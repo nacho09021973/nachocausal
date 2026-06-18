@@ -3,3 +3,6 @@ __pycache__/
 .venv/
 venv/
 *.egg-info/
+
+# generated dev ensemble output (raw sprinkling data) is never committed
+dev_ensemble_raw/

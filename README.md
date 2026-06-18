@@ -17,5 +17,6 @@ Founding rules (see docs/preregistration.md):
 - The hidden embedding (ground truth) only scores; it never defines or guides the observable
   or the boundary.
 
-Status: pre-registration frozen. Dev prototype not yet built. No result yet. No event/apparent
-horizon, Kerr, or manifoldlikeness claim.
+Status: pre-registration frozen. Dev prototype built and smoke-tested (exploration only; lives
+in dev/, deliberately not committed). No frozen result yet. No event/apparent horizon, Kerr, or
+manifoldlikeness claim.
