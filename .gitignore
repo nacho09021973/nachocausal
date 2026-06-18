@@ -6,3 +6,6 @@ venv/
 
 # generated dev ensemble output (raw sprinkling data) is never committed
 dev_ensemble_raw/
+
+# local literature library (papers, books, derived notes) -- not committed
+biblioteca/

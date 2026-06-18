@@ -20,3 +20,11 @@ Founding rules (see docs/preregistration.md):
 Status: pre-registration frozen. Dev prototype built and smoke-tested (exploration only; lives
 in dev/, deliberately not committed). No frozen result yet. No event/apparent horizon, Kerr, or
 manifoldlikeness claim.
+
+## Literature library
+
+An extensive local library of causal-set-theory articles and books lives in `biblioteca/`
+(papers by Bombelli, Sorkin, Benincasa, Dowker, Surya et al.; textbooks; and the directly
+relevant "Towards black-hole horizons and geodesic focusing in causal sets"). It also holds
+markdown notes and PDF-derived markdown under `biblioteca/derived-md/`. The folder is local
+reference material only — it is git-ignored and not part of the committed project.
