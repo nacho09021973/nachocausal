@@ -17,9 +17,38 @@ Founding rules (see docs/preregistration.md):
 - The hidden embedding (ground truth) only scores; it never defines or guides the observable
   or the boundary.
 
-Status: pre-registration frozen. Dev prototype built and smoke-tested (exploration only; lives
-in dev/, deliberately not committed). No frozen result yet. No event/apparent horizon, Kerr, or
-manifoldlikeness claim.
+Status: pre-registration frozen; **instrument sealed** (block #4). The order-only estimator,
+generator, frozen thresholds, and blind PASS/FAIL runner live in the committed package
+`nachocausal/`, with every threshold value fixed in writing in
+`docs/preregistration_001_addendum.md` *before* any validation data. An independent adversarial
+audit cleared the seal. **No frozen result yet** — the blind validation run (step #5) has not
+been executed. No event/apparent horizon, Kerr, or manifoldlikeness claim.
+
+## Running / reproducing on a fresh machine
+
+The validation path is **pure numpy**. Anyone can reproduce everything under identical
+conditions with just this repo and the pinned environment:
+
+```bash
+git clone https://github.com/nacho09021973/nachocausal
+cd nachocausal
+python3 -m venv .venv && . .venv/bin/activate     # Python 3.12 (sealed: 3.12.3)
+pip install -r requirements.txt                    # numpy==1.26.4 (hard-pinned), pytest
+
+make test       # bit-exact regression vs the 64 audited O multisets + leak/seed guards
+make dry-run    # run the full frozen PASS/FAIL path on dev seeds (verdict discarded)
+make verify-seal  # print the thresholds.py SHA256 (compare to the addendum)
+```
+
+numpy is hard-pinned because the frozen poset/estimator are guaranteed bit-for-bit reproducible
+only under the version the instrument was sealed against; the package hard-fails on any other
+numpy.
+
+The optional Minz admissibility cross-check (`make gate`) is **not** on the validation path and
+**not** required to run the benchmark. It needs the external clone
+[c-minz/Python-causets](https://github.com/c-minz/Python-causets) on `sys.path` via the env var
+`NACHOCAUSAL_MINZ_PATH` (default `~/cs-horizon-reuse-check`). Its evidence is already recorded in
+`nachocausal/fixtures/gate_evidence.json`.
 
 ## Literature library
 

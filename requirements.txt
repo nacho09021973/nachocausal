@@ -1,0 +1,16 @@
+# Sealed numeric environment for the nachocausal validation path (block #4).
+#
+# numpy is HARD-PINNED: the frozen poset/estimator are guaranteed bit-for-bit
+# reproducible only under the version the instrument was verified and sealed
+# against (docs/preregistration_001_addendum.md; thresholds.assert_environment
+# hard-fails on any other version). Do not relax this pin.
+numpy==1.26.4
+
+# Test runner for `make test` (bit-exact regression + leak + seed invariants).
+pytest>=7,<9
+
+# NOTE: the OPTIONAL Minz admissibility gate (`make gate`) additionally needs the
+# external clone github.com/c-minz/Python-causets on sys.path via the env var
+# NACHOCAUSAL_MINZ_PATH (default ~/cs-horizon-reuse-check). It is NOT on the
+# validation path and NOT required to run the benchmark — its evidence is already
+# recorded in nachocausal/fixtures/gate_evidence.json.
