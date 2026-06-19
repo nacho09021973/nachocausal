@@ -123,3 +123,35 @@ recoverability benchmark of a known-truth horizon.
   (`make verify-seal`). The git commit that introduces this addendum + that
   thresholds.py is the freeze seal; step #5 (the blind validation run) begins
   only afterward.
+
+## Independent pre-#5 audit (falsification gate, preregistration.md:74-78)
+
+Before step #5, an independent adversarial auditor (separate session, blind to
+any desired outcome, tasked to BREAK the instrument — find cheats, leakage,
+hardcoding, or a verdict that cannot fail) audited the sealed package at commit
+`34f3435` by **re-execution** (46 tool actions), not reading alone. Verdict:
+**CLEAR-TO-PROCEED-TO-#5**; no CRITICAL/MAJOR/MINOR findings. Re-executed
+evidence:
+
+- **Order-only:** monkeypatching `estimate_O` to depend on a coordinate/label
+  made `verify_order_only` RAISE; the scorer receives `thr` as an already-frozen
+  float and never feeds back. No r_S/2M path into the observable.
+- **Accelerator:** on a fresh seed (123456, not in any seed set/fixture)
+  `past_matrix_fast == Minz` bit-for-bit (BH+MINK); the gate RAISES on a 1-bit
+  poset corruption.
+- **Thresholds:** θ_loc/θ_stab derive from intensity + fixed area, not realized
+  N; the permutation p-value matches a brute-force 2ⁿ enumeration.
+- **Falsifiable both ways:** forcing BH≡MINK → `p_perm=1.0` → FAIL; a genuine
+  14-seed horizon signal → `p_perm=6.1e-5 ≤ 1e-4` → PASS-eligible.
+- **Fixtures genuine:** 64/64 O-multisets regenerated from scratch, 0 mismatch;
+  gate checksums reproduce.
+- **No bypass:** no early read of validation data, no `if seed ==`, no r_S in any
+  decision; validation seeds disjoint.
+- **All seven guardrails fire** on the violating input built for each (Glue-3
+  chi²=1197≫18.5, numpy pin, Minz gate, MIN_VALID_SEEDS→inconclusive, Guard-v).
+
+Two NITs (non-blocking, confirmed not cheats): `validate.py` hardcodes the
+`v_order_only` check True (sound — a Guard-v violation RAISES and aborts the run,
+so it cannot be masked); `dry_run.py` temporarily lowers MIN_VALID_SEEDS for the
+8-seed dev path only (restored in `finally`, never touches a threshold). Both
+left as-is by decision. The independent-falsification gate is satisfied.
