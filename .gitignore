@@ -7,5 +7,9 @@ venv/
 # generated dev ensemble output (raw sprinkling data) is never committed
 dev_ensemble_raw/
 
+# generated benchmark artifacts (raw ensembles, dry-run output) -- not committed.
+# The committed verdict record lives in docs/, separate from raw data (cmte SWE).
+results/
+
 # local literature library (papers, books, derived notes) -- not committed
 biblioteca/

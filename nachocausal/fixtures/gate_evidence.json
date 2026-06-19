@@ -1,0 +1,34 @@
+{
+  "description": "Admissibility: past_matrix_fast == Minz bit-for-bit. Re-runnable via make gate (needs Minz clone).",
+  "numpy": "1.26.4",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "minz_verified_commit": "1e61bec",
+  "high_N_reference": {
+    "N": 10017,
+    "intensity": 10000.0,
+    "seed": 20240617,
+    "pairs_each": 100340289,
+    "kinds": [
+      "BH",
+      "MINK"
+    ],
+    "result": "bit-for-bit, 0 disagreements",
+    "source": "docs/reuse_check.md, dev/gate_highN.log"
+  },
+  "small_N_gate": {
+    "BH": {
+      "minz_gate_N": 424,
+      "intensity": 420.0,
+      "seed": 20240617,
+      "fast_poset_sha256": "ec8c7631c6dd739ccb2d45eff2d39f8ef11d5e0146b55005f2a3493c8a06f449",
+      "agrees_with_minz": true
+    },
+    "MINK": {
+      "minz_gate_N": 424,
+      "intensity": 420.0,
+      "seed": 20240617,
+      "fast_poset_sha256": "d88c62bffbafeac767ffbcd4083748f8782c598179d2b5e844168b4e3f3e980a",
+      "agrees_with_minz": true
+    }
+  }
+}
