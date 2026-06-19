@@ -25,7 +25,11 @@ Glue to write (minimal, ours):
    spacetimes.py:759 — closed form, no Newton). Minz REMAINS the reference relation: the fast
    path is admissible only where verify_fast_matches_minz() confirms bit-for-bit agreement on
    the same coordinates (gated, raises otherwise). Verified EXACT vs Minz across seeds {20240617,
-   7, 42, 99} × intensities {420, 1500, 3000} × {BH, MINK}, N up to ~3046. Not a new physics
+   7, 42, 99} × intensities {420, 1500, 3000} × {BH, MINK}, N up to ~3046, AND directly at the
+   dense ceiling N=10017 (intensity 10000, seed 20240617, BH + box-matched MINK): 100,340,289
+   pairs each agree bit-for-bit (dev/gate_highN.py, 2026-06-19; Minz gen+poset 2221s BH / 4392s
+   MINK on dev). This closes the prior audit gap (the fast path had been relied on in sweeps up to
+   N~10⁴–2·10⁴ but the exact gate had only run to N~3046). Not a new physics
    claim — a verified third implementation; vidh2000 C++ stays the independent cross-check.
 
 Cost (measured on dev, this machine): Minz pure-Python relate() is O(N^2) and dominates
