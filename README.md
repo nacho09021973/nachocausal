@@ -28,6 +28,29 @@ false-positive (0.10 > 0.05) bars. Recorded verbatim in `docs/preregistration_00
 the validation seeds are now burned (no re-run/re-tune). No event/apparent horizon, Kerr, or
 manifoldlikeness claim.
 
+## Pending tasks (next session)
+
+Post-FAIL exploration (dev only; sealed instrument untouched) is recorded in
+[`docs/estimator_v2_exploration.md`](docs/estimator_v2_exploration.md). It found that future
+**volume** fixes localisation-coverage (ii) and that an **abstaining gate** with a principled,
+data-independent `tau(n)` (= p99 of an abstract uniform null at matched n; α=0.01; frozen MC
+seed) fixes false-positives (iv): pre-flight on EXPLORE_POOL closes both at all intensities
+without touching BH coverage. The chosen combination (τ(n) table / α=0.01 / uniform null) was
+fixed **by principle, not by best-FP selection**.
+
+1. **Re-run the gated FP pre-flight on the new machine** to confirm the result reproduces:
+   `.venv/bin/python dev/explore_fp_gated.py` (expects fp 0.000/0.000/0.033 ≤ 0.05, coverage
+   0.90/0.90/0.80, p_perm sig; n∈[16,71]). The dev scripts (`dev/explore_fp_gated.py`,
+   `dev/explore_fp.py`, `dev/explore_seeds.py`) are committed as a scoped exception to the
+   `dev/` ignore rule so they travel with the repo; everything else in `dev/` stays untracked.
+2. **(Optional) Robustness annex** — run the 12-way grid (form{table,const} × α{.01,.05} ×
+   null{uniform,gauss,disc-uniform}) as a **sensitivity map only, never as a selector**.
+3. **Pre-registration 002** (committing; needs explicit authorisation) — freeze α, the null,
+   the MC script + seed, and the τ(n) table into a re-sealed estimator-v2 (new seal SHA), with
+   fresh held-out seeds from the reserved 002 band `[2_000_000, 2_999_999]`. Frozen thresholds,
+   geometry, ensemble, and primary endpoint do not move; the prereg-001 validation seeds stay
+   burned.
+
 ## Running / reproducing on a fresh machine
 
 The validation path is **pure numpy**. Anyone can reproduce everything under identical

@@ -4,6 +4,9 @@ __pycache__/
 venv/
 *.egg-info/
 
+# exploration sandbox (CLAUDE.md: deliberately not committed / untracked)
+dev/
+
 # generated dev ensemble output (raw sprinkling data) is never committed
 dev_ensemble_raw/
 
