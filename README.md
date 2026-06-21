@@ -21,8 +21,12 @@ Status: pre-registration frozen; **instrument sealed** (block #4). The order-onl
 generator, frozen thresholds, and blind PASS/FAIL runner live in the committed package
 `nachocausal/`, with every threshold value fixed in writing in
 `docs/preregistration_001_addendum.md` *before* any validation data. An independent adversarial
-audit cleared the seal. **No frozen result yet** — the blind validation run (step #5) has not
-been executed. No event/apparent horizon, Kerr, or manifoldlikeness claim.
+audit cleared the seal. **Frozen result (step #5, 2026-06-21): `FAIL`** — the single committed
+blind run emits FAIL; the causal order carries strong horizon signal (sign-flip p≈1e-6 at all
+N) but the v1 estimator misses the pre-registered localisation-coverage (0.30 < 0.50) and
+false-positive (0.10 > 0.05) bars. Recorded verbatim in `docs/preregistration_001_result.md`;
+the validation seeds are now burned (no re-run/re-tune). No event/apparent horizon, Kerr, or
+manifoldlikeness claim.
 
 ## Running / reproducing on a fresh machine
 

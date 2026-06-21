@@ -90,7 +90,66 @@ causet. Any unmet → FAIL; primary level with < 18/20 valid seeds → INCONCLUS
 
 ## Result
 
-**PENDING — not yet executed.** To be filled once, from `results/validation.json`,
-with the verdict and the full 4-level table (per intensity: N_mean, n_valid,
-p_perm, significant, median_width/2M, IQR, coverage, boundary_r_std, fp_fraction,
-and the five check booleans), plus the launch-time provenance snapshot.
+**Verdict: `FAIL`.** Executed 2026-06-21 — the single committed `validate.run()`
+over the 20 frozen `VALIDATION_SEEDS` (`label="validation"`, `guard=True`, no
+`seeds=`, no `guard=False`). Transcribed verbatim from `results/validation.json`.
+
+Three of five checks held; **two were unmet at the primary N (intensity 12000):**
+(ii) localisation and (iv) false-positive. Significance was strong at every level.
+
+### Four-level table (per intensity, from `results/validation.json`)
+
+| intensity | N_mean | n_valid | p_perm | sig | med w/2M | IQR/2M | θ_loc | coverage | r_std | θ_stab | fp_frac | status |
+|---:|---:|---:|---:|:-:|---:|---:|---:|---:|---:|---:|---:|:-:|
+| 1500  | 1514.4   | 20 | 3.81e-06 | ✓ | 0.1662 | 0.1572 | 0.2771 | 0.65 | 0.0232 | 0.1386 | 0.10 | scored |
+| 3000  | 3020.3   | 20 | 9.54e-07 | ✓ | 0.1036 | 0.1063 | 0.1960 | 0.60 | 0.0214 | 0.0980 | 0.10 | scored |
+| 6000  | 6028.8   | 20 | 9.54e-07 | ✓ | 0.0845 | 0.0499 | 0.1386 | 0.40 | 0.0161 | 0.0693 | 0.10 | scored |
+| **12000** (primary) | 12040.75 | 20 | 9.54e-07 | ✓ | 0.0586 | 0.0466 | 0.0980 | **0.30** | 0.0131 | 0.0490 | **0.10** | scored |
+
+### Five checks (primary N = intensity 12000)
+
+| check | value |
+|---|:-:|
+| (i) significant at primary and every N≥3000 | **True** |
+| (ii) localisation at primary (width ≤ θ_loc, not IQR-inconclusive, coverage ≥ 0.5) | **False** |
+| (ii) convergence-slack (b) | True |
+| (iii) stability at primary (boundary r-std ≤ θ_stab) | True |
+| (iv) false-positive at primary (LOO fp ≤ 0.05) | **False** |
+| (v) Guard-v raised on no causet (order-only) | True |
+
+**Why FAIL (factual):**
+- **(ii) localisation** — the bracket *width* passed (median 0.0586 ≤ θ_loc 0.0980),
+  but **coverage of the true `R_S` was 0.30 < 0.50** required. The order-statistic
+  bracket (`r_lo = max r` over predicted-interior, `r_hi = min r` over
+  predicted-exterior; `scorer.py:53-54`) is narrow but off-centre: a single
+  misclassified minimal element near the boundary breaks coverage. Coverage falls
+  monotonically with N (0.65 → 0.60 → 0.40 → 0.30).
+- **(iv) false-positive** — LOO false-positive fraction = **0.10 > 0.05** at every
+  level. `two_means_split` always splits the O multiset, so pure-Minkowski seeds
+  get a spurious `sep`; the tail produces false positives.
+
+The causal order *does* carry horizon signal (sign-flip significance p ≈ 1e-6 at
+all four N), but the frozen v1 estimator does **not** recover the Schwarzschild
+horizon at the pre-registered fidelity. This is recorded as the outcome of
+pre-registration 001; it is **not** licence to re-run or re-tune (binding rule
+above). Any re-validation of an improved estimator requires a **new
+pre-registration (002)** with a newly sealed estimator and **fresh held-out
+seeds disjoint from `DEV_SEEDS` and from these now-burned `VALIDATION_SEEDS`**;
+the frozen thresholds and primary endpoint do not move.
+
+### Launch-time provenance snapshot (actual run)
+
+- commit: `672eb1424feee580c628753b7ab5b6b76aa982c4` (`672eb14`, branch `main`)
+- package diff (`nachocausal/`, `docs/`): 0 lines
+- `thresholds.py` SHA256: `ad02cb57e1445ca83a489bd4f3f9cae151517ca2aedbd1b29c44c60ac65f7faa`
+- env: `Linux 6.6.87.2-microsoft-standard-WSL2 x86_64`; Python 3.12.3; numpy 1.26.4
+- pip freeze (sealed venv): numpy==1.26.4, pytest==8.4.2, pluggy==1.6.0,
+  iniconfig==2.3.0, packaging==26.2, Pygments==2.20.0
+- captured_utc 2026-06-21T09:05:58Z; tests 10 passed (sealed venv)
+- run: verdict written to `results/validation.json` at completion (32.5 min, CPU)
+- launcher note: the run was driven via `dev/run_validation_instrumented.py`, a
+  non-sealed dev wrapper that adds a **pass-through** progress timer around
+  `validate._per_seed` (calls the original, returns its result unchanged) and
+  invokes the unmodified `validate.run()`; numerically identical to
+  `python -m nachocausal.validate`. Full provenance trail in
+  `results/validation_provenance_launch.txt`.
