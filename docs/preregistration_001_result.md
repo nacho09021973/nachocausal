@@ -38,6 +38,20 @@ nohup .venv/bin/python -m nachocausal.validate > results/validation_run.log 2>&1
 (git-ignored). After completion the verdict + the full 4-level table is
 transcribed into the "Result" section here (committed).
 
+### Launcher correction (2026-06-21, BEFORE any validation data was seen)
+
+On the first launch attempt the committed command `python -m nachocausal.validate`
+exited 0 in seconds and produced an **empty** `results/validation_run.log` and **no**
+`results/validation.json`: at the time of pre-commit, `nachocausal/validate.py` had
+**no `if __name__ == "__main__":` block** (and there is no `nachocausal/__main__.py`),
+so `-m` merely imported the module and exited — a silent no-op. Fix (commit on
+`main`): a `__main__` block was added to `validate.py` that calls `run()` with the
+frozen defaults (no `seeds=`, `guard=True`, `label="validation"`) and prints the
+verdict. This is a launcher-only change: **`thresholds.py` is untouched, the seal
+SHA256 is unchanged, and no validation seed had been analysed** (empty log, no
+verdict file) — it is not post-hoc tuning of any frozen quantity. The run command
+above is unchanged and now executes the single committed run.
+
 ## Pre-flight gate (must be green before launch)
 
 | Check | Command | Required |

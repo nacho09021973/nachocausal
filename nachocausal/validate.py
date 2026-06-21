@@ -190,3 +190,14 @@ def _write(verdict: dict, label: str) -> str:
     with open(path, "w") as f:
         json.dump(verdict, f, indent=2, default=float)
     return path
+
+
+if __name__ == "__main__":
+    # Step #5 entrypoint: the single committed blind run on VALIDATION_SEEDS
+    # (guard=True, label="validation"), per docs/preregistration_001_result.md.
+    # No seeds=, no guard=False; the full table is transcribed from the written
+    # results/validation.json into the result record.
+    verdict = run()  # write=True by default -> results/validation.json
+    print(f"verdict: {verdict.get('verdict')}")
+    print(f"checks: {verdict.get('checks', verdict.get('reason'))}")
+    print(f"written: {os.path.join(RESULTS_DIR, verdict['label'] + '.json')}")
