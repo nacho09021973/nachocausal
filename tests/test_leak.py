@@ -45,22 +45,23 @@ def test_guard_v_can_fail():
     # A genuine order-only O is invariant under relabelling: verify_order_only
     # returns without raising. Then we corrupt the recomputation to depend on a
     # label and confirm the guard RAISES — i.e. it is a guardrail that can fail.
+    # Guard-v defaults to the PRODUCTION observable (volume, freeze cl. v).
     emb, _, _ = generator.numpy_sprinkle(seed=20240617, intensity=420.0)
     C = generator.past_matrix_fast(emb, "BH")
     estimator.verify_order_only(C, seed=1)  # must not raise on real order-only O
 
     import pytest
-    orig = estimator.estimate_O
+    orig = estimator.estimate_O_volume
 
     def label_dependent(pm):
-        O, mn, L = orig(pm)
+        O, mn = orig(pm)
         if mn:
             O[mn[0]] = O[mn[0]] + 1  # contaminate with an index-dependent value
-        return O, mn, L
+        return O, mn
 
-    estimator.estimate_O = label_dependent
+    estimator.estimate_O_volume = label_dependent
     try:
         with pytest.raises(ValueError):
             estimator.verify_order_only(C, seed=1)
     finally:
-        estimator.estimate_O = orig
+        estimator.estimate_O_volume = orig

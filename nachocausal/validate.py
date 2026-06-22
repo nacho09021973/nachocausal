@@ -18,7 +18,7 @@ from typing import Dict, List
 
 import numpy as np
 
-from . import estimator, generator, thresholds
+from . import estimator, gate, generator, thresholds
 from .scoring import blind_bracket
 
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "results")
@@ -78,28 +78,42 @@ def _iqr(x: np.ndarray) -> float:
 # =============================================================================
 # Per-seed blind phase (poset only) -> then reveal r to score.
 # =============================================================================
-def _per_seed(seed: int, intensity: float, guard: bool = True) -> dict:
-    emb, edges, center = generator.numpy_sprinkle(seed, intensity)
+def _per_seed(seed: int, intensity: float, t_edge: float, guard: bool = True) -> dict:
+    # Evaluation order (freeze cl. H): DOMAIN (checked once per run) -> ESTIMATOR
+    # (volume observable) -> GATE (tau(n) abstention) -> CRITERIA (here + run_level).
+    emb, edges, center = generator.numpy_sprinkle(seed, intensity, t_edge)
     generator.assert_coordinate_uniform(emb, edges, center)  # Glue-3, can fail
     out: Dict[str, object] = {"seed": int(seed), "N": int(emb.shape[0])}
     blind = {}
     for kind in ("BH", "MINK"):
         C = generator.past_matrix_fast(emb, kind)
         if guard:
-            estimator.verify_order_only(C, seed=seed)  # Guard-v: RAISES if not order-only
-        O_by_min, min_idx, _ = estimator.estimate_O(C)
-        thr, sep = estimator.two_means_split(list(O_by_min.values()))
-        blind[kind] = (O_by_min, min_idx, thr, sep)
+            # Guard-v on the PRODUCTION observable (volume); RAISES if not order-only.
+            estimator.verify_order_only(C, seed=seed)
+        O_by_min, min_idx = estimator.estimate_O_volume(C)        # freeze cl. A
+        vals = list(O_by_min.values())
+        thr, sep = estimator.two_means_split(vals)
+        n = len(min_idx)
+        abstained = gate.abstains(estimator.improvement(vals), n)  # freeze cl. C
+        if abstained:
+            sep = 0.0                                            # no boundary claimed
+        blind[kind] = (O_by_min, min_idx, thr, sep, abstained)
     # thr is now frozen from O alone for both kinds; ONLY now reveal r.
-    O_bh, min_bh, thr_bh, sep_bh = blind["BH"]
-    _, _, _, sep_mk = blind["MINK"]
-    br = blind_bracket(O_bh, min_bh, thr_bh, emb)  # scoring: reveals r
-    out.update(sep_BH=sep_bh, sep_MINK=sep_mk, d=sep_bh - sep_mk, **br)
+    O_bh, min_bh, thr_bh, sep_bh, abst_bh = blind["BH"]
+    _, _, _, sep_mk, abst_mk = blind["MINK"]
+    if abst_bh:
+        # An abstaining BH causet makes NO localisation claim -> invalid bracket.
+        br = dict(valid=False, r_lo=float("nan"), r_hi=float("nan"),
+                  width=float("nan"), midpoint=float("nan"), covers=False, clean=False)
+    else:
+        br = blind_bracket(O_bh, min_bh, thr_bh, emb)             # scoring: reveals r
+    out.update(sep_BH=sep_bh, sep_MINK=sep_mk, d=sep_bh - sep_mk,
+               abstained_BH=bool(abst_bh), abstained_MINK=bool(abst_mk), **br)
     return out
 
 
-def run_level(seeds, intensity: float, guard: bool = True) -> dict:
-    rows = [_per_seed(s, intensity, guard) for s in seeds]
+def run_level(seeds, intensity: float, t_edge: float, guard: bool = True) -> dict:
+    rows = [_per_seed(s, intensity, t_edge, guard) for s in seeds]
     valid = [r for r in rows if r["valid"] and np.isfinite(r["sep_MINK"])]
     n_valid = len(valid)
     lam_ell_2m = thresholds.ell(intensity) / thresholds.TWO_M
@@ -107,6 +121,8 @@ def run_level(seeds, intensity: float, guard: bool = True) -> dict:
         "intensity": intensity,
         "N_mean": float(np.mean([r["N"] for r in rows])),
         "n_valid": n_valid,
+        "abstain_frac_BH": float(np.mean([r["abstained_BH"] for r in rows])),
+        "abstain_frac_MINK": float(np.mean([r["abstained_MINK"] for r in rows])),
         "theta_loc": thresholds.theta_loc(intensity),
         "theta_stab": thresholds.theta_stab(intensity),
         "ell_over_2M": lam_ell_2m,
@@ -136,13 +152,27 @@ def run_level(seeds, intensity: float, guard: bool = True) -> dict:
 # =============================================================================
 # Full run across the 4 N levels -> frozen verdict.
 # =============================================================================
-def run(seeds=None, label: str = "validation", guard: bool = True, write: bool = True) -> dict:
+def run(seeds=None, label: str = "validation", guard: bool = True, write: bool = True,
+        t_edge: float = None) -> dict:
     thresholds.assert_environment()
     seeds = list(thresholds.VALIDATION_SEEDS if seeds is None else seeds)
-    levels = {lam: run_level(seeds, lam, guard) for lam in thresholds.INTENSITIES}
+    t_edge = thresholds.T_EDGE if t_edge is None else float(t_edge)
+
+    # (D) Domain gate (freeze cl. D): t_edge < T_EDGE_MIN is OUT-OF-DOMAIN, a
+    # distinct status that is NEVER a physical FAIL of the recoverability claim.
+    if t_edge < thresholds.T_EDGE_MIN:
+        verdict = {"label": label, "seeds": seeds, "t_edge": t_edge,
+                   "verdict": "OUT_OF_DOMAIN",
+                   "reason": f"t_edge={t_edge} < T_EDGE_MIN={thresholds.T_EDGE_MIN}; "
+                             "outside the experiment's domain of validity (not a FAIL)"}
+        if write:
+            _write(verdict, label)
+        return verdict
+
+    levels = {lam: run_level(seeds, lam, t_edge, guard) for lam in thresholds.INTENSITIES}
 
     prim = levels[thresholds.PRIMARY_INTENSITY]
-    verdict = {"label": label, "seeds": seeds, "levels": levels}
+    verdict = {"label": label, "seeds": seeds, "t_edge": t_edge, "levels": levels}
 
     if prim.get("status") != "scored":
         verdict["verdict"] = "INCONCLUSIVE"

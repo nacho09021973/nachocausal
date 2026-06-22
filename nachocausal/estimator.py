@@ -108,19 +108,76 @@ def two_means_split(O) -> Tuple[float, float]:
 
 
 # =============================================================================
+# Estimator-v2 observable — future VOLUME (frozen; docs/estimator_v2_freeze.md).
+# =============================================================================
+def estimate_O_volume(
+    past_matrix: np.ndarray,
+) -> Tuple[Dict[int, int], List[int]]:
+    """Estimator-v2 observable (FROZEN, freeze cl. A). INPUT: the boolean past
+    matrix C ONLY. For each minimal element i (all-False row -> empty past),
+    O(i) = |future(i)| = the number of elements that have i in their past =
+    the column sum C[:, i]. Order-only and permutation-invariant.
+
+    Returns (O_by_minimal_index, minimal_indices). Replaces the height
+    observable (estimate_O) on the validation path; estimate_O is retained as
+    the audited poset-integrity oracle (tests/test_regression.py)."""
+    if past_matrix.dtype != bool:
+        past_matrix = past_matrix.astype(bool)
+    N = past_matrix.shape[0]
+    has_past = past_matrix.any(axis=1)
+    vol = past_matrix.sum(axis=0).astype(int)  # vol[i] = |future(i)|
+    minimal_indices = [i for i in range(N) if not has_past[i]]
+    O_by_minimal = {i: int(vol[i]) for i in minimal_indices}
+    return O_by_minimal, minimal_indices
+
+
+def improvement(values) -> float:
+    """Fraction of variance explained by the best 1-D 2-partition (== 2-means in
+    1D) of the values: 1 - SSE2/SSE1. Vectorised via prefix sums (O(n log n));
+    bit-identical to the brute split-loop. Feeds the tau(n) gate. [freeze cl. C]"""
+    o = np.sort(np.asarray(values, float))
+    n = o.size
+    if n < 2:
+        return 0.0
+    tot = float(o.var() * n)  # SSE1
+    if tot <= 0.0:
+        return 0.0
+    cs = np.cumsum(o)
+    css = np.cumsum(o * o)
+    i = np.arange(1, n)         # split after index i-1: left=[0,i), right=[i,n)
+    sl, sql = cs[i - 1], css[i - 1]
+    sse_l = sql - sl * sl / i
+    sr, sqr = cs[-1] - sl, css[-1] - sql
+    sse_r = sqr - sr * sr / (n - i)
+    sse2 = float(np.min(sse_l + sse_r))
+    return 1.0 - sse2 / tot
+
+
+# =============================================================================
 # GUARD (v) — runnable proof O depends ONLY on the abstract poset.
 # =============================================================================
-def verify_order_only(past_matrix: np.ndarray, seed: int = 0) -> Dict[int, int]:
+def _O_and_min(result) -> Tuple[Dict[int, int], List[int]]:
+    """Take (O_by_min, min_idx) from an observable returning a 2- or 3-tuple."""
+    return result[0], result[1]
+
+
+def verify_order_only(past_matrix: np.ndarray, seed: int = 0, observable=None):
     """Relabel elements by a random permutation (conjugate the order matrix) and
-    recompute O. A permutation preserves the order but destroys any
-    index/coordinate correlation. RAISES if the O multiset, or the per-element
-    O value tracked through the permutation, changes. Returns O for the caller."""
-    O0, min0, _ = estimate_O(past_matrix)
+    recompute the observable. A permutation preserves the order but destroys any
+    index/coordinate correlation. RAISES if the O multiset, or the per-element O
+    value tracked through the permutation, changes. Returns O for the caller.
+
+    `observable` defaults to the production estimator-v2 observable
+    (estimate_O_volume); pass estimate_O to guard the height oracle. Guarding the
+    observable ACTUALLY USED keeps this a guardrail that can fail, not decoration
+    (freeze cl. v)."""
+    obs = observable or estimate_O_volume
+    O0, min0 = _O_and_min(obs(past_matrix))
     rng = np.random.default_rng(seed)
     N = past_matrix.shape[0]
     perm = rng.permutation(N)
     permuted = past_matrix[perm][:, perm]
-    O1, min1, _ = estimate_O(permuted)
+    O1, min1 = _O_and_min(obs(permuted))
 
     if len(min1) != len(min0) or sorted(O1.values()) != sorted(O0.values()):
         raise ValueError(

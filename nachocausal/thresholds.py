@@ -106,3 +106,25 @@ def theta_stab(intensity: float) -> float:
 THETA_LOC = {lam: theta_loc(lam) for lam in INTENSITIES}
 THETA_STAB = {lam: theta_stab(lam) for lam in INTENSITIES}
 ELL = {lam: ell(lam) for lam in INTENSITIES}
+
+# --- Estimator-v2 (frozen; contract docs/estimator_v2_freeze.md) --------------
+# Three changes vs prereg-001: (A) VOLUME observable, (C) tau(n) abstaining gate,
+# (D) minimum-extent domain gate. Everything above is inherited verbatim.
+
+# (D) Domain gate: a configuration with t_edge < T_EDGE_MIN is OUT-OF-DOMAIN
+# (reported as outside the experiment's validity, NEVER a physical FAIL). Pinned
+# to 6 by dev/explore_tmin.py (= the sealed T_EDGE, so BOX_AREA and the frozen
+# ell/theta_loc table are unchanged). [freeze cl. D]
+T_EDGE_MIN = 6.0
+
+# (C) tau(n) abstaining gate: abstain (sep -> 0, no boundary claimed) iff
+# improvement(O_min) < tau(n), where tau(n) is the (1 - GATE_ALPHA) quantile of
+# `improvement` under an abstract Uniform[0,1] null at matched n, by Monte Carlo
+# with the FROZEN seed/reps below. n = number of minimal elements (order-only).
+# The table is precomputed into fixtures/tau_table.json over n in [2, N_MAX]
+# (regenerate: scripts/gen_tau_table.py). Data-independent: no project seeds,
+# no sprinkling, no ground truth enter it. [freeze cl. C]
+GATE_ALPHA = 0.01                # tau = p99 of the abstract uniform null
+GATE_NULL_MC_SEED = 20260621     # frozen MC seed
+GATE_NULL_MC_REPS = 40000        # reps per n
+GATE_TAU_N_MAX = 128             # table covers n in [2, 128]; production n <= ~71
