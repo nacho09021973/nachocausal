@@ -192,6 +192,87 @@ cannot drift from the pre-flight. For each intensity in (3000, 6000, 12000), ove
    `mean(br.covers)` over claiming valid seeds; midpoint mean/std and
    `mean − R_S`; `width/2M` median/std over clean claiming seeds; sep mean/std.
 
+## Finding 4 — patch-extent and density/resolution axes (prerequisite #1, cont. 2026-06-22)
+
+Geometric subtlety made explicit: in this **fixed-box** generator (box =
+`[t_edge, R_EDGE]`, area = `t_edge·R_EDGE`, `intensity` = expected #points),
+**density `ρ` and "resolution at fixed physical area" are the SAME knob** —
+raising intensity at a fixed box raises `ρ` *and* shrinks the discreteness scale
+`ℓ ~ 1/√ρ`. So the density/resolution axis is the **intensity sweep at the fixed
+box** (Finding 3's 3000/6000/12000, here **extended** with 1500 and 24000); the
+genuinely separable axis is **patch extent**, swept by varying `t_edge` at
+**matched density** (`intensity = 1000·t_edge ⇒ ρ ≡ 833.3`). `R_EDGE`/`R_CENTER`
+are frozen thresholds, left untouched (so the r-window stays `[0.1, 1.3]`, R_S
+inside). Same gated pipeline, 40 EXPLORE_POOL seeds, BH only. Run:
+`dev/explore_axes.py` (exit 0). Gate never fires (abstention 0/40 everywhere).
+
+**Patch-extent axis (matched `ρ = 833`):**
+
+| t_edge | I | coverage | midpoint mean ± std | bias vs R_S | width/2M |
+|---:|:--:|:--:|:--:|:--:|:--:|
+| 3 | 3000 | **0.35** | 0.5262 ± 0.0146 | **+0.0262** | 0.086 |
+| 6 | 6000 | 0.93 | 0.4978 ± 0.0130 | −0.0022 | 0.086 |
+| 12 | 12000 | **1.00** | 0.4986 ± 0.0132 | −0.0014 | 0.088 |
+
+**Density/resolution axis (fixed box `t_edge = 6`; 1500 & 24000 extend Finding 3):**
+
+| I | ρ | coverage | midpoint mean ± std | bias vs R_S | width/2M |
+|---:|:--:|:--:|:--:|:--:|:--:|
+| 1500 | 208 | 0.97 | 0.5017 ± 0.0305 | +0.0017 | 0.159 |
+| 3000 | 417 | 0.93 | 0.4983 ± 0.0212 | −0.0017 | 0.120 |
+| 6000 | 833 | 0.93 | 0.4978 ± 0.0130 | −0.0022 | 0.086 |
+| 12000 | 1667 | 0.85 | 0.5018 ± 0.0109 | +0.0018 | 0.064 |
+| 24000 | 3333 | **0.78** | 0.5028 ± 0.0074 | +0.0028 | 0.043 |
+
+**Reading — the two axes move coverage in OPPOSITE directions:**
+- **Density → precision up, coverage DOWN.** As `ρ` rises, midpoint std
+  (0.0305→0.0074) and width/2M (0.159→0.043) shrink **monotonically** (the
+  estimator is *consistent* — it converges, it does not scatter), but coverage
+  falls **monotonically** (0.97→0.78). The order-statistic bracket tightens
+  faster than the small residual bias/scatter closes, so at high density it
+  **under-covers**: it is a localisation bracket, **not a calibrated coverage
+  interval**.
+- **Patch extent → bias/centring.** At matched density, a **short** time-patch
+  (`t_edge = 3`) is badly biased **outward** (+0.026) and coverage collapses to
+  **0.35**, while a tall patch (`t_edge = 12`) is unbiased and covers 1.00 — at
+  near-constant width (~0.086). Plausibly: short time-extent leaves minimal
+  elements too little future to integrate, and the EF `log` term near the horizon
+  then skews the volume outward. Extent sets *accuracy*; density sets *precision*.
+
+**Bounded conclusion (versioned):**
+> Estimator-v2's seed-stability holds in the sense of **consistency** — across 40
+> seeds the boundary midpoint sits on R_S with bias < 0.5 % and the seed-to-seed
+> dispersion *and* bracket width shrink monotonically to zero as density rises.
+> But two stability caveats are now explicit and must be resolved **before**
+> freezing prereg-002's localisation criterion, not after: (a) the order-statistic
+> bracket is **not a calibrated coverage interval** — coverage falls monotonically
+> with density (0.97→0.78 over ρ = 208→3333), so the criterion cannot be set as
+> unconditional coverage ≈ 1 and must either fix a density/extent regime where
+> coverage is adequate or **recalibrate/inflate** the bracket; (b) localisation is
+> **not patch-extent-invariant** — a short time-patch biases the boundary outward
+> and collapses coverage (0.35 at t_edge = 3, matched density), so a **minimum
+> time-extent** is a precondition. The sealed endpoint (t_edge = 6, I = 12000)
+> sits at coverage 0.85.
+
+Exploration only (EXPLORE_POOL; sealed package, thresholds, seal SHA untouched;
+reserved prereg-002 band never evaluated). Confirms/maps feasibility; sets no
+threshold.
+
+## Reconstruction spec for `dev/explore_axes.py`
+
+Imports the gate/observable/null verbatim from `dev/explore_fp_gated.py` and the
+across-seed metric `stability()` from `dev/explore_stability.py` (no drift). Adds
+`collect_bh(intensity, t_edge)` = `collect_bh` of Finding 3 but passing `t_edge`
+into `generator.numpy_sprinkle(seed, intensity, t_edge)`. Two sweeps over
+`EXPLORE_POOL` (all 40), BH only:
+1. **patch:** cells `(t_edge, I) ∈ {(3,3000),(6,6000),(12,12000)}` (so
+   `ρ = I/(t_edge·R_EDGE) ≡ 833.3`); one tau(n) table over the realized n.
+2. **density:** `t_edge = 6` fixed, `I ∈ {1500,3000,6000,12000,24000}`; its own
+   tau(n) table.
+Per cell report `stability()` fields: coverage, midpoint mean/std, `mean − R_S`,
+width/2M median/std, abstention. `R_EDGE = 1.2`, `R_CENTER = 0.7`, `R_S = 0.5`,
+`T_EDGE = 6` from `thresholds.py`.
+
 ## Discipline / next steps
 
 - A 12-way grid (form{table, const} × alpha{.01, .05} × null{uniform, gauss,
