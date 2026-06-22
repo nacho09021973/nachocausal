@@ -4,6 +4,9 @@ __pycache__/
 venv/
 *.egg-info/
 
+# local compiled accelerators
+cpp/formula_volume_kernel
+
 # exploration sandbox (CLAUDE.md: deliberately not committed / untracked)
 dev/
 
