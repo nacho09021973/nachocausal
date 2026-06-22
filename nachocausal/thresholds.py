@@ -55,13 +55,24 @@ SAME_CLOUD = True
 
 # --- Seeds (frozen, disjoint) ------------------------------------------------
 DEV_SEEDS = (20240617, 13, 101, 7, 42, 99, 2718, 31415)     # sweep_o2.py:27
+# prereg-002 held-out seeds (estimator-v2). Drawn ONCE and BLIND from the
+# reserved VIRGIN band [2_000_000, 2_999_999] (dev/explore_seeds.py), never
+# evaluated in exploration, via
+#   numpy(1.26.4).default_rng(VALIDATION_DRAW_SEED)
+#       .choice(arange(2_000_000, 3_000_000), 20, replace=False)  -> sorted.
+# The prereg-001 set (<=65537) is BURNED and intentionally NOT reused.
+# See docs/preregistration_002.md.
+VALIDATION_DRAW_SEED = 20260622
 VALIDATION_SEEDS = (
-    11, 23, 57, 88, 137, 271, 314, 577, 911, 1618,
-    2024, 4099, 5040, 6700, 7777, 8191, 9001, 12289, 27644, 65537,
+    2076703, 2110290, 2123378, 2126638, 2167164, 2198840, 2266288, 2282260,
+    2326739, 2362116, 2401239, 2472372, 2596866, 2696605, 2789254, 2833485,
+    2871428, 2928587, 2948610, 2983811,
 )
 assert len(VALIDATION_SEEDS) == ENSEMBLE
 assert set(VALIDATION_SEEDS).isdisjoint(DEV_SEEDS), \
     "validation seeds must be disjoint from dev seeds (preregistration.md:66)"
+assert all(2_000_000 <= s <= 2_999_999 for s in VALIDATION_SEEDS), \
+    "prereg-002 held-out seeds must lie in the reserved virgin band"
 
 # --- Boundary / significance machinery (frozen) ------------------------------
 POOLED_SD_FLOOR = 0.5         # one O-discreteness unit; floors `sep` denom (cmte m2)
