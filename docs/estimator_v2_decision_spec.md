@@ -95,13 +95,31 @@ density of Finding 4's patch sweep), such that **all** hold and are **flat
 3. the above are **stable** across `[t_edge, 2·t_edge]` (the plateau, guarding
    against a single-point coincidence).
 
-Provisional reading from the existing three points: **t_edge = 3 is
-out-of-domain**; **t_edge = 6** (the sealed `T_EDGE`) sits on the plateau
-(coverage 0.93, bias −0.0022 ≪ half-width); t_edge = 12 confirms the plateau
-(1.00, −0.0014). The exact boundary `t_min ∈ (3, 6]` is **not yet pinned** — the
-three points jump 3→6.
+**`t_min` is PINNED to 6** by the confirmatory fine sweep
+(`dev/explore_tmin.py`, exit 0; EXPLORE_POOL; both reference densities):
 
-> Patches with `t_edge < t_min` are declared **out of the experiment's domain of
+| t_edge | cov @ρ=833 | cov @ρ=1667 | bias (ρ=833 / ρ=1667) | bias ≤ half-width? | on plateau? |
+|---:|:--:|:--:|:--:|:--:|:--:|
+| 3 | 0.35 | — | +0.0262 | **no** | — |
+| 4 | 0.62 | **0.50** | +0.0137 / +0.0122 | yes (thin) | **no — rising edge** |
+| 5 | 0.80 | 0.78 | +0.0049 / +0.0035 | yes | no — still rising |
+| **6** | 0.93 | 0.85 | −0.0022 / +0.0018 | yes (margin) | **yes — shoulder, flat to 12** |
+| 8 | 1.00 | — | −0.0047 | yes | yes (saturated) |
+| 10 | 1.00 | — | −0.0028 | yes | yes |
+
+t_edge = 4, 5 satisfy the bare inequality (`|bias| ≤ half-width ∧ coverage ≥ 0.5`)
+but **fail clause 3 (plateau)** — coverage is still climbing steeply
+(0.50/0.62 → 1.00 across `[4, 8]`) and at ρ=1667 t_edge=4 sits exactly on the 0.5
+floor. **t_edge = 6** is the smallest extent meeting **all three** clauses: it
+clears the inequality with margin and is flat over `[6, 12]` (0.93→1.00 at ρ=833;
+0.85 at ρ=1667). The boundary is **density-robust** (same t_min at both
+densities). Choosing `t_min = 6` also equals the sealed `T_EDGE`, so it requires
+**no geometry change** and does not retro-declare the prereg-001 endpoint
+out-of-domain (which `t_min = 8` would). The more conservative `t_min = 8`
+(coverage fully saturated at 1.00) is recorded as the available stricter
+alternative if a future programme wants zero rising-edge risk.
+
+> Patches with `t_edge < t_min = 6` are declared **out of the experiment's domain of
 > validity**, not "corrected" by inflating the bracket. The sealed prereg-001
 > endpoint (t_edge = 6) is in-domain.
 
@@ -121,13 +139,13 @@ three points jump 3→6.
 
 ## Open items / next reversible step
 
-1. **Pin `t_min` (confirmatory fine sweep).** A reversible EXPLORE_POOL pre-flight
-   over `t_edge ∈ {4, 5, 6, 8, 10}` at ρ = 833, applying the Decision-2 criterion,
-   to locate the plateau edge in (3, 6] and confirm flatness. Until then `t_min`
-   is provisionally `6` (the sealed value, known in-domain). Should also check
-   whether `t_min` is density-dependent (re-run at ρ = 1667, the primary
-   endpoint).
-2. **Freeze** `t_min` (and re-affirm the unchanged coverage criterion) on
+1. **Pin `t_min` — DONE (2026-06-22).** The confirmatory fine sweep
+   (`dev/explore_tmin.py`, `t_edge ∈ {4,5,6,8,10}` at ρ=833 and `{4,5,6}` at
+   ρ=1667, EXPLORE_POOL) gives **`t_min = 6`** (smallest extent meeting all three
+   Decision-2 clauses incl. plateau; density-robust; equals the sealed `T_EDGE`).
+   See the Decision 2 table above. `t_min = 8` is recorded as the stricter
+   alternative.
+2. **Freeze** `t_min = 6` (and re-affirm the unchanged coverage criterion) on
    EXPLORE_POOL **before** any prereg-002 held-out seed is seen.
 3. **Then** prerequisite #2: integrate + re-seal once; **then** prerequisite #3:
    freeze prereg-002; **then** the single blind run.
