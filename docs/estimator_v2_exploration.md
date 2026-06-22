@@ -138,6 +138,60 @@ For each intensity in (3000, 6000, 12000), over EXPLORE_POOL[:30]:
 `lo.var()*lo.size + hi.var()*hi.size`, keep the min as SSE2; `SSE1 = var*n`;
 return `1 - SSE2/SSE1`.
 
+## Finding 3 — seed-stability axis holds (prerequisite #1, 2026-06-22)
+
+Closing (iv) is necessary but not sufficient: before estimator-v2 can be
+integrated + re-sealed, its localisation must be shown **stable**, not just
+correct on average. This isolates the **seed** axis — the only truly-open prior
+scientific gap (density `ρ`, patch extent, resolution are separate sweeps, out of
+scope here per the 2026-06-22 decision). At each **fixed** intensity the full
+**gated** pipeline ran over the whole `EXPLORE_POOL` (**40 replicate seeds**,
+1000000..1000039 — more than the FP test's 30), reporting the across-seed
+**dispersion** of localisation. Run: `dev/explore_stability.py` (exit 0).
+
+| intensity | n range | abstention | coverage | midpoint mean ± std (bias vs R_S) | width/2M med ± std | sep ± std |
+|---:|:--:|:--:|:--:|:--:|:--:|:--:|
+| 3000 | [22,41] | 0/40 (0.00) | 0.93 | 0.4983 ± 0.0212 (−0.0017) | 0.120 ± 0.052 | 15.07 ± 4.28 |
+| 6000 | [37,49] | 0/40 (0.00) | 0.93 | 0.4978 ± 0.0130 (−0.0022) | 0.086 ± 0.041 | 14.21 ± 3.59 |
+| 12000 | [53,71] | 0/40 (0.00) | 0.85 | 0.5018 ± 0.0109 (+0.0018) | 0.064 ± 0.033 | 14.20 ± 3.06 |
+
+**Reading (R_S = 0.5):**
+- **Centred + low-bias:** the localised boundary midpoint sits on the true
+  horizon at every intensity — |bias| ≤ 0.0022, i.e. < 0.5 % of R_S.
+- **Dispersion shrinks with density (the stability signal):** seed-to-seed
+  midpoint std falls 0.0212 → 0.0130 → 0.0109 and width/2M std falls
+  0.052 → 0.041 → 0.033 as intensity rises. The estimator converges, it does not
+  scatter.
+- **Gate never fires on BH:** abstention 0/40 at all intensities (n ∈ [22,71],
+  far above where tau(n) could clip) — consistent with Finding 2's "no n ≤ 8".
+- **Caveat — coverage/precision tension at the primary endpoint:** coverage is
+  0.93 / 0.93 but drops to **0.85** at intensity 12000. The bracket tightens
+  faster than the residual bias closes, so on ~6/40 seeds the (now very narrow)
+  bracket just excludes R_S. This is the axis prereg-002's localisation PASS/FAIL
+  (`θ_loc` / coverage) criterion must be set against, *before* any held-out run —
+  not a false-positive or abstention failure, but a precision-vs-coverage trade.
+
+This is exploration (EXPLORE_POOL only; sealed package, thresholds, and seal SHA
+untouched). It **confirms feasibility** of the stability prerequisite; it does not
+set any threshold.
+
+## Reconstruction spec for `dev/explore_stability.py`
+
+Imports the EXACT gate/observable/null from `dev/explore_fp_gated.py`
+(`improvement`, `minimal_volume`, `build_tau_table`, `INTENS`, MC params) so it
+cannot drift from the pre-flight. For each intensity in (3000, 6000, 12000), over
+`EXPLORE_POOL` (all 40), **BH only**:
+1. `emb,_,_ = generator.numpy_sprinkle(seed, intensity)`; `C =
+   generator.past_matrix_fast(emb, "BH")`.
+2. `Ob, mi = minimal_volume(C)`; `vals = [Ob[i] for i in mi]`; `n = len(mi)`.
+3. `imp = improvement(vals)`; `thr, sep = estimator.two_means_split(vals)`;
+   `br = scoring.blind_bracket(Ob, mi, thr, emb)`.
+4. gate: a seed **abstains** when `imp < tau[n]` (excluded from coverage/midpoint/
+   width — makes no boundary claim; `sep → 0`).
+5. across the 40 seeds per intensity report: abstention rate; coverage =
+   `mean(br.covers)` over claiming valid seeds; midpoint mean/std and
+   `mean − R_S`; `width/2M` median/std over clean claiming seeds; sep mean/std.
+
 ## Discipline / next steps
 
 - A 12-way grid (form{table, const} × alpha{.01, .05} × null{uniform, gauss,
