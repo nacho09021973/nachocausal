@@ -58,24 +58,30 @@ rungs, near the bracket seed) vs tail (rungs 3..).
 |     7200  | 0.0316 |     211 | 2.86 [1.26,4.16]  |            6.17  |        0.966  |
 |    14400  | 0.0224 |     231 | 2.59 [1.36,4.00]  |            7.56  |        0.960  |
 
-### Verdict (head converges, tail diverges — NOT the script's first glib label)
+### Verdict (precise — what the 3-point sweep does and does NOT establish)
 
-- **HEAD (first-3 rungs): non-monotonic / FLAT at ~2.5 ell** (2.34 -> 2.86 -> 2.59, big
-  overlapping IQRs). Bounded in ell units across a 4x density change => the near-seed end of
-  the ladder tracks the horizon at the discreteness floor: physical d_perp = ~2.5 ell -> 0 as
-  ell -> 0. This is just the prereg-002 bracket localisation re-appearing at the seed; it
-  CONVERGES. Good.
-- **TAIL (body of the ladder): MONOTONE-INCREASING (4.37 -> 6.17 -> 7.56).** The longest
-  ladder's body drifts further from the horizon in ell units, and *worse* at higher density.
-  "Longest" diverges.
-- **DIRECTION (relphi_mean): robust across 4x density, AUC(all) 0.94-0.97.** Candidate #2 rule
-  holds up. (Near-band AUC still rests on few outward examples: near out counts 1/6/2.)
+- **HEAD (first-3 rungs): d_perp/ell stays bounded around ~2.5** (2.34 -> 2.86 -> 2.59), but with
+  large overlapping IQRs and **non-monotone**. This is **COMPATIBLE WITH** horizon localisation at
+  discreteness precision (d_perp = O(ell)). It does **NOT** by itself demonstrate convergence, nor
+  that the first-3 rungs form a seed-coherent horizon curve. (It is consistent with the prereg-002
+  bracket localisation re-appearing at the seed.)
+- **TAIL (body of the ladder): d_perp/ell GROWS (4.37 -> 6.17 -> 7.56).** So the longest-selected
+  ladder **fails the required discreteness-scale adherence** — it does not stay at O(ell) of the
+  horizon. This does **NOT** establish *physical* divergence: ell roughly halves over the sweep, so
+  physical d_perp could still be decreasing (e.g. 7.56 * ell0/2 = 3.78 ell0 < 4.37 ell0), only
+  slower than O(ell). Whether it scales as ell^a (0<a<1), logarithmically, or saturates is
+  **undetermined** with three densities.
+- **DIRECTION (relphi_mean): strong GLOBAL signal, AUC(all) 0.94-0.97** across the 4x sweep. The
+  specifically near-horizon validation is still limited to **1/6/2 positive (outgoing) cases**.
 
-### Implication for roadmap point 2 (the freeze)
+### Frozen verdict (recorded; not yet designing the corrected #3)
 
-The longest-from-bracket selection (#3) is **confirmed wrong as-is**: it converges at the head
-but diverges in the tail, so the *object it returns* is a long ladder whose body leaves the
-horizon. The horizon-tracking signal lives in the FIRST FEW rungs near the seed, not in the
-length. Selection rule #3 must therefore pick a SHORT, near-staying ladder (or truncate the
-longest to its converging head) — NOT the longest. The convergence success criterion can hold,
-but for the head, not the whole ladder. Direction rule #2 (relphi_mean) is on track to freeze.
+- **#2 `relphi_mean`: retained PROVISIONALLY** — insufficient near-horizon support (1/6/2) for a
+  definitive freeze.
+- **#3 `longest`: REJECTED** as the selector of a complete horizon portion (fails discreteness-
+  scale adherence along the tail).
+- **Structural finding:** horizon information concentrates in the HEAD near the seed; the later
+  growth optimises *length*, not *adherence*.
+- **Single next question (do not pre-design alternatives):** does a head truncated by a rule
+  defined *only* on causal observables produce a **connected** sequence whose distance to the
+  horizon stays O(ell)?

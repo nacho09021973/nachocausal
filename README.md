@@ -94,32 +94,35 @@ deliberation/integrity skills (`/comite`, `/auditor`) added under `.claude/skill
 `measure_near_horizon.py`, `sweep_near_horizon_density.py` (bracket-seeded longest ladders,
 order-only build).
 
-- **#2 direction — a clear, robust winner.** Of the `L_fut`-field features, **`relphi_mean`**
+- **#2 direction — a strong *global* signal.** Of the `L_fut`-field features, **`relphi_mean`**
   (mean relative-exteriority along the ladder) predicts true `sign(Δr)` with AUC **0.94–0.97**,
   stable across a **4× density sweep** (intensity 3600→7200→14400). The other features are weak.
-  Candidate to freeze as the #2 discriminant — caveat: the near-horizon-band AUC still rests on few
-  outgoing examples (near-out counts 1/6/2), so it is measured at the ~5 ℓ scale, not yet *at* the
-  horizon.
-- **#3 selection "longest" — confirmed WRONG as-is.** A density sweep splits the bracket-seeded
-  longest ladder into head vs tail: the **head** (first-3 rungs, near the seed) is flat at ~2.5 ℓ
-  (2.34→2.86→2.59, non-monotone, large IQRs) ⇒ **bounded in ℓ → converges to the discreteness
-  floor** (`d_⊥`→0 physical; it is the prereg-002 bracket localisation reappearing at the seed).
-  But the **tail** is **monotone-increasing** (4.37→6.17→7.56 ℓ) ⇒ the ladder body drifts off the
-  horizon, *worse* at higher density. The horizon signal lives in the **near-seed head, not in the
-  length** — so "select the longest ladder" (à la EGS) returns a long object whose body leaves the
-  horizon. `NO_POST_HOC_TUNING` honoured: nothing frozen, dev only.
+  The specifically near-horizon validation is still limited to **1/6/2** positive (outgoing) cases,
+  so #2 is **retained provisionally**, not yet definitively freezable.
+- **#3 selection "longest" — REJECTED as the selector of a horizon portion.** A density sweep
+  splits the bracket-seeded longest ladder into head vs tail. The **head** (first-3 rungs) keeps
+  `d_⊥/ℓ` bounded around ~2.5 (2.34→2.86→2.59, non-monotone, large IQRs) — **compatible with**
+  localisation at discreteness precision (`d_⊥`=O(ℓ)); this does **not** by itself demonstrate
+  convergence or a seed-coherent curve. The **tail** has `d_⊥/ℓ` **growing** (4.37→6.17→7.56), so
+  the longest-selected ladder **fails the required discreteness-scale adherence** — it does not
+  stay at O(ℓ). (This is *not* a claim of physical divergence: ℓ roughly halves over the sweep, so
+  physical `d_⊥` may still be decreasing, only slower than O(ℓ); the scaling is undetermined with
+  three densities.) **Structural finding:** horizon information concentrates in the head near the
+  seed; later growth optimises *length*, not *adherence*. `NO_POST_HOC_TUNING` honoured: dev only,
+  nothing frozen.
 
-### Plan for tomorrow (steps now clear)
+### Plan for tomorrow (one precise question first — do NOT pre-design alternatives)
 
-1. **Design + measure the corrected selection rule #3:** a **short / near-staying** ladder (or the
-   longest *truncated to its converging head*), not the longest. Verify it keeps `d_⊥` bounded in ℓ
-   (head-like convergence) under the density sweep, while staying order-only and **relabel-invariant**
-   (leakage-gate criterion 3, `docs/pr003_leakage_gate.md`).
+1. **The single next question:** does a head truncated by a rule defined *only* on causal
+   observables produce a **connected** sequence whose distance to the horizon stays O(ℓ)? Measure
+   that one thing (under the density sweep, relabel-invariant per `docs/pr003_leakage_gate.md`)
+   before branching into multiple near-staying selection designs.
 2. **Firm up #2 at the horizon:** scale seeds so the near-horizon band has enough outgoing ladders to
-   measure the `relphi_mean` direction AUC *at* the horizon (not just at ~5 ℓ).
-3. **Freeze the two order-only rules** (#2 `relphi_mean`, #3 corrected selection) — both must pass the
-   leakage gate — via `/comite`, then seal. Until then it is an embedding-seedable proof-of-principle,
-   not a blind reconstruction.
+   measure the `relphi_mean` direction AUC *at* the horizon (today 1/6/2 positives), not just at the
+   ~5 ℓ scale — a precondition for a definitive #2 freeze.
+3. **Only then freeze** the two order-only rules (#2 `relphi_mean`, the corrected #3) — both must
+   pass the leakage gate — via `/comite`, then seal. Until then it is an embedding-seedable
+   proof-of-principle, not a blind reconstruction.
 4. **Then draft the revisable PR-003 plan** with success criteria in frozen form: `d_⊥ ≲ k·ℓ`,
    temporal persistence, discrete continuity, transverse convergence with density, held-out
    stability, a flat control (no persistent curve), shifted controls (vary M ⇒ the reconstruction

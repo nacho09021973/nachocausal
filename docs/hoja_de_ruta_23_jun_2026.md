@@ -29,25 +29,33 @@
   ejecutables existentes → `docs/pr003_leakage_gate.md`.
 - ✅ **Punto 3 — bloqueo experimental: MEDIDO** (dev, nada congelado;
   `dev/PR003_NEAR_HORIZON_NOTES.md`, scripts `measure_near_horizon.py` /
-  `sweep_near_horizon_density.py`). Resultado:
-  - **#2 dirección:** ganador claro `relphi_mean`, AUC **0.94–0.97** robusto en barrido 4× de
-    densidad. Listo para congelar salvo afinar la banda cercana (pocas salientes: 1/6/2).
-  - **#3 selección "longest": equivocada.** El barrido de densidad separa cabeza/cola: la **cabeza**
-    (first-3 rungs) es plana ~2.5 ℓ → converge al suelo de discreteness; la **cola** crece monótona
-    (4.4→6.2→7.6 ℓ) → el cuerpo se va del horizonte. La señal está en la cabeza, no en la longitud.
+  `sweep_near_horizon_density.py`). Veredicto **preciso** (lo respaldado, no más):
+  - **#2 dirección:** `relphi_mean` da una señal direccional **global** fuerte, AUC **0.94–0.97**
+    estable en barrido 4× de densidad. La validación *near-horizon* sigue limitada a **1/6/2**
+    salientes → **retenida provisionalmente**, aún no congelable en firme.
+  - **#3 selección "longest": RECHAZADA** como selector de una porción de horizonte. La **cabeza**
+    (first-3 rungs) mantiene `d_⊥/ℓ` ≈ 2.5 acotado (2.34→2.86→2.59, no monótono, IQR grandes) →
+    **compatible con** localización a precisión de discreteness (`d_⊥`=O(ℓ)); **no** demuestra por
+    sí sola convergencia ni una curva coherente entre seeds. La **cola** crece en `d_⊥/ℓ`
+    (4.37→6.17→7.56) → la longest **falla la adherencia a escala de discreteness** (no se queda en
+    O(ℓ)). NO es divergencia física: como ℓ ≈ se reduce a la mitad, `d_⊥` físico podría seguir
+    bajando, solo más lento que O(ℓ); el escalado (ℓ^α, log, saturación) queda **indeterminado**.
+  - **Hallazgo estructural:** la información de horizonte se concentra en la cabeza próxima al seed;
+    el crecimiento posterior optimiza **longitud**, no **adherencia**.
 - ⬜ **Punto 2 — congelar**: pendiente (ver "Mañana").
 - ⬜ **Punto 4 — plan sellable**: pendiente.
 
-## Mañana (pasos claros)
+## Mañana (una pregunta precisa primero — NO pre-diseñar alternativas)
 
-1. **Diseñar + medir la regla de selección #3 corregida**: escalera **corta / que se quede pegada**
-   (o la longest **truncada a su cabeza convergente**), no la longest. Verificar que mantiene `d_⊥`
-   acotado en ℓ bajo el barrido de densidad y que es **invariante bajo relabel** (criterio 3 del
-   leakage gate).
-2. **Firmar #2 en el horizonte**: escalar semillas hasta tener suficientes escaleras salientes en la
-   banda cercana para medir la AUC de `relphi_mean` *en* el horizonte (hoy medida a ~5 ℓ).
-3. **Congelar las dos reglas** (#2 `relphi_mean`, #3 corregida) — ambas pasando el leakage gate — vía
-   `/comite`, y sellar.
+1. **La única pregunta siguiente:** ¿una cabeza truncada mediante una regla definida **solo** con
+   observables causales produce una secuencia **conexa** cuya distancia al horizonte se mantenga
+   O(ℓ)? Medir **eso** (bajo el barrido de densidad, invariante bajo relabel según
+   `docs/pr003_leakage_gate.md`) antes de ramificar en varias selecciones "near-staying".
+2. **Firmar #2 en el horizonte**: escalar semillas hasta tener suficientes salientes en la banda
+   cercana para medir la AUC de `relphi_mean` *en* el horizonte (hoy 1/6/2) — precondición para
+   congelar #2 en firme.
+3. **Solo entonces congelar** las dos reglas (#2 `relphi_mean`, #3 corregida) — ambas pasando el
+   leakage gate — vía `/comite`, y sellar.
 4. **Redactar el plan PR-003 revisable** (punto 4) con los criterios congelables.
 
 ## Los cuatro puntos
