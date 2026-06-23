@@ -154,7 +154,7 @@ step (above all the blind validation run) or a frontier decision; also via "conv
 - Writes `docs/comite/comite_decision_NNN_<slug>.md`.
 - Brief gate: `python .claude/skills/comite/check_comite_brief.py <brief.md>` — fails on a missing
   section, a surviving `{{…}}` placeholder, an invalid verdict, or a pre-registration `BLOCK`
-  paired with a PROCEED verdict.
+  paired with a PROCEED verdict. `make verify-comite` runs it over every brief in `docs/comite/`.
 
 ### `/auditor [scope]` — backward-looking integrity audit
 The standing guardrail against AI-faked results: every published number must be the literal output
@@ -163,13 +163,14 @@ separation and the *hidden-embedding-only-scores* rule must hold, and no text ma
 finite-patch 1+1D localisation. It *reports*; it never fixes. Produces an audit report with an
 `AUDIT_VERDICT` the user reads; also via "audita el repo".
 - Writes `docs/auditor/auditor_report_NNN_<slug>.md`.
-- Mechanical core, runnable standalone (no Claude Code needed):
-  `bash .claude/skills/auditor/audit.sh` — flags CI that swallows failures, app code with no
+- Mechanical core, runnable standalone (no Claude Code needed): `make audit` (or
+  `bash .claude/skills/auditor/audit.sh`) — flags CI that swallows failures, app code with no
   tests, **seal drift** (live `thresholds.py` SHA recorded in no `docs/` freeze file),
   **gitignored-but-tracked** paths (committed despite being declared uncommitted), and committed
   data files with no generator. Exit `0` clean / `1` errors / `2` bad invocation.
 - Report gate: `python .claude/skills/auditor/check_audit_report.py <report.md>` — fails if the
-  verdict contradicts its own error/warning counts.
+  verdict contradicts its own error/warning counts. `make verify-audit` runs it over every report
+  in `docs/auditor/`.
 
 ## Literature library
 
