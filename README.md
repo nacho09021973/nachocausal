@@ -71,8 +71,11 @@ deterministic either way). Probes (committed as scoped `dev/` exceptions): `expl
   boundary concentrates ladders near the horizon (67–100% near-horizon), confirming the bracket is a
   valid order-only seed — but only 1–3 long ladders are harvested per sprinkling, and `d_⊥ = |r−r_S|`
   median ≈ 3–4 ℓ (near, not yet the O(ℓ) target).
-- **Engineering note:** the *recursive* Numba ladder kernel segfaults at recursion depth ≳50; the
-  ladder builder was switched to an **iterative** form (the C++-portable shape).
+- **Engineering note:** the *recursive* Numba njit ladder kernel **SIGSEGVs on real BH-generator
+  posets** (`t_edge=6`), even at stack depth ≈21–30; this was **not** reproduced on synthetic
+  light-cone posets up to `lmax=300`, so the failure is **workload-dependent**, not a universal
+  recursion-depth limit. Mechanism `[UNVERIFIED]` — symptom reproduced, Numba internals not pinned.
+  The ladder builder was switched to an **iterative** (explicit-stack) form (the C++-portable shape).
 
 ### Plan for tomorrow
 

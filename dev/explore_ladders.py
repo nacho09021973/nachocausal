@@ -80,110 +80,119 @@ def _is_future_link(a, nb, indptr, idx):
     return False
 
 
+# --- ITERATIVE longest-fuzzy-ladder kernel (explicit stack) ----------------
+# Replaces the recursive _dfs/_dfs_path (Numba njit recursion SIGSEGVs on the
+# real BH posets even at modest depth). Verified bit-for-bit vs the recursive
+# kernel (lengths AND paths) over M in {2,3,4}, lmax<=40, budget in {5..3000};
+# selftest() carries a hand-checked len-3 ladder as the standing oracle.
 @njit(cache=True)
-def _dfs(d, p_path, q_path, indptr, idx, C, M, lmax, budget):
-    """Longest fuzzy ladder reachable; d rungs already in p_path/q_path[0:d].
-    budget = 1-elem array (node expansions left). Returns max #rungs."""
-    best = d
-    if d >= lmax or budget[0] <= 0:
-        return best
-    p_i = p_path[d - 1]
-    q_i = q_path[d - 1]
-    for ta in range(indptr[p_i], indptr[p_i + 1]):
-        np_ = idx[ta]
-        for tb in range(indptr[q_i], indptr[q_i + 1]):
-            nq = idx[tb]
-            if np_ == nq:
-                continue
-            if not _is_future_link(np_, nq, indptr, idx):   # rung p<*q must be a link
-                continue
-            ok = True
-            if d >= M:                                       # conditions 4,5
-                cp = _interval_card(p_path[d - M], np_, C)
-                if cp < M - 1 or cp > 2 * M - 1:
-                    ok = False
-                if ok:
-                    cq = _interval_card(q_path[d - M], nq, C)
-                    if cq < M - 1 or cq > 2 * M - 1:
-                        ok = False
-            if ok:
-                budget[0] -= 1
-                p_path[d] = np_
-                q_path[d] = nq
-                r = _dfs(d + 1, p_path, q_path, indptr, idx, C, M, lmax, budget)
-                if r > best:
-                    best = r
-                if budget[0] <= 0:
-                    return best
-    return best
-
-
-@njit(cache=True)
-def _dfs_path(d, p_path, q_path, indptr, idx, C, M, lmax, budget,
-              p_best, q_best, best_len):
-    if d > best_len[0]:
-        best_len[0] = d
-        for t in range(d):
-            p_best[t] = p_path[t]
-            q_best[t] = q_path[t]
-    if d >= lmax or budget[0] <= 0:
-        return
-    p_i = p_path[d - 1]
-    q_i = q_path[d - 1]
-    for ta in range(indptr[p_i], indptr[p_i + 1]):
-        np_ = idx[ta]
-        for tb in range(indptr[q_i], indptr[q_i + 1]):
-            nq = idx[tb]
-            if np_ == nq or not _is_future_link(np_, nq, indptr, idx):
-                continue
-            ok = True
-            if d >= M:
-                cp = _interval_card(p_path[d - M], np_, C)
-                if cp < M - 1 or cp > 2 * M - 1:
-                    ok = False
-                if ok:
-                    cq = _interval_card(q_path[d - M], nq, C)
-                    if cq < M - 1 or cq > 2 * M - 1:
-                        ok = False
-            if ok:
-                budget[0] -= 1
-                p_path[d] = np_
-                q_path[d] = nq
-                _dfs_path(d + 1, p_path, q_path, indptr, idx, C, M, lmax, budget,
-                          p_best, q_best, best_len)
-                if budget[0] <= 0:
-                    return
-
-
-@njit(cache=True)
-def longest_one_path(sp, sq, indptr, idx, C, M, lmax, budget_val):
-    """Return (length, p_best, q_best) for a single start rung (sp, sq)."""
+def _one_iter(sp, sq, indptr, idx, C, M, lmax, budget_val, want_path):
+    """Single start rung (sp, sq). Returns (best_len, p_best, q_best).
+    Faithful explicit-stack simulation of the recursive _dfs / _dfs_path:
+      - identical DFS visit order (ta outer, tb inner);
+      - budget decremented at the exact accept point, shared across the search;
+      - best path recorded at frame ENTRY on strict improvement (first reach).
+    want_path=False skips path bookkeeping (length-only, used by longest_ladders).
+    """
     p_path = np.empty(lmax, np.int64)
     q_path = np.empty(lmax, np.int64)
     p_best = np.empty(lmax, np.int64)
     q_best = np.empty(lmax, np.int64)
-    best_len = np.zeros(1, np.int64)
-    budget = np.empty(1, np.int64)
-    budget[0] = budget_val
+    # frame stack: depth fd[top], and the next loop cursor (fta[top], ftb[top])
+    fd = np.empty(lmax, np.int64)
+    fta = np.empty(lmax, np.int64)
+    ftb = np.empty(lmax, np.int64)
+
+    budget = budget_val
+    best_len = 0
+
     p_path[0] = sp
     q_path[0] = sq
-    _dfs_path(1, p_path, q_path, indptr, idx, C, M, lmax, budget,
-              p_best, q_best, best_len)
-    return best_len[0], p_best, q_best
+
+    # push + ENTER root frame d = 1
+    top = 0
+    fd[0] = 1
+    fta[0] = indptr[sp]
+    ftb[0] = indptr[sq]
+    if 1 > best_len:                       # root entry recording (d = 1)
+        best_len = 1
+        if want_path:
+            p_best[0] = p_path[0]
+            q_best[0] = q_path[0]
+
+    while top >= 0:
+        d = fd[top]
+        # entry guards, == recursion's `if d >= lmax or budget <= 0: return`
+        if budget <= 0 or d >= lmax:
+            top -= 1
+            continue
+        p_i = p_path[d - 1]
+        q_i = q_path[d - 1]
+        ta = fta[top]
+        tb = ftb[top]
+        advanced = False
+        while ta < indptr[p_i + 1]:
+            np_ = idx[ta]
+            while tb < indptr[q_i + 1]:
+                nq = idx[tb]
+                accept = False
+                if np_ != nq and _is_future_link(np_, nq, indptr, idx):
+                    ok = True
+                    if d >= M:                              # conditions 4, 5
+                        cp = _interval_card(p_path[d - M], np_, C)
+                        if cp < M - 1 or cp > 2 * M - 1:
+                            ok = False
+                        if ok:
+                            cq = _interval_card(q_path[d - M], nq, C)
+                            if cq < M - 1 or cq > 2 * M - 1:
+                                ok = False
+                    accept = ok
+                if accept:
+                    # save resume cursor = NEXT pair within this frame
+                    fta[top] = ta
+                    ftb[top] = tb + 1
+                    # accept node: decrement shared budget, extend the path
+                    budget -= 1
+                    p_path[d] = np_
+                    q_path[d] = nq
+                    # push + ENTER child frame d + 1
+                    top += 1
+                    fd[top] = d + 1
+                    fta[top] = indptr[np_]      # child p_i = p_path[d] = np_
+                    ftb[top] = indptr[nq]        # child q_i = q_path[d] = nq
+                    if (d + 1) > best_len:       # child entry recording
+                        best_len = d + 1
+                        if want_path:
+                            for t in range(d + 1):
+                                p_best[t] = p_path[t]
+                                q_best[t] = q_path[t]
+                    advanced = True
+                    break
+                tb += 1
+            if advanced:
+                break
+            ta += 1
+            tb = indptr[q_i]                     # reset inner loop for next ta
+        if not advanced:
+            top -= 1                             # frame loop exhausted -> return
+    return best_len, p_best, q_best
+
+
+@njit(cache=True)
+def longest_one_path(sp, sq, indptr, idx, C, M, lmax, budget_val):
+    """Return (length, p_best, q_best) for a single start rung (sp, sq).
+    Only p_best[:length], q_best[:length] are meaningful (same as before)."""
+    return _one_iter(sp, sq, indptr, idx, C, M, lmax, budget_val, True)
 
 
 @njit(cache=True)
 def longest_ladders(start_p, start_q, indptr, idx, C, M, lmax, per_start_budget):
-    """For each starting rung (link) (start_p[s], start_q[s]) return max #rungs."""
+    """For each starting rung (start_p[s], start_q[s]) return max #rungs."""
     out = np.empty(start_p.size, np.int64)
-    p_path = np.empty(lmax, np.int64)
-    q_path = np.empty(lmax, np.int64)
-    budget = np.empty(1, np.int64)
     for s in range(start_p.size):
-        p_path[0] = start_p[s]
-        q_path[0] = start_q[s]
-        budget[0] = per_start_budget
-        out[s] = _dfs(1, p_path, q_path, indptr, idx, C, M, lmax, budget)
+        bl, _, _ = _one_iter(start_p[s], start_q[s], indptr, idx, C, M, lmax,
+                             per_start_budget, False)
+        out[s] = bl
     return out
 
 
@@ -225,7 +234,38 @@ def selftest():
     # covering links only: 0<*1,1<*2,2<*3
     assert int(L.sum()) == 3 and _is_future_link(0, 1, indptr, idx) \
         and not _is_future_link(0, 2, indptr, idx)
-    print("selftest OK: interval card + link matrix correct on the 4-chain")
+
+    # --- ladder kernel on a hand-checked 2-chain ladder (oracle-confirmed) ----
+    # nodes 0=p0 1=p1 2=p2 3=q0 4=q1 5=q2 6=z; the parallel chains p0<*p1<*p2,
+    # q0<*q1<*q2 with rungs p_i<*q_i form a fuzzy ladder of length 3. Node z sits
+    # p0<*z<*p2 (off the p1 line) inflating |[p0,p2]| to 4, so at M=2 conditions
+    # 4-5 REJECT the i=2 rung (length 3 -> 2); at M=4 they never fire (length 3).
+    # This is the only kernel coverage once the recursive oracle is gone, so it
+    # exercises link-chaining, the rung-link test, AND interval-card accept/reject.
+    edges = [(0, 1), (1, 2), (3, 4), (4, 5), (0, 3), (1, 4), (2, 5), (0, 6), (6, 2)]
+    less = np.zeros((7, 7), bool)
+    for a, b in edges:
+        less[a, b] = True
+    for _ in range(7):                       # transitive closure
+        for k in range(7):
+            for i in range(7):
+                if less[i, k]:
+                    less[i] |= less[k]
+    Cl = np.zeros((7, 7), bool)
+    for i in range(7):
+        for j in range(7):
+            if less[j, i]:
+                Cl[i, j] = True              # j in past of i
+    assert _interval_card(0, 2, Cl) == 4 and _interval_card(3, 5, Cl) == 3
+    Ll, ipl, ixl = link_future_csr(Cl)
+    assert int(Ll.sum()) == 9
+    sp = np.array([0, 1, 2]); sq = np.array([3, 4, 5])     # start rungs p_i<*q_i
+    assert list(longest_ladders(sp, sq, ipl, ixl, Cl, 4, 20, 100000)) == [3, 2, 1]
+    assert list(longest_ladders(sp, sq, ipl, ixl, Cl, 2, 20, 100000)) == [2, 2, 1]
+    Lp, _, _ = longest_one_path(0, 3, ipl, ixl, Cl, 4, 20, 100000)
+    assert Lp == 3
+    print("selftest OK: interval card + link matrix (4-chain) + ladder kernel "
+          "(len-3 ladder, M=2 interval-card rejection) all correct")
 
 
 def run():
