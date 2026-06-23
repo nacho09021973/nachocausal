@@ -23,6 +23,33 @@
   testear); semillado-bracket #3 🟡 (concentra cerca del horizonte pero rinde poco, `d_⊥` mediana
   ≈3–4 ℓ frente al objetivo O(ℓ)); kernel iterativo ya en su sitio (el recursivo hacía SIGSEGV).
 
+## Estado al cierre (23-jun-2026)
+
+- ✅ **Punto 1 — disciplina anti-fuga: HECHO.** Leakage gate escrito y anclado a las guardas
+  ejecutables existentes → `docs/pr003_leakage_gate.md`.
+- ✅ **Punto 3 — bloqueo experimental: MEDIDO** (dev, nada congelado;
+  `dev/PR003_NEAR_HORIZON_NOTES.md`, scripts `measure_near_horizon.py` /
+  `sweep_near_horizon_density.py`). Resultado:
+  - **#2 dirección:** ganador claro `relphi_mean`, AUC **0.94–0.97** robusto en barrido 4× de
+    densidad. Listo para congelar salvo afinar la banda cercana (pocas salientes: 1/6/2).
+  - **#3 selección "longest": equivocada.** El barrido de densidad separa cabeza/cola: la **cabeza**
+    (first-3 rungs) es plana ~2.5 ℓ → converge al suelo de discreteness; la **cola** crece monótona
+    (4.4→6.2→7.6 ℓ) → el cuerpo se va del horizonte. La señal está en la cabeza, no en la longitud.
+- ⬜ **Punto 2 — congelar**: pendiente (ver "Mañana").
+- ⬜ **Punto 4 — plan sellable**: pendiente.
+
+## Mañana (pasos claros)
+
+1. **Diseñar + medir la regla de selección #3 corregida**: escalera **corta / que se quede pegada**
+   (o la longest **truncada a su cabeza convergente**), no la longest. Verificar que mantiene `d_⊥`
+   acotado en ℓ bajo el barrido de densidad y que es **invariante bajo relabel** (criterio 3 del
+   leakage gate).
+2. **Firmar #2 en el horizonte**: escalar semillas hasta tener suficientes escaleras salientes en la
+   banda cercana para medir la AUC de `relphi_mean` *en* el horizonte (hoy medida a ~5 ℓ).
+3. **Congelar las dos reglas** (#2 `relphi_mean`, #3 corregida) — ambas pasando el leakage gate — vía
+   `/comite`, y sellar.
+4. **Redactar el plan PR-003 revisable** (punto 4) con los criterios congelables.
+
 ## Los cuatro puntos
 
 ### 1. La disciplina anti-fuga es lo primero — *empezamos aquí*

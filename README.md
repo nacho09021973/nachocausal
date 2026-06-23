@@ -86,16 +86,40 @@ deterministic either way). Probes (committed as scoped `dev/` exceptions): `expl
   hitting the wall-clock cap, so those lengths are **lower bounds** (true saturation not yet
   established). Measurement only — `/tmp`, nothing frozen.
 
-### Plan for tomorrow
+### What was explored (2026-06-23, dev only; coords used *only* to score)
 
-1. **Write the iterative longest-ladder kernel** (explicit stack — robust, and the form we port to
-   C++). The greedy-first builder is the current bottleneck; the longest-ladder search will harvest
-   *more and longer* near-horizon ladders.
-2. **Re-test #2/#3 in the near-horizon band** with sufficient sample: measure the direction AUC where
-   it matters, and push `d_⊥` toward O(ℓ) by selecting the longest outgoing bracket-seeded ladder.
-3. **Settle the two gating order-only rules:** the direction rule (#2) and a **fixed** ladder
-   **selection** rule (#3) — both must be frozen before any reconstruction freeze, or it is only an
-   embedding-seeded proof-of-principle, not a blind reconstruction.
+Process: the **leakage gate** — the order-only contract every new PR-003 observable must pass — is
+written and anchored to the existing executable guards (`docs/pr003_leakage_gate.md`). Two
+deliberation/integrity skills (`/comite`, `/auditor`) added under `.claude/skills/`. Probes:
+`measure_near_horizon.py`, `sweep_near_horizon_density.py` (bracket-seeded longest ladders,
+order-only build).
+
+- **#2 direction — a clear, robust winner.** Of the `L_fut`-field features, **`relphi_mean`**
+  (mean relative-exteriority along the ladder) predicts true `sign(Δr)` with AUC **0.94–0.97**,
+  stable across a **4× density sweep** (intensity 3600→7200→14400). The other features are weak.
+  Candidate to freeze as the #2 discriminant — caveat: the near-horizon-band AUC still rests on few
+  outgoing examples (near-out counts 1/6/2), so it is measured at the ~5 ℓ scale, not yet *at* the
+  horizon.
+- **#3 selection "longest" — confirmed WRONG as-is.** A density sweep splits the bracket-seeded
+  longest ladder into head vs tail: the **head** (first-3 rungs, near the seed) is flat at ~2.5 ℓ
+  (2.34→2.86→2.59, non-monotone, large IQRs) ⇒ **bounded in ℓ → converges to the discreteness
+  floor** (`d_⊥`→0 physical; it is the prereg-002 bracket localisation reappearing at the seed).
+  But the **tail** is **monotone-increasing** (4.37→6.17→7.56 ℓ) ⇒ the ladder body drifts off the
+  horizon, *worse* at higher density. The horizon signal lives in the **near-seed head, not in the
+  length** — so "select the longest ladder" (à la EGS) returns a long object whose body leaves the
+  horizon. `NO_POST_HOC_TUNING` honoured: nothing frozen, dev only.
+
+### Plan for tomorrow (steps now clear)
+
+1. **Design + measure the corrected selection rule #3:** a **short / near-staying** ladder (or the
+   longest *truncated to its converging head*), not the longest. Verify it keeps `d_⊥` bounded in ℓ
+   (head-like convergence) under the density sweep, while staying order-only and **relabel-invariant**
+   (leakage-gate criterion 3, `docs/pr003_leakage_gate.md`).
+2. **Firm up #2 at the horizon:** scale seeds so the near-horizon band has enough outgoing ladders to
+   measure the `relphi_mean` direction AUC *at* the horizon (not just at ~5 ℓ).
+3. **Freeze the two order-only rules** (#2 `relphi_mean`, #3 corrected selection) — both must pass the
+   leakage gate — via `/comite`, then seal. Until then it is an embedding-seedable proof-of-principle,
+   not a blind reconstruction.
 4. **Then draft the revisable PR-003 plan** with success criteria in frozen form: `d_⊥ ≲ k·ℓ`,
    temporal persistence, discrete continuity, transverse convergence with density, held-out
    stability, a flat control (no persistent curve), shifted controls (vary M ⇒ the reconstruction
