@@ -130,6 +130,47 @@ The optional Minz admissibility cross-check (`make gate`) is **not** on the vali
 `NACHOCAUSAL_MINZ_PATH` (default `~/cs-horizon-reuse-check`). Its evidence is already recorded in
 `nachocausal/fixtures/gate_evidence.json`.
 
+## In-repo tooling — the `/comite` and `/auditor` skills
+
+Two Claude Code skills live in `.claude/skills/` and travel with the repo, so any clone on any
+machine has them with **no install step** — Claude Code auto-discovers project skills under
+`.claude/skills/`. They encode this project's discipline as runnable guardrails: the committee is
+**forward-looking** (deliberate before a one-way step), the auditor is **backward-looking** (verify
+that what is already claimed is real).
+
+```bash
+git clone https://github.com/nacho09021973/nachocausal
+cd nachocausal
+# open Claude Code here — both skills are picked up automatically
+```
+
+### `/comite <decision question>` — standing deliberation committee
+A 6-role, two-wave **blind** expert panel (reproducibility engineer, causal-set mathematician,
+Schwarzschild physicist, falsifier, pre-registration warden, literature verifier) chaired into a
+grounded, freeze-checked **decision brief** the user signs off on. The committee *proposes*; the
+user *authorises* — it never launches the blind validation run, commits, loosens a frozen
+threshold, or makes a reconstruction claim. Convene it for any one-way / scientifically committing
+step (above all the blind validation run) or a frontier decision; also via "convoca al comité".
+- Writes `docs/comite/comite_decision_NNN_<slug>.md`.
+- Brief gate: `python .claude/skills/comite/check_comite_brief.py <brief.md>` — fails on a missing
+  section, a surviving `{{…}}` placeholder, an invalid verdict, or a pre-registration `BLOCK`
+  paired with a PROCEED verdict.
+
+### `/auditor [scope]` — backward-looking integrity audit
+The standing guardrail against AI-faked results: every published number must be the literal output
+of a committed deterministic script, the live seal must match a frozen record, the dev/validation
+separation and the *hidden-embedding-only-scores* rule must hold, and no text may over-claim beyond
+finite-patch 1+1D localisation. It *reports*; it never fixes. Produces an audit report with an
+`AUDIT_VERDICT` the user reads; also via "audita el repo".
+- Writes `docs/auditor/auditor_report_NNN_<slug>.md`.
+- Mechanical core, runnable standalone (no Claude Code needed):
+  `bash .claude/skills/auditor/audit.sh` — flags CI that swallows failures, app code with no
+  tests, **seal drift** (live `thresholds.py` SHA recorded in no `docs/` freeze file),
+  **gitignored-but-tracked** paths (committed despite being declared uncommitted), and committed
+  data files with no generator. Exit `0` clean / `1` errors / `2` bad invocation.
+- Report gate: `python .claude/skills/auditor/check_audit_report.py <report.md>` — fails if the
+  verdict contradicts its own error/warning counts.
+
 ## Literature library
 
 An extensive local library of causal-set-theory articles and books lives in `biblioteca/`
