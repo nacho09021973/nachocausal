@@ -76,6 +76,15 @@ deterministic either way). Probes (committed as scoped `dev/` exceptions): `expl
   light-cone posets up to `lmax=300`, so the failure is **workload-dependent**, not a universal
   recursion-depth limit. Mechanism `[UNVERIFIED]` — symptom reproduced, Numba internals not pinned.
   The ladder builder was switched to an **iterative** (explicit-stack) form (the C++-portable shape).
+- **Measurement (2026-06-23, dev): `lmax` censoring lifted at `t_edge=6`.** The earlier
+  `maxlen == lmax == 30` was a cap artifact, not a real length. Sweeping `lmax` ∈ {30,40,60,80,120}
+  (intensity=3600, M=3, 3 seeds): true longest-ladder lengths are **46–96+** and **seed-dependent**.
+  The science counts `ge6`/`ge8` are **identical across every `lmax`/budget cell** — the "length-≥8
+  ladders abundant" claim was never censored; only `maxlen` (and slightly `mean`) were. Raising `lmax`
+  shifts the binding cap onto `per_start_budget`: only seed1 reached budget-insensitive **saturation
+  ≈46**; seed0 (≥96, still climbing) and seed2 (≥72) stayed budget-bound, their highest-budget cells
+  hitting the wall-clock cap, so those lengths are **lower bounds** (true saturation not yet
+  established). Measurement only — `/tmp`, nothing frozen.
 
 ### Plan for tomorrow
 
