@@ -19,7 +19,11 @@ Schwarzschild event-horizon structure from causal-set order alone. See `README.m
 
 ## Layout
 
-- `dev/` — exploration sandbox, **deliberately not committed** (untracked). The prototype
+- `dev/` — exploration sandbox. The exploration **scripts** (`dev/explore_*.py`) are committed as
+  scoped exceptions so they sync across machines via the GitHub clone (see the README's "What was
+  explored" probes); generated raw ensembles (`dev_ensemble_raw/`) stay git-ignored. Committing the
+  scripts does not touch the dev/validation separation — that separation is about code paths and
+  seeds (dev never tunes the sealed thresholds), not about git tracking. The prototype
   `dev/prototype_o.py` runs against the external, non-vendored c-minz/Python-causets clone at
   `~/cs-horizon-reuse-check/`; run it with that repo's venv (numpy<2):
   `~/cs-horizon-reuse-check/venv_minz/bin/python dev/prototype_o.py`.

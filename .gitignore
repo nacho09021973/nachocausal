@@ -4,11 +4,16 @@ __pycache__/
 venv/
 *.egg-info/
 
-# exploration sandbox (CLAUDE.md: deliberately not committed / untracked)
-dev/
+# exploration sandbox: the dev/ exploration SCRIPTS are committed as scoped
+# exceptions so they sync across machines via the GitHub clone (see README /
+# CLAUDE.md). Only the generated raw data below stays out of git.
 
 # generated dev ensemble output (raw sprinkling data) is never committed
 dev_ensemble_raw/
+dev/**/__pycache__/
+# generated dev artifacts (logs, dumped O multisets) — regenerable, don't sync
+dev/*.log
+dev/o_samples.json
 
 # generated benchmark artifacts (raw ensembles, dry-run output) -- not committed.
 # The committed verdict record lives in docs/, separate from raw data (cmte SWE).
