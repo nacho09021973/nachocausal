@@ -94,6 +94,25 @@ El orden es **#1 → #2 → #3**, pero con *puertas de decisión* explícitas y 
   (el avance es el subconjunto ordenado conexo, no un principio nuevo). dev/v0, puntuado con `r`
   oculta — **no congelado, no validado, no auditado**; antes de comprometer: endurecer (3ª densidad
   + tratar frentes no-cubrientes) y `/comite` + `/auditor`.
+- **S3 (24-jun-2026, ENDURECIMIENTO de v0; `dev/measure_iterative_reseed_v1.py`,
+  `dev/PR003_ITERATIVE_RESEED_V1_NOTES.md`, `dev/iterative_reseed_v1.log`) — NO CONVERGE.** 6 semillas,
+  3ª densidad 14400 + la puerta `τ(n)` **ya congelada** como regla de parada order-only, contando
+  frentes que abstienen/degeneran como *miss* (corrige el sesgo abstain-a-excluir del falsador). Sello
+  `6e2c3888…` antes y después. **Veredicto: la cobertura SE DEGRADA con densidad** — HONESTA
+  51→48→**44 %**, OPTIMISTA (v0) 74→65→**54 %** (monótona en las 3 densidades); **d⊥/ℓ crece
+  0.52→0.63→0.88** (d⊥ físico se estanca ~0.020, no se afila respecto a ℓ). Bajo la vara
+  pre-comprometida "no degradar con densidad" (líneas 64,80) esto es **FALLO de convergencia**.
+  *Lo que sí sobrevive (honesto, no rescata el veredicto):* anchura crece (96→146→**234** frentes),
+  conexo 90→95→93 %, IQR robusto baja 0.042→0.030 (< θ_stab), **Guard-v 6/6** y **control MINK PASA**
+  en las 3 densidades, y **`τ(n)` ES una regla de parada order-only que funciona** (los frentes que
+  abstiene *cubrirían* solo 40/37/35 %, muy por debajo del 74/65/54 % localizado → descarta la cola
+  no-cubriente; responde afirmativamente a la pregunta de Fase #2) — pero **no basta** para hacer
+  converger la cobertura. Misma fragilidad a densidad que EGS marca como problema abierto del método
+  de escaleras (md:469); el re-sembrado **hereda, no escapa** la truncación interior (igual dirección
+  que el expansion S1/S2 NEGATIVO). dev/v0–v1, puntuado con `r` oculta — no congelado/validado/auditado.
+  **Consecuencia (pre-comprometida en `comite_decision_002` §9): S3 no aguanta ⇒ PR-003 entra en
+  Fase #3** (aceptar la cota `BARE_RELOCALISATION`). Etiqueta honesta del re-sembrado v0+v1:
+  **INCONCLUSIVE-como-objeto-extendido / NEGATIVO en convergencia**.
 
 ### Fase #2 — ¿Existe una regla de parada order-only? (si #1 no basta)
 
@@ -112,7 +131,15 @@ El orden es **#1 → #2 → #3**, pero con *puertas de decisión* explícitas y 
   cabeza **no es detectable desde el orden** a esta escala — refuerza que el objeto reconstruible es
   intrínsecamente la pieza O(ℓ), y empuja hacia #3 con una afirmación más fuerte y honesta.
 
-### Fase #3 — Aceptar la cota y consolidar (si #1 y #2 no extienden)
+### Fase #3 — Aceptar la cota y consolidar (si #1 y #2 no extienden) — **ENTRADA 24-jun-2026**
+
+> **Estado: ACTIVA.** La cascada #1/#2 no produjo un objeto extendido *que converja*: expansión
+> #1-B PARCIAL → S1/S2 **NEGATIVO** (`dev/PR003_EXPANSION_ROBUSTNESS_NOTES.md`); re-sembrado v0
+> POSITIVO preliminar → **S3 NO CONVERGE** (cobertura honesta 51→48→44 %,
+> `dev/PR003_ITERATIVE_RESEED_V1_NOTES.md`). La pregunta de #2 quedó respondida de paso: `τ(n)` **sí**
+> es una regla de parada order-only que funciona (descarta la cola no-cubriente), pero no extiende el
+> objeto. Conclusión: el objeto reconstruible es intrínsecamente la pieza O(ℓ) de
+> `BARE_RELOCALISATION`. Se entra en #3.
 
 - **Acción:** tratar `BARE_RELOCALISATION` como **el resultado de escala alcanzable** y dejar de
   perseguir un objeto extendido. Redirigir el esfuerzo a: (i) afirmar la regla de dirección #2
