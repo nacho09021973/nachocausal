@@ -63,3 +63,18 @@ interior undersampling) is the open obstacle.
 
 **Open uncertainty (one line, no plan):** whether the interior-expansion signal can be made
 density-robust (sampling vs proxy vs intrinsic) is what this v0 leaves unresolved.
+
+## ADDENDUM (2026-06-24, comité decision 002, S1+S2 — `dev/PR003_EXPANSION_ROBUSTNESS_NOTES.md`)
+
+The committee's minimal falsification test (S1) and taller-box probe (S2) both came back
+**NEGATIVE** for this diagnostic:
+- **S1:** the 3600 POSITIVE is **not robust** — its interior negativity and the zero-crossing at
+  R_S **depend on the unreliable `relphi` direction split**. Pooling all ladders moves the
+  crossing to r*=0.283 (d_perp 2.78 ℓ) and the interior bins go positive.
+- **S2:** a taller box at **fixed** density does **not** fix the interior undersampling — d_perp/ell
+  degrades 0.84→2.49→10.54 as t_edge grows 6→12→24 (the t_edge=12 row is unconfounded: same
+  sample count, signal still collapses, flat control FAILS).
+
+→ The expansion / Θ_out variant is **set aside** as a robust order-only localizer. The
+empirically-leading path remains iterative-reseed v0 (S3, not yet run). No threshold touched;
+seal `6e2c3888…` intact.
