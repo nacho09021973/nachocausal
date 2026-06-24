@@ -85,3 +85,89 @@ rungs, near the bracket seed) vs tail (rungs 3..).
 - **Single next question (do not pre-design alternatives):** does a head truncated by a rule
   defined *only* on causal observables produce a **connected** sequence whose distance to the
   horizon stays O(ell)?
+
+## Single-next-question measurement (2026-06-24) — `dev/measure_truncated_head.py`
+
+Exploration only, NOTHING frozen. 6 seeds (EXPLORE_POOL[:6]), t_edge=6 fixed, intensity
+3600 -> 7200 -> 14400 (ell 0.0447 -> 0.0316 -> 0.0224, ~2x density per step). Per bracket-
+seeded LONGEST ladder we record the per-rung `d_perp/ell` (hidden coord, SCORE ONLY) and the
+cumulative-mean `rel_phi` (order-only #2 feature). `k*` = longest prefix whose **median**
+`d_perp/ell` stays <= 3 (a *reference* band, NOT a frozen threshold). Run completed exit 0,
+all densities present, **connectedness = 100%** at every density (every prefix is a verified
+chain in C), no NaN/Inf, nothing dropped except sub-min_len ladders by design. The script
+aggregates pooled-per-density; it did **not** emit per-seed breakdowns, so per-seed dispersion
+is not available from this run (not reconstructed here).
+
+| intensity | ell | ladders | conn | k* (rungs) | k*·ell (phys) | k* in ell-floors |
+|----------:|----:|--------:|-----:|-----------:|--------------:|-----------------:|
+|     3600  | 0.0447 |    148 | 100% |        3   |        0.134  |             3.0  |
+|     7200  | 0.0316 |    211 | 100% |        2   |        0.063  |             2.0  |
+|    14400  | 0.0224 |    231 | 100% |        3   |        0.067  |             3.0  |
+
+`d_perp/ell` profile by prefix length k (median, pooled): rises monotonically at all three
+densities — k=0 (seed rung) ~1.7-1.8 ell (the prereg-002 floor, stable in ell units), crossing
+~3 ell by k=2-3, into the body 5-8 ell. The deep tail (k=15) **grows with density**
+5.2 -> 6.5 -> 8.2, reconfirming the longest-tail divergence in ell units.
+
+### Exploratory verdict (6 seeds): **BARE_RELOCALISATION**
+
+- **Geometric result (measured with hidden `d_perp`).** A connected, geometrically adherent head
+  **exists** but it is only the seed's discreteness neighbourhood: `k*` = O(1) rungs (3 / 2 / 3,
+  no growth on refinement) and its **physical** extent `k*·ell` **halves with ell**
+  (0.134 -> 0.067, x0.50, while ell shrank x0.50; k* in ell-floors stays ~2-3). This is the
+  prereg-002 bracket localisation re-appearing at the seed, **not** a lengthening reconstructed
+  horizon segment.
+- **Rejected readings:** `FIXED_PHYSICAL_SEGMENT` (k*·ell did not stay constant — it tracked ell
+  down; k* did not grow); `FAIL_GEOMETRIC_ADHERENCE` (connectedness is 100% and the head *does*
+  stay O(ell) for ~2-3 rungs — it is the body that leaves, the already-known longest behaviour);
+  `NO_STABLE_SCALING` (the k* sequence wobbles 3->2->3, but the physical trend halving-with-ell and
+  the stable ell-floor count ~2-3 are consistent; the 7200 dip to k*=2 is the one wobble, flagged).
+- **`k*` is NOT an order-only rule.** It is read off `d_perp` (the hidden diagnostic geometry), so
+  it is a geometric diagnostic only.
+
+### Order-only detectability of the head end (`rel_phi`): **AMBIGUOUS / UNSTABLE**
+
+- No cumulative-`rel_phi` breakpoint aligns with the geometric head end `k*` (2-3): the
+  `relphi_cum` extremum sits around k~=5 at all densities, **past** k*.
+- Scale/sign are not density-robust: 3600 hovers near 0 with mild oscillation
+  (+0.5 ... -10.9 ... +12.6); 7200 plunges to ~ -65; 14400 to ~ -102. Magnitude grows with density
+  but there is no stable breakpoint coincident with where geometric adherence is lost.
+- => a signal exists at higher density but it is **not** a stable, aligned marker of the head end.
+  (Not "clear aligned breakpoint"; not "no visible signal".)
+
+### Greedy contrast: **UNDERPOWERED / inconclusive**
+
+Greedy (stop-at-first-stuck) ladders reaching min_len=6 from the invariant bracket are **rare**:
+n = 2 / 8 / 1 across 3600 / 7200 / 14400. Greedy length median 9.5 / 8 / 6 (shrinking), tail
+`d_perp/ell` 6.40 / 5.72 / 0.88 — these vary wildly on n=1-8 ladders, so they are anecdotal, not a
+measurement. The single n=1 tail of 0.88 at 14400 supports nothing. (Not comparable to the earlier
+`measure_pr003` greedy-tail ~0.5 ell, which used a different seed set and 40-seed per-sprinkling
+aggregation.) Greedy here neither confirms nor denies an adherent extended head.
+
+**What this does NOT show:** no reconstructed horizon *segment* (extended, growing); no order-only
+stopping rule (k* uses hidden geometry); and it does not settle whether some other, still-unmeasured
+order-only truncation could extend adherence past the seed floor.
+
+### Post-committee addenda (2026-06-24, R1/R2 — `comite_decision_001`)
+
+- **Two distinct channels, do not conflate them:**
+  - *Geometric channel* (scored with hidden `d_perp`): `BARE_RELOCALISATION` — the adherent head
+    exists but is the seed's discreteness neighbourhood (k\*=O(1), k\*·ell halves with ell). Solid.
+  - *Order-only detectability channel* (`rel_phi`, greedy): **ABSTAIN** — `rel_phi` gives no
+    density-robust breakpoint aligned with the head end (extremum at k~5, past k\*=2-3; scale/sign
+    not robust) and the greedy contrast is statistically empty (n=2/8/1). There is therefore **no
+    order-only evidence that the head end is detectable from order alone.** This abstain is reported
+    in its own right, not folded into the geometric verdict.
+- **Tail growth is NOT a search-budget artifact** (falsifier's minimal test, run by the committee
+  chair on `EXPLORE_POOL[0]`): complete-search fraction = 89% / 93% / 87% at 3600 / 7200 / 14400,
+  and the tail (k>=10) `d_perp/ell` on COMPLETE-only ladders (6.21 / 8.95 / 10.07) matches the
+  all-ladder values (6.00 / 9.11 / 8.23). So the ell-unit tail growth is real. **But** whether it is
+  *physical* (vs ell-unit) divergence remains **undetermined** with three densities (ell roughly
+  halves over the sweep, so physical `d_perp` could still be shrinking sub-O(ell)). `measure_truncated_head.py`
+  now also reports the per-density complete-fraction and per-seed k\* dispersion (R1).
+  **6-seed re-run confirms it:** complete-fraction = 86% / 90% / 79% at 3600 / 7200 / 14400
+  (≈ the 1-seed 89/93/87%); per-seed k\* median[min,max] = 3[0,5] / 2[0,4] / 3[1,4] (wide spread).
+- **Next:** roadmap `docs/hoja_de_ruta_24_jun_2026.md` — cascade #1 (iterative order-only
+  re-seeding) -> #2 (order-only stopping observable) -> #3 (accept the bound), each leakage-gated,
+  with the minimal falsification test (complete-only agreement / relabel Guard-v / MINK flat control)
+  carried forward.

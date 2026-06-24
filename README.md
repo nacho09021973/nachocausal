@@ -113,10 +113,17 @@ order-only build).
 
 ### Plan for tomorrow (one precise question first — do NOT pre-design alternatives)
 
-1. **The single next question:** does a head truncated by a rule defined *only* on causal
-   observables produce a **connected** sequence whose distance to the horizon stays O(ℓ)? Measure
-   that one thing (under the density sweep, relabel-invariant per `docs/pr003_leakage_gate.md`)
-   before branching into multiple near-staying selection designs.
+1. ✅ **ANSWERED (2026-06-24, exploratory, 6 seeds; `dev/measure_truncated_head.py`,
+   `dev/PR003_NEAR_HORIZON_NOTES.md`).** *Does a head truncated by an order-only rule give a
+   **connected** sequence that stays O(ℓ)?* Verdict **`BARE_RELOCALISATION`**. (a) A connected,
+   geometrically adherent head **exists but is only the seed's discreteness neighbourhood**:
+   connectedness 100% at every density, but (measured with the hidden `d_⊥`) `k*` = O(1) rungs
+   (3/2/3, no growth) and its physical extent `k*·ℓ` **halves with ℓ** (0.134→0.067) — the
+   prereg-002 floor at the seed, not a lengthening segment. `k*` is **not** an order-only rule (it
+   is read off `d_⊥`). (b) The head end is **not stably detectable from order**: cumulative
+   `rel_phi` shows no density-robust breakpoint aligned with `k*` (ambiguous/unstable). (c) Still
+   unproven: any *extended/growing* horizon segment, and any order-only stopping rule; the greedy
+   contrast was underpowered (n=2/8/1).
 2. **Firm up #2 at the horizon:** scale seeds so the near-horizon band has enough outgoing ladders to
    measure the `relphi_mean` direction AUC *at* the horizon (today 1/6/2 positives), not just at the
    ~5 ℓ scale — a precondition for a definitive #2 freeze.

@@ -4,6 +4,10 @@
 > umbral vinculante. Las reglas y los criterios de éxito que aquí se nombran se congelan
 > formalmente, cada uno en su documento sellado, **antes** de cualquier paso *committing* (reglas
 > fundacionales en `CLAUDE.md` y `docs/preregistration.md`). Sucesor de `docs/roadmap.md`.
+>
+> **Sucesora (24-jun-2026):** `docs/hoja_de_ruta_24_jun_2026.md` — cascada #1→#2→#3 tras el cierre
+> de la pregunta del punto 1 con veredicto `BARE_RELOCALISATION` (ver comité
+> `docs/comite/comite_decision_001_pr003-bare-relocalisation-next-step.md`).
 
 ## Punto de partida (verificado)
 
@@ -47,10 +51,24 @@
 
 ## Mañana (una pregunta precisa primero — NO pre-diseñar alternativas)
 
-1. **La única pregunta siguiente:** ¿una cabeza truncada mediante una regla definida **solo** con
-   observables causales produce una secuencia **conexa** cuya distancia al horizonte se mantenga
-   O(ℓ)? Medir **eso** (bajo el barrido de densidad, invariante bajo relabel según
-   `docs/pr003_leakage_gate.md`) antes de ramificar en varias selecciones "near-staying".
+1. ✅ **CERRADA (24-jun-2026, exploratoria, 6 semillas; `dev/measure_truncated_head.py`,
+   `dev/PR003_NEAR_HORIZON_NOTES.md`).** *¿Una cabeza truncada por una regla definida solo con
+   observables causales produce una secuencia conexa que se mantenga O(ℓ)?* Veredicto
+   **`BARE_RELOCALISATION`**. Distinguiendo lo que pedía la pregunta:
+   - **(a) ¿Existe una cabeza geométricamente adherente?** **Sí, pero es solo el vecindario de
+     discreteness de la semilla.** Conectividad 100% en las tres densidades; medido con la coord
+     oculta `d_⊥`: `k*` = O(1) rungs (3/2/3, sin crecer al refinar) y su extensión **física**
+     `k*·ℓ` **se halva con ℓ** (0.134→0.067, ×0.50, mientras ℓ ×0.50). Es la localización del
+     bracket de prereg-002 reapareciendo en la semilla, **no** un trozo de horizonte que se alargue.
+     `k*` **no es** una regla order-only: se lee de `d_⊥` (geometría diagnóstica oculta).
+   - **(b) ¿Su final parece detectable desde el orden (`rel_phi`)?** **Ambiguo/inestable.** El
+     extremo de `relphi_cum` cae en k≈5 (más allá de `k*`=2-3) y su escala/signo no es robusta a la
+     densidad (≈0 oscilando a 3600; ≈−65 a 7200; ≈−102 a 14400). Hay señal a densidad alta pero
+     **no** un breakpoint estable alineado con el fin de la cabeza.
+   - **(c) Qué sigue sin demostrarse:** ningún trozo de horizonte *extendido/creciente*; ninguna
+     regla de parada order-only; el contraste greedy quedó **sin potencia** (n=2/8/1, anecdótico).
+   - *Incertidumbre abierta (una frase, sin plan):* queda sin medir si alguna otra regla de
+     truncación order-only podría extender la adherencia más allá del suelo de la semilla.
 2. **Firmar #2 en el horizonte**: escalar semillas hasta tener suficientes salientes en la banda
    cercana para medir la AUC de `relphi_mean` *en* el horizonte (hoy 1/6/2) — precondición para
    congelar #2 en firme.
