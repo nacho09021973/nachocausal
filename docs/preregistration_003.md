@@ -1,28 +1,34 @@
-# Pre-registration 003 — DRAFT (PR-003 Fase #3 result: operational resolution floor)
+# Pre-registration 003 — PR-003 Fase #3 result: operational resolution floor (FROZEN)
 
-> ## ⚠ DRAFT — NOT FROZEN, NOT YET A PRE-REGISTRATION
+> ## ✔ FROZEN PRE-REGISTRATION — 2026-06-25
 >
-> This file is a **dev / reversible draft** of what `docs/preregistration_003.md` *would*
-> register. It freezes nothing, seals nothing, and touches **no** `RESERVED_002` seed. It is
-> NOT the prereg-003 seal. Freezing is a separate, committing step (§8 below) that requires
-> `/comite` + `/auditor` + explicit user authorisation, and only at that point is the
-> non-draft `docs/preregistration_003.md` created. Until then every number here is a pointer to
-> a committed dev artefact, to be re-verified literally by `/auditor` before any freeze.
+> This is the frozen prereg-003. It registers the PR-003 Fase #3 result as an **operational
+> (estimator-induced) resolution floor** of the sealed v2 estimator. It changes **no** code, seals
+> **no** new constant, and touches **no** `RESERVED_002` seed: the freeze is doc-only. Sealed
+> instrument unchanged — `nachocausal/thresholds.py` SHA256 =
+> `6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4` (`make verify-seal`,
+> confirmed before and after this commit).
 >
-> Authorised by `docs/comite/comite_decision_003_pr003-silver-bullet-synthesis.md` §9 **C1**
-> (`COMMITTEE_DECISION_VERDICT=RECOMMEND_PROCEED_WITH_SCOPED_NEXT_STEP`, ACCEPTED 2026-06-24).
-> Sealed instrument unchanged: `nachocausal/thresholds.py` SHA256 =
-> `6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4` (`make verify-seal`).
->
-> **FROZEN 2026-06-25 → `docs/preregistration_003.md`.** This draft has been frozen. The review
-> chain: `/auditor` foundation (`auditor_report_001`, `AUDIT_PASS_WITH_WARNINGS`) → `/comite`
-> (`comite_decision_004`, `RECOMMEND_REVISE_AND_RECONVENE`) → R-1 (audit W1 discharged: O3/R2 re-run
-> on SEALED numpy 1.26.4, logs `dev/{o3,kbeam}_sealed_numpy_rerun.log`) → R-2 (revised per comité-004
-> B1–B8) → C-1 re-audit (`auditor_report_002`, `AUDIT_PASS`) → C-2 reconvene (warden PASS, falsifier
-> all objections RESOLVED) → C-3 user authorisation. This file is retained as the dev draft of record;
-> the frozen registration is `docs/preregistration_003.md`.
+> **Provenance chain (all artefacts committed):**
+> - Authorised by `docs/comite/comite_decision_003_pr003-silver-bullet-synthesis.md` §9 **C1**
+>   (`RECOMMEND_PROCEED_WITH_SCOPED_NEXT_STEP`, ACCEPTED 2026-06-24).
+> - Foundation audit `docs/auditor/auditor_report_001_pr003-c1-freeze-foundation.md`
+>   = `AUDIT_PASS_WITH_WARNINGS` (warning W1: GPU-venv figures not re-executed under sealed numpy).
+> - Freeze-readiness committee `docs/comite/comite_decision_004_pr003-c1-freeze-readiness.md`
+>   = `RECOMMEND_REVISE_AND_RECONVENE` (revisions B1–B8 + the W1 re-run required first).
+> - **R-1 (W1 discharged):** `dev/measure_info_bound_o3.py` and `dev/measure_kbeam_peeloff.py`
+>   re-run under the SEALED numpy 1.26.4 (CPU); they reproduce the §3 figures (logs
+>   `dev/o3_sealed_numpy_rerun.log`, `dev/kbeam_sealed_numpy_rerun.log`).
+> - **R-2:** this text was revised per comité-004 §8 B1–B8.
+> - **C-1 re-audit** of the revised text `docs/auditor/auditor_report_002_pr003-c1-revised-draft.md`
+>   = `AUDIT_PASS` (0 errors, 0 warnings).
+> - **C-2 reconvene** (focused warden + falsifier): warden PASS, falsifier all seven objections
+>   RESOLVED — no freeze-blocker.
+> - **C-3:** explicit user authorisation, 2026-06-25 ("crear + commitear en main").
+> - The dev/reversible draft this was frozen from is retained at
+>   `docs/preregistration_003_draft.md`.
 
-## 1. What this result IS (the precise claim to be registered)
+## 1. What this result IS (the precise registered claim)
 
 The PR-003 Fase #3 result is an **operational (estimator-induced) resolution floor** for the
 **sealed v2 estimator** viewed as a channel `T: C ↦ r̂` from the causal order `C` to the
@@ -51,8 +57,8 @@ neighbourhood (`BARE_RELOCALISATION`); the extended-object cascade closed negati
   `KL(P^C_0 ‖ P^C_1)` / `TV(P^C_0, P^C_1)`. The information evidence we have (R1 / O1) is a KL of
   the *output* `r̂ = T(C)`, and by the data-processing inequality
   `KL(P^{r̂}_0‖P^{r̂}_1) ≤ KL(P^C_0‖P^C_1)` it bounds the full-data KL **from below** — the wrong
-  direction. **The minimax bound over `C` is left explicitly OPEN** (future work; §7). Do not
-  phrase the frozen result as a universal information limit.
+  direction. **The minimax bound over `C` is left explicitly OPEN** (future work; §7). This frozen
+  result is NOT a universal information limit.
   [grounding: `dev/PR003_INFO_BOUND_NOTES.md` §0, §7-O1, reclassified 2026-06-25.]
 - **NOT an order-theoretic universal over estimators — it is the limit of OUR sealed tool.** (★) is
   a property of the *specific* sealed channel `T: C ↦ r̂` built from the future-VOLUME observable
@@ -75,10 +81,12 @@ neighbourhood (`BARE_RELOCALISATION`); the extended-object cascade closed negati
   signal ground-truth leakage, to be audited against `docs/pr003_leakage_gate.md`, not taken as
   refutation (comité-003 §5 falsifier).
 
-## 3. Evidence (all committed, dev, EXPLORE_POOL only — to be re-verified by /auditor)
+## 3. Evidence (all committed, dev, EXPLORE_POOL only — re-verified by /auditor + sealed re-run)
 
 The operational floor (★) rests on three legs plus one hardening probe; all live in
-`dev/PR003_INFO_BOUND_NOTES.md` (R1) and `dev/PR003_KBEAM_PEELOFF_NOTES.md` (R2):
+`dev/PR003_INFO_BOUND_NOTES.md` (R1) and `dev/PR003_KBEAM_PEELOFF_NOTES.md` (R2). Every figure was
+re-verified by `/auditor` (`auditor_report_002`, `AUDIT_PASS`) and reproduced under the sealed numpy
+1.26.4 in R-1:
 
 1. **In-repo anchor (§3 of the notes).** The frozen thresholds already encode (★):
    `theta_loc = K_LOC·ℓ/(2M)`, `theta_stab = K_LOC·ℓ`, `K_LOC = 2`, `POOLED_SD_FLOOR = 0.5`
@@ -88,18 +96,19 @@ The operational floor (★) rests on three legs plus one hardening probe; all li
    per-element future-volume `O`-multiset is GPU≡CPU **bit-identical** (`maxdiff = 0`, integer
    observable); the downstream *float* figures (`r̂` scatter, `2s/ℓ`) are reproducible only
    *statistically*, not bit-level (GPU `np.log` ulp flips, `measure_info_bound_o3.py:47-49`) — so
-   this draft makes **no** bit-level reproducibility claim for the float figures. Result: `r̂`
+   this result makes **no** bit-level reproducibility claim for the float figures. Result: `r̂`
    scatter `sd(r̂)/ℓ = 0.34 / 0.45 / 0.39 / 0.40` across the four intensities — i.e. `≈ 0.4·ℓ`,
    density-invariant within ≈30% over **×8 in density** (which is only **×2.83 in `ℓ`**:
    `ℓ = 0.069 → 0.024`); the whole `TVg(r̂)` curve collapses onto a single function of `s/ℓ`;
    resolvable separation `2s/ℓ = 0.60 / 0.47 / 0.62 / 0.71`. ⇒ measured constant `O(1) < 2`.
-   **Sealed-environment confirmation (comité-004 R-1, audit W1 discharged):** re-run on the SEALED
+   **Sealed-environment confirmation (R-1, audit W1 discharged):** re-run on the SEALED
    numpy 1.26.4 (CPU, `--device cpu`) reproduces the scatter table `0.34/0.45/0.39/0.40` and the
    `2s/ℓ` row to the reported 2-decimal precision (seal `6e2c3888…` asserted pre+post; log
    `dev/o3_sealed_numpy_rerun.log`) — the constant is **not** an artefact of the GPU venv.
 3. **Analytic Jacobian O2 (§7 of the notes).** `dO/dr = ρ·dA_fut/dr`, log-enhanced near `r_S`
    (tortoise term); `σ_O ∝ 1/ℓ` over `dO/dr ∝ 1/ℓ²` ⇒ `ρ` cancels ⇒ `δr = ℓ·√(A_fut)/(dA_fut/dr) ∝ ℓ`,
-   dimensionless O(1) constant `≈0.4` pinned by leg 2. O1 (the KL of the output) is the
+   dimensionless O(1) constant `≈0.4` pinned by leg 2. This leg is an explicit *scaling sketch*
+   (Poisson `σ_O≈√O`, equal-variance approximations), not a theorem. O1 (the KL of the output) is the
    **operational** companion, explicitly NOT a minimax statement (see §2).
 4. **Hardening — R2 K-beam peel-off (`dev/PR003_KBEAM_PEELOFF_NOTES.md`; 6 EXPLORE_POOL seeds,
    intensities 3600/7200/14400).** Under the *specific* order-only ranking tested (interval-cardinality
@@ -112,7 +121,7 @@ The operational floor (★) rests on three legs plus one hardening probe; all li
    differently (`PR003_KBEAM_PEELOFF_NOTES.md:80`); (c) the single low-`d⊥` datum at intensity 14400/K=1
    rests on **one** ladder (anecdotal, notes:44-45) and is **not** load-bearing; the headline pools
    3600/7200. The only way to reopen extension is a taller-box prereg (C2, out of scope).
-   **Sealed-environment confirmation (comité-004 R-1):** the integer ladder enumeration is deterministic
+   **Sealed-environment confirmation (R-1):** the integer ladder enumeration is deterministic
    and the sealed numpy 1.26.4 (CPU) re-run reproduces the table essentially exactly (e.g. 7200: top-1
    `d⊥/ℓ@k=8` K=1→64 = 3.21→6.63, `n` = 8→147, reach = 23 %; log `dev/kbeam_sealed_numpy_rerun.log`).
 
@@ -121,7 +130,7 @@ The operational floor (★) rests on three legs plus one hardening probe; all li
 The frozen constant is `K = K_LOC = 2`, **already sealed** in `thresholds.py:98` since the
 estimator-v2 / prereg-002 seal `6e2c3888…` (commit `573cfcb`), i.e. **before any PR-003 Fase #3
 measurement existed** — so "conservative ceiling" is a pre-measurement fact, not a post-hoc label.
-This draft (and the eventual freeze) introduces **no new data-tuned constant**: leg 2 reports
+This freeze introduces **no new data-tuned constant**: leg 2 reports
 that the measured constant is `O(1) < 2`, which is a *consistency* statement about the existing
 seal, not a recalibration. Re-tuning `K` on the EXPLORE_POOL measurement would be
 reverse-engineering and is forbidden (`pr003_leakage_gate.md` contract #5).
@@ -133,10 +142,9 @@ held-out RESERVED_002 seeds under the sealed instrument, that order alone locali
 significantly and stably within the patch, with `median|dr|/2M = 0.064 ≤ θ_loc` and
 `r_std = 0.008 ≤ θ_stab`. (★) is the *information-side reading* of that same sealed instrument:
 the localisation cannot be sharpened below `O(ℓ)` by this estimator. No new blind run is required
-for (★); it consolidates the already-validated instrument. (If, on freeze, the committee wants an
-independent confirmatory blind quantity, that would be specified here — currently none is needed.)
+for (★); it consolidates the already-validated instrument.
 
-## 6. Falsifiability / how a freeze would be checked
+## 6. Falsifiability of (★)
 
 **Positive falsification criterion for (★) (pre-committed — the route to FAIL).** (★) is the claim
 that *the sealed channel* `T: C ↦ r̂` cannot resolve `r_S` finer than `≈ 0.4·ℓ` (with `K_LOC=2·ℓ`
@@ -148,21 +156,20 @@ a hedge):** this criterion is evaluated on EXPLORE_POOL (no new RESERVED_002 bli
 consolidates the already-validated instrument, §5), so it trips only on a *systematic* error, not a
 borderline one; its bite is correspondingly lower than a held-out test would give. Because (★) is
 scoped to the sealed channel, a *different* order-only estimator localising finer does **not** falsify
-(★) (it would
-instead resolve the OPEN minimax-over-`C` question of §7) — UNLESS it does so by reading the hidden
-embedding, in which case it is a leakage finding to be audited against `docs/pr003_leakage_gate.md`,
-not a refutation. This asymmetry is declared in advance, not invoked post-hoc. [comité-004 §8 B1, §5
-falsifier.]
+(★) — it would instead resolve the OPEN minimax-over-`C` question of §7 — UNLESS it does so by reading
+the hidden embedding, in which case it is a leakage finding to be audited against
+`docs/pr003_leakage_gate.md`, not a refutation. This asymmetry is declared in advance, not invoked
+post-hoc. [comité-004 §8 B1, §5 falsifier.]
 
+Standing freeze-integrity checks (discharged at this freeze):
 - **Anchor freeze-check:** `K = K_LOC = 2` is the sealed value; `make verify-seal` =
   `6e2c3888…` before and after; no `M nachocausal/`.
-- **Direction-of-claim check (the O1 reclassification):** the frozen text must say "sealed
-  estimator's resolution", never "no estimator of `C` can do better". `/auditor` to confirm the
-  document does not reintroduce the minimax phrasing.
-- **Number-provenance check:** every figure in §3 must be literal output of a committed script
-  (`measure_info_bound_o3.py`, `measure_kbeam_peeloff.py`) with its git-ignored log regenerable
-  on demand — `/auditor`'s standing job. **Discharged once (comité-004 R-1):** both scripts re-run
-  under the sealed numpy 1.26.4 (CPU) reproduce the §3 figures (logs `dev/o3_sealed_numpy_rerun.log`,
+- **Direction-of-claim check (the O1 reclassification):** the text says "sealed
+  estimator's resolution", never "no estimator of `C` can do better" — confirmed by `/auditor`
+  (`auditor_report_002` §6, no residual minimax phrasing).
+- **Number-provenance check:** every figure in §3 is literal output of a committed script
+  (`measure_info_bound_o3.py`, `measure_kbeam_peeloff.py`); both re-run under the sealed numpy
+  1.26.4 (R-1) reproduce the §3 figures (logs `dev/o3_sealed_numpy_rerun.log`,
   `dev/kbeam_sealed_numpy_rerun.log`).
 
 ## 7. Open items (explicitly NOT closed by this result)
@@ -173,28 +180,24 @@ falsifier.]
 - **O4 — literature.** Source Le Cam framing (Tsybakov 2009, *Introduction to Nonparametric
   Estimation*, Thm 2.2) and the Bretagnolle–Huber inequality and any causal-set information-theory
   precedent into `biblioteca/` before citing. **These sources are PHYSICALLY ABSENT from `biblioteca/`
-  (comité-004 literature verdict: UNVERIFIED — ABSENT), so the frozen prereg-003 MUST NOT cite Thm 2.2
-  or Bretagnolle–Huber as established support until they are added.** The result (★) does **not** depend
+  (comité-004 literature verdict: UNVERIFIED — ABSENT), so this frozen prereg-003 does NOT cite Thm 2.2
+  or Bretagnolle–Huber as established support.** The result (★) does **not** depend
   on them: its evidence is the operational O2/O3 legs (§3); the Le Cam / Bretagnolle–Huber framing lives
   only in the O1 *diagnostic*, which §2 already downgrades. By itself O4 does **not** close the
   inequality-direction gap above.
 - **C2 — taller-box prereg** (`t*/r_S∈[0,50]`) to address the R2 under-reach caveat: a NEW prereg
   (different `BOX_AREA`/ℓ table), out of scope here.
 
-## 8. Procedure to turn this DRAFT into the frozen prereg-003 (committing — needs separate OK)
-
-1. Review/iterate this draft (reversible, dev).
-2. `/comite` over the draft (one-way step) → freeze-check + falsification of the claim form/scope.
-3. `/auditor` → verify every published number is literal committed-script output and the document
-   does not over-claim beyond the operational, finite-patch 1+1D resolution floor.
-4. Only then create `docs/preregistration_003.md` (non-draft) and commit it as the prereg-003
-   freeze — atomic on `main` (verify `git branch --show-current = main`; shared-checkout `formula`
-   hazard), `make verify-seal` = `6e2c3888…` before+after, `git status` shows no
-   `M nachocausal/` and no `M docs/preregistration_*`.
-
 ---
 
-> **Provenance of this draft.** Branch `main`; dev/reversible; no seed drawn; seal `6e2c3888…`
-> intact. Grounding files: `dev/PR003_INFO_BOUND_NOTES.md` (R1, O1 reclassified 2026-06-25),
-> `dev/PR003_KBEAM_PEELOFF_NOTES.md` (R2), `docs/preregistration_002_result.md` (PASS),
-> `docs/comite/comite_decision_003_pr003-silver-bullet-synthesis.md` §9 (C1).
+> **Provenance of this freeze.** Branch `main`; doc-only; no seed drawn; seal `6e2c3888…`
+> intact (verified before+after the freeze commit). Grounding files:
+> `dev/PR003_INFO_BOUND_NOTES.md` (R1, O1 reclassified 2026-06-25),
+> `dev/PR003_KBEAM_PEELOFF_NOTES.md` (R2), `dev/o3_sealed_numpy_rerun.log` +
+> `dev/kbeam_sealed_numpy_rerun.log` (R-1 sealed re-run),
+> `docs/preregistration_002_result.md` (PASS),
+> `docs/comite/comite_decision_003_pr003-silver-bullet-synthesis.md` §9 (C1),
+> `docs/comite/comite_decision_004_pr003-c1-freeze-readiness.md` (freeze-readiness),
+> `docs/auditor/auditor_report_001_pr003-c1-freeze-foundation.md` +
+> `docs/auditor/auditor_report_002_pr003-c1-revised-draft.md`,
+> `docs/preregistration_003_draft.md` (the dev draft this was frozen from).
