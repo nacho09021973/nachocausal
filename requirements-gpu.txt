@@ -1,0 +1,24 @@
+# OPTIONAL GPU backend for the dev/ exploration sandbox only.
+#
+# NOT part of the sealed validation environment (requirements.txt). The sealed
+# package nachocausal/ is pure CPU numpy==1.26.4 and bit-for-bit reproducible;
+# GPU (CuPy) is used only in dev/ for exploration / large-N timing and is NOT
+# bit-identical to the sealed CPU instrument (BH branch: log + FMA differ in the
+# last ulp near the horizon). Install only on a CUDA machine:
+#
+#   pip install -r requirements-gpu.txt
+#
+# CuPy for CUDA 12.x (driver here exposes CUDA 13.3; the 12x wheel's bundled
+# runtime is forward-compatible). The [ctk] extra pulls the NVIDIA CUDA header
+# wheels (~1 GB) that NVRTC needs to JIT-compile kernels — REQUIRED on Blackwell
+# (RTX 50xx, sm_120): the bundled NVRTC must be >= CUDA 12.8 to target sm_120.
+# CuPy 14.x depends on numpy>=2.0, so install it in a SEPARATE venv (.venv-gpu),
+# never the sealed .venv (numpy==1.26.4). On a CPU-only machine skip this file
+# entirely: dev/backend.py falls back to numpy automatically.
+cupy-cuda12x[ctk]>=14.1
+# numba: the dev/ ladder kernels (explore_ladders, explore_direction) JIT integer
+# DFS/beam combinatorics. Needed when a GPU dev probe that also walks ladders runs
+# in .venv-gpu (e.g. dev/measure_kbeam_peeloff.py, which builds the BH matrix +
+# transitive-reduction matmul on CuPy and runs the K-beam on numba). numba 0.65
+# coexists with numpy 2.x + CuPy 14.x in the same venv.
+numba>=0.65
