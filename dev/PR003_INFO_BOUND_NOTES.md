@@ -1,4 +1,12 @@
-# PR-003 R1 — information-theoretic lower bound on order-only horizon localisation (dev derivation, NOT a frozen result)
+# PR-003 R1 — operational (estimator-induced) resolution floor for order-only horizon localisation (dev derivation, NOT a frozen result)
+
+> **Reclassified 2026-06-25 (user logical review).** The firm content of this note is an
+> **operational / estimator-induced** resolution bound for the *sealed v2 channel* `C ↦ r̂`
+> (`Error ∝ ℓ`): §3 anchor + §6 measurement + §7-O2 Jacobian. It is **not** a Le Cam **minimax**
+> lower bound over all functions of the full causal set `C`: §7-O1 measures the KL of the estimator
+> *output*, which by the data-processing inequality bounds the full-data KL from the wrong side. The
+> minimax floor over `C` is a **separate, unproven target** (see §0). Phrase any C1 freeze as the
+> sealed estimator's resolution, never as a universal information limit.
 
 Authorised by `docs/comite/comite_decision_003_pr003-silver-bullet-synthesis.md` §9 step R1.
 **This is an analytic dev derivation, not a measurement and not a frozen claim.** It develops the
@@ -27,8 +35,18 @@ Frozen setting (`nachocausal/thresholds.py`):
   `{O(i)}` by the best 1-D 2-means partition and reports a boundary threshold `thr` and separation
   `sep` (`estimator.py:96-107`). The boundary in O-space maps to a radial location estimate `r̂`.
 
-We bound `inf_{r̂} sup E|r̂ − r_S|` over **any** estimator that is a function of the causal order
-`C` (the v2 observable is one such function), in this finite patch at density ρ.
+**Two distinct quantities must be kept rigorously apart (this is the crux of the O1 reclassification):**
+- **(Operational — the firm result here.)** The resolution of the **sealed v2 channel** `T: C ↦ r̂`,
+  i.e. `E|r̂ − r_S|` for THIS estimator, in this finite patch at density ρ. This is what §6 *measures*
+  and §7-O2 *derives*: it scales `∝ ℓ`, constant `≈0.4`.
+- **(Minimax over `C` — the TARGET, NOT established here.)** `inf_{r̂} sup E|r̂ − r_S|` over **any**
+  estimator that is a function of the full causal order `C`. A genuine Le Cam/Fano bound on this needs
+  an **upper** bound on `TV(P^C_0,P^C_1)` / `KL(P^C_0‖P^C_1)` of the **full data** `C`. This note does
+  NOT supply that: the only KL we can read off (§7-O1) is of the *output* `r̂=T(C)`, and by the
+  data-processing inequality `KL(P^{r̂}_0‖P^{r̂}_1) ≤ KL(P^C_0‖P^C_1)` it bounds the full-data KL from
+  **below** — the wrong direction for a minimax lower bound. The minimax statement over `C` is left as
+  **future work**; everything below that says "floor" or "bound" without qualifier means the
+  **operational** (estimator-induced) one.
 
 ## 1. Le Cam two-point reduction
 
@@ -109,10 +127,10 @@ consistent: physical `d⊥` plateaus at `O(ℓ) ≈ 0.020` while `d⊥/ℓ` grow
 
 ## 4. Scope and honesty (binding, per comité-003)
 
-- **For THIS estimator, this patch, this density.** (★) bounds order-only estimators of `r_S` in the
-  finite `BOX_AREA = 7.2` patch at `ρ = intensity/7.2`. It is NOT a universal no-go and NOT an
-  asymptotic-horizon statement (the event horizon needs an infinite sprinkling — EGS, comité-003
-  literature 1a CONFIRMED).
+- **For THIS estimator, this patch, this density.** (★) bounds the resolution of the **sealed v2
+  estimator** `C ↦ r̂` of `r_S` in the finite `BOX_AREA = 7.2` patch at `ρ = intensity/7.2`. It is NOT
+  a minimax bound over all functions of `C` (§0), NOT a universal no-go, and NOT an asymptotic-horizon
+  statement (the event horizon needs an infinite sprinkling — EGS, comité-003 literature 1a CONFIRMED).
 - **Singular-Schwarzschild-specific.** The truncation mechanism that makes O(i) carry the boundary
   fails for a regular (Hayward) black hole (EGS derived-md:463-465, comité-003 literature 1f
   CONFIRMED); (★) inherits this.
@@ -125,10 +143,14 @@ consistent: physical `d⊥` plateaus at `O(ℓ) ≈ 0.020` while `d⊥/ℓ` grow
 
 ## 5. Open items before this could become a *frozen* Fase #3 result (committing — needs new prereg + /comite + /auditor)
 
-- **O1 [rigour]. CLOSED as a sketch — see §7.** `KL(P_0‖P_1)` of the estimator output `≈ 3.1·(2s/ℓ)²`
-  reaches `O(1)` at `2s ≈ 0.57·ℓ` (anchored on the §6-measured `σ(r̂)≈0.40ℓ`), matching the measured
-  `TVg=0.5` crossing; Bretagnolle–Huber gives the `O(ℓ)` floor. Full-data KL `∝ n_min` reaches `O(1)`
-  even sooner (data-processing caveat noted).
+- **O1 [rigour]. RECLASSIFIED as an OPERATIONAL (estimator-induced) bound — see §7.** `KL` of the
+  **estimator output** `r̂=T(C)` `≈ 3.1·(2s/ℓ)²` reaches `O(1)` at `2s ≈ 0.57·ℓ` (anchored on the
+  §6-measured `σ(r̂)≈0.40ℓ`), matching the measured `TVg=0.5` crossing; Bretagnolle–Huber turns this
+  into the **sealed channel's** resolution floor `∝ ℓ`. This is a bound on the channel `C ↦ r̂`, **NOT**
+  a Le Cam minimax bound over all functions of `C`: by data-processing the output KL bounds the
+  full-data KL from *below*, the wrong direction. The observation that full-data KL `∝ n_min` reaches
+  `O(1)` even *sooner* makes the full hypotheses *more* distinguishable and therefore **weakens** (not
+  supports) any universal-impossibility reading — so the minimax floor over `C` stays OPEN.
 - **O2 [Jacobian]. CLOSED as a sketch — see §7.** `dO/dr = ρ·dA_fut/dr` (log-enhanced near `r_S` from
   the tortoise term `func`); with `σ_O ∝ 1/ℓ` and `dO/dr ∝ 1/ℓ²` the `ρ` cancels to give `δr ∝ ℓ`
   (O2★), constant `1/(dA_fut/dr|_{r_S}) ≈ 0.4` pinned by §6.
@@ -140,10 +162,13 @@ consistent: physical `d⊥` plateaus at `O(ℓ) ≈ 0.020` while `d⊥/ℓ` grow
   source it into `biblioteca/` first (the synthesis' TDA citations are UNVERIFIED; the bound itself
   rests on Tsybakov 2009, a standard statistics text, not yet in `biblioteca/`).
 
-O1–O2 are now closed as **derivation sketches (§7)** grounded in the §6 measurement: with the
-in-repo anchor (§3), the numerical illustration (§6) and the analytic Jacobian + KL scale (§7), this
-is a **grounded derivation sketch**, still not a theorem. It freezes nothing; a *frozen* Fase #3
-result needs the committing path (new prereg + `/comite` + `/auditor`) and O4.
+O2 is closed as a **derivation sketch (§7)**; O1 is **reclassified** (§7) as an *operational*
+(estimator-induced) bound on the channel `C ↦ r̂`, NOT a minimax bound over `C`. With the in-repo
+anchor (§3), the numerical illustration (§6) and the analytic Jacobian (§7), this is a **grounded
+operational resolution bound for the sealed estimator**, still not a theorem and explicitly NOT a
+universal information floor over the full causal set (§0). It freezes nothing; a *frozen* Fase #3
+result needs the committing path (new prereg + `/comite` + `/auditor`) and O4, and must be phrased as
+the sealed estimator's resolution — the minimax bound over `C` is separate, future work.
 
 ## 6. O3 — numerical illustration of the scaling (dev, NOT a frozen result)
 
@@ -239,37 +264,56 @@ The factor `√(A_fut)/(dA_fut/dr)` is **dimensionless and O(1)** (in 1+1D, `A_f
 factor. (`POOLED_SD_FLOOR = 0.5` O-units, `thresholds.py:78`, floors `σ_O` so this stays finite when
 a cluster is a single element.)
 
-### O1 — `KL(P_0‖P_1)` vs `2s/ℓ`, and where it reaches `O(1)`  (the clean bound)
+### O1 — operational KL of the SEALED channel `C ↦ r̂` (estimator-induced; NOT a minimax bound over `C`)
+
+> **Scope flag (the data-processing direction).** What follows bounds the resolution of the *output*
+> `r̂ = T(C)` of the sealed v2 estimator. It is an **operational / estimator-induced** bound, not a
+> Le Cam minimax bound over all functions of the full causal set `C`. The latter would require an
+> **upper** bound on `KL(P^C_0‖P^C_1)`; the KL computed below is on the output and, by
+> `KL(P^{r̂}_0‖P^{r̂}_1) ≤ KL(P^C_0‖P^C_1)`, only bounds the full-data KL from the wrong side. The
+> minimax floor over `C` is left OPEN (see §0).
 
 The estimator's output `r̂` (=midpoint) has, at true boundary `r_S±s`, an approximately Gaussian law
 with the measured spread `σ ≈ 0.40·ℓ` and means separated by `Δμ ≈ 2s` (§6: `r̂` tracks the boundary,
-bias `≤ 0.11·ℓ`). The two-point KL of the **estimator's own output** is then
+bias `≤ 0.11·ℓ`). [These are working approximations — Gaussianity, equal variance across the two
+hypotheses, `Δμ = 2s`, and negligible bias/abstention — adequate as a *local diagnostic*, NOT yet a
+theorem.] Under them the two-point KL of the **estimator's own output** is
 
 ```
-KL(P_0‖P_1)  ≈  (Δμ)² / (2σ²)  =  (2s)² / (2·(0.40 ℓ)²)  ≈  3.1 · (2s/ℓ)² .
+KL(P^{r̂}_0‖P^{r̂}_1)  ≈  (Δμ)² / (2σ²)  =  (2s)² / (2·(0.40 ℓ)²)  ≈  3.1 · (2s/ℓ)² .
 ```
 
 So `KL = 1` at `2s ≈ 0.57·ℓ` — matching the independently-read resolvable separation
-`2s/ℓ ≈ 0.6` (§6, `TVg=0.5`). Bretagnolle–Huber `1−TV ≥ ½·exp(−KL)` then turns this into the Le Cam
-floor `Error ≳ (s/4)·exp(−KL) = O(0.03–0.08·ℓ)` at the maximising `s` — the same order as §6's
-`max_s (s/2)(1−TV)`. **The order-distributions become statistically distinguishable only at the `ℓ`
-scale (`2s ≈ 0.6 ℓ`), so no estimator localises `r_S` finer than `O(ℓ)` — claim (★), with constant
-`O(1) < K_LOC=2`.**
+`2s/ℓ ≈ 0.6` (§6, `TVg=0.5`). Bretagnolle–Huber `1−TV ≥ ½·exp(−KL)` then turns this into the
+**sealed channel's** resolution floor `Error ≳ (s/4)·exp(−KL) = O(0.03–0.08·ℓ)` at the maximising `s`
+— the same order as §6's `max_s (s/2)(1−TV)`. **The sealed estimator's `r̂`-distributions become
+statistically distinguishable only at the `ℓ` scale (`2s ≈ 0.6 ℓ`), so the SEALED estimator resolves
+`r_S` no finer than `O(ℓ)` — claim (★), operational, with constant `O(1) < K_LOC=2`.** This does NOT
+license "no estimator of `C` can do better."
 
 Honest caveat (the data-processing direction, per comité-003 §8 falsifier): the KL above is of the
-estimator's *output*; the full-data sufficient statistic (the whole `{O(i)}` multiset of `n_min`
+estimator's *output*. The full-data sufficient statistic (the whole `{O(i)}` multiset of `n_min`
 minimal elements) has `KL_full ≈ n_min · KL_per-element`, which reaches `O(1)` at an even *smaller*
-`2s` (the per-element pmf KL `KLo`, §6, is the small data-processed proxy `~0.1`, and `n_min ≈ 19→62`
-grows with density). That makes the *data* distinguishable slightly below the *operational* `0.4 ℓ`
-floor — i.e. the operational floor is the conservative (larger) of the two, again consistent with
-`K_LOC=2` being a safe ceiling on the constant, never an under-claim.
+`2s` (the per-element pmf KL `KLo`, §6, is `~0.1`, and `n_min ≈ 19→62` grows with density). Critically,
+a *larger* full-data KL means the full hypotheses are **more** distinguishable — so it **weakens** any
+"universal `O(ℓ)` impossibility" reading rather than supporting it, and it says nothing about whether a
+*better* function of `C` could beat `0.4 ℓ`. The only thing it confirms is internal consistency of the
+**operational** floor for THIS estimator (its output cannot resolve below what its sufficient statistic
+carries). The minimax bound over `C` remains the separate, unproven target of §0.
 
 ### Status after O1–O2
 
-`δr ∝ ℓ` is now **derived** (O2★) rather than asserted, with the constant fixed empirically by §6
-(`≈0.4`); the distinguishability scale `2s ≈ 0.6 ℓ` is **derived** from the measured `σ(r̂)` and
-matches the measured `TVg=0.5` crossing (O1). The two §2 `[HEURISTIC]` gaps (the cone-geometry
-factor and the `dO/dr` Jacobian) are closed at sketch level. This is now a **grounded derivation
-sketch + numerical illustration + analytic Jacobian**, still NOT a theorem and still frozen-nothing;
-a *frozen* Fase #3 result would need the committing path (new prereg + `/comite` + `/auditor`) and
-O4 (source Tsybakov 2009 / any causal-set info-theory precedent into `biblioteca/`).
+The **operational** resolution of the sealed channel `C ↦ r̂` is now established on three legs: the
+in-repo anchor (§3), the numerical `ℓ`-collapse (§6), and the analytic Jacobian `δr ∝ ℓ` (O2★, §7)
+with constant `≈0.4` fixed by §6; the distinguishability scale `2s ≈ 0.6 ℓ` is **derived** from the
+measured `σ(r̂)` and matches the `TVg=0.5` crossing (O1). The two §2 `[HEURISTIC]` gaps (the
+cone-geometry factor and the `dO/dr` Jacobian) are closed at sketch level. **What this is and is
+NOT:** it IS a grounded operational/estimator-induced resolution bound for THIS sealed estimator at
+finite V, ρ; it is NOT a theorem, and it is NOT a Le Cam **minimax** lower bound over all functions
+of the full causal set `C` — O1 measures the output channel, the wrong side of the data-processing
+inequality for a universal floor, so the minimax statement over `C` stays explicitly OPEN (§0).
+A *frozen* Fase #3 result would (a) be phrased as the **sealed estimator's resolution** (operational),
+not a universal information limit, and (b) need the committing path (new prereg + `/comite` +
+`/auditor`); a future, *separate* minimax bound over `C` would need an upper bound on the full-data
+`KL(P^C_0‖P^C_1)`. O4 (sourcing Tsybakov 2009 / causal-set info-theory precedent into `biblioteca/`)
+is for the citations, and by itself does not close this inequality-direction gap.
