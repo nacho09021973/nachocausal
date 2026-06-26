@@ -339,7 +339,9 @@ Tres hallazgos:
 `#contrib` sub-lineal y `Var ~ √N`, la tasa de Berry–Esseen **heurística** de TY
 `d_W ~ (∫E|DΦ|⁴ ν)^{1/2}/Var ~ (N^{0.65})^{1/2}/N^{1/2} = N^{−0.18} → 0`. Robusto mientras
 `#contrib` sea sub-lineal (cualquier α<1 da tasa→0; los datos dan frac↓ ⇒ α<1 claramente). **Esto
-elimina el riesgo de Lectura A (tasa divergente)** que era el cuello del §9.3.
+descarta la Lectura A (tasa divergente) EN EL RÉGIMEN NUMÉRICO EXPLORADO (`N≤1620`)** — el experimento
+falsa esa lectura *operativa* concreta, NO es una refutación de un enunciado asintótico aún no
+formalizado.
 
 **Caveats honestos (por qué sigue OPEN-CONTINGENT, no CONFIRMED):**
 - La fórmula de tasa es una **reducción dimensional heurística** de los γ̂ de TY (Thm 2.1); NO se
@@ -355,7 +357,9 @@ elimina el riesgo de Lectura A (tasa divergente)** que era el cuello del §9.3.
 **Estado L₁a:** evidencia empírica **a favor de la localidad-condicional (cierre de L₁)**, con la
 tasa→0 plausible; pero el grado se mantiene **OPEN-CONTINGENT** hasta (i) γ̂ completos de TY con
 `D²`, (ii) prueba analítica de #contrib sub-lineal, (iii) cola del 4º momento a N grande, (iv)
-aislamiento C4. El probe **refutó** la Lectura A, no **probó** la B.
+aislamiento C4. El probe **descartó la Lectura A en el régimen numérico explorado**, no **probó** la B.
+**L₁a queda CONGELADO** hasta resolver el mapeo L₁b-(b) (ver `dev/PR003_L1B_LPP_MAPPING_NOTES.md`):
+afinar tasas Berry–Esseen sería correcto sobre el objeto equivocado si el puente LPP/KPZ falla.
 
 ## 7. Backing
 
