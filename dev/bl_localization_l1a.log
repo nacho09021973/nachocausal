@@ -1,0 +1,11 @@
+# BL-localization L₁a probe | numpy 1.26.4 | seeds (20240617, 13, 101, 7, 42, 99, 2718, 31415)
+# t0=2026-06-26T08:29:29Z
+# col: intensity meanN  E[Φ]  Var[Φ]  Var/sqrtN  | mean|DΦ|  max|DΦ|  frac(DΦ≠0)  #contrib=frac*N  #contrib/sqrtN
+    200   207.1   41.50   196.57    13.659  |    0.759     12.0      0.241           49.8          3.463
+    400   410.0   77.75   321.93    15.899  |    0.384      9.0      0.178           73.0          3.607
+    800   814.2  158.75   452.50    15.858  |    0.500     12.0      0.175          142.5          4.994
+   1600  1620.4  323.62   559.98    13.911  |      nan      nan        nan            nan            nan
+# t1=2026-06-26T08:31:36Z
+# READ (the rate hinges on #contrib scaling, with Var~sqrtN measured separately):
+#   #contrib/sqrtN ~ const  ⇒ contributors ~ sqrtN (membrane) ⇒ rate ~ N^-1/4 → 0  (Lectura B, L₁→CONFIRMED path)
+#   #contrib/sqrtN ~ sqrtN  ⇒ contributors ~ N (bulk)        ⇒ rate ~ O(1)        (inconclusive / Lectura A risk)
