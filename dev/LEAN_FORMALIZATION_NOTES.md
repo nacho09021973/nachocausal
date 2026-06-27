@@ -206,12 +206,17 @@ Option 2 progress:
 - `FORMALISED`: `ChainEnd P` is an ambient sigma over the provisional `IdealEnd P`.
 - `FORMALISED`: `chainEndInIdealOfCountableNonprincipal` and `chainEndOfCountableIdealEnd` show that
   countable non-principal ideals/provisional ends actually inhabit the chain-end quotient.
+- `FORMALISED`: `nonempty_chainEndInIdeal_of_countable_nonprincipal` and
+  `nonempty_chainEnd_of_countable_idealEnd` expose those constructors as proposition-level
+  `Nonempty` wrappers for downstream theorem statements.
 - `FORMALISED`: `mapChainEndOrderIso` transports ambient `ChainEnd` values across order
   isomorphisms. Supporting lemmas map chain representatives pointwise, preserve mutual cofinal
   domination, preserve cofinality inside `mapIdealOrderIso e I`, preserve non-terminality, and descend
   to the quotient `ChainEndInIdeal I`.
-- Still open: decide whether `ChainEnd` should replace or coexist with `IdealEnd` in downstream
-  statements.
+- Decision for the next downstream layer: `IdealEnd` and `ChainEnd` coexist for now. `IdealEnd`
+  selects the ambient non-principal ideal; `ChainEnd` represents the cofinal direction inside that
+  ideal. Do not globally replace `IdealEnd` until the project chooses a final escape/end selection
+  rule.
 
 ### L3 — image/preimage behaviour of ideals under monotone maps
 

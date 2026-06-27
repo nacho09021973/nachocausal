@@ -238,14 +238,17 @@ Constructors:
 chainEndInIdealOfNonterminalChain
 chainEndInIdealOfCountableNonprincipal
 chainEndOfCountableIdealEnd
+nonempty_chainEndInIdeal_of_countable_nonprincipal
+nonempty_chainEnd_of_countable_idealEnd
 ```
 
 Interpretation:
 
 - Option 2 is now represented: ends as equivalence classes of non-terminal
   cofinal chains.
-- `ChainEnd P` still depends on the provisional `IdealEnd P` for selecting the
-  ambient non-principal ideal.
+- Provisional downstream decision: `ChainEnd P` coexists with `IdealEnd P`.
+  `IdealEnd` selects the ambient non-principal ideal; `ChainEnd` represents the
+  cofinal direction inside that ideal.
 - This is not yet a physical escape end.
 
 ### 2.5 Accessibility
@@ -468,8 +471,8 @@ Do not generalise to embeddings yet.
 
 ## 5. Second formal work package
 
-Recommended after isomorphism transport: compare `IdealEnd` and `ChainEnd` for
-countable ideals.
+Completed after isomorphism transport: compare `IdealEnd` and `ChainEnd` for
+countable ideals at the API level.
 
 Already formalised:
 
@@ -477,17 +480,10 @@ Already formalised:
 chainEndOfCountableIdealEnd
 ```
 
-Next useful result:
-
-```text
-Every countable provisional IdealEnd has at least one ChainEnd representative.
-```
-
-This is already represented as a constructor, but one can add a theorem-style
-existence statement:
+Added theorem-style existence wrappers:
 
 ```lean
-theorem exists_chainEndInIdeal_of_countable_nonprincipal
+theorem nonempty_chainEndInIdeal_of_countable_nonprincipal
     (I : Order.Ideal P) (hcount : (I : Set P).Countable)
     (hnonprincipal : IsNonprincipalIdeal I) :
     Nonempty (ChainEndInIdeal I)
@@ -496,7 +492,7 @@ theorem exists_chainEndInIdeal_of_countable_nonprincipal
 and:
 
 ```lean
-theorem exists_chainEnd_of_countable_idealEnd
+theorem nonempty_chainEnd_of_countable_idealEnd
     (I : IdealEnd P) (hcount : (I.1 : Set P).Countable) :
     Nonempty (ChainEnd P)
 ```

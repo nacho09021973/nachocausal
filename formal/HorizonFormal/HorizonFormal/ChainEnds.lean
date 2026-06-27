@@ -126,6 +126,15 @@ noncomputable def chainEndOfCountableIdealEnd (I : IdealEnd P)
     (hcount : (I.1 : Set P).Countable) : ChainEnd P :=
   ⟨I, chainEndInIdealOfCountableNonprincipal I.1 hcount I.2⟩
 
+theorem nonempty_chainEndInIdeal_of_countable_nonprincipal (I : Order.Ideal P)
+    (hcount : (I : Set P).Countable) (hnonprincipal : IsNonprincipalIdeal I) :
+    Nonempty (ChainEndInIdeal I) :=
+  ⟨chainEndInIdealOfCountableNonprincipal I hcount hnonprincipal⟩
+
+theorem nonempty_chainEnd_of_countable_idealEnd (I : IdealEnd P)
+    (hcount : (I.1 : Set P).Countable) : Nonempty (ChainEnd P) :=
+  ⟨chainEndOfCountableIdealEnd I hcount⟩
+
 /-- Transport a chain pointwise across an order isomorphism. -/
 def mapChainOrderIso (e : P ≃o Q) (c : Nat → P) : Nat → Q :=
   fun n => e (c n)

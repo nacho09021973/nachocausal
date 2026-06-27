@@ -29,7 +29,7 @@ added to the design notes.
 | Chain-end equivalence by mutual cofinal domination is an equivalence relation. | `FORMALISED` as `cofinalChainSetoid` and `nonterminalCofinalChainSetoid`. | `[Preorder P]`; chains `Nat → P`; `c ~ d` iff each term of either chain is below some term of the other. | `PROVED_AS_ORDER_THEORETIC_EQUIVALENCE`. |
 | Chain ends as equivalence classes of non-terminal cofinal chains. | `FORMALISED` as `ChainEndInIdeal` and `ChainEnd`. | Fixed ideal quotient plus ambient sigma over provisional `IdealEnd`. | `DEFINITION_FORMALISED`; physical interpretation open. |
 | Order isomorphisms transport chain ends. | `FORMALISED` as `mapChainEndOrderIso`. | `[Preorder P] [Preorder Q]`; `e : P ≃o Q`; chain representatives transported pointwise; ambient ideals transported by `mapIdealOrderIso`. | `PROVED_FOR_ORDER_ISOMORPHISMS`; arbitrary embeddings remain open. |
-| Countable provisional ideal-ends have chain-end representatives. | `FORMALISED` as `chainEndOfCountableIdealEnd`. | `I : IdealEnd P`; `(I.1 : Set P).Countable`; uses nonterminal chain existence. | `PROVED_FOR_COUNTABLE_PROVISIONAL_IDEALEND`. |
+| Countable provisional ideal-ends have chain-end representatives. | `FORMALISED` as `chainEndOfCountableIdealEnd` and `nonempty_chainEnd_of_countable_idealEnd`; ideal-level wrapper `nonempty_chainEndInIdeal_of_countable_nonprincipal`. | `I : IdealEnd P`; `(I.1 : Set P).Countable`; uses nonterminal chain existence. | `PROVED_FOR_COUNTABLE_PROVISIONAL_IDEALEND`. |
 | `x ⇝ I` iff `x ∈ I`. | `FORMALISED` as `accessesIdeal_iff_mem`. | `[Preorder P]`; `I : Order.Ideal P`; accessibility defined by `∃ y ∈ I, x ≤ y`. | `PROVED`; also shows the ideal formulation is already downward closed. |
 | Relational horizon for `R = ∅` is empty. | `FORMALISED` as `relationalHorizon_empty`. | `[Preorder P]`; `R : Set P`; relation uses preorder cover placeholder. | `PROVED_AS_ORDER_TRIVIALITY`. |
 | Relational horizon for `R = univ` is empty. | `FORMALISED` as `relationalHorizon_univ`. | Same as above. | `PROVED_AS_ORDER_TRIVIALITY`. |
@@ -172,6 +172,8 @@ ChainEventuallyLe c d := ∀ n, ∃ m, c n ≤ d m
 CofinalChainEquivalent c d := ChainEventuallyLe c d ∧ ChainEventuallyLe d c
 ChainEndInIdeal I := Quotient (nonterminalCofinalChainSetoid I)
 ChainEnd P := Σ I : IdealEnd P, ChainEndInIdeal I.1
+nonempty_chainEndInIdeal_of_countable_nonprincipal
+nonempty_chainEnd_of_countable_idealEnd
 ```
 
 This gives an order-theoretic end candidate as an equivalence class of
