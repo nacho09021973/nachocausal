@@ -170,3 +170,52 @@ spec de comité-006 §9, ahora con (II)+(III)):
   `nachocausal/estimator.py` Guard-v `verify_order_only`.
 - Pivote y scope: [[strategic-refocus-relational-definition]]; observable de enlaces = rectángulo de
   Alexandrov vacío `dev/PR003_L1B_LPP_MAPPING_NOTES.md` §1.
+
+## §9 — Pregeometric relational horizons and finite persistent growth
+
+### 9.1. The Pregeometric Relational Horizon Hypothesis
+
+We reformulate the problem of the horizon to align with a purely pregeometric, quantum-covariant framework, removing any dependence on coordinates, metrics, or background manifolds.
+
+*   `[DEFINITION] 9.1.1 (Pregeometric Relational Horizon).` Let $C = (X, \preceq)$ be a causal poset and let $R \subset X$ be an internally defined, relational reference subset representing "escape" or "asymptotic future". The *relational past of escape* is the down-set:
+    $$\mathcal A_R := \downarrow R = \{ x \in X : \exists y \in R, \ x \preceq y \}$$
+    The *relational black hole region* relative to $R$ is the complement:
+    $$\mathcal B_R := X \setminus \mathcal A_R$$
+    The *pregeometric relational horizon* is the relational boundary interface:
+    $$\mathcal H[C; R] := \{ (x, y) \in \mathcal B_R \times \mathcal A_R : x \prec \text{link} \ y \}$$
+    where $x \prec \text{link} \ y$ denotes a causal link (an immediate relation with no intermediate elements).
+
+---
+
+### 9.2. The Relational Reference $R$ in Finite Posets
+
+*   `[PROVED] Proposition 9.2.1 (The Triviality of Static Absolute Ends).` *If $C$ is a finite causal set, defining $R$ as the set of future ends $\mathscr E^+(C)$ yields a trivial horizon:*
+    $$R = \mathscr E^+(C) \implies \mathcal H[C; R] = \varnothing$$
+
+    *Proof.* By Proposition 8.8.1, for any finite poset $C$, $\mathscr E^+(C) = \varnothing$. Thus, $R = \varnothing \implies \mathcal A_R = \varnothing \implies \mathcal B_R = X$. Since $\mathcal A_R$ is empty, the Cartesian product $\mathcal B_R \times \mathcal A_R$ is empty, meaning $\mathcal H[C; R] = \varnothing$. $\blacksquare$
+
+*   `[CONJECTURE] 9.2.2 (Dynamic Escape via Truncated Flow).` In a finite causal set $C$ representing a partial history, the relational reference $R$ cannot be absolute. It must be defined dynamically, either as:
+    1.  The set of maximal elements of $C$: $R = \operatorname{max}(C) = \{ x \in X : \nexists y \in X, \ x \prec y \}$.
+    2.  A subset of maximal elements selected by a "growth flow" or sequential growth process (such as Classical Sequential Growth, CSG).
+    3.  A family of discrete "ladders" approximating null geodesics that do not experience discrete focusing (cf. Eichhorn, Gamito, & Stokes, 2026).
+
+---
+
+### 9.3. Semiclassical Consistency Constraints (The No-Spurious Horizon Test)
+
+Any proposed pregeometric operator $\mathcal{H}[C; R]$ must satisfy two strict classical correspondence limits when evaluated on manifoldlike causal sets obtained via Poisson sprinkling $C_{\rho, R}$ of density $\rho$ in a compact region $M_R \uparrow M$:
+
+1.  **Black Hole Limit:** If $M$ is Schwarzschild, the spatial concentration of $\mathcal{H}[C_{\rho, R}; R']$ must converge to the classical event horizon $r = 2M$ as $\rho, R \to \infty$.
+2.  **Minkowski Limit (No Spurious Horizons):** If $M$ is flat Minkowski space, the expectation value of the horizon size or its persistence must vanish:
+    $$\lim_{R \to \infty} \lim_{\rho \to \infty} \mathbb P \left( \mathcal H[C_{\rho, R}; R'] \neq \varnothing \right) = 0$$
+    A pregeometric proposal that detects a stable, non-vanishing boundary in flat space is physically invalid.
+
+---
+
+### 9.4. Quantum Formulations: The Horizon as a Covariant Event
+
+In a sum-over-histories formulation of causal set quantum gravity, a horizon cannot be localized as a surface on a single, fixed poset. It must be formulated as a *covariant event* (a property of the configuration space of posets):
+
+*   `[CONJECTURE] 9.4.1 (Horizon Covariant Event).` Let $\Omega$ be the space of all finite causal sets. The quantum horizon is represented by a covariant event (a subset of histories) $\Omega_{\mathcal H} \subset \Omega$, defined by the relational structure of $\mathcal H[C; R]$:
+    $$\Omega_{\mathcal H} := \{ C \in \Omega : \mathcal H[C; R] \text{ satisfies a specific relational partition} \}$$
+    The quantum dynamics (via the decoherence functional or partition function) assigns a quantum measure or quantum probability to the existence and stability of this relational partition.

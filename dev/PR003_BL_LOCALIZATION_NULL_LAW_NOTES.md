@@ -68,11 +68,14 @@ descalificación.**
     más larga en a lo sumo 1). Lo NO acotado es el **número** de `x` afectados — y eso es justo lo
     que mata la estabilización clásica pero **no** la BL-localización (que mira leyes, no
     realizaciones). Un reordenamiento global *coherente* de la etiqueta de altura re-indexa el corte
-    pero deja el perfil de flujo (como función de la posición geodésica) aprox. invariante.
-  - La cadena más larga hasta `x` vive, con alta probabilidad, en un **tubo** de anchura
-    transversal `~ℓ^{2/3}` alrededor de la geodésica (exponente transversal 2/3 de la percolación de
-    último paso dirigida / Ulam; *estándar, no re-derivado aquí*). `s(x)` es por tanto localizable,
-    aunque a una escala que CRECE con `ℓ`, no a radio fijo.
+    pero deja el perfil de flujo, expresado en la propia foliación order-only por altura, aprox.
+    invariante. La "posición geodésica" es sólo el benchmark semiclasico usado para razonar sobre
+    el límite manifoldlike, no un dato que defina `Φ`.
+  - En el benchmark continuo del orden producto 1+1D, la cadena más larga hasta `x` vive, con alta
+    probabilidad, en un **tubo** de anchura transversal `~ℓ^{2/3}` alrededor de la geodésica
+    correspondiente (exponente transversal 2/3 de la percolación de último paso dirigida / Ulam;
+    *estándar, no re-derivado aquí*). Esto orienta la prueba de localización, pero la definición de
+    `s(x)` y `Φ` sigue siendo puramente order-only.
 - Dos rasgos de TY hechos a medida:
   1. **Decaimiento integrable, NO exponencial:** sólo se exige `I_ψ(θ)<∞` (eq. 2.5) y `I_φ(θ')<∞`
      (eq. 2.6), "a mild integrability condition" (p.3). Un `ψ(r)` polinómico/estirado (cola KPZ)

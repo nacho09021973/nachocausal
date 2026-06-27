@@ -837,3 +837,77 @@ Finite causet `C=(E,≺)`, strict partial order. All of the following are relabe
 
 — Recorded at HEAD `aef48ce`, `main`. No code, no seed, no sealed-path execution, no new file, no commit;
 seal `6e2c3888…` re-verified intact before and after.
+
+## 13. Formalisation workflow for the order-theoretic core (Lean-first)
+
+> Scope: reversible tooling recommendation only. No model training, no physics promotion, no code execution,
+> no seed, no commit. The purpose is to close the algebraic/order-theoretic nucleus before attempting any
+> formal statement about Schwarzschild, GKP boundaries, sprinklings, or semiclassical correspondence.
+
+### 13.1 Recommended proof loop
+
+Use a human-audited formalisation loop:
+
+```
+GPT/Claude proposes lemma
+  -> Lean 4 + mathlib attempts formalisation
+  -> specialised prover assistance proposes proof steps
+  -> human/GPT audits the physical interpretation separately
+```
+
+The formal prover is used for the algebraic payload, not for the physics interpretation. In particular,
+`PROVED` in Lean should mean "the order-theoretic statement typechecks"; it should not be silently upgraded
+to "the causal-set or black-hole interpretation is established".
+
+### 13.2 Tooling choice
+
+- **Lean 4 + mathlib** is the primary target: strongest fit for posets, ideals, order embeddings,
+  completions, functoriality, and current autoformalisation workflows.
+- **Isabelle/HOL or Coq** remain mature fallback systems, but using more than one prover now would split
+  effort before the lemma inventory is stable.
+- **Wolfram/Mathematica** is useful for symbolic or numerical exploration, not for certifying the conceptual
+  order-theoretic claims.
+- **DeepSeek-Prover-V2 or similar prover assistants** may be used as proof-search support, but not as the
+  source of physical interpretation.
+
+No bespoke model training is recommended at this stage; the bottleneck is lemma specification and audit,
+not generation capacity.
+
+### 13.3 Suitable first Lean targets
+
+The first formalisation batch should be small, algebraic, and independent of sprinkling geometry:
+
+1.  In a locally finite poset, every bounded ideal satisfying the relevant directed/lower-set hypotheses is
+    principal.
+2.  Every non-principal ideal in a countable locally finite poset admits an unbounded cofinal chain, under
+    the exact hypotheses needed by the notes.
+3.  `Idl` is functorial under monotone maps, with hypotheses explicit enough to prevent hidden preservation
+    assumptions.
+4.  Order embeddings preserve ideal ends, once the target notion of end and embedding is fixed.
+
+These are appropriate because their truth conditions are purely order-theoretic and can be audited against
+mathlib's existing abstractions.
+
+### 13.4 Explicit non-targets for the first pass
+
+Do not try to formalise yet:
+
+- Schwarzschild horizons or GKP causal boundaries.
+- Poisson sprinklings and manifoldlike limits.
+- Fuzzy/null ladders as physical light-ray approximants.
+- The semiclassical "no spurious horizon" test.
+
+Those require additional modelling choices and should remain `OPEN` until the order-theoretic core is
+mechanically checked.
+
+### 13.5 Status tokens
+
+```
+FORMALISATION_STRATEGY = LEAN_FIRST
+MODEL_TRAINING = NOT_RECOMMENDED
+ALGEBRAIC_CORE_FORMALISATION = NEXT
+SCHWARZSCHILD_FORMALISATION = DEFERRED
+GKP_FORMALISATION = DEFERRED
+SPRINKLING_FORMALISATION = DEFERRED
+PHYSICAL_INTERPRETATION_AUDIT = REQUIRED_SEPARATELY
+```
