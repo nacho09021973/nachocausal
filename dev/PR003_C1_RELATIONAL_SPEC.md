@@ -153,3 +153,28 @@ Failure means C1 fails before physics scoring.
 - `C1_PROMOTION`: blocked until committee/auditor review of this closed draft.
 - `PHYSICAL_INTERPRETATION`: still only a finite apparent/trapping precursor,
   never an event horizon or reconstruction claim.
+
+## 9. Preflight status after comité 009
+
+Comité 009 authorised only a scoped negative preflight: implement the written
+`R=Max(C)` selector on synthetic finite posets and assert that it trivialises.
+
+Implemented artefacts:
+
+- `nachocausal/c1_selector.py`
+- `tests/test_c1_selector.py`
+
+Verified behavior:
+
+```text
+R = Max(C)
+A_R = down(R) = C
+B_R = empty
+H[C;R] = empty
+status = NO_INTERFACE
+```
+
+This is not a C1 signal and not a probe. It records that the current reference
+rule is structurally degenerate on finite posets. Any replacement for `R`, any
+fallback after `NO_INTERFACE`, and any persistence/asymmetry/bulk-control score
+remain `OPEN` and require fresh review before data.
