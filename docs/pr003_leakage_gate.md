@@ -47,8 +47,10 @@ Todo observable nuevo de PR-003 pasa el gate **si y solo si** cumple, mecánicam
    etiquetas: misma selección (como conjunto identificado por el orden) al conjugar `C`; RAISES en
    caso contrario. *Es la condición crucial para #3:* una **regla fija de selección** elige la
    misma escalera con independencia del etiquetado.
-   - *Cómo se hace fallable:* un Guard-v nuevo análogo a `verify_order_only` para el observable de
-     construcción, con su test «can_fail».
+   - *Cómo se hace fallable:* `nachocausal.selection_guard.verify_selection_order_only` conjuga
+     `C`, ejecuta el selector y exige que la selección de etiquetas se conjugue exactamente.
+     `tests/test_selection_guard.py` prueba tanto el PASS de un selector order-only como el FAIL
+     de un selector dependiente de la etiqueta `0`.
 
 4. **Sembrado order-only, ciego antes de revelar.** Toda la construcción —semilla = el **bracket
    order-only de v2** → dirección (#2) → selección (#3) → banda— ocurre en la fase ciega. `r` se
