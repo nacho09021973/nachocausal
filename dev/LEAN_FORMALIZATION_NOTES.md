@@ -1,8 +1,8 @@
 # Lean formalisation notes — order-theoretic core first (dev, NOT a result)
 
 > Scope: local formalisation planning only. No physics claim, no simulation, no seed, no sealed path, no
-> preregistration. `lean`/`lake` are not currently installed in this workspace, so this file specifies the
-> first Lean targets before any checked `.lean` artefact is created.
+> preregistration. `lean`/`lake` are installed in this workspace and the checked artefacts live under
+> `formal/HorizonFormal/`.
 
 ## 0. Tooling state
 
@@ -12,7 +12,9 @@
 - Project modules:
   - `HorizonFormal/Posets.lean`
   - `HorizonFormal/Ideals.lean`
+  - `HorizonFormal/CofinalChains.lean`
   - `HorizonFormal/Ends.lean`
+  - `HorizonFormal/ChainEnds.lean`
   - `HorizonFormal/Accessibility.lean`
   - `HorizonFormal/Horizon.lean`
 - Relevant mathlib modules, checked against current online docs:
@@ -204,6 +206,10 @@ Option 2 progress:
 - `FORMALISED`: `ChainEnd P` is an ambient sigma over the provisional `IdealEnd P`.
 - `FORMALISED`: `chainEndInIdealOfCountableNonprincipal` and `chainEndOfCountableIdealEnd` show that
   countable non-principal ideals/provisional ends actually inhabit the chain-end quotient.
+- `FORMALISED`: `mapChainEndOrderIso` transports ambient `ChainEnd` values across order
+  isomorphisms. Supporting lemmas map chain representatives pointwise, preserve mutual cofinal
+  domination, preserve cofinality inside `mapIdealOrderIso e I`, preserve non-terminality, and descend
+  to the quotient `ChainEndInIdeal I`.
 - Still open: decide whether `ChainEnd` should replace or coexist with `IdealEnd` in downstream
   statements.
 
@@ -258,6 +264,21 @@ Progress:
 - `FORMALISED`: `mapIdealOrderIso_principal`, `isPrincipalIdeal_mapOrderIso`,
   `isPrincipalIdeal_of_mapOrderIso`, and `isPrincipalIdeal_mapOrderIso_iff` show principality is
   preserved and reflected by order isomorphisms.
+- `FORMALISED`: `mapIdealEndOrderIso` transports provisional ideal ends across order isomorphisms.
+- `FORMALISED`: `mapChainEndOrderIso` transports chain-end quotient classes across order
+  isomorphisms.
+
+Audit label now allowed:
+
+```text
+CHAIN_END_COVARIANCE_UNDER_ORDER_ISOMORPHISMS = PROVED_IN_LEAN
+```
+
+Still not allowed:
+
+```text
+CHAIN_END_COVARIANCE_UNDER_ORDER_EMBEDDINGS = PROVED
+```
 - `FORMALISED`: `mapIdealEndOrderIso` transports the provisional non-principal-ideal end notion across
   order isomorphisms.
 - Still `HYPOTHESES_OPEN`: arbitrary embeddings. They can create new lower elements in the codomain

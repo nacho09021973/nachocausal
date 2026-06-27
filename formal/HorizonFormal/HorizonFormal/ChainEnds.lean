@@ -13,7 +13,7 @@ event horizons, escape ends, or asymptotic boundaries in a finite causal set.
 
 namespace HorizonFormal
 
-variable {P : Type u} [Preorder P]
+variable {P : Type u} {Q : Type v} [Preorder P] [Preorder Q]
 
 /-- Chain `c` is eventually dominated by chain `d` in the cofinal preorder sense. -/
 def ChainEventuallyLe (c d : Nat → P) : Prop :=
@@ -125,5 +125,82 @@ def ChainEnd (P : Type u) [Preorder P] : Type u :=
 noncomputable def chainEndOfCountableIdealEnd (I : IdealEnd P)
     (hcount : (I.1 : Set P).Countable) : ChainEnd P :=
   ⟨I, chainEndInIdealOfCountableNonprincipal I.1 hcount I.2⟩
+
+/-- Transport a chain pointwise across an order isomorphism. -/
+def mapChainOrderIso (e : P ≃o Q) (c : Nat → P) : Nat → Q :=
+  fun n => e (c n)
+
+theorem mapChainOrderIso_nondec (e : P ≃o Q) {c : Nat → P}
+    (hc : IsNondecreasingSeq c) :
+    IsNondecreasingSeq (mapChainOrderIso e c) := by
+  intro n
+  exact (OrderIsoClass.map_le_map_iff e).mpr (hc n)
+
+theorem chainEventuallyLe_mapOrderIso (e : P ≃o Q) {c d : Nat → P}
+    (h : ChainEventuallyLe c d) :
+    ChainEventuallyLe (mapChainOrderIso e c) (mapChainOrderIso e d) := by
+  intro n
+  obtain ⟨m, hle⟩ := h n
+  exact ⟨m, (OrderIsoClass.map_le_map_iff e).mpr hle⟩
+
+theorem cofinalChainEquivalent_mapOrderIso (e : P ≃o Q) {c d : Nat → P}
+    (h : CofinalChainEquivalent c d) :
+    CofinalChainEquivalent (mapChainOrderIso e c) (mapChainOrderIso e d) :=
+  ⟨chainEventuallyLe_mapOrderIso e h.1, chainEventuallyLe_mapOrderIso e h.2⟩
+
+theorem mapChainOrderIso_cofinalSeqInIdeal (e : P ≃o Q)
+    {I : Order.Ideal P} {c : Nat → P}
+    (hc : IsCofinalSeqInIdeal I c) :
+    IsCofinalSeqInIdeal (mapIdealOrderIso e I) (mapChainOrderIso e c) := by
+  constructor
+  · intro n
+    exact ⟨c n, hc.1 n, rfl⟩
+  · intro y hy
+    obtain ⟨n, hn⟩ := hc.2 (e.symm y) (by simpa using hy)
+    refine ⟨n, ?_⟩
+    simpa [mapChainOrderIso] using (OrderIsoClass.map_le_map_iff e).mpr hn
+
+theorem mapChainOrderIso_cofinalChainInIdeal (e : P ≃o Q)
+    {I : Order.Ideal P} {c : Nat → P}
+    (hc : IsCofinalChainInIdeal I c) :
+    IsCofinalChainInIdeal (mapIdealOrderIso e I) (mapChainOrderIso e c) :=
+  ⟨mapChainOrderIso_nondec e hc.1, mapChainOrderIso_cofinalSeqInIdeal e hc.2⟩
+
+theorem mapChainOrderIso_not_terminal (e : P ≃o Q)
+    {I : Order.Ideal P} {c : Nat → P}
+    (hnot : ¬ IsTerminalCofinalChainInIdeal I c) :
+    ¬ IsTerminalCofinalChainInIdeal (mapIdealOrderIso e I) (mapChainOrderIso e c) := by
+  intro hterm
+  obtain ⟨n, hn⟩ := hterm
+  apply hnot
+  refine ⟨n, ?_⟩
+  intro x hx
+  have hmap : e x ≤ e (c n) := hn (e x) ⟨x, hx, rfl⟩
+  exact (OrderIsoClass.map_le_map_iff e).mp hmap
+
+def mapNonterminalChainOrderIso (e : P ≃o Q) {I : Order.Ideal P} :
+    NonterminalCofinalChainInIdeal I →
+    NonterminalCofinalChainInIdeal (mapIdealOrderIso e I) :=
+  fun c =>
+    ⟨mapChainOrderIso e c.1,
+      mapChainOrderIso_cofinalChainInIdeal e c.2.1,
+      mapChainOrderIso_not_terminal e c.2.2⟩
+
+theorem mapNonterminalChainOrderIso_respects_equiv (e : P ≃o Q)
+    {I : Order.Ideal P} {c d : NonterminalCofinalChainInIdeal I}
+    (h : NonterminalChainEquivalent c d) :
+    NonterminalChainEquivalent
+      (mapNonterminalChainOrderIso e c) (mapNonterminalChainOrderIso e d) :=
+  cofinalChainEquivalent_mapOrderIso e h
+
+def mapChainEndInIdealOrderIso (e : P ≃o Q) (I : Order.Ideal P) :
+    ChainEndInIdeal I → ChainEndInIdeal (mapIdealOrderIso e I) :=
+  Quotient.map (mapNonterminalChainOrderIso e)
+    (fun _ _ h => mapNonterminalChainOrderIso_respects_equiv e h)
+
+def mapChainEndOrderIso (e : P ≃o Q) : ChainEnd P → ChainEnd Q :=
+  fun end_ =>
+    ⟨mapIdealEndOrderIso e end_.1,
+      mapChainEndInIdealOrderIso e end_.1.1 end_.2⟩
 
 end HorizonFormal

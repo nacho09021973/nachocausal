@@ -28,6 +28,7 @@ added to the design notes.
 | Every countable non-principal ideal has a non-terminal cofinal sequence. | `FORMALISED` as `exists_nonterminal_cofinalChain_of_countable_nonprincipalIdeal`. | Same countability hypothesis plus `IsNonprincipalIdeal I`; terminal means `∃ n, ∀ x ∈ I, x ≤ c n`. | `PROVED_FOR_COUNTABLE_NONPRINCIPAL_MATHLIB_IDEALS`. |
 | Chain-end equivalence by mutual cofinal domination is an equivalence relation. | `FORMALISED` as `cofinalChainSetoid` and `nonterminalCofinalChainSetoid`. | `[Preorder P]`; chains `Nat → P`; `c ~ d` iff each term of either chain is below some term of the other. | `PROVED_AS_ORDER_THEORETIC_EQUIVALENCE`. |
 | Chain ends as equivalence classes of non-terminal cofinal chains. | `FORMALISED` as `ChainEndInIdeal` and `ChainEnd`. | Fixed ideal quotient plus ambient sigma over provisional `IdealEnd`. | `DEFINITION_FORMALISED`; physical interpretation open. |
+| Order isomorphisms transport chain ends. | `FORMALISED` as `mapChainEndOrderIso`. | `[Preorder P] [Preorder Q]`; `e : P ≃o Q`; chain representatives transported pointwise; ambient ideals transported by `mapIdealOrderIso`. | `PROVED_FOR_ORDER_ISOMORPHISMS`; arbitrary embeddings remain open. |
 | Countable provisional ideal-ends have chain-end representatives. | `FORMALISED` as `chainEndOfCountableIdealEnd`. | `I : IdealEnd P`; `(I.1 : Set P).Countable`; uses nonterminal chain existence. | `PROVED_FOR_COUNTABLE_PROVISIONAL_IDEALEND`. |
 | `x ⇝ I` iff `x ∈ I`. | `FORMALISED` as `accessesIdeal_iff_mem`. | `[Preorder P]`; `I : Order.Ideal P`; accessibility defined by `∃ y ∈ I, x ≤ y`. | `PROVED`; also shows the ideal formulation is already downward closed. |
 | Relational horizon for `R = ∅` is empty. | `FORMALISED` as `relationalHorizon_empty`. | `[Preorder P]`; `R : Set P`; relation uses preorder cover placeholder. | `PROVED_AS_ORDER_TRIVIALITY`. |
@@ -178,6 +179,24 @@ non-terminal cofinal chains. It still depends on the provisional `IdealEnd` for
 the ambient ideal selection, so the escape/asymptotic interpretation remains
 open.
 
+Order isomorphism covariance is now checked for this chain-end layer:
+
+```lean
+mapChainOrderIso
+chainEventuallyLe_mapOrderIso
+cofinalChainEquivalent_mapOrderIso
+mapChainOrderIso_cofinalChainInIdeal
+mapChainOrderIso_not_terminal
+mapNonterminalChainOrderIso
+mapChainEndInIdealOrderIso
+mapChainEndOrderIso
+```
+
+Audit verdict: `CHAIN_END_COVARIANCE_UNDER_ORDER_ISOMORPHISMS =
+PROVED_IN_LEAN`. This does not license replacing "order isomorphism" with
+"embedding"; embedding preservation still needs one of the repair hypotheses in
+§4.
+
 ### 6. Accessibility to an ideal is tautological
 
 For a mathlib ideal `I`, the relation:
@@ -200,7 +219,9 @@ the distinction between "reference" and "past of reference".
   `IDEAL_TRANSPORT_UNDER_ORDER_ISOMORPHISMS = PROVED`.
 - `END_PRESERVATION_UNDER_ORDER_EMBEDDINGS = PROVED` is too strong. Replace by:
   `END_PRESERVATION_UNDER_ORDER_ISOMORPHISMS = PROVED_FOR_PROVISIONAL_IDEALEND`
-  and keep embeddings as `HYPOTHESES_OPEN`.
+  for the provisional ideal-end layer and
+  `CHAIN_END_COVARIANCE_UNDER_ORDER_ISOMORPHISMS = PROVED_IN_LEAN` for the
+  chain-end quotient layer; keep embeddings as `HYPOTHESES_OPEN`.
 - `CHAIN_REPRESENTATION_UNDER_COUNTABLE_LOCAL_FINITE_HYPOTHESES = PROVED` should
   be narrowed to `COUNTABLE_IDEAL_HAS_NONDECREASING_COFINAL_SEQUENCE =
   PROVED_FOR_MATHLIB_IDEALS`. Local finiteness and non-principality are not
@@ -214,11 +235,10 @@ the distinction between "reference" and "past of reference".
 
 ## Next Lean targets after this audit
 
-1. Replace the placeholder `LocallyFinitePoset` with the exact hypothesis needed
-   for lower-interval finiteness, or introduce a second explicit predicate:
-   `FiniteLowerIntervals`.
-2. Decide whether `ChainEnd` should replace `IdealEnd` in downstream statements
+1. Decide whether `ChainEnd` should replace `IdealEnd` in downstream statements
    or coexist as the chain-representation layer for countable provisional ends.
+2. Add theorem-style `Nonempty` wrappers for the existing countable chain-end
+   constructors if downstream code wants proposition-level existence statements.
 3. Add a small embeddings file only after choosing one of the repair hypotheses
    above.
 4. Keep `IdealEnd` provisional until the project chooses between non-principal

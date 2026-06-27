@@ -334,6 +334,7 @@ ORDER_ISOMORPHISMS_PRESERVE_PROVISIONAL_IDEAL_ENDS = PROVED_IN_LEAN
 EMBEDDINGS_PRESERVE_IDEAL_ENDS = HYPOTHESES_OPEN
 CHAIN_END_EQUIVALENCE = PROVED_IN_LEAN
 CHAIN_END_AS_QUOTIENT = DEFINITION_FORMALISED
+CHAIN_END_COVARIANCE_UNDER_ORDER_ISOMORPHISMS = PROVED_IN_LEAN
 PREGEOMETRIC_RELATIONAL_HORIZON_FORMULATION = DEFINITION_FORMALISED
 RELATIONAL_PAST_LOWER_SET = PROVED_IN_LEAN
 RELATIONAL_REFERENCE_MONOTONICITY = PROVED_IN_LEAN
@@ -350,9 +351,9 @@ BOUNDED_IDEAL_IS_PRINCIPAL_WITHOUT_FINITE_LOWER_INTERVAL = PROVED
 CHAIN_END_EQUALS_PHYSICAL_CAUSAL_END = PROVED
 ```
 
-## 4. Next formal work package
+## 4. Completed formal work package — chain-end transport
 
-Recommended next package: make `ChainEnd` usable under order isomorphisms.
+`ChainEnd` is now usable under order isomorphisms.
 
 Goal:
 
@@ -360,7 +361,7 @@ Goal:
 Order isomorphisms transport chain ends.
 ```
 
-This is the right next step because:
+This was the right next step because:
 
 - ideal ends already transport under order isomorphisms;
 - chain representatives are maps `Nat → P`;
@@ -368,94 +369,49 @@ This is the right next step because:
   isomorphism;
 - it avoids arbitrary embeddings for now.
 
-### 4.1 Define chain transport
+### 4.1 Chain transport
 
-In `ChainEnds.lean`, define:
+In `ChainEnds.lean`, now defined:
 
 ```lean
 def mapChainOrderIso (e : P ≃o Q) (c : Nat → P) : Nat → Q :=
   fun n => e (c n)
 ```
 
-Then prove:
+Proved:
 
 ```lean
 mapChainOrderIso_nondec
-mapChainOrderIso_eventuallyLe
-mapChainOrderIso_equivalent
+chainEventuallyLe_mapOrderIso
+cofinalChainEquivalent_mapOrderIso
 ```
-
-Expected statement shape:
-
-```lean
-theorem chainEventuallyLe_mapOrderIso
-    {e : P ≃o Q} {c d : Nat → P}
-    (h : ChainEventuallyLe c d) :
-    ChainEventuallyLe (mapChainOrderIso e c) (mapChainOrderIso e d)
-```
-
-Proof idea:
-
-For each `n`, get `m` from `h n`; apply monotonicity of `e`.
 
 ### 4.2 Transport cofinal chains inside transported ideals
 
-Use existing:
+Using existing:
 
 ```lean
 mapIdealOrderIso e I
 ```
 
-Prove:
+Proved:
 
 ```lean
 mapChainOrderIso_cofinalSeqInIdeal
 mapChainOrderIso_cofinalChainInIdeal
 ```
 
-Expected shape:
-
-```lean
-theorem mapChainOrderIso_cofinalChainInIdeal
-    (e : P ≃o Q) {I : Order.Ideal P} {c : Nat → P}
-    (hc : IsCofinalChainInIdeal I c) :
-    IsCofinalChainInIdeal (mapIdealOrderIso e I) (mapChainOrderIso e c)
-```
-
-Potential proof details:
-
-- membership: if `c n ∈ I`, then `e (c n) ∈ mapIdealOrderIso e I` by image witness;
-- nondecreasing: map `c n ≤ c (n+1)` through `e`;
-- cofinality: if `y ∈ mapIdealOrderIso e I`, use `mem_mapIdealOrderIso` to get
-  `e.symm y ∈ I`; cofinality of `c` gives `n` with `e.symm y ≤ c n`; map by `e`
-  and simplify `e (e.symm y) = y`.
-
 ### 4.3 Preserve non-terminality
 
-Prove:
+Proved:
 
 ```lean
 mapChainOrderIso_not_terminal
 ```
 
-Expected statement:
-
-```lean
-theorem mapChainOrderIso_not_terminal
-    (e : P ≃o Q) {I : Order.Ideal P} {c : Nat → P}
-    (hc : IsCofinalChainInIdeal I c)
-    (hnot : ¬ IsTerminalCofinalChainInIdeal I c) :
-    ¬ IsTerminalCofinalChainInIdeal (mapIdealOrderIso e I) (mapChainOrderIso e c)
-```
-
-Proof idea:
-
-Assume the mapped chain is terminal at `n`. Pull the terminal domination back
-through `e.symm` and contradict `hnot`.
-
 ### 4.4 Transport `NonterminalCofinalChainInIdeal`
 
-Define:
+Defined:
 
 ```lean
 def mapNonterminalChainOrderIso
@@ -466,13 +422,13 @@ def mapNonterminalChainOrderIso
 
 ### 4.5 Descend to quotient
 
-Prove compatibility:
+Proved compatibility:
 
 ```lean
 mapNonterminalChainOrderIso_respects_equiv
 ```
 
-Then define:
+Defined:
 
 ```lean
 def mapChainEndInIdealOrderIso
@@ -481,24 +437,22 @@ def mapChainEndInIdealOrderIso
     ChainEndInIdeal (mapIdealOrderIso e I)
 ```
 
-Use `Quotient.map` or `Quotient.lift`, depending on which is easier in Lean.
-
 ### 4.6 Transport ambient `ChainEnd`
 
-Use:
+Using:
 
 ```lean
 mapIdealEndOrderIso
 ```
 
-Define:
+Defined:
 
 ```lean
 def mapChainEndOrderIso (e : P ≃o Q) :
     ChainEnd P → ChainEnd Q
 ```
 
-This gives the clean theorem:
+This gives the clean algebraic statement:
 
 ```text
 Chain-end classes are invariant under order isomorphism.
