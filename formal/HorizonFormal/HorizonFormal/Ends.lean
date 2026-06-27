@@ -8,6 +8,9 @@ import HorizonFormal.Ideals
 candidate "non-principal ideal" notion, but the project must decide whether causal
 ends should instead be maximal non-principal ideals, indecomposable past/future
 sets, or equivalence classes of cofinal chains.
+
+The chain-equivalence option is implemented in `HorizonFormal.ChainEnds`, while
+this file keeps the older ideal-based transport lemmas.
 -/
 
 namespace HorizonFormal

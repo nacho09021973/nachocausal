@@ -36,5 +36,6 @@ The `.lake/` directory is a local build cache and is not committed.
 - `HorizonFormal.Ideals`
 - `HorizonFormal.CofinalChains`
 - `HorizonFormal.Ends`
+- `HorizonFormal.ChainEnds`
 - `HorizonFormal.Accessibility`
 - `HorizonFormal.Horizon`

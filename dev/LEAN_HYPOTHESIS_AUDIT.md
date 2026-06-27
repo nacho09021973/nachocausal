@@ -26,6 +26,9 @@ added to the design notes.
 | Order isomorphisms preserve provisional ideal ends. | `FORMALISED` as `mapIdealEndOrderIso`. | Same as above; `IdealEnd` currently means non-principal mathlib ideal. | `PROVED_FOR_PROVISIONAL_IDEALEND`. |
 | Every countable ideal has a nondecreasing cofinal sequence. | `FORMALISED` as `exists_cofinalChain_of_countableIdeal`. | `[Preorder P]`; `I : Order.Ideal P`; `(I : Set P).Countable`; sequence `c : Nat → P`; cofinal means `∀ x ∈ I, ∃ n, x ≤ c n`. | `PROVED_FOR_COUNTABLE_MATHLIB_IDEALS`. |
 | Every countable non-principal ideal has a non-terminal cofinal sequence. | `FORMALISED` as `exists_nonterminal_cofinalChain_of_countable_nonprincipalIdeal`. | Same countability hypothesis plus `IsNonprincipalIdeal I`; terminal means `∃ n, ∀ x ∈ I, x ≤ c n`. | `PROVED_FOR_COUNTABLE_NONPRINCIPAL_MATHLIB_IDEALS`. |
+| Chain-end equivalence by mutual cofinal domination is an equivalence relation. | `FORMALISED` as `cofinalChainSetoid` and `nonterminalCofinalChainSetoid`. | `[Preorder P]`; chains `Nat → P`; `c ~ d` iff each term of either chain is below some term of the other. | `PROVED_AS_ORDER_THEORETIC_EQUIVALENCE`. |
+| Chain ends as equivalence classes of non-terminal cofinal chains. | `FORMALISED` as `ChainEndInIdeal` and `ChainEnd`. | Fixed ideal quotient plus ambient sigma over provisional `IdealEnd`. | `DEFINITION_FORMALISED`; physical interpretation open. |
+| Countable provisional ideal-ends have chain-end representatives. | `FORMALISED` as `chainEndOfCountableIdealEnd`. | `I : IdealEnd P`; `(I.1 : Set P).Countable`; uses nonterminal chain existence. | `PROVED_FOR_COUNTABLE_PROVISIONAL_IDEALEND`. |
 | `x ⇝ I` iff `x ∈ I`. | `FORMALISED` as `accessesIdeal_iff_mem`. | `[Preorder P]`; `I : Order.Ideal P`; accessibility defined by `∃ y ∈ I, x ≤ y`. | `PROVED`; also shows the ideal formulation is already downward closed. |
 | Relational horizon for `R = ∅` is empty. | `FORMALISED` as `relationalHorizon_empty`. | `[Preorder P]`; `R : Set P`; relation uses preorder cover placeholder. | `PROVED_AS_ORDER_TRIVIALITY`. |
 | Relational horizon for `R = univ` is empty. | `FORMALISED` as `relationalHorizon_univ`. | Same as above. | `PROVED_AS_ORDER_TRIVIALITY`. |
@@ -143,7 +146,7 @@ Possible repair hypotheses for embeddings:
 - define a separate lower-closure operation and prove what it does to
   principality/non-principality.
 
-### 5. `IdealEnd` is provisional
+### 5. `IdealEnd` is provisional; `ChainEnd` is now available
 
 Current Lean definition:
 
@@ -160,6 +163,20 @@ This is mathematically clean but physically broad. It does not yet encode:
 
 Audit verdict: all theorems using `IdealEnd` are `PROVED_FOR_PROVISIONAL_IDEALEND`,
 not yet proof of the final causal-end interpretation.
+
+Option 2 is now represented in Lean:
+
+```lean
+ChainEventuallyLe c d := ∀ n, ∃ m, c n ≤ d m
+CofinalChainEquivalent c d := ChainEventuallyLe c d ∧ ChainEventuallyLe d c
+ChainEndInIdeal I := Quotient (nonterminalCofinalChainSetoid I)
+ChainEnd P := Σ I : IdealEnd P, ChainEndInIdeal I.1
+```
+
+This gives an order-theoretic end candidate as an equivalence class of
+non-terminal cofinal chains. It still depends on the provisional `IdealEnd` for
+the ambient ideal selection, so the escape/asymptotic interpretation remains
+open.
 
 ### 6. Accessibility to an ideal is tautological
 
@@ -200,9 +217,8 @@ the distinction between "reference" and "past of reference".
 1. Replace the placeholder `LocallyFinitePoset` with the exact hypothesis needed
    for lower-interval finiteness, or introduce a second explicit predicate:
    `FiniteLowerIntervals`.
-2. Decide whether the final `IdealEnd` definition should be non-principal
-   ideals, maximal non-principal ideals, or equivalence classes of non-terminal
-   cofinal chains.
+2. Decide whether `ChainEnd` should replace `IdealEnd` in downstream statements
+   or coexist as the chain-representation layer for countable provisional ends.
 3. Add a small embeddings file only after choosing one of the repair hypotheses
    above.
 4. Keep `IdealEnd` provisional until the project chooses between non-principal

@@ -4,5 +4,6 @@ import HorizonFormal.Posets
 import HorizonFormal.Ideals
 import HorizonFormal.CofinalChains
 import HorizonFormal.Ends
+import HorizonFormal.ChainEnds
 import HorizonFormal.Accessibility
 import HorizonFormal.Horizon

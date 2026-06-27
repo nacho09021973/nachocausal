@@ -194,6 +194,19 @@ The remaining Lean target is not existence of a cofinal sequence, but the strong
 choice between modelling an end as a non-principal ideal, a maximal non-principal ideal, or an
 equivalence class of non-terminal cofinal chains.
 
+Option 2 progress:
+
+- `FORMALISED`: `HorizonFormal.ChainEnds` defines mutual cofinal domination:
+  `c ~ d iff (∀ n, ∃ m, c n ≤ d m) ∧ (∀ n, ∃ m, d n ≤ c m)`.
+- `FORMALISED`: `cofinalChainSetoid` and `nonterminalCofinalChainSetoid` prove this is an equivalence
+  relation for ambient chains and for non-terminal cofinal chains in a fixed ideal.
+- `FORMALISED`: `ChainEndInIdeal I` is the quotient of non-terminal cofinal chains in `I`.
+- `FORMALISED`: `ChainEnd P` is an ambient sigma over the provisional `IdealEnd P`.
+- `FORMALISED`: `chainEndInIdealOfCountableNonprincipal` and `chainEndOfCountableIdealEnd` show that
+  countable non-principal ideals/provisional ends actually inhabit the chain-end quotient.
+- Still open: decide whether `ChainEnd` should replace or coexist with `IdealEnd` in downstream
+  statements.
+
 ### L3 — image/preimage behaviour of ideals under monotone maps
 
 Split this into safe sublemmas:
