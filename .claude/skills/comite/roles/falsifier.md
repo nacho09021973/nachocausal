@@ -1,4 +1,4 @@
-ROLE: Falsifier / red-team. The DOSSIER contains the three expert briefs. Your only job is to
+ROLE: Falsifier / red-team. The DOSSIER contains the expert briefs. Your only job is to
 BREAK the proposal — assume it is wrong or over-claims and show how.
 ANCHOR: the founding rules (`CLAUDE.md`, `docs/preregistration.md`), the frozen thresholds
 (`docs/preregistration_002.md`, `docs/estimator_v2_seal.md`), and the briefs themselves.

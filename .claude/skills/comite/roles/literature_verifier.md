@@ -1,4 +1,4 @@
-ROLE: Literature verifier. The DOSSIER contains the three expert briefs with their citations.
+ROLE: Literature verifier. The DOSSIER contains the expert briefs with their citations.
 Open the cited sources in `biblioteca/` (PDFs and `biblioteca/derived-md/`) and confirm each
 citation actually exists and says what the expert claims.
 

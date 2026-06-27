@@ -1,20 +1,23 @@
 # Comité — especificación de asiento nuevo: "Estadístico asintótico de órdenes aleatorios" (dev, NO convoca)
 
-> Charge document. Define el asiento que falta en el panel de 6 roles para poder deliberar el problema de
+> Charge document histórico. Fue escrito cuando el panel base tenía 6 roles; el comité base ahora
+> incluye también un **mathematical logician**. Esta nota define un asiento especializado adicional
+> para poder deliberar el problema de
 > identificabilidad de `dev/MEMO_random_orders_identifiability.md` (§5: clasificación de `P_n, Q_n`). **No
 > lanza `/comite`, no congela, no commitea.** Es el paso "definir el asiento primero" antes de convocar.
 > Procedencia: `make verify-seal` = `6e2c3888…` (sin código sellado tocado).
 
 ## Por qué un asiento nuevo
 
-El panel actual tiene 6 asientos: reproducibility engineer, **mathematician (causal-sets)**, physicist,
-falsifier, prereg warden, literature verifier (`docs/comite/comite_decision_004…md:56-141`). Ninguno cubre
-la competencia central del problema: **estadística asintótica de la distinguibilidad de dos leyes de
-órdenes aleatorios** (Le Cam: separación / contigüidad mutua / contigüidad unilateral; maquinaria de
-likelihood-ratio sobre estructuras **transitivas y dependientes**, no aristas independientes). El asiento
-de matemático de causal-sets está cerca del rol "formulación de las leyes sobre posets" (Brightwell), pero
-no del rol "probar separación/contigüidad" (Kleijn/Rizzelli). Se añade el segundo y se re-mandata el
-primero.
+El panel base ahora tiene 7 asientos: reproducibility engineer, **mathematician (causal-sets)**,
+mathematical logician, physicist, falsifier, prereg warden, literature verifier. Ninguno cubre por
+sí solo la competencia central del problema: **estadística asintótica de la distinguibilidad de dos
+leyes de órdenes aleatorios** (Le Cam: separación / contigüidad mutua / contigüidad unilateral;
+maquinaria de likelihood-ratio sobre estructuras **transitivas y dependientes**, no aristas
+independientes). El asiento de matemático de causal-sets está cerca del rol "formulación de las
+leyes sobre posets" (Brightwell), y el mathematical logician audita cuantificadores/equivalencias,
+pero ninguno sustituye el rol "probar separación/contigüidad" (Kleijn/Rizzelli). Este asiento
+especializado se mantiene como adicional y se re-mandata el primero.
 
 ## Asiento A7 — "Estadístico asintótico de órdenes aleatorios" (rol Kleijn/Rizzelli)
 

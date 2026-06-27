@@ -28,6 +28,9 @@ REQUIRED_HEADINGS = [
     "## 10. Verdict",
     "## 11. User sign-off",
 ]
+NEW_ROLE_HEADINGS = [
+    "### Mathematical logic brief",
+]
 
 PROCEED_VERDICTS = {
     "RECOMMEND_PROCEED_WITH_SCOPED_NEXT_STEP",
@@ -49,6 +52,13 @@ def check(path: str) -> list[str]:
     for h in REQUIRED_HEADINGS:
         if h not in text:
             errs.append(f"missing required section heading: {h!r}")
+
+    n = re.search(r"comite_decision_(\d{3})_", path)
+    requires_new_roles = n is None or int(n.group(1)) >= 9
+    if requires_new_roles:
+        for h in NEW_ROLE_HEADINGS:
+            if h not in text:
+                errs.append(f"missing required post-008 role heading: {h!r}")
 
     leftover = re.findall(r"\{\{[A-Z_]+\}\}", text)
     if leftover:

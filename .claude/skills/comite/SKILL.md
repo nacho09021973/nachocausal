@@ -1,6 +1,6 @@
 ---
 name: comite
-description: Convene the standing nachocausal deliberation committee — a 6-role, two-wave blind expert panel (reproducibility engineer, causal-set mathematician, Schwarzschild physicist, falsifier, pre-registration warden, literature verifier) chaired into a grounded, falsified, freeze-checked decision brief the user signs off on. Use for one-way / scientifically committing steps (above all the blind validation run) or any frontier decision. Use when the user types /comite, says "convoca al comité", or asks for a multi-perspective committee review. Not for trivial steps.
+description: Convene the standing nachocausal deliberation committee — a 7-role, two-wave blind expert panel (reproducibility engineer, causal-set mathematician, mathematical logician, Schwarzschild physicist, falsifier, pre-registration warden, literature verifier) chaired into a grounded, falsified, freeze-checked decision brief the user signs off on. Use for one-way / scientifically committing steps (above all the blind validation run) or any frontier decision. Use when the user types /comite, says "convoca al comité", or asks for a multi-perspective committee review. Not for trivial steps.
 ---
 
 # Comité — standing deliberation body for nachocausal
@@ -50,16 +50,17 @@ founding rules.
   PROCEED on top of an `AUDIT_VERDICT=AUDIT_FAIL`.
 
 ## Step 2 — Wave 1: experts (parallel, blind)
-Dispatch THREE `Agent` calls IN ONE MESSAGE. For each, the prompt is the concatenation of
+Dispatch FOUR `Agent` calls IN ONE MESSAGE. For each, the prompt is the concatenation of
 `roles/_common.md` + the role file, with `{{DECISION_QUESTION}}` and `{{DOSSIER}}` filled in.
 - reproducibility engineer → `subagent_type: "Explore"`, `model: "opus"`, prompt = `_common.md` + `roles/reproducibility_engineer.md`
 - causet mathematician → `subagent_type: "Explore"`, `model: "opus"`, prompt = `_common.md` + `roles/causet_mathematician.md`
+- mathematical logician → `subagent_type: "Explore"`, `model: "opus"`, prompt = `_common.md` + `roles/mathematical_logician.md`
 - physicist → `subagent_type: "Explore"`, `model: "opus"`, prompt = `_common.md` + `roles/physicist.md`
 
-Collect the three returned briefs verbatim.
+Collect the four returned briefs verbatim.
 
 ## Step 3 — Wave 2: controls (parallel)
-Append the three expert briefs to the `DOSSIER`. Dispatch THREE `Agent` calls IN ONE MESSAGE:
+Append the four expert briefs to the `DOSSIER`. Dispatch THREE `Agent` calls IN ONE MESSAGE:
 - falsifier → `subagent_type: "Explore"`, `model: "fable"`, prompt = `_common.md` + `roles/falsifier.md`
 - preregistration warden → `subagent_type: "Explore"`, `model: "sonnet"`, prompt = `_common.md` + `roles/preregistration_warden.md`
 - literature verifier → `subagent_type: "Explore"`, `model: "sonnet"`, prompt = `_common.md` + `roles/literature_verifier.md`
@@ -68,7 +69,7 @@ Collect the three control sections verbatim.
 
 ## Step 4 — Synthesize
 Fill `templates/decision_brief_template.md`:
-- Paste §2 verified state, the dossier list, the three expert briefs, the falsifier attack, the
+- Paste §2 verified state, the dossier list, the four expert briefs, the falsifier attack, the
   pre-registration verdict, and the literature verdict **verbatim**.
 - Write `## 8. Synthesis`: recommended direction + ranked alternatives. You MUST surface every
   disagreement between roles; never hide dissent. If a pre-registration BLOCK or an unresolved

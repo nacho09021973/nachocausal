@@ -23,6 +23,8 @@ Files and references the chair supplied to the committee:
 {{REPRODUCIBILITY_BRIEF}}
 ### Mathematician brief
 {{MATHEMATICIAN_BRIEF}}
+### Mathematical logic brief
+{{MATHEMATICAL_LOGIC_BRIEF}}
 ### Physicist brief
 {{PHYSICIST_BRIEF}}
 

@@ -196,12 +196,13 @@ cd nachocausal
 ```
 
 ### `/comite <decision question>` — standing deliberation committee
-A 6-role, two-wave **blind** expert panel (reproducibility engineer, causal-set mathematician,
-Schwarzschild physicist, falsifier, pre-registration warden, literature verifier) chaired into a
-grounded, freeze-checked **decision brief** the user signs off on. The committee *proposes*; the
-user *authorises* — it never launches the blind validation run, commits, loosens a frozen
-threshold, or makes a reconstruction claim. Convene it for any one-way / scientifically committing
-step (above all the blind validation run) or a frontier decision; also via "convoca al comité".
+A 7-role, two-wave **blind** expert panel (reproducibility engineer, causal-set mathematician,
+mathematical logician, Schwarzschild physicist, falsifier, pre-registration warden, literature
+verifier) chaired into a grounded, freeze-checked **decision brief** the user signs off on. The
+committee *proposes*; the user *authorises* — it never launches the blind validation run, commits,
+loosens a frozen threshold, or makes a reconstruction claim. Convene it for any one-way /
+scientifically committing step (above all the blind validation run) or a frontier decision; also
+via "convoca al comité".
 - Writes `docs/comite/comite_decision_NNN_<slug>.md`.
 - Brief gate: `python .claude/skills/comite/check_comite_brief.py <brief.md>` — fails on a missing
   section, a surviving `{{…}}` placeholder, an invalid verdict, or a pre-registration `BLOCK`
