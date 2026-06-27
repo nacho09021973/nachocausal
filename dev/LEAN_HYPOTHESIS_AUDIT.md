@@ -27,6 +27,7 @@ added to the design notes.
 | Every countable ideal has a nondecreasing cofinal sequence. | `FORMALISED` as `exists_cofinalChain_of_countableIdeal`. | `[Preorder P]`; `I : Order.Ideal P`; `(I : Set P).Countable`; sequence `c : Nat → P`; cofinal means `∀ x ∈ I, ∃ n, x ≤ c n`. | `PROVED_FOR_COUNTABLE_MATHLIB_IDEALS`. |
 | Every countable non-principal ideal has a non-terminal cofinal sequence. | `FORMALISED` as `exists_nonterminal_cofinalChain_of_countable_nonprincipalIdeal`. | Same countability hypothesis plus `IsNonprincipalIdeal I`; terminal means `∃ n, ∀ x ∈ I, x ≤ c n`. | `PROVED_FOR_COUNTABLE_NONPRINCIPAL_MATHLIB_IDEALS`. |
 | Chain-end equivalence by mutual cofinal domination is an equivalence relation. | `FORMALISED` as `cofinalChainSetoid` and `nonterminalCofinalChainSetoid`. | `[Preorder P]`; chains `Nat → P`; `c ~ d` iff each term of either chain is below some term of the other. | `PROVED_AS_ORDER_THEORETIC_EQUIVALENCE`. |
+| Chain-end equivalence is equality of generated lower sets. | `FORMALISED` as `CofinalChainEquivalent_iff_generated_eq`. | `[Preorder P]`; generated lower set is `IdealGeneratedByChain c = {x | ∃ n, x ≤ c n}`. | `PROVED_AS_ORDER_THEORETIC_EQUIVALENCE`; physical end interpretation open. |
 | Chain ends as equivalence classes of non-terminal cofinal chains. | `FORMALISED` as `ChainEndInIdeal` and `ChainEnd`. | Fixed ideal quotient plus ambient sigma over provisional `IdealEnd`. | `DEFINITION_FORMALISED`; physical interpretation open. |
 | Order isomorphisms transport chain ends. | `FORMALISED` as `mapChainEndOrderIso`. | `[Preorder P] [Preorder Q]`; `e : P ≃o Q`; chain representatives transported pointwise; ambient ideals transported by `mapIdealOrderIso`. | `PROVED_FOR_ORDER_ISOMORPHISMS`; arbitrary embeddings remain open. |
 | Countable provisional ideal-ends have chain-end representatives. | `FORMALISED` as `chainEndOfCountableIdealEnd` and `nonempty_chainEnd_of_countable_idealEnd`; ideal-level wrapper `nonempty_chainEndInIdeal_of_countable_nonprincipal`. | `I : IdealEnd P`; `(I.1 : Set P).Countable`; uses nonterminal chain existence. | `PROVED_FOR_COUNTABLE_PROVISIONAL_IDEALEND`. |
@@ -172,6 +173,8 @@ ChainEventuallyLe c d := ∀ n, ∃ m, c n ≤ d m
 CofinalChainEquivalent c d := ChainEventuallyLe c d ∧ ChainEventuallyLe d c
 ChainEndInIdeal I := Quotient (nonterminalCofinalChainSetoid I)
 ChainEnd P := Σ I : IdealEnd P, ChainEndInIdeal I.1
+IdealGeneratedByChain c := {x | ∃ n, x ≤ c n}
+CofinalChainEquivalent_iff_generated_eq
 nonempty_chainEndInIdeal_of_countable_nonprincipal
 nonempty_chainEnd_of_countable_idealEnd
 ```
