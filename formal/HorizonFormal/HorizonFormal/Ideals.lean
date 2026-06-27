@@ -80,6 +80,17 @@ theorem isPrincipalIdeal_of_bounded_of_finite_Iic {I : Order.Ideal P} {b : P}
     intro x hx
     exact hb x hx)
 
+/--
+A bounded ideal is principal in any preorder whose lower intervals are finite.
+
+This is the audited replacement for the informal slogan "bounded locally finite
+ideal is principal".
+-/
+theorem isPrincipalIdeal_of_bounded_of_finiteLowerIntervals {I : Order.Ideal P}
+    (hP : FiniteLowerIntervals P) (hI : IsBoundedIdeal I) : IsPrincipalIdeal I := by
+  obtain ⟨b, hb⟩ := hI
+  exact isPrincipalIdeal_of_bounded_of_finite_Iic hb (hP b)
+
 /-- A non-principal ideal has no maximum element. -/
 theorem not_hasMaximum_of_nonprincipal {I : Order.Ideal P}
     (hI : IsNonprincipalIdeal I) : ¬ ∃ m : P, HasMaximumInIdeal I m := by

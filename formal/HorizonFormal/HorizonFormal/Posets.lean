@@ -25,4 +25,14 @@ replace it by the exact mathlib interval-finiteness API needed for bounded ideal
 def LocallyFinitePoset (P : Type u) [PartialOrder P] : Prop :=
   ∀ a b : P, Set.Finite {x : P | a ≤ x ∧ x ≤ b}
 
+/--
+Explicit hypothesis used by the bounded-ideal theorem: every lower interval
+below a point is finite.
+
+This is stronger/more directed than ordinary finite closed intervals, but it is
+exactly what the current Lean proof of bounded ideal principalness consumes.
+-/
+def FiniteLowerIntervals (P : Type u) [Preorder P] : Prop :=
+  ∀ b : P, (Set.Iic b).Finite
+
 end HorizonFormal

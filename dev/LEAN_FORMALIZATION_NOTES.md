@@ -49,6 +49,10 @@ instead of patching the theorem post hoc.
 
 ## 2. Definitions to align with mathlib
 
+The current detailed hypothesis audit is `dev/LEAN_HYPOTHESIS_AUDIT.md`. It is the controlling
+document for deciding whether a prose `PROVED` label remains valid, must be narrowed, or must be
+downgraded to `HYPOTHESES_OPEN`.
+
 ### 2.1 Poset
 
 Use mathlib's existing `[Preorder P]` / `[PartialOrder P]` hierarchy. Prefer `[PartialOrder P]` for causal
@@ -94,6 +98,10 @@ The real theorem is not true from "bounded" alone in arbitrary posets. It needs 
 - or local finiteness plus a proof that the bounded lower interval below `b` is finite.
 
 This is the first place where exact hypotheses matter.
+
+Audit update (2026-06-27): `dev/LEAN_HYPOTHESIS_AUDIT.md` narrows the checked statement to finite lower
+intervals. Plain interval local finiteness between two endpoints does not automatically give finiteness
+of `Set.Iic b` unless the lower side is also controlled.
 
 ## 3. First Lean targets
 
@@ -167,7 +175,24 @@ Expected construction:
   element;
 - prove monotone/cofinal.
 
-This may overlap with `Order.sequenceOfCofinals` / `Order.idealOfCofinals`, so inspect mathlib first.
+Progress:
+
+- `FORMALISED`: `exists_cofinalChain_of_countableIdeal` in
+  `formal/HorizonFormal/HorizonFormal/CofinalChains.lean`.
+- Final checked statement: every countable mathlib ideal admits a nondecreasing cofinal sequence
+  `c : Nat → P`.
+- Exact cofinality predicate: `∀ x : P, x ∈ I → ∃ n : Nat, x ≤ c n`.
+- Exact countability hypothesis: `(I : Set P).Countable`, not necessarily `Countable P`.
+- Audit correction: non-principality and local finiteness are not needed for existence of the cofinal
+  sequence. They are relevant only for stronger claims about no terminal maximum, no eventual bound, or
+  causal-end interpretation.
+- `FORMALISED`: `exists_nonterminal_cofinalChain_of_countable_nonprincipalIdeal` proves that if the
+  ideal is also non-principal, then there exists such a cofinal chain with no terminal element
+  dominating the whole ideal.
+
+The remaining Lean target is not existence of a cofinal sequence, but the stronger end-specific
+choice between modelling an end as a non-principal ideal, a maximal non-principal ideal, or an
+equivalence class of non-terminal cofinal chains.
 
 ### L3 — image/preimage behaviour of ideals under monotone maps
 
