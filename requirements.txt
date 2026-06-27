@@ -14,3 +14,8 @@ pytest>=7,<9
 # NACHOCAUSAL_MINZ_PATH (default ~/cs-horizon-reuse-check). It is NOT on the
 # validation path and NOT required to run the benchmark — its evidence is already
 # recorded in nachocausal/fixtures/gate_evidence.json.
+#
+# NOTE: the OPTIONAL Lean formalisation track is not a pip dependency. Install
+# elan/Lean separately; the exact Lean toolchain and mathlib revision are pinned
+# in formal/HorizonFormal/lean-toolchain, lakefile.toml, and lake-manifest.json.
+# Build it with: cd formal/HorizonFormal && lake build

@@ -158,6 +158,23 @@ numpy is hard-pinned because the frozen poset/estimator are guaranteed bit-for-b
 only under the version the instrument was sealed against; the package hard-fails on any other
 numpy.
 
+### Optional Lean formalisation track
+
+The order-theoretic formalisation lives under `formal/HorizonFormal/`. It is independent of the
+sealed Python validation path and uses Lean 4 + mathlib via Lake. The reproducible dependency
+pins are committed in `formal/HorizonFormal/lean-toolchain`, `formal/HorizonFormal/lakefile.toml`,
+and `formal/HorizonFormal/lake-manifest.json`; `.lake/` build artifacts are intentionally ignored.
+
+```bash
+curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | \
+  sh -s -- -y --default-toolchain leanprover/lean4:v4.31.0
+. "$HOME/.elan/env"
+
+cd formal/HorizonFormal
+lake update
+lake build
+```
+
 The optional Minz admissibility cross-check (`make gate`) is **not** on the validation path and
 **not** required to run the benchmark. It needs the external clone
 [c-minz/Python-causets](https://github.com/c-minz/Python-causets) on `sys.path` via the env var

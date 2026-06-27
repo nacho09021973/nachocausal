@@ -1,0 +1,15 @@
+name = "HorizonFormal"
+version = "0.1.0"
+defaultTargets = ["horizonformal"]
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.31.0"
+
+[[lean_lib]]
+name = "HorizonFormal"
+
+[[lean_exe]]
+name = "horizonformal"
+root = "Main"
