@@ -67,6 +67,11 @@ theorem relationalBlackRegion_upper {R : RelationalReference P} {x y : P}
   intro hy
   exact hx (relationalPast_lower hxy hy)
 
+theorem mem_relationalHorizon_pair {R : RelationalReference P} {x y : P}
+    (hx : x ∈ RelationalBlackRegion R) (hy : y ∈ RelationalPast R)
+    (hcover : IsCover x y) : (x, y) ∈ RelationalHorizon R :=
+  ⟨hx, hy, hcover⟩
+
 theorem relationalHorizon_fst_mem_black {R : RelationalReference P} {p : P × P}
     (hp : p ∈ RelationalHorizon R) : p.1 ∈ RelationalBlackRegion R :=
   hp.1
@@ -78,6 +83,23 @@ theorem relationalHorizon_snd_mem_past {R : RelationalReference P} {p : P × P}
 theorem relationalHorizon_isCover {R : RelationalReference P} {p : P × P}
     (hp : p ∈ RelationalHorizon R) : IsCover p.1 p.2 :=
   hp.2.2
+
+theorem relationalHorizon_lt {R : RelationalReference P} {p : P × P}
+    (hp : p ∈ RelationalHorizon R) : p.1 < p.2 :=
+  (relationalHorizon_isCover hp).1
+
+theorem relationalHorizon_ne {R : RelationalReference P} {p : P × P}
+    (hp : p ∈ RelationalHorizon R) : p.1 ≠ p.2 :=
+  ne_of_lt (relationalHorizon_lt hp)
+
+theorem relationalHorizon_fst_not_mem_past {R : RelationalReference P} {p : P × P}
+    (hp : p ∈ RelationalHorizon R) : p.1 ∉ RelationalPast R :=
+  relationalHorizon_fst_mem_black hp
+
+theorem relationalHorizon_snd_not_mem_black {R : RelationalReference P} {p : P × P}
+    (hp : p ∈ RelationalHorizon R) : p.2 ∉ RelationalBlackRegion R := by
+  intro hblack
+  exact hblack (relationalHorizon_snd_mem_past hp)
 
 @[simp]
 theorem relationalPast_empty :

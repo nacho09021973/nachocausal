@@ -290,6 +290,19 @@ RelationalHorizon
 Proved:
 
 ```lean
+mem_relationalPast_of_mem
+relationalPast_lower
+relationalPast_mono
+relationalBlackRegion_antitone
+relationalBlackRegion_upper
+mem_relationalHorizon_pair
+relationalHorizon_fst_mem_black
+relationalHorizon_snd_mem_past
+relationalHorizon_isCover
+relationalHorizon_lt
+relationalHorizon_ne
+relationalHorizon_fst_not_mem_past
+relationalHorizon_snd_not_mem_black
 relationalPast_empty
 relationalHorizon_empty
 relationalPast_univ
@@ -299,8 +312,11 @@ relationalHorizon_univ
 
 Interpretation:
 
-These are order-theoretic triviality checks only. They do not prove physical
-horizon recovery.
+These are order-theoretic structural checks only. They establish that
+`RelationalPast R` is a lower set, that enlarging `R` enlarges the past and
+shrinks the black-region candidate, and that horizon pairs cross from
+`RelationalBlackRegion R` to `RelationalPast R` along a strict cover. They do
+not prove physical horizon recovery.
 
 ## 3. Current audit labels
 
@@ -319,6 +335,9 @@ EMBEDDINGS_PRESERVE_IDEAL_ENDS = HYPOTHESES_OPEN
 CHAIN_END_EQUIVALENCE = PROVED_IN_LEAN
 CHAIN_END_AS_QUOTIENT = DEFINITION_FORMALISED
 PREGEOMETRIC_RELATIONAL_HORIZON_FORMULATION = DEFINITION_FORMALISED
+RELATIONAL_PAST_LOWER_SET = PROVED_IN_LEAN
+RELATIONAL_REFERENCE_MONOTONICITY = PROVED_IN_LEAN
+RELATIONAL_HORIZON_FRONTIER_SHAPE = PROVED_IN_LEAN
 PHYSICAL_ESCAPE_END_INTERPRETATION = OPEN
 ```
 
