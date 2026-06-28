@@ -3,6 +3,10 @@
 Recovering black-hole horizon structure from causal-set order alone — framed as a
 *recoverability* benchmark, not a reconstruction claim.
 
+For any AI or agent connecting to this repo, read [INSTRUCCIONES.md](INSTRUCCIONES.md) first for
+the available machinery and the correct workflow between committee, auditor, external consultors,
+and Alloy.
+
 The project starts deliberately narrow and disciplined: reproduce, blind to coordinates and
 under a success/failure criterion frozen in advance, the known-truth detection of a
 Schwarzschild event horizon in a 1+1D causal set, using the order-only observable validated
@@ -181,13 +185,14 @@ The optional Minz admissibility cross-check (`make gate`) is **not** on the vali
 `NACHOCAUSAL_MINZ_PATH` (default `~/cs-horizon-reuse-check`). Its evidence is already recorded in
 `nachocausal/fixtures/gate_evidence.json`.
 
-## In-repo tooling — the `/comite` and `/auditor` skills
+## In-repo tooling — the `/comite`, `/auditor`, and `/alloy-verifier` skills
 
 Two Claude Code skills live in `.claude/skills/` and travel with the repo, so any clone on any
 machine has them with **no install step** — Claude Code auto-discovers project skills under
 `.claude/skills/`. They encode this project's discipline as runnable guardrails: the committee is
 **forward-looking** (deliberate before a one-way step), the auditor is **backward-looking** (verify
-that what is already claimed is real).
+that what is already claimed is real), and Alloy is a **bounded formal verifier** that only enters
+after a claim has been translated into a checkable finite model.
 
 ```bash
 git clone https://github.com/nacho09021973/nachocausal
@@ -223,6 +228,29 @@ finite-patch 1+1D localisation. It *reports*; it never fixes. Produces an audit 
 - Report gate: `python .claude/skills/auditor/check_audit_report.py <report.md>` — fails if the
   verdict contradicts its own error/warning counts. `make verify-audit` runs it over every report
   in `docs/auditor/`.
+
+### `/alloy-verifier <claim/model question>` — bounded model checker
+This verifier enters **only** when a claim has already been translated into an explicit finite
+relational model. It is not a committee, not an auditor, and not a theorem prover. Its job is to
+run a bounded Alloy check against a stated model, target, and scope, then write a verification note
+with a narrow verdict. If the model is not yet explicit, or if no verified Alloy executable exists,
+it fails closed.
+- Writes `docs/alloy/alloy_verification_NNN_<slug>.md`.
+- Repo convention: committed/rerunnable models under `formal/alloy/`, exploratory models under
+  `dev/alloy/`, verification notes under `docs/alloy/`.
+- See `docs/ALLOY_VERIFICATION.md` for the entry condition and claim boundary.
+
+## External advisory consultors
+
+The repo can also prepare **advisory-only** external consultations through
+wrappers that live outside the repository. These are reversible support tools,
+not part of the sealed validation path and not evidence by themselves.
+
+- DeepMath pattern: `docs/DEEPMATH_CONSULTING.md`
+- NVIDIA pattern: `docs/NVIDIA_CONSULTING.md`
+
+For `nachocausal`, archived consultation artefacts default to `dev/consultations/`
+so they remain clearly outside the sealed/results path.
 
 ## Literature library
 
