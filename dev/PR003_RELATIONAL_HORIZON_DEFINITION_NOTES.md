@@ -157,7 +157,203 @@ spec de comité-006 §9, ahora con (II)+(III)):
   atrapamiento* en un parche finito 1+1D — NUNCA un horizonte de sucesos, NUNCA reconstrucción.
   `NO_RECONSTRUCTION_CLAIM` se mantiene.
 
-## 7. Backing
+## 7. Sub-problema previo de (III): ¿define el orden DOS CARAS no temporales alrededor de A? (conceptual, sin código)
+
+Paso autorizado (usuario, esta sesión): **antes** de construir el estadístico one-way, resolver el
+cuello de botella lógico — ¿existe, a partir de un entorno relacional `N(A)`, una **pareja no
+ordenada** `{L_A, R_A}` con `L_A ⊔ R_A = N(A)\A`, que (1) dependa solo de `≺`; (2) sea
+relabel-invariante; (3) equivariante bajo automorfismos; (4) NO use altura como sustituto de lado
+espacial; (5) NO use `r`/embedding/`relphi`/outgoing/horizonte; (6) sea única salvo intercambio
+`L_A ↔ R_A`? Si NO existe, cualquier estadístico dirigido reintroducirá geometría externa.
+
+### 7.1 Por qué pasado/futuro es fácil y lateral es el problema real
+
+`A` (antichain) induce `down(A)` (pasado) y complemento (futuro) — **bipartición temporal, gratis del
+orden**. Pero esas no son las dos caras *laterales* que coexisten al MISMO rango de altura a ambos
+lados del cuello. En 1+1D el orden `≺` codifica la estructura de **conos de luz** = estructura
+causal/conforme; la dirección espacial es *precisamente la que `≺` no distingue puntualmente* (los
+dos lados espaciales de un punto son ambos spacelike, simétricos). Definir "ambos lados" sin
+coordenada es donde acecha la fuga (constraint 4–5).
+
+### 7.2 Examen de los tres mecanismos (ninguno presupuesto)
+
+**(M2) Firmas de incidencia causal con A (pasado/futuro cercano de A).** Para `x∈N(A)\A`: vector
+(`#A` de cuyo pasado es `x`, `#A` de cuyo futuro, `#A` spacelike a `x`). Da la **posición TEMPORAL**
+de `x` relativa a `A`, y es **paridad-simétrica** (un punto a la izquierda y su espejo a la derecha
+tienen la misma firma). **NO produce split lateral. Falla** para (III).
+
+**(M3) Partición espectral / Fiedler.** Sobre el **grafo de comparabilidad** del band, el Fiedler
+separa pasado de futuro (la conectividad fuerte es por cadenas = temporal) ⇒ **reproduce la altura,
+viola constraint 4**. Sobre el **grafo de incomparabilidad** de un band delgado (casi todos spacelike
+⇒ grafo casi completo) el Fiedler es **plano ⇒ sin corte canónico**. Sólo funciona si se repondera
+hacia la estructura conjugada — y entonces **colapsa en (M1)**. Solo, **falla**.
+
+**(M1) Componentes/cortes del grafo de incomparabilidad — reinterpretado como ORDEN CONJUGADO.**
+Componentes: en 1+1D el grafo de incomparabilidad de un band es casi completo (izq y der lejanas son
+spacelike entre sí) ⇒ **una componente, no separa.** PERO hay un hecho estructural decisivo:
+
+> **Un sprinkling de Minkowski 1+1D es, por construcción, un orden de DIMENSIÓN 2:** `x≺y ⇔ u_x<u_y ∧
+> v_x<v_y` (orden producto en las dos coords nulas). Por el teorema de dimensión de orden
+> (Dushnik–Miller 1941), su **grafo de incomparabilidad es un grafo de comparabilidad**, cuya
+> **orientación transitiva = el orden conjugado `Q`** (la dirección ESPACIAL). `Q` es intrínseco a
+> `≺`. **La reversión de `Q` corresponde al swap `L_A↔R_A`.**
+
+**Unicidad — NO garantizada en general [corrección, usuario].** "Único salvo reversión" vale para los
+**componentes PRIMOS de la descomposición modular** del grafo de comparabilidad (Gallai 1967). Un
+grafo **no primo** admite elecciones independientes en distintos módulos ⇒ varias orientaciones
+transitivas NO relacionadas por una reversión global. Por tanto invocar "Gallai para grafos primos"
+**no cierra el caso real**. Hay que: (1) demostrar que el grafo relevante es primo; **o** (2) aceptar
+la descomposición modular y probar que **todas** sus orientaciones admisibles inducen la **misma
+pareja de caras**; **o** (3) declarar C2′ no cerrado en causets con módulos no triviales. [ABIERTO]
+
+`Q` es un orden **PARCIAL** (también 2D), no lineal: linealiza sólo los pares `P`-incomparables
+(spacelike); dos elementos `P`-comparables (timelike) son `Q`-incomparables. Esto importa para la
+construcción de caras (§7.4): un vecino timelike a un `a∈A` no es ni `Q`-izquierda ni `Q`-derecha de
+`a` — el "tercer residuo" que hay que excluir.
+
+### 7.3 Dimensión de orden ≤ 2: TEOREMA por auditoría del generador, NO por medición [corrección, usuario]
+
+**Retracto** dos afirmaciones erróneas de la versión previa: "la tortuga rompe el orden-producto y la
+dimensión puede exceder 2 cerca del horizonte" y "el ruido de sprinkling puede dar dimensión >2".
+Ambas son **falsas** si la relación observada es la restricción de un orden-producto 2D — y lo es:
+
+- **BH es conformalmente plano en 1+1D.** En coordenadas nulas de Kruskal–Szekeres la parte radial de
+  Schwarzschild es `ds² = Ω²(U,V) dU dV`, **regular a través del horizonte**; la causalidad la fija el
+  orden de las dos coords nulas: `x≺y ⇔ U_x<U_y ∧ V_x<V_y`. La singularidad de `r_*` (tortuga) es de
+  la CARTA Schwarzschild/EF, **no** una ruptura física del orden. El parche EF ingoing = regiones I∪II
+  de Kruskal; un **suborden** de un orden-producto sigue siendo orden-producto. [razonamiento físico;
+  el paso "parche EF = restricción del producto Kruskal" marcado [UNVERIFIED] vs cita primaria, pero
+  es estándar.]
+- **Auditoría del generador (hecha esta sesión, lectura de código):** `nachocausal/generator.py:88`
+  `past_matrix_fast` implementa la relación EF cerrada de He–Rideout (Minz `isCausal_BH2D`), verificada
+  **bit-a-bit** vs Minz hasta `N=10017`, `100,340,289` pares (`docs/reuse_check.md:27-33`,
+  `dev/gate_highN.py`). Las ramas `b1/b2/b3` son la forma chart-dependiente de computar **el mismo**
+  orden; no añaden ni quitan relaciones respecto a la causalidad exacta.
+
+> **Proposición condicional 7.3 (representación producto del generador radial 1+1D) [usuario].**
+> *Supóngase que la relación producida por `past_matrix_fast` coincide exactamente con la causalidad
+> radial de la métrica Schwarzschild en el parche ingoing-EF utilizado.* La reducción radial admite
+> coordenadas nulas de Kruskal `(U,V)`, regulares al cruzar el horizonte, en las que
+> `ds²_(2) = −Ω²(U,V) dU dV`. Con la orientación temporal fijada, la relación causal sobre las
+> regiones exterior e interior cubiertas por el parche es la restricción del orden producto
+> `x ≺ y ⇔ U_x < U_y ∧ V_x < V_y`, casi seguramente bajo sprinkling continuo (sin empates). Por
+> tanto `P_C = L_U ∩ L_V` y `dim_DM(C) ≤ 2`. En consecuencia **existe al menos un orden conjugado
+> `Q`** sobre las parejas incomparables de `P_C`.
+
+**Alcance de la Proposición 7.3 (lo que SÍ y lo que NO da).** Establece una **orientación lateral
+order-only** (vía `Q`) para BH y MINK por igual — condicional a la hipótesis (generador = causalidad
+radial exacta), NO a una medición de dimensión. **Por eso NO hay que "atacar la dimensión de BH"
+midiendo: es una propiedad del generador.** La hipótesis es auditable y está fuertemente respaldada
+(`past_matrix_fast` = Minz `isCausal_BH2D` bit-a-bit, `reuse_check.md:27-33`; Minz = relación
+He–Rideout exacta, premisa de reuse-check). **PERO la Proposición 7.3 NO demuestra** que una antichain
+`A` induzca una pareja **exhaustiva y canónica** de caras `{L_A, R_A}`: eso requiere el lema de
+bipartición de §7.4 y el tratamiento de la descomposición modular de §7.2. `orden conjugado ⇏ dos
+caras`.
+
+### 7.4 El lema de DOS CARAS: orden conjugado ⇏ bipartición (el paso que FALTA) [usuario]
+
+Recuperar `Q` es avance real, pero **no construye** `{L_A, R_A}` automáticamente. Como `A` es antichain
+en `P`, `Q` lo ordena linealmente; pero un vecino `x∈N(A)\A` puede quedar `Q`-antes de todo `A`,
+`Q`-después de todo `A`, **o intercalado** entre dos elementos de `A` — y, peor, si `x` es
+`P`-comparable (timelike) a algún `a∈A`, es `Q`-incomparable a `a` (§7.2) ⇒ **tercera clase
+residual**. Para que la bipartición exista hay que **probar un lema**, no asumirlo:
+
+- elegir `N(A)` como una **losa spacelike** (todo `x∈N(A)\A` es `P`-incomparable a todo `A`), y
+- probar que `A` es un **bloque `Q`-convexo**, y entonces definir
+  `L_A = {x : x <_Q a  ∀a∈A}`, `R_A = {x : a <_Q x  ∀a∈A}`, y
+- **demostrar exhaustividad y disjunción:** `N(A)\A = L_A ⊔ R_A` (sin residuo intercalado ni
+  `Q`-incomparable).
+
+Si existen elementos intercalados o `Q`-incomparables relevantes, **la bipartición NO está
+construida.** Este lema es el verdadero contenido de "el orden define dos caras".
+
+### 7.4.1 Análisis del lema (esta sesión): construcción de Q, intercalado, y resultado parcial
+
+**Construcción explícita de `Q` (paso 2).** Con realizador `P = L_U ∩ L_V` (Prop. 7.3), define el
+conjugado `x <_Q y :⇔ U_x<U_y ∧ V_x>V_y`. Es la **orientación transitiva del grafo de
+incomparabilidad** de `P` (todo par `P`-incomparable = spacelike = exactamente uno de `U<,V>` o
+`U>,V<`). `Q` es un orden parcial 2D. Coordenadas auxiliares (sólo para razonar, NO entran en nada):
+`τ=U+V` (tiempo), `ξ=V−U` (espacio). `Q` ordena por `ξ` creciente entre pares spacelike.
+
+**El intercalado es GENÉRICO para |A|≥2 (contraejemplo trabajado).** Sea `A={a₁,a₂}`,
+`a₁=(U,V)=(0,2)`, `a₂=(2,0)` (antichain: spacelike; `a₁<_Q a₂`). Vecino `x=(1,1)`:
+- vs `a₁`: `U:0→1↑, V:2→1↓` ⇒ spacelike, y `a₁<_Q x`.
+- vs `a₂`: `U:1→2↑, V:1→0↓` ⇒ spacelike, y `x<_Q a₂`.
+⇒ `a₁ <_Q x <_Q a₂`: **`x` está `Q`-INTERCALADO**, spacelike a todo `A`, en `τ=2` (igual que `a₁,a₂`):
+geométricamente *entre* los dos puntos-membrana, en la misma rebanada. **No es ni `L_A` ni `R_A`.**
+Esto NO es patológico: cualquier antichain de extensión espacial >0 tiene vecinos spacelike en su
+"hueco" interior. ⇒ **`N(A)\A = L_A ⊔ R_A` FALLA para `|A|≥2`** con la definición Q-extremos. El lema
+de bipartición EXHAUSTIVA, tal como se pidió, **es FALSO en general.** [refutación, no laguna]
+
+**Resultado positivo 1 — marcador de un solo elemento (`|A|=1`).** Si la membrana se marca por un
+único elemento `a`, no hay "entre": todo `x` spacelike a `a` cumple `x<_Q a` ó `a<_Q x`,
+**exhaustivamente**. ⇒ `L_a={x spacelike : x<_Q a}`, `R_a={x spacelike : a<_Q x}`,
+`spacelike(a)=L_a⊔R_a`, **canónico salvo swap** (reversión de `Q`). El único residuo son los vecinos
+timelike (`≺a` ó `a≺`), que se excluyen definiendo `N(a)=spacelike(a)`. **Bipartición LIMPIA.** ✓
+
+**Resultado positivo 2 — tripartición canónica (`|A|≥2`).** En general, lo canónico no es una
+bipartición sino la **TRIPARTICIÓN** `{L_A, core_A, R_A}` con
+`L_A={x : x<_Q a  ∀a∈A}`, `R_A={x : a<_Q x  ∀a∈A}`, `core_A = (N(A)\A) ∖ (L_A∪R_A)` (intercalados +
+timelike). `core_A` ≠ ruido: es el **grosor relacional de la membrana** (los elementos
+espacialmente dentro del cuello), que conecta con la persistencia (§4). El estadístico de asimetría
+puede compararse sobre las **dos caras exteriores** `L_A, R_A` (intercambiables por swap), tratando
+`core_A` como la propia membrana. Esto NO es la bipartición exhaustiva pedida, pero **sí un objeto
+canónico order-only** suficiente para `Δ_A`.
+
+**Descomposición modular / unicidad (paso 3, SIN asumir primalidad).** `Q` (y por tanto el split
+`L/R`) es único salvo reversión **sii** el grafo de incomparabilidad es **primo** en su
+descomposición modular (Gallai); equivalentemente, sii el 2D-orden `P` tiene realizador único salvo
+swap. Si hay un **módulo** `M` no trivial, sus elementos pueden orientarse independientemente ⇒
+múltiples `Q`. **Pero:** un módulo en este grafo = un subconjunto `M` tal que todo `x∉M` es spacelike
+a todo `M` o a nada de `M` — una **degeneración geométrica no genérica** bajo sprinkling Poisson
+continuo. [PLAUSIBLE, [UNVERIFIED]: "2D-orden Poisson es primo c.s. para N grande" — estándar para
+órdenes aleatorios pero no anclado a cita primaria en biblioteca.] Si se confirma, `Q` es único salvo
+swap **casi seguramente**; los casos no primos son medida cero / borde, a manejar con una regla de
+desempate relabel-invariante (p.ej. orientar el módulo por su propio sub-conjugado, recursivamente).
+
+### 7.5 Circularidad que el face-construction DEBE evitar (crítico)
+
+Las dos caras del horizonte (interior/exterior) **son** distinguibles por su futuro (interior
+truncado por singularidad, exterior largo). Tentación: definir "cara capturada" = la de futuro
+truncado. **Eso es CIRCULAR**: el estadístico de (III) mide después la asimetría de acceso futuro; si
+las caras se definen por esa misma asimetría, `Δ_A≠0` es tautológico. ⇒ **La bipartición debe usar
+SOLO el orden conjugado `Q` (lateral, ⟂ futuro), nunca la accesibilidad futura que el estadístico
+luego mide.** El conjugado cumple esto (es espacial, no temporal); la definición-por-truncación NO.
+
+### 7.6 Veredicto del sub-problema — PROVISIONAL (no cerrado)
+
+**Estado provisional, NO un veredicto de cierre todavía.** Lo establecido y lo que falta:
+
+**Avance real (lo establecido):** en un orden causal de **dimensión 2** — que es el caso para BH y
+MINK **condicional a la auditoría del generador `P_C=L_U∩L_V`** (§7.3, razonamiento Kruskal +
+verificación Minz bit-a-bit) — el **orden conjugado `Q` existe** y porta una noción intrínseca de
+**orientación lateral, definida solo salvo reversión** (= el swap permitido `L_A↔R_A`), order-only y
+relabel-invariante. Esto es un resultado conceptual importante y descarta, *para el NULL plano*, el
+veredicto `III_REQUIRES_EXTERNAL_GEOMETRIC_REFERENCE`.
+
+**Por qué NO se declara aún `III_UNORDERED_FACES_EXIST_BUT_ASYMMETRY_NOT_CLOSED`:** ese token afirma
+que las caras **existen**; pero "antichain `A` ⇒ dos caras canónicas" **no está demostrado** — falta
+el **lema de bipartición §7.4** (losa spacelike + `Q`-convexidad de `A` + exhaustividad
+`N(A)\A=L_A⊔R_A` sin residuo). Además la **unicidad** depende de la descomposición modular (§7.2,
+ABIERTO). Hasta probar el lema, **`orden conjugado ⇏ dos caras`**.
+
+**Token provisional:** `III_PENDING_TWO_FACE_LEMMA` (entre "existe orientación lateral salvo
+reversión" y "existen dos caras canónicas"; ninguno de los cuatro tokens de cierre es aún aplicable).
+
+**Próxima ronda correcta (secuencia del usuario; NO medir dimensión sobre BH):**
+1. **Auditar la relación EXACTA del generador** y demostrar/refutar `P_C = L_U ∩ L_V` para BH y MINK
+   (lectura de `generator.py` + Minz). Si cierto ⇒ `dim(C)≤2` demostrada para toda seed, sin
+   experimento. [§7.3 ya da el esqueleto; falta la prueba formal del paso EF=restricción-Kruskal]
+2. **Construir `Q`** explícitamente por orientación transitiva del grafo de incomparabilidad.
+3. **Analizar su descomposición modular**, SIN asumir primalidad (§7.2 opción 1/2/3).
+4. **Probar el lema de dos caras** (§7.4) para el `N(A)` y la `A` concretos de C2′.
+5. **Sólo si** la unión es exhaustiva y única salvo swap: mantener un veredicto de cierre y, entonces,
+   construir el estadístico `Δ_A=|S(L_A,R_A)−S(R_A,L_A)|` (normalizado por oportunidades, intercambiable
+   por swap, robusto a cardinalidades y frontera futura) sobre los cuatro contraejemplos (borde top,
+   focusing simétrico, tubo de densidad persistente, terminación singular). **La circularidad §7.5 se
+   conserva como restricción vinculante.**
+
+## 8. Backing
 
 - Contenido clásico (horizonte aparente, `Θ_out=0`, teleológico): `biblioteca/Horizontes…md` §1, §6
   [THEOREM-CONFIRMED]; EGS `biblioteca/derived-md/Towards black-hole horizons…md:223-225` (`Θ_out`),
@@ -170,6 +366,13 @@ spec de comité-006 §9, ahora con (II)+(III)):
   `nachocausal/estimator.py` Guard-v `verify_order_only`.
 - Pivote y scope: [[strategic-refocus-relational-definition]]; observable de enlaces = rectángulo de
   Alexandrov vacío `dev/PR003_L1B_LPP_MAPPING_NOTES.md` §1.
+- §7 (caras no temporales): dimensión de orden 2 / realizador / orden conjugado y orientación
+  transitiva única salvo reversión para grafos primos — Dushnik–Miller 1941 (order dimension);
+  Gallai 1967 / Trotter *Combinatorics and Partially Ordered Sets* (comparability graphs, modular
+  decomposition); sprinkling 1+1D = orden producto 2D: Surya LRR §4, `dev/PR003_L1B_LPP_MAPPING_NOTES.md`
+  §2–3. **[UNVERIFIED]:** dimensión de orden del causet Schwarzschild-EF (no en biblioteca; sub-problema
+  abierto). Constraint anti-fuga (cara ≠ definida por truncación futura): `docs/pr003_leakage_gate.md`,
+  Guard-v `nachocausal/estimator.py`.
 
 ## §9 — Pregeometric relational horizons and finite persistent growth
 

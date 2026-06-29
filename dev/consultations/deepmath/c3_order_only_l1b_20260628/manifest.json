@@ -1,0 +1,30 @@
+{
+  "consultation_id": "c3_order_only_l1b_20260628",
+  "context": [
+    "/home/adnac/nachocausal/docs/comite/comite_decision_007_pr003-bl-localization-lemma-l1-regrade.md",
+    "/home/adnac/nachocausal/dev/PR003_BL_LOCALIZATION_NULL_LAW_NOTES.md"
+  ],
+  "created_utc": "2026-06-28T18:06:16.561869+00:00",
+  "deepmath": {
+    "adapter_contract": "configured command reads dossier from stdin and writes answer to stdout",
+    "deepmath_cmd": "/home/adnac/ai/deepmath/bin/deepmath-consult",
+    "deepmath_cmd_configured": true,
+    "deepmath_command_found": true,
+    "deepmath_home": "/home/adnac/ai/deepmath",
+    "deepmath_home_exists": true,
+    "external_repo": {
+      "head": "0d97187a17b0e1b54ecef109c43a904b50c99506",
+      "is_git_repo": true,
+      "status_short": "?? bin/"
+    }
+  },
+  "git": {
+    "branch": "main",
+    "head": "063e64e71e3ee6bc71922402b417fb31fd08bcba",
+    "status_short": "m DeepMath\n M README.md\n?? completion_maximality_smoke.als\n?? dev/PR003_C1_REFERENCE_ALTERNATIVES.md\n?? dev/PR003_COMPLETION_TRUNCATION_NONIDENTIFIABILITY.md\n?? docs/DEEPMATH_CONSULTING.md\n?? docs/NVIDIA_CONSULTING.md\n?? \"modelo contraejemplo.als\"\n?? poset_smoke.als\n?? scripts/consulting/"
+  },
+  "max_file_bytes": 200000,
+  "question_sha256": "e9bcb24555b0df0ea83e587d4e736e6392d31dd049a1ea28cc5dcf7188e6d577",
+  "repo_root": "/home/adnac/nachocausal",
+  "run_requested": true
+}

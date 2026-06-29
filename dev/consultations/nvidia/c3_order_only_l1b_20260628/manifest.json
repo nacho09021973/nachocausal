@@ -1,0 +1,30 @@
+{
+  "consultation_id": "c3_order_only_l1b_20260628",
+  "context": [
+    "/home/adnac/nachocausal/docs/comite/comite_decision_007_pr003-bl-localization-lemma-l1-regrade.md",
+    "/home/adnac/nachocausal/dev/PR003_BL_LOCALIZATION_NULL_LAW_NOTES.md"
+  ],
+  "created_utc": "2026-06-28T18:07:07.900385+00:00",
+  "git": {
+    "branch": "main",
+    "head": "063e64e71e3ee6bc71922402b417fb31fd08bcba",
+    "status_short": "m DeepMath\n M README.md\n?? completion_maximality_smoke.als\n?? dev/PR003_C1_REFERENCE_ALTERNATIVES.md\n?? dev/PR003_COMPLETION_TRUNCATION_NONIDENTIFIABILITY.md\n?? dev/consultations/\n?? docs/DEEPMATH_CONSULTING.md\n?? docs/NVIDIA_CONSULTING.md\n?? \"modelo contraejemplo.als\"\n?? poset_smoke.als\n?? scripts/consulting/"
+  },
+  "max_file_bytes": 200000,
+  "nvidia": {
+    "adapter_contract": "configured command reads dossier from stdin and writes answer to stdout",
+    "external_repo": {
+      "head": "5823e14295ed060af954677f25d162aa4ef9355e",
+      "is_git_repo": true,
+      "status_short": ""
+    },
+    "nvidia_cmd": "/home/adnac/ai/nvidia-consult/bin/nvidia-consult",
+    "nvidia_cmd_configured": true,
+    "nvidia_command_found": true,
+    "nvidia_home": "/home/adnac/ai/nvidia-consult",
+    "nvidia_home_exists": true
+  },
+  "question_sha256": "e9bcb24555b0df0ea83e587d4e736e6392d31dd049a1ea28cc5dcf7188e6d577",
+  "repo_root": "/home/adnac/nachocausal",
+  "run_requested": true
+}

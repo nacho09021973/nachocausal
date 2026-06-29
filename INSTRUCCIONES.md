@@ -121,7 +121,7 @@ Contrato:
 - modelos canónicos: `formal/alloy/`
 - modelos exploratorios: `dev/alloy/`
 - informes: `docs/alloy/`
-- skill local: `.claude/skills/alloy_verifier/`
+- skill global: `~/.claude/skills/alloy_verifier/`
 - documentación: `docs/ALLOY_VERIFICATION.md`
 
 Límite:
