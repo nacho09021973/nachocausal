@@ -171,3 +171,157 @@ order-only truncation could extend adherence past the seed floor.
   re-seeding) -> #2 (order-only stopping observable) -> #3 (accept the bound), each leakage-gated,
   with the minimal falsification test (complete-only agreement / relabel Guard-v / MINK flat control)
   carried forward.
+
+## Physical-tail scaling extension — 5-density exploratory sweep
+
+**Commit y estado del árbol usados:** `c2e64b56ed9666455a2b134c9e87d0b58569ca8a` — árbol limpio
+(ningún archivo modificado antes de este run; esta sección es la única modificación post-run).
+
+**Comando exacto:**
+```bash
+cd /home/ignac/nachocausal
+PYTHONUNBUFFERED=1 python3 -u - <<'PY' > /tmp/sweep_5density_raw.txt 2>&1
+import sys, time
+sys.path.insert(0, ".")
+sys.path.insert(0, "dev")
+from explore_seeds import EXPLORE_POOL
+from sweep_near_horizon_density import run
+print(f"START: {time.strftime('%Y-%m-%dT%H:%M:%S')}", flush=True)
+summary = run(list(EXPLORE_POOL[:6]), [21600.0, 28800.0], t_edge=6.0)
+print(f"END: {time.strftime('%Y-%m-%dT%H:%M:%S')}", flush=True)
+print(f"summary={summary}", flush=True)
+PY
+```
+
+**Ejecución:** START 2026-07-01T09:25:14 → END 2026-07-01T12:51:38 (3 h 26 min total).
+- intensity=21600: 4 583 s (76.4 min) para 6 semillas.
+- intensity=28800: 7 801 s (130.0 min) para 6 semillas.
+
+**Salida literal nueva (intensidades 21600 y 28800):**
+```
+intensity= 21600  ell=0.0183  ladders= 251 [4583s]
+   d_perp/ell  first3=2.84 [1.40,4.17]   tail=8.89   overall=7.77
+   direction relphi_mean  AUC(all)=0.951  AUC(<3ell)=0.756  near out/in=3/26
+
+intensity= 28800  ell=0.0158  ladders= 250 [7801s]
+   d_perp/ell  first3=3.00 [1.53,4.98]   tail=10.16   overall=8.39
+   direction relphi_mean  AUC(all)=0.959  AUC(<3ell)=0.486  near out/in=5/37
+```
+
+### Tabla completa de cinco densidades
+
+Puntos 1-3 tomados de "Density sweep result (2026-06-23)"; puntos 4-5 del run actual.
+
+| intensity |  ell   | ladders | first3 d⊥/ell [IQR]  | tail d⊥/ell | tail d⊥ físico | AUC(all) |
+|----------:|-------:|--------:|----------------------:|------------:|---------------:|---------:|
+|      3600 | 0.0447 |     148 | 2.34 [1.30, 3.52]    |        4.37 |         0.1953 |    0.943 |
+|      7200 | 0.0316 |     211 | 2.86 [1.26, 4.16]    |        6.17 |         0.1950 |    0.966 |
+|     14400 | 0.0224 |     231 | 2.59 [1.36, 4.00]    |        7.56 |         0.1693 |    0.960 |
+|     21600 | 0.01826|     251 | 2.84 [1.40, 4.17]    |        8.89 |         0.1623 |    0.951 |
+|     28800 | 0.01581|     250 | 3.00 [1.53, 4.98]    |       10.16 |         0.1606 |    0.959 |
+
+**`tail d⊥ físico` = (tail d⊥/ell) × ell** — nunca confundir con `tail d⊥/ell` ni con `bl`:
+- 3600:  4.37  × 0.0447  = 0.1953
+- 7200:  6.17  × 0.0316  = 0.1950
+- 14400: 7.56  × 0.0224  = 0.1693
+- 21600: 8.890 × 0.01826 = 0.1623
+- 28800: 10.158× 0.01581 = 0.1606
+
+Cambios consecutivos en d⊥ físico:
+
+| tramo           | Δ abs   | Δ rel  |
+|:----------------|--------:|-------:|
+| 3600 → 7200     | −0.0004 |  −0.2% |
+| 7200 → 14400    | −0.0256 | −13.1% |
+| 14400 → 21600   | −0.0070 |  −4.2% |
+| 21600 → 28800   | −0.0017 |  −1.0% |
+
+### Advertencias de comparabilidad
+
+1. **Parámetros idénticos:** EXPLORE_POOL[:6], t_edge=6, min_len=6, lmax=120, M=3,
+   budget=30000, selector `longest_censored`. Comparables con los 3 runs existentes. ✓
+2. **Fracción de búsquedas completas no reportada** por `sweep_near_horizon_density.py`.
+   El falsificador verificó a 3600/7200/14400 que las colas de búsquedas completas coinciden
+   con las del total (ver addenda del comité, 2026-06-24); esa verificación no está disponible
+   aquí sin modificar el script.
+3. **Escalado temporal empírico:** entre 21600 y 28800 el tiempo escala como N^1.85
+   (mucho mejor que el N^3.7 observado entre 14400 y 21600, probablemente efecto de caché).
+   El presupuesto de búsqueda no se redujo.
+4. **Script `MONOTONE-INCREASING` para first3:** el VERDICT READ-OFF del script cubre sólo
+   los dos puntos nuevos (2.84 → 3.00). Sobre los 5 puntos totales, `first3 d⊥/ell` es
+   **NON-MONOTONE** (2.34 → 2.86 → 2.59 → 2.84 → 3.00); la etiqueta del script no aplica
+   al sweep completo.
+
+### Respuestas a las tres preguntas
+
+**P1. ¿`tail d⊥/ell` continúa creciendo, se estabiliza o cambia de tendencia?**
+
+Crece monotonamente (4.37 → 6.17 → 7.56 → 8.89 → 10.16), pero los incrementos consecutivos
+disminuyen: +1.80, +1.39, +1.33, +1.27. Esto extiende a cinco densidades el fallo exploratorio
+de adherencia O(ell) para el selector `longest_censored` bajo el presupuesto fijo utilizado.
+La completitud de la búsqueda en las dos densidades nuevas no fue registrada (ver advertencia 2
+y veredicto `SEARCH_COMPLETENESS_AT_21600_28800`). La tasa de crecimiento adimensional se
+desacelera pero no revierte.
+
+**P2. ¿`tail d⊥ físico` disminuye, permanece constante o aumenta?**
+
+Decrece: 0.1953 → 0.1950 → 0.1693 → 0.1623 → 0.1606. La tasa de descenso se desacelera
+rápidamente: de −13.1% (7200→14400) a −4.2% (14400→21600) a −1.0% (21600→28800). El
+último par cambia solo 0.0017 mientras ell cae un 13.4%; bajo el modelo potencia con α=0.22,
+se esperaría un cambio de 3.1% — se observa sólo 1.0%.
+
+**P3. ¿Los cinco puntos discriminan entre d⊥ → c>0 y d⊥ ∝ ell^α?**
+
+No de forma concluyente. El patrón no es uniforme: plano en 3600-7200 (~0.195), salto brusco
+a 14400 (−13%), luego casi plano en 21600-28800 (~0.161). Este comportamiento sigmoidal es
+inconsistente con un modelo potencia puro en todo el rango; a su vez, la tendencia global es
+decreciente, lo que no descarta que la asíntota sea c=0 (decaimiento lento). Los residuos del
+modelo potencia (máx 0.009) son menores que los del modelo plateau c=0.1615 para los puntos
+1-2 (residuos ~0.034), pero el último par favorece el plateau.
+
+### Ajuste log-log descriptivo
+
+```
+EXPLORATORY_EFFECTIVE_EXPONENT_ONLY
+  ln(d⊥) = 0.219 × ln(ell) − 0.927
+  → d⊥ ≈ 0.396 × ell^0.219
+  EXPLORATORY_EFFECTIVE_EXPONENT = 0.22
+```
+
+ADVERTENCIA OBLIGATORIA: el modelo potencia se impone, no se identifica. Los exponentes
+efectivos por pares consecutivos son:
+
+| tramo           | α_par  |
+|:----------------|-------:|
+| 3600 → 7200     |  0.004 |
+| 7200 → 14400    |  0.411 |
+| 14400 → 21600   |  0.207 |
+| 21600 → 28800   |  0.073 |
+
+Rango 0.004–0.411: demasiado inestable para interpretar α≈0.22 como ley física. El exponente
+global es un promedio descriptivo del rango completo, no un parámetro físico identificado.
+
+### Veredictos
+
+```
+LONGEST_TAIL_O_ELL_ADHERENCE
+  = FAILED_IN_EXPLORATORY_3_DENSITY_SWEEP           [sin cambio; confirmado por 5 puntos]
+
+LONGEST_TAIL_PHYSICAL_CONVERGENCE =
+  EVIDENCE_FAVOURS_SLOW_DECAY_BUT_NOT_IDENTIFIED
+
+LONGEST_TAIL_SCALING_EXPONENT = UNRESOLVED
+
+EXPLORATORY_EFFECTIVE_EXPONENT = 0.22
+  (EXPLORATORY_EFFECTIVE_EXPONENT_ONLY — modelo potencia impuesto, no identificado)
+
+SEARCH_COMPLETENESS_AT_21600_28800 = UNVERIFIED
+```
+
+### Qué sigue sin estar identificado
+
+- Si la asíntota d⊥(ell→0) es cero (decaimiento lento) o un plateau positivo c≈0.16.
+- El mecanismo del salto no-uniforme entre 7200 y 14400 (el mayor descenso de la serie).
+- La fracción de búsquedas completas a 21600/28800 y su efecto sobre los valores de cola.
+- No se ha diseñado todavía un nuevo selector de horizonte, una banda de adherencia,
+  ni la extensión a Schwarzschild 3+1D.
