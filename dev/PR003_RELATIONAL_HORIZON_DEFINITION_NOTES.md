@@ -384,9 +384,39 @@ We reformulate the problem of the horizon to align with a purely pregeometric, q
     $$\mathcal A_R := \downarrow R = \{ x \in X : \exists y \in R, \ x \preceq y \}$$
     The *relational black hole region* relative to $R$ is the complement:
     $$\mathcal B_R := X \setminus \mathcal A_R$$
-    The *pregeometric relational horizon* is the relational boundary interface:
-    $$\mathcal H[C; R] := \{ (x, y) \in \mathcal B_R \times \mathcal A_R : x \prec \text{link} \ y \}$$
+    The *pregeometric relational horizon* is the relational boundary interface of **infalling
+    crossing links** (from the past of escape *into* the black region):
+    $$\mathcal H[C; R] := \{ (x, y) \in \mathcal A_R \times \mathcal B_R : x \prec \text{link} \ y \}$$
     where $x \prec \text{link} \ y$ denotes a causal link (an immediate relation with no intermediate elements).
+
+    `[CORRECCIÓN 2026-07-02 — orientación]` La versión previa de esta definición tomaba
+    $(x,y) \in \mathcal B_R \times \mathcal A_R$ con $x \prec y$. Ese conjunto es **demostrablemente
+    vacío para todo $R$, en todo preorden**: $\mathcal A_R = \downarrow R$ es down-set (luego
+    $\mathcal B_R$ es up-set), y $x \prec y \preceq r \in R$ fuerza $x \in \mathcal A_R$,
+    contradiciendo $x \in \mathcal B_R$. No depende de finitud, antisimetría ni sprinkling.
+    Formalizado como teorema-lápida `relationalHorizonOld_eq_empty` en
+    `formal/HorizonFormal/HorizonFormal/Horizon.lean`, junto con un **testigo de no-vacuidad** de la
+    orientación corregida (poset en V: $a<b$, $a<c$, $b \parallel c$; $R=\{b\}\subseteq\max$; el link
+    $(a,c)$ pertenece a $\mathcal H$). Los lemas previos sobre $\mathcal H$ razonaban desde una
+    hipótesis imposible (guardarraíl que no podía fallar). La orientación corregida coincide con la
+    de Dou–Sorkin (elemento inferior fuera del horizonte, superior dentro; gr-qc/0302009, dossier
+    §3.1.1bis).
+
+    **Qué es automático y qué NO tras la corrección.** Como $\mathcal B_R$ es up-set, ninguna
+    relación causal sale de $\mathcal B_R$ hacia $\mathcal A_R$ (`relationalBlackRegion_no_escape`)
+    — la prohibición one-way es estructural, **dado un $R$ correcto**. Esto elimina la necesidad de
+    caras laterales para el track event-horizon-relativo-a-$R$, pero NO demuestra la condición (III)
+    completa de §4 (futuro exterior desarrollado, separación de pared/inhomogeneidad persistente,
+    correspondencia física): toda esa carga se desplaza a la regla de selección de $R$, que sigue
+    ABIERTA. La interfaz no descubre el horizonte; delimita lo que el selector ya declaró incapaz de
+    escapar.
+
+    **Restricción vinculante para cualquier selector futuro de $R$:** el selector debe devolver
+    $R \subseteq \max(C)$ directamente, o, si construye primero una región atrapada
+    $\widehat{\mathcal B}$, debe demostrar el cierre
+    $\widehat{\mathcal B} = X \setminus \downarrow\!\bigl(\max(C)\setminus\widehat{\mathcal B}\bigr)$
+    — una clausura-up arbitraria NO lo satisface en general (contraejemplo: cadena $0<1$ con
+    $\widehat{\mathcal B}=\{1\}$ da $R=\varnothing$ y $\mathcal B_R = X \neq \widehat{\mathcal B}$).
 
 ---
 
@@ -395,7 +425,8 @@ We reformulate the problem of the horizon to align with a purely pregeometric, q
 *   `[PROVED] Proposition 9.2.1 (The Triviality of Static Absolute Ends).` *If $C$ is a finite causal set, defining $R$ as the set of future ends $\mathscr E^+(C)$ yields a trivial horizon:*
     $$R = \mathscr E^+(C) \implies \mathcal H[C; R] = \varnothing$$
 
-    *Proof.* By Proposition 8.8.1, for any finite poset $C$, $\mathscr E^+(C) = \varnothing$. Thus, $R = \varnothing \implies \mathcal A_R = \varnothing \implies \mathcal B_R = X$. Since $\mathcal A_R$ is empty, the Cartesian product $\mathcal B_R \times \mathcal A_R$ is empty, meaning $\mathcal H[C; R] = \varnothing$. $\blacksquare$
+    *Proof.* By Proposition 8.8.1, for any finite poset $C$, $\mathscr E^+(C) = \varnothing$. Thus, $R = \varnothing \implies \mathcal A_R = \varnothing \implies \mathcal B_R = X$. Since $\mathcal A_R$ is empty, the Cartesian product $\mathcal A_R \times \mathcal B_R$ is empty, meaning $\mathcal H[C; R] = \varnothing$. $\blacksquare$ *(Enunciado y prueba
+    válidos también con la orientación corregida de 9.1.1.)*
 
 *   `[CONJECTURE] 9.2.2 (Dynamic Escape via Truncated Flow).` In a finite causal set $C$ representing a partial history, the relational reference $R$ cannot be absolute. It must be defined dynamically, either as:
     1.  The set of maximal elements of $C$: $R = \operatorname{max}(C) = \{ x \in X : \nexists y \in X, \ x \prec y \}$.
@@ -447,13 +478,16 @@ result.
 
 3. **Finite observable interface — `RelationalHorizon`.** For a finite causet and a relational
    reference subset `R`, `RelationalHorizon R` is the finite interface
-   $$\mathcal H[C;R] = \{(x,y) : x \in \mathcal B_R,\ y \in \mathcal A_R,\ x \prec_{\mathrm{link}} y\}.$$
-   Lean proves only structural facts: `RelationalPast R` is a lower set, enlarging `R` enlarges the
-   past and shrinks the black-region candidate, and horizon pairs cross from
-   `RelationalBlackRegion R` to `RelationalPast R` along a strict cover
-   (`relationalHorizon_lt`, `relationalHorizon_fst_not_mem_past`,
-   `relationalHorizon_snd_not_mem_black`). These are order-theoretic guardrails, not recovery of a
-   classical horizon.
+   $$\mathcal H[C;R] = \{(x,y) : x \in \mathcal A_R,\ y \in \mathcal B_R,\ x \prec_{\mathrm{link}} y\}$$
+   (orientación corregida 2026-07-02, ver 9.1.1; la versión $\mathcal B_R \to \mathcal A_R$ es vacía,
+   teorema-lápida `relationalHorizonOld_eq_empty`). Lean proves only structural facts:
+   `RelationalPast R` is a lower set, enlarging `R` enlarges the past and shrinks the black-region
+   candidate, horizon pairs fall from `RelationalPast R` into `RelationalBlackRegion R` along a
+   strict cover (`relationalHorizon_lt`, `relationalHorizon_fst_mem_past`,
+   `relationalHorizon_snd_mem_black`), no causal relation leaves the black region into the past
+   (`relationalBlackRegion_no_escape`), and the corrected interface is non-vacuous on an explicit
+   witness (`VPoset.relationalHorizon_nonempty_witness`). These are order-theoretic guardrails, not
+   recovery of a classical horizon.
 
 **C1 reading after the Lean bridge.** C1 should be written as an order-only finite interface
 candidate built around $\mathcal H[C;R]$: a closed rule selects or approximates a relational

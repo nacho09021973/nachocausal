@@ -16,10 +16,16 @@ enter the construction.
 C1 is interpreted through the finite relational interface
 
 ```text
-H[C; R] = {(x,y) : x in B_R, y in A_R, x covers y}
+H[C; R] = {(x,y) : x in A_R, y in B_R, y covers x}
 A_R = down(R)
 B_R = C \ A_R
 ```
+
+`[CORRECCIÓN 2026-07-02 — orientación]` La versión previa (`x in B_R, y in A_R`) es demostrablemente
+vacía para todo `R` en todo preorden (`A_R` es down-set ⇒ ningún link sale de `B_R` hacia `A_R`);
+ver notas §9.1.1 y el teorema-lápida `relationalHorizonOld_eq_empty` en
+`formal/HorizonFormal/HorizonFormal/Horizon.lean`. La interfaz corregida son los links entrantes
+(infalling), orientación Dou–Sorkin.
 
 where `R` is an internally selected relational reference subset. In Lean terms:
 

@@ -288,6 +288,8 @@ RelationalPast
 RelationalBlackRegion
 IsCover
 RelationalHorizon
+RelationalHorizonOld   -- tombstone (pre-2026-07-02 orientation, provably empty)
+VPoset                 -- three-element non-emptiness witness poset
 ```
 
 Proved:
@@ -298,28 +300,39 @@ relationalPast_lower
 relationalPast_mono
 relationalBlackRegion_antitone
 relationalBlackRegion_upper
+relationalBlackRegion_no_escape
+relationalHorizonOld_eq_empty
 mem_relationalHorizon_pair
-relationalHorizon_fst_mem_black
-relationalHorizon_snd_mem_past
+relationalHorizon_fst_mem_past
+relationalHorizon_snd_mem_black
 relationalHorizon_isCover
 relationalHorizon_lt
 relationalHorizon_ne
-relationalHorizon_fst_not_mem_past
-relationalHorizon_snd_not_mem_black
+relationalHorizon_fst_not_mem_black
+relationalHorizon_snd_not_mem_past
 relationalPast_empty
 relationalHorizon_empty
 relationalPast_univ
 relationalBlackRegion_univ
 relationalHorizon_univ
+VPoset.relationalHorizon_nonempty_witness
 ```
 
 Interpretation:
 
 These are order-theoretic structural checks only. They establish that
 `RelationalPast R` is a lower set, that enlarging `R` enlarges the past and
-shrinks the black-region candidate, and that horizon pairs cross from
-`RelationalBlackRegion R` to `RelationalPast R` along a strict cover. They do
-not prove physical horizon recovery.
+shrinks the black-region candidate, and that horizon pairs fall from
+`RelationalPast R` into `RelationalBlackRegion R` along a strict cover. The
+pre-correction orientation (`RelationalHorizonOld`, pairs from the black region
+into the past) is provably empty for every `R` in every preorder
+(`relationalHorizonOld_eq_empty`) — its lemmas were vacuously true; the
+corrected interface carries an explicit non-emptiness witness so the
+formalisation can fail. `relationalBlackRegion_no_escape` records the only
+automatic component of any one-way condition: no causal relation leaves the
+black region into the past. They do not prove physical horizon recovery, and
+they do not discharge condition (III) of the notes (§4) — that burden lies
+entirely with the still-open selection rule for `R`.
 
 ## 3. Current audit labels
 
