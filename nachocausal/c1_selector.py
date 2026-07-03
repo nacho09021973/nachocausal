@@ -3,6 +3,14 @@
 This module implements only the current written draft `R = Max(C)` so tests can
 lock in its finite-poset consequence: `down(Max(C)) = C`, hence no interface.
 It is a negative preflight guardrail, not a C1 signal implementation.
+
+Orientation (corrected 2026-07-02, mirrors `relationalHorizonOld_eq_empty` in
+`formal/HorizonFormal/HorizonFormal/Horizon.lean`): interface pairs are the
+infalling cover links `(x, y)` with `x in A_R = down(R)` and `y in B_R = C \\ A_R`.
+The pre-correction orientation (`x in B_R, y in A_R`) is provably empty for every
+reference in every preorder, so an emptiness assertion against it could never
+fail; with the corrected orientation, `H[C; Max(C)] = empty` holds because
+`B_R = empty`, which is the actual degeneracy of the draft reference rule.
 """
 
 from __future__ import annotations
@@ -53,6 +61,27 @@ def cover_relations(past_matrix: np.ndarray) -> FrozenSet[Tuple[int, int]]:
     return frozenset(covers)
 
 
+def relational_interface(
+    past_matrix: np.ndarray, reference: FrozenSet[int]
+) -> FrozenSet[Tuple[int, int]]:
+    """Return `H[C; R]`: infalling cover links from `A_R = down(R)` into `B_R`.
+
+    Corrected orientation (2026-07-02): pairs `(x, y)` with `x in A_R`,
+    `y in B_R`, `y` covering `x`. The reversed orientation is provably empty
+    for every reference (`relationalHorizonOld_eq_empty`).
+    """
+    if past_matrix.dtype != bool:
+        past_matrix = past_matrix.astype(bool)
+    n = past_matrix.shape[0]
+    assert past_matrix.shape == (n, n), "C1 selector expects a square poset matrix"
+    accessible = down_closure(past_matrix, reference)
+    black_region = frozenset(i for i in range(n) if i not in accessible)
+    covers = cover_relations(past_matrix)
+    return frozenset(
+        (x, y) for x, y in covers if x in accessible and y in black_region
+    )
+
+
 def c1_selector(past_matrix: np.ndarray) -> Selection:
     """Select the draft C1 reference and finite interface.
 
@@ -66,12 +95,7 @@ def c1_selector(past_matrix: np.ndarray) -> Selection:
     assert past_matrix.shape == (n, n), "C1 selector expects a square poset matrix"
 
     reference = maximal_elements(past_matrix)
-    accessible = down_closure(past_matrix, reference)
-    black_region = frozenset(i for i in range(n) if i not in accessible)
-    covers = cover_relations(past_matrix)
-    interface = frozenset(
-        (x, y) for x, y in covers if x in black_region and y in accessible
-    )
+    interface = relational_interface(past_matrix, reference)
     return {"R": reference, "interface": interface}
 
 
