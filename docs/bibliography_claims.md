@@ -728,15 +728,50 @@ full-text OCR not available in this session's toolset]`. Flag for a future sessi
 tooling (or `marker_single`, already used for this project's other derived-md conversions per
 `CLAUDE.md`).
 
+### 5.2bis Trotter (1976), "Combinatorial Problems in Dimension Theory for Partially Ordered
+Sets": acquired and read in full (auditor pass, 2026-07-03) — does not resolve §5.3
+
+**Identificación exacta**: W.T. Trotter, Jr., "Combinatorial Problems in Dimension Theory for
+Partially Ordered Sets," *Colloques Internationaux du C.N.R.S. N°260 — Problèmes Combinatoires et
+Théorie des Graphes* (Orsay, 1976), pp. 403–406. Locally archived at
+`biblioteca/parcial_Set_Trotter.pdf` (4 pages, ClearScan OCR text layer — confirmed machine-readable
+via `pdftotext`, unlike the `biblioteca/derived-md/`-less scans in §5.2). This is a **different,
+shorter paper** from both the Kelly–Trotter (1982) chapter and the Trotter (1995) handbook chapter
+already catalogued in §5.2 — a conference proceedings note, not a survey/handbook chapter.
+
+**Contenido**: a short survey of results in poset dimension theory as of 1976 — Hiraguchi's
+`Dim(X) ≤ |X|/2` bound and simplified proofs thereof, irreducible/doubly-irreducible posets,
+existence of m-dimensional irreducible posets of arbitrary length (Trotter's own prior result),
+splits `S(X)` and the inequality `Dim(X) ≤ Dim(S(X)) ≤ 1+Dim(X)`, amalgamations of rooted posets,
+and `Dim(X × Y)` bounds for cartesian products. Ends with five open problems as of 1976.
+
+**Qué respalda**: general poset-dimension background (irreducibility, splits, products);
+tangential to but not overlapping the `dim_DM ≤ 2` equivalence itself (§5.1 already covers that,
+via the primary Dushnik–Miller source).
+
+**Qué NO demuestra**: **read in full this session — grepped for "uniqu", "realizer", "conjugate",
+"automorph": zero occurrences.** It does not state, prove, or bear on realizer/conjugate
+uniqueness-up-to-swap for dimension-2 posets. **§5.3's `UNSUPPORTED_GAP` verdict is unchanged by
+this source.**
+
+**Estado**: `SUPPORTED` (background only) — read in full, correctly identified, does not touch
+the open question.
+
+**Provenance note**: this file was present in `biblioteca/` (mtime 2026-07-02, the same session as
+this dossier's other `[re-graded 2026-07-02 audit]` edits) but was never entered into this
+dossier — found and closed out by `/auditor` (`docs/auditor/auditor_report_003_bibliography-claims-vs-biblioteca.md`,
+finding #2) on 2026-07-03, not by the original dossier pass. §5.5's earlier claim that only item 2
+was "genuinely missing" is corrected below.
+
 ### 5.3 Uniqueness / automorphisms / modular decomposition: still `UNSUPPORTED_GAP`
 
-**No source read this session — including the primary 1941 paper now fully read — states or
-proves, for general dimension-2 posets, that the realizer/conjugate is unique up to swapping the
-two linear orders.** The two most likely remaining candidates to contain this
-(Kelly–Trotter 1982, Trotter 1995) are now physically present in `biblioteca/` but not
-text-extractable without OCR tooling not available this session (§5.2). Prior arXiv-based search
-for automorphism groups / modular decomposition of 2-dimensional posets specifically (performed
-in the previous pass of this dossier) still returned nothing on-target.
+**No source read to date — including the primary 1941 paper (§5.1) and the 1976 Trotter note
+(§5.2bis), both now fully read — states or proves, for general dimension-2 posets, that the
+realizer/conjugate is unique up to swapping the two linear orders.** The two most likely
+remaining candidates to contain this (Kelly–Trotter 1982, Trotter 1995) are now physically present
+in `biblioteca/` but not text-extractable without OCR tooling not available this session (§5.2).
+Prior arXiv-based search for automorphism groups / modular decomposition of 2-dimensional posets
+specifically (performed in the previous pass of this dossier) still returned nothing on-target.
 
 **Do not adopt "realizer uniqueness up to swap" as literature-backed** anywhere in C1/`comite`
 material until either (a) `ordenes dimension 003.pdf` or `009.pdf` is OCR'd and actually read, or
@@ -789,6 +824,7 @@ None of these are marked `SUPPORTED` in this dossier — they are inventoried, n
 | 8 | arXiv:1909.08620 (Barton et al., horizon molecules) | **Acquired** (`1909.08620v1.pdf`), already read via alphaXiv |
 | 9 | arXiv:2301.06480 (Bhattacharya, Mathur, Surya, ladders) | **Acquired**, text layer confirmed readable (`2301.06480v1.pdf`); abstract spot-read this session — see note below |
 | 10 | arXiv:2307.04150 (Dou 2023, arXiv manuscript / invited handbook chapter) | **Acquired**, text layer confirmed readable (`2307.04150v1.pdf`); chronological review of horizon-molecule proposals, submitted to arXiv 2023-07-09 as an invited chapter for the *Handbook of Quantum Gravity* — no published-edition reference documented, so dated 2023 until one is; full read still pending |
+| 11 | Trotter (1976), CNRS Colloque N°260 note | **Acquired, read in full** (`parcial_Set_Trotter.pdf`) — §5.2bis; found present-but-uncatalogued by `/auditor` audit 003, 2026-07-03; does not resolve §5.3 |
 
 **Late addendum (item 9)**: the abstract of arXiv:2301.06480 — "Null Geodesics from Ladder
 Molecules," A. Bhattacharya, A. Mathur, S. Surya — states a result not captured in §4.2's
@@ -804,4 +840,9 @@ only, full text not analyzed this session.
 **Still genuinely missing after this pass**: only item 2 (Trotter's 1992 book) has no local
 substitute confirmed to cover the same ground — and even that is provisional, since item 3 is
 physically acquired but not yet actually legible (OCR blocker), and items 9-10 are acquired and
-legible but not yet fully read for dossier-grade claims.
+legible but not yet fully read for dossier-grade claims. `[Correction, 2026-07-03: this claim was
+itself incomplete — item 11 (Trotter 1976, `parcial_Set_Trotter.pdf`) was already present in
+`biblioteca/` at the time this sentence was written but had not been entered into this dossier;
+found by `/auditor` audit 003. It is a real but partial substitute — general poset-dimension
+background, not a hit on the §5.3 uniqueness question. The residual gap is unchanged: only a
+genuine reading of Kelly–Trotter (1982) or Trotter (1995) (item 3, OCR-blocked) can close §5.3.]`
