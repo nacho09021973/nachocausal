@@ -1,8 +1,19 @@
-# Pre-registration 002 — RESULT: **PASS**
+# Pre-registration 002 — RESULT: **PASS [PRIMARY_ARTIFACT_LOST; TRANSCRIPTION_REVERIFIED; BLINDNESS_DOCUMENTARY_ONLY]**
 
 The single blind `validate.run()` on the prereg-002 held-out seeds was executed
 **once**, exactly as frozen. Per the binding reporting rule
 (`docs/preregistration_002.md`), the outcome is recorded regardless of value.
+
+> **2026-07-04 annotation:** the raw artifact of this original 2026-06-22 run was later found
+> unrecoverable (`docs/auditor/auditor_report_005_prereg002-pass-raw-artifact-integrity.md`,
+> `AUDIT_FAIL`), and the second machine holding it is not available (PI determination,
+> `results/README.md`). The transcription below was verified by a `SUPERVISED_REVERIFICATION` —
+> a deterministic replay on the same sealed instrument, commit, and frozen seeds — authorised by
+> `docs/comite/comite_decision_016_prereg002-supervised-reverification.md` and governed by
+> `docs/prereg002_reverification_declaration.md`. Outcome: **MATCH**, every field
+> (`docs/prereg002_reverification_result.md`). "First and only evaluation of the held-out band"
+> below refers strictly to the historical 2026-06-22 event, whose primary raw artifact is lost;
+> the reverification is a distinct, later verification exercise, never the original evaluation.
 
 - **Verdict: PASS** — all six frozen checks hold at the primary endpoint
   (intensity 12000), `t_edge = 6` (in-domain).

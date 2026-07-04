@@ -13,7 +13,9 @@
 
 - **prereg-002 `PASS`** (`docs/preregistration_002_result.md`, sello `6e2c3888…`): localización
   *order-only* del borde asociado al horizonte en un parche finito 1+1D, a ciegas y bajo protocolo
-  congelado.
+  congelado. *(Nota 2026-07-04: status actualizado a `PASS [PRIMARY_ARTIFACT_LOST;
+  TRANSCRIPTION_REVERIFIED; BLINDNESS_DOCUMENTARY_ONLY]` — ver
+  `docs/prereg002_reverification_result.md`.)*
 - **Claim acotada:** localización — **no** reconstrucción de métrica, **no** horizonte global,
   **no** 3+1D, **no** Kerr.
 - **Objetivo de PR-003:** cambiar *qué devuelve el estimador* — de «el borde está entre X e Y» a

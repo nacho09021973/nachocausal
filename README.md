@@ -38,6 +38,12 @@ is demonstrated under a fully frozen protocol.** The arc:
   checks hold at the primary endpoint (intensity 12000): sign-flip `p=9.5e-7`, coverage 0.95, median
   `|dr|/2M = 0.064 ≤ θ_loc`, boundary r-std 0.008, false-positive 0.00, Guard-v clean. 20/20 valid
   seeds at all four N levels.
+- **Status label (2026-07-04):** `PASS [PRIMARY_ARTIFACT_LOST; TRANSCRIPTION_REVERIFIED;
+  BLINDNESS_DOCUMENTARY_ONLY]`. The original run's raw artifact was later found unrecoverable; a
+  `SUPERVISED_REVERIFICATION` — a deterministic replay of the same sealed instrument, commit, and
+  frozen seeds, user-authorised per comité 016 — matched the transcription exactly on every field
+  (`docs/prereg002_reverification_result.md`). This verifies the transcription, not the lost
+  artifact; it is never presented as the original blind evaluation.
 
 **Bounded claim (do not overstate):** the causal order alone — no coordinates accessible to the
 estimator — localises the horizon-associated boundary *significantly and stably* in a 1+1D

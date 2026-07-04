@@ -11,6 +11,8 @@
 
 - **prereg-002 `PASS`**, sello `6e2c3888…` (`make verify-seal` = `docs/preregistration_002.md`):
   localización *order-only* del borde asociado al horizonte en un parche finito 1+1D, a ciegas.
+  *(Nota 2026-07-04: status actualizado a `PASS [PRIMARY_ARTIFACT_LOST; TRANSCRIPTION_REVERIFIED;
+  BLINDNESS_DOCUMENTARY_ONLY]` — ver `docs/prereg002_reverification_result.md`.)*
 - **Pregunta del 23-jun CERRADA** (exploratoria, 6 semillas; `dev/measure_truncated_head.py`,
   `dev/PR003_NEAR_HORIZON_NOTES.md`): *¿una cabeza truncada order-only es conexa y se queda O(ℓ)?*
   Veredicto **`BARE_RELOCALISATION`**: la cabeza adherente existe (conectividad 100 %) pero es solo

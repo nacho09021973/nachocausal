@@ -11,7 +11,9 @@
 
 - **prereg-002 `PASS`**, sello `nachocausal/thresholds.py` sha256 =
   `6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4` (`make verify-seal`). Camino
-  sellado intacto; nada de esta fase lo toca.
+  sellado intacto; nada de esta fase lo toca. *(Nota 2026-07-04: status actualizado a
+  `PASS [PRIMARY_ARTIFACT_LOST; TRANSCRIPTION_REVERIFIED; BLINDNESS_DOCUMENTARY_ONLY]` — ver
+  `docs/prereg002_reverification_result.md`.)*
 - **PR-003 está en Fase #3.** El cascade #1 (expansión Θ, S1/S2 NEGATIVE) y #2 (re-sembrado
   iterativo S3, NO converge: cobertura honesta 51→48→44 % al subir densidad) cerraron en negativo.
   El objeto *extendido* se aparta; **PR-003 consolida sobre la cota O(ℓ) medida** (`BARE_RELOCALISATION`).
