@@ -1,25 +1,32 @@
-# PR-003 — R-VAR spec v2.1: selector variacional de consenso con abstención tipada (revisión post-comité 017)
+# PR-003 — R-VAR spec v2.2: selector variacional de consenso con abstención tipada (parche documental post-Gate-0-Tier-0)
 
-> **SUPERSEDED (2026-07-04) por `dev/PR003_R_VAR_SELECTOR_SPEC_V2_2.md`.** Gate 0 Tier 0
-> (`dev/PR003_RVAR_GATE0_TIER0_REPORT.md`, commit `b142377`) encontró que el sketch de D.2.1
-> ("DP local sobre pasos de escalera") no era directamente implementable; v2.2 lo reemplaza por
-> la construcción de min-cut / cierre de peso máximo, verificada contra fuerza bruta. Todo lo
-> demás de v2.1 (cierres a-d, f-i, CIRCULARITY_STANDARD, V.1a/V.1b) se conserva sin cambio en
-> v2.2. Conservado aquí solo como registro histórico; donde v2.1 y v2.2 difieran, **v2.2
-> gobierna**.
+Status: **dev nota de especificación, solo escritura — parche documental mínimo, sin ejecución.**
+Sin código nuevo, sin simulación, sin enumeración, sin Alloy, sin Lean, sin datos, sin freeze,
+sin cómputo de μ, sin Tier 1, sin tocar `EXPLORE_POOL` ni `VALIDATION_SEEDS`, sin tocar el path
+sellado ni tracks de producción/parches BH. Escrita en respuesta directa al hallazgo lateral del
+informe de Gate 0 Tier 0 (`dev/PR003_RVAR_GATE0_TIER0_REPORT.md`, sección "Hallazgo que debe
+alimentar la próxima revisión de la spec"), autorizada explícitamente por el PI como parche
+quirúrgico previo a cualquier autorización de Tier 1.
 
-Status: **dev nota de especificación, solo escritura. Sin código, sin simulación, sin
-enumeración, sin Alloy, sin Lean, sin datos, sin freeze, sin commit de ejecución.** Escrita en
-respuesta a `docs/comite/comite_decision_017_r-var-v2-reconvene.md` (§9, paso reversible 1),
-que independientemente verificó los nueve cierres (a)-(i) autoreportados por v2 y encontró que
-tres — (a) el cuantificador de V.1a, (c) el testigo de separación C.1, (d) el rol real de F3 —
-estaban cerrados en la letra pero no en la sustancia (falsifier de 017). Esta revisión v2.1
-corrige exactamente esos tres, más cuatro ajustes menores (§9 de 017), y añade el Gate 0 de
-falsación silenciosa que el falsifier de 017 identificó como el hallazgo de mayor severidad.
-Sustituye a `dev/PR003_R_VAR_SELECTOR_SPEC_V2.md` (v2), que queda como registro histórico junto
-con `dev/PR003_R_VAR_SELECTOR_SPEC.md` (v1); donde v2 y v2.1 difieren, **v2.1 gobierna**. Esta
-revisión en sí misma NO constituye ni solicita la autorización scoped de comité 017 §9 paso 3
-(S1-S5) — esa sigue pendiente de autorización explícita del PI.
+**Qué corrige exactamente esta revisión (nada más):**
+1. D.2.1/D.2.2: el sketch de "DP local sobre pasos de escalera" queda **superseded** por la
+   construcción de min-cut / cierre de peso máximo, verificada en Gate 0 Tier 0 contra fuerza
+   bruta con cero discrepancias en los 4 pasos de la iteración Dinkelbach.
+2. El hallazgo del empate espurio (`D=∅`, `D=C` empatan trivialmente con el óptimo real bajo la
+   fórmula `G` sin restringir) se registra explícitamente como la justificación de por qué los
+   filtros de pertenencia a `𝒜(C)` son restricciones DURAS de admisibilidad previas a la
+   optimización, no heurísticas de limpieza posteriores.
+3. Gate 0 (D.2.3) se mantiene intacto y sigue siendo obligatorio antes de cualquier cómputo de
+   tabla μ o escalado a Tier 1 — no queda relajado por haber pasado ya sobre el poset de 16
+   elementos; Tier 1 (≥100 posets automatizados) es una verificación adicional pendiente, no
+   redundante.
+
+**Esta revisión v2.2 NO autoriza Tier 1, ni el cómputo de μ, ni ningún paso de S1-S5 más allá de
+lo ya ejecutado en Gate 0 Tier 0.** Sustituye a `dev/PR003_R_VAR_SELECTOR_SPEC_V2_1.md` (v2.1),
+que queda como registro histórico junto con v2 y v1; donde v2.1 y v2.2 difieren, **v2.2
+gobierna**. Fue v2.1 quien independientemente verificó y corrigió los nueve cierres (a)-(i)
+autoreportados por v2 (comité 017); ese trabajo se conserva sin cambios aquí — v2.2 toca
+ÚNICAMENTE D.2.1/D.2.2 y las referencias directas a ellos.
 
 Preservado sin reapertura (tokens vinculantes, verificados por comité 015 §2 y re-confirmados por
 comité 017 §2): `Q_DISPOSITION = Q_DIAGNOSTIC_CANDIDATE_ONLY` | `OVERALL_VERDICT (014) =
@@ -48,7 +55,10 @@ usar exclusivamente `EXPLORE_POOL`.
 
 | Archivo | Uso |
 |:---|:---|
-| `docs/comite/comite_decision_017_r-var-v2-reconvene.md` | El mandato de esta revisión — falsifier §5, síntesis §8, next-step spec §9 |
+| `dev/PR003_RVAR_GATE0_TIER0_REPORT.md` | El hallazgo que motiva esta revisión: min-cut verificado, sketch de D.2.1 superseded, empate espurio documentado |
+| `dev/measure_pr003_rvar_gate0.py`, `dev/gate0_tier0_result.json` | Código y output crudo de Gate 0 Tier 0 (commit `b142377`) — la evidencia detrás del parche |
+| `dev/PR003_R_VAR_SELECTOR_SPEC_V2_1.md` | Versión previa (v2.1); todo lo no tocado aquí se hereda sin cambio |
+| `docs/comite/comite_decision_017_r-var-v2-reconvene.md` | El mandato de la revisión v2.1 — falsifier §5, síntesis §8, next-step spec §9 |
 | `docs/comite/comite_decision_015_r-var-selector-adjudication.md` | Los 7 briefs y el mandato §8-§9 originales; cada cierre de abajo cita el hallazgo que lo motiva |
 | `docs/comite/comite_decision_016_prereg002-supervised-reverification.md`, `docs/prereg002_reverification_result.md`, `docs/prereg002_reverification_declaration.md` | Cierre del audit de prereg-002 (MATCH), etiqueta de status corregida arriba |
 | `docs/comite/comite_decision_012_c1-admissible-completion-class.md` (bloque normativo :330-360) | D1 (cláusulas MANDATORY/DEFERRED de la clase admisible), D2 (convexidad MANDATORY; dim≤2 solo para 𝔄_Schw) |
@@ -312,31 +322,63 @@ adicional: la media por link es la forma cuya expectativa es el contraste físic
 (independiente de |H| en media) y la única con algoritmo exacto cerrado (D.2.1-D.2.2).
 ```
 
-### D.2.1 Optimización: Dinkelbach entero sobre escaleras (esbozo obligatorio, estatus PLAUSIBLE)
+### D.2.1 Optimización: cierre de peso máximo / min-cut (revisado v2.2 — sketch de escalera SUPERSEDED)
+
+**[PARCHE v2.2, motivado por el hallazgo de Gate 0 Tier 0, `dev/PR003_RVAR_GATE0_TIER0_REPORT.md`]:**
+el sketch previo ("DP local sobre pasos de escalera", un párrafo, estatus `PLAUSIBLE, no
+probado`) resultó NO ser directamente implementable como una DP escalar de estado local: la
+contribución de una arista de cobertura `(x,y)` a `A(D)` depende de la pertenencia de AMBOS
+extremos, y aunque toda arista de cobertura va de menor a mayor posición-`u` (hecho estructural
+verificado), plegar esto en un barrido de estado escalar único exige más derivación de la que el
+sketch daba. **Ese sketch queda SUPERSEDED — no se cita más como el algoritmo, salvo que una
+futura revisión demuestre por escrito su equivalencia exacta con lo que sigue.**
+
+**Algoritmo correcto, verificado (v2.2 — reemplaza D.2.1 íntegramente):**
 
 Bajo `dim_DM(C) ≤ 2` (garantizado para la familia generadora — matemático de 015: conformidad
-plana 2D; comités 010:72,78 y 011:137), fijado un realizador `ρ=(L_U,L_V)` (solo estructura de
-búsqueda; el resultado depende únicamente de `≤`):
+plana 2D; comités 010:72,78 y 011:137), el problema `max_D [ q·A(D) − p·B(D) ]` sobre down-sets
+`D` de un poset, para `λ=p/q ∈ ℚ` fijo, es una instancia del **problema de cierre de peso
+máximo** (*maximum-weight closure*, Picard 1976): reescribiendo el objetivo aditivo-por-arista
+como `Σ_z d_z·c_z` con `c_z := Σ_{(z,y) cobertura} w(z,y) − Σ_{(x,z) cobertura} w(x,z)` y
+`w(x,y):=q(d⁺(x)−d⁺(y))−p`, sujeto a `d_x ≥ d_y` para toda cobertura `x⋖y` (la condición de
+down-set), este es exactamente el problema de Picard y se resuelve por **min-cut**: nodo por
+elemento, arista `S→z` de capacidad `c_z` si `c_z>0`, arista `z→T` de capacidad `−c_z` si
+`c_z<0`, y arista `y→x` de capacidad `∞` por cada cobertura `x⋖y` (impone `d_x≥d_y`). El valor
+óptimo es `Σ_{c_z>0} c_z − mincut`; el `D` óptimo es el conjunto alcanzable desde `S` en el
+grafo residual. Polinomial en `|C|` y `|covers|` vía cualquier algoritmo de flujo máximo
+estándar (Edmonds-Karp basta para los tamaños de este proyecto).
 
-1. Los down-sets anclados son caminos-escalera monótonos en la retícula del realizador.
-2. Para λ = p/q ∈ ℚ fijo, `max_D [ q·A(D) − p·B(D) ]` es un objetivo **aditivo por arista de
-   Hasse cruzada** (cada par de cobertura (x,y) contribuye `q·(d⁺(x)−d⁺(y)) − p` si cruza el
-   cut, 0 si no): un camino óptimo en un DAG de pasos de escalera, resoluble por programación
-   dinámica en tiempo polinomial con pesos enteros.
-3. Iteración de Dinkelbach: λ₀ arbitrario admisible; λ_{k+1} := A(D_k)/B(D_k) como racional
-   exacto; parar cuando `max_D [q_k·A − p_k·B] = 0`. Con A,B enteros acotados polinomialmente,
-   converge en un número polinomial de iteraciones.
+**Empate degenerado (hallazgo de Gate 0, elevado aquí a advertencia normativa — ver también
+D.1):** el óptimo SIN restringir a `𝒜(C)` empata trivialmente entre el verdadero óptimo, `D=∅`
+y `D=C`, porque `H(∅)=H(C)=∅` da `A=B=0` y por tanto `G=0` para ambos casos triviales bajo la
+fórmula cruda. **Esto significa que los filtros de pertenencia a `𝒜(C)` (`D≠∅`, `D≠C`,
+`H[C;D]≠∅`, `(C∖D)∩Min(C)≠∅`, D.1) deben aplicarse ANTES de tomar el argmax — son restricciones
+DURAS de admisibilidad de la optimización, no un post-filtro cosmético de limpieza.** Cualquier
+implementación que compute el cierre de peso máximo sin filtrar por `𝒜(C)` puede devolver
+`D=∅` o `D=C` como "óptimo" — un error silencioso distinto del que Gate 0 Tier 0 ya cazó, pero
+de la misma familia (optimizar sobre el conjunto equivocado sin que ningún tipo de abstención lo
+note). El tier de juguete y cualquier futura implementación DEBEN filtrar por `𝒜(C)` antes de
+declarar un argmax.
 
-`ESTATUS: SPECIFICATION-CLOSED, PROOF-OPEN` (relabel comité 017 — nunca `[CERRADO]` a secas en
-el bloque normativo, Parte H, hasta que Gate 0 (D.2.3) pase) — el paso 2 (que el cruce de cada
-arista sea función local del camino-escalera) es la obligación técnica que el tier de juguete
-debe verificar PRIMERO, en posets escritos a mano, antes de cualquier sprinkling.
+Iteración de Dinkelbach (sin cambio de v2.1): `λ₀` arbitrario admisible; `λ_{k+1} :=
+A(D_k)/B(D_k)` como racional exacto; parar cuando `max_D [q_k·A−p_k·B] = 0` (filtrado por
+`𝒜(C)` en cada paso, per el párrafo anterior). Con `A,B` enteros acotados polinomialmente,
+converge en un número polinomial de iteraciones — VERIFICADO en Gate 0 Tier 0 sobre un poset de
+16 elementos: 4 pasos (`λ: 0 → 5/3 → 9/4 → 3`), cero discrepancias contra fuerza bruta en cada
+paso.
+
+`ESTATUS: SPECIFICATION-CLOSED, VERIFIED AT TOY SCALE` (min-cut, no el sketch anterior) — Gate 0
+Tier 0 (D.2.3) ya lo verificó exactamente en un caso; Gate 0 Tier 1 (≥100 posets automatizados)
+sigue pendiente y sigue siendo obligatorio antes de cualquier cómputo de tabla μ — la
+verificación a escala de juguete de Tier 0 no substituye la campaña más amplia de Tier 1, solo
+la precede y la habilita.
 
 ### D.2.2 Intersecciones de consenso: forced-in / forced-out (cierre (e), algoritmo antes ausente)
 
-Sea `λ* = A*/B*` el valor óptimo exacto. Definir el objetivo entero
-`G(D) := A(D)·B* − B(D)·A*` (así `max_D G = 0`, alcanzado exactamente por 𝒜*). Entonces, sin
-enumerar 𝒜* (que puede ser exponencial — matemático de 015):
+Sea `λ* = A*/B*` el valor óptimo exacto, ahora obtenido vía el min-cut de D.2.1 y siempre
+filtrado por `𝒜(C)` (nunca aceptar `D=∅` o `D=C` como origen de `λ*`). Definir el objetivo
+entero `G(D) := A(D)·B* − B(D)·A*` (así `max_{D∈𝒜(C)} G = 0`, alcanzado exactamente por `𝒜*`).
+Entonces, sin enumerar `𝒜*` (que puede ser exponencial — matemático de 015):
 
 ```text
 z ∈ T(C)  (núcleo atrapado)   ⟺  max{ G(D) : D ∈ 𝒜(C), z ∈ D } < 0     (z forced-out)
@@ -344,48 +386,62 @@ z ∈ E(C)  (núcleo de escape)  ⟺  max{ G(D) : D ∈ 𝒜(C), z ∉ D } < 0  
 U(C) := C ∖ (T ∪ E)
 ```
 
-Cada test es UNA optimización restringida (mismo DP de D.2.1 con la celda de `z` forzada a un
-lado del camino) ⟹ `n` tests ⟹ polinomial total, todo en ℤ. `ESTATUS: SPECIFICATION-CLOSED,
-PROOF-OPEN`, misma obligación de verificación de juguete que D.2.1, misma restricción de
-relabel (nunca `[CERRADO]` a secas hasta Gate 0).
+Cada test es UNA instancia adicional de min-cut (misma construcción de D.2.1, con la restricción
+de que `z` esté forzado a un lado) ⟹ `n` instancias ⟹ polinomial total, todo en ℤ. `ESTATUS:
+SPECIFICATION-CLOSED, VERIFIED AT TOY SCALE` — Gate 0 Tier 0 verificó exactamente la partición
+`T={14,15}`, `E={0,...,13}`, `U=∅` (argmax singleton) sobre el poset de 16 elementos, coincidencia
+total con fuerza bruta.
 
-### D.2.3 Gate 0 — falsación de la corrupción silenciosa (NUEVO, comité 017, hallazgo de mayor severidad)
+### D.2.3 Gate 0 — falsación de la corrupción silenciosa (comité 017, hallazgo de mayor severidad; Tier 0 EJECUTADO)
 
-**El problema que ningún tipo de la escalera de abstención puede ver:** si el lema de
-localidad-de-arista de D.2.1 (paso 2) es falso en el régimen sprinkleado, la DP optimiza
-silenciosamente sobre una SUBFAMILIA equivocada de `𝒜(C)` — Dinkelbach converge igual, `T/E/U`
-se emiten igual, ningún tipo de abstención se dispara. Peor: el mismo código calcula tanto la
-tabla `μ_n` (Parte F, paso 3) como el test de falsación mínima (paso 5), así que la corrupción
-es autoconsistente — `FP_RATE ≈ α` por construcción y el test *pasa* mientras la tabla μ
-congelada y todo `T/E/U` corriente pertenecen a un selector distinto, no documentado, del que
-dice implementar esta spec. Verificar "en posets escritos a mano" (como decía v2) es
-insuficiente: un autor eligiendo sus propios posets pequeños puede pasar por alto exactamente
-la geometría de enlaces largos que rompe la localidad.
+**El problema que ningún tipo de la escalera de abstención puede ver:** si el algoritmo de
+optimización de D.2.1 (min-cut, v2.2) tuviera un error de implementación, o si el filtro de
+pertenencia a `𝒜(C)` se omitiera, la optimización podría converger silenciosamente sobre un
+conjunto equivocado — Dinkelbach converge igual, `T/E/U` se emiten igual, ningún tipo de
+abstención se dispara. Peor: el mismo código calcula tanto la tabla `μ_n` (Parte F, paso 3) como
+el test de falsación mínima (paso 5), así que la corrupción sería autoconsistente — `FP_RATE ≈
+α` por construcción y el test *pasaría* mientras la tabla μ congelada y todo `T/E/U` corriente
+pertenecerían a un selector distinto, no documentado, del que dice implementar esta spec.
 
-**Gate 0 (dos niveles, MANDATORIO, bloquea todo lo demás en caso de discrepancia):**
+**Gate 0 — Tier 0: EJECUTADO 2026-07-04, resultado PASS**
+(`dev/PR003_RVAR_GATE0_TIER0_REPORT.md`, `dev/measure_pr003_rvar_gate0.py`,
+`dev/gate0_tier0_result.json`, commit `b142377`):
 
 ```text
-Gate 0 — Tier 0 (a mano, por un miembro del comité que NO sea el autor de esta spec, ANTES de
-  autorizar siquiera el tier de juguete):
-  (i) construir a mano el par testigo de la Parte C (P₁ = cadena de 3, P₂ = cadena de 2) y
-      verificar que d⁺(x) coincide y O(x) difiere, como se afirma arriba;
-  (ii) construir a mano UN poset adicional de ~15-20 elementos y verificar que la partición
-      T/E/U que produciría el DP de Dinkelbach/escalera (D.2.1-D.2.2) coincide con la
-      enumeración por fuerza bruta de 𝒜(C) sobre ese mismo poset.
-  Más barato que la propia tabla μ; debe ser el PRIMER entregable del tier de juguete, no un
-  extra opcional.
+(i) Par testigo de la Parte C (P₁ = cadena de 3, P₂ = cadena de 2, ambos Hasse-conexos —
+    corregido de v2 tras el hallazgo del falsifier de 017 de que el testigo original usaba un
+    poset desconectado): d⁺(x)=1 en ambos (coincide), O(x)=2 vs 1 (difiere), ambos abstienen
+    idénticamente vía EMPTY_FAMILY (output expuesto genuinamente idéntico). PASS.
 
-Gate 0 — Tier 1 (automatizado, dentro del tier de juguete, ANTES de cualquier cómputo de tabla
-  μ): sobre ≥100 posets sprinkleados con N suficientemente pequeño para enumeración exhaustiva
-  de 𝒜(C) (N ≲ 14, sub-sembrados de EXPLORE_POOL con claves de spawn registradas, cajas MINK y
-  BH ambas), comparar el output exacto (λ*, T, E, U, τ) de la DP de Dinkelbach contra la
-  enumeración por fuerza bruta con aritmética racional exacta.
+(ii) Poset de permutación de 16 elementos (dim≤2, |Min|=4, |Max|=3, 21 coberturas, |𝒜(C)|=4):
+    el algoritmo de min-cut de D.2.1 comparado contra enumeración por fuerza bruta en los 4
+    pasos de la iteración Dinkelbach (λ: 0 → 5/3 → 9/4 → 3) — CERO discrepancias en cada paso,
+    y en la partición final T={14,15}, E={0,...,13}, U=∅. Confirmado además el hallazgo del
+    empate espurio (D=∅, D=C empatan con el óptimo verdadero bajo la fórmula G sin restringir;
+    resuelto por el filtro de 𝒜(C), ya incorporado en D.2.1 arriba).
 
-REGLA DE ACEPTACIÓN CONGELADA: CERO discrepancias, en cualquiera de los dos niveles. Cualquier
-  discrepancia, aunque sea una sola, FALSIFICA el mecanismo D.2.1/D.2.2 y BLOQUEA
-  incondicionalmente el freeze de la tabla μ (Parte F, paso 4). No se ajusta la DP ni el test;
-  se reconvoca al comité con el fallo como hallazgo.
+OVERALL_STATUS = PASS (ambas partes).
 ```
+
+Este resultado **verifica el algoritmo de min-cut a escala de juguete**; NO substituye el Tier 1
+automatizado, que evalúa a mayor escala y con posets sprinkleados (no solo construidos a mano) —
+ver abajo. El sketch de "DP local sobre pasos de escalera" que Tier 0 estaba originalmente
+diseñado para poner a prueba quedó **superseded** por el propio proceso de intentar implementarlo
+(D.2.1 arriba); Tier 0 terminó verificando el algoritmo de reemplazo (min-cut), no el original —
+esto se registra aquí para que quede trazable.
+
+**Gate 0 — Tier 1 (automatizado, PENDIENTE — no ejecutado, no autorizado por esta revisión):**
+sobre ≥100 posets sprinkleados con N suficientemente pequeño para enumeración exhaustiva de
+`𝒜(C)` (N ≲ 14, sub-sembrados de EXPLORE_POOL con claves de spawn registradas, cajas MINK y BH
+ambas), comparar el output exacto (λ*, T, E, U, τ) del min-cut de D.2.1 contra la enumeración
+por fuerza bruta con aritmética racional exacta.
+
+REGLA DE ACEPTACIÓN CONGELADA (sin cambio): CERO discrepancias, en cualquiera de los dos
+niveles. Cualquier discrepancia, aunque sea una sola, FALSIFICA el mecanismo D.2.1/D.2.2 y
+BLOQUEA incondicionalmente el freeze de la tabla μ (Parte F, paso 4). No se ajusta el
+algoritmo ni el test; se reconvoca al comité con el fallo como hallazgo. **Tier 1 sigue siendo
+obligatorio y no queda satisfecho por el PASS de Tier 0** — Tier 0 habilita la autorización de
+Tier 1, no la reemplaza.
 
 ## D.3 Abstención tipada completa (cierre (d))
 
@@ -429,17 +485,21 @@ aquí ANTES de la primera ejecución:
 
 ---
 
-# Parte E — Nota de computabilidad (revisada)
+# Parte E — Nota de computabilidad (revisada v2.2)
 
-La vía del realizador (D.2.1) usa `dim_DM ≤ 2`, que comité 012 D2 exige **solo para 𝔄_Schw** —
-coherente: el DP es una técnica de cómputo para la familia generadora (que la satisface por
-conformidad plana 2D), no una condición de la definición de R-VAR, que permanece definida por
-`≤` para todo poset finito (a coste exponencial general). Si un poset de entrada no admite
-realizador, el cómputo cae al camino general o se abstiene por presupuesto — decisión de
-implementación que el tier de juguete debe fijar y documentar; **ningún cap de presupuesto
-puede introducirse en sprinkling sin reabrir la herida de censura documentada en
-`dev/measure_pr003.py` (wounds #1/#2)** — si el DP exacto no escala, la respuesta es reducir N,
-no truncar la búsqueda.
+**[Simplificación v2.2]:** el algoritmo de min-cut de D.2.1 (cierre de peso máximo, Picard 1976)
+es polinomial en `|C|` y `|coberturas|` para **cualquier poset finito**, sin requerir
+`dim_DM(C)≤2` ni un realizador — a diferencia del sketch de "DP sobre escalera" que sí dependía
+de esa estructura 2D. Esto es una mejora genuina descubierta al implementar Gate 0: la condición
+`dim_DM≤2` (que comité 012 D2 exige **solo para 𝔄_Schw**, la familia generadora, por conformidad
+plana 2D) YA NO es una condición de computabilidad de R-VAR — R-VAR era, es, y sigue siendo
+definido por `≤` para todo poset finito, y ahora también se **computa** en tiempo polinomial
+para todo poset finito, no solo para la subclase 2D. La nota histórica del realizador se
+conserva por completitud (era la justificación original, ya no la única ni la necesaria), pero
+ningún poset de entrada necesita "caer al camino general" ni abstenerse por presupuesto: el
+min-cut ES el camino general. **Ningún cap de presupuesto puede introducirse en sprinkling sin
+reabrir la herida de censura documentada en `dev/measure_pr003.py` (wounds #1/#2)** — con
+min-cut, esta precaución ya no debería activarse en la práctica, pero se mantiene registrada.
 
 ---
 
@@ -534,9 +594,12 @@ Las identificaciones T1/T2 de v1 conservan su estatus de 015: motivación correc
 # Parte H — Bloque normativo
 
 ```text
-DOCUMENT_ID = PR003_R_VAR_SELECTOR_SPEC_V2_1
-SUPERSEDES = PR003_R_VAR_SELECTOR_SPEC (v1) y PR003_R_VAR_SELECTOR_SPEC_V2 (v2); ambos
-  conservados como registro histórico
+DOCUMENT_ID = PR003_R_VAR_SELECTOR_SPEC_V2_2
+SUPERSEDES = PR003_R_VAR_SELECTOR_SPEC (v1), PR003_R_VAR_SELECTOR_SPEC_V2 (v2), y
+  PR003_R_VAR_SELECTOR_SPEC_V2_1 (v2.1); los tres conservados como registro histórico
+PATCH_SCOPE = documental mínimo, motivado por dev/PR003_RVAR_GATE0_TIER0_REPORT.md — toca
+  ÚNICAMENTE D.2.1/D.2.2/D.2.3/Parte E y las referencias directas al algoritmo; el resto de
+  v2.1 (cierres a-d, f-i, CIRCULARITY_STANDARD, V.1a/V.1b) se hereda sin cambio
 CANDIDATE_PATH = C1 vía R directa (Q_DISPOSITION sin cambio)
 REVISION_MANDATE = docs/comite/comite_decision_017_r-var-v2-reconvene.md §9 paso reversible 1
 
@@ -561,11 +624,15 @@ CLOSURES_DELIVERED (re-verificadas por comité 017, corregidas donde el falsifie
       un cierre sustantivo independiente; declarada explícitamente la consecuencia compuesta
       (la escalera de 4 tipos colapsa a 1 gate operativo bajo argmax singleton) [CERRADO el
       hazard; F3 relabeled honesto; consecuencia compuesta declarada]
-  (e) aritmética racional exacta obligatoria; Dinkelbach entero sobre escaleras (D.2.1);
-      forced-in/forced-out para T/E sin enumerar 𝒜* (D.2.2) — ambos con Gate 0 (D.2.3, NUEVO
-      en v2.1) como obligación de verificación mandatoria, DOS niveles (hand-check + brute
-      force automatizado), regla de aceptación cero-discrepancias            [SPECIFICATION-
-      CLOSED, PROOF-OPEN — nunca "[CERRADO]" a secas hasta que Gate 0 pase]
+  (e) [REVISADO en v2.2] aritmética racional exacta obligatoria; algoritmo de cierre de peso
+      máximo / min-cut (D.2.1, reemplaza el sketch de "DP local sobre pasos de escalera" de
+      v1/v2/v2.1, que quedó SUPERSEDED al intentar implementarlo — ver
+      `dev/PR003_RVAR_GATE0_TIER0_REPORT.md`); forced-in/forced-out para T/E sin enumerar 𝒜*
+      (D.2.2, misma construcción de min-cut) — Gate 0 Tier 0 EJECUTADO 2026-07-04 (commit
+      `b142377`), PASS en ambas obligaciones (testigo C.1 + poset de 16 elementos, 4 pasos de
+      Dinkelbach, cero discrepancias); Gate 0 Tier 1 (automatizado, ≥100 posets) sigue
+      PENDIENTE                                             [SPECIFICATION-CLOSED, VERIFIED AT
+      TOY SCALE — Tier 1 sigue siendo obligatorio antes de cualquier freeze de tabla μ]
   (f) Parte IV → CONJETURA C-COL con obligación de cita y prohibición de uso en umbrales,
       ELEVADA en v2.1 a regla vinculante entre documentos, guardia dura no advisoria [CERRADO]
   (g) F2: procedimiento μ completo — α=0.05 ≡ θ_fp (reutilización de convención, no derivación,
@@ -595,8 +662,10 @@ PASS_DEPENDENCY_LABEL = PASS [PRIMARY_ARTIFACT_LOST; TRANSCRIPTION_REVERIFIED;
   corchetes; NUNCA "PASS" desnudo. [FIX comité 017: la etiqueta v2
   ([UNVERIFIED-raw-artifact]/auditor 005) estaba stale — corregida aquí.]
 
-GATE_0_STATUS = NOT_YET_EXECUTED — mandatorio, primer entregable del tier de juguete, bloquea
-  todo lo posterior (incluida la tabla μ) ante cualquier discrepancia (D.2.3)
+GATE_0_STATUS = TIER_0_PASS (2026-07-04, commit b142377) / TIER_1_NOT_YET_EXECUTED — Tier 0
+  verificó el testigo C.1 y un poset de 16 elementos contra fuerza bruta, cero discrepancias;
+  Tier 1 (automatizado, ≥100 posets) sigue mandatorio y bloquea la tabla μ ante cualquier
+  discrepancia (D.2.3)
 
 BLOCKING_ADJUDICATIONS_RESOLVED_BY_COMITE_017:
   (1) CIRCULARITY_STANDARD = FUNCTIONAL_ONLY, con las 3 condiciones vinculantes (Parte C.2) —
@@ -608,12 +677,15 @@ BLOCKING_ADJUDICATIONS_RESOLVED_BY_COMITE_017:
   (3) aceptación de V.1a (forma v2.1, cuantificador cerrado) como escenario candidato de un
       futuro Alloy 003 — ACEPTADA, NO autoriza Alloy 003 en sí (ALLOY_003_AUTHORIZATION_STATUS
       = NOT_AUTHORIZED sigue vigente)
-NEXT_RECOMMENDED_ACTION = commit de esta revisión v2.1 (con v1 y v2 marcados superseded en el
-  mismo commit); después, autorización explícita del PI para el paso comprometido S1-S5 de
-  comité 017 §9 (implementación dev-only + tier de juguete con Gate 0 + calibración μ sobre
-  nulos EXPLORE + test de falsación) — nada de esto se auto-otorga por escribir esta revisión
-NEXT_FORBIDDEN_WITHOUT_AUTORIZACION_S1_S5 = implementación | simulación | enumeración | Alloy |
-  Lean | scoring de parches BH | citar output de R-VAR como evidencia sobre Q o como
+NEXT_RECOMMENDED_ACTION = commit de esta revisión v2.2 (con v1, v2 y v2.1 marcados superseded en
+  el mismo commit); después, autorización explícita del PI para Gate 0 Tier 1 (automatizado,
+  ≥100 posets, N≲14, sub-sembrados de EXPLORE_POOL) como paso comprometido separado — nada de
+  esto se auto-otorga por escribir esta revisión. Solo tras un PASS de Tier 1: autorización
+  explícita separada para la calibración μ sobre nulos EXPLORE (Parte F) y, finalmente, el test
+  de falsación mínima de 015/017
+NEXT_FORBIDDEN_WITHOUT_AUTORIZACION_EXPLICITA = Gate 0 Tier 1 | cálculo de tabla μ | cualquier
+  sprinkling adicional al ya ejecutado en Gate 0 Tier 0 | Alloy | Lean | scoring de parches BH |
+  citar output de R-VAR (incluido el resultado de Gate 0 Tier 0) como evidencia sobre Q o como
   corroboración del PASS de prereg-002 | cualquier semilla fuera de EXPLORE_POOL con
   proveniencia de spawn registrada | commit o push de código de ejecución sin autorización
   explícita del PI
