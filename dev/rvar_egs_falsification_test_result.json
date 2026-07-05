@@ -1,0 +1,1190 @@
+{
+  "scope": "MEASUREMENT_ONLY -- falsification test per comite_decision_021 SS5/SS9 step 1; dev seeds only, ZERO NEW seed consumption (reuses the three dev seeds already drawn in commit 6347459); no mu, no spec freeze, no EXPLORE_POOL/VALIDATION_SEEDS, no threshold frozen here, no reconstruction claim. Interior/exterior labels use r as a POST-HOC diagnostic only, never as input to L() or future_card().",
+  "dev_seeds": [
+    20240617,
+    13,
+    101
+  ],
+  "provenance": {
+    "git_commit": "a15c1a3f2be1e9fc0866c3e46d09e5a4750f8f44",
+    "numpy_version": "1.26.4",
+    "uname": {
+      "system": "Linux",
+      "node": "OMENNACHO",
+      "release": "6.6.87.2-microsoft-standard-WSL2",
+      "version": "#1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025",
+      "machine": "x86_64",
+      "processor": "x86_64"
+    },
+    "timestamp_utc": "2026-07-05T17:09:14.484183+00:00"
+  },
+  "rows": [
+    {
+      "kind": "MINK",
+      "intensity": 1500.0,
+      "seed": 20240617,
+      "N": 1507,
+      "n_min": 21,
+      "L_minimal": {
+        "n": 21,
+        "mean": 116.71428571428571,
+        "std": 2.6029810226126573,
+        "cv": 0.022302162984441373,
+        "min": 112.0,
+        "max": 120.0
+      },
+      "future_card_minimal": {
+        "n": 21,
+        "mean": 1391.7142857142858,
+        "std": 25.26270139222354,
+        "cv": 0.018152218204225495,
+        "min": 1349.0,
+        "max": 1425.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 1500.0,
+      "seed": 13,
+      "N": 1549,
+      "n_min": 16,
+      "L_minimal": {
+        "n": 16,
+        "mean": 120.9375,
+        "std": 1.9833289565778038,
+        "cv": 0.01639961927919631,
+        "min": 118.0,
+        "max": 124.0
+      },
+      "future_card_minimal": {
+        "n": 16,
+        "mean": 1442.6875,
+        "std": 18.23019044744185,
+        "cv": 0.012636271158821193,
+        "min": 1410.0,
+        "max": 1470.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 1500.0,
+      "seed": 101,
+      "N": 1581,
+      "n_min": 13,
+      "L_minimal": {
+        "n": 13,
+        "mean": 117.84615384615384,
+        "std": 1.5613679330911108,
+        "cv": 0.013249205698553812,
+        "min": 115.0,
+        "max": 120.0
+      },
+      "future_card_minimal": {
+        "n": 13,
+        "mean": 1457.8461538461538,
+        "std": 35.24604975977647,
+        "cv": 0.0241767964793739,
+        "min": 1395.0,
+        "max": 1513.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 3000.0,
+      "seed": 20240617,
+      "N": 3009,
+      "n_min": 24,
+      "L_minimal": {
+        "n": 24,
+        "mean": 165.20833333333334,
+        "std": 1.3838101587846345,
+        "cv": 0.008376152285203336,
+        "min": 163.0,
+        "max": 168.0
+      },
+      "future_card_minimal": {
+        "n": 24,
+        "mean": 2781.7916666666665,
+        "std": 48.351128189756054,
+        "cv": 0.017381290183996305,
+        "min": 2687.0,
+        "max": 2843.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 3000.0,
+      "seed": 13,
+      "N": 3069,
+      "n_min": 25,
+      "L_minimal": {
+        "n": 25,
+        "mean": 168.04,
+        "std": 1.4277254638059798,
+        "cv": 0.008496342917198167,
+        "min": 165.0,
+        "max": 170.0
+      },
+      "future_card_minimal": {
+        "n": 25,
+        "mean": 2856.32,
+        "std": 47.536697403164226,
+        "cv": 0.016642637170612616,
+        "min": 2751.0,
+        "max": 2923.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 3000.0,
+      "seed": 101,
+      "N": 3115,
+      "n_min": 18,
+      "L_minimal": {
+        "n": 18,
+        "mean": 169.72222222222223,
+        "std": 1.0957268290731124,
+        "cv": 0.006456000956895588,
+        "min": 168.0,
+        "max": 171.0
+      },
+      "future_card_minimal": {
+        "n": 18,
+        "mean": 2895.8333333333335,
+        "std": 51.95109880134073,
+        "cv": 0.017939947787513344,
+        "min": 2788.0,
+        "max": 2968.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 6000.0,
+      "seed": 20240617,
+      "N": 6013,
+      "n_min": 36,
+      "L_minimal": {
+        "n": 36,
+        "mean": 232.19444444444446,
+        "std": 3.2388221834182973,
+        "cv": 0.01394874968334235,
+        "min": 226.0,
+        "max": 237.0
+      },
+      "future_card_minimal": {
+        "n": 36,
+        "mean": 5575.333333333333,
+        "std": 92.96444959708462,
+        "cv": 0.01667424063082948,
+        "min": 5371.0,
+        "max": 5689.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 6000.0,
+      "seed": 13,
+      "N": 6098,
+      "n_min": 36,
+      "L_minimal": {
+        "n": 36,
+        "mean": 239.41666666666666,
+        "std": 3.506937568750135,
+        "cv": 0.014647842264184346,
+        "min": 233.0,
+        "max": 245.0
+      },
+      "future_card_minimal": {
+        "n": 36,
+        "mean": 5650.75,
+        "std": 99.61017769284422,
+        "cv": 0.017627779974843025,
+        "min": 5445.0,
+        "max": 5792.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 6000.0,
+      "seed": 101,
+      "N": 6163,
+      "n_min": 31,
+      "L_minimal": {
+        "n": 31,
+        "mean": 240.96774193548387,
+        "std": 1.575699966686428,
+        "cv": 0.0065390493932100755,
+        "min": 239.0,
+        "max": 244.0
+      },
+      "future_card_minimal": {
+        "n": 31,
+        "mean": 5711.677419354839,
+        "std": 101.73697494401742,
+        "cv": 0.017812100977423386,
+        "min": 5486.0,
+        "max": 5832.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 12000.0,
+      "seed": 20240617,
+      "N": 12019,
+      "n_min": 53,
+      "L_minimal": {
+        "n": 53,
+        "mean": 337.1132075471698,
+        "std": 2.5965170964959716,
+        "cv": 0.007702211121860777,
+        "min": 332.0,
+        "max": 343.0
+      },
+      "future_card_minimal": {
+        "n": 53,
+        "mean": 11144.735849056604,
+        "std": 178.75240079595252,
+        "cv": 0.016039177887835165,
+        "min": 10710.0,
+        "max": 11354.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 12000.0,
+      "seed": 13,
+      "N": 12138,
+      "n_min": 44,
+      "L_minimal": {
+        "n": 44,
+        "mean": 346.15909090909093,
+        "std": 3.0670031406020453,
+        "cv": 0.00886009705117786,
+        "min": 341.0,
+        "max": 351.0
+      },
+      "future_card_minimal": {
+        "n": 44,
+        "mean": 11310.886363636364,
+        "std": 158.57550766821277,
+        "cv": 0.014019724234700201,
+        "min": 10957.0,
+        "max": 11518.0
+      }
+    },
+    {
+      "kind": "MINK",
+      "intensity": 12000.0,
+      "seed": 101,
+      "N": 12231,
+      "n_min": 44,
+      "L_minimal": {
+        "n": 44,
+        "mean": 342.45454545454544,
+        "std": 3.08555686335948,
+        "cv": 0.00901012091769426,
+        "min": 337.0,
+        "max": 349.0
+      },
+      "future_card_minimal": {
+        "n": 44,
+        "mean": 11416.5,
+        "std": 182.04613551115403,
+        "cv": 0.015945879692651342,
+        "min": 11008.0,
+        "max": 11635.0
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 1500.0,
+      "seed": 20240617,
+      "N": 1507,
+      "n_min": 26,
+      "L_minimal": {
+        "n": 26,
+        "mean": 47.46153846153846,
+        "std": 37.21789351418395,
+        "cv": 0.7841695554042,
+        "min": 0.0,
+        "max": 91.0
+      },
+      "future_card_minimal": {
+        "n": 26,
+        "mean": 798.7307692307693,
+        "std": 622.8302990068375,
+        "cv": 0.7797750168140692,
+        "min": 0.0,
+        "max": 1379.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 10,
+        "n_exterior": 16,
+        "interior_fraction": 0.38461538461538464,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 10,
+          "mean": 2.9,
+          "std": 3.4481879299133333,
+          "cv": 1.18903032065977,
+          "min": 0.0,
+          "max": 9.0
+        },
+        "L_exterior": {
+          "n": 16,
+          "mean": 75.3125,
+          "std": 15.05705295700324,
+          "cv": 0.19992767411788534,
+          "min": 39.0,
+          "max": 91.0
+        },
+        "L_cohens_d_ext_minus_int": 6.412452379850874,
+        "future_card_interior": {
+          "n": 10,
+          "mean": 24.0,
+          "std": 39.54491117704021,
+          "cv": 1.6477046323766755,
+          "min": 0.0,
+          "max": 123.0
+        },
+        "future_card_exterior": {
+          "n": 16,
+          "mean": 1282.9375,
+          "std": 140.72200820678336,
+          "cv": 0.10968734502404315,
+          "min": 847.0,
+          "max": 1379.0
+        },
+        "future_card_cohens_d_ext_minus_int": 11.775438370250633
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 1500.0,
+      "seed": 13,
+      "N": 1549,
+      "n_min": 29,
+      "L_minimal": {
+        "n": 29,
+        "mean": 46.275862068965516,
+        "std": 33.528059840537004,
+        "cv": 0.724525883290293,
+        "min": 0.0,
+        "max": 81.0
+      },
+      "future_card_minimal": {
+        "n": 29,
+        "mean": 845.3448275862069,
+        "std": 626.0456783963638,
+        "cv": 0.7405802436669202,
+        "min": 0.0,
+        "max": 1426.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 11,
+        "n_exterior": 18,
+        "interior_fraction": 0.3793103448275862,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 11,
+          "mean": 5.2727272727272725,
+          "std": 4.84469548889972,
+          "cv": 0.918821558239602,
+          "min": 0.0,
+          "max": 13.0
+        },
+        "L_exterior": {
+          "n": 18,
+          "mean": 71.33333333333333,
+          "std": 11.893041849940849,
+          "cv": 0.16672488574683433,
+          "min": 46.0,
+          "max": 81.0
+        },
+        "L_cohens_d_ext_minus_int": 7.050443845117143,
+        "future_card_interior": {
+          "n": 11,
+          "mean": 57.09090909090909,
+          "std": 77.35802778516214,
+          "cv": 1.3549973019694004,
+          "min": 0.0,
+          "max": 243.0
+        },
+        "future_card_exterior": {
+          "n": 18,
+          "mean": 1327.0555555555557,
+          "std": 126.63046509966716,
+          "cv": 0.09542212801080122,
+          "min": 1039.0,
+          "max": 1426.0
+        },
+        "future_card_cohens_d_ext_minus_int": 11.7005901991563
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 1500.0,
+      "seed": 101,
+      "N": 1581,
+      "n_min": 21,
+      "L_minimal": {
+        "n": 21,
+        "mean": 47.57142857142857,
+        "std": 40.92102897343734,
+        "cv": 0.8602018102524366,
+        "min": 0.0,
+        "max": 93.0
+      },
+      "future_card_minimal": {
+        "n": 21,
+        "mean": 773.5238095238095,
+        "std": 660.9260184120905,
+        "cv": 0.8544352614290753,
+        "min": 0.0,
+        "max": 1453.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 9,
+        "n_exterior": 12,
+        "interior_fraction": 0.42857142857142855,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 9,
+          "mean": 2.7777777777777777,
+          "std": 2.8974232912011773,
+          "cv": 1.043072384832424,
+          "min": 0.0,
+          "max": 9.0
+        },
+        "L_exterior": {
+          "n": 12,
+          "mean": 81.16666666666667,
+          "std": 17.048134469462894,
+          "cv": 0.210038617693588,
+          "min": 40.0,
+          "max": 93.0
+        },
+        "L_cohens_d_ext_minus_int": 6.135141091066292,
+        "future_card_interior": {
+          "n": 9,
+          "mean": 21.0,
+          "std": 31.752515210959622,
+          "cv": 1.51202453385522,
+          "min": 0.0,
+          "max": 102.0
+        },
+        "future_card_exterior": {
+          "n": 12,
+          "mean": 1337.9166666666667,
+          "std": 142.91982503798724,
+          "cv": 0.10682266586458093,
+          "min": 986.0,
+          "max": 1453.0
+        },
+        "future_card_cohens_d_ext_minus_int": 12.17041579555157
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 3000.0,
+      "seed": 20240617,
+      "N": 3009,
+      "n_min": 32,
+      "L_minimal": {
+        "n": 32,
+        "mean": 69.9375,
+        "std": 53.8695980470432,
+        "cv": 0.7702534126476239,
+        "min": 0.0,
+        "max": 129.0
+      },
+      "future_card_minimal": {
+        "n": 32,
+        "mean": 1621.125,
+        "std": 1249.3608053220655,
+        "cv": 0.7706751825565984,
+        "min": 0.0,
+        "max": 2772.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 12,
+        "n_exterior": 20,
+        "interior_fraction": 0.375,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 12,
+          "mean": 4.916666666666667,
+          "std": 5.722154800034297,
+          "cv": 1.16382809492223,
+          "min": 0.0,
+          "max": 17.0
+        },
+        "L_exterior": {
+          "n": 20,
+          "mean": 108.95,
+          "std": 23.766520569910945,
+          "cv": 0.21814153804415737,
+          "min": 53.0,
+          "max": 129.0
+        },
+        "L_cohens_d_ext_minus_int": 5.860237698262733,
+        "future_card_interior": {
+          "n": 12,
+          "mean": 42.916666666666664,
+          "std": 74.8247489508355,
+          "cv": 1.743489295941798,
+          "min": 0.0,
+          "max": 251.0
+        },
+        "future_card_exterior": {
+          "n": 20,
+          "mean": 2568.05,
+          "std": 320.89367008403264,
+          "cv": 0.12495616132241685,
+          "min": 1694.0,
+          "max": 2772.0
+        },
+        "future_card_cohens_d_ext_minus_int": 10.55349739461507
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 3000.0,
+      "seed": 13,
+      "N": 3069,
+      "n_min": 35,
+      "L_minimal": {
+        "n": 35,
+        "mean": 65.4,
+        "std": 53.05264232008484,
+        "cv": 0.8112024819584838,
+        "min": 0.0,
+        "max": 125.0
+      },
+      "future_card_minimal": {
+        "n": 35,
+        "mean": 1577.142857142857,
+        "std": 1321.7466397127087,
+        "cv": 0.8380639925714638,
+        "min": 0.0,
+        "max": 2845.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 15,
+        "n_exterior": 20,
+        "interior_fraction": 0.42857142857142855,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 15,
+          "mean": 6.266666666666667,
+          "std": 5.674112754920857,
+          "cv": 0.9054435247214134,
+          "min": 0.0,
+          "max": 17.0
+        },
+        "L_exterior": {
+          "n": 20,
+          "mean": 109.75,
+          "std": 17.660336916378466,
+          "cv": 0.16091423158431403,
+          "min": 49.0,
+          "max": 125.0
+        },
+        "L_cohens_d_ext_minus_int": 7.683392921556396,
+        "future_card_interior": {
+          "n": 15,
+          "mean": 66.13333333333334,
+          "std": 91.60776289279322,
+          "cv": 1.3851980276128006,
+          "min": 0.0,
+          "max": 308.0
+        },
+        "future_card_exterior": {
+          "n": 20,
+          "mean": 2710.4,
+          "std": 233.12387265142965,
+          "cv": 0.08601087391212722,
+          "min": 1768.0,
+          "max": 2845.0
+        },
+        "future_card_cohens_d_ext_minus_int": 14.534368260593185
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 3000.0,
+      "seed": 101,
+      "N": 3115,
+      "n_min": 27,
+      "L_minimal": {
+        "n": 27,
+        "mean": 59.25925925925926,
+        "std": 56.73694504275531,
+        "cv": 0.9574359475964959,
+        "min": 0.0,
+        "max": 130.0
+      },
+      "future_card_minimal": {
+        "n": 27,
+        "mean": 1369.888888888889,
+        "std": 1367.839776553156,
+        "cv": 0.9985041762493636,
+        "min": 0.0,
+        "max": 2893.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 14,
+        "n_exterior": 13,
+        "interior_fraction": 0.5185185185185185,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 14,
+          "mean": 5.714285714285714,
+          "std": 4.510758115384841,
+          "cv": 0.7893826701923472,
+          "min": 0.0,
+          "max": 15.0
+        },
+        "L_exterior": {
+          "n": 13,
+          "mean": 116.92307692307692,
+          "std": 15.847647427744057,
+          "cv": 0.13553908984254787,
+          "min": 71.0,
+          "max": 130.0
+        },
+        "L_cohens_d_ext_minus_int": 9.1725179307087,
+        "future_card_interior": {
+          "n": 14,
+          "mean": 59.07142857142857,
+          "std": 77.12463409101835,
+          "cv": 1.3056165384211087,
+          "min": 0.0,
+          "max": 256.0
+        },
+        "future_card_exterior": {
+          "n": 13,
+          "mean": 2781.5384615384614,
+          "std": 190.57306912194127,
+          "cv": 0.06851354808034393,
+          "min": 2164.0,
+          "max": 2893.0
+        },
+        "future_card_cohens_d_ext_minus_int": 18.000324712058422
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 6000.0,
+      "seed": 20240617,
+      "N": 6013,
+      "n_min": 49,
+      "L_minimal": {
+        "n": 49,
+        "mean": 97.10204081632654,
+        "std": 75.12499649168633,
+        "cv": 0.7736706238109773,
+        "min": 0.0,
+        "max": 180.0
+      },
+      "future_card_minimal": {
+        "n": 49,
+        "mean": 3240.816326530612,
+        "std": 2526.836399681201,
+        "cv": 0.7796913323953328,
+        "min": 0.0,
+        "max": 5533.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 19,
+        "n_exterior": 30,
+        "interior_fraction": 0.3877551020408163,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 19,
+          "mean": 6.947368421052632,
+          "std": 7.789829294869901,
+          "cv": 1.1212633075949099,
+          "min": 0.0,
+          "max": 28.0
+        },
+        "L_exterior": {
+          "n": 30,
+          "mean": 154.2,
+          "std": 27.78296840392209,
+          "cv": 0.18017489237303563,
+          "min": 73.0,
+          "max": 180.0
+        },
+        "L_cohens_d_ext_minus_int": 7.0905946095616486,
+        "future_card_interior": {
+          "n": 19,
+          "mean": 117.21052631578948,
+          "std": 237.25992385597706,
+          "cv": 2.0242202753765444,
+          "min": 0.0,
+          "max": 974.0
+        },
+        "future_card_exterior": {
+          "n": 30,
+          "mean": 5219.1,
+          "std": 547.7564756957845,
+          "cv": 0.10495228596803749,
+          "min": 3370.0,
+          "max": 5533.0
+        },
+        "future_card_cohens_d_ext_minus_int": 11.864812953040804
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 6000.0,
+      "seed": 13,
+      "N": 6098,
+      "n_min": 46,
+      "L_minimal": {
+        "n": 46,
+        "mean": 90.02173913043478,
+        "std": 82.1915813763754,
+        "cv": 0.9130192570184178,
+        "min": 0.0,
+        "max": 193.0
+      },
+      "future_card_minimal": {
+        "n": 46,
+        "mean": 2851.2391304347825,
+        "std": 2660.138417326883,
+        "cv": 0.9329762589647264,
+        "min": 0.0,
+        "max": 5646.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 22,
+        "n_exterior": 24,
+        "interior_fraction": 0.4782608695652174,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 22,
+          "mean": 6.909090909090909,
+          "std": 7.102554539863494,
+          "cv": 1.0280013149802425,
+          "min": 0.0,
+          "max": 28.0
+        },
+        "L_exterior": {
+          "n": 24,
+          "mean": 166.20833333333334,
+          "std": 27.663121007740415,
+          "cv": 0.1664364262185435,
+          "min": 76.0,
+          "max": 193.0
+        },
+        "L_cohens_d_ext_minus_int": 7.720935809781366,
+        "future_card_interior": {
+          "n": 22,
+          "mean": 96.95454545454545,
+          "std": 195.74577140973796,
+          "cv": 2.0189437276203632,
+          "min": 0.0,
+          "max": 863.0
+        },
+        "future_card_exterior": {
+          "n": 24,
+          "mean": 5376.0,
+          "std": 446.6848255015312,
+          "cv": 0.08308869521977887,
+          "min": 3528.0,
+          "max": 5646.0
+        },
+        "future_card_cohens_d_ext_minus_int": 14.981112296704383
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 6000.0,
+      "seed": 101,
+      "N": 6163,
+      "n_min": 41,
+      "L_minimal": {
+        "n": 41,
+        "mean": 98.6829268292683,
+        "std": 78.05702700336722,
+        "cv": 0.7909881629110371,
+        "min": 0.0,
+        "max": 184.0
+      },
+      "future_card_minimal": {
+        "n": 41,
+        "mean": 3291.8048780487807,
+        "std": 2631.3485944173303,
+        "cv": 0.7993634774540658,
+        "min": 0.0,
+        "max": 5697.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 16,
+        "n_exterior": 25,
+        "interior_fraction": 0.3902439024390244,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 16,
+          "mean": 5.5,
+          "std": 4.795831523312719,
+          "cv": 0.8719693678750399,
+          "min": 0.0,
+          "max": 18.0
+        },
+        "L_exterior": {
+          "n": 25,
+          "mean": 158.32,
+          "std": 29.392135002411788,
+          "cv": 0.18565017055591074,
+          "min": 51.0,
+          "max": 184.0
+        },
+        "L_cohens_d_ext_minus_int": 7.108188900769861,
+        "future_card_interior": {
+          "n": 16,
+          "mean": 59.375,
+          "std": 96.62936600744104,
+          "cv": 1.6274419538095333,
+          "min": 0.0,
+          "max": 386.0
+        },
+        "future_card_exterior": {
+          "n": 25,
+          "mean": 5360.56,
+          "std": 618.484475472101,
+          "cv": 0.11537684038087458,
+          "min": 2664.0,
+          "max": 5697.0
+        },
+        "future_card_cohens_d_ext_minus_int": 11.730966845153054
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 12000.0,
+      "seed": 20240617,
+      "N": 12019,
+      "n_min": 73,
+      "L_minimal": {
+        "n": 73,
+        "mean": 132.17808219178082,
+        "std": 106.33809385418374,
+        "cv": 0.8045062546746206,
+        "min": 0.0,
+        "max": 257.0
+      },
+      "future_card_minimal": {
+        "n": 73,
+        "mean": 6211.191780821918,
+        "std": 5061.704200689222,
+        "cv": 0.8149328469164437,
+        "min": 0.0,
+        "max": 11038.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 30,
+        "n_exterior": 43,
+        "interior_fraction": 0.410958904109589,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 30,
+          "mean": 9.9,
+          "std": 10.354870029765383,
+          "cv": 1.045946467653069,
+          "min": 0.0,
+          "max": 35.0
+        },
+        "L_exterior": {
+          "n": 43,
+          "mean": 217.48837209302326,
+          "std": 37.58610090273862,
+          "cv": 0.17281889850489315,
+          "min": 104.0,
+          "max": 257.0
+        },
+        "L_cohens_d_ext_minus_int": 7.439364184133245,
+        "future_card_interior": {
+          "n": 30,
+          "mean": 230.76666666666668,
+          "std": 417.5816633373113,
+          "cv": 1.809540647135539,
+          "min": 0.0,
+          "max": 1941.0
+        },
+        "future_card_exterior": {
+          "n": 43,
+          "mean": 10383.581395348838,
+          "std": 1006.3326056241242,
+          "cv": 0.09691575260101443,
+          "min": 6749.0,
+          "max": 11038.0
+        },
+        "future_card_cohens_d_ext_minus_int": 13.014265078001156
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 12000.0,
+      "seed": 13,
+      "N": 12138,
+      "n_min": 69,
+      "L_minimal": {
+        "n": 69,
+        "mean": 111.82608695652173,
+        "std": 108.80376652177888,
+        "cv": 0.9729730287717396,
+        "min": 0.0,
+        "max": 258.0
+      },
+      "future_card_minimal": {
+        "n": 69,
+        "mean": 5173.289855072464,
+        "std": 5248.23992056481,
+        "cv": 1.0144878921521971,
+        "min": 0.0,
+        "max": 11224.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 36,
+        "n_exterior": 33,
+        "interior_fraction": 0.5217391304347826,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 36,
+          "mean": 11.083333333333334,
+          "std": 10.398651087734622,
+          "cv": 0.9382241582918456,
+          "min": 0.0,
+          "max": 36.0
+        },
+        "L_exterior": {
+          "n": 33,
+          "mean": 221.72727272727272,
+          "std": 38.53237342356285,
+          "cv": 0.17378274196768814,
+          "min": 82.0,
+          "max": 258.0
+        },
+        "L_cohens_d_ext_minus_int": 7.350710640119461,
+        "future_card_interior": {
+          "n": 36,
+          "mean": 219.38888888888889,
+          "std": 429.1274919193452,
+          "cv": 1.956012877829378,
+          "min": 0.0,
+          "max": 1964.0
+        },
+        "future_card_exterior": {
+          "n": 33,
+          "mean": 10577.545454545454,
+          "std": 1188.7092080350087,
+          "cv": 0.1123804395966163,
+          "min": 5628.0,
+          "max": 11224.0
+        },
+        "future_card_cohens_d_ext_minus_int": 11.415727623941955
+      }
+    },
+    {
+      "kind": "BH",
+      "intensity": 12000.0,
+      "seed": 101,
+      "N": 12231,
+      "n_min": 64,
+      "L_minimal": {
+        "n": 64,
+        "mean": 144.5,
+        "std": 109.77249200050075,
+        "cv": 0.7596712249169602,
+        "min": 0.0,
+        "max": 262.0
+      },
+      "future_card_minimal": {
+        "n": 64,
+        "mean": 6712.734375,
+        "std": 5181.222775085854,
+        "cv": 0.7718498134504024,
+        "min": 0.0,
+        "max": 11366.0
+      },
+      "interior_diagnostic": {
+        "note": "r used ONLY as a post-hoc diagnostic label here, never as input to L() or future_card(); scoring-only per NO_GROUND_TRUTH_LEAKAGE",
+        "n_interior": 24,
+        "n_exterior": 40,
+        "interior_fraction": 0.375,
+        "expected_geometric_fraction": 0.33333333333333337,
+        "L_interior": {
+          "n": 24,
+          "mean": 9.375,
+          "std": 7.755710261908104,
+          "cv": 0.8272757612701978,
+          "min": 0.0,
+          "max": 26.0
+        },
+        "L_exterior": {
+          "n": 40,
+          "mean": 225.575,
+          "std": 41.41852695352648,
+          "cv": 0.18361310851613202,
+          "min": 74.0,
+          "max": 262.0
+        },
+        "L_cohens_d_ext_minus_int": 7.162538680427877,
+        "future_card_interior": {
+          "n": 24,
+          "mean": 150.5,
+          "std": 234.39940983998517,
+          "cv": 1.5574711617274761,
+          "min": 0.0,
+          "max": 922.0
+        },
+        "future_card_exterior": {
+          "n": 40,
+          "mean": 10650.075,
+          "std": 1256.4800314270817,
+          "cv": 0.11797851483929284,
+          "min": 5303.0,
+          "max": 11366.0
+        },
+        "future_card_cohens_d_ext_minus_int": 11.467740948942113
+      }
+    }
+  ],
+  "summary": {
+    "mink_cv_by_intensity": {
+      "1500.0": {
+        "L_cv": [
+          0.022302162984441373,
+          0.01639961927919631,
+          0.013249205698553812
+        ],
+        "future_card_cv": [
+          0.018152218204225495,
+          0.012636271158821193,
+          0.0241767964793739
+        ]
+      },
+      "3000.0": {
+        "L_cv": [
+          0.008376152285203336,
+          0.008496342917198167,
+          0.006456000956895588
+        ],
+        "future_card_cv": [
+          0.017381290183996305,
+          0.016642637170612616,
+          0.017939947787513344
+        ]
+      },
+      "6000.0": {
+        "L_cv": [
+          0.01394874968334235,
+          0.014647842264184346,
+          0.0065390493932100755
+        ],
+        "future_card_cv": [
+          0.01667424063082948,
+          0.017627779974843025,
+          0.017812100977423386
+        ]
+      },
+      "12000.0": {
+        "L_cv": [
+          0.007702211121860777,
+          0.00886009705117786,
+          0.00901012091769426
+        ],
+        "future_card_cv": [
+          0.016039177887835165,
+          0.014019724234700201,
+          0.015945879692651342
+        ]
+      }
+    },
+    "bh_interior_occupancy_by_intensity": {
+      "1500.0": {
+        "n_min": [
+          26,
+          29,
+          21
+        ],
+        "n_interior": [
+          10,
+          11,
+          9
+        ],
+        "interior_fraction": [
+          0.38461538461538464,
+          0.3793103448275862,
+          0.42857142857142855
+        ]
+      },
+      "3000.0": {
+        "n_min": [
+          32,
+          35,
+          27
+        ],
+        "n_interior": [
+          12,
+          15,
+          14
+        ],
+        "interior_fraction": [
+          0.375,
+          0.42857142857142855,
+          0.5185185185185185
+        ]
+      },
+      "6000.0": {
+        "n_min": [
+          49,
+          46,
+          41
+        ],
+        "n_interior": [
+          19,
+          22,
+          16
+        ],
+        "interior_fraction": [
+          0.3877551020408163,
+          0.4782608695652174,
+          0.3902439024390244
+        ]
+      },
+      "12000.0": {
+        "n_min": [
+          73,
+          69,
+          64
+        ],
+        "n_interior": [
+          30,
+          36,
+          24
+        ],
+        "interior_fraction": [
+          0.410958904109589,
+          0.5217391304347826,
+          0.375
+        ]
+      }
+    },
+    "note": "No non-degeneracy floor or scaling-law acceptance threshold is asserted by this script (that would be NO_POST_HOC_TUNING if invented after seeing these numbers). Read mink_cv_by_intensity: values near 0 across all levels indicate a near-degenerate MINK null (falsifier failure mode 1). Read bh_interior_occupancy_by_intensity: n_interior tracking interior_fraction*n_min roughly constant across intensities while n_min itself grows 13-21 -> 64-73 indicates SCALING (candidate survives); n_interior staying roughly CONSTANT in absolute count indicates a corner-artifact redux (falsifier failure mode 2)."
+  }
+}
