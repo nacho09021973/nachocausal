@@ -78,6 +78,33 @@ enmienda aquí, por escrito, ANTES de cualquier ejecución: **M=200 = 200 parche
   root→nivel), que es precisamente lo que cierra el gap 1 del falsificador de comité 018 (una
   tabla μ correlacionada entre niveles por reuso de streams).
 
+### Part F M-consumption semantics
+
+**Regla canónica y única de Parte F:** `M` cuenta **solo** consumos de nulos `MINK`.
+
+- **Parte F NO hereda el conteo dual `KINDS=("MINK","BH")` de Tier 1.**
+- Cualquier frase de este addendum como "reuso verbatim de Tier 1" o equivalente aplica
+  **únicamente** a mecánicas que se redeclaran explícitamente aquí y **no** importa consumo `BH`,
+  semántica `BH`, ni ninguna otra semántica Tier 1 no redeclarada de forma local en este
+  addendum.
+- En particular: el contador `M=200` de Parte F se satisface **solo** con 200 consumos
+  `MINK` admisibles (`𝒜(C)≠∅`) por nivel; `BH` no cuenta, no completa `M`, no comparte cuota con
+  `MINK`, y no puede entrar por herencia implícita desde Tier 1.
+- **AUDIT_006 sigue siendo válido solo para integridad/reproducibilidad del freeze y no
+  constituye autorización de ejecución de Parte F paso 3.**
+
+### Precondición dura del falsificador: dual-consumption-plan diff test
+
+Antes de cualquier uso de runner de Parte F o cualquier ejecución del paso 3 de Parte F, una
+auditoría debe comparar:
+
+1. el plan canónico `MINK-only`, y
+2. el plan alternativo heredado de Tier 1 con conteo dual `KINDS=("MINK","BH")`.
+
+La auditoría debe confirmar que la única interpretación admitida para Parte F es la canónica
+`MINK-only`. Si ambos planes divergen y el addendum o los metadatos del runner no fuerzan de forma
+explícita la regla `MINK-only`, la ejecución queda bloqueada.
+
 ## 2. Esquema exacto de spawn y regla de agotamiento (corregida)
 
 **`numpy.random.SeedSequence(root).spawn(K)`**, consumido en orden, con
@@ -100,6 +127,11 @@ receta ya ejecutada y aprobada en Gate 0 Tier 1
   un nivel se agotan sin juntar M=200 admisibles, ESE nivel (no el proceso completo) aborta y se
   reporta como hallazgo — nunca se amplía el cap, nunca se toman roots de otro bloque o de otro
   pool (calibración ↔ test), nunca se reduce M silenciosamente.
+
+**Semántica de spawn de Parte F — cerrada localmente en este addendum:** la forma canónica es
+`numpy.random.SeedSequence(root).spawn(K)`, consumida en orden, con `MAX_CHILDREN_PER_ROOT = 400`
+y agotamiento root→siguiente-root dentro del bloque asignado. Parte F no autoriza ninguna forma
+alternativa como `Generator.spawn(k)` ni importa ninguna semántica de spawn no redeclarada aquí.
 
 ## 3. Niveles μ_n enumerados
 
@@ -242,6 +274,22 @@ una **autorización explícita separada del PI**, exactamente como Gate 0 Tier 0
 requirieron cada uno la suya en vez de heredar la del paso anterior. El objeto estadístico ya está
 adjudicado (comité 018); lo que falta autorizar es la ejecución misma — dos eventos distintos, no
 uno.
+
+**Factibilidad de producción a `N≈86k`: no autorizada en este addendum.** La factibilidad
+computacional a N de producción queda fuera del alcance de este parche textual y permanece
+pendiente de re-auditoría posterior a la clausura semántica; no puede inferirse ni reclamarse a
+partir de `AUDIT_006`, de Gate 0, ni de este addendum.
+
+### Blocking conditions específicas de Parte F paso 3
+
+Parte F paso 3 queda bloqueado si ocurre cualquiera de las siguientes:
+
+- `M` se interpreta como `KINDS=("MINK","BH")`.
+- Se cuenta cualquier consumo `BH` dentro de `M` para Parte F.
+- Se usa la frase "verbatim reuse of Tier 1" o equivalente para importar a Parte F cualquier
+  semántica Tier 1 no redeclarada explícitamente en este addendum.
+- La semántica de spawn deja de ser la cerrada en §2 y se vuelve ambigua.
+- El dual-consumption-plan diff test no ha sido descargado formalmente.
 
 ---
 
