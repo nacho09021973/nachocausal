@@ -1,0 +1,40 @@
+{
+  "scope": "MEASUREMENT_ONLY -- comit\u00e9 020 \u00a79 step 1 (falsifier's minimal test); claim-inert; no mu, no seed-band consumption, no spec change",
+  "dev_seed": 20240617,
+  "intensity": 1500.0,
+  "rows": [
+    {
+      "kind": "BH",
+      "key": "p=t+r",
+      "certificate": "PASS",
+      "status": "OK",
+      "K": 116,
+      "lambda_star": "37/4",
+      "size_D": 1495,
+      "A": 74,
+      "B": 8
+    },
+    {
+      "kind": "BH",
+      "key": "u=t-r",
+      "certificate": "FAIL",
+      "detail": "interval certificate FAILED -- gap-DP not applicable"
+    },
+    {
+      "kind": "MINK",
+      "key": "u=t-r",
+      "certificate": "PASS",
+      "status": "EMPTY_FAMILY",
+      "K": 15
+    },
+    {
+      "kind": "MINK",
+      "key": "p=t+r",
+      "certificate": "PASS",
+      "status": "EMPTY_FAMILY",
+      "K": 15
+    }
+  ],
+  "branch": "a",
+  "verdict": "KEY_DEPENDENCE_CONFIRMED: the abstain/OK boundary depends on the sort key; with the key currently chosen by the hidden kind label, this is a NO_GROUND_TRUTH_LEAKAGE violation as implemented. DP blocked until an order-only key derivation is specified and frozen (comit\u00e9 020 \u00a78(2)(a))."
+}
