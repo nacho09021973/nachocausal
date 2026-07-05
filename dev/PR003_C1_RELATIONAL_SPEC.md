@@ -63,7 +63,7 @@ Given `R = Max(C)`:
 ```text
 A_R = {x : exists r in R, x <= r}
 B_R = C \ A_R
-H[C;R] = cover edges from B_R into A_R.
+H[C;R] = cover edges from A_R into B_R (infalling; corrected orientation, see §1).
 ```
 
 The measured interface object is the set of ordered cover pairs `(x,y)` in
@@ -116,6 +116,27 @@ does **not** freeze a numeric asymmetry score. It fixes only the required shape:
 the score must compare two order-defined directed reach/link counts across the
 same interface slice, and it must be evaluated by the selection Guard-v before
 any data use.
+
+`[CORRECCIÓN 2026-07-03 — vacuidad estructural de una pata, y separación de
+tracks]` Si "A_R-side future reach" denota alcance dentro de `A_R`, entonces
+`L_out_to_in(k) = 0` idénticamente: `B_R` es up-set, luego ninguna relación
+causal (en particular ningún cover) sale de `B_R` hacia `A_R`
+(`relationalBlackRegion_no_escape`,
+`formal/HorizonFormal/HorizonFormal/Horizon.lean`). La comparación bidireccional
+a través de `H` es por tanto inválida: una de sus dos patas es un cero
+estructural — guardarraíl que no puede fallar.
+
+Ningún `ASYMMETRY_SCORE` alternativo forma parte actualmente de la definición
+cerrada del track event-horizon relativo a `R`. Dado `R`, la separación
+`A_R = down(R)` / `B_R = C \ A_R` es temporal y canónica; definir `H[C;R]` y su
+propiedad one-way no requiere realizer, orden conjugado, caras izquierda/derecha
+ni el lema de dos caras. Un score basado en dos caras laterales pertenece al
+track aparente/validador independiente y continúa condicionado al problema
+abierto del lema de bipartición (notas §7.4, `III_PENDING_TWO_FACE_LEMMA`); no
+bloquea la definición de `H[C;R]` dado `R`. **El bloqueo fundacional de este
+track es exclusivamente la selección order-only de `R(C)`** — cuya carga
+discriminante es demostrar que el selector no detecta pared, truncación ni
+inhomogeneidad, no recuperar dos caras espaciales.
 
 Status: `ASYMMETRY_SCORE = OPEN`.
 
@@ -184,3 +205,16 @@ This is not a C1 signal and not a probe. It records that the current reference
 rule is structurally degenerate on finite posets. Any replacement for `R`, any
 fallback after `NO_INTERFACE`, and any persistence/asymmetry/bulk-control score
 remain `OPEN` and require fresh review before data.
+
+`[CORRECCIÓN 2026-07-03 — orientación en el código]` La implementación original
+de `c1_selector.py` construía la interfaz con la orientación vieja
+(`x in B_R, y in A_R`), que es vacía para todo `R` (teorema-lápida
+`relationalHorizonOld_eq_empty`) — de modo que la aserción `interface == empty`
+del preflight no podía fallar por diseño y no testeaba la regla `R = Max(C)`.
+El veredicto del preflight sigue siendo válido: su contenido real es
+`down(Max(C)) = C` (⇒ `B_R = ∅`), que el test verifica por separado y que hace
+la interfaz vacía también con la orientación corregida. El código está ahora
+alineado con la orientación corregida (infalling `A_R → B_R`), con un testigo
+ejecutable de no-vacuidad sobre el poset en V del Lean
+(`tests/test_c1_selector.py::test_corrected_orientation_nonempty_on_lean_witness`)
+para que el guardarraíl pueda fallar.

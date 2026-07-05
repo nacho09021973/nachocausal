@@ -9,8 +9,10 @@ from nachocausal import c1_selector as c1_selector_module
 from nachocausal.c1_selector import (
     c1_selector,
     c1_status,
+    cover_relations,
     down_closure,
     maximal_elements,
+    relational_interface,
 )
 from nachocausal.selection_guard import verify_selection_order_only
 
@@ -76,3 +78,36 @@ def test_max_reference_trivializes_hand_built_finite_posets():
 def test_c1_selector_selection_guard_on_synthetic_posets():
     for C in (chain_poset(5), diamond_poset(), two_component_poset()):
         verify_selection_order_only(C, c1_selector, seed=17)
+
+
+def v_poset():
+    """Lean witness poset (Horizon.lean `VPoset`): a < b, a < c, b || c."""
+    C = np.zeros((3, 3), dtype=bool)
+    C[1, 0] = True  # a < b
+    C[2, 0] = True  # a < c
+    return C
+
+
+def test_corrected_orientation_nonempty_on_lean_witness():
+    # Executable counterpart of `VPoset.relationalHorizon_nonempty_witness`:
+    # with reference R = {b} (a strict subset of the maximal elements),
+    # the infalling interface contains exactly the cover link (a, c).
+    C = v_poset()
+    interface = relational_interface(C, frozenset({1}))
+    assert interface == frozenset({(0, 2)})
+
+
+def test_old_orientation_is_empty_for_every_reference():
+    # Executable counterpart of `relationalHorizonOld_eq_empty`: cover pairs
+    # from B_R into A_R do not exist for any reference on these posets.
+    for C in (chain_poset(5), diamond_poset(), two_component_poset(), v_poset()):
+        n = C.shape[0]
+        covers = cover_relations(C)
+        for bits in range(1 << n):
+            reference = frozenset(i for i in range(n) if bits & (1 << i))
+            accessible = down_closure(C, reference)
+            black_region = frozenset(i for i in range(n) if i not in accessible)
+            old_orientation = frozenset(
+                (x, y) for x, y in covers if x in black_region and y in accessible
+            )
+            assert old_orientation == frozenset()

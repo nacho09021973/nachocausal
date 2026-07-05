@@ -148,6 +148,25 @@ order-only build).
 The roadmap: **boundary localisation ✅ → horizon-portion construction → convergence under patch
 extension → 3+1D.**
 
+### Current state of the PR-003 track (2026-07-03)
+
+The ladder plan above is **frozen, not abandoned** — on 2026-06-26/27 the track pivoted to first
+closing an *intrinsic relational definition* of the horizon interface
+(`docs/hoja_de_ruta_27_jun_2026.md`; prereg-003, the sealed estimator's operational resolution
+floor, is separately frozen in `docs/preregistration_003.md`). The honest boundary today:
+
+- **Defined (given `R`):** for a finite causal poset and a reference subset `R`, the relational
+  interface `H[C;R]` — infalling cover links from `down(R)` into its complement — is rigorously
+  defined and formalised (`formal/HorizonFormal/HorizonFormal/Horizon.lean`). The pre-2026-07-02
+  orientation was provably empty for every `R` (tombstone theorem `relationalHorizonOld_eq_empty`);
+  the corrected orientation carries an explicit non-emptiness witness and the structural one-way
+  lemma `relationalBlackRegion_no_escape` (no causal relation leaves the black-region candidate).
+- **Open:** selecting `R(C)` from the causal order alone in a closed, robust, physically
+  discriminating way. The only written draft rule, `R = Max(C)`, provably trivialises on finite
+  posets (`NO_INTERFACE`; `nachocausal/c1_selector.py`, `dev/PR003_C1_RELATIONAL_SPEC.md` §8-9).
+  The interface does not discover the horizon; it delimits what a (still missing) selector already
+  declared unable to escape. No order-only horizon reconstruction is claimed.
+
 ## Running / reproducing on a fresh machine
 
 The validation path is **pure numpy**. Anyone can reproduce everything under identical
