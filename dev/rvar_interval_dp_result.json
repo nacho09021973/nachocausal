@@ -1,0 +1,124 @@
+{
+  "scope": "EXPLORATION -- candidate polynomial implementation of the SAME frozen selector object; toy-validated against the committed Gate 0 reference; production outputs claim-inert; requires its own fresh Gate 0 (comit\u00e9 017 \u00a79 / addendum \u00a76 discipline) before any calibration or scoring use",
+  "dev_seed": 20240617,
+  "toy_validation": {
+    "family_size": 4,
+    "lambda_star_bf": "3",
+    "lambda_star_dp": "3",
+    "dinkelbach_iters": 3,
+    "checks": {
+      "modularity_all_family_members": true,
+      "lambda_star_match": true,
+      "argmax_in_tied_set": true,
+      "argmax_equals_unique_bf_argmax": true,
+      "argmax_in_family_with_H_nonempty": true
+    },
+    "PASS": true
+  },
+  "production_demo": [
+    {
+      "kind": "MINK",
+      "intensity": 1500.0,
+      "N": 1507,
+      "K": 15,
+      "status": "EMPTY_FAMILY",
+      "iters": null,
+      "lambda_star": null,
+      "size_D": null,
+      "A": null,
+      "B": null,
+      "wall_seconds": 0.03
+    },
+    {
+      "kind": "MINK",
+      "intensity": 3000.0,
+      "N": 3009,
+      "K": 22,
+      "status": "EMPTY_FAMILY",
+      "iters": null,
+      "lambda_star": null,
+      "size_D": null,
+      "A": null,
+      "B": null,
+      "wall_seconds": 0.2
+    },
+    {
+      "kind": "MINK",
+      "intensity": 6000.0,
+      "N": 6013,
+      "K": 26,
+      "status": "EMPTY_FAMILY",
+      "iters": null,
+      "lambda_star": null,
+      "size_D": null,
+      "A": null,
+      "B": null,
+      "wall_seconds": 1.23
+    },
+    {
+      "kind": "MINK",
+      "intensity": 12000.0,
+      "N": 12019,
+      "K": 40,
+      "status": "EMPTY_FAMILY",
+      "iters": null,
+      "lambda_star": null,
+      "size_D": null,
+      "A": null,
+      "B": null,
+      "wall_seconds": 8.09
+    },
+    {
+      "kind": "BH",
+      "intensity": 1500.0,
+      "N": 1507,
+      "K": 116,
+      "status": "OK",
+      "iters": 7,
+      "lambda_star": "37/4",
+      "size_D": 1495,
+      "A": 74,
+      "B": 8,
+      "wall_seconds": 0.1
+    },
+    {
+      "kind": "BH",
+      "intensity": 3000.0,
+      "N": 3009,
+      "K": 180,
+      "status": "OK",
+      "iters": 9,
+      "lambda_star": "9",
+      "size_D": 3005,
+      "A": 27,
+      "B": 3,
+      "wall_seconds": 0.41
+    },
+    {
+      "kind": "BH",
+      "intensity": 6000.0,
+      "N": 6013,
+      "K": 281,
+      "status": "OK",
+      "iters": 9,
+      "lambda_star": "71/8",
+      "size_D": 6003,
+      "A": 71,
+      "B": 8,
+      "wall_seconds": 1.51
+    },
+    {
+      "kind": "BH",
+      "intensity": 12000.0,
+      "N": 12019,
+      "K": 426,
+      "status": "OK",
+      "iters": 9,
+      "lambda_star": "77/8",
+      "size_D": 12002,
+      "A": 77,
+      "B": 8,
+      "wall_seconds": 8.72
+    }
+  ]
+}

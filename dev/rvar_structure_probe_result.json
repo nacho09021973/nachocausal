@@ -1,0 +1,447 @@
+{
+  "scope": "MEASUREMENT_ONLY -- structural facts on dev seeds; no mu, no Part F, no seed-band consumption, no claim beyond the counted certificates",
+  "dev_seeds": [
+    20240617,
+    13,
+    101
+  ],
+  "rows": [
+    {
+      "kind": "MINK",
+      "intensity": 1500.0,
+      "seed": 20240617,
+      "N": 1507,
+      "n_min": 21,
+      "n_max": 15,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 94
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 1500.0,
+      "seed": 13,
+      "N": 1549,
+      "n_min": 16,
+      "n_max": 13,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 60
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 1500.0,
+      "seed": 101,
+      "N": 1581,
+      "n_min": 13,
+      "n_max": 16,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 106
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 3000.0,
+      "seed": 20240617,
+      "N": 3009,
+      "n_min": 24,
+      "n_max": 22,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 214
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 3000.0,
+      "seed": 13,
+      "N": 3069,
+      "n_min": 25,
+      "n_max": 19,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 248
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 3000.0,
+      "seed": 101,
+      "N": 3115,
+      "n_min": 18,
+      "n_max": 23,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 230
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 6000.0,
+      "seed": 20240617,
+      "N": 6013,
+      "n_min": 36,
+      "n_max": 26,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 402
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 6000.0,
+      "seed": 13,
+      "N": 6098,
+      "n_min": 36,
+      "n_max": 27,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 480
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 6000.0,
+      "seed": 101,
+      "N": 6163,
+      "n_min": 31,
+      "n_max": 29,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 453
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 12000.0,
+      "seed": 20240617,
+      "N": 12019,
+      "n_min": 53,
+      "n_max": 40,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 917
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 12000.0,
+      "seed": 13,
+      "N": 12138,
+      "n_min": 44,
+      "n_max": 44,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 1036
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "MINK",
+      "intensity": 12000.0,
+      "seed": 101,
+      "N": 12231,
+      "n_min": 44,
+      "n_max": 42,
+      "interval_violations_per_sort": {
+        "u=t-r": 0,
+        "p=t+r": 0,
+        "r": 0,
+        "q=t-rstar": 904
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 0,
+      "partial_interval_minimals": 0,
+      "family_status": "EMPTY_CERTIFIED"
+    },
+    {
+      "kind": "BH",
+      "intensity": 1500.0,
+      "seed": 20240617,
+      "N": 1507,
+      "n_min": 26,
+      "n_max": 116,
+      "interval_violations_per_sort": {
+        "u=t-r": 627,
+        "p=t+r": 0,
+        "r": 1210,
+        "q=t-rstar": 538
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 1327,
+      "partial_interval_minimals": 26,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 1500.0,
+      "seed": 13,
+      "N": 1549,
+      "n_min": 29,
+      "n_max": 133,
+      "interval_violations_per_sort": {
+        "u=t-r": 855,
+        "p=t+r": 0,
+        "r": 1256,
+        "q=t-rstar": 593
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 1504,
+      "partial_interval_minimals": 29,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 1500.0,
+      "seed": 101,
+      "N": 1581,
+      "n_min": 21,
+      "n_max": 141,
+      "interval_violations_per_sort": {
+        "u=t-r": 849,
+        "p=t+r": 0,
+        "r": 1271,
+        "q=t-rstar": 581
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 1425,
+      "partial_interval_minimals": 21,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 3000.0,
+      "seed": 20240617,
+      "N": 3009,
+      "n_min": 32,
+      "n_max": 180,
+      "interval_violations_per_sort": {
+        "u=t-r": 1799,
+        "p=t+r": 0,
+        "r": 2494,
+        "q=t-rstar": 1234
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 2463,
+      "partial_interval_minimals": 32,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 3000.0,
+      "seed": 13,
+      "N": 3069,
+      "n_min": 35,
+      "n_max": 182,
+      "interval_violations_per_sort": {
+        "u=t-r": 1893,
+        "p=t+r": 0,
+        "r": 2498,
+        "q=t-rstar": 1218
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 2886,
+      "partial_interval_minimals": 35,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 3000.0,
+      "seed": 101,
+      "N": 3115,
+      "n_min": 27,
+      "n_max": 205,
+      "interval_violations_per_sort": {
+        "u=t-r": 1914,
+        "p=t+r": 0,
+        "r": 2579,
+        "q=t-rstar": 1190
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 2957,
+      "partial_interval_minimals": 27,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 6000.0,
+      "seed": 20240617,
+      "N": 6013,
+      "n_min": 49,
+      "n_max": 281,
+      "interval_violations_per_sort": {
+        "u=t-r": 3859,
+        "p=t+r": 0,
+        "r": 5138,
+        "q=t-rstar": 2416
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 5937,
+      "partial_interval_minimals": 49,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 6000.0,
+      "seed": 13,
+      "N": 6098,
+      "n_min": 46,
+      "n_max": 294,
+      "interval_violations_per_sort": {
+        "u=t-r": 4244,
+        "p=t+r": 0,
+        "r": 5157,
+        "q=t-rstar": 2421
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 6783,
+      "partial_interval_minimals": 46,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 6000.0,
+      "seed": 101,
+      "N": 6163,
+      "n_min": 41,
+      "n_max": 290,
+      "interval_violations_per_sort": {
+        "u=t-r": 4134,
+        "p=t+r": 0,
+        "r": 5240,
+        "q=t-rstar": 2536
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 5355,
+      "partial_interval_minimals": 41,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 12000.0,
+      "seed": 20240617,
+      "N": 12019,
+      "n_min": 73,
+      "n_max": 426,
+      "interval_violations_per_sort": {
+        "u=t-r": 8966,
+        "p=t+r": 0,
+        "r": 10473,
+        "q=t-rstar": 5009
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 13943,
+      "partial_interval_minimals": 73,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 12000.0,
+      "seed": 13,
+      "N": 12138,
+      "n_min": 69,
+      "n_max": 412,
+      "interval_violations_per_sort": {
+        "u=t-r": 8325,
+        "p=t+r": 0,
+        "r": 10440,
+        "q=t-rstar": 5108
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 15241,
+      "partial_interval_minimals": 69,
+      "family_status": "POSSIBLY_NONEMPTY"
+    },
+    {
+      "kind": "BH",
+      "intensity": 12000.0,
+      "seed": 101,
+      "N": 12231,
+      "n_min": 64,
+      "n_max": 436,
+      "interval_violations_per_sort": {
+        "u=t-r": 8876,
+        "p=t+r": 0,
+        "r": 10646,
+        "q=t-rstar": 5211
+      },
+      "empty_I_v": 0,
+      "unrelated_min_max_pairs": 11797,
+      "partial_interval_minimals": 64,
+      "family_status": "POSSIBLY_NONEMPTY"
+    }
+  ],
+  "summary": {
+    "interval_property_holds_all_draws": true,
+    "mink_family_empty_certified_all_production_draws": true,
+    "bh_all_minimals_partial_interval_all_draws": true
+  }
+}
