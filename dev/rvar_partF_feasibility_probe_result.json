@@ -1,0 +1,56 @@
+{
+  "scope": "MEASUREMENT_ONLY -- comit\u00e9 019 \u00a79 step 1; NOT Part F step 3; NO mu computed",
+  "dev_seed": 20240617,
+  "subsets_per_sec_optimistic_floor": 12127877.016151246,
+  "levels": [
+    {
+      "intensity": 1500.0,
+      "N_generated": 1507,
+      "max_size": 15,
+      "enum_2pow": "32768",
+      "log2_enum": 15,
+      "num_covers": 7349,
+      "t_pastmatrix_s": 0.0342,
+      "t_covers_s": 0.0275,
+      "est_enum_and_filter_time_optimistic_floor": "0.0027 s",
+      "level_verdict": "FEASIBLE_TO_REQUEST_PARTF"
+    },
+    {
+      "intensity": 3000.0,
+      "N_generated": 3009,
+      "max_size": 22,
+      "enum_2pow": "4194304",
+      "log2_enum": 22,
+      "num_covers": 16566,
+      "t_pastmatrix_s": 0.1629,
+      "t_covers_s": 0.1528,
+      "est_enum_and_filter_time_optimistic_floor": "0.346 s",
+      "level_verdict": "MARGINAL"
+    },
+    {
+      "intensity": 6000.0,
+      "N_generated": 6013,
+      "max_size": 26,
+      "enum_2pow": "67108864",
+      "log2_enum": 26,
+      "num_covers": 37857,
+      "t_pastmatrix_s": 0.3662,
+      "t_covers_s": 1.0845,
+      "est_enum_and_filter_time_optimistic_floor": "5.53 s",
+      "level_verdict": "MARGINAL"
+    },
+    {
+      "intensity": 12000.0,
+      "N_generated": 12019,
+      "max_size": 40,
+      "enum_2pow": "1099511627776",
+      "log2_enum": 40,
+      "num_covers": 83481,
+      "t_pastmatrix_s": 1.177,
+      "t_covers_s": 7.3803,
+      "est_enum_and_filter_time_optimistic_floor": "9.07e+04 s",
+      "level_verdict": "INFEASIBLE"
+    }
+  ],
+  "overall_verdict": "INFEASIBLE"
+}
