@@ -50,18 +50,22 @@ estimator — localises the horizon-associated boundary *significantly and stabl
 Schwarzschild model within a **finite patch**. It does **not** claim metric reconstruction, the
 global event horizon (future null infinity), 3+1D, Kerr, or manifoldlikeness.
 
-## Next phase — PR-003: from *localising* the boundary to *constructing* a horizon portion
+Everything below this point is post-Paper-I development material. It is exploratory/dev-only
+context and is not part of the sealed Paper I result.
+
+## Next phase — PR-003: from *localising* the boundary toward a candidate horizon portion
 
 With localisation PASSed, the next goal changes the **object the estimator returns**: from "the
-boundary is between these two positions" to an **ordered subset / band of causal-set elements** — a
-discrete causal curve that *is* a reconstructed portion of the horizon. The immediate defensible
-target (a finite patch cannot reach the global event horizon, which needs all of future null
-infinity) is an **order-only, blind reconstruction of a local portion of the 1+1D Schwarzschild
-horizon**. This follows Eichhorn–Gamito–Stokes (arXiv:2605.06813, Sec. V) — longest-chain
+boundary is between these two positions" to an **ordered subset / band of causal-set elements** —
+candidate horizon structure rather than a reconstruction claim. The immediate defensible target (a
+finite patch cannot reach the global event horizon, which needs all of future null infinity) is an
+**order-only, blind candidate for a local portion of the 1+1D Schwarzschild horizon**, subject to a
+separate freeze. This follows Eichhorn–Gamito–Stokes (arXiv:2605.06813, Sec. V) — longest-chain
 interior/exterior split → boundary → an **outgoing fuzzy ladder** tracing the horizon → a band built
 by iterating over successive antichains. **Key advance vs EGS:** they *seeded and selected* the
 horizon ladder using the embedding (their §V.B); ours must be **fully order-only and blind**, seeded
-from the v2 bracket boundary.
+from the v2 bracket boundary, with any reconstruction claim deferred until a separate dev cycle and
+freeze.
 
 ### What was explored today (2026-06-22, dev only; coords used *only* to score)
 
@@ -70,22 +74,24 @@ Compute engine decision: **Numba now** (fast iteration) → port the validated *
 deterministic either way). Probes (committed as scoped `dev/` exceptions): `explore_ladders.py`,
 `explore_direction.py`, `explore_seed_bracket.py`.
 
-- **Feasibility — yes.** Order-only **fuzzy ladders** (EGS Def. 2) of length ≥8 are *abundant* even
-  in our modest box (`t_edge=6`, N≈3600) — ladder scarcity is **not** a blocker (EGS's pessimism was
-  about rigid ladders). Kernel verified correct independently at N=147.
-- **#2 direction (outgoing vs ingoing), order-only — promising.** The exteriority field
+- **Feasibility — yes, in dev-only exploration.** Order-only **fuzzy ladders** (EGS Def. 2) of length
+  ≥8 are *abundant* even in our modest box (`t_edge=6`, N≈3600) — ladder scarcity is **not** a
+  blocker (EGS's pessimism was about rigid ladders). Kernel verified correct independently at N=147.
+- **#2 direction (outgoing vs ingoing), order-only — promising, dev-only.** The exteriority field
   `φ = L_fut` (EGS interior/exterior diagnostic) carries direction: a relative-exteriority feature
   predicts true `sign(Δr)` with AUC **0.72–0.95** in aggregate. *Preliminary:* tiny samples; the
-  **near-horizon band is still untested**.
+  **near-horizon band is still untested**. This is exploratory context, not Paper I evidence.
 - **#3 bracket-seeding — directionally right, low yield.** Seeding from the order-only v2 bracket
-  boundary concentrates ladders near the horizon (67–100% near-horizon), confirming the bracket is a
-  valid order-only seed — but only 1–3 long ladders are harvested per sprinkling, and `d_⊥ = |r−r_S|`
-  median ≈ 3–4 ℓ (near, not yet the O(ℓ) target).
+  boundary concentrates ladders near the horizon (67–100% near-horizon), indicating the bracket is a
+  usable order-only dev seed — but only 1–3 long ladders are harvested per sprinkling, and `d_⊥ =
+  |r−r_S|` median ≈ 3–4 ℓ (near, not yet the O(ℓ) target). This remains dev-only, not Paper I
+  evidence.
 - **Engineering note:** the *recursive* Numba njit ladder kernel **SIGSEGVs on real BH-generator
   posets** (`t_edge=6`), even at stack depth ≈21–30; this was **not** reproduced on synthetic
   light-cone posets up to `lmax=300`, so the failure is **workload-dependent**, not a universal
   recursion-depth limit. Mechanism `[UNVERIFIED]` — symptom reproduced, Numba internals not pinned.
   The ladder builder was switched to an **iterative** (explicit-stack) form (the C++-portable shape).
+  This is dev-only implementation context, not Paper I evidence.
 - **Measurement (2026-06-23, dev): `lmax` censoring lifted at `t_edge=6`.** The earlier
   `maxlen == lmax == 30` was a cap artifact, not a real length. Sweeping `lmax` ∈ {30,40,60,80,120}
   (intensity=3600, M=3, 3 seeds): true longest-ladder lengths are **46–96+** and **seed-dependent**.
@@ -94,7 +100,7 @@ deterministic either way). Probes (committed as scoped `dev/` exceptions): `expl
   shifts the binding cap onto `per_start_budget`: only seed1 reached budget-insensitive **saturation
   ≈46**; seed0 (≥96, still climbing) and seed2 (≥72) stayed budget-bound, their highest-budget cells
   hitting the wall-clock cap, so those lengths are **lower bounds** (true saturation not yet
-  established). Measurement only — `/tmp`, nothing frozen.
+  established). Measurement only — `/tmp`, nothing frozen, and not Paper I evidence.
 
 ### What was explored (2026-06-23, dev only; coords used *only* to score)
 
@@ -104,22 +110,23 @@ deliberation/integrity skills (`/comite`, `/auditor`) added under `.claude/skill
 `measure_near_horizon.py`, `sweep_near_horizon_density.py` (bracket-seeded longest ladders,
 order-only build).
 
-- **#2 direction — a strong *global* signal.** Of the `L_fut`-field features, **`relphi_mean`**
-  (mean relative-exteriority along the ladder) predicts true `sign(Δr)` with AUC **0.94–0.97**,
-  stable across a **4× density sweep** (intensity 3600→7200→14400). The other features are weak.
-  The specifically near-horizon validation is still limited to **1/6/2** positive (outgoing) cases,
-  so #2 is **retained provisionally**, not yet definitively freezable.
-- **#3 selection "longest" — REJECTED as the selector of a horizon portion.** A density sweep
-  splits the bracket-seeded longest ladder into head vs tail. The **head** (first-3 rungs) keeps
-  `d_⊥/ℓ` bounded around ~2.5 (2.34→2.86→2.59, non-monotone, large IQRs) — **compatible with**
-  localisation at discreteness precision (`d_⊥`=O(ℓ)); this does **not** by itself demonstrate
-  convergence or a seed-coherent curve. The **tail** has `d_⊥/ℓ` **growing** (4.37→6.17→7.56), so
-  the longest-selected ladder **fails the required discreteness-scale adherence** — it does not
-  stay at O(ℓ). (This is *not* a claim of physical divergence: ℓ roughly halves over the sweep, so
-  physical `d_⊥` may still be decreasing, only slower than O(ℓ); the scaling is undetermined with
-  three densities.) **Structural finding:** horizon information concentrates in the head near the
-  seed; later growth optimises *length*, not *adherence*. `NO_POST_HOC_TUNING` honoured: dev only,
-  nothing frozen.
+- **#2 direction — a strong *global* signal, still dev-only.** Of the `L_fut`-field features,
+  **`relphi_mean`** (mean relative-exteriority along the ladder) predicts true `sign(Δr)` with AUC
+  **0.94–0.97**, stable across a **4× density sweep** (intensity 3600→7200→14400). The other
+  features are weak. The specifically near-horizon validation is still limited to **1/6/2** positive
+  (outgoing) cases, so #2 is **retained provisionally**, not yet definitively freezable. This is
+  exploratory context, not Paper I evidence.
+- **#3 selection "longest" — REJECTED as the selector of a horizon portion.** A density sweep splits
+  the bracket-seeded longest ladder into head vs tail. The **head** (first-3 rungs) keeps `d_⊥/ℓ`
+  bounded around ~2.5 (2.34→2.86→2.59, non-monotone, large IQRs) — **compatible with** localisation
+  at discreteness precision (`d_⊥`=O(ℓ)); this does **not** by itself demonstrate convergence or a
+  seed-coherent curve. The **tail** has `d_⊥/ℓ` **growing** (4.37→6.17→7.56), so the longest-selected
+  ladder **fails the required discreteness-scale adherence** — it does not stay at O(ℓ). (This is
+  *not* a claim of physical divergence: ℓ roughly halves over the sweep, so physical `d_⊥` may still
+  be decreasing, only slower than O(ℓ); the scaling is undetermined with three densities.)
+  **Structural finding:** horizon information concentrates in the head near the seed; later growth
+  optimises *length*, not *adherence*. `NO_POST_HOC_TUNING` honoured: dev only, nothing frozen, not
+  Paper I evidence.
 
 ### Plan for tomorrow (one precise question first — do NOT pre-design alternatives)
 
