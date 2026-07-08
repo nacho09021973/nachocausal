@@ -50,6 +50,28 @@ estimator — localises the horizon-associated boundary *significantly and stabl
 Schwarzschild model within a **finite patch**. It does **not** claim metric reconstruction, the
 global event horizon (future null infinity), 3+1D, Kerr, or manifoldlikeness.
 
+## Program-level question
+
+The deeper program is narrower and more defensible than a generic "geometry from order" slogan:
+
+- How much continuous geometry, and in particular horizon-type structure, can be recovered from
+  causal order alone?
+- Are there geometric observables whose localisation is not arbitrarily refinable from finite
+  discrete order data alone?
+
+The current repo does **not** claim a universal no-go theorem or a new physical uncertainty
+principle. What it does claim today is more limited:
+
+- **Paper I / prereg-002:** an order-only estimator can recover a horizon-associated boundary in a
+  controlled finite 1+1D setting.
+- **PR-003 / prereg-003:** the sealed v2 estimator exhibits an **operational resolution floor** in
+  that setting.
+
+The open scientific question is whether such a floor is merely estimator-specific, or whether it
+signals a deeper **order/geometry indetermination** for fine geometric localisation. "Uncertainty"
+is therefore used here only as a working analogy for a possible intrinsic operational limit, not
+as an established physical principle.
+
 Everything below this point is post-Paper-I development material. It is exploratory/dev-only
 context and is not part of the sealed Paper I result.
 
