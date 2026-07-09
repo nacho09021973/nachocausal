@@ -222,47 +222,58 @@ the gating logic above. It is labeled `DIAGNOSTIC_ONLY / GROUND_TRUTH_READOUT`, 
 
 ```
 COMMAND_TO_FREEZE_BEFORE_RUN:
-<to be filled only after implementation/data contract is audited>
+python3 dev/measure_kbeam_peeloff.py --seeds 6 --intensities 3600,7200,14400 \
+  --probe-out data/reports/pr004_braiding_v2_per_lineage.csv --probe-k 8
 ```
 
-Using only flags that exist today in `dev/measure_kbeam_peeloff.py`
-(`--seeds`, `--intensities`, `--device`, `--probe-out`, `--probe-k`), the closest
-existing invocation shape is:
+**Scope of this first run (Option A — single-K).** `--probe-k 8` uses `K_REF = 8`,
+already frozen in `dev/measure_kbeam_peeloff.py` as "the reference tail depth for the
+adherence-vs-K read" — not a new number invented for this freeze. `--seeds 6` and
+`--intensities 3600,7200,14400` reuse the same seed count and intensity grid already used
+to produce the V1 CSV (`data/reports/kbeam_braiding_diagnostic_per_survivor.csv`),
+unchanged here because V2 revises the per-lineage *definitions and columns*, not the
+sampling grid.
 
-```
-python3 dev/measure_kbeam_peeloff.py --seeds <N> --intensities <comma-list> \
-  --probe-out data/reports/pr004_braiding_v2_per_lineage.csv --probe-k <K>
-```
+This first V2 run is a single-K primary diagnostic at `K_REF = 8`. Multi-K output
+(`REQUIRED_IMPLEMENTATION_CHANGE` item 6 below) remains unresolved and is **not required**
+for the primary `CONCENTRATED_SIGNAL` / `DISPERSED_SIGNAL` / `INCONCLUSIVE` classification
+in §6. It is explicitly out of scope for this run and does not gate it.
 
-This is **not** sufficient as-is. `--probe-k` only dumps rows for a single `K` value per
-run (`if probe_writer is not None and probe_k is not None and K == probe_k`), and the
-script does not currently emit `lineage_id`, `d_p_over_ell`, `d_q_over_ell`,
-`is_top1`, or `is_minbeam_at_k`, nor does it rename `survivor_rank` to
-`survivor_rank_at_depth`. None of these are invented as existing flags here.
+Items 1–5 below are implemented in the working tree of `dev/measure_kbeam_peeloff.py` as
+of this preregistration edit (persistent `lineage_id` in `kbeam()`, the renamed
+`survivor_rank_at_depth` field, `d_p_over_ell`/`d_q_over_ell`, `is_top1`, and
+`is_minbeam_at_k` all present in `PROBE_FIELDS` and wired into the probe-writer path) —
+not yet committed as of this edit. Item 6 is deliberately not implemented and is deferred,
+per the scope note above.
 
-**REQUIRED_IMPLEMENTATION_CHANGE** (must land, be reviewed, and be seal-checked before
-the command above can be frozen and run):
+**REQUIRED_IMPLEMENTATION_CHANGE** (items 1–5 landed in the working tree and reviewed as
+of this edit; item 6 deferred and out of scope for this first run):
 
 1. Assign a persistent `lineage_id` at candidate-creation time in `kbeam()` and thread it
    through `by_depth`, so each row in the probe writer carries the same `lineage_id` its
-   parent had, extended only by growth, never reassigned.
+   parent had, extended only by growth, never reassigned. — **DONE** (working tree, not
+   committed).
 2. Rename the existing `survivor_rank` probe field to `survivor_rank_at_depth` (no logic
-   change — it already is depth-relative; this is a naming-contract fix only).
+   change — it already is depth-relative; this is a naming-contract fix only). —
+   **DONE** (working tree, not committed).
 3. Compute and emit `d_p_over_ell = abs(r_p_last - R_S) / ell` and
    `d_q_over_ell = abs(r_q_last - R_S) / ell` in the probe writer (currently only
-   `d_mid_over_ell` is computed).
+   `d_mid_over_ell` is computed). — **DONE** (working tree, not committed).
 4. Emit `is_top1` explicitly (currently only implicit via `survivor_rank_at_depth == 0`
    under the existing sort order — must be materialized as its own column so the
-   contract does not silently depend on sort-order stability).
+   contract does not silently depend on sort-order stability). — **DONE** (working tree,
+   not committed).
 5. Emit `is_minbeam_at_k`: the row within the same
    `(seed, intensity, K, start_id, depth_k)` group whose `d_mid_over_ell` is the minimum
-   (ties broken by lowest `lineage_id`, to keep it deterministic — this tie-break rule
-   must be reviewed alongside the change, not decided silently in code).
-6. Decide and implement how multiple `K` values enter one frozen per-lineage output (the
-   current `--probe-k` mechanism dumps exactly one `K` per invocation): either extend the
-   probe writer to emit all `K` in `K_GRID` in one pass, or freeze a documented
-   concatenation-of-runs procedure. This preregistration does not resolve that choice; it
-   must be resolved and reviewed before §7's command is filled in.
+   (ties broken by lowest `lineage_id`, to keep it deterministic). — **DONE** (working
+   tree, not committed).
+6. **DEFERRED — out of scope for this first run.** Decide and implement how multiple `K`
+   values enter one frozen per-lineage output (the current `--probe-k` mechanism dumps
+   exactly one `K` per invocation): either extend the probe writer to emit all `K` in
+   `K_GRID` in one pass, or freeze a documented concatenation-of-runs procedure. This
+   preregistration does not resolve that choice. It does not need to be resolved for the
+   frozen command above (single-`K`, `K_REF=8`); it must be resolved and reviewed in a
+   separate preregistration before any multi-K analysis is attempted.
 
 No other flags, columns, or behaviors are assumed to exist beyond what is read in
 `dev/measure_kbeam_peeloff.py` as of this preregistration.
@@ -274,8 +285,9 @@ No other flags, columns, or behaviors are assumed to exist beyond what is read i
 
 ## 9. Stop Rule
 
-- The output files in §8 may only be looked at after: (a) items 1–6 in §7 have landed and
-  been reviewed, (b) the seal check (`assert_seal` pre and post, per
+- The output files in §8 may only be looked at after: (a) items 1–5 in §7 have landed and
+  been reviewed (item 6 is explicitly deferred per §7's Option A scope note and does not
+  gate this run), (b) the seal check (`assert_seal` pre and post, per
   `dev/measure_kbeam_peeloff.py`) has passed, (c) §7's `COMMAND_TO_FREEZE_BEFORE_RUN` has
   been filled in verbatim and committed unedited, and (d) the run has completed without
   `FAILED_RUNTIME`.
