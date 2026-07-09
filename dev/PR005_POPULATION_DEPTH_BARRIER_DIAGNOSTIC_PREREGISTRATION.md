@@ -213,7 +213,44 @@ python3 dev/measure_kbeam_peeloff.py --seeds 6 --intensities 3600,7200,14400 \
   --slice-out data/reports/pr005_population_depth_barrier_slices.csv --probe-k 8
 ```
 
-## 9.1 Decision Tree To Freeze Before Run
+## 9.1 Frozen Scientific Tree
+
+The frozen scientific tree for PR005 is the smallest profile-based tree that the
+current output supports without reverting to lineage censoring. It uses only the
+primary CSV columns in §6 and treats `GROUND_TRUTH_READOUT / NOT_ORDER_ONLY_EVIDENCE`
+columns as diagnostic-only.
+
+Definitions:
+
+- `first_empty_depth(sequence)`: the smallest `depth_k` whose `slice_status` is `EMPTY`
+  for a given `(seed, intensity, K, start_id)` sequence; `26` if no `EMPTY` slice occurs
+  in the frozen depth range.
+- `empty_fraction(depth_k)`: fraction of slices at a given `depth_k` whose
+  `slice_status` is `EMPTY`.
+
+`BARRIER_SIGNAL` requires all of:
+
+1. `median(first_empty_depth) = 4`.
+2. For every seed and every intensity group, at least `0.85` of the sequences satisfy
+   `first_empty_depth <= 4`.
+3. `empty_fraction(4) >= 0.85`.
+4. The median of `empty_fraction(depth_k)` over `depth_k = 5..25` is `>= 0.90`.
+5. The median of `empty_fraction(depth_k)` over `depth_k = 1..3` is `<= 0.10`.
+
+`NO_BARRIER_SIGNAL` requires all of:
+
+1. `median(first_empty_depth) >= 8`.
+2. For every seed and every intensity group, at most `0.50` of the sequences satisfy
+   `first_empty_depth <= 4`.
+3. `empty_fraction(4) <= 0.50`.
+4. The median of `empty_fraction(depth_k)` over `depth_k = 5..25` is `<= 0.50`.
+
+`INCONCLUSIVE` applies if neither full criterion set is satisfied.
+
+The ground-truth horizon-side readouts remain secondary diagnostics only; they may be
+compared after the primary label is fixed, but they do not enter the tree above.
+
+## 9.2 Decision Tree To Freeze Before Run
 
 The final PR005 decision tree must start with the data contract:
 
