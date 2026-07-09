@@ -295,7 +295,7 @@ def _write_slice_rows(slice_writer, seed, intensity, K, start_id, by_depth):
 
 
 def measure_seed(seed, intensity, t_edge, device, probe_k=None, probe_writer=None,
-                 slice_writer=None):
+                 slice_writer=None, slice_writers=None):
     t_seed0 = time.perf_counter()
     emb, _, _ = generator.numpy_sprinkle(seed, float(intensity), float(t_edge))
     ell = thresholds.ell(intensity)
@@ -337,6 +337,8 @@ def measure_seed(seed, intensity, t_edge, device, probe_k=None, probe_writer=Non
             reach.append(len(bd))
             if slice_writer is not None and probe_k is not None and K == probe_k:
                 _write_slice_rows(slice_writer, seed, intensity, K, start_id, bd)
+            if slice_writers is not None and K in slice_writers:
+                _write_slice_rows(slice_writers[K], seed, intensity, K, start_id, bd)
             if len(bd) < MIN_LEN:
                 continue
             for k in range(len(bd)):
@@ -447,13 +449,16 @@ SLICE_FIELDS = [
 
 
 def run(seeds, intensities, t_edge, device, probe_out=None, probe_k=None,
-        slice_out=None):
+        slice_out=None, slice_out_prefix=None, slice_k_list=None):
     probe_count = 0
     probe_fh = None
     probe_writer = None
     slice_count = 0
     slice_fh = None
     slice_writer = None
+    slice_counts = {k: 0 for k in (slice_k_list or [])}
+    slice_fhs = {}
+    slice_writers = {}
     if probe_out:
         probe_fh = open(probe_out, "w", newline="", encoding="utf-8")
         probe_writer = csv.DictWriter(probe_fh, fieldnames=PROBE_FIELDS)
@@ -462,12 +467,20 @@ def run(seeds, intensities, t_edge, device, probe_out=None, probe_k=None,
         slice_fh = open(slice_out, "w", newline="", encoding="utf-8")
         slice_writer = csv.DictWriter(slice_fh, fieldnames=SLICE_FIELDS, lineterminator="\n")
         slice_writer.writeheader()
+    if slice_out_prefix and slice_k_list:
+        for k in slice_k_list:
+            out = f"{slice_out_prefix}_K{k}.csv"
+            fh = open(out, "w", newline="", encoding="utf-8")
+            writer = csv.DictWriter(fh, fieldnames=SLICE_FIELDS, lineterminator="\n")
+            writer.writeheader()
+            slice_fhs[k] = fh
+            slice_writers[k] = writer
     print(f"seeds={len(seeds)} {seeds}  t_edge={t_edge:.0f}  M={M}  lmax={LMAX} "
           f"min_len={MIN_LEN}  K={K_GRID}  k_ref={K_REF}  ADH={ADH:.0f}ℓ\n")
     for inten in intensities:
         t0 = time.perf_counter()
         rows = [measure_seed(s, inten, t_edge, device, probe_k=probe_k, probe_writer=probe_writer,
-                             slice_writer=slice_writer)
+                             slice_writer=slice_writer, slice_writers=slice_writers)
                 for s in seeds]
         if probe_writer is not None and probe_k is not None:
             probe_count += sum(
@@ -478,6 +491,9 @@ def run(seeds, intensities, t_edge, device, probe_out=None, probe_k=None,
         if slice_writer is not None and probe_k is not None:
             slice_count += sum(r["perf"]["kbeam"][probe_k]["starts"] * LMAX
                                for r in rows if probe_k in r["perf"]["kbeam"])
+        for k in slice_counts:
+            slice_counts[k] += sum(r["perf"]["kbeam"][k]["starts"] * LMAX
+                                   for r in rows if k in r["perf"]["kbeam"])
         ell = rows[0]["ell"]
         dev = rows[0]["dev"]
         perf_rows = [r["perf"] for r in rows]
@@ -530,6 +546,9 @@ def run(seeds, intensities, t_edge, device, probe_out=None, probe_k=None,
     if slice_fh is not None:
         slice_fh.close()
         print(f"slice_rows written: {slice_count} -> {slice_out}")
+    for k, fh in slice_fhs.items():
+        fh.close()
+        print(f"slice_rows written: {slice_counts.get(k, 0)} -> {slice_out_prefix}_K{k}.csv")
 
 
 def parse_args():
@@ -542,6 +561,8 @@ def parse_args():
     ap.add_argument("--probe-out", default="", help="optional CSV path for per-survivor/per-depth probe rows")
     ap.add_argument("--probe-k", type=int, default=64, help="K value to dump when --probe-out is set")
     ap.add_argument("--slice-out", default="", help="optional PR005 depth-slice CSV path")
+    ap.add_argument("--slice-out-prefix", default="", help="optional PR005 multi-K depth-slice prefix")
+    ap.add_argument("--slice-k-list", default="", help="comma-separated K values for --slice-out-prefix")
     return ap.parse_args()
 
 
@@ -567,6 +588,9 @@ def main():
     assert_seeds(seeds)
     if not seeds:
         raise SystemExit("no seeds selected; check --seeds and --seed-offset")
+    slice_k_list = [int(x) for x in args.slice_k_list.split(",") if x.strip()]
+    if slice_k_list and not args.slice_out_prefix:
+        raise SystemExit("--slice-out-prefix is required when --slice-k-list is set")
     _xp, dev = backend.resolve_device(args.device)
     print(f"backend device = {dev}  (requested {args.device})\n")
 
@@ -574,7 +598,9 @@ def main():
     run(seeds, intensities, 6.0, args.device,
         probe_out=(args.probe_out or None),
         probe_k=args.probe_k,
-        slice_out=(args.slice_out or None))
+        slice_out=(args.slice_out or None),
+        slice_out_prefix=(args.slice_out_prefix or None),
+        slice_k_list=(slice_k_list or None))
     print(f"elapsed {time.time()-t0:.1f}s")
     assert_seal("post")
     print("done — exploration only; nothing frozen, no seed in RESERVED_002 touched.")
