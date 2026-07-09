@@ -66,8 +66,7 @@ horizon-side label:
 The primary comparison is early-depth versus late-depth behavior within the same
 `(seed, intensity, start_id, K)` run.
 
-Endpoint identity must be frozen before any implementation can be used for PR005. The
-default candidate is:
+Endpoint identity for the first PR005 CSV contract is frozen in §6 as:
 
 ```text
 endpoint_pair_id = (p_last, q_last)
@@ -92,24 +91,51 @@ diagnostic readouts:
 They are not primary order-only features. Any report using them must label them
 `GROUND_TRUTH_READOUT / NOT_ORDER_ONLY_EVIDENCE`.
 
-## 6. Mandatory Data Contract
+## 6. Mandatory CSV Contract
 
-The PR005 output must contain one row per `depth_slice` and must include at least:
+The first PR005 output must be a CSV with exactly one row per `depth_slice`. Its
+mandatory primary columns must appear first, in exactly the ordered prefix below:
 
-- `seed`
-- `intensity`
-- `K`
-- `start_id`
-- `depth_k`
-- `n_survivors`
-- `n_endpoint_identities`
-- `top1_endpoint_mass_fraction`
-- `top3_endpoint_mass_fraction`
-- `endpoint_entropy`
-- `effective_endpoint_count`
-- `turnover_from_previous_depth`
+| Column | Type | Definition |
+|---|---|---|
+| `seed` | int | Seed used for the sprinkle. |
+| `intensity` | float | Sprinkle intensity. |
+| `K` | int | Beam width. |
+| `start_id` | int | Deterministic start-rung index within `(seed, intensity, K)`. |
+| `depth_k` | int | Depth slice, one-indexed, in `[1, frozen_max_depth]`. |
+| `slice_status` | enum | `EVALUABLE` if `n_survivors > 0`, else `EMPTY`. |
+| `n_survivors` | int | Number of survivor states present in this depth slice. |
+| `n_endpoint_identities` | int | Number of distinct `endpoint_pair_id` values in this slice. |
+| `top1_endpoint_pair` | string | JSON list `[p_last,q_last]` for the most frequent `endpoint_pair_id`; `NA` if empty. |
+| `top1_endpoint_count` | int | Count of survivors with `top1_endpoint_pair`; `0` if empty. |
+| `top1_endpoint_mass_fraction` | float | `top1_endpoint_count / n_survivors`; `0.0` if empty. |
+| `top3_endpoint_count` | int | Sum of the three largest endpoint-identity counts; `0` if empty. |
+| `top3_endpoint_mass_fraction` | float | `top3_endpoint_count / n_survivors`; `0.0` if empty. |
+| `endpoint_entropy_nats` | float | Shannon entropy `-sum_i p_i log(p_i)` over endpoint identities; `0.0` if empty. |
+| `effective_endpoint_count` | float | `exp(endpoint_entropy_nats)`; `0.0` if empty. |
+| `turnover_from_previous_depth` | float or `NA` | Jaccard distance between endpoint-identity sets at `depth_k-1` and `depth_k` for the same `(seed,intensity,K,start_id)`; `NA` at `depth_k=1`. |
 
-Optional diagnostic columns may include:
+Endpoint identity is frozen for this contract as:
+
+```text
+endpoint_pair_id = (p_last, q_last)
+```
+
+Tie rules:
+
+- `top1_endpoint_pair`: highest endpoint count wins; ties are broken by lexicographic
+  order of `(p_last, q_last)`.
+- `top3_endpoint_count`: use the same count-descending, lexicographic tie order and sum
+  up to three endpoint identities.
+- `turnover_from_previous_depth`: if both previous and current endpoint sets are empty,
+  the Jaccard distance is `0.0`; if exactly one is empty, it is `1.0`.
+
+Rows with `n_survivors == 0` must be emitted explicitly for every
+`(seed, intensity, K, start_id, depth_k)` through the frozen maximum depth. They are
+`EMPTY` slices, not dropped rows and not censoring.
+
+Optional diagnostic columns may be emitted only after the ordered columns above, and must
+be excluded from PR005 primary decision logic:
 
 - `radial_spread_over_ell`
 - `modal_shell_over_ell`
@@ -118,9 +144,6 @@ Optional diagnostic columns may include:
 - `lineage_turnover`
 - `top1_persistence`
 - `minbeam_identity_changed`
-
-Rows with `n_survivors == 0` are terminal slice failures for that
-`(seed, intensity, start_id, K)` sequence and must be reported, not silently dropped.
 
 ## 7. Censoring Rule
 
