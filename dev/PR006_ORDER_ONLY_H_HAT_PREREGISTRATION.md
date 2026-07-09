@@ -141,11 +141,29 @@ intensity sets, or the fixed `K_REF`.
 Validation run block status:
 
 ```text
-VALIDATION RUN BLOCK: NOT FROZEN IN THIS DRAFT.
+VALIDATION RUN BLOCK: FROZEN_FOR_FUTURE_VALIDATION.
 ```
 
-No PR006 validation run may be executed until the command, seed set, intensity grid,
-output path, and expected report path are frozen in a follow-up preregistration commit.
+Frozen validation command:
+
+```bash
+python3 dev/measure_kbeam_peeloff.py --seeds 6 --seed-offset 24 \
+  --intensities 4800,9600,19200 \
+  --slice-out data/reports/pr006_order_only_h_hat_validation.csv \
+  --probe-k 8
+```
+
+Frozen validation block:
+
+- seed set: `1000024,1000025,1000026,1000027,1000028,1000029`;
+- seed source: `EXPLORE_POOL[24:30]`;
+- intensity grid: `4800,9600,19200`;
+- `K_REF = 8`;
+- output CSV path: `data/reports/pr006_order_only_h_hat_validation.csv`;
+- expected report path: `data/reports/PR006_ORDER_ONLY_H_HAT_VALIDATION_REPORT.md`.
+
+This block freezes the future validation run. It does not execute the run, create the
+CSV, create the report, or change `VALIDATION_STATUS` from `NOT_RUN`.
 
 A valid PR006 validation input must satisfy the PR005 depth-slice data contract for
 `K_REF=8`:
