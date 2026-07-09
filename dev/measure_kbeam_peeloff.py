@@ -41,7 +41,9 @@ Run:
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
+import json
 import os
 import platform
 import subprocess
@@ -142,21 +144,32 @@ def _children(a, indptr, idx):
 def kbeam(sp, sq, indptr, idx, C, K, lmax=LMAX):
     """Order-only K-beam fuzzy-ladder search from start rung (sp,sq).
 
-    A state = (p_path, q_path, regscore). At each depth, expand every surviving
-    state by all Def-2-valid successor rungs, accumulate the ORDER-ONLY regularity
-    reward (centred-ness of the interval cardinalities in the EGS band), then keep
-    the top-K states by regscore (deduped by terminal rung for diversity).
+    A state = (lineage_id, regscore, p_path, q_path). At each depth, expand every
+    surviving state by all Def-2-valid successor rungs, accumulate the ORDER-ONLY
+    regularity reward (centred-ness of the interval cardinalities in the EGS
+    band), then keep the top-K states by regscore (deduped by terminal rung for
+    diversity).
 
-    Returns a list (per reached depth d=1..) of the surviving p-paths at that depth
-    (each a python list of node indices), so the caller can score d_perp/ell. r is
-    NOT touched here — this is order-only."""
-    # state: (regscore, p_tuple, q_tuple)
-    frontier = [(0.0, (int(sp),), (int(sq),))]
-    by_depth = [[list(frontier[0][1])]]  # depth-1 survivors (just the seed p)
+    `lineage_id` is unique within this kbeam() call (one call = one start) and is
+    assigned once when a candidate is first created; it is inherited unchanged by
+    the single highest-scoring child that continues a given parent. If a parent
+    survives into multiple children (a beam branch/split), every child other than
+    that highest-scoring one is a newly created lineage and gets a fresh id — a
+    branch is a new survivor, not a continuation of the old one. This makes
+    `lineage_id` a persistent identity across depths (PR004 V2 preregistration §2),
+    unlike the depth-relative rank the caller assigns downstream.
+
+    Returns a list by depth. Each depth entry is a list of survivors
+    `(lineage_id, regscore, p_path, q_path)` in rank order. r is NOT touched here —
+    this is order-only."""
+    next_lineage_id = 1  # 0 is reserved for the depth-1 seed lineage
+    frontier = [(0, 0.0, (int(sp),), (int(sq),))]  # (lineage_id, regscore, p_tuple, q_tuple)
+    _lid0, _reg0, _pt0, _qt0 = frontier[0]
+    by_depth = [[(_lid0, _reg0, list(_pt0), list(_qt0))]]
     d = 1
     while d < lmax and frontier:
-        cand = {}  # key=(p_last,q_last) -> best (regscore, p_tuple, q_tuple)
-        for reg, pt, qt in frontier:
+        cand = {}  # key=(p_last,q_last) -> best (regscore, p_tuple, q_tuple, parent_lineage_id)
+        for lid, reg, pt, qt in frontier:
             p_i, q_i = pt[-1], qt[-1]
             for np_ in _children(p_i, indptr, idx):
                 np_ = int(np_)
@@ -177,12 +190,22 @@ def kbeam(sp, sq, indptr, idx, C, K, lmax=LMAX):
                     nreg = reg + rwd
                     prev = cand.get(key)
                     if prev is None or nreg > prev[0]:
-                        cand[key] = (nreg, pt + (np_,), qt + (nq,))
+                        cand[key] = (nreg, pt + (np_,), qt + (nq,), lid)
         if not cand:
             break
-        survivors = sorted(cand.values(), key=lambda s: s[0], reverse=True)[:K]
+        ranked = sorted(cand.values(), key=lambda s: s[0], reverse=True)[:K]
+        used_parents = set()
+        survivors = []
+        for nreg, pt, qt, parent_lid in ranked:
+            if parent_lid not in used_parents:
+                lid = parent_lid
+                used_parents.add(parent_lid)
+            else:
+                lid = next_lineage_id
+                next_lineage_id += 1
+            survivors.append((lid, nreg, pt, qt))
         frontier = survivors
-        by_depth.append([list(pt) for _, pt, _ in survivors])
+        by_depth.append([(lid, float(reg), list(pt), list(qt)) for lid, reg, pt, qt in survivors])
         d += 1
     return by_depth
 
@@ -203,14 +226,29 @@ def sample_starts(C, indptr, idx, seed):
     return starts
 
 
-def measure_seed(seed, intensity, t_edge, device):
+def _child_degree_stats(indptr):
+    deg = np.diff(indptr)
+    return dict(
+        avg_outdeg=float(np.mean(deg)) if deg.size else 0.0,
+        max_outdeg=int(np.max(deg)) if deg.size else 0,
+    )
+
+
+def measure_seed(seed, intensity, t_edge, device, probe_k=None, probe_writer=None):
+    t_seed0 = time.perf_counter()
     emb, _, _ = generator.numpy_sprinkle(seed, float(intensity), float(t_edge))
     ell = thresholds.ell(intensity)
+    t0 = time.perf_counter()
     C, indptr, idx, _L, dev = gpu_link_csr(emb, device)
+    t_link = time.perf_counter() - t0
     r = emb[:, 1]
+    t0 = time.perf_counter()
     starts = sample_starts(C, indptr, idx, seed)
+    t_starts = time.perf_counter() - t0
+    deg_stats = _child_degree_stats(indptr)
 
     # SINGLE-TRACER baseline (protocol a): the existing greedy ladder, same rungs.
+    t0 = time.perf_counter()
     g_tail, g_len = [], []
     for (sp, sq) in starts:
         gln, gpb = greedy_ladder(sp, sq, indptr, idx, C, M, LMAX)
@@ -220,23 +258,77 @@ def measure_seed(seed, intensity, t_edge, device):
             g_len.append(int(gln))
             if gln > 3:
                 g_tail.append(float(np.median(gd[3:])))
+    t_greedy = time.perf_counter() - t0
 
     # K-beam sweep. Per K: pooled per-depth d_perp/ell of (i) the top-1 regularity
     # ladder and (ii) the MIN over the K survivors (best retained hypothesis).
     out = {}
+    kbeam_stats = {}
     for K in K_GRID:
+        t0 = time.perf_counter()
         top1 = [[] for _ in range(LMAX)]   # depth -> list of d_perp/ell (top-1 reg)
         beammin = [[] for _ in range(LMAX)]
         reach = []                         # max depth reached per start
-        for (sp, sq) in starts:
+        total_frontier_states = 0
+        total_survivors = 0
+        for start_id, (sp, sq) in enumerate(starts):
             bd = kbeam(sp, sq, indptr, idx, C, K)
             reach.append(len(bd))
             if len(bd) < MIN_LEN:
                 continue
             for k in range(len(bd)):
                 paths = bd[k]              # survivors at depth k+1, ranked (top1 first)
+                total_frontier_states += len(paths)
+                total_survivors += len(paths)
                 # d_perp/ell of the LAST rung of each survivor path
-                dvals = [abs(r[p[-1]] - R_S) / ell for p in paths]
+                dvals = []
+                for lid, reg, p, q in paths:
+                    r_p_last = float(r[p[-1]])
+                    r_q_last = float(r[q[-1]])
+                    d_mid = abs(0.5 * (r_p_last + r_q_last) - R_S) / ell
+                    dvals.append(d_mid)
+                if probe_writer is not None and probe_k is not None and K == probe_k:
+                    rows_k = []
+                    for survivor_rank, (lid, reg, p, q) in enumerate(paths):
+                        r_p_last = float(r[p[-1]])
+                        r_q_last = float(r[q[-1]])
+                        d_p = abs(r_p_last - R_S) / ell
+                        d_q = abs(r_q_last - R_S) / ell
+                        d_mid = abs(0.5 * (r_p_last + r_q_last) - R_S) / ell
+                        rows_k.append(dict(
+                            lineage_id=int(lid),
+                            survivor_rank_at_depth=int(survivor_rank),
+                            p_last=int(p[-1]),
+                            q_last=int(q[-1]),
+                            r_p_last=r_p_last,
+                            r_q_last=r_q_last,
+                            d_p_over_ell=float(d_p),
+                            d_q_over_ell=float(d_q),
+                            d_mid_over_ell=float(d_mid),
+                            straddles_horizon=int((r_p_last - R_S) * (r_q_last - R_S) <= 0.0),
+                            regscore=float(reg),
+                            is_top1=int(survivor_rank == 0),
+                            path_p=json.dumps(p, separators=(",", ":")),
+                            path_q=json.dumps(q, separators=(",", ":")),
+                        ))
+                    # is_minbeam_at_k: argmin d_mid_over_ell within this depth's
+                    # survivor group; ties broken deterministically by lowest
+                    # lineage_id (PR004 V2 preregistration §7 item 5).
+                    min_d_mid = min(row["d_mid_over_ell"] for row in rows_k)
+                    minbeam_lineage_id = min(
+                        row["lineage_id"] for row in rows_k
+                        if row["d_mid_over_ell"] == min_d_mid
+                    )
+                    for row in rows_k:
+                        row["is_minbeam_at_k"] = int(row["lineage_id"] == minbeam_lineage_id)
+                        probe_writer.writerow(dict(
+                            seed=int(seed),
+                            intensity=float(intensity),
+                            K=int(K),
+                            start_id=int(start_id),
+                            depth_k=int(k + 1),
+                            **row,
+                        ))
                 top1[k].append(dvals[0])           # order-only top-1 selection
                 beammin[k].append(min(dvals))      # best retained hypothesis
         out[K] = dict(
@@ -245,24 +337,82 @@ def measure_seed(seed, intensity, t_edge, device):
             n_at=[len(x) for x in top1],
             reach=np.array(reach, float),
         )
-    return dict(ell=ell, g_tail=np.array(g_tail, float), g_len=np.array(g_len, float),
-                kbeam=out, dev=dev, N=emb.shape[0])
+        kbeam_stats[K] = dict(
+            elapsed=float(time.perf_counter() - t0),
+            starts=int(len(starts)),
+            frontier_states=int(total_frontier_states),
+            survivors=int(total_survivors),
+            max_depth=int(max(reach) if reach else 0),
+        )
+    return dict(
+        ell=ell,
+        g_tail=np.array(g_tail, float),
+        g_len=np.array(g_len, float),
+        kbeam=out,
+        dev=dev,
+        N=emb.shape[0],
+        perf=dict(
+            seed=int(seed),
+            intensity=float(intensity),
+            elapsed_total=float(time.perf_counter() - t_seed0),
+            t_link=float(t_link),
+            t_starts=float(t_starts),
+            t_greedy=float(t_greedy),
+            n_starts=int(len(starts)),
+            avg_outdeg=deg_stats["avg_outdeg"],
+            max_outdeg=deg_stats["max_outdeg"],
+            kbeam=kbeam_stats,
+        ),
+    )
 
 
 # --------------------------------------------------------------------------- run
-def run(seeds, intensities, t_edge, device):
+PROBE_FIELDS = [
+    "seed", "intensity", "K", "start_id", "depth_k", "lineage_id",
+    "survivor_rank_at_depth", "path_p", "path_q", "p_last", "q_last",
+    "r_p_last", "r_q_last", "d_p_over_ell", "d_q_over_ell", "d_mid_over_ell",
+    "straddles_horizon", "regscore", "is_top1", "is_minbeam_at_k",
+]
+
+
+def run(seeds, intensities, t_edge, device, probe_out=None, probe_k=None):
+    probe_count = 0
+    probe_fh = None
+    probe_writer = None
+    if probe_out:
+        probe_fh = open(probe_out, "w", newline="", encoding="utf-8")
+        probe_writer = csv.DictWriter(probe_fh, fieldnames=PROBE_FIELDS)
+        probe_writer.writeheader()
     print(f"seeds={len(seeds)} {seeds}  t_edge={t_edge:.0f}  M={M}  lmax={LMAX} "
           f"min_len={MIN_LEN}  K={K_GRID}  k_ref={K_REF}  ADH={ADH:.0f}ℓ\n")
     for inten in intensities:
         t0 = time.perf_counter()
-        rows = [measure_seed(s, inten, t_edge, device) for s in seeds]
+        rows = [measure_seed(s, inten, t_edge, device, probe_k=probe_k, probe_writer=probe_writer)
+                for s in seeds]
+        if probe_writer is not None and probe_k is not None:
+            probe_count += sum(
+                r["perf"]["kbeam"][probe_k]["survivors"]
+                for r in rows
+                if probe_k in r["perf"]["kbeam"]
+            )
         ell = rows[0]["ell"]
         dev = rows[0]["dev"]
+        perf_rows = [r["perf"] for r in rows]
         # single-tracer baseline
         gt = np.concatenate([r["g_tail"] for r in rows]) if rows else np.array([])
         gl = np.concatenate([r["g_len"] for r in rows]) if rows else np.array([])
         print(f"================ intensity {inten:g}  ℓ={ell:.4f}  N≈{rows[0]['N']}  "
               f"dev={dev}  [{time.perf_counter()-t0:.0f}s] ================")
+        for p in perf_rows:
+            print(f"  PERF seed={p['seed']} total={p['elapsed_total']:.2f}s "
+                  f"link={p['t_link']:.2f}s starts={p['t_starts']:.2f}s "
+                  f"greedy={p['t_greedy']:.2f}s n_starts={p['n_starts']} "
+                  f"avg_outdeg={p['avg_outdeg']:.2f} max_outdeg={p['max_outdeg']}")
+            for K in K_GRID:
+                ks = p["kbeam"][K]
+                print(f"    K={K:>2} kbeam={ks['elapsed']:.2f}s "
+                      f"frontier_states={ks['frontier_states']} "
+                      f"survivors={ks['survivors']} max_depth={ks['max_depth']}")
         print(f"  SINGLE-TRACER (greedy, K=1 baseline): len median={np.nanmedian(gl):.0f} "
               f"n={gl.size};  tail d⊥/ℓ (rungs>3) median={np.nanmedian(gt):.2f}  "
               f"(peel-off reference)")
@@ -291,6 +441,9 @@ def run(seeds, intensities, t_edge, device):
             print(f"  {K:>3} | {top1_ref:>14.2f} | {min_ref:>17.2f} | {n_ref:>6d} | "
                   f"{reach_frac:>9.0%} | {prof_str}")
         print()
+    if probe_fh is not None:
+        probe_fh.close()
+        print(f"probe_rows written: {probe_count} -> {probe_out}")
 
 
 def parse_args():
@@ -298,6 +451,9 @@ def parse_args():
     ap.add_argument("--smoke", action="store_true", help="2 seeds x {3600}, K<=8")
     ap.add_argument("--seeds", type=int, default=6)
     ap.add_argument("--device", default="auto", choices=["auto", "cpu", "gpu"])
+    ap.add_argument("--intensities", default="", help="comma-separated intensities, e.g. 3600,7200")
+    ap.add_argument("--probe-out", default="", help="optional CSV path for per-survivor/per-depth probe rows")
+    ap.add_argument("--probe-k", type=int, default=64, help="K value to dump when --probe-out is set")
     return ap.parse_args()
 
 
@@ -316,12 +472,16 @@ def main():
         seeds = list(EXPLORE_POOL[:2]); intensities = (3600.0,)
     else:
         seeds = list(EXPLORE_POOL[:args.seeds]); intensities = (3600.0, 7200.0, 14400.0)
+    if args.intensities:
+        intensities = tuple(float(x) for x in args.intensities.split(",") if x.strip())
     assert_seeds(seeds)
     _xp, dev = backend.resolve_device(args.device)
     print(f"backend device = {dev}  (requested {args.device})\n")
 
     t0 = time.time()
-    run(seeds, intensities, 6.0, args.device)
+    run(seeds, intensities, 6.0, args.device,
+        probe_out=(args.probe_out or None),
+        probe_k=args.probe_k)
     print(f"elapsed {time.time()-t0:.1f}s")
     assert_seal("post")
     print("done — exploration only; nothing frozen, no seed in RESERVED_002 touched.")
