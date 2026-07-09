@@ -66,6 +66,16 @@ horizon-side label:
 The primary comparison is early-depth versus late-depth behavior within the same
 `(seed, intensity, start_id, K)` run.
 
+Endpoint identity must be frozen before any implementation can be used for PR005. The
+default candidate is:
+
+```text
+endpoint_pair_id = (p_last, q_last)
+```
+
+This candidate is order-only as an element-identity pair. It is not a radial coordinate
+or horizon-side label.
+
 ## 5. Ground-Truth Readouts
 
 The following Schwarzschild-embedded quantities may be reported only as calibration or
@@ -128,7 +138,32 @@ The following are reported as diagnostics, not as exclusion reasons:
 If too few depth slices exist to compare early and late windows under the frozen run
 parameters, the terminal label is `FAILED_DATA_CONTRACT`, not a recovered PR004 label.
 
-## 8. Decision Criteria To Freeze Before Run
+## 8. Required Implementation Change Before Command Freeze
+
+The runner must provide a dedicated PR005 depth-slice output path, distinct from the
+existing PR004 `--probe-out` path.
+
+The PR005 output must emit one row per:
+
+```text
+depth_slice = (seed, intensity, K, start_id, depth_k)
+```
+
+The PR005 output must not apply the PR004 `MIN_LEN` lineage filter before emitting
+`depth_slice` rows.
+
+Rows with `n_survivors == 0` must be represented explicitly up to the frozen maximum
+depth, because population extinction is part of the observable rather than a censoring
+failure.
+
+The existing `--probe-out` flag remains PR004/per-survivor semantics and must not be used
+as the frozen PR005 command. Renaming the output path to
+`data/reports/pr005_population_depth_barrier_slices.csv` while using `--probe-out` is not
+a valid PR005 run.
+
+No flag name for the future PR005 slice output is frozen here.
+
+## 9. Decision Criteria To Freeze Before Run
 
 The final PR005 preregistration must freeze, before any PR005 output is observed:
 
@@ -148,7 +183,7 @@ The final PR005 preregistration must freeze, before any PR005 output is observed
 Until those items are frozen, PR005 remains `PREREGISTRATION_DRAFT` and must not be run
 as a validating experiment.
 
-## 8.1 Decision Tree To Freeze Before Run
+## 9.1 Decision Tree To Freeze Before Run
 
 The final PR005 decision tree must start with the data contract:
 
@@ -165,7 +200,7 @@ The final PR005 decision tree must start with the data contract:
 No `GROUND_TRUTH_READOUT / NOT_ORDER_ONLY_EVIDENCE` column may participate in steps 1-4
 except as an optional diagnostic readout after the primary terminal label is fixed.
 
-## 9. Allowed Terminal Labels
+## 10. Allowed Terminal Labels
 
 Allowed terminal labels:
 
@@ -178,7 +213,7 @@ Allowed terminal labels:
 No `CONCENTRATED`, `DISPERSED`, `PEELED`, or PR004 lineage-window label is allowed as a
 PR005 terminal label.
 
-## 10. Prohibited Claims
+## 11. Prohibited Claims
 
 - No claim that PR004 has been rescued.
 - No claim that changing PR005 definitions changes the PR004 terminal verdict.
@@ -186,9 +221,11 @@ PR005 terminal label.
 - No order-only claim for any statistic that uses embedded radial position, shell,
   straddle status, or horizon-side labels.
 - No use of `lineage_id` as a primary denominator.
+- No use of the existing PR004 `--probe-out` per-survivor output as the frozen PR005
+  command or as a disguised PR005 slice output.
 - No post-output threshold adjustment to force `BARRIER_SIGNAL` or `NO_BARRIER_SIGNAL`.
 
-## 11. Future Outputs
+## 12. Future Outputs
 
 - `data/reports/pr005_population_depth_barrier_slices.csv` — NOT_CREATED
 - `data/reports/PR005_POPULATION_DEPTH_BARRIER_VALIDATION_REPORT.md` — NOT_CREATED
