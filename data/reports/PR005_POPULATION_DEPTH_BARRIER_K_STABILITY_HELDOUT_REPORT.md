@@ -82,3 +82,29 @@ beam-width dependent transition; not yet a K-invariant barrier
 
 This is still a valid PR005 result because the data contract passes. It is not a barrier
 confirmation.
+
+## PR006 Interpretation Decision
+
+PR006 will not assume K-invariance.
+
+For PR006, `K` is treated as a frozen algorithmic hyperparameter of the estimator.
+It is not an invariant physical axis. A multi-K estimator is allowed only if its
+aggregation rule is preregistered before validation; otherwise multi-K aggregation
+belongs to a later robustness stage.
+
+This fixes the PR006 interpretation as Option A:
+
+- Demonstrate first that there exists a reasonable order-only `H_hat` under a frozen
+  estimator contract.
+- Do not optimize, average, or select across `K` after seeing validation output.
+- Reserve any explicit multi-K aggregation rule for PR007 or a separate robustness
+  preregistration.
+
+Closing interpretation:
+
+```text
+The K sweep downgrades PR005 from a strong population-depth barrier claim to a
+weaker but still useful early-emptying localization signal. PR006 must therefore
+treat K as a frozen estimator hyperparameter, not as an invariant physical axis,
+unless a multi-K aggregation rule is preregistered before validation.
+```
