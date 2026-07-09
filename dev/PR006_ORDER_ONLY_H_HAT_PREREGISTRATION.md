@@ -82,7 +82,7 @@ freeze its aggregation rule before validation in a separate preregistration.
 
 ## 5. Allowed Inputs
 
-The primary estimator may use only the order-only PR005 depth-slice contract fields:
+The primary estimator uses only the order-only PR005 depth-slice contract fields:
 
 - `seed`;
 - `intensity`;
@@ -107,6 +107,13 @@ For the minimal PR006 `H_hat` defined in Section 3, only `K`, `start_id`, `depth
 `seed` and `intensity` are grouping metadata for validation summaries. They are not
 allowed to change the estimator rule.
 
+Seed and intensity groups are defined as follows:
+
+- seed group: all rows sharing the same `seed`, across all preregistered intensities
+  and all `start_id` values at `K_REF`;
+- intensity group: all rows sharing the same `intensity`, across all preregistered
+  seeds and all `start_id` values at `K_REF`.
+
 ## 6. Forbidden Inputs and Ground-Truth Leakage
 
 The following are forbidden in the PR006 primary estimator:
@@ -130,6 +137,15 @@ terminal label is fixed. They must not alter `H_hat`, thresholds, exclusions, se
 intensity sets, or the fixed `K_REF`.
 
 ## 7. Data Contract
+
+Validation run block status:
+
+```text
+VALIDATION RUN BLOCK: NOT FROZEN IN THIS DRAFT.
+```
+
+No PR006 validation run may be executed until the command, seed set, intensity grid,
+output path, and expected report path are frozen in a follow-up preregistration commit.
 
 A valid PR006 validation input must satisfy the PR005 depth-slice data contract for
 `K_REF=8`:
