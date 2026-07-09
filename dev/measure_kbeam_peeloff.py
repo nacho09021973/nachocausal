@@ -536,6 +536,7 @@ def parse_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("--smoke", action="store_true", help="2 seeds x {3600}, K<=8")
     ap.add_argument("--seeds", type=int, default=6)
+    ap.add_argument("--seed-offset", type=int, default=0, help="start index into EXPLORE_POOL")
     ap.add_argument("--device", default="auto", choices=["auto", "cpu", "gpu"])
     ap.add_argument("--intensities", default="", help="comma-separated intensities, e.g. 3600,7200")
     ap.add_argument("--probe-out", default="", help="optional CSV path for per-survivor/per-depth probe rows")
@@ -558,10 +559,14 @@ def main():
         K_GRID = (1, 2, 4, 8)
         seeds = list(EXPLORE_POOL[:2]); intensities = (3600.0,)
     else:
-        seeds = list(EXPLORE_POOL[:args.seeds]); intensities = (3600.0, 7200.0, 14400.0)
+        start = int(args.seed_offset)
+        stop = start + int(args.seeds)
+        seeds = list(EXPLORE_POOL[start:stop]); intensities = (3600.0, 7200.0, 14400.0)
     if args.intensities:
         intensities = tuple(float(x) for x in args.intensities.split(",") if x.strip())
     assert_seeds(seeds)
+    if not seeds:
+        raise SystemExit("no seeds selected; check --seeds and --seed-offset")
     _xp, dev = backend.resolve_device(args.device)
     print(f"backend device = {dev}  (requested {args.device})\n")
 
