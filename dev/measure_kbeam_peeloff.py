@@ -44,6 +44,7 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 import os
 import platform
 import subprocess
@@ -234,7 +235,67 @@ def _child_degree_stats(indptr):
     )
 
 
-def measure_seed(seed, intensity, t_edge, device, probe_k=None, probe_writer=None):
+def _write_slice_rows(slice_writer, seed, intensity, K, start_id, by_depth):
+    prev_endpoints = None
+    for depth_k in range(1, LMAX + 1):
+        paths = by_depth[depth_k - 1] if depth_k <= len(by_depth) else []
+        counts = {}
+        for _lid, _reg, p, q in paths:
+            endpoint = (int(p[-1]), int(q[-1]))
+            counts[endpoint] = counts.get(endpoint, 0) + 1
+
+        n_survivors = len(paths)
+        endpoint_items = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
+        endpoint_set = set(counts)
+        if n_survivors:
+            top1_endpoint, top1_count = endpoint_items[0]
+            top1_pair = json.dumps(list(top1_endpoint), separators=(",", ":"))
+            top3_count = sum(count for _endpoint, count in endpoint_items[:3])
+            probs = [count / n_survivors for _endpoint, count in endpoint_items]
+            entropy = -sum(p_i * math.log(p_i) for p_i in probs)
+            if abs(entropy) < 1e-15:
+                entropy = 0.0
+            effective_count = math.exp(entropy)
+        else:
+            top1_pair = "NA"
+            top1_count = 0
+            top3_count = 0
+            entropy = 0.0
+            effective_count = 0.0
+
+        if prev_endpoints is None:
+            turnover = "NA"
+        elif not prev_endpoints and not endpoint_set:
+            turnover = 0.0
+        elif not prev_endpoints or not endpoint_set:
+            turnover = 1.0
+        else:
+            turnover = 1.0 - (len(prev_endpoints & endpoint_set) /
+                              len(prev_endpoints | endpoint_set))
+
+        slice_writer.writerow(dict(
+            seed=int(seed),
+            intensity=float(intensity),
+            K=int(K),
+            start_id=int(start_id),
+            depth_k=int(depth_k),
+            slice_status="EVALUABLE" if n_survivors else "EMPTY",
+            n_survivors=int(n_survivors),
+            n_endpoint_identities=int(len(endpoint_items)),
+            top1_endpoint_pair=top1_pair,
+            top1_endpoint_count=int(top1_count),
+            top1_endpoint_mass_fraction=float(top1_count / n_survivors) if n_survivors else 0.0,
+            top3_endpoint_count=int(top3_count),
+            top3_endpoint_mass_fraction=float(top3_count / n_survivors) if n_survivors else 0.0,
+            endpoint_entropy_nats=float(entropy),
+            effective_endpoint_count=float(effective_count),
+            turnover_from_previous_depth=turnover,
+        ))
+        prev_endpoints = endpoint_set
+
+
+def measure_seed(seed, intensity, t_edge, device, probe_k=None, probe_writer=None,
+                 slice_writer=None):
     t_seed0 = time.perf_counter()
     emb, _, _ = generator.numpy_sprinkle(seed, float(intensity), float(t_edge))
     ell = thresholds.ell(intensity)
@@ -274,6 +335,8 @@ def measure_seed(seed, intensity, t_edge, device, probe_k=None, probe_writer=Non
         for start_id, (sp, sq) in enumerate(starts):
             bd = kbeam(sp, sq, indptr, idx, C, K)
             reach.append(len(bd))
+            if slice_writer is not None and probe_k is not None and K == probe_k:
+                _write_slice_rows(slice_writer, seed, intensity, K, start_id, bd)
             if len(bd) < MIN_LEN:
                 continue
             for k in range(len(bd)):
@@ -374,20 +437,37 @@ PROBE_FIELDS = [
     "straddles_horizon", "regscore", "is_top1", "is_minbeam_at_k",
 ]
 
+SLICE_FIELDS = [
+    "seed", "intensity", "K", "start_id", "depth_k", "slice_status",
+    "n_survivors", "n_endpoint_identities", "top1_endpoint_pair",
+    "top1_endpoint_count", "top1_endpoint_mass_fraction", "top3_endpoint_count",
+    "top3_endpoint_mass_fraction", "endpoint_entropy_nats",
+    "effective_endpoint_count", "turnover_from_previous_depth",
+]
 
-def run(seeds, intensities, t_edge, device, probe_out=None, probe_k=None):
+
+def run(seeds, intensities, t_edge, device, probe_out=None, probe_k=None,
+        slice_out=None):
     probe_count = 0
     probe_fh = None
     probe_writer = None
+    slice_count = 0
+    slice_fh = None
+    slice_writer = None
     if probe_out:
         probe_fh = open(probe_out, "w", newline="", encoding="utf-8")
         probe_writer = csv.DictWriter(probe_fh, fieldnames=PROBE_FIELDS)
         probe_writer.writeheader()
+    if slice_out:
+        slice_fh = open(slice_out, "w", newline="", encoding="utf-8")
+        slice_writer = csv.DictWriter(slice_fh, fieldnames=SLICE_FIELDS, lineterminator="\n")
+        slice_writer.writeheader()
     print(f"seeds={len(seeds)} {seeds}  t_edge={t_edge:.0f}  M={M}  lmax={LMAX} "
           f"min_len={MIN_LEN}  K={K_GRID}  k_ref={K_REF}  ADH={ADH:.0f}ℓ\n")
     for inten in intensities:
         t0 = time.perf_counter()
-        rows = [measure_seed(s, inten, t_edge, device, probe_k=probe_k, probe_writer=probe_writer)
+        rows = [measure_seed(s, inten, t_edge, device, probe_k=probe_k, probe_writer=probe_writer,
+                             slice_writer=slice_writer)
                 for s in seeds]
         if probe_writer is not None and probe_k is not None:
             probe_count += sum(
@@ -395,6 +475,9 @@ def run(seeds, intensities, t_edge, device, probe_out=None, probe_k=None):
                 for r in rows
                 if probe_k in r["perf"]["kbeam"]
             )
+        if slice_writer is not None and probe_k is not None:
+            slice_count += sum(r["perf"]["kbeam"][probe_k]["starts"] * LMAX
+                               for r in rows if probe_k in r["perf"]["kbeam"])
         ell = rows[0]["ell"]
         dev = rows[0]["dev"]
         perf_rows = [r["perf"] for r in rows]
@@ -444,6 +527,9 @@ def run(seeds, intensities, t_edge, device, probe_out=None, probe_k=None):
     if probe_fh is not None:
         probe_fh.close()
         print(f"probe_rows written: {probe_count} -> {probe_out}")
+    if slice_fh is not None:
+        slice_fh.close()
+        print(f"slice_rows written: {slice_count} -> {slice_out}")
 
 
 def parse_args():
@@ -454,6 +540,7 @@ def parse_args():
     ap.add_argument("--intensities", default="", help="comma-separated intensities, e.g. 3600,7200")
     ap.add_argument("--probe-out", default="", help="optional CSV path for per-survivor/per-depth probe rows")
     ap.add_argument("--probe-k", type=int, default=64, help="K value to dump when --probe-out is set")
+    ap.add_argument("--slice-out", default="", help="optional PR005 depth-slice CSV path")
     return ap.parse_args()
 
 
@@ -481,7 +568,8 @@ def main():
     t0 = time.time()
     run(seeds, intensities, 6.0, args.device,
         probe_out=(args.probe_out or None),
-        probe_k=args.probe_k)
+        probe_k=args.probe_k,
+        slice_out=(args.slice_out or None))
     print(f"elapsed {time.time()-t0:.1f}s")
     assert_seal("post")
     print("done — exploration only; nothing frozen, no seed in RESERVED_002 touched.")

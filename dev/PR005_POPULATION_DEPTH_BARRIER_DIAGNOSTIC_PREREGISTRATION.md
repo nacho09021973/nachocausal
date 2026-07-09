@@ -4,7 +4,7 @@ STATUS: PREREGISTRATION_DRAFT
 VALIDATION_STATUS: NOT_RUN
 RELATION_TO_PR004: NEW_OBSERVABLE_AFTER_PR004_FAILED_DATA_CONTRACT
 ORDER_ONLY_PRIMARY: YES_PENDING_FINAL_CONTRACT
-COMMAND_TO_FREEZE_BEFORE_RUN: NOT_SET
+COMMAND_TO_FREEZE_BEFORE_RUN: FROZEN_IN_SECTION_9
 
 ## 1. Motivation
 
@@ -184,7 +184,7 @@ as the frozen PR005 command. Renaming the output path to
 `data/reports/pr005_population_depth_barrier_slices.csv` while using `--probe-out` is not
 a valid PR005 run.
 
-No flag name for the future PR005 slice output is frozen here.
+For the first PR005 run, the dedicated depth-slice output flag is `--slice-out`.
 
 ## 9. Decision Criteria To Freeze Before Run
 
@@ -205,6 +205,13 @@ The final PR005 preregistration must freeze, before any PR005 output is observed
 
 Until those items are frozen, PR005 remains `PREREGISTRATION_DRAFT` and must not be run
 as a validating experiment.
+
+Frozen command for the first PR005 depth-slice output:
+
+```bash
+python3 dev/measure_kbeam_peeloff.py --seeds 6 --intensities 3600,7200,14400 \
+  --slice-out data/reports/pr005_population_depth_barrier_slices.csv --probe-k 8
+```
 
 ## 9.1 Decision Tree To Freeze Before Run
 
