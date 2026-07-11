@@ -31,6 +31,9 @@ DEFAULT_SEEDS = (1_000_000, 1_000_001, 1_000_002)
 DEFAULT_INTENSITY = 600.0
 DEFAULT_T_EDGE = 6.0
 DEFAULT_MAX_ANCHORS_PER_RULE = 5
+DEFAULT_MAX_SEEDS = 3
+EXPANDED_KILL_TEST_MAX_SEEDS = 12
+EXPANDED_KILL_TEST_MAX_ANCHORS_PER_RULE = 10
 DEFAULT_CSV = "data/reports/present_anchor_sanity_pilot_v2.csv"
 DEFAULT_SUMMARY = "data/reports/PRESENT_ANCHOR_SANITY_PILOT_V2_SUMMARY.md"
 CHEAP_VERDICT_VERSION = "v2_proxy_separated"
@@ -287,7 +290,9 @@ def posthoc_result(result: str) -> str:
     return "SCRIPT_NOT_REPAIRED"
 
 
-def write_summary(path: str, rows: list[dict], command: str) -> None:
+def write_summary(
+    path: str, rows: list[dict], command: str, expanded_kill_test_mode: bool
+) -> None:
     counts = Counter(r["cheap_verdict"] for r in rows)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     if rows:
@@ -305,6 +310,7 @@ def write_summary(path: str, rows: list[dict], command: str) -> None:
         fh.write("SCOPE: DIAGNOSTIC_ONLY\n\n")
         fh.write("POSTHOC_REPAIR=YES\n\n")
         fh.write("CHEAP_VERDICT_VERSION=v2_proxy_separated\n\n")
+        fh.write(f"expanded_kill_test_mode={expanded_kill_test_mode}\n\n")
         fh.write("KBEAM_USED=NO\n\n")
         fh.write(f"COMMAND={command}\n\n")
         fh.write("## Status of v2\n\n")
@@ -347,22 +353,29 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--summary-out", default=DEFAULT_SUMMARY)
     ap.add_argument("--output", dest="csv_out", help="alias for --csv-out")
     ap.add_argument("--summary-output", dest="summary_out", help="alias for --summary-out")
+    ap.add_argument("--allow-expanded-kill-test", action="store_true")
     return ap.parse_args()
 
 
 def main() -> None:
     args = parse_args()
     seeds = tuple(int(x) for x in args.seeds.split(",") if x.strip())
-    if len(seeds) > 3:
-        raise ValueError("sanity pilot is capped at 3 seeds")
-    if args.max_anchors_per_rule > 5:
-        raise ValueError("sanity pilot is capped at 5 anchors per rule")
+    max_seeds = EXPANDED_KILL_TEST_MAX_SEEDS if args.allow_expanded_kill_test else DEFAULT_MAX_SEEDS
+    max_anchors = (
+        EXPANDED_KILL_TEST_MAX_ANCHORS_PER_RULE
+        if args.allow_expanded_kill_test
+        else DEFAULT_MAX_ANCHORS_PER_RULE
+    )
+    if len(seeds) > max_seeds:
+        raise ValueError(f"sanity pilot is capped at {max_seeds} seeds")
+    if args.max_anchors_per_rule > max_anchors:
+        raise ValueError(f"sanity pilot is capped at {max_anchors} anchors per rule")
     rows: list[dict] = []
     for seed in seeds:
         rows.extend(rows_for_seed(seed, args.intensity, args.t_edge, args.max_anchors_per_rule))
     write_csv(args.csv_out, rows)
     command = " ".join(sys.argv)
-    write_summary(args.summary_out, rows, command)
+    write_summary(args.summary_out, rows, command, args.allow_expanded_kill_test)
     counts = Counter(r["cheap_verdict"] for r in rows)
     result = overall_result(counts)
     print("PRESENT_ANCHOR_SANITY_PILOT v2 complete")
