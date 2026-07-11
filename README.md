@@ -39,6 +39,16 @@ insofar as it serves the one above it:
    closing: WP4 as a technical lower-bound/no-go result, WP5 as a definition/unilateral chart (if
    it proceeds), and any explicit bridge toward Schwarzschild 3+1D.
 
+### Current observable status
+
+PR008 is closed with terminal label `BASELINE_DOMINATED`. The fixed-`K` scalar `H_hat`
+agrees with `H=4` in every audited cell, but the strongest preregistered empirical
+baseline does too, giving `delta_agreement = 0`. `H_hat` is therefore retained only as
+an auxiliary diagnostic or future baseline, not as the primary route to horizon
+reconstruction. The active design front moves to a new order-only observable sensitive
+to expansion or trapping. See
+`dev/PR008_H_HAT_BASELINE_LEAKAGE_AUDIT_CLOSURE_DECISION.md`.
+
 Founding rules (see docs/preregistration.md):
 - A guardrail that cannot fail is decoration. Every claim carries verifiable backing
   (file:line, command, commit, citation) or is marked [UNVERIFIED].
