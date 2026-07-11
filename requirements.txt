@@ -9,6 +9,14 @@ numpy==1.26.4
 # Test runner for `make test` (bit-exact regression + leak + seed invariants).
 pytest>=7,<9
 
+# CPU scientific tooling used by the reproducible research and dev scripts.
+# Keep GPU-only CuPy in requirements-gpu.txt: CuPy 14 requires NumPy 2.x and
+# therefore cannot share this sealed NumPy 1.26 environment.
+scipy>=1.11,<2
+sympy>=1.12,<2
+numba>=0.59,<1
+diptest>=0.9,<1
+
 # NOTE: the OPTIONAL Minz admissibility gate (`make gate`) additionally needs the
 # external clone github.com/c-minz/Python-causets on sys.path via the env var
 # NACHOCAUSAL_MINZ_PATH (default ~/cs-horizon-reuse-check). It is NOT on the
