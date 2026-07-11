@@ -13,8 +13,15 @@
 >   A weaker floor of order `1/n` survives.
 > - (H) for the corrected family (causal-diamond family with fixed EF corners): regularity and
 >   finite Fisher information **PROVED**; the `1/sqrt(n)` localization floor on this family is
->   **PROVED**. Strict positivity `I(tau) > 0` at every `tau` remains open (it is not needed for
->   the floor). The physical `Omega(ell)` reading remains open.
+>   **PROVED**. Global rigidity — `c_tau` is injective in `tau`, so the family is pairwise
+>   informative *everywhere* and `I(tau) = 0` on any subinterval is impossible — is now **PROVED**
+>   (§4, Proposition 5). Strict positivity `I(tau) > 0` at *every single* `tau` (as opposed to
+>   outside a possible discrete exceptional set) remains open; it is not needed for the floor.
+>   The physical `Omega(ell)` reading is **structurally resolved** (§5a, Proposition 6):
+>   `V(tau)*Ibar` is exactly dilation-invariant, giving the floor `prereg-003`'s `O(ell)` *form*
+>   intrinsically. **Numerically illustrated** (NUMERICAL, not proved): `~35 ell` for one moderate
+>   reference shape, degrading as `~ell/lambda^3` (empirical `kappa ~ lambda^6`) toward thin
+>   near-horizon diamonds — the floor does not stay `O(ell)` under reshaping.
 >
 > Taxonomy labels (taxonomy §10): object = horizon-location parameter of a 1+1D family; task =
 > localization lower bound; evidence level = intrinsic (laws, not estimators); claim type =
@@ -159,19 +166,102 @@ bounded, so by Cauchy-Schwarz along the parameter path
 `( sqrt(c_{tau+delta}) - sqrt(c_tau) )^2 <= delta int_tau^{tau+delta} ( d_s sqrt(c_s) )^2 ds`;
 integrate over the unit square and use `int (d_s sqrt(c_s))^2 = I(s)/4`. ∎
 
-**On strict positivity (open).** `I(tau) > 0` at every `tau` is **not proved here**. What is
-available: (a) *Dichotomy*: for any `tau != tau'`, either `c_tau != c_{tau'}` (the family is
-informative at that pair), or `c_tau = c_{tau'}`, in which case `(theta_tau, theta_{tau'})` is an
-**exact `TV = 0` witness pair for relative horizon location** — an even stronger result than the
-floor. Either branch serves the program; the floor theorem below needs neither. (b) If
-`c` were `tau`-independent on a subinterval, the copulas there would coincide pairwise; ruling
-this out reduces, via the rigidity remark of `first_witness_pair_candidates.md` §4 (same copula on
-a null box implies isometric up to global scale) and the fact that a causal isomorphism must map
-the diamond's order-minimum `p` and order-maximum `q` to each other, to an explicit monotonicity
-check on dimensionless corner invariants (e.g. `R tau^2 |_p = 2 (tau / r_p)^3` is injective in
-`tau` at fixed `r_p`, which already blocks pure scale maps). Completing that check is left open;
-`I(tau) = 0` is in any case impossible on a whole subinterval unless the exact-witness branch of
-the dichotomy fires there.
+**Dichotomy (restated).** For any `tau != tau'` in `[tau_0, tau_1]`: either `c_tau != c_{tau'}`
+(the family is informative at that pair), or `c_tau = c_{tau'}`, in which case
+`(theta_tau, theta_{tau'})` is an **exact `TV = 0` witness pair for relative horizon location** —
+an even stronger result than the floor. Either branch serves the program; the floor theorem below
+needs neither. Proposition 5 (next) shows the second branch never occurs on this family.
+
+**The Ricci scalar of the family (elementary, verified symbolically with sympy —
+`research_program/work_packages/wp4_fisher_localization_floor_symbolic_checks.py`, run with
+`python3 research_program/work_packages/wp4_fisher_localization_floor_symbolic_checks.py`).** For
+`g_t = -(1 - t/r) dv^2 + 2 dv dr`, direct computation of the Christoffel symbols, Riemann tensor,
+and contraction gives
+
+`R_t(v, r) = -2t / r^3`,
+
+independent of `v` (as staticity requires). It is used below only as a fixed, `t`-linear,
+computable scalar invariant, carried covariantly by any isometry; no physical horizon-limit
+reading is claimed for it (that is the separate open item 2 of §6).
+
+**Proposition 5 (global rigidity: no exact re-identification in the diamond family).** For the
+diamond family of §4, `c_tau != c_{tau'}` for every pair `tau != tau'` in `[tau_0, tau_1]`.
+Equivalently, `tau -> c_tau` is injective: the exact-witness branch of the dichotomy above never
+fires anywhere in this family — every pair is genuinely order-informative.
+
+*Proof.* Suppose toward contradiction `c_tau = c_{tau'}` for some `tau != tau'` in
+`[tau_0, tau_1]`. By the rigidity remark of `first_witness_pair_candidates.md` §4 (same copula on
+a null box implies isometric up to a global constant scale), there is a diffeomorphism
+`Psi : D_tau -> D_{tau'}`, acting in null coordinates as `Psi(Ũ, v) = (phi(Ũ), psi(v))` for
+increasing bijections `phi` of the `Ũ`-ranges and `psi` of the shared `v`-range `[v_p, v_q]`, with
+`Psi^* g_{tau'} = k g_tau` for a constant `k > 0` (the Jacobian of the reparametrization is exactly
+what turns "same copula" into "isometric up to a global constant").
+
+1. *`Psi` fixes the corners.* Increasing bijections between intervals send endpoints to endpoints.
+   Both diamonds share the `v`-range `[v_p, v_q]` exactly, so `psi(v_p) = v_p`, `psi(v_q) = v_q`;
+   similarly `phi` maps the endpoints of `[Ũ_tau(p), Ũ_tau(q)]` to those of
+   `[Ũ_{tau'}(p), Ũ_{tau'}(q)]`. Hence `Psi(p) = p` and `Psi(q) = q` as points of the shared
+   `(v, r)` chart (the corners are fixed points of the EF chart, independent of `tau`).
+2. *The Ricci scalar pins `k` and forces `r`-preservation.* Constant-conformal covariance of the
+   Ricci scalar, `R[kappa g] = R[g] / kappa` for any constant `kappa > 0` (verified directly for
+   this family: scaling the metric by a symbolic constant and recomputing `R` returns exactly
+   `R/kappa`), together with `Psi^* g_{tau'} = k g_tau`, gives
+   `R_{tau'}(Psi(x)) = k^{-1} R_tau(x)` for every `x` in `D_tau`. At `x = p`:
+   `-2 tau' / r_p^3 = k^{-1} (-2 tau / r_p^3)`, so `k = tau / tau'`. Substituting this `k` back at
+   a general point `x = (v, r)`: `r'(Psi(x))^3 = (k tau'/tau) r(x)^3 = r(x)^3`, so
+   `r'(Psi(x)) = r(x)`: `Psi` preserves the areal-radius coordinate exactly — in `(v, r)`
+   coordinates it can only move `v`, via `psi`.
+3. *`r`-preservation is algebraically impossible for `tau != tau'`.* Writing `Psi`'s null-coordinate
+   action with `r`-preservation substituted in gives, for every `(v, r)` in the (two-dimensional)
+   box, equation `(*)`:
+   `W_{tau'}(r) = -e^{psi(v)/2tau'} * phi( -e^{-v/2tau} W_tau(r) )`.
+   Two derivatives of `(*)` pin down the constraint **without ever solving for `phi` in closed
+   form** — solving the intermediate ODE gives a power law `phi(u) = K|u|^C`, but `phi` must map
+   `Ũ_tau(p) < 0` to `Ũ_{tau'}(p) < 0` and `Ũ_tau(q) > 0` to `Ũ_{tau'}(q) > 0`, crossing `u = 0`,
+   where `|u|^C` is not licensed to change sign; the route below sidesteps this entirely.
+   - *(i) `d/dv` at fixed `r`.* Differentiating `(*)` in `v` (verified symbolically) gives
+     `psi'(v) = (tau'/tau) * h(u)`, `h(u) := u phi'(u)/phi(u)`, `u` the argument of `phi`. The left
+     side does not depend on `r`; at fixed `v = v_0`, as `r` ranges over the box's (nondegenerate)
+     `r`-extent, `u` ranges over a nondegenerate interval (`W_tau' > 0`), so `h` is constant on
+     that interval, equal to `(tau/tau') psi'(v_0)`. As `v_0` varies continuously the swept
+     `u`-intervals vary continuously and overlap for nearby `v_0`; chaining this across the
+     connected box forces `h(u)` to be **one single constant `C`** on the whole range of `u`
+     achieved anywhere in the box.
+   - *(ii) `d/dr` at fixed `v`, closing `(*)` on itself.* Differentiating `(*)` in `r` instead, and
+     eliminating `phi(u)` using `(*)` itself (rather than solving for `phi`), gives directly
+     `L_{tau'}(r) = h(u) * L_tau(r)`, with `L_t(r) := d/dr ln W_t(r) = r / (t(r - t))` (elementary;
+     matches `W_t' = r e^{r/t}/t^2`). Verified symbolically — this is the identity checked in
+     `wp4_fisher_localization_floor_symbolic_checks.py::check_r_derivative_route`, which never
+     constructs `phi` explicitly.
+
+   Combining (i) and (ii): `L_{tau'}(r) = C * L_tau(r)` for all `r` in the box, i.e.
+   `tau(r - tau) = C * tau'(r - tau')` as an identity of linear functions of `r`
+   (verified symbolically). Matching the coefficient of `r` gives `C = tau/tau'`; matching the
+   constant term gives `C = (tau/tau')^2`. These two values of `C` agree only if `tau = tau'`,
+   contradicting the hypothesis. ∎
+
+**Corollary (`I` vanishes on no subinterval).** `I(tau) = 0` cannot hold for every `tau` in any
+nondegenerate subinterval of `[tau_0, tau_1]`.
+
+*Proof.* If `I ≡ 0` on `[tau_a, tau_b]`, then since `I(tau) = 4 int ( d/dtau sqrt(c_tau) )^2` and
+`I >= 0` is continuous (Proposition 4), `d/dtau c_tau(x,y) = 0` for a.e. `tau` in `[tau_a, tau_b]`,
+for a.e. `(x,y)` (Fubini). By Lemma R, `tau -> c_tau(x,y)` is `C^1`, so `d/dtau c_tau(x,y)` is
+continuous in `tau` and hence vanishes for *every* `tau` in `[tau_a, tau_b]`, for a.e. `(x,y)`.
+Then `c_tau(x,y)` is constant in `tau` on `[tau_a, tau_b]` for a.e. `(x,y)`, i.e.
+`c_{tau_a} = c_{tau_b}` — contradicting Proposition 5. ∎
+
+**On strict positivity (status updated, was open).** Proposition 5 and its corollary resolve the
+dichotomy in favor of branch (a) *everywhere*, and rule out `I ≡ 0` on any subinterval — a strictly
+stronger statement than what the original sketch aimed at. What remains open is only the pointwise
+claim `I(tau) > 0` at *every single* `tau` in `[tau_0, tau_1]`, as opposed to outside a possible
+discrete (isolated, measure-zero) exceptional set. A plausible route to close this fully:
+`c_tau(x,y)` is built from real-analytic ingredients (`W_tau`, its analytic-IFT inverse, since
+`W_tau' > 0`, and exponentials), so it should be jointly real-analytic in `(x, y, tau)`; combined
+with the injectivity of Proposition 5, a non-constant real-analytic function of `tau` (for a.e.
+`(x,y)`) can have at most isolated critical points, which would upgrade `I(tau) > 0` to hold
+outside a discrete set. This is **not carried out here** — it needs analyticity of the marginals
+despite the `tau`-dependent box boundary (`Ũ_tau(p), Ũ_tau(q)` move with `tau`), which has not been
+checked — and is left as the precise remaining gap.
 
 ## 5. The localization floor on the corrected family (Theorem, PROVED)
 
@@ -201,14 +291,134 @@ included), at the stated fixed `n`, in the order-only channel, both models condi
 `N = n`. The bound holds a fortiori because it already holds at the point-process level; it can
 therefore be loose for posets, and it says nothing about what any estimator *achieves*.
 
+## 5a. The floor in physical units: dilation invariance of `V(tau) * Ibar` (item 2 of §6)
+
+**Motivation.** §5's floor is stated in abstract statistical units (`n`, `Ibar`). To compare it to
+`prereg-003`'s operational floor `Error(r̂ - r_S) >= K * ell`, `ell = rho^(-1/2)`
+(`docs/preregistration_003.md` §1), it must be rewritten in units of the discreteness scale `ell`.
+With `n = rho * V(tau)` (`V(tau)` the `g_tau`-area of `D_tau`; sprinkling density `rho`), so that
+`ell = sqrt(V(tau)/n)`, §5's floor `delta_n ~ 1/sqrt(n Ibar)` becomes
+
+`delta_n / ell = 1 / sqrt( Ibar * V(tau) ) =: 1 / sqrt(kappa)`,
+
+with `kappa := V(tau) * Ibar` **dimensionless** (`I` has units `1/length^2` since `tau` has units
+of length; `V` has units `length^2`). Item 2 of §6 asked whether this `kappa` degenerates (`-> 0`
+or `-> infinity`) as the diamond's corners are enlarged, which would make "`O(ell)`" a
+size-dependent, non-intrinsic statement. It does not — this is now proved.
+
+**Lemma (exact dilation covariance of the diamond family).** For `s > 0`, let the "`s`-scaled
+family" be the diamond family of §4 built from corners `(s v_p, s r_p)`, `(s v_q, s r_q)` and range
+`[s tau_0, s tau_1]`. Write `V'`, `I'` for its area and Fisher information as functions of its own
+parameter `tau' := s tau`. Then:
+
+1. `W_{s t}(s r) = W_t(r)` identically (elementary; verified symbolically —
+   `research_program/work_packages/wp4_fisher_localization_floor_symbolic_checks.py`), hence the
+   null coordinate is exactly scale-covariant: `Ũ_{s t}(s v, s r) = Ũ_t(v, r)`.
+2. `D_{s tau} = s * D_tau` (the dilated image, as a subset of the `(v, r)` plane) — immediate
+   from 1.
+3. `det g_t = -1` for every `t` (§4), so the sampling measure on `D_t` is always Lebesgue `dv dr`;
+   hence `V'(s tau) = s^2 V(tau)` (elementary area scaling under a linear dilation by `s`,
+   Jacobian `s^2`, verified symbolically).
+4. `c'_{s tau} = c_tau` exactly as copula densities on the unit square. *Proof:* the map
+   `(v, r) -> (s v, s r)` acts on null coordinates as `Ũ -> Ũ` (identity, by 1) and `v -> s v` (an
+   increasing reparametrization of the second coordinate alone, `s > 0`) — precisely the
+   per-coordinate reparametrization that leaves a copula unchanged (Sklar's theorem; the same
+   invariance used and verified in Proposition 5's audit). Concretely: pushing the uniform
+   `dv' dr'` sampling measure on `D_{s tau}` forward through `(v', r') = (s v, s r)` and then to
+   null coordinates gives `h'_{s tau}(Ũ', v') = s * h_tau(Ũ', v'/s)` (Jacobian `s^2` from 3, times
+   `1/s` from the coordinate substitution `dv = dv'/s`); the constant prefactor `s` cancels under
+   copula normalization, and `v' = s v` is exactly the per-coordinate rank-preserving
+   reparametrization Sklar's theorem quotients out.
+5. Consequently, `c'_{tau'}(x, y) = c_{tau'/s}(x, y)` exactly, so by the chain rule
+   `I'(s tau) = I(tau) / s^2` (verified symbolically: `d/dtau' f(tau'/s) = f'(tau'/s)/s`, squared
+   and integrated).
+
+**Proposition 6 (`V * Ibar` is a dilation-invariant shape functional).**
+`kappa(tau) := V(tau) * I(tau)`, evaluated for the `s`-scaled family at its corresponding
+parameter `s tau`, equals `kappa(tau)` for every `s > 0`: it depends only on the *dimensionless
+shape* of the diamond (the ratios `r_p/tau_0, r_q/tau_0, v_p/tau_0, ...`), never on its absolute
+size.
+
+*Proof.* Immediate from the Lemma: `V'(s tau) * I'(s tau) = [s^2 V(tau)] * [I(tau)/s^2] =
+V(tau) * I(tau)`. ∎
+
+**Corollary (the floor has the `O(ell)` form, structurally).** Writing `kappa_bar :=
+V * Ibar_{[tau_0,tau_1]}` (evaluating `V` at a reference point of the range; exact if `V` is
+constant across `[tau_0, tau_1]`, an `O(1)` approximation for a range narrow relative to `tau_0`,
+otherwise tracked as a function of `tau`):
+
+`delta_n ~ ell / sqrt(kappa_bar)`,
+
+and `kappa_bar` is a *pure number*, identical across the whole dilation orbit of a given diamond
+shape. This is the first order-only, information-theoretic (not estimator-induced) statement with
+the exact `O(ell)` *form* of `prereg-003`'s operational floor `(★)` — it shows that form is not an
+artifact of the particular box size chosen, only of the box *shape*.
+
+**Deterministic numerical reference values (item (i), now available — NUMERICAL, not a proof).**
+`research_program/work_packages/wp4_kappa_numeric_reference.py` gives a **quadrature-based
+numerical reference** for `V(tau)` and `I(tau)` — quantities Proposition 4 and this section define
+*exactly*, evaluated here by deterministic quadrature (trapezoid rule + root-finding for the
+transcendental `r = r_tau(Ũ, v)`; PCHIP monotone interpolation for the marginal quantile maps — no
+closed form exists for `W_tau^{-1}`, so this is a numeric, not symbolic, evaluation) because they
+have no closed form, not computed in closed form themselves. "Deterministic" describes the
+*method* (reproducible, no randomness anywhere in the pipeline) — it is **not a simulation**: no
+Poisson sprinkling, no order-only estimator, no random seed. It does **not** mean the reported
+numbers are exact or error-free: they carry ordinary quadrature/discretization error, bounded only
+by the stability checks below, not by a proof. `I(tau)` is estimated via the QMD expansion itself
+(`H^2(c_{tau-delta/2}, c_{tau+delta/2}) ~= (delta^2/4) I(tau)`, Proposition 4), checked stable to
+`<0.1%` across a `4x` range of `delta` (confirms the QMD asymptotic regime is reached, not
+finite-difference noise), and cross-checked (the copula integrates to `~1` over the unit square;
+the two ways of computing `V` — integrating `m1` vs `m2` — agree to `<1e-6`).
+
+For a moderate reference diamond (`tau=1`, `r_p=2, r_q=0.5, v_p=0, v_q=1`):
+`V ~= 1.4717`, `I ~= 5.415e-4`, `kappa ~= 7.97e-4`, giving `delta_tau/ell ~ 1/sqrt(kappa) ~= 35.4`
+— i.e. **the two-point floor for this shape is `~35 ell`, not `~1 ell`**: a genuine, large `O(1)`
+constant, not `O(ell)` in the naive sense of "order unity in `ell`-units".
+
+**Item (iii) — reshaping, now numerically examined (partial answer: it does NOT stay bounded).**
+Shrinking a near-horizon diamond (`r_p = 1+0.3*lambda, r_q = 1-0.3*lambda, v_q = 0.3*lambda`,
+`tau=1` fixed, corners *not* dilated together with `tau` — this is reshaping, the case
+Proposition 6 does not cover) from `lambda=1` to `lambda=0.05` gives `kappa` falling from
+`1.68e-5` to `3.53e-13` — an **empirical power law `kappa ~ lambda^6`** (exponent stable at
+`5.9`–`6.0` across the fitted range, not derived analytically here), i.e.
+`delta_tau/ell ~ lambda^{-3}`: the floor degrades as the **cube of the inverse linear patch
+size** as the diamond narrows toward the horizon. Concretely: halving the linear size of a
+near-horizon patch (at fixed `tau`) multiplies the order-only localization floor by `~8`.
+
+**What this suggests, stated carefully.** This is consistent with — and gives one candidate
+quantitative account of — a pattern noted informally in this project's PR004 attempts (parked
+present-anchor and ladder-braiding diagnostics; see `dev/`, `data/reports/`): diagnostics that
+probe small, local, near-horizon patches for fine order-only localization may be attempting
+something close to an information-theoretic wall, not merely fighting an implementation defect.
+**This is a plausibility argument from a numerical scan of one particular family, not a proof that
+any specific PR004 diagnostic hits this wall** — no PR004 output was read or used to produce these
+numbers, and no PR004 diagnostic's actual probed shape has been checked against this scan.
+
+**What is still NOT done.** (i) *[now available, see above]*. (ii) Comparing any of these numbers
+to `prereg-003`'s measured `K_LOC` constant — a different quantity (bounds the *sealed estimator's*
+output, §1-2 there), not something this floor claims to explain or reproduce. (iii) *[partially
+examined, see above]* — an analytic derivation of the `lambda^6` exponent (a near-horizon/Rindler
+expansion of `I(tau)` is a plausible route, not attempted). (iv) Whether PR004's actual diagnostic
+patches correspond to any specific `(r_p, r_q, v_p, v_q)` in this family at all — the diamond
+family is a mathematical construction for proving a floor, not a description of what PR004's
+ladder/peel-off procedure geometrically probes; this connection has not been made.
+
 ## 6. What remains open
 
-1. **`I(tau) > 0` pointwise** (§4): open; not needed for the floor; the dichotomy is proved.
-2. **The physical `Omega(ell)` reading**: the scaling corollary of the superseded §3 relied on a
-   one-scale family; the diamond family has fixed corner scales, so relating
-   `1/sqrt(n Ibar)` to `ell` requires computing how `Ibar` and the diamond volume scale along a
-   covariant enlargement of the corners — not done. Any claim that the operational `O(ell)` floor
-   of `prereg-003` is intrinsic remains unsupported.
+1. **`I(tau) > 0` at every single `tau`** (§4): the exact-witness branch of the dichotomy is now
+   ruled out everywhere and `I` cannot vanish on any subinterval (Proposition 5 + corollary,
+   **PROVED**); pointwise positivity outside a possible discrete exceptional set remains open (not
+   needed for the floor).
+2. **The physical `Omega(ell)` reading**: **structurally resolved** (§5a, Proposition 6,
+   **PROVED**) — `V(tau) * Ibar` is exactly dilation-invariant, so `delta_n ~ ell / sqrt(kappa_bar)`
+   with `kappa_bar` a pure, size-independent number. **Numerically illustrated** (§5a,
+   `wp4_kappa_numeric_reference.py`, NUMERICAL not proved): `kappa_bar ~ 8e-4` for one moderate
+   reference shape (`delta_tau ~ 35 ell`), and empirically `kappa_bar ~ lambda^6` under reshaping
+   toward thin near-horizon diamonds (`delta_tau ~ ell/lambda^3`) — it does **not** stay bounded
+   as the shape narrows. Still open: an analytic derivation of the `lambda^6` exponent; any
+   comparison to `prereg-003`'s measured `K_LOC` (a different, estimator-bound quantity); whether
+   PR004's diagnostics actually probe shapes in this degrading regime (not checked against any
+   PR004 output).
 3. **Poset-level tightness**: all distance control is inherited from the point level; a technique
    for bounding poset-law distances *below* the point-level bound (or matching upper bounds via
    an explicit order-only estimator) is still missing — same open item as Attempt C.
@@ -224,11 +434,25 @@ therefore be loose for posets, and it says nothing about what any estimator *ach
 - **(H) for the fixed-EF-box repair: FAILED** (non-regular: support motion, `H^2 asymp |delta|`,
   Proposition 2). Weakest surviving statement: the `1/n` floor of Proposition 3.
 - **(H) for the diamond family: regularity established** (Lemma R, Proposition 4): QMD holds,
-  `Ibar < infinity` proved; `I > 0` pointwise open (dichotomy proved instead).
+  `Ibar < infinity` proved; global rigidity proved (Proposition 5: `c_tau` injective in `tau`,
+  `I ≡ 0` on no subinterval); `I > 0` at every single `tau` remains open only outside a possible
+  discrete exceptional set.
 - **Localization floor on the diamond family: PROVED** (§5) — the statistical implication *and*
   the model regularity it needs. This upgrades the substantive content of Theorem B from PARTIAL
-  to PROVED **on the corrected family**, with the two clearly flagged open items (positivity;
-  physical `ell` scaling) that do not bear on the floor's validity.
+  to PROVED **on the corrected family**, with the remaining open item (pointwise positivity) that
+  does not bear on the floor's validity.
+- **The floor's `O(ell)` form is intrinsic, not just operational** (§5a, Proposition 6, PROVED):
+  `V*Ibar` is exactly dilation-invariant, giving `delta_n ~ ell/sqrt(kappa_bar)` with `kappa_bar` a
+  size-independent pure number. This is the first order-only, information-theoretic statement
+  sharing `prereg-003`'s operational-floor *form*; it does not reproduce or bound `prereg-003`'s
+  measured constant.
+- **The floor degrades sharply under reshaping toward thin near-horizon diamonds (NUMERICAL, not
+  proved)**: `wp4_kappa_numeric_reference.py` gives `kappa_bar ~ 8e-4` (`delta_tau ~ 35 ell`) for
+  one moderate reference shape, falling as an empirical `kappa_bar ~ lambda^6` (`delta_tau ~
+  ell/lambda^3`) as the diamond narrows toward the horizon at fixed `tau`. A plausibility argument
+  — not a proof, not checked against any PR004 output or shape — for why fine order-only
+  localization from small local patches may be fighting an information-theoretic wall rather than
+  only an implementation defect.
 - **No physical horizon-limit claim is made.** The floor is a property of one named 1+1D family
   in one named channel at fixed `n`; it is not a statement about generic horizons, higher
   dimensions, or the sealed estimator.

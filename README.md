@@ -13,6 +13,32 @@ Schwarzschild event horizon in a 1+1D causal set, using the order-only observabl
 in recent literature (arXiv:2605.06813): the longest timelike chain from minimal elements —
 interior elements have futures truncated by the singularity.
 
+## Strategic objectives
+
+The program has three objectives, in explicit priority order — each later one only has value
+insofar as it serves the one above it:
+
+1. **Final target — Schwarzschild 3+1D order-only.** The long-term target is Schwarzschild 3+1D
+   horizon localisation/reconstruction from order-only causal information. 3+1D is the
+   destination of this program, not an optional extension. Embedding coordinates may be used for
+   simulation, validation, and ground truth, but never as input to the order-only estimator.
+2. **Structural foundation — 1+1D lower bounds and blindness maps.** The current 1+1D work
+   (Paper I / PR-003, and the WP4/WP5 identifiability program under `research_program/`) is not
+   the final goal; it is the technical foundation for 3+1D, valuable to the extent that it yields
+   principles that survive the step up: information-theoretic lower bounds, order-only blindness
+   regions, the asymmetry between "blindness proven" and "candidate visible" (never the reverse),
+   and the separation between a universal *definition* and the first computable chart on one
+   concrete family. 1+1D does **not** resolve 3+1D; the "candidate visible" side is **not**
+   demonstrated; and no WP5-style map is a universal *computable* map. WP4/WP5 count as a
+   structural-foundation proof of principle only insofar as their lower bound closes cleanly.
+3. **Operational discipline — close verifiable units before expanding scope.** The project must
+   not expand indefinitely into new work packages without closing technical units first. Each
+   stage must produce a minimal verifiable unit: a narrow claim, an explicit information channel,
+   reproducible proofs or numerics, written interpretation limits, and a bibliography/reuse-check
+   pass before any public novelty claim. Before opening large new work packages, priority goes to
+   closing: WP4 as a technical lower-bound/no-go result, WP5 as a definition/unilateral chart (if
+   it proceeds), and any explicit bridge toward Schwarzschild 3+1D.
+
 Founding rules (see docs/preregistration.md):
 - A guardrail that cannot fail is decoration. Every claim carries verifiable backing
   (file:line, command, commit, citation) or is marked [UNVERIFIED].
