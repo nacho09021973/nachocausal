@@ -85,6 +85,20 @@ Allowed input artifacts:
 - `data/reports/pr007_h_hat_robustness_seed_density.csv`;
 - `dev/PR007_A_H_HAT_ROBUSTNESS_CLOSURE_DECISION.md`.
 
+Frozen artifact split:
+
+- Reference/training artifacts: PR006 preregistration, PR006 validation report, and
+  `data/reports/pr006_order_only_h_hat_validation.csv`.
+- Evaluation artifacts: PR007-A preregistration, PR007-A validation report,
+  `data/reports/pr007_h_hat_robustness_seed_density.csv`, and PR007-A closure decision.
+
+All seven listed artifacts are required. The preregistrations, validation reports, and
+closure decision provide contract metadata only; they may not supply numerical baseline
+predictions or evaluation values. Both empirical baselines are derived only from
+`data/reports/pr006_order_only_h_hat_validation.csv`. All evaluation values and metrics
+are derived only from `data/reports/pr007_h_hat_robustness_seed_density.csv`, with frozen
+SHA256 `b0da043bd16554066d262ad897d7240052530e652475f62c9df3570c40463afd`.
+
 Forbidden input artifacts for PR008 terminal logic:
 
 - any file containing embedded coordinates or radial distances;
@@ -122,22 +136,46 @@ Any column outside this list is prohibited for PR008 terminal logic.
 All baselines must be computed from the allowed columns only and must be frozen before
 audit execution.
 
-Admissible baseline classes:
+Frozen baseline IDs:
 
-1. **Constant-depth baselines.** Fixed predictions such as `H_baseline = 4`,
-   `H_baseline = 8`, or `H_baseline = 26`, declared before execution.
-2. **Seed-blind empirical baseline.** A baseline computed from a training artifact or
-   previous committed validation artifact, never from the PR008 evaluation rows
-   themselves.
-3. **Intensity-blind empirical baseline.** A baseline that ignores intensity labels when
-   computing the comparison statistic.
-4. **Permutation baseline.** A deterministic or seeded permutation of permitted
-   `slice_status` or `first_empty_depth` values, with seed and permutation rule frozen
-   before execution.
+1. `constant_depth_8`: predicts `8` for every `(seed, intensity)` evaluation cell.
+2. `constant_depth_26`: predicts `26` for every `(seed, intensity)` evaluation cell.
+3. `pr006_block_h_hat`: predicts the lower median over all 18 frozen PR006
+   `H_hat(seed, intensity)` values for every `(seed, intensity)` evaluation cell.
+4. `pr006_intensity_h_hat`: for each evaluation intensity `I`, predicts the lower median
+   over the frozen PR006 seed set of the PR006 `H_hat(seed, I)` values defined below.
+
+Both empirical baselines are derived exclusively from
+`data/reports/pr006_order_only_h_hat_validation.csv` with frozen SHA256
+`e9f9d2dd861795454b32267477d7510ba1f48ddc0ba75fae66363a4a33cf0255`. Only the
+columns `seed`, `intensity`, `K`, `start_id`, `depth_k`, and `slice_status` may enter the
+derivation. The frozen PR006 seed set is
+`{1000024, 1000025, 1000026, 1000027, 1000028, 1000029}`. For each seed and intensity,
+compute `first_empty_depth` for every `start_id` using Section 2, then compute
+`H_hat(seed, intensity)` as the lower median over `start_id`. For each intensity `I`,
+`pr006_intensity_h_hat(I)` is the lower median of those six `H_hat(seed, I)` values.
+Every PR007-A evaluation cell with intensity `I` receives that same scalar prediction;
+no PR007-A seed value enters the baseline.
+
+No other PR006 artifact, rerun, seed subset, interpolation, extrapolation,
+nearest-neighbor substitution, cross-intensity fallback, or alternative aggregation is
+permitted. A missing frozen PR006 seed, a missing evaluation intensity in the PR006
+artifact, more than one derived `H_hat` value for the same `(seed, intensity)` cell, or
+a duplicate raw `(seed, intensity, K, start_id, depth_k)` row is
+`FAILED_DATA_CONTRACT`.
+
+`constant_depth_4` is excluded from the primary frozen baseline set because it is an
+oracle baseline for the already observed PR006/PR007 result `H_hat=4`. Including it
+would make the baseline comparison non-informative by construction.
+
+`constant_depth_4` may be retained only as `DEGENERATE_ORACLE_SANITY_CHECK`, and it is
+excluded from `max_baseline_cell_agreement_with_H4`, `BASELINE_DOMINATED`, and the
+primary pass/fail comparison.
 
 Inadmissible baselines:
 
 - any baseline using radial, shell, straddle, horizon-side, or embedding information;
+- any baseline outside the frozen baseline IDs above;
 - any baseline selected after seeing PR008 baseline outcomes;
 - any baseline tuned to force `H_hat` to pass or fail;
 - any multi-K baseline unless a separate preregistration freezes the aggregation rule;
@@ -160,21 +198,35 @@ the same `(seed, intensity)` cell.
 The primary audit comparison is:
 
 ```text
+max_baseline_cell_agreement_with_H4 =
+  max(cell_agreement_with_H4(baseline_id) for baseline_id in
+      {constant_depth_8, constant_depth_26,
+       pr006_block_h_hat, pr006_intensity_h_hat})
+
 delta_agreement = cell_agreement_with_H4(H_hat) - max_baseline_cell_agreement_with_H4.
 ```
 
 This metric is intentionally scalar and order-only. It does not use radial error,
 distance-to-horizon, shell accuracy, or any geometric target.
 
-The audit may also report:
+The secondary reporting set is frozen and all of the following must be reported:
 
-- `H_hat_block`;
-- `cell_fraction_H4`;
-- seed-group medians;
-- intensity-group medians;
-- data-contract pass/fail counts.
+- `H_hat_block`: lower median over all PR007-A evaluation `H_hat(seed, intensity)` cells;
+- `cell_fraction_H4`: fraction of PR007-A evaluation `(seed, intensity)` cells with
+  `H_hat(seed, intensity) = 4`;
+- `seed_group_median(seed)`: lower median of `first_empty_depth` over all PR007-A
+  evaluation intensities and `start_id` values for that seed;
+- `intensity_group_median(intensity)`: lower median of `first_empty_depth` over all
+  PR007-A evaluation seeds and `start_id` values for that intensity;
+- the count for each frozen data-contract failure class: missing required artifacts,
+  artifact SHA256 mismatches, missing or malformed required CSV columns, duplicate raw
+  `(seed, intensity, K, start_id, depth_k)` rows, incomplete depth-coverage sequences,
+  rows with `K != 8`, missing frozen PR006 seed-intensity cells, and duplicate derived
+  PR006 `(seed, intensity)` cells.
 
-These secondary summaries must not override the primary terminal tree.
+These secondary summaries are descriptive only and must not override the primary
+terminal tree. No additional secondary metric, subgroup, transformation, baseline, or
+visualization may be selected for reporting after observing PR008 results.
 
 ## 8. Output Artifacts
 
@@ -198,6 +250,17 @@ Allowed terminal labels:
 
 No other terminal label is allowed.
 
+Terminal precedence is exactly:
+
+```text
+FAILED_RUNTIME > FAILED_DATA_CONTRACT > FAILED_LEAKAGE_AUDIT > BASELINE_DOMINATED >
+PASSED_BASELINE_AND_LEAKAGE_AUDIT > INCONCLUSIVE
+```
+
+Exactly one terminal label is assigned to each run. The labels are evaluated in the
+frozen precedence order above, and the terminal label is the first applicable label.
+Once a label applies, no lower-precedence label is evaluated or assigned.
+
 ## 10. Failure Conditions
 
 `FAILED_DATA_CONTRACT` applies if:
@@ -207,6 +270,10 @@ No other terminal label is allowed.
 - duplicate `(seed, intensity, K, start_id, depth_k)` rows are present;
 - depth coverage `1..25` is incomplete for any sequence;
 - any `K` value other than `8` enters terminal logic.
+
+`FAILED_RUNTIME` applies if the PR008 audit script or report cannot complete due to an
+exception, a missing executable dependency, an unreadable input file, malformed CSV, or
+any nonzero command exit not already classified as `FAILED_DATA_CONTRACT`.
 
 `FAILED_LEAKAGE_AUDIT` applies if:
 
