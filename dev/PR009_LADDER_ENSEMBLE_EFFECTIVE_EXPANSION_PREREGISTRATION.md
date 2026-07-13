@@ -397,3 +397,224 @@ After this commit, PR009 forbids:
 
 No PR009 seed may be generated until these tests pass and the implementation is reviewed
 against this preregistration.
+
+## 16. Amendment A — frozen execution and artifact boundary
+
+STATUS: FROZEN_BEFORE_IMPLEMENTATION / AMENDED_BEFORE_ANY_PR009_RUN
+
+This amendment resolves execution details that §§7–8 require but did not name. It was
+written before any PR009 seed was generated or inspected. It changes no scientific
+question, estimator, seed, configuration, scoring zone, statistic, threshold, coverage
+rule, terminal label, or precedence edge.
+
+### 16.1 Fixed commands and execution order
+
+The only production commands are, in this order:
+
+```text
+python3 dev/run_pr009_effective_expansion.py --block REFERENCE
+python3 dev/run_pr009_effective_expansion.py --block EVALUATION
+python3 dev/score_pr009_effective_expansion.py
+```
+
+The runner accepts no path, seed, device, K, depth, start-count, intensity, box-size, or
+format override. `--block` accepts only the two literal values above. The scorer accepts no
+production override. Both programs may expose a synthetic self-test entry point that
+cannot call the generator or write a production path.
+
+The evaluation command must refuse to start unless the finalized reference artifact and
+its sidecar exist, validate, and reproduce the recorded SHA-256. The scorer must refuse to
+start unless the canonical order-only artifact and evaluation truth artifact both exist
+and validate. A valid existing production output is never overwritten.
+
+### 16.2 Fixed intermediate and final paths
+
+```text
+REFERENCE_ORDER_ONLY = data/reports/pr009_ladder_ensemble_effective_expansion_reference_order_only.csv
+REFERENCE_SHA256 = data/reports/pr009_ladder_ensemble_effective_expansion_reference_order_only.sha256
+EVALUATION_ORDER_ONLY = data/reports/pr009_ladder_ensemble_effective_expansion_evaluation_order_only.csv
+EVALUATION_TRUTH = data/reports/pr009_ladder_ensemble_effective_expansion_evaluation_truth.csv
+CANONICAL_ORDER_ONLY = data/reports/pr009_ladder_ensemble_effective_expansion_order_only.csv
+SCORED = data/reports/pr009_ladder_ensemble_effective_expansion_scored.csv
+REPORT = data/reports/PR009_LADDER_ENSEMBLE_EFFECTIVE_EXPANSION_REPORT.md
+```
+
+The reference command publishes only `REFERENCE_ORDER_ONLY` and then `REFERENCE_SHA256`.
+The sidecar is exactly one lowercase hexadecimal SHA-256 followed by `  `, the reference
+artifact's basename, and `\n`.
+
+The evaluation command publishes `EVALUATION_ORDER_ONLY` and `EVALUATION_TRUTH`, then
+constructs `CANONICAL_ORDER_ONLY` as one header followed by the already-finalized
+reference rows and then evaluation rows. It must compare the reference bytes with the
+sidecar before and after publication. It may concatenate validated bytes; it may not
+parse, summarize, display, or score evaluation values.
+
+### 16.3 Primary key, rows, statuses, and canonical serialization
+
+The primary key in every CSV is:
+
+```text
+(run_block, seed, spacetime_kind, intensity, K, start_id, depth_k)
+```
+
+There is exactly one order-only row for every emitted start and every `depth_k` in
+`1..MAX_DEPTH`, including depths after beam exhaustion. `start_id` is the zero-based rank
+in the frozen deterministic start sample. Rows are ordered by `run_block` (`REFERENCE`
+then `EVALUATION`), seed ascending, `spacetime_kind` (`BH` then `MINK`), intensity, K,
+start_id, and depth_k.
+
+The exact order-only header is the §8.1 column list in the order printed there.
+`slice_status` is exactly one of:
+
+- `TRANSITION_EVALUABLE`: current and following widths are positive and evaluable;
+- `WIDTH_ONLY`: current width is evaluable but no evaluable following width exists;
+- `WIDTH_UNEVALUABLE`: current width is not evaluable;
+- `EMPTY`: no survivor exists at the current depth.
+
+For `TRANSITION_EVALUABLE`, all five numeric statistic columns from
+`width_lower_median` through `survivor_growth_baseline` are finite. For `WIDTH_ONLY`, only
+`width_lower_median` is finite. For `WIDTH_UNEVALUABLE` and `EMPTY`, those five columns
+are missing. Integer count columns are always present and nonnegative.
+
+All CSVs use UTF-8, comma delimiter, RFC-4180 quoting only when required, `\n` line
+endings, and a final newline. Integers use unsigned base-10 notation; finite floats use
+Python `format(value, '.17g')`; every missing scalar is the literal `NA`. No `NaN`,
+infinity, empty field, locale-dependent decimal, or negative zero is allowed.
+
+### 16.4 Reference residualization boundary
+
+The reference command first holds width and `theta_raw` values in memory, derives
+`b_depth(k)` exclusively from reference-Minkowski evaluable transitions, checks the frozen
+minimum of 12, and only then renders the finalized reference rows. Reference-BH rows may
+receive that already-derived depth reference; they may not contribute to it.
+
+The evaluation command reads from `REFERENCE_ORDER_ONLY` only the validated mapping
+`depth_k -> depth_mink_reference`. It may not read reference truth or any reference-BH
+statistic to construct an evaluation value.
+
+### 16.5 Separately held evaluation truth
+
+`EVALUATION_TRUTH` has the exact header:
+
+```text
+run_block,seed,spacetime_kind,intensity,K,start_id,depth_k,truth_r_mid,truth_zone,distance_to_horizon_over_ell
+```
+
+It contains evaluation keys only and uses the same row order and serialization. For a
+nonempty current-depth slice, `truth_r_mid` is the lower median of
+`0.5*(r_p_last+r_q_last)` over all current survivor rungs, and
+`distance_to_horizon_over_ell = abs(truth_r_mid-R_S)/ell`. `truth_zone` follows §9. For
+an empty slice all three truth fields are `NA`; otherwise they are present, including
+`GUARD`.
+
+Truth rows are computed and written by a geometry-aware collector that receives the
+embedding and survivor terminal identifiers. The order-only row builder receives only the
+causal matrix, survivor terminal identifiers, and frozen metadata. The two byte streams
+are rendered independently. No truth field or truth-derived missingness may enter an
+order-only row.
+
+### 16.6 Scored artifact and transition convention
+
+`SCORED` contains evaluation rows only. Its exact header is the 15 order-only columns
+followed by the three truth fields in §8.2. The scorer performs a one-to-one join on the
+primary key and refuses duplicates, missing keys, or extra keys.
+
+A statistic recorded at `depth_k = k` always describes the transition `k -> k+1` and is
+scored with the truth zone of the current slice at depth `k`. Only
+`TRANSITION_EVALUABLE` rows with `truth_zone` equal to `INTERIOR` or `EXTERIOR` enter the
+terminal statistics. `GUARD`, missing truth, and non-transition rows remain in `SCORED`
+but never enter a contrast, permutation, concordance, or coverage count.
+
+The scorer is the sole program allowed to compute contrasts, permutation p-values,
+coverage cells, terminal labels, or the report. It never writes or modifies an order-only,
+reference, sidecar, evaluation, or truth artifact.
+
+### 16.7 Amendment B — exchangeable order-only tie resolution
+
+STATUS: FROZEN_BEFORE_IMPLEMENTATION / AMENDED_AFTER_SYNTHETIC_RELABEL_FALSIFIER
+
+The pre-existing K-beam used Python insertion order when equal regularity scores crossed
+the K cutoff, and its deterministic start sampler selected positions from a label-sorted
+list. A hand-built symmetric poset demonstrated that relabeling could change retained
+terminal rungs. This violates §5.1 because identifiers then determine inclusion. The core
+width tests did not exercise this upstream selection path.
+
+PR009 therefore uses an auxiliary exchangeable random rank, not an element identifier, to
+resolve inclusion ties. This adds no coordinate, radius, direction, zone, distance, or
+other geometric information. The estimator is a reproducible randomized order-only
+estimator conditional on the frozen ranks.
+
+```text
+TIE_RANK_MASTER_SEED = 9009009
+tie_rank = Generator(PCG64(SeedSequence([TIE_RANK_MASTER_SEED, seed]))).permutation(N)
+```
+
+`tie_rank[e]` is a unique integer in `0..N-1` attached to element `e`. The same vector is
+used for the matched BH and MINK relations on a seed's shared point set. Under a relabeling
+test, the rank vector must be permuted with the elements; regenerating ranks from the new
+numeric labels is prohibited. Neither ranks nor their numeric values enter a width,
+expansion, baseline, zone, contrast, permutation statistic, or output row.
+
+Start rungs are still the complete output of `boundary_minimals_invariant` paired with
+their future-link children. If more than `MAX_STARTS` exist, retain the `MAX_STARTS` rungs
+with lexicographically smallest `(tie_rank[p], tie_rank[q])`. Their `start_id` order is
+that same rank order. No RNG choice over a label-sorted list is allowed.
+
+The Definition-2 predicate, cumulative regularity reward, terminal-rung deduplication,
+K=64 cutoff, M, and depth limit remain unchanged. For every candidate path define:
+
+```text
+path_tie_key = ((tie_rank[p_0],tie_rank[q_0]),...,(tie_rank[p_k],tie_rank[q_k]))
+```
+
+For duplicate terminal rungs, retain the candidate with the higher cumulative regularity
+score and then the lexicographically smaller `path_tie_key`. Rank the deduplicated beam by
+higher cumulative regularity score and then smaller `path_tie_key`; retain the first K.
+This key also fixes parent-continuation and lineage output order. Numeric element IDs may
+only appear when materializing the already-selected path in the internal computation.
+
+Required pre-run tests now include whole-beam and start-sample equivariance under many
+random relabelings, with the rank vector carried through each relabeling. Tests must compare
+mapped-back start sets, survivor paths at every depth, widths, transition values, and
+rendered order-only rows. A test that relabels only a preselected survivor list is
+insufficient.
+
+### 16.8 Amendment C — scoring population and pre-scoring failures
+
+STATUS: FROZEN_BEFORE_SCORER_IMPLEMENTATION
+
+The aggregate contrast `C_kind(s)` uses every evaluation `TRANSITION_EVALUABLE` row in
+the two scored zones for that spacetime kind. The seed-stratified permutation p-value uses
+only seeds that contribute at least one transition to both `INTERIOR` and `EXTERIOR` for
+that kind; all rows from those complete-zone seeds enter the permutation. A seed with only
+one zone is not silently relabeled or borrowed by another stratum. It fails to count as a
+positive seed contrast and therefore cannot help the `5 of 6` requirement.
+
+`n_positive_seed_contrasts` is computed over the frozen six evaluation seed identifiers.
+For a seed lacking either zone its positivity indicator is zero. The reported per-seed
+contrast is `NA`, not zero, so absence is distinguishable from a measured nonpositive
+contrast.
+
+`INCONCLUSIVE_COVERAGE` is a scientific terminal result and publishes `SCORED` and
+`REPORT`. The three higher-precedence labels are pre-scoring refusals:
+
+- `FAILED_RUNTIME`: an input or production path cannot be read, an uncaught computation
+  fails, or publication cannot complete;
+- `FAILED_DATA_CONTRACT`: bytes are readable but violate a frozen schema, key,
+  configuration, hash, serialization, or reference-isolation rule;
+- `FAILED_LEAKAGE_AUDIT`: an order-only artifact exposes a forbidden geometric field or a
+  truth key cannot be isolated one-to-one from the order-only key set.
+
+A pre-scoring refusal prints exactly one `PR009_TERMINAL_LABEL=<label>` line to stderr,
+returns nonzero, and publishes neither `SCORED` nor `REPORT`. After correcting
+implementation or storage, the scorer may be rerun against the unchanged finalized runner
+artifacts; the reference or evaluation generator may not be rerun. This distinction keeps
+an operational failure from masquerading as a scientific kill or consuming a second seed
+execution.
+
+For every published scientific result, `REPORT` records SHA-256 values for
+`REFERENCE_ORDER_ONLY`, `EVALUATION_ORDER_ONLY`, `EVALUATION_TRUTH`, and
+`CANONICAL_ORDER_ONLY`, plus a configuration fingerprint over the exact frozen constants,
+field lists, seeds, and terminal thresholds. The report machine block uses a fixed key
+order and `NA` for unavailable metrics. `SCORED` and `REPORT` are published as one rollback
+protected pair and valid existing finals are never overwritten.
