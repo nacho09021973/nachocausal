@@ -141,8 +141,14 @@ def valid_artifact_bytes() -> tuple[bytes, bytes, bytes, bytes]:
     return reference, evaluation, truth, canonical
 
 
-def write_inputs(tmp_path: Path, monkeypatch) -> None:
-    reference, evaluation, truth, canonical = valid_artifact_bytes()
+def write_artifacts(
+    tmp_path: Path,
+    monkeypatch,
+    reference: bytes,
+    evaluation: bytes,
+    truth: bytes,
+    canonical: bytes,
+) -> None:
     paths = {
         "REFERENCE_ORDER_ONLY": tmp_path / "reference.csv",
         "REFERENCE_SHA256": tmp_path / "reference.sha256",
@@ -159,6 +165,10 @@ def write_inputs(tmp_path: Path, monkeypatch) -> None:
     paths["EVALUATION_ORDER_ONLY"].write_bytes(evaluation)
     paths["EVALUATION_TRUTH"].write_bytes(truth)
     paths["CANONICAL_ORDER_ONLY"].write_bytes(canonical)
+
+
+def write_inputs(tmp_path: Path, monkeypatch) -> None:
+    write_artifacts(tmp_path, monkeypatch, *valid_artifact_bytes())
 
 
 def test_configuration_fingerprint_is_stable():
@@ -255,6 +265,59 @@ def test_truth_zone_arithmetic_is_revalidated(tmp_path, monkeypatch):
         scorer.load_and_validate_inputs()
 
 
+def test_nonderived_reference_baseline_is_rejected(tmp_path, monkeypatch):
+    reference, evaluation, truth, _canonical = valid_artifact_bytes()
+    rows = runner.validate_order_csv_bytes(reference, {"REFERENCE"})
+    for row in rows:
+        if row["slice_status"] == "TRANSITION_EVALUABLE":
+            row["depth_mink_reference"] = "1"
+            row["theta_residual"] = runner._format_scalar(
+                float(row["theta_raw"]) - 1.0
+            )
+    reference = runner.render_csv(rows, runner.ORDER_FIELDS)
+    canonical = reference + evaluation[evaluation.index(b"\n") + 1 :]
+    write_artifacts(
+        tmp_path, monkeypatch, reference, evaluation, truth, canonical
+    )
+    with pytest.raises(runner.DataContractError, match="not derived"):
+        scorer.load_and_validate_inputs()
+
+
+def test_nonempty_order_row_requires_complete_truth(tmp_path, monkeypatch):
+    reference, evaluation, truth, canonical = valid_artifact_bytes()
+    truth_rows = runner.validate_truth_csv_bytes(truth)
+    target = next(row for row in truth_rows if row["truth_zone"] != "NA")
+    target["truth_r_mid"] = "NA"
+    target["truth_zone"] = "NA"
+    target["distance_to_horizon_over_ell"] = "NA"
+    truth = runner.render_csv(truth_rows, runner.TRUTH_FIELDS)
+    write_artifacts(
+        tmp_path, monkeypatch, reference, evaluation, truth, canonical
+    )
+    with pytest.raises(runner.DataContractError, match="truth missingness"):
+        scorer.load_and_validate_inputs()
+
+
+def test_out_of_range_start_id_is_rejected(tmp_path, monkeypatch):
+    reference, evaluation, truth, _canonical = valid_artifact_bytes()
+    reference_rows = runner.validate_order_csv_bytes(reference, {"REFERENCE"})
+    evaluation_rows = runner.validate_order_csv_bytes(evaluation, {"EVALUATION"})
+    truth_rows = runner.validate_truth_csv_bytes(truth)
+    for rows in (reference_rows, evaluation_rows, truth_rows):
+        for row in rows:
+            if row["start_id"] == "0":
+                row["start_id"] = str(runner.MAX_STARTS)
+    reference = runner.render_csv(reference_rows, runner.ORDER_FIELDS)
+    evaluation = runner.render_csv(evaluation_rows, runner.ORDER_FIELDS)
+    truth = runner.render_csv(truth_rows, runner.TRUTH_FIELDS)
+    canonical = reference + evaluation[evaluation.index(b"\n") + 1 :]
+    write_artifacts(
+        tmp_path, monkeypatch, reference, evaluation, truth, canonical
+    )
+    with pytest.raises(runner.DataContractError, match="start_id"):
+        scorer.load_and_validate_inputs()
+
+
 def test_truth_key_mismatch_is_leakage_not_generic_contract(tmp_path, monkeypatch):
     write_inputs(tmp_path, monkeypatch)
     lines = runner.EVALUATION_TRUTH.read_bytes().splitlines(keepends=True)
@@ -273,6 +336,25 @@ def test_report_machine_block_rejects_mutation(tmp_path, monkeypatch):
     )
     with pytest.raises(runner.DataContractError, match="terminal"):
         scorer.validate_report_bytes(mutated, label)
+
+
+def test_real_synthetic_scorer_preserves_all_runner_artifact_bytes(
+    tmp_path, monkeypatch
+):
+    write_inputs(tmp_path, monkeypatch)
+    monkeypatch.setattr(scorer, "SCORED", tmp_path / "scored.csv")
+    monkeypatch.setattr(scorer, "REPORT", tmp_path / "report.md")
+    runner_paths = (
+        runner.REFERENCE_ORDER_ONLY,
+        runner.REFERENCE_SHA256,
+        runner.EVALUATION_ORDER_ONLY,
+        runner.EVALUATION_TRUTH,
+        runner.CANONICAL_ORDER_ONLY,
+    )
+    before = {path: path.read_bytes() for path in runner_paths}
+    assert scorer.run_production() == "INCONCLUSIVE_COVERAGE"
+    assert {path: path.read_bytes() for path in runner_paths} == before
+    assert scorer.SCORED.exists() and scorer.REPORT.exists()
 
 
 @pytest.mark.parametrize(

@@ -42,6 +42,32 @@ def tied_beam_poset() -> np.ndarray:
     )
 
 
+def evaluable_beam_poset() -> tuple[np.ndarray, np.ndarray]:
+    # Three exchangeable rail pairs survive at depths two and three.  The
+    # shared final element encloses each same-rail survivor pair, so both
+    # depths have evaluable widths and depth two has an evaluable transition.
+    covers = [(0, 1)]
+    for a, b, c, d in zip((2, 3, 4), (5, 6, 7), (8, 9, 10), (11, 12, 13)):
+        covers.extend(
+            [
+                (0, a),
+                (1, b),
+                (a, b),
+                (a, c),
+                (b, d),
+                (c, d),
+                (d, 14),
+            ]
+        )
+    matrix = causal_matrix(15, covers)
+    # Prefer a_i over q_0 at depth two and c_i over b_i at depth three.
+    rank_order = (2, 3, 4, 8, 9, 10, 0, 1, 5, 6, 7, 11, 12, 13, 14)
+    tie_rank = np.empty(15, dtype=np.int64)
+    for rank, element in enumerate(rank_order):
+        tie_rank[element] = rank
+    return matrix, tie_rank
+
+
 def relabel(
     matrix: np.ndarray, tie_rank: np.ndarray, permutation: np.ndarray
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -139,19 +165,104 @@ def test_whole_beam_falsifier_is_relabeling_equivariant():
 
 
 def test_whole_beam_survives_many_random_relabelings():
-    matrix = tied_beam_poset()
-    tie_rank = np.array([4, 1, 5, 0, 3, 2], dtype=np.int64)
-    expected = normalize_beam(run_tied_beam(matrix, tie_rank, (0, 1)))
+    matrix, tie_rank = evaluable_beam_poset()
+    _links, indptr, indices = runner.XL.link_future_csr(matrix)
+    starts = runner.sample_starts_exchangeably(
+        matrix,
+        indptr,
+        indices,
+        tie_rank,
+        max_starts=4,
+        selector=lambda _causal: [0],
+    )
+    start_id = starts.index((0, 1))
+    original_beam = runner.kbeam_exchangeable(
+        0,
+        1,
+        indptr,
+        indices,
+        matrix,
+        tie_rank,
+        beam_size=4,
+        max_depth=3,
+    )
+    expected_beam = normalize_beam(original_beam)
+    original_rows = runner.build_order_only_slices(
+        matrix,
+        original_beam,
+        run_block="REFERENCE",
+        seed=1_100_000,
+        spacetime_kind="BH",
+        start_id=start_id,
+    )
+    assert original_rows[1].slice_status == "TRANSITION_EVALUABLE"
+    original_values = [
+        (
+            row.n_survivors,
+            row.n_valid_pair_separations,
+            row.width_lower_median,
+            row.theta_raw,
+            row.survivor_growth_baseline,
+        )
+        for row in original_rows
+    ]
+    original_bytes = runner.render_csv(
+        runner.finalize_order_rows(original_rows, {2: 0.0}),
+        runner.ORDER_FIELDS,
+    )
     rng = np.random.default_rng(20260713)
     for _ in range(100):
         permutation = rng.permutation(matrix.shape[0])
         changed, changed_ranks, inverse = relabel(matrix, tie_rank, permutation)
-        actual = run_tied_beam(
+        _links2, indptr2, indices2 = runner.XL.link_future_csr(changed)
+        changed_starts = runner.sample_starts_exchangeably(
+            changed,
+            indptr2,
+            indices2,
+            changed_ranks,
+            max_starts=4,
+            selector=lambda _causal, p=int(permutation[0]): [p],
+        )
+        mapped_starts = [
+            (int(inverse[p]), int(inverse[q])) for p, q in changed_starts
+        ]
+        assert mapped_starts == starts
+        changed_start = (int(permutation[0]), int(permutation[1]))
+        assert changed_starts.index(changed_start) == start_id
+        actual_beam = runner.kbeam_exchangeable(
+            *changed_start,
+            indptr2,
+            indices2,
             changed,
             changed_ranks,
-            (int(permutation[0]), int(permutation[1])),
+            beam_size=4,
+            max_depth=3,
         )
-        assert normalize_beam(actual, inverse) == expected
+        assert normalize_beam(actual_beam, inverse) == expected_beam
+        actual_rows = runner.build_order_only_slices(
+            changed,
+            actual_beam,
+            run_block="REFERENCE",
+            seed=1_100_000,
+            spacetime_kind="BH",
+            start_id=start_id,
+        )
+        actual_values = [
+            (
+                row.n_survivors,
+                row.n_valid_pair_separations,
+                row.width_lower_median,
+                row.theta_raw,
+                row.survivor_growth_baseline,
+            )
+            for row in actual_rows
+        ]
+        assert actual_values == original_values
+        actual_bytes = runner.render_csv(
+            runner.finalize_order_rows(actual_rows, {2: 0.0}),
+            runner.ORDER_FIELDS,
+        )
+        assert actual_bytes == original_bytes
 
 
 def test_start_sampling_is_relabeling_equivariant_past_the_cap():
@@ -251,30 +362,34 @@ def test_truth_rows_are_separate_and_use_current_depth_zone():
     assert len(parsed) == runner.MAX_DEPTH
 
 
-def order_data(block: str, seed: int) -> bytes:
+def order_data(block: str, seed: int, n_starts: int = 1) -> bytes:
     matrix, rungs = three_rung_diamond()
-    raw = runner.build_order_only_slices(
-        matrix,
-        synthetic_by_depth(rungs),
-        run_block=block,
-        seed=seed,
-        spacetime_kind="MINK",
-        start_id=0,
-    )
+    raw = [
+        row
+        for start_id in range(n_starts)
+        for row in runner.build_order_only_slices(
+            matrix,
+            synthetic_by_depth(rungs),
+            run_block=block,
+            seed=seed,
+            spacetime_kind="MINK",
+            start_id=start_id,
+        )
+    ]
     return runner.render_csv(
         runner.finalize_order_rows(raw, {1: 0.0}), runner.ORDER_FIELDS
     )
 
 
 def test_reference_mapping_and_combined_artifact():
-    reference = order_data("REFERENCE", 1_100_000)
+    reference = order_data("REFERENCE", 1_100_000, n_starts=12)
     evaluation = order_data("EVALUATION", 1_100_006)
     assert runner.reference_depths_from_csv(reference) == {1: 0.0}
     combined = runner.combine_order_csv(reference, evaluation)
     rows = runner.validate_order_csv_bytes(
         combined, {"REFERENCE", "EVALUATION"}
     )
-    assert len(rows) == 2 * runner.MAX_DEPTH
+    assert len(rows) == 13 * runner.MAX_DEPTH
     assert combined.count((",".join(runner.ORDER_FIELDS) + "\n").encode()) == 1
 
 

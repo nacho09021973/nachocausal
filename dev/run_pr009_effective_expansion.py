@@ -608,6 +608,7 @@ def validate_order_csv_bytes(
             raise DataContractError("unexpected run block")
         if row["spacetime_kind"] not in SPACETIME_KINDS:
             raise DataContractError("unexpected spacetime kind")
+        parsed_unsigned = {}
         for field in (
             "seed",
             "intensity",
@@ -617,11 +618,13 @@ def validate_order_csv_bytes(
             "n_survivors",
             "n_valid_pair_separations",
         ):
-            _parse_unsigned(row[field], field)
+            parsed_unsigned[field] = _parse_unsigned(row[field], field)
         if _parse_unsigned(row["intensity"], "intensity") != INTENSITY:
             raise DataContractError("intensity drift")
         if _parse_unsigned(row["K"], "K") != K:
             raise DataContractError("K drift")
+        if parsed_unsigned["start_id"] >= MAX_STARTS:
+            raise DataContractError("start_id outside frozen range")
         depth = _parse_unsigned(row["depth_k"], "depth_k")
         if depth not in range(1, MAX_DEPTH + 1):
             raise DataContractError("depth drift")
@@ -632,6 +635,8 @@ def validate_order_csv_bytes(
             for field in ORDER_FIELDS[10:]
         }
         status = row["slice_status"]
+        if (status == "EMPTY") != (parsed_unsigned["n_survivors"] == 0):
+            raise DataContractError("EMPTY status and survivor count disagree")
         if status == "TRANSITION_EVALUABLE":
             if any(value is None for value in numeric.values()):
                 raise DataContractError("transition row has missing statistic")
@@ -650,6 +655,7 @@ def validate_order_csv_bytes(
         rows.append(row)
     if rows != sorted(rows, key=_row_sort_key):
         raise DataContractError("order CSV row ordering drift")
+    _validate_start_id_sequences(rows)
     return rows
 
 
@@ -674,8 +680,12 @@ def validate_truth_csv_bytes(data: bytes) -> list[dict[str, str]]:
             raise DataContractError("truth contains a non-evaluation row")
         if row["spacetime_kind"] not in SPACETIME_KINDS:
             raise DataContractError("truth spacetime drift")
-        for field in ("seed", "intensity", "K", "start_id", "depth_k"):
-            _parse_unsigned(row[field], field)
+        parsed_unsigned = {
+            field: _parse_unsigned(row[field], field)
+            for field in ("seed", "intensity", "K", "start_id", "depth_k")
+        }
+        if parsed_unsigned["start_id"] >= MAX_STARTS:
+            raise DataContractError("truth start_id outside frozen range")
         r_mid = _parse_float(row["truth_r_mid"], "truth_r_mid")
         distance = _parse_float(
             row["distance_to_horizon_over_ell"],
@@ -695,27 +705,73 @@ def validate_truth_csv_bytes(data: bytes) -> list[dict[str, str]]:
         rows.append(row)
     if rows != sorted(rows, key=_row_sort_key):
         raise DataContractError("truth CSV row ordering drift")
+    _validate_start_id_sequences(rows)
     return rows
+
+
+def _validate_start_id_sequences(rows: Sequence[Mapping[str, str]]) -> None:
+    grouped: dict[tuple[str, str, str], set[int]] = {}
+    for row in rows:
+        group = (row["run_block"], row["seed"], row["spacetime_kind"])
+        grouped.setdefault(group, set()).add(int(row["start_id"]))
+    for start_ids in grouped.values():
+        if sorted(start_ids) != list(range(len(start_ids))):
+            raise DataContractError("start_id sequence is not contiguous from zero")
+
+
+def validate_truth_alignment(
+    order_rows: Sequence[Mapping[str, str]],
+    truth_rows: Sequence[Mapping[str, str]],
+) -> None:
+    order_by_key = {
+        tuple(row[field] for field in PRIMARY_KEY): row for row in order_rows
+    }
+    truth_by_key = {
+        tuple(row[field] for field in PRIMARY_KEY): row for row in truth_rows
+    }
+    if set(order_by_key) != set(truth_by_key):
+        raise DataContractError("evaluation and truth keys differ")
+    for key, order_row in order_by_key.items():
+        truth_row = truth_by_key[key]
+        empty = order_row["slice_status"] == "EMPTY"
+        truth_missing = truth_row["truth_zone"] == "NA"
+        if empty != truth_missing:
+            raise DataContractError("truth missingness disagrees with EMPTY status")
 
 
 def reference_depths_from_csv(data: bytes) -> dict[int, float]:
     rows = validate_order_csv_bytes(data, {"REFERENCE"})
-    grouped: dict[int, set[float]] = {}
+    inputs = [
+        {
+            "run_block": row["run_block"],
+            "spacetime_kind": row["spacetime_kind"],
+            "depth_k": row["depth_k"],
+            "theta_raw": row["theta_raw"],
+        }
+        for row in rows
+        if row["spacetime_kind"] == "MINK"
+        and row["slice_status"] == "TRANSITION_EVALUABLE"
+    ]
+    try:
+        derived = build_depth_mink_reference(inputs, MIN_REFERENCE_PER_DEPTH)
+    except CoreContractError as exc:
+        raise DataContractError(str(exc)) from exc
     for row in rows:
-        if (
-            row["spacetime_kind"] == "MINK"
-            and row["slice_status"] == "TRANSITION_EVALUABLE"
-        ):
-            depth = int(row["depth_k"])
-            value = _parse_float(
-                row["depth_mink_reference"], "depth_mink_reference"
-            )
-            if value is None:
-                raise DataContractError("reference mapping contains NA")
-            grouped.setdefault(depth, set()).add(value)
-    if not grouped or any(len(values) != 1 for values in grouped.values()):
-        raise DataContractError("reference mapping is absent or inconsistent")
-    return {depth: next(iter(values)) for depth, values in grouped.items()}
+        if row["slice_status"] != "TRANSITION_EVALUABLE":
+            continue
+        depth = int(row["depth_k"])
+        if depth not in derived:
+            raise DataContractError("reference transition lacks derived depth")
+        serialized = _parse_float(
+            row["depth_mink_reference"], "depth_mink_reference"
+        )
+        theta_raw = _parse_float(row["theta_raw"], "theta_raw")
+        residual = _parse_float(row["theta_residual"], "theta_residual")
+        if serialized != derived[depth]:
+            raise DataContractError("serialized reference baseline is not derived")
+        if theta_raw is None or residual != theta_raw - derived[depth]:
+            raise DataContractError("reference residual arithmetic drift")
+    return derived
 
 
 def combine_order_csv(reference: bytes, evaluation: bytes) -> bytes:
@@ -810,6 +866,10 @@ def run_evaluation() -> None:
     }
     if evaluation_keys != truth_keys:
         raise DataContractError("evaluation and truth keys differ")
+    validate_truth_alignment(
+        validate_order_csv_bytes(evaluation_data, {"EVALUATION"}),
+        validate_truth_csv_bytes(truth_data),
+    )
     canonical_data = combine_order_csv(reference_data, evaluation_data)
     reference_after, _mapping_after = load_finalized_reference()
     if sha256_bytes(reference_after) != reference_hash_before:

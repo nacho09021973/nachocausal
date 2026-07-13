@@ -295,6 +295,7 @@ def load_and_validate_inputs() -> InputArtifacts:
     truth_keys = {_key(row) for row in truth_rows}
     if evaluation_keys != truth_keys:
         raise LeakageAuditError("truth/order key isolation is not one-to-one")
+    runner.validate_truth_alignment(evaluation_rows, truth_rows)
 
     references = runner.reference_depths_from_csv(reference)
     reference_counts: dict[int, int] = {}
