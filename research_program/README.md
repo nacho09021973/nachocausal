@@ -69,9 +69,9 @@ En particular, para fronteras de tipo horizonte:
 PR011 no es un protocolo empírico tipo PR009/PR010. Es una **unidad de viabilidad
 teórico-computacional**: familia diamante EF (ancla **A moderate**), par `\tau=0.95` vs `1.05`,
 canal `N=n`, producto futuro = `TV` certificada. Spec **congelado** (`FROZEN_VIABILITY_SPEC`, comité 022, auditoría 007 G2a). Certificación TV
-G2b descargado (`auditor_report_008`, `AUDIT_PASS_WITH_WARNINGS`): ε provisional ≈ 0.00133 en
-n=4, pero el terminal de viabilidad sigue bloqueado (cuadratura no tier-1). Falta convergencia
-de malla o fallback §6.1 + autorización explícita del usuario. G0b descargado. Ver
+PR011 emitió `PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` en `n=4` vía `HELLINGER_FALLBACK`
+(`epsilon_certified_upper ≈ 0.00461 < 1`; artefacto `data/reports/pr011_tv_certification_n4.csv`).
+La escalera `n > 4` y la estimación de masa siguen abiertas. G0b/G2b descargados. Ver
 `synthesis/pr011_mass_distinguishability_viability.md`.
 
 4. **Base conceptual parcial en la literatura.**

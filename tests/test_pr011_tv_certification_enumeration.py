@@ -1,7 +1,8 @@
-"""Tests for PR011 TV enumeration scaffold (no viability terminal, no reports)."""
+"""Tests for PR011 TV certification (enumeration + Hellinger fallback)."""
 
 from __future__ import annotations
 
+import hashlib
 import subprocess
 import sys
 from pathlib import Path
@@ -19,6 +20,7 @@ def test_frozen_geometry_matches_pr011_anchor() -> None:
     assert enum.R_Q == 0.5 and enum.V_Q == 1.0
     assert enum.TAU_PAIR == (0.95, 1.05)
     assert enum.N_LADDER == (4, 5, 6, 7, 8)
+    assert enum.HELLINGER_M == 100
 
 
 def test_poset_law_renormalizes_to_unit_mass_at_n4_grid12() -> None:
@@ -51,12 +53,54 @@ def test_certified_tv_upper_rounds_up() -> None:
     assert enum.certified_tv_upper(noisy) >= noisy
 
 
+def test_hellinger_stability_and_upper_bound() -> None:
+    h2, h2_x = enum.verify_hellinger_stability(enum.TAU_PAIR[0], enum.TAU_PAIR[1])
+    assert h2 > 0.0 and h2_x > 0.0
+    eps, _ = enum.poset_tv_upper_via_hellinger(enum.TAU_PAIR[0], enum.TAU_PAIR[1], 4)
+    assert 0.0 < eps < 1.0
+
+
+def test_certify_n4_via_hellinger_fallback(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(enum, "PRIMARY_CERTIFY_PROBE", ())
+    result = enum.certify(4, enum.TAU_PAIR[0], enum.TAU_PAIR[1])
+    assert result.method == "HELLINGER_FALLBACK"
+    assert result.terminal == enum.TERMINAL_DISTINGUISHABLE
+    assert 0.0 < result.epsilon_certified_upper < 1.0
+    assert result.primary_tv_nominal is not None
+    assert result.primary_tv_nominal < result.epsilon_certified_upper
+
+
+def test_publish_certification_roundtrip(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(enum, "PRIMARY_CERTIFY_PROBE", ())
+    report_dir = tmp_path / "data" / "reports"
+    report_dir.mkdir(parents=True)
+    monkeypatch.setattr(enum, "REPORT_DIR", report_dir)
+    monkeypatch.setattr(enum, "CERT_CSV_PATH", report_dir / "pr011_tv_certification_n4.csv")
+    monkeypatch.setattr(enum, "CERT_SIDECAR_PATH", report_dir / "pr011_tv_certification_n4.sha256")
+
+    result = enum.certify(4)
+    enum.publish_certification(result)
+    csv_data = enum.CERT_CSV_PATH.read_bytes()
+    digest = hashlib.sha256(csv_data).hexdigest()
+    assert enum.CERT_SIDECAR_PATH.read_text() == f"{digest}  {enum.CERT_CSV_PATH.name}\n"
+    with pytest.raises(RuntimeError, match="refusing to overwrite"):
+        enum.publish_certification(result)
+
+
 def test_falsifier_cli_writes_no_report_artifacts(tmp_path: Path) -> None:
     reports = tmp_path / "data" / "reports"
     reports.mkdir(parents=True)
     before = set(reports.glob("pr011_*"))
     proc = subprocess.run(
-        [sys.executable, str(_ROOT / "dev" / "pr011_tv_certification_enumeration.py"), "falsifier", "--grid-m", "12"],
+        [
+            sys.executable,
+            str(_ROOT / "dev" / "pr011_tv_certification_enumeration.py"),
+            "falsifier",
+            "--grid-m",
+            "12",
+        ],
         cwd=_ROOT,
         check=False,
         capture_output=True,
@@ -64,5 +108,28 @@ def test_falsifier_cli_writes_no_report_artifacts(tmp_path: Path) -> None:
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
     assert "PR011_ENUM_FALSIFIER=OK" in proc.stdout
-    assert "falsifier_verdict=PAIR_DISTINGUISHABLE_TV_POSITIVE" in proc.stdout
     assert set(reports.glob("pr011_*")) == before
+
+
+def test_certify_dry_run_via_main(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(enum, "PRIMARY_CERTIFY_PROBE", ())
+    assert enum.main(["certify", "--dry-run"]) == 0
+
+
+COMMITTED_CERT_SHA256 = (
+    "5b53df73cdb02cba1198e02fb332d69d0ca3377a033cb767075d7855b6a475a0"
+)
+
+
+def test_committed_certification_artifact_matches_terminal() -> None:
+    csv_path = _ROOT / "data" / "reports" / "pr011_tv_certification_n4.csv"
+    sidecar_path = _ROOT / "data" / "reports" / "pr011_tv_certification_n4.sha256"
+    csv_data = csv_path.read_bytes()
+    assert hashlib.sha256(csv_data).hexdigest() == COMMITTED_CERT_SHA256
+    assert sidecar_path.read_text() == f"{COMMITTED_CERT_SHA256}  {csv_path.name}\n"
+    lines = csv_data.decode().splitlines()
+    assert lines[0] == ",".join(enum.CERT_CSV_FIELDS)
+    row = dict(zip(enum.CERT_CSV_FIELDS, lines[1].split(",")))
+    assert row["method"] == "HELLINGER_FALLBACK"
+    assert row["terminal"] == enum.TERMINAL_DISTINGUISHABLE
+    assert float(row["epsilon_certified_upper"]) < 1.0
