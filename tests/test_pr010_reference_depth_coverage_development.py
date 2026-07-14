@@ -15,6 +15,9 @@ from dev import run_pr010_reference_depth_coverage_development as runner
 
 
 NORMATIVE_SHA = "489f560f2cbe0cc92671b06574dc48b04d432968"
+COMMITTED_CSV_SHA256 = (
+    "58037a1b1ef9dcbf63901fb85e8ee7f2095270f432bff7f37176479d716bb58f"
+)
 
 
 def synthetic_rows(
@@ -110,6 +113,22 @@ def test_normative_definitions_are_literal_ast_copies(name, class_name, source_p
     )
 
 
+def test_committed_development_artifact_evaluates_to_infeasible_terminal() -> None:
+    root = Path(__file__).resolve().parent.parent
+    csv_path = root / "data" / "reports" / "pr010_reference_depth_coverage_development.csv"
+    sidecar_path = (
+        root / "data" / "reports" / "pr010_reference_depth_coverage_development.sha256"
+    )
+    csv_data = csv_path.read_bytes()
+    assert hashlib.sha256(csv_data).hexdigest() == COMMITTED_CSV_SHA256
+    expected_sidecar = (
+        f"{COMMITTED_CSV_SHA256}  {csv_path.name}\n".encode("ascii")
+    )
+    assert sidecar_path.read_bytes() == expected_sidecar
+    rows = evaluator.validate_csv_bytes(csv_data)
+    assert evaluator.evaluate_rows(rows) == evaluator.INFEASIBLE_TERMINAL
+
+
 def test_frozen_constants_and_schema_are_exact():
     assert runner.DEVELOPMENT_SEEDS == tuple(range(1_101_000, 1_101_024))
     assert runner.SPACETIME_KINDS == ("BH", "MINK")
@@ -134,7 +153,7 @@ def test_computational_thread_backends_are_fixed_below_process_cap():
         "VECLIB_MAXIMUM_THREADS",
         "BLIS_NUM_THREADS",
     ):
-        assert os.environ[name] == "3"
+        assert os.environ[name] == "1"
 
 
 def test_exchangeable_ranks_are_deterministic_and_seeded():

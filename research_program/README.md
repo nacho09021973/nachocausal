@@ -69,7 +69,8 @@ En particular, para fronteras de tipo horizonte:
 PR011 no es un protocolo empírico tipo PR009/PR010. Es una **unidad de viabilidad
 teórico-computacional**: familia diamante EF (ancla **A moderate**), par `\tau=0.95` vs `1.05`,
 canal `N=n`, producto futuro = `TV` certificada. Spec **congelado** (`FROZEN_VIABILITY_SPEC`, comité 022, auditoría 007 G2a). Certificación TV
-bloqueada hasta cierre PR010 (G0b) + auditoría pre-ejecución (G2b). Ver
+bloqueada hasta auditoría pre-ejecución (G2b) + autorización explícita del usuario. G0b
+(PR010 cerrado) está descargado. Ver
 `synthesis/pr011_mass_distinguishability_viability.md`.
 
 4. **Base conceptual parcial en la literatura.**
@@ -89,11 +90,14 @@ efectiva order-only, pero terminó durante su bloque de referencia con
 mínimo preregistrado. No se publicó ningún artefacto PR009, no se ejecutaron evaluación ni
 scorer y no existe resultado científico sobre sensibilidad al horizonte.
 
-PR010 es ahora una fase de diseño de cobertura. Debe usar semillas de desarrollo nuevas y
-decidir, antes de una nueva confirmación, entre ampliar el bloque de referencia o limitar
-las profundidades puntuables. Los valores internos no publicados y las semillas de PR009
-son entradas prohibidas. El nuevo prerregistro, las semillas confirmatorias y la auditoría
-permanecen pendientes; esta actualización no autoriza ninguna ejecución.
+PR010 cerró su fase de diseño de cobertura con terminal
+`PR010_DESIGN_INFEASIBLE_REFERENCE_COVERAGE`: el bloque de desarrollo publicado
+(`data/reports/pr010_reference_depth_coverage_development.csv`, 24 semillas
+`1101000–1101023`) no alcanza el mínimo congelado de 22 semillas soportadas por celda
+en al menos una celda `(spacetime_kind, depth_k)`. Ese terminal prohíbe una prerregistración
+confirmatoria para este diseño PR010. No se publicó artefacto científico de expansión
+efectiva; el nuevo prerregistro, las semillas confirmatorias y la auditoría permanecen
+pendientes.
 
 ## 2. Distinciones que no deben mezclarse
 

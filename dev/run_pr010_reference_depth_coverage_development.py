@@ -22,7 +22,7 @@ import time
 from typing import Callable, Iterable, Iterator, Mapping, Sequence
 
 
-# Three computational threads plus the budget monitor remain within the frozen
+# One computational thread plus the budget monitor stay within the frozen
 # four-thread process limit.  Existing environment values are overwritten, not
 # accepted as configuration overrides.
 for _thread_variable in (
@@ -33,9 +33,10 @@ for _thread_variable in (
     "VECLIB_MAXIMUM_THREADS",
     "BLIS_NUM_THREADS",
 ):
-    os.environ[_thread_variable] = "3"
+    os.environ[_thread_variable] = "1"
 
 import numpy as np
+from threadpoolctl import threadpool_limits
 
 
 _HERE = Path(__file__).resolve().parent
@@ -504,52 +505,55 @@ def _validate_frozen_configuration() -> None:
 def _coverage_rows_for_seed(seed: int) -> list[dict[str, int | str]]:
     if seed not in DEVELOPMENT_SEEDS:
         raise DataContractError("seed outside frozen development band")
-    embedding, edges, center = generator.numpy_sprinkle(seed, INTENSITY, T_EDGE)
-    generator.assert_coordinate_uniform(embedding, edges, center)
-    tie_rank = make_exchangeable_tie_ranks(len(embedding), seed)
-    rows: list[dict[str, int | str]] = []
-    for kind in SPACETIME_KINDS:
-        causal = generator.past_matrix_fast(embedding, kind)
-        _links, indptr, indices = XL.link_future_csr(causal)
-        starts = sample_starts_exchangeably(
-            causal, indptr, indices, tie_rank, MAX_STARTS
-        )
-        workspace = EnclosingDiamondWorkspace(causal)
-        evaluable_counts = {depth: 0 for depth in TRANSITION_DEPTHS}
-        for start_p, start_q in starts:
-            by_depth = kbeam_exchangeable(
-                start_p,
-                start_q,
-                indptr,
-                indices,
-                causal,
-                tie_rank,
-                K,
-                MAX_DEPTH,
+    # Keep NumPy-linked native pools at a single worker so the frozen budget
+    # counter never sees extra native threads beyond the monitored process.
+    with threadpool_limits(limits=1):
+        embedding, edges, center = generator.numpy_sprinkle(seed, INTENSITY, T_EDGE)
+        generator.assert_coordinate_uniform(embedding, edges, center)
+        tie_rank = make_exchangeable_tie_ranks(len(embedding), seed)
+        rows: list[dict[str, int | str]] = []
+        for kind in SPACETIME_KINDS:
+            causal = generator.past_matrix_fast(embedding, kind)
+            _links, indptr, indices = XL.link_future_csr(causal)
+            starts = sample_starts_exchangeably(
+                causal, indptr, indices, tie_rank, MAX_STARTS
             )
-            widths = {
-                depth: workspace.ensemble_width(_survivor_rungs(by_depth, depth))
-                for depth in REQUIRED_SLICES
-            }
-            for depth in TRANSITION_DEPTHS:
-                if (
-                    widths[depth].width_lower_median is not None
-                    and widths[depth + 1].width_lower_median is not None
-                ):
-                    evaluable_counts[depth] += 1
-        for depth in TRANSITION_DEPTHS:
-            n_evaluable = evaluable_counts[depth]
-            rows.append(
-                {
-                    "seed": seed,
-                    "spacetime_kind": kind,
-                    "depth_k": depth,
-                    "n_emitted_starts": len(starts),
-                    "n_transition_evaluable_starts": n_evaluable,
-                    "seed_depth_supported": int(n_evaluable >= 5),
+            workspace = EnclosingDiamondWorkspace(causal)
+            evaluable_counts = {depth: 0 for depth in TRANSITION_DEPTHS}
+            for start_p, start_q in starts:
+                by_depth = kbeam_exchangeable(
+                    start_p,
+                    start_q,
+                    indptr,
+                    indices,
+                    causal,
+                    tie_rank,
+                    K,
+                    MAX_DEPTH,
+                )
+                widths = {
+                    depth: workspace.ensemble_width(_survivor_rungs(by_depth, depth))
+                    for depth in REQUIRED_SLICES
                 }
-            )
-    return rows
+                for depth in TRANSITION_DEPTHS:
+                    if (
+                        widths[depth].width_lower_median is not None
+                        and widths[depth + 1].width_lower_median is not None
+                    ):
+                        evaluable_counts[depth] += 1
+            for depth in TRANSITION_DEPTHS:
+                n_evaluable = evaluable_counts[depth]
+                rows.append(
+                    {
+                        "seed": seed,
+                        "spacetime_kind": kind,
+                        "depth_k": depth,
+                        "n_emitted_starts": len(starts),
+                        "n_transition_evaluable_starts": n_evaluable,
+                        "seed_depth_supported": int(n_evaluable >= 5),
+                    }
+                )
+        return rows
 
 
 def build_coverage_rows() -> list[dict[str, int | str]]:
