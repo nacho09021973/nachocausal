@@ -33,6 +33,7 @@ import explore_ladders as XL  # noqa: E402
 from dev.measure_pr003 import boundary_minimals_invariant  # noqa: E402
 from dev.pr009_effective_expansion_core import (  # noqa: E402
     ContractError as CoreContractError,
+    EnclosingDiamondWorkspace,
     WidthResult,
     build_depth_mink_reference,
     ensemble_width,
@@ -312,12 +313,20 @@ def build_order_only_slices(
     seed: int,
     spacetime_kind: str,
     start_id: int,
+    separation_workspace: EnclosingDiamondWorkspace | None = None,
 ) -> list[RawSlice]:
     """Build raw rows without accepting an embedding or any truth value."""
 
+    prepared = separation_workspace or EnclosingDiamondWorkspace(causal)
     widths: list[WidthResult] = []
     for depth_k in range(1, MAX_DEPTH + 1):
-        widths.append(ensemble_width(causal, _survivor_rungs(by_depth, depth_k)))
+        widths.append(
+            ensemble_width(
+                causal,
+                _survivor_rungs(by_depth, depth_k),
+                workspace=prepared,
+            )
+        )
 
     rows = []
     for index, current in enumerate(widths):
@@ -436,6 +445,7 @@ def build_block(
             starts = sample_starts_exchangeably(
                 causal, indptr, indices, tie_rank, MAX_STARTS
             )
+            separation_workspace = EnclosingDiamondWorkspace(causal)
             for start_id, (start_p, start_q) in enumerate(starts):
                 by_depth = kbeam_exchangeable(
                     start_p,
@@ -455,6 +465,7 @@ def build_block(
                         seed=seed,
                         spacetime_kind=kind,
                         start_id=start_id,
+                        separation_workspace=separation_workspace,
                     )
                 )
                 if include_truth:

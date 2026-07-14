@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from itertools import combinations, product
 import math
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Iterator, Mapping, Sequence
 
 import numpy as np
 
@@ -59,8 +59,188 @@ def validate_strict_causal_matrix(causal: np.ndarray) -> np.ndarray:
     return matrix
 
 
+def _set_bit_indices(bits: int) -> Iterator[int]:
+    """Yield set-bit indices without allocating an N-length boolean vector."""
+
+    while bits:
+        least = bits & -bits
+        yield least.bit_length() - 1
+        bits ^= least
+
+
+class EnclosingDiamondWorkspace:
+    """Prepared exact separation engine for one immutable causal matrix.
+
+    Past and future sets are stored as Python integer bitsets.  The minimum may
+    be restricted to maximal common-past and minimal common-future elements:
+    moving either endpoint inward can only shrink the enclosing interval.  The
+    workspace also memoizes element-pair separations and complete width slices
+    so all starts and depths for the same causal matrix can share work.
+    """
+
+    def __init__(self, causal: np.ndarray):
+        self.matrix = validate_strict_causal_matrix(causal)
+        self.n = int(self.matrix.shape[0])
+        packed_past = np.packbits(self.matrix, axis=1, bitorder="little")
+        packed_future = np.packbits(self.matrix.T, axis=1, bitorder="little")
+        self._past_bits = tuple(
+            int.from_bytes(row.tobytes(), byteorder="little")
+            for row in packed_past
+        )
+        self._future_bits = tuple(
+            int.from_bytes(row.tobytes(), byteorder="little")
+            for row in packed_future
+        )
+        cache_dtype = np.uint16 if self.n < 65_534 else np.uint32
+        cache_limits = np.iinfo(cache_dtype)
+        self._cache_unknown = int(cache_limits.max)
+        self._cache_none = self._cache_unknown - 1
+        self._separation_cache = np.full(
+            self.n * (self.n - 1) // 2,
+            self._cache_unknown,
+            dtype=cache_dtype,
+        )
+        self._separation_cache_entries = 0
+        self._width_cache: dict[tuple[tuple[int, int], ...], WidthResult] = {}
+
+    def require_matrix(self, causal: np.ndarray) -> None:
+        """Refuse accidental reuse with a different causal relation."""
+
+        if np.asarray(causal, dtype=bool) is not self.matrix:
+            raise ContractError("separation workspace belongs to another matrix")
+
+    def cache_info(self) -> tuple[int, int]:
+        """Return separation and width entry counts for deterministic tests."""
+
+        return self._separation_cache_entries, len(self._width_cache)
+
+    def _pair_index(self, u: int, v: int) -> int:
+        if u > v:
+            u, v = v, u
+        return u * (2 * self.n - u - 1) // 2 + (v - u - 1)
+
+    def _store_separation(self, index: int, cardinality: int | None) -> None:
+        if int(self._separation_cache[index]) == self._cache_unknown:
+            self._separation_cache_entries += 1
+        self._separation_cache[index] = (
+            self._cache_none if cardinality is None else cardinality
+        )
+
+    def minimum_enclosing_diamond_separation(
+        self, u: int, v: int
+    ) -> float | None:
+        if not 0 <= u < self.n or not 0 <= v < self.n:
+            raise ContractError("element identifier outside causal matrix")
+        if u == v:
+            return None
+
+        cache_index = self._pair_index(u, v)
+        cached = int(self._separation_cache[cache_index])
+        if cached != self._cache_unknown:
+            return None if cached == self._cache_none else math.sqrt(cached)
+        if self.matrix[u, v] or self.matrix[v, u]:
+            self._store_separation(cache_index, None)
+            return None
+
+        common_past = self._past_bits[u] & self._past_bits[v]
+        common_future = self._future_bits[u] & self._future_bits[v]
+        if common_past == 0 or common_future == 0:
+            self._store_separation(cache_index, None)
+            return None
+
+        maximal_past = [
+            e
+            for e in _set_bit_indices(common_past)
+            if (self._future_bits[e] & common_past) == 0
+        ]
+        minimal_future = [
+            f
+            for f in _set_bit_indices(common_future)
+            if (self._past_bits[f] & common_future) == 0
+        ]
+
+        minimum_cardinality: int | None = None
+        for e in maximal_past:
+            strict_future = self._future_bits[e]
+            for f in minimal_future:
+                cardinality = (
+                    strict_future & self._past_bits[f]
+                ).bit_count() + 2
+                if cardinality < 4:
+                    raise ContractError(
+                        "enclosing diamond omitted required elements"
+                    )
+                if (
+                    minimum_cardinality is None
+                    or cardinality < minimum_cardinality
+                ):
+                    minimum_cardinality = cardinality
+                    if cardinality == 4:
+                        self._store_separation(cache_index, cardinality)
+                        return 2.0
+
+        self._store_separation(cache_index, minimum_cardinality)
+        if minimum_cardinality is None:
+            return None
+        return math.sqrt(minimum_cardinality)
+
+    def survivor_rung_separation(
+        self,
+        left: tuple[int, int],
+        right: tuple[int, int],
+    ) -> float | None:
+        d_p = self.minimum_enclosing_diamond_separation(left[0], right[0])
+        d_q = self.minimum_enclosing_diamond_separation(left[1], right[1])
+        if d_p is None or d_q is None or d_p <= 0.0 or d_q <= 0.0:
+            return None
+        return math.sqrt(d_p * d_q)
+
+    def ensemble_width(
+        self, survivor_rungs: Sequence[tuple[int, int]]
+    ) -> WidthResult:
+        n_survivors = len(survivor_rungs)
+        if len(set(survivor_rungs)) != n_survivors:
+            raise ContractError("survivor terminal rungs must be deduplicated")
+
+        cache_key = tuple(sorted((int(p), int(q)) for p, q in survivor_rungs))
+        cached = self._width_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
+        separations = []
+        for left_index, right_index in combinations(range(n_survivors), 2):
+            value = self.survivor_rung_separation(
+                survivor_rungs[left_index], survivor_rungs[right_index]
+            )
+            if value is not None:
+                separations.append(value)
+
+        evaluable = (
+            n_survivors >= MIN_SURVIVORS
+            and len(separations) >= MIN_PAIR_SEPARATIONS
+        )
+        width = lower_median(separations) if evaluable else None
+        result = WidthResult(n_survivors, len(separations), width)
+        self._width_cache[cache_key] = result
+        return result
+
+
+def _prepared_workspace(
+    causal: np.ndarray,
+    workspace: EnclosingDiamondWorkspace | None,
+) -> EnclosingDiamondWorkspace:
+    if workspace is None:
+        return EnclosingDiamondWorkspace(causal)
+    workspace.require_matrix(causal)
+    return workspace
+
+
 def minimum_enclosing_diamond_separation(
-    causal: np.ndarray, u: int, v: int
+    causal: np.ndarray,
+    u: int,
+    v: int,
+    *,
+    workspace: EnclosingDiamondWorkspace | None = None,
 ) -> float | None:
     """Return sqrt(min |[e,f]|) for spacelike ``u,v``, or ``None``.
 
@@ -69,70 +249,29 @@ def minimum_enclosing_diamond_separation(
     representative through labels or embedding data.
     """
 
-    matrix = validate_strict_causal_matrix(causal)
-    n = matrix.shape[0]
-    if not 0 <= u < n or not 0 <= v < n:
-        raise ContractError("element identifier outside causal matrix")
-    if u == v or matrix[u, v] or matrix[v, u]:
-        return None
-
-    common_past = np.flatnonzero(matrix[u] & matrix[v])
-    common_future = np.flatnonzero(matrix[:, u] & matrix[:, v])
-    if common_past.size == 0 or common_future.size == 0:
-        return None
-
-    minimum_cardinality: int | None = None
-    for e in common_past:
-        future_of_e = matrix[:, e].copy()
-        future_of_e[e] = True
-        for f in common_future:
-            past_of_f = matrix[f].copy()
-            past_of_f[f] = True
-            cardinality = int(np.count_nonzero(future_of_e & past_of_f))
-            if cardinality < 4:
-                raise ContractError("enclosing diamond omitted required elements")
-            if minimum_cardinality is None or cardinality < minimum_cardinality:
-                minimum_cardinality = cardinality
-
-    if minimum_cardinality is None:
-        return None
-    return math.sqrt(minimum_cardinality)
+    prepared = _prepared_workspace(causal, workspace)
+    return prepared.minimum_enclosing_diamond_separation(u, v)
 
 
 def survivor_rung_separation(
     causal: np.ndarray,
     left: tuple[int, int],
     right: tuple[int, int],
+    *,
+    workspace: EnclosingDiamondWorkspace | None = None,
 ) -> float | None:
-    d_p = minimum_enclosing_diamond_separation(causal, left[0], right[0])
-    d_q = minimum_enclosing_diamond_separation(causal, left[1], right[1])
-    if d_p is None or d_q is None or d_p <= 0.0 or d_q <= 0.0:
-        return None
-    return math.sqrt(d_p * d_q)
+    prepared = _prepared_workspace(causal, workspace)
+    return prepared.survivor_rung_separation(left, right)
 
 
 def ensemble_width(
     causal: np.ndarray,
     survivor_rungs: Sequence[tuple[int, int]],
+    *,
+    workspace: EnclosingDiamondWorkspace | None = None,
 ) -> WidthResult:
-    n_survivors = len(survivor_rungs)
-    if len(set(survivor_rungs)) != n_survivors:
-        raise ContractError("survivor terminal rungs must be deduplicated")
-
-    separations = []
-    for left_index, right_index in combinations(range(n_survivors), 2):
-        value = survivor_rung_separation(
-            causal, survivor_rungs[left_index], survivor_rungs[right_index]
-        )
-        if value is not None:
-            separations.append(value)
-
-    evaluable = (
-        n_survivors >= MIN_SURVIVORS
-        and len(separations) >= MIN_PAIR_SEPARATIONS
-    )
-    width = lower_median(separations) if evaluable else None
-    return WidthResult(n_survivors, len(separations), width)
+    prepared = _prepared_workspace(causal, workspace)
+    return prepared.ensemble_width(survivor_rungs)
 
 
 def transition_metrics(

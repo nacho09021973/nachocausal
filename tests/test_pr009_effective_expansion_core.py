@@ -38,6 +38,40 @@ def inverse_permutation(permutation: np.ndarray) -> np.ndarray:
     return inverse
 
 
+def slow_minimum_enclosing_diamond_separation(
+    causal: np.ndarray, u: int, v: int
+) -> float | None:
+    """Literal preregistered definition, retained only as a test oracle."""
+
+    matrix = core.validate_strict_causal_matrix(causal)
+    if u == v or matrix[u, v] or matrix[v, u]:
+        return None
+    common_past = np.flatnonzero(matrix[u] & matrix[v])
+    common_future = np.flatnonzero(matrix[:, u] & matrix[:, v])
+    if common_past.size == 0 or common_future.size == 0:
+        return None
+    minimum = None
+    for e in common_past:
+        future_of_e = matrix[:, e].copy()
+        future_of_e[e] = True
+        for f in common_future:
+            past_of_f = matrix[f].copy()
+            past_of_f[f] = True
+            cardinality = int(np.count_nonzero(future_of_e & past_of_f))
+            minimum = cardinality if minimum is None else min(minimum, cardinality)
+    return None if minimum is None else math.sqrt(minimum)
+
+
+def random_poset(rng: np.random.Generator, n: int, probability: float) -> np.ndarray:
+    covers = [
+        (past, future)
+        for past in range(n)
+        for future in range(past + 1, n)
+        if rng.random() < probability
+    ]
+    return causal_matrix(n, covers)
+
+
 def test_lower_median_is_frozen_lower_choice():
     assert core.lower_median([9, 1, 5, 3]) == 3
     assert core.lower_median([9, 1, 5]) == 5
@@ -62,6 +96,44 @@ def test_minimum_selects_smallest_enclosing_diamond():
         [(0, 8), (8, 1), (8, 2), (1, 9), (2, 9), (9, 7)],
     )
     assert core.minimum_enclosing_diamond_separation(matrix, 1, 2) == 2.0
+
+
+def test_prepared_engine_matches_literal_definition_on_random_posets():
+    rng = np.random.default_rng(20260714)
+    for n, probability in ((8, 0.18), (12, 0.12), (16, 0.09)):
+        for _ in range(10):
+            matrix = random_poset(rng, n, probability)
+            workspace = core.EnclosingDiamondWorkspace(matrix)
+            for u in range(n):
+                for v in range(u + 1, n):
+                    expected = slow_minimum_enclosing_diamond_separation(
+                        matrix, u, v
+                    )
+                    actual = core.minimum_enclosing_diamond_separation(
+                        matrix, u, v, workspace=workspace
+                    )
+                    assert actual == expected
+
+
+def test_workspace_reuses_pair_and_width_results_without_semantic_drift():
+    matrix, rungs = three_rung_diamond()
+    workspace = core.EnclosingDiamondWorkspace(matrix)
+    first = core.ensemble_width(matrix, rungs, workspace=workspace)
+    populated = workspace.cache_info()
+    second = core.ensemble_width(
+        matrix, list(reversed(rungs)), workspace=workspace
+    )
+    assert second == first
+    assert workspace.cache_info() == populated
+    assert populated[0] > 0
+    assert populated[1] == 1
+
+
+def test_workspace_cannot_be_reused_for_another_matrix():
+    matrix, rungs = three_rung_diamond()
+    workspace = core.EnclosingDiamondWorkspace(matrix)
+    with pytest.raises(core.ContractError, match="another matrix"):
+        core.ensemble_width(matrix.copy(), rungs, workspace=workspace)
 
 
 def test_separation_and_width_are_relabeling_invariant():
