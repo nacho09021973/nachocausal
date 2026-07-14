@@ -14,8 +14,9 @@ TV certification execution **not** authorized.
 **Normative status:** This is a **viability specification**, not a preregistration, not a blind
 validation run, and not authorization to execute production science. It does not modify PR010,
 the sealed path, or any frozen preregistration. **G0a:** this spec document is frozen as
-`FROZEN_VIABILITY_SPEC`. **G0b:** PR010 must close under its own rules before **TV certification
-execution** or any viability terminal.
+`FROZEN_VIABILITY_SPEC`. **G0b:** PR010 closed (`PR010_DESIGN_INFEASIBLE_REFERENCE_COVERAGE`,
+2026-07-14). TV certification execution and any viability terminal still require G2b + user
+authorization.
 
 **Series placement:** PR011 is **not** an observable/recoverability protocol (unlike PR008–PR010).
 It is the first **theoretical–computational viability** unit in the identifiability track (WP4). It
@@ -274,8 +275,9 @@ When PR011 is authorized after freeze:
 **Implementation locus (not authorized until G0–G2 + user sign-off):**
 
 - `dev/pr011_freeze_sanity_check.py` — geometry-only checks (**exists**, PASS at anchor);
-- `dev/pr011_tv_certification_enumeration.py` — to be written at execution authorization;
-- `data/reports/pr011_*` — outputs only after certification script + tests exist;
+- `dev/pr011_tv_certification_enumeration.py` — enumeration scaffold exists; falsifier probe
+  at `n=4` authorized as dev pre-flight; **no viability terminal** until G2b + user sign-off;
+- `data/reports/pr011_*` — outputs only after G2b pre-execution audit + user authorization;
 - no changes to `nachocausal/thresholds.py` or sealed estimator.
 
 ## 10. Gates (split per comité 022 §8)
@@ -283,14 +285,14 @@ When PR011 is authorized after freeze:
 | Gate | Requirement | Status |
 |---|---|---|
 | **G0a** | Spec document freeze (`FROZEN_VIABILITY_SPEC`) | **DISCHARGED** (comité 022 + user sign-off) |
-| **G0b** | PR010 closed under its own rules — required for **TV certification execution** | **OPEN** |
+| **G0b** | PR010 closed under its own rules — required for **TV certification execution** | **DISCHARGED** (`PR010_DESIGN_INFEASIBLE_REFERENCE_COVERAGE`, 2026-07-14) |
 | **G1** | `/comite` on numeric anchor §3.1, §5, §6.1 | **DISCHARGED** (comité 022) |
 | **G2a** | `/auditor` on freeze text (claim boundary, anchor numbers) | **DISCHARGED** (`auditor_report_007`, `AUDIT_PASS_WITH_WARNINGS`) |
 | **G2b** | `/auditor` on any reported `ε` or viability terminal (pre-execution) | **OPEN** |
 | **G3** | Tsybakov/Le Cam in `biblioteca/` if external memo cites them | **OPEN** |
 
 Spec freeze does **not** authorize running TV certification or emitting a viability terminal.
-Execution requires G0b + G2b + explicit user authorization.
+Execution requires G2b + explicit user authorization (G0b discharged 2026-07-14).
 
 ## 11. Relation to later units (out of scope for PR011)
 
@@ -310,7 +312,7 @@ Execution requires G0b + G2b + explicit user authorization.
 | Pair rule `MIDPOINT_QUARTER_SPAN` | **FILLED** §5 |
 | `n` ladder, primary method, error budget | **FILLED** §4.4, §6.1 |
 | Spec freeze (G0a) | **DISCHARGED** |
-| PR010 closed (G0b) | **OPEN** |
+| PR010 closed (G0b) | **DISCHARGED** |
 | `/comite` (G1) | **DISCHARGED** |
 | `/auditor` freeze text (G2a) | **DISCHARGED** |
 | `/auditor` pre-execution `ε` (G2b) | **OPEN** |
@@ -321,5 +323,5 @@ Nothing in §3–§6 was selected using PR009 or PR010 scientific outputs.
 ## 13. Current status
 
 ```text
-FROZEN_VIABILITY_SPEC — EXECUTION BLOCKED (G0b, G2b) — NO TERMINAL AUTHORIZED
+FROZEN_VIABILITY_SPEC — EXECUTION BLOCKED (G2b) — NO TERMINAL AUTHORIZED
 ```
