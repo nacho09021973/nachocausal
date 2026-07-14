@@ -1,0 +1,2 @@
+method,n,tau_a,tau_b,epsilon_certified_upper,terminal,hellinger_M,hellinger_H2,hellinger_H2_crosscheck,primary_grid_m,primary_tv_nominal,primary_raw_mass_sum
+HELLINGER_FALLBACK,5,0.95,1.05,0.005764874036,PAIR_DISTINGUISHABLE_AT_TRACTABLE_N,100,1.3293513475560046e-06,1.3284341822964638e-06,8,0.0018882081521309929,0.042108803294489454

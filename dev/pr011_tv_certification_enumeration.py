@@ -45,6 +45,12 @@ TAU_PAIR = (0.95, 1.05)
 N_LADDER = (4, 5, 6, 7, 8)
 DEFAULT_GRID_M = 20
 NOMINAL_CROSSCHECK_GRID_M = 12
+
+
+def nominal_annotation_grid_m(n: int) -> int:
+    if n <= 4:
+        return NOMINAL_CROSSCHECK_GRID_M
+    return n + 3
 TV_ROUND_UP = 1e-12
 RAW_MASS_SUM_MIN = 0.25
 RAW_MASS_SUM_TARGET = 0.99
@@ -60,8 +66,7 @@ TERMINAL_INCOMPLETE = "CERTIFICATION_INCOMPLETE"
 ORDER_FACTORIAL_CACHE: dict[int, int] = {}
 
 REPORT_DIR = _ROOT / "data" / "reports"
-CERT_CSV_PATH = REPORT_DIR / "pr011_tv_certification_n4.csv"
-CERT_SIDECAR_PATH = REPORT_DIR / "pr011_tv_certification_n4.sha256"
+CERTIFIABLE_N = (4, 5, 6, 7, 8)
 CERT_CSV_FIELDS = (
     "method",
     "n",
@@ -199,6 +204,8 @@ def enumerate_tv(
     tau_a: float,
     tau_b: float,
     grid_m: int = DEFAULT_GRID_M,
+    *,
+    require_coverage: bool = True,
 ) -> EnumerationResult:
     fam_a, copula_a = build_diamond_family(tau_a)
     fam_b, copula_b = build_diamond_family(tau_b)
@@ -208,7 +215,9 @@ def enumerate_tv(
     raw_law_b = poset_law_from_grid(grid_b, n)
     law_a, raw_mass_sum_a = normalize_law(raw_law_a)
     law_b, raw_mass_sum_b = normalize_law(raw_law_b)
-    if raw_mass_sum_a < RAW_MASS_SUM_MIN or raw_mass_sum_b < RAW_MASS_SUM_MIN:
+    if require_coverage and (
+        raw_mass_sum_a < RAW_MASS_SUM_MIN or raw_mass_sum_b < RAW_MASS_SUM_MIN
+    ):
         raise RuntimeError(
             "quadrature under-coverage: increase grid_m before certification "
             f"(raw sums={raw_mass_sum_a:.8f}, {raw_mass_sum_b:.8f})"
@@ -296,12 +305,23 @@ def try_primary_convergence(
     return None
 
 
+def certification_artifact_paths(n: int) -> tuple[Path, Path]:
+    if n not in CERTIFIABLE_N:
+        raise ValueError(f"n={n} is outside certifiable ladder {CERTIFIABLE_N}")
+    csv_path = REPORT_DIR / f"pr011_tv_certification_n{n}.csv"
+    sidecar_path = REPORT_DIR / f"pr011_tv_certification_n{n}.sha256"
+    return csv_path, sidecar_path
+
+
 def certify(
     n: int,
     tau_a: float = TAU_PAIR[0],
     tau_b: float = TAU_PAIR[1],
 ) -> CertificationResult:
-    primary = try_primary_convergence(n, tau_a, tau_b, PRIMARY_CERTIFY_PROBE)
+    if n not in CERTIFIABLE_N:
+        raise ValueError(f"n={n} is outside certifiable ladder {CERTIFIABLE_N}")
+    primary_probe = PRIMARY_CERTIFY_PROBE if n <= 4 else ()
+    primary = try_primary_convergence(n, tau_a, tau_b, primary_probe)
     if primary is not None:
         epsilon = primary.tv_certified_upper
         terminal = (
@@ -328,7 +348,14 @@ def certify(
 
     h2, h2_x = verify_hellinger_stability(tau_a, tau_b)
     epsilon, _ = poset_tv_upper_via_hellinger(tau_a, tau_b, n, HELLINGER_M)
-    nominal = enumerate_tv(n, tau_a, tau_b, grid_m=NOMINAL_CROSSCHECK_GRID_M)
+    annotation_m = nominal_annotation_grid_m(n)
+    nominal = enumerate_tv(
+        n,
+        tau_a,
+        tau_b,
+        grid_m=annotation_m,
+        require_coverage=False,
+    )
     terminal = (
         TERMINAL_DISTINGUISHABLE
         if epsilon < 1.0
@@ -346,7 +373,7 @@ def certify(
         hellinger_M=HELLINGER_M,
         hellinger_H2=h2,
         hellinger_H2_crosscheck=h2_x,
-        primary_grid_m=NOMINAL_CROSSCHECK_GRID_M,
+        primary_grid_m=annotation_m,
         primary_tv_nominal=nominal.tv,
         primary_raw_mass_sum=min(nominal.raw_mass_sum_a, nominal.raw_mass_sum_b),
     )
@@ -379,13 +406,16 @@ def render_certification_csv(result: CertificationResult) -> bytes:
 
 
 def publish_certification(result: CertificationResult) -> None:
-    if CERT_CSV_PATH.exists() or CERT_SIDECAR_PATH.exists():
-        raise RuntimeError("refusing to overwrite existing pr011 certification artifact")
+    csv_path, sidecar_path = certification_artifact_paths(result.n)
+    if csv_path.exists() or sidecar_path.exists():
+        raise RuntimeError(
+            f"refusing to overwrite existing pr011 certification artifact for n={result.n}"
+        )
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     csv_data = render_certification_csv(result)
-    CERT_CSV_PATH.write_bytes(csv_data)
+    csv_path.write_bytes(csv_data)
     digest = hashlib.sha256(csv_data).hexdigest()
-    CERT_SIDECAR_PATH.write_bytes(f"{digest}  {CERT_CSV_PATH.name}\n".encode("ascii"))
+    sidecar_path.write_bytes(f"{digest}  {csv_path.name}\n".encode("ascii"))
 
 
 def _print_enumeration(result: EnumerationResult, *, label: str) -> None:
@@ -433,9 +463,9 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     certify_cmd = sub.add_parser(
         "certify",
-        help="tier-1 certification at n (writes data/reports/pr011_tv_certification_n4.*)",
+        help="tier-1 certification at n (writes data/reports/pr011_tv_certification_nN.*)",
     )
-    certify_cmd.add_argument("--n", type=int, default=4, choices=(4,))
+    certify_cmd.add_argument("--n", type=int, default=4, choices=CERTIFIABLE_N)
     certify_cmd.add_argument("--tau-a", type=float, default=TAU_PAIR[0])
     certify_cmd.add_argument("--tau-b", type=float, default=TAU_PAIR[1])
     certify_cmd.add_argument(

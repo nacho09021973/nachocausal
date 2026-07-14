@@ -77,14 +77,13 @@ def test_publish_certification_roundtrip(
     report_dir = tmp_path / "data" / "reports"
     report_dir.mkdir(parents=True)
     monkeypatch.setattr(enum, "REPORT_DIR", report_dir)
-    monkeypatch.setattr(enum, "CERT_CSV_PATH", report_dir / "pr011_tv_certification_n4.csv")
-    monkeypatch.setattr(enum, "CERT_SIDECAR_PATH", report_dir / "pr011_tv_certification_n4.sha256")
 
     result = enum.certify(4)
+    csv_path, sidecar_path = enum.certification_artifact_paths(4)
     enum.publish_certification(result)
-    csv_data = enum.CERT_CSV_PATH.read_bytes()
+    csv_data = csv_path.read_bytes()
     digest = hashlib.sha256(csv_data).hexdigest()
-    assert enum.CERT_SIDECAR_PATH.read_text() == f"{digest}  {enum.CERT_CSV_PATH.name}\n"
+    assert sidecar_path.read_text() == f"{digest}  {csv_path.name}\n"
     with pytest.raises(RuntimeError, match="refusing to overwrite"):
         enum.publish_certification(result)
 
@@ -116,20 +115,39 @@ def test_certify_dry_run_via_main(monkeypatch: pytest.MonkeyPatch) -> None:
     assert enum.main(["certify", "--dry-run"]) == 0
 
 
-COMMITTED_CERT_SHA256 = (
+def test_certify_n5_via_hellinger_fallback(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(enum, "PRIMARY_CERTIFY_PROBE", ())
+    result = enum.certify(5, enum.TAU_PAIR[0], enum.TAU_PAIR[1])
+    assert result.method == "HELLINGER_FALLBACK"
+    assert result.n == 5
+    assert result.terminal == enum.TERMINAL_DISTINGUISHABLE
+    assert 0.0 < result.epsilon_certified_upper < 1.0
+
+
+COMMITTED_CERT_SHA256_N4 = (
     "5b53df73cdb02cba1198e02fb332d69d0ca3377a033cb767075d7855b6a475a0"
+)
+COMMITTED_CERT_SHA256_N5 = (
+    "092b3d42011cb4221f6c18648debe5e5023d5ba5836896b6da55c6accdda473f"
 )
 
 
-def test_committed_certification_artifact_matches_terminal() -> None:
-    csv_path = _ROOT / "data" / "reports" / "pr011_tv_certification_n4.csv"
-    sidecar_path = _ROOT / "data" / "reports" / "pr011_tv_certification_n4.sha256"
+@pytest.mark.parametrize(
+    ("n", "sha256"),
+    [
+        (4, COMMITTED_CERT_SHA256_N4),
+        (5, COMMITTED_CERT_SHA256_N5),
+    ],
+)
+def test_committed_certification_artifact_matches_terminal(n: int, sha256: str) -> None:
+    csv_path, sidecar_path = enum.certification_artifact_paths(n)
     csv_data = csv_path.read_bytes()
-    assert hashlib.sha256(csv_data).hexdigest() == COMMITTED_CERT_SHA256
-    assert sidecar_path.read_text() == f"{COMMITTED_CERT_SHA256}  {csv_path.name}\n"
+    assert hashlib.sha256(csv_data).hexdigest() == sha256
+    assert sidecar_path.read_text() == f"{sha256}  {csv_path.name}\n"
     lines = csv_data.decode().splitlines()
     assert lines[0] == ",".join(enum.CERT_CSV_FIELDS)
     row = dict(zip(enum.CERT_CSV_FIELDS, lines[1].split(",")))
     assert row["method"] == "HELLINGER_FALLBACK"
+    assert row["n"] == str(n)
     assert row["terminal"] == enum.TERMINAL_DISTINGUISHABLE
     assert float(row["epsilon_certified_upper"]) < 1.0

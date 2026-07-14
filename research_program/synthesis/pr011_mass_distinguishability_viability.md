@@ -11,9 +11,9 @@
 - G2b (pre-execution `ε`): `docs/auditor/auditor_report_008_pr011-g2b-pre-execution-epsilon.md`
   (`AUDIT_PASS_WITH_WARNINGS`, 2026-07-14)
 
-**G2b tier-1 (2026-07-14):** `HELLINGER_FALLBACK` certification at `n=4` —
-`epsilon_certified_upper = 0.004611899229 < 1`; terminal
-`PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` (`data/reports/pr011_tv_certification_n4.csv`).
+**G2b tier-1 (2026-07-14):** `HELLINGER_FALLBACK` certification on frozen ladder —
+`n=4`: `ε ≤ 0.004611899229`; `n=5`: `ε ≤ 0.005764874036` (both `< 1`); terminal
+`PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` at each certified `n` (§13).
 
 **Normative status:** This is a **viability specification**, not a preregistration, not a blind
 validation run, and not authorization to execute production science. It does not modify PR010,
@@ -280,7 +280,8 @@ When PR011 is authorized after freeze:
 
 - `dev/pr011_freeze_sanity_check.py` — geometry-only checks (**exists**, PASS at anchor);
 - `dev/pr011_tv_certification_enumeration.py` — `falsifier`, `probe`, `certify` (§6.1 fallback);
-- `data/reports/pr011_tv_certification_n4.csv` — tier-1 certification at `n=4` (2026-07-14);
+- `data/reports/pr011_tv_certification_n4.csv`, `pr011_tv_certification_n5.csv` — tier-1
+  certification (2026-07-14);
 - no changes to `nachocausal/thresholds.py` or sealed estimator.
 
 ## 10. Gates (split per comité 022 §8)
@@ -321,20 +322,21 @@ mass-estimation remain separate authorization units.
 | `/auditor` freeze text (G2a) | **DISCHARGED** |
 | `/auditor` pre-execution `ε` (G2b) | **DISCHARGED** (`auditor_report_008`) |
 | Tier-1 `ε` at `n=4` (`HELLINGER_FALLBACK`) | **CLOSED** (2026-07-14) |
-| Viability terminal `PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` | **EMITTED** at `n=4` |
-| Ladder `n ∈ {5,6,7,8}` / mass-estimation prereg | **OPEN** |
+| Tier-1 `ε` at `n=5` (`HELLINGER_FALLBACK`) | **CLOSED** (2026-07-14) |
+| Viability terminal `PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` | **EMITTED** at `n=4`, `n=5` |
+| Ladder `n ∈ {6,7,8}` / mass-estimation prereg | **OPEN** |
 
 Nothing in §3–§6 was selected using PR009 or PR010 scientific outputs.
 
 ## 13. Current status
 
 ```text
-PAIR_DISTINGUISHABLE_AT_TRACTABLE_N — n=4 — method=HELLINGER_FALLBACK
-epsilon_certified_upper = 0.004611899229  (< 1)
-hellinger_M=100  H2=1.329351347556e-06  (cross-check M=72, rel_gap < 0.1%)
-primary_nominal_tv (enumeration grid_m=12, annotation only) ≈ 0.001440
+PAIR_DISTINGUISHABLE_AT_TRACTABLE_N — method=HELLINGER_FALLBACK — hellinger_M=100
+n=4  epsilon_certified_upper = 0.004611899229  primary_nominal_tv ≈ 0.001440 (grid_m=12)
+n=5  epsilon_certified_upper = 0.005764874036  primary_nominal_tv ≈ 0.001888 (grid_m=8)
+H2 = 1.329351347556e-06  (cross-check M=72, rel_gap < 0.1%)
 ```
 
-Artifact: `data/reports/pr011_tv_certification_n4.csv` (+ `.sha256`).
-Generator: `python3 dev/pr011_tv_certification_enumeration.py certify`.
-Audits: `auditor_report_008` (provisional quadrature), `auditor_report_009` (tier-1 closure).
+Artifacts: `data/reports/pr011_tv_certification_n4.csv`, `pr011_tv_certification_n5.csv` (+ `.sha256`).
+Generator: `python3 dev/pr011_tv_certification_enumeration.py certify --n N`.
+Audits: `auditor_report_008`–`009`.
