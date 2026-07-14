@@ -4,6 +4,7 @@ STATUS: PROTOCOL_ONLY / PENDING_TEXT_AUDIT
 SCOPE: DEVELOPMENT_COVERAGE_ONLY / NO_CODE / NO_EXECUTION
 NORMATIVE_DECISION: `dev/PR010_REFERENCE_DEPTH_COVERAGE_DECISION.md`
 FROZEN_DECISION_SHA: `ff98ae1`
+NORMATIVE_REUSE_SHA: `489f560f2cbe0cc92671b06574dc48b04d432968`
 
 ## 1. Purpose and Non-Authorization
 
@@ -54,9 +55,11 @@ DEVELOPMENT_SEEDS = 1101000..1101023
 N_DEVELOPMENT_SEEDS = 24
 SPACETIME_KINDS = BH,MINK
 INTENSITY = 4800
+T_EDGE = 6.0
 M = 3
 K = 64
 MAX_STARTS = 40
+TIE_RANK_MASTER_SEED = 9009009
 REQUIRED_SLICES = 3..6
 TRANSITION_DEPTHS = 3,4,5
 ```
@@ -69,6 +72,41 @@ retain any development output row outside transition depths 3 through 5.
 The runner must refuse any seed, kind, intensity, `M`, `K`, start count, required slice,
 or transition depth outside this block. PR009 seeds and the reserved PR010 confirmatory
 bands are forbidden.
+
+### 3.1 Exact Normative Reuse
+
+The sole normative provenance for the exchangeable rules and width evaluability is the
+exact commit `489f560f2cbe0cc92671b06574dc48b04d432968`, specifically
+`dev/run_pr009_effective_expansion.py` and
+`dev/pr009_effective_expansion_core.py` as stored in that commit. There is no implicit
+inheritance from PR009, no normative dependency on the current `HEAD`, and no permission
+to substitute later versions of either source file.
+
+The future PR010 runner must copy literally from that exact commit, preserving names,
+control flow, ordering, validation, deterministic generation, and return semantics:
+
+- `make_exchangeable_tie_ranks`, including `SeedSequence([9009009, int(seed)])`,
+  `PCG64`, the permutation of all element identifiers, and `int64` ranks;
+- `sample_starts_exchangeably`, including invariant boundary-minimal selection,
+  future-link children, set deduplication, ordering by the attached rank pair, and the
+  first `MAX_STARTS` entries;
+- `kbeam_exchangeable`, including `_path_tie_key`, terminal-rung deduplication,
+  regularity-first/rank-key ordering, parent-lineage continuation, and the `K` beam cut;
+- the sealed width-evaluability rule in
+  `EnclosingDiamondWorkspace.ensemble_width`, including deduplicated survivor rungs,
+  all valid pair separations, `MIN_SURVIVORS = 3`,
+  `MIN_PAIR_SEPARATIONS = 3`, and the lower median only when both minima hold.
+
+An implementation audit must compare these copied definitions directly with
+`git show 489f560f2cbe0cc92671b06574dc48b04d432968:<path>`. Importing a mutable PR009
+implementation or treating current repository contents as normative provenance is
+forbidden. Refactoring, renaming, replacing, optimizing, or otherwise changing the
+semantics of the copied definitions is forbidden.
+
+`T_EDGE` and `TIE_RANK_MASTER_SEED` accept no command-line, environment, configuration,
+test-hook, or internal override. They may not be adapted after inspecting any result.
+Every other frozen seed, depth, unit, threshold, schema, terminal, resource, atomic
+publication, and rollback rule in this protocol remains unchanged.
 
 ## 4. Independent Unit and Support Predicate
 
@@ -149,6 +187,10 @@ must not serialize or reveal:
 - signs, contrasts, p-values, effect sizes, or scientific terminal statistics;
 - survivor identities, paths, rung identifiers, or per-start rows;
 - any PR009 seed, row, artifact value, cached value, or reconstructed unpublished value.
+
+This amendment authorizes no PR010 seed, pilot, or execution and no modification,
+reactivation, rerun, or reinterpretation of PR009. Results from any source may not be used
+to adapt the constants or normative definitions in Section 3.1.
 
 Only fixed metadata, the six CSV fields, publication status, validation errors that do not
 reveal forbidden values, and the exact terminal line defined below may be exposed.
