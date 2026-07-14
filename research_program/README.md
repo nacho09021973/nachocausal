@@ -19,6 +19,8 @@ Convención:
 - `research_program/bibliography/`: matrices de literatura y mapas de soporte/límite;
 - `research_program/work_packages/`: paquetes de trabajo activos;
 - `research_program/models/`: familias estadísticas y contraejemplos canónicos;
+- `research_program/synthesis/`: decisiones transversales que unifican WP sin duplicar teoremas
+  probados (no es preregistro ni protocolo PR);
 - `research_program/results/`: solo cuando exista un resultado programático estabilizado, todavía
   no apto para `docs/`.
 
@@ -50,9 +52,27 @@ En particular, para fronteras de tipo horizonte:
 
 2. **Suelo operacional del instrumento sellado.** `prereg-003` congela una **cota operacional
    O(ell)** del estimador v2 sellado. No es una cota minimax sobre todos los funcionales del
-   orden, ni un no-go universal sobre toda estadística order-only.
+   orden, ni un no-go universal sobre toda estadística order-only. El encuadre programático del
+   ítem OPEN minimax-sobre-`C` de `prereg-003` §7 vive en
+   `research_program/synthesis/geometric_indeterminacy_decision.md` (síntesis WP3/WP4; teorema
+   probado en `work_packages/wp4_two_point_theorem.md`).
 
-3. **Base conceptual parcial en la literatura.**
+3. **Núcleo minimax order-only (matemática, no física cerrada).** `wp4_two_point_theorem.md`
+   prueba el lema de dos puntos en el canal poset; `first_witness_pair_candidates.md` exhibe
+   ceguera exacta (Teorema A); `wp4_fisher_localization_floor.md` prueba un piso en la familia
+   diamante causal. La física dura — parejas con TV certificada pequeña a `n` relevante — sigue
+   abierta. Borrador de viabilidad (no congelado, no autorizado a ejecutar):
+   `research_program/synthesis/pr011_mass_distinguishability_viability.md`.
+
+### 1.2 PR011 (spec congelado — ejecución bloqueada)
+
+PR011 no es un protocolo empírico tipo PR009/PR010. Es una **unidad de viabilidad
+teórico-computacional**: familia diamante EF (ancla **A moderate**), par `\tau=0.95` vs `1.05`,
+canal `N=n`, producto futuro = `TV` certificada. Spec **congelado** (`FROZEN_VIABILITY_SPEC`, comité 022, auditoría 007 G2a). Certificación TV
+bloqueada hasta cierre PR010 (G0b) + auditoría pre-ejecución (G2b). Ver
+`synthesis/pr011_mass_distinguishability_viability.md`.
+
+4. **Base conceptual parcial en la literatura.**
    - HKMM respalda la idea de que la estructura causal transporta mucha geometría, pero no cierra
      el caso d=2 ni la traducción discreta general.
    - La Hauptvermutung sigue abierta en general: la reconstrucción geométrica desde causal sets es

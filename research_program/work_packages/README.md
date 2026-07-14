@@ -16,3 +16,8 @@ Cada paquete debería fijar:
 ranked, falsifiable observable-design sequence. It authorizes no production experiment;
 the first permitted next artifact is a preregistration for the cheap kill test of the
 ladder-ensemble effective-expansion candidate.
+
+## WP4 identifiability synthesis
+
+Cross-package roadmap (not a duplicate proof): `../synthesis/geometric_indeterminacy_decision.md`.
+Authoritative two-point theorem: `wp4_two_point_theorem.md`.

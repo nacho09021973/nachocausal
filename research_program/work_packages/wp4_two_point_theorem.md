@@ -5,7 +5,8 @@
 > identificabilidad de `research_program/models/canonical_counterexamples.md` §3, con el criterio
 > WP3b). El núcleo matemático queda **PROBADO**; el contenido físico (la existencia de la pareja
 > adversarial) queda explícitamente **ABIERTO**. Sin claim empírico, sin simulaciones, sin uso del
-> estimador sellado, sin datos PR004.
+> estimador sellado, sin datos PR004. Síntesis transversal (módulo `\omega_\rho`, regímenes A/B/C,
+> gobernanza PR010): `research_program/synthesis/geometric_indeterminacy_decision.md`.
 
 ## 0. Veredicto sobre el teorema candidato
 
