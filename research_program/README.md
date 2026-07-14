@@ -61,6 +61,20 @@ En particular, para fronteras de tipo horizonte:
      **singularity-truncated futures**, por lo que no debe venderse como "horizon-generic"
      mientras no se separe de ese mecanismo.
 
+### 1.1 Estado operativo del frente de observables
+
+PR008 está cerrado como `BASELINE_DOMINATED`. PR009 abrió un canal distinto de expansión
+efectiva order-only, pero terminó durante su bloque de referencia con
+`FAILED_DATA_CONTRACT`: la cobertura reference-MINK en profundidad 7 quedó por debajo del
+mínimo preregistrado. No se publicó ningún artefacto PR009, no se ejecutaron evaluación ni
+scorer y no existe resultado científico sobre sensibilidad al horizonte.
+
+PR010 es ahora una fase de diseño de cobertura. Debe usar semillas de desarrollo nuevas y
+decidir, antes de una nueva confirmación, entre ampliar el bloque de referencia o limitar
+las profundidades puntuables. Los valores internos no publicados y las semillas de PR009
+son entradas prohibidas. El nuevo prerregistro, las semillas confirmatorias y la auditoría
+permanecen pendientes; esta actualización no autoriza ninguna ejecución.
+
 ## 2. Distinciones que no deben mezclarse
 
 Toda afirmación futura debe etiquetarse en una de estas tres capas:

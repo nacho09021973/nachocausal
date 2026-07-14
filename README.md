@@ -41,13 +41,19 @@ insofar as it serves the one above it:
 
 ### Current observable status
 
-PR008 is closed with terminal label `BASELINE_DOMINATED`. The fixed-`K` scalar `H_hat`
-agrees with `H=4` in every audited cell, but the strongest preregistered empirical
-baseline does too, giving `delta_agreement = 0`. `H_hat` is therefore retained only as
-an auxiliary diagnostic or future baseline, not as the primary route to horizon
-reconstruction. The active design front moves to a new order-only observable sensitive
-to expansion or trapping. See
-`dev/PR008_H_HAT_BASELINE_LEAKAGE_AUDIT_CLOSURE_DECISION.md`.
+PR008 is closed with terminal label `BASELINE_DOMINATED`; its fixed-`K` scalar `H_hat`
+is retained only as an auxiliary diagnostic or future baseline. PR009 then attempted the
+frozen reference stage for a new order-only effective-expansion observable, but terminated with
+`FAILED_DATA_CONTRACT`: reference-MINK coverage at depth 7 was below the preregistered
+minimum. Nothing was published, evaluation and scoring were not run, and no scientific
+terminal or inference about horizon sensitivity exists.
+
+PR010 is the active design phase. It will study coverage by depth using entirely new
+development seeds, choose in advance between a larger reference block and a restricted
+scorable-depth range, and only then define new confirmatory seeds, a new preregistration,
+and a new audit. Unpublished PR009 values are forbidden inputs. See
+`dev/PR009_LADDER_ENSEMBLE_EFFECTIVE_EXPANSION_CLOSURE_DECISION.md` and
+`dev/PR010_REFERENCE_DEPTH_COVERAGE_DECISION.md`.
 
 Founding rules (see docs/preregistration.md):
 - A guardrail that cannot fail is decoration. Every claim carries verifiable backing

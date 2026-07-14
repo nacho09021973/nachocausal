@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Recorrido interactivo del programa NachoCausal: hitos, bloqueos y líneas futuras.">
+  <title>NachoCausal — Recorrido del programa</title>
+  <style>
+    :root {
+      --ink:#f3f5f1; --muted:#aeb7b0; --bg:#07100e; --panel:#0c1916;
+      --line:#24342f; --cyan:#7ed8c4; --gold:#f2c46d; --coral:#ff806c;
+      --violet:#b7a7ff; --soft:#11231e; --shadow:0 18px 60px rgba(0,0,0,.25);
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--bg); font:16px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    button, a { font:inherit; }
+    a { color:inherit; }
+    button:focus-visible, a:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .skip { position:absolute; left:-999px; top:8px; z-index:99; padding:8px 12px; background:var(--ink); color:var(--bg); border-radius:8px; }
+    .skip:focus { left:8px; }
+    .shell { width:min(1180px, calc(100% - 40px)); margin:auto; }
+    .site-head { position:sticky; top:0; z-index:20; backdrop-filter:blur(14px); background:rgba(7,16,14,.82); border-bottom:1px solid rgba(126,216,196,.12); }
+    .nav { min-height:68px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .brand { text-decoration:none; letter-spacing:.13em; font-size:.84rem; font-weight:800; }
+    .brand span { color:var(--cyan); }
+    .links { display:flex; align-items:center; gap:24px; }
+    .links a { color:var(--muted); text-decoration:none; font-size:.9rem; }
+    .links a:hover, .links a[aria-current="true"] { color:var(--ink); }
+    .menu { display:none; border:1px solid var(--line); color:var(--ink); background:var(--panel); border-radius:9px; padding:7px 11px; }
+    .hero { position:relative; min-height:680px; display:grid; align-items:center; overflow:hidden; border-bottom:1px solid var(--line); }
+    .hero-grid { display:grid; grid-template-columns:1.08fr .92fr; gap:60px; align-items:center; padding:88px 0 72px; }
+    .eyebrow { margin:0 0 16px; color:var(--cyan); text-transform:uppercase; letter-spacing:.14em; font-size:.76rem; font-weight:800; }
+    h1 { max-width:800px; margin:0; font-size:clamp(3rem, 7.4vw, 6.7rem); line-height:.92; letter-spacing:-.065em; font-weight:780; }
+    h1 em { display:block; color:var(--cyan); font-style:normal; }
+    .lead { max-width:680px; margin:26px 0 0; color:var(--muted); font-size:clamp(1.05rem, 1.8vw, 1.3rem); }
+    .truth { display:inline-flex; gap:10px; align-items:center; margin-top:28px; padding:10px 14px; border:1px solid rgba(242,196,109,.45); color:#f6dca5; background:rgba(242,196,109,.07); border-radius:999px; font-size:.88rem; }
+    .truth::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 5px rgba(242,196,109,.1); }
+    .causal-wrap { position:relative; min-height:470px; display:grid; place-items:center; }
+    .causal { width:100%; height:auto; filter:drop-shadow(0 28px 80px rgba(126,216,196,.12)); }
+    .causal .edge { stroke:var(--line); stroke-width:1.4; }
+    .causal .active { stroke:var(--cyan); stroke-width:1.7; stroke-dasharray:5 8; animation:dash 18s linear infinite; }
+    .causal .dot { fill:var(--bg); stroke:var(--muted); stroke-width:1.6; }
+    .causal .focus { fill:var(--cyan); stroke:var(--bg); stroke-width:7; }
+    .causal .horizon { fill:none; stroke:var(--gold); stroke-width:2; stroke-dasharray:4 10; opacity:.72; }
+    .formula { position:absolute; bottom:24px; right:0; padding:12px 16px; border:1px solid var(--line); background:rgba(12,25,22,.88); border-radius:12px; color:var(--muted); box-shadow:var(--shadow); }
+    .formula strong { color:var(--ink); }
+    @keyframes dash { to { stroke-dashoffset:-200; } }
+    .section { padding:104px 0; border-bottom:1px solid var(--line); }
+    .section-head { display:grid; grid-template-columns:.7fr 1.3fr; gap:40px; align-items:end; margin-bottom:48px; }
+    .kicker { color:var(--cyan); font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; font-weight:800; }
+    h2 { margin:8px 0 0; font-size:clamp(2.2rem,5vw,4.6rem); line-height:1; letter-spacing:-.045em; }
+    .section-intro { margin:0; max-width:650px; color:var(--muted); font-size:1.08rem; }
+    .status-row { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 26px; }
+    .chip { border:1px solid var(--line); color:var(--muted); background:transparent; padding:8px 13px; border-radius:999px; cursor:pointer; }
+    .chip:hover { color:var(--ink); border-color:var(--muted); }
+    .chip[aria-pressed="true"] { color:var(--bg); background:var(--cyan); border-color:var(--cyan); font-weight:750; }
+    .journey-layout { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr); gap:28px; align-items:start; }
+    .route { position:relative; display:grid; gap:10px; }
+    .route::before { content:""; position:absolute; left:25px; top:26px; bottom:26px; width:1px; background:linear-gradient(var(--cyan),var(--line) 70%,var(--violet)); }
+    .stage { position:relative; display:grid; grid-template-columns:52px 1fr auto; gap:14px; align-items:center; width:100%; min-height:88px; padding:13px 16px 13px 0; border:1px solid transparent; border-radius:16px; color:var(--ink); background:transparent; text-align:left; cursor:pointer; }
+    .stage:hover { background:var(--soft); }
+    .stage[aria-selected="true"] { background:var(--panel); border-color:var(--line); box-shadow:var(--shadow); }
+    .marker { position:relative; z-index:2; display:grid; place-items:center; width:52px; height:52px; border:1px solid var(--line); border-radius:50%; background:var(--bg); color:var(--muted); font-size:.72rem; font-weight:800; }
+    .stage[data-state="validated"] .marker { color:var(--bg); background:var(--cyan); border-color:var(--cyan); }
+    .stage[data-state="closed"] .marker { color:var(--coral); border-color:var(--coral); }
+    .stage[data-state="active"] .marker { color:var(--bg); background:var(--violet); border-color:var(--violet); }
+    .stage[data-state="blocked"] .marker { color:var(--gold); border-color:var(--gold); }
+    .stage-title { display:block; font-weight:780; letter-spacing:-.015em; }
+    .stage-sub { display:block; color:var(--muted); font-size:.86rem; }
+    .state { padding:4px 8px; border:1px solid var(--line); border-radius:999px; color:var(--muted); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; }
+    .detail { position:sticky; top:94px; min-height:450px; padding:28px; background:var(--panel); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); }
+    .detail .big { color:var(--cyan); font-size:4rem; line-height:1; letter-spacing:-.06em; font-weight:800; }
+    .detail h3 { margin:15px 0 8px; font-size:1.55rem; line-height:1.2; }
+    .detail p { color:var(--muted); }
+    .detail dl { margin:24px 0 0; display:grid; gap:13px; }
+    .detail dl div { padding-top:12px; border-top:1px solid var(--line); }
+    .detail dt { color:var(--muted); font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; }
+    .detail dd { margin:3px 0 0; }
+    .legend { display:flex; flex-wrap:wrap; gap:18px; margin-top:24px; color:var(--muted); font-size:.78rem; }
+    .legend span { display:inline-flex; align-items:center; gap:7px; }
+    .legend i { width:8px; height:8px; border-radius:50%; background:var(--cyan); }
+    .legend span:nth-child(2) i { background:transparent; border:1px solid var(--coral); }
+    .legend span:nth-child(3) i { background:transparent; border:1px solid var(--gold); }
+    .legend span:nth-child(4) i { background:var(--violet); }
+    .blocker-flow { display:grid; grid-template-columns:1fr 72px 1fr; gap:16px 20px; align-items:center; }
+    .block { min-height:130px; padding:22px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    .block small { display:block; margin-bottom:8px; color:var(--coral); text-transform:uppercase; letter-spacing:.1em; }
+    .block.resolved small { color:var(--cyan); }
+    .block h3 { margin:0 0 7px; font-size:1.12rem; }
+    .block p { margin:0; color:var(--muted); font-size:.9rem; }
+    .arrow { position:relative; height:1px; background:var(--line); }
+    .arrow::after { content:""; position:absolute; right:0; top:-4px; width:8px; height:8px; border-top:1px solid var(--cyan); border-right:1px solid var(--cyan); transform:rotate(45deg); }
+    .future-map { display:grid; grid-template-columns:.8fr 1.2fr; gap:48px; }
+    .gate { padding:28px; border:1px solid rgba(183,167,255,.4); border-radius:20px; background:linear-gradient(145deg, rgba(183,167,255,.12), transparent); }
+    .gate-label { color:var(--violet); text-transform:uppercase; letter-spacing:.12em; font-size:.74rem; font-weight:800; }
+    .gate h3 { font-size:1.6rem; line-height:1.2; margin:12px 0; }
+    .gate p { color:var(--muted); }
+    .branches { display:grid; gap:10px; }
+    .branch { display:grid; grid-template-columns:40px 1fr; gap:13px; padding:17px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    .branch b { display:grid; place-items:center; width:40px; height:40px; border-radius:50%; background:var(--soft); color:var(--cyan); }
+    .branch h3 { margin:0; font-size:1rem; }
+    .branch p { margin:3px 0 0; color:var(--muted); font-size:.86rem; }
+    .branch[data-kind="candidate"] { opacity:.76; }
+    .branch[data-kind="candidate"] b { color:var(--gold); }
+    .principle { padding:110px 0 118px; text-align:center; }
+    .principle blockquote { max-width:930px; margin:0 auto; font-size:clamp(2.2rem,5.5vw,5rem); line-height:1.05; letter-spacing:-.05em; }
+    .principle strong { color:var(--cyan); }
+    .principle p { color:var(--muted); margin:24px auto 0; max-width:620px; }
+    footer { padding:34px 0; border-top:1px solid var(--line); color:var(--muted); font-size:.82rem; }
+    .foot { display:flex; justify-content:space-between; gap:20px; }
+    .hidden { display:none !important; }
+    @media (max-width:900px) {
+      .hero-grid, .section-head, .future-map { grid-template-columns:1fr; }
+      .hero-grid { gap:20px; }
+      .causal-wrap { min-height:360px; }
+      .journey-layout { grid-template-columns:1fr; }
+      .detail { position:relative; top:auto; min-height:0; }
+      .blocker-flow { grid-template-columns:1fr; }
+      .arrow { width:1px; height:42px; margin:auto; }
+      .arrow::after { right:-4px; top:auto; bottom:0; transform:rotate(135deg); }
+    }
+    @media (max-width:680px) {
+      .shell { width:min(100% - 26px,1180px); }
+      .menu { display:block; }
+      .links { display:none; position:absolute; top:68px; left:13px; right:13px; padding:14px; flex-direction:column; align-items:stretch; gap:8px; background:var(--panel); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+      .links.open { display:flex; }
+      .links a { padding:9px; }
+      .hero { min-height:auto; }
+      .hero-grid { padding:70px 0 44px; }
+      .causal-wrap { min-height:300px; }
+      .formula { bottom:0; right:0; font-size:.78rem; }
+      .section { padding:76px 0; }
+      .section-head { margin-bottom:34px; }
+      .stage { grid-template-columns:45px 1fr; }
+      .marker { width:45px; height:45px; }
+      .stage .state { display:none; }
+      .detail { padding:22px; }
+      .foot { flex-direction:column; }
+    }
+    @media (prefers-reduced-motion:reduce) { html{scroll-behavior:auto} .causal .active{animation:none} }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Saltar al contenido</a>
+  <header class="site-head">
+    <nav class="nav shell" aria-label="Navegación principal">
+      <a class="brand" href="#inicio">NACHO<span>CAUSAL</span></a>
+      <button class="menu" type="button" aria-expanded="false" aria-controls="nav-links">Menú</button>
+      <div class="links" id="nav-links">
+        <a href="#recorrido">Recorrido</a><a href="#bloqueos">Bloqueos</a><a href="#futuro">Líneas futuras</a><a href="#principio">Principio rector</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="inicio">
+      <div class="hero-grid shell">
+        <div>
+          <p class="eyebrow">Programa de investigación · Schwarzschild 3+1D</p>
+          <h1>Orden + número <em>→ geometría</em></h1>
+          <p class="lead">Un recorrido order-only desde los límites de localización hasta el rediseño estadístico de la cobertura en profundidad.</p>
+          <div class="truth">Estado honesto: PR009 cerrado por contrato; ningún resultado científico sobre sensibilidad al horizonte</div>
+        </div>
+        <div class="causal-wrap" aria-label="Diagrama esquemático de un conjunto causal y una frontera candidata">
+          <svg class="causal" viewBox="0 0 540 470" role="img" aria-labelledby="causal-title causal-desc">
+            <title id="causal-title">Red causal esquemática</title><desc id="causal-desc">Eventos conectados por relaciones causales; una curva discontinua marca una frontera candidata.</desc>
+            <path class="horizon" d="M374 38 C315 132 347 242 269 438"/>
+            <g class="edge"><path d="M58 407L121 339L78 264M121 339L180 286L142 212M121 339L232 366M180 286L246 227L221 153M180 286L282 316M246 227L314 170L283 94M246 227L361 262M314 170L392 112L364 55M314 170L426 202M392 112L474 66M361 262L426 202L487 151M282 316L361 262L422 345M232 366L282 316L327 410M78 264L142 212L108 135M142 212L221 153L185 81M221 153L283 94L250 39"/></g>
+            <g class="active"><path d="M58 407L121 339L180 286L246 227L314 170L392 112L474 66"/><path d="M232 366L282 316L361 262L426 202L487 151"/></g>
+            <g><circle class="dot" cx="58" cy="407" r="6"/><circle class="dot" cx="121" cy="339" r="6"/><circle class="dot" cx="78" cy="264" r="6"/><circle class="dot" cx="180" cy="286" r="6"/><circle class="dot" cx="142" cy="212" r="6"/><circle class="dot" cx="232" cy="366" r="6"/><circle class="dot" cx="246" cy="227" r="6"/><circle class="dot" cx="221" cy="153" r="6"/><circle class="dot" cx="282" cy="316" r="6"/><circle class="focus" cx="314" cy="170" r="7"/><circle class="dot" cx="283" cy="94" r="6"/><circle class="dot" cx="361" cy="262" r="6"/><circle class="dot" cx="392" cy="112" r="6"/><circle class="dot" cx="364" cy="55" r="6"/><circle class="dot" cx="426" cy="202" r="6"/><circle class="dot" cx="474" cy="66" r="6"/><circle class="dot" cx="487" cy="151" r="6"/><circle class="dot" cx="422" cy="345" r="6"/><circle class="dot" cx="327" cy="410" r="6"/><circle class="dot" cx="108" cy="135" r="6"/><circle class="dot" cx="185" cy="81" r="6"/><circle class="dot" cx="250" cy="39" r="6"/></g>
+          </svg>
+          <div class="formula"><strong>PR010:</strong> diseñar cobertura sin geometría oculta</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="recorrido">
+      <div class="shell">
+        <div class="section-head"><div><span class="kicker">01 · Recorrido</span><h2>Del límite al observable</h2></div><p class="section-intro">Selecciona una etapa para ver qué pregunta resolvió, qué evidencia produjo y qué no permite afirmar. Los filtros cambian la lectura sin alterar el registro.</p></div>
+        <div class="status-row" role="group" aria-label="Filtrar etapas por estado">
+          <button class="chip" data-filter="all" aria-pressed="true">Todas</button>
+          <button class="chip" data-filter="validated" aria-pressed="false">Completadas</button>
+          <button class="chip" data-filter="closed" aria-pressed="false">Cerradas</button>
+          <button class="chip" data-filter="blocked" aria-pressed="false">Bloqueadas</button>
+          <button class="chip" data-filter="active" aria-pressed="false">Activas</button>
+        </div>
+        <div class="journey-layout">
+          <div class="route" id="route" role="listbox" aria-label="Etapas del programa"></div>
+          <aside class="detail" id="stage-detail" aria-live="polite"></aside>
+        </div>
+        <div class="legend" aria-label="Leyenda"><span><i></i>Completada o reproducida</span><span><i></i>Cerrada con aprendizaje</span><span><i></i>Bloqueada</span><span><i></i>Activa, sin ejecutar</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="bloqueos">
+      <div class="shell">
+        <div class="section-head"><div><span class="kicker">02 · Bloqueos</span><h2>Problema → control</h2></div><p class="section-intro">El programa avanza haciendo visibles los fallos de definición y de contrato. “Superado” significa que existe un control operativo; no que el problema físico global haya desaparecido.</p></div>
+        <div class="blocker-flow">
+          <article class="block"><small>Bloqueo conceptual</small><h3>El horizonte global no está disponible</h3><p>Un conjunto causal finito no contiene acceso directo a ℐ⁺.</p></article><div class="arrow" aria-hidden="true"></div><article class="block resolved"><small>Control adoptado</small><h3>Estimadores estrictamente order-only</h3><p>Las etiquetas geométricas quedan sólo como diagnóstico, nunca como entrada.</p></article>
+          <article class="block"><small>Bloqueo de datos</small><h3>Censura antes de escribir</h3><p>PR004 mezcló unidad por superviviente y descarte MIN_LEN.</p></article><div class="arrow" aria-hidden="true"></div><article class="block resolved"><small>Control adoptado</small><h3>Contrato dedicado depth-slice</h3><p>PR005 separó la unidad primaria y explicitó cobertura y sentinelas.</p></article>
+          <article class="block"><small>Bloqueo inferencial</small><h3>La “barrera” dependía de K</h3><p>La mediana permanecía en 4, pero la distribución cambiaba monótonamente.</p></article><div class="arrow" aria-hidden="true"></div><article class="block resolved"><small>Control adoptado</small><h3>K fijado como hiperparámetro</h3><p>PR006 restringió la afirmación: señal algorítmica robusta, no barrera física.</p></article>
+          <article class="block"><small>Bloqueo vigente</small><h3>Cobertura MINK insuficiente en profundidad 7</h3><p>PR009 se detuvo antes de publicar porque no alcanzó el mínimo preregistrado de filas de referencia.</p></article><div class="arrow" aria-hidden="true"></div><article class="block resolved"><small>Control adoptado</small><h3>Abrir PR010 sin reutilizar datos</h3><p>Nuevas semillas de desarrollo decidirán cobertura antes de un nuevo prerregistro confirmatorio.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="futuro">
+      <div class="shell">
+        <div class="section-head"><div><span class="kicker">03 · Futuro condicionado</span><h2>Primero cobertura, después confirmación</h2></div><p class="section-intro">El siguiente paso no interpreta PR009. PR010 debe resolver su diseño de cobertura con datos nuevos antes de congelar cualquier test confirmatorio.</p></div>
+        <div class="future-map">
+          <article class="gate"><span class="gate-label">Gate inmediato · PR010</span><h3>Estudio de cobertura nuevo → decisión de diseño → nuevo prerregistro</h3><p>Elegir antes de la confirmación entre aumentar el bloque de referencia o limitar las profundidades puntuables. Las semillas PR009 y sus valores internos quedan fuera.</p><div class="truth">Fase de diseño; ninguna ejecución autorizada</div></article>
+          <div class="branches">
+            <article class="branch" data-kind="active"><b>1</b><div><h3>Cobertura por profundidad</h3><p>Línea activa: diseñar con nuevas semillas qué profundidades pueden sostener una referencia válida.</p></div></article>
+            <article class="branch" data-kind="candidate"><b>2</b><div><h3>Dimensión de Hausdorff order-only</h3><p>Candidata futura, no diseñada ni autorizada.</p></div></article>
+            <article class="branch" data-kind="candidate"><b>3</b><div><h3>Complejidad de rutas causales</h3><p>Candidata para sensibilidad estructural en dimensiones superiores.</p></div></article>
+            <article class="branch" data-kind="candidate"><b>4</b><div><h3>Entropía de subconjuntos</h3><p>Candidata exploratoria; requiere definición que evite identidades triviales.</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="principle" id="principio"><div class="shell"><span class="kicker">Principio rector</span><blockquote>La métrica puede mejorar.<br><strong>La física no se negocia.</strong></blockquote><p>Un cierre contractual bien sellado protege la inferencia. Ese también es progreso.</p></div></section>
+  </main>
+  <footer><div class="foot shell"><span>NachoCausal · mapa del programa</span><span>Estado reconstruido a partir del registro disponible · julio de 2026</span></div></footer>
+
+  <script>
+    const stages = [
+      {id:"WP4",state:"validated",stateLabel:"completada",title:"Piso de localización",sub:"Referencia numérica y límite de información",number:"8×10⁻⁴",body:"WP4 cuantificó lo débil que puede ser la señal local y fijó un suelo antes de diseñar estimadores order-only.",evidence:"κ ≈ 8×10⁻⁴ en el caso de referencia; δτ ≈ 35ℓ; escala empírica κ ~ λ⁶.",claim:"Justifica prudencia y búsqueda de observables; no localiza el horizonte."},
+      {id:"PR004",state:"closed",stateLabel:"cerrada",title:"Present anchor y braiding",sub:"Dos intentos, dos controles ganados",number:"FAIL",body:"El present anchor fue aparcado y el diagnóstico de braiding V2 terminó en FAILED_DATA_CONTRACT por censura antes de escritura.",evidence:"Contrato de 20 campos, sello pre/post idéntico y fallo terminal explícito.",claim:"El fracaso detectó una unidad de análisis inadecuada; no constituye evidencia física negativa."},
+      {id:"PR005",state:"closed",stateLabel:"cerrada",title:"Population depth barrier",sub:"La estabilidad aparente no sobrevivió a K",number:"K↗",body:"La mediana de first_empty_depth fue 4 para todos los K, pero la masa en profundidad 4 cayó y la media aumentó de forma monótona.",evidence:"Masa en 4: 0.9591 (K=2) → 0.6470 (K=64); media: 4.0489 → 7.0924.",claim:"Descarta interpretar la transición como barrera física estable bajo variación de K."},
+      {id:"PR006",state:"validated",stateLabel:"reproducida",title:"Estimador Ĥ a K fijo",sub:"Primera señal order-only replicada",number:"Ĥ=4",body:"Se congeló K_REF=8 y se definió Ĥ como agregación robusta de first_empty_depth.",evidence:"1,905 secuencias; cobertura 1…25; todas las medianas por seed e intensidad = 4.",claim:"Señal algorítmica replicada a K fijo; no localización radial ni horizonte geométrico."},
+      {id:"PR007-A",state:"validated",stateLabel:"robusta",title:"Robustez seed–densidad",sub:"La señal se mantiene fuera de la muestra inicial",number:"3,251",body:"Un pool nuevo de semillas y tres intensidades sostuvo Ĥ=4 sin deriva de la mediana.",evidence:"3,251 secuencias; cell_fraction_H4=1.0; intensity_median_drift=0.",claim:"Eleva la robustez empírica de Ĥ; conserva todas las limitaciones de PR006."},
+      {id:"PR008",state:"closed",stateLabel:"cerrada",title:"Baseline leakage audit",sub:"H_hat no superó el baseline preregistrado",number:"BASE",body:"La ejecución auditada cerró H_hat como BASELINE_DOMINATED: la señal a K fijo fue igualada por el baseline empírico más fuerte.",evidence:"Cierre publicado con delta_agreement = 0 y terminal BASELINE_DOMINATED.",claim:"Resultado sobre este observable y sus baselines; no demuestra que todo observable order-only sea trivial."},
+      {id:"PR009",state:"closed",stateLabel:"cerrada",title:"Anchura transversal order-only",sub:"Cierre contractual antes de publicación",number:"DATA",body:"El bloque REFERENCE se detuvo porque la cobertura reference-MINK en profundidad 7 quedó por debajo del mínimo preregistrado.",evidence:"FAILED_DATA_CONTRACT sobre 489f560; sin outputs, evaluación ni scorer.",claim:"No existe terminal científico ni inferencia permitida sobre sensibilidad al horizonte."},
+      {id:"PR010",state:"active",stateLabel:"diseño",title:"Rediseño de cobertura",sub:"Nueva fase sin reutilizar PR009",number:"D→C",body:"PR010 estudiará exclusivamente cobertura por profundidad con nuevas semillas de desarrollo y decidirá antes de confirmar entre ampliar referencia o limitar profundidades puntuables.",evidence:"Fase DECISION_ONLY; nuevo prerregistro, semillas confirmatorias y auditoría todavía pendientes.",claim:"No es evidencia sobre el observable ni autorización de ejecución."}
+    ];
+    const route = document.getElementById("route"), detail = document.getElementById("stage-detail");
+    let current = "WP4", activeFilter = "all";
+    function selectStage(id){ current=id; render(); }
+    function detailMarkup(s){ return `<div class="big">${s.number}</div><h3>${s.id} · ${s.title}</h3><p>${s.body}</p><dl><div><dt>Evidencia</dt><dd>${s.evidence}</dd></div><div><dt>Límite de la afirmación</dt><dd>${s.claim}</dd></div></dl>`; }
+    function render(){
+      const visible=stages.filter(s=>activeFilter==="all"||s.state===activeFilter);
+      if(!visible.some(s=>s.id===current)) current=visible[0]?.id;
+      route.innerHTML=visible.map(s=>`<button type="button" class="stage" role="option" data-id="${s.id}" data-state="${s.state}" aria-selected="${s.id===current}"><span class="marker">${s.id}</span><span><span class="stage-title">${s.title}</span><span class="stage-sub">${s.sub}</span></span><span class="state">${s.stateLabel}</span></button>`).join("");
+      route.querySelectorAll(".stage").forEach(b=>b.addEventListener("click",()=>selectStage(b.dataset.id)));
+      const s=stages.find(x=>x.id===current); detail.innerHTML=s?detailMarkup(s):"";
+    }
+    document.querySelectorAll(".chip").forEach(button=>button.addEventListener("click",()=>{
+      activeFilter=button.dataset.filter;
+      document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String(b===button)));
+      render();
+    }));
+    const menu=document.querySelector(".menu"), links=document.querySelector(".links");
+    menu.addEventListener("click",()=>{const open=menu.getAttribute("aria-expanded")==="true";menu.setAttribute("aria-expanded",String(!open));links.classList.toggle("open",!open)});
+    links.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{links.classList.remove("open");menu.setAttribute("aria-expanded","false")}));
+    const navLinks=[...links.querySelectorAll("a")], sections=navLinks.map(a=>document.querySelector(a.getAttribute("href"))).filter(Boolean);
+    const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(a=>a.removeAttribute("aria-current"));const match=navLinks.find(a=>a.getAttribute("href")===`#${e.target.id}`);if(match)match.setAttribute("aria-current","true")}})},{rootMargin:"-35% 0px -55%",threshold:0});
+    sections.forEach(s=>observer.observe(s));
+    render();
+  </script>
+</body>
+</html>
