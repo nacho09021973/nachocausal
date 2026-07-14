@@ -677,8 +677,16 @@ class AtomicPublisher:
         return None
 
     def _exclusive_write(self, path: Path, data: bytes, label: str) -> None:
-        with path.open("xb") as handle:
-            self.created_paths.add(path)
+        # Register intent before the exclusive-create syscall so an asynchronous
+        # interruption cannot strand a file between creation and bookkeeping.
+        # A genuine pre-existing path is explicitly released from ownership.
+        self.created_paths.add(path)
+        try:
+            handle = path.open("xb")
+        except FileExistsError:
+            self.created_paths.discard(path)
+            raise
+        with handle:
             self._checkpoint(f"{label}_created")
             handle.write(data)
             self._checkpoint(f"{label}_written")
@@ -687,13 +695,26 @@ class AtomicPublisher:
             os.fsync(handle.fileno())
             self._checkpoint(f"{label}_fsynced")
 
+    def _replace_owned(self, source: Path, target: Path) -> None:
+        # The destination is absent by contract.  Track it before the syscall
+        # while retaining the source, so either pre- or post-rename interruption
+        # leaves every possible invocation-owned path eligible for rollback.
+        self.created_paths.add(target)
+        try:
+            os.replace(source, target)
+        except BaseException:
+            if source.exists():
+                self.created_paths.discard(target)
+            raise
+        self.created_paths.discard(source)
+
     def _rollback(self) -> None:
         failures = []
         for path in tuple(self.created_paths):
             try:
                 path.unlink()
             except FileNotFoundError:
-                pass
+                self.created_paths.discard(path)
             except OSError as exc:
                 failures.append(exc)
             else:
@@ -716,13 +737,9 @@ class AtomicPublisher:
             if persisted_sidecar != _sidecar_bytes(persisted_csv):
                 raise DataContractError("temporary sidecar mismatch")
             self._checkpoint("sidecar_validated")
-            os.replace(CSV_TMP_PATH, CSV_PATH)
-            self.created_paths.remove(CSV_TMP_PATH)
-            self.created_paths.add(CSV_PATH)
+            self._replace_owned(CSV_TMP_PATH, CSV_PATH)
             self._checkpoint("csv_renamed")
-            os.replace(SIDECAR_TMP_PATH, SIDECAR_PATH)
-            self.created_paths.remove(SIDECAR_TMP_PATH)
-            self.created_paths.add(SIDECAR_PATH)
+            self._replace_owned(SIDECAR_TMP_PATH, SIDECAR_PATH)
             self._checkpoint("sidecar_renamed")
             directory_fd = os.open(REPORT_DIR, os.O_RDONLY)
             try:
@@ -884,7 +901,7 @@ def run() -> None:
             try:
                 path.unlink()
             except FileNotFoundError:
-                pass
+                publisher.created_paths.discard(path)
             except OSError as cleanup_exc:
                 cleanup_failures.append(cleanup_exc)
             else:

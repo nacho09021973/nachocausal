@@ -394,6 +394,48 @@ def test_every_publication_failure_stage_rolls_back(stage, monkeypatch, tmp_path
     assert not any(path.exists() for path in runner._all_artifact_paths())
 
 
+@pytest.mark.parametrize("temporary_name", ["CSV_TMP_PATH", "SIDECAR_TMP_PATH"])
+def test_post_create_interrupt_is_owned_and_rolled_back(
+    temporary_name, monkeypatch, tmp_path
+):
+    patch_paths(monkeypatch, runner, tmp_path)
+    data = runner.render_csv(synthetic_rows())
+    target = getattr(runner, temporary_name)
+    real_open = Path.open
+
+    def create_then_interrupt(path, mode="r", *args, **kwargs):
+        handle = real_open(path, mode, *args, **kwargs)
+        if path == target and mode == "xb":
+            handle.close()
+            raise runner.BudgetExceeded("synthetic post-create interrupt")
+        return handle
+
+    monkeypatch.setattr(Path, "open", create_then_interrupt)
+    with pytest.raises(runner.BudgetExceeded):
+        runner.AtomicPublisher().publish(data)
+    assert not any(path.exists() for path in runner._all_artifact_paths())
+
+
+@pytest.mark.parametrize("final_name", ["CSV_PATH", "SIDECAR_PATH"])
+def test_post_rename_interrupt_is_owned_and_rolled_back(
+    final_name, monkeypatch, tmp_path
+):
+    patch_paths(monkeypatch, runner, tmp_path)
+    data = runner.render_csv(synthetic_rows())
+    target = getattr(runner, final_name)
+    real_replace = runner.os.replace
+
+    def replace_then_interrupt(source, destination):
+        real_replace(source, destination)
+        if destination == target:
+            raise runner.BudgetExceeded("synthetic post-rename interrupt")
+
+    monkeypatch.setattr(runner.os, "replace", replace_then_interrupt)
+    with pytest.raises(runner.BudgetExceeded):
+        runner.AtomicPublisher().publish(data)
+    assert not any(path.exists() for path in runner._all_artifact_paths())
+
+
 def test_cleanup_failure_has_runtime_precedence(monkeypatch, tmp_path):
     patch_paths(monkeypatch, runner, tmp_path)
     data = runner.render_csv(synthetic_rows())
