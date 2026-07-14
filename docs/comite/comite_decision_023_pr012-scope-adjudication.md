@@ -464,4 +464,18 @@ verdict-coercion and Δτ→0-numerics findings simultaneously.
 COMMITTEE_DECISION_VERDICT=RECOMMEND_REVISE_AND_RECONVENE
 
 ## 11. User sign-off
-_(left blank for the user — decision, date, and any overriding notes)_
+
+Signed: Nacho / PI
+Date: 2026-07-14
+Autorizo.
+
+Note (chair, same date): the two "revise" items this verdict required before any PR012 freeze —
+the confirmed dead-code defect in `certify()`'s terminal-selection logic, and the misleading
+`PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` prose in the PR011 spec §13 / `research_program/README.md`
+— were fixed and pushed under explicit prior authorization (commit `c06a906`), per
+`docs/auditor/auditor_report_011_pr011-terminal-semantics.md`. This sign-off is recorded on the
+brief as delivered; it does not by itself resolve §8's still-open disagreements (Theorem A's
+converse direction, the `Δτ_floor` error model, or which mathematical object a PR012 curve would
+certify per-point) or reopen candidate (c). Scope of what "Autorizo" authorizes beyond the
+already-completed revise items should be confirmed explicitly before drafting or freezing any
+PR012 spec.
