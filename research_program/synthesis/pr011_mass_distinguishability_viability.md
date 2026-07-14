@@ -344,9 +344,23 @@ n=8  epsilon_certified_upper = 0.009223798457  primary_nominal_tv ≈ 0.002532 (
 H2 = 1.329351347556e-06  (cross-check M=72, rel_gap < 0.1%)
 ```
 
-Frozen ladder `n ∈ {4,…,8}` **closed** (2026-07-14): every rung certified distinguishable with
-`ε < 1`. The Hellinger `ε` grows linearly in `n` by construction (`ε = n·TV_copula` rounded up);
-the nominal enumeration TV annotations are diagnostics only, not certified bounds.
+Frozen ladder `n ∈ {4,…,8}` **closed** (2026-07-14): every rung certified a non-degenerate upper
+bound `ε < 1` (terminal `PAIR_DISTINGUISHABLE_AT_TRACTABLE_N`, §8). The Hellinger `ε` grows
+linearly in `n` by construction (`ε = n·TV_copula` rounded up); the nominal enumeration TV
+annotations are diagnostics only, not certified bounds.
+
+**Terminal-naming note (added 2026-07-14, `docs/auditor/auditor_report_011_pr011-terminal-semantics.md`,
+`AUDIT_FAIL`):** the terminal name `PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` names only the certified
+event `ε < 1` (§8) — it is **not** a claim that the pair is easy to distinguish. Applying §7's own
+formula, `max_i P(\text{any order-only estimator errs on } \tau) \geq (1-\varepsilon)/2`, to the
+five certified values above gives a minimax error floor of **0.4954–0.4977** at every `n` —
+i.e. an order-only estimator errs on `τ` almost exactly as often as a coin flip at every certified
+rung. Read the terminal as: *a non-trivial, non-degenerate upper bound on TV was certified* (§1's
+actual decision question — ruling out `TV=1`/certification-infeasible, not establishing that the
+pair is easy to tell apart). The audit also found and a follow-up fix (`dev/pr011_tv_certification_enumeration.py`,
+`terminal_for_epsilon`) corrected a dead-code defect that made the negative terminal
+`PAIR_INDISTINGUISHABLE_TV_ZERO` structurally unreachable; the fix does not change any of the five
+`ε` values above (all confirmed bit-for-bit reproduced under the corrected code).
 
 Artifacts: `data/reports/pr011_tv_certification_n{4,5,6,7,8}.csv` (+ `.sha256`).
 Generator: `python3 dev/pr011_tv_certification_enumeration.py certify --n N`.

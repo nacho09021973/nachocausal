@@ -313,6 +313,17 @@ def certification_artifact_paths(n: int) -> tuple[Path, Path]:
     return csv_path, sidecar_path
 
 
+def terminal_for_epsilon(epsilon: float) -> str:
+    """§8 terminal precedence. `epsilon<=0.0` (TV=0, a valid negative result) must be checked
+    before `epsilon<1.0`, which it would otherwise also satisfy, leaving
+    `TERMINAL_INDISTINGUISHABLE` unreachable (auditor_report_011)."""
+    if epsilon <= 0.0:
+        return TERMINAL_INDISTINGUISHABLE
+    if epsilon < 1.0:
+        return TERMINAL_DISTINGUISHABLE
+    return TERMINAL_INCOMPLETE
+
+
 def certify(
     n: int,
     tau_a: float = TAU_PAIR[0],
@@ -324,13 +335,7 @@ def certify(
     primary = try_primary_convergence(n, tau_a, tau_b, primary_probe)
     if primary is not None:
         epsilon = primary.tv_certified_upper
-        terminal = (
-            TERMINAL_DISTINGUISHABLE
-            if epsilon < 1.0
-            else TERMINAL_INDISTINGUISHABLE
-            if epsilon <= 0.0
-            else TERMINAL_INCOMPLETE
-        )
+        terminal = terminal_for_epsilon(epsilon)
         return CertificationResult(
             method="PRIMARY_ENUMERATION",
             n=n,
@@ -356,13 +361,7 @@ def certify(
         grid_m=annotation_m,
         require_coverage=False,
     )
-    terminal = (
-        TERMINAL_DISTINGUISHABLE
-        if epsilon < 1.0
-        else TERMINAL_INDISTINGUISHABLE
-        if epsilon <= 0.0
-        else TERMINAL_INCOMPLETE
-    )
+    terminal = terminal_for_epsilon(epsilon)
     return CertificationResult(
         method="HELLINGER_FALLBACK",
         n=n,

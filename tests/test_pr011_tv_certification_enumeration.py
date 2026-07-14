@@ -53,6 +53,45 @@ def test_certified_tv_upper_rounds_up() -> None:
     assert enum.certified_tv_upper(noisy) >= noisy
 
 
+def test_terminal_for_epsilon_reaches_indistinguishable_branch() -> None:
+    """Regression for auditor_report_011: epsilon<=0.0 must be checked before epsilon<1.0, or
+    TERMINAL_INDISTINGUISHABLE (the spec's §8 "valid negative result") is unreachable."""
+    assert enum.terminal_for_epsilon(0.0) == enum.TERMINAL_INDISTINGUISHABLE
+    assert enum.terminal_for_epsilon(0.5) == enum.TERMINAL_DISTINGUISHABLE
+    assert enum.terminal_for_epsilon(1.0) == enum.TERMINAL_INCOMPLETE
+    assert enum.terminal_for_epsilon(1.5) == enum.TERMINAL_INCOMPLETE
+
+
+def test_certify_reports_indistinguishable_when_primary_route_finds_tv_zero(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """End-to-end regression for auditor_report_011 on the PRIMARY_ENUMERATION path: a genuine
+    TV=0 primary result must surface as PAIR_INDISTINGUISHABLE_TV_ZERO, not be shadowed by the
+    epsilon<1.0 check. (The Hellinger fallback path cannot exercise epsilon==0.0 directly:
+    verify_hellinger_stability raises before terminal assignment when H² is exactly 0 for an
+    identical tau pair, so this is only reachable via the primary route.)"""
+    zero_tv_result = enum.EnumerationResult(
+        n=4,
+        grid_m=24,
+        tau_a=enum.TAU_PAIR[0],
+        tau_b=enum.TAU_PAIR[1],
+        raw_mass_sum_a=1.0,
+        raw_mass_sum_b=1.0,
+        mass_sum_a=1.0,
+        mass_sum_b=1.0,
+        tv=0.0,
+        tv_certified_upper=0.0,
+        n_poset_classes=16,
+    )
+    monkeypatch.setattr(
+        enum, "try_primary_convergence", lambda *args, **kwargs: zero_tv_result
+    )
+    result = enum.certify(4, enum.TAU_PAIR[0], enum.TAU_PAIR[1])
+    assert result.method == "PRIMARY_ENUMERATION"
+    assert result.terminal == enum.TERMINAL_INDISTINGUISHABLE
+    assert result.epsilon_certified_upper == 0.0
+
+
 def test_hellinger_stability_and_upper_bound() -> None:
     h2, h2_x = enum.verify_hellinger_stability(enum.TAU_PAIR[0], enum.TAU_PAIR[1])
     assert h2 > 0.0 and h2_x > 0.0
