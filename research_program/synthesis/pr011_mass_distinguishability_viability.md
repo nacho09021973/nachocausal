@@ -8,15 +8,18 @@
   2026-07-14: spec freeze authorized)
 - G2a (freeze text): `docs/auditor/auditor_report_007_pr011-viability-freeze-text.md`
   (`AUDIT_PASS_WITH_WARNINGS`, 2026-07-14)
+- G2b (pre-execution `ε`): `docs/auditor/auditor_report_008_pr011-g2b-pre-execution-epsilon.md`
+  (`AUDIT_PASS_WITH_WARNINGS`, 2026-07-14)
 
-TV certification execution **not** authorized.
+TV certification execution and viability terminal emission **not** authorized.
 
 **Normative status:** This is a **viability specification**, not a preregistration, not a blind
 validation run, and not authorization to execute production science. It does not modify PR010,
 the sealed path, or any frozen preregistration. **G0a:** this spec document is frozen as
 `FROZEN_VIABILITY_SPEC`. **G0b:** PR010 closed (`PR010_DESIGN_INFEASIBLE_REFERENCE_COVERAGE`,
-2026-07-14). TV certification execution and any viability terminal still require G2b + user
-authorization.
+2026-07-14). **G2b** pre-execution audit discharged (`auditor_report_008`, 2026-07-14): provisional
+`ε` only; viability terminal remains blocked until tier-1 quadrature or §6.1 fallback closes.
+User execution authorization still required for any production certification run.
 
 **Series placement:** PR011 is **not** an observable/recoverability protocol (unlike PR008–PR010).
 It is the first **theoretical–computational viability** unit in the identifiability track (WP4). It
@@ -276,8 +279,9 @@ When PR011 is authorized after freeze:
 
 - `dev/pr011_freeze_sanity_check.py` — geometry-only checks (**exists**, PASS at anchor);
 - `dev/pr011_tv_certification_enumeration.py` — enumeration scaffold exists; falsifier probe
-  at `n=4` authorized as dev pre-flight; **no viability terminal** until G2b + user sign-off;
-- `data/reports/pr011_*` — outputs only after G2b pre-execution audit + user authorization;
+  at `n=4` authorized as dev pre-flight; G2b audit complete (`auditor_report_008`) — **no
+  viability terminal** until quadrature converges + user sign-off;
+- `data/reports/pr011_*` — outputs only after tier-1 `ε` certification + user authorization;
 - no changes to `nachocausal/thresholds.py` or sealed estimator.
 
 ## 10. Gates (split per comité 022 §8)
@@ -288,11 +292,12 @@ When PR011 is authorized after freeze:
 | **G0b** | PR010 closed under its own rules — required for **TV certification execution** | **DISCHARGED** (`PR010_DESIGN_INFEASIBLE_REFERENCE_COVERAGE`, 2026-07-14) |
 | **G1** | `/comite` on numeric anchor §3.1, §5, §6.1 | **DISCHARGED** (comité 022) |
 | **G2a** | `/auditor` on freeze text (claim boundary, anchor numbers) | **DISCHARGED** (`auditor_report_007`, `AUDIT_PASS_WITH_WARNINGS`) |
-| **G2b** | `/auditor` on any reported `ε` or viability terminal (pre-execution) | **OPEN** |
+| **G2b** | `/auditor` on any reported `ε` or viability terminal (pre-execution) | **DISCHARGED** (`auditor_report_008`, `AUDIT_PASS_WITH_WARNINGS`; terminal **blocked**) |
 | **G3** | Tsybakov/Le Cam in `biblioteca/` if external memo cites them | **OPEN** |
 
 Spec freeze does **not** authorize running TV certification or emitting a viability terminal.
-Execution requires G2b + explicit user authorization (G0b discharged 2026-07-14).
+Execution requires tier-1 `ε` closure + explicit user authorization (G0b/G2b audits discharged
+2026-07-14; terminal not authorized on provisional quadrature `ε`).
 
 ## 11. Relation to later units (out of scope for PR011)
 
@@ -315,7 +320,8 @@ Execution requires G2b + explicit user authorization (G0b discharged 2026-07-14)
 | PR010 closed (G0b) | **DISCHARGED** |
 | `/comite` (G1) | **DISCHARGED** |
 | `/auditor` freeze text (G2a) | **DISCHARGED** |
-| `/auditor` pre-execution `ε` (G2b) | **OPEN** |
+| `/auditor` pre-execution `ε` (G2b) | **DISCHARGED** (`auditor_report_008`) |
+| Tier-1 `ε` / quadrature convergence | **OPEN** |
 | Execution authorization | **OPEN** |
 
 Nothing in §3–§6 was selected using PR009 or PR010 scientific outputs.
@@ -323,5 +329,9 @@ Nothing in §3–§6 was selected using PR009 or PR010 scientific outputs.
 ## 13. Current status
 
 ```text
-FROZEN_VIABILITY_SPEC — EXECUTION BLOCKED (G2b) — NO TERMINAL AUTHORIZED
+FROZEN_VIABILITY_SPEC — G2b AUDIT_PASS_WITH_WARNINGS — NO TERMINAL AUTHORIZED
+Provisional ε (n=4, grid_m=20, quadrature): TV_certified_upper ≈ 0.001330364765 — not tier-1
 ```
+
+See `docs/auditor/auditor_report_008_pr011-g2b-pre-execution-epsilon.md` for convergence table
+and blockers on terminal emission.
