@@ -12,8 +12,9 @@
   (`AUDIT_PASS_WITH_WARNINGS`, 2026-07-14)
 
 **G2b tier-1 (2026-07-14):** `HELLINGER_FALLBACK` certification on frozen ladder —
-`n=4`: `ε ≤ 0.004611899229`; `n=5`: `ε ≤ 0.005764874036` (both `< 1`); terminal
-`PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` at each certified `n` (§13).
+`n=4`: `ε ≤ 0.004611899229`; `n=5`: `ε ≤ 0.005764874036`; `n=6`: `ε ≤ 0.006917848843`;
+`n=7`: `ε ≤ 0.008070823650`; `n=8`: `ε ≤ 0.009223798457` (all `< 1`); terminal
+`PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` at each certified `n` — **ladder closed** (§13).
 
 **Normative status:** This is a **viability specification**, not a preregistration, not a blind
 validation run, and not authorization to execute production science. It does not modify PR010,
@@ -280,8 +281,8 @@ When PR011 is authorized after freeze:
 
 - `dev/pr011_freeze_sanity_check.py` — geometry-only checks (**exists**, PASS at anchor);
 - `dev/pr011_tv_certification_enumeration.py` — `falsifier`, `probe`, `certify` (§6.1 fallback);
-- `data/reports/pr011_tv_certification_n4.csv`, `pr011_tv_certification_n5.csv` — tier-1
-  certification (2026-07-14);
+- `data/reports/pr011_tv_certification_n{4,5,6,7,8}.csv` — tier-1 certification, full frozen
+  ladder (2026-07-14);
 - no changes to `nachocausal/thresholds.py` or sealed estimator.
 
 ## 10. Gates (split per comité 022 §8)
@@ -296,8 +297,8 @@ When PR011 is authorized after freeze:
 | **G3** | Tsybakov/Le Cam in `biblioteca/` if external memo cites them | **OPEN** |
 
 Spec freeze does **not** authorize running TV certification or emitting a viability terminal.
-Tier-1 `ε` at `n=4` closed via `HELLINGER_FALLBACK` (2026-07-14). Ladder `n > 4` and blind
-mass-estimation remain separate authorization units.
+Tier-1 `ε` closed via `HELLINGER_FALLBACK` at every `n` in the frozen ladder `{4,…,8}`
+(2026-07-14). Blind mass-estimation remains a separate authorization unit.
 
 ## 11. Relation to later units (out of scope for PR011)
 
@@ -323,8 +324,11 @@ mass-estimation remain separate authorization units.
 | `/auditor` pre-execution `ε` (G2b) | **DISCHARGED** (`auditor_report_008`) |
 | Tier-1 `ε` at `n=4` (`HELLINGER_FALLBACK`) | **CLOSED** (2026-07-14) |
 | Tier-1 `ε` at `n=5` (`HELLINGER_FALLBACK`) | **CLOSED** (2026-07-14) |
-| Viability terminal `PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` | **EMITTED** at `n=4`, `n=5` |
-| Ladder `n ∈ {6,7,8}` / mass-estimation prereg | **OPEN** |
+| Tier-1 `ε` at `n=6` (`HELLINGER_FALLBACK`) | **CLOSED** (2026-07-14) |
+| Tier-1 `ε` at `n=7` (`HELLINGER_FALLBACK`) | **CLOSED** (2026-07-14) |
+| Tier-1 `ε` at `n=8` (`HELLINGER_FALLBACK`) | **CLOSED** (2026-07-14) |
+| Viability terminal `PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` | **EMITTED** at every `n ∈ {4,…,8}` — ladder closed |
+| Mass-estimation prereg | **OPEN** |
 
 Nothing in §3–§6 was selected using PR009 or PR010 scientific outputs.
 
@@ -334,9 +338,16 @@ Nothing in §3–§6 was selected using PR009 or PR010 scientific outputs.
 PAIR_DISTINGUISHABLE_AT_TRACTABLE_N — method=HELLINGER_FALLBACK — hellinger_M=100
 n=4  epsilon_certified_upper = 0.004611899229  primary_nominal_tv ≈ 0.001440 (grid_m=12)
 n=5  epsilon_certified_upper = 0.005764874036  primary_nominal_tv ≈ 0.001888 (grid_m=8)
+n=6  epsilon_certified_upper = 0.006917848843  primary_nominal_tv ≈ 0.002138 (grid_m=9)
+n=7  epsilon_certified_upper = 0.008070823650  primary_nominal_tv ≈ 0.002343 (grid_m=10)
+n=8  epsilon_certified_upper = 0.009223798457  primary_nominal_tv ≈ 0.002532 (grid_m=11)
 H2 = 1.329351347556e-06  (cross-check M=72, rel_gap < 0.1%)
 ```
 
-Artifacts: `data/reports/pr011_tv_certification_n4.csv`, `pr011_tv_certification_n5.csv` (+ `.sha256`).
+Frozen ladder `n ∈ {4,…,8}` **closed** (2026-07-14): every rung certified distinguishable with
+`ε < 1`. The Hellinger `ε` grows linearly in `n` by construction (`ε = n·TV_copula` rounded up);
+the nominal enumeration TV annotations are diagnostics only, not certified bounds.
+
+Artifacts: `data/reports/pr011_tv_certification_n{4,5,6,7,8}.csv` (+ `.sha256`).
 Generator: `python3 dev/pr011_tv_certification_enumeration.py certify --n N`.
 Audits: `auditor_report_008`–`009`.

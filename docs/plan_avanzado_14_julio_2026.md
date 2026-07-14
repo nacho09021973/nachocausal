@@ -3,6 +3,7 @@
 Documento de situación local: dónde está el programa **nachocausal**, qué está cerrado con respaldo verificable, y qué falta en la cadena hacia **Schwarzschild 3+1D order-only**. No es preregistro ni autorización de ejecución.
 
 **Commit de referencia al redactar:** `9a5e3df` (certificación PR011 en `n=5`).
+**Actualizado el mismo día:** escalera PR011 cerrada (`n=6,7,8` certificados; ver tabla ε).
 
 ---
 
@@ -37,18 +38,21 @@ Dos frentes que no deben mezclarse:
 | Teorema dos puntos, Teorema A (TV=0 por escala), piso Fisher diamante | Matemática en repo | `research_program/work_packages/wp4_two_point_theorem.md`, etc. |
 | **PR011** spec | `FROZEN_VIABILITY_SPEC` | `research_program/synthesis/pr011_mass_distinguishability_viability.md` |
 | **G0b / G2b** | Descargados | `auditor_report_008`, `auditor_report_009` |
-| **Viabilidad certificada** | `n=4`, `n=5` | Terminal `PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` |
+| **Viabilidad certificada** | `n=4`–`8` (escalera completa) | Terminal `PAIR_DISTINGUISHABLE_AT_TRACTABLE_N` en cada peldaño |
 | Método | `HELLINGER_FALLBACK` (§6.1) | Cuadratura primaria en rejilla no cierra tier-1 a M tractable |
-| Artefactos | Publicados | `data/reports/pr011_tv_certification_n4.csv`, `pr011_tv_certification_n5.csv` (+ `.sha256`) |
-| Escalera `n ∈ {6,7,8}` | **Abierta** | |
+| Artefactos | Publicados | `data/reports/pr011_tv_certification_n{4..8}.csv` (+ `.sha256`) |
+| Escalera `n ∈ {6,7,8}` | **Cerrada** (2026-07-14) | Misma ruta Hellinger; ε crece linealmente en `n` por construcción |
 | Estimación de masa / prerreg ciego | **No abierto** | |
 
-**ε certificado (cota superior, ambos &lt; 1):**
+**ε certificado (cota superior, todos &lt; 1):**
 
 | `n` | `epsilon_certified_upper` | Generador |
 |-----|---------------------------|-----------|
 | 4 | `0.004611899229` | `python3 dev/pr011_tv_certification_enumeration.py certify --n 4` |
 | 5 | `0.005764874036` | `python3 dev/pr011_tv_certification_enumeration.py certify --n 5` |
+| 6 | `0.006917848843` | `python3 dev/pr011_tv_certification_enumeration.py certify --n 6` |
+| 7 | `0.008070823650` | `python3 dev/pr011_tv_certification_enumeration.py certify --n 7` |
+| 8 | `0.009223798457` | `python3 dev/pr011_tv_certification_enumeration.py certify --n 8` |
 
 PR011 responde: *¿el orden solo, condicionado a `N=n`, distingue dos masas en la familia diamante EF 1+1D?* No es un protocolo de recuperación de horizonte ni un claim 3+1D.
 
@@ -70,7 +74,7 @@ No confundir recoverability empírica (capa 1) con indeterminación intrínseca 
 
 Orden lógico según `geometric_indeterminacy_decision.md` §15 y PR011 §11:
 
-1. **Cerrar escalera PR011** — certificar `n=6, 7, 8` (misma ruta Hellinger o enumeración si algún día cierra tier-1).
+1. **Cerrar escalera PR011** — ✓ hecho (2026-07-14): `n=6, 7, 8` certificados vía Hellinger.
 2. **PR012 (escalado)** — curva TV vs `Δτ`, posiblemente escalera en `ρ` y `n`, con prerregistro propio.
 3. **Prerregistro de estimación de masa** — solo tras viabilidad + curva TV; bandas dev/confirmación nuevas; sin inputs PR009/PR010.
 4. **Separar mecanismos** — singularity-imprint vs horizonte genérico (tabla §3 del programa de investigación).
@@ -87,7 +91,7 @@ La síntesis WP4 fija: **ningún claim 3+1D hasta que la viabilidad escalar cier
 ```
 prereg-002 (localización 1+1D)          ✓ hecho
         ↓
-PR011 viabilidad masa τ en G_◊          → en curso (n=4,5 ✓; n=6–8 pendiente)
+PR011 viabilidad masa τ en G_◊          ✓ escalera completa (n=4–8)
         ↓
 PR012 / estimación τ certificada        → no abierto
         ↓
@@ -110,7 +114,7 @@ Recoverability o indeterminación en 3+1D  → claim aparte; capa (3) abierta
 
 ## En una frase
 
-Hay **localización empírica 1+1D** (prereg-002) y **viabilidad teórica de distinguir masa** en diamante 1+1D (PR011, `n=4`–`5`). El camino a **SW 3+1D** pasa por cerrar identificabilidad escalar en 1+1D, abrir estimación certificada, y solo entonces un **puente dimensional** con familia, observable y protocolo propios — sin saltar dimensiones ni mezclar recoverability con reconstrucción métrica global.
+Hay **localización empírica 1+1D** (prereg-002) y **viabilidad teórica de distinguir masa** en diamante 1+1D (PR011, escalera completa `n=4`–`8`). El camino a **SW 3+1D** pasa por PR012 (curva TV), abrir estimación certificada, y solo entonces un **puente dimensional** con familia, observable y protocolo propios — sin saltar dimensiones ni mezclar recoverability con reconstrucción métrica global.
 
 ---
 

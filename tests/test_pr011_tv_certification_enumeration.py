@@ -130,6 +130,15 @@ COMMITTED_CERT_SHA256_N4 = (
 COMMITTED_CERT_SHA256_N5 = (
     "092b3d42011cb4221f6c18648debe5e5023d5ba5836896b6da55c6accdda473f"
 )
+COMMITTED_CERT_SHA256_N6 = (
+    "351888f6bf3339765bad656b51a0246c6e4a7dd5df1212c1ac81ef44e48b21fc"
+)
+COMMITTED_CERT_SHA256_N7 = (
+    "29ab38eeab258d8194a97f0c763fc20412cd31fbe369d03ce75daf6462f735a7"
+)
+COMMITTED_CERT_SHA256_N8 = (
+    "2910319b9b823c2b3696f64385e28e359eab5a97f875457d0c3e1760a2c7f565"
+)
 
 
 @pytest.mark.parametrize(
@@ -137,6 +146,9 @@ COMMITTED_CERT_SHA256_N5 = (
     [
         (4, COMMITTED_CERT_SHA256_N4),
         (5, COMMITTED_CERT_SHA256_N5),
+        (6, COMMITTED_CERT_SHA256_N6),
+        (7, COMMITTED_CERT_SHA256_N7),
+        (8, COMMITTED_CERT_SHA256_N8),
     ],
 )
 def test_committed_certification_artifact_matches_terminal(n: int, sha256: str) -> None:
