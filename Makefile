@@ -4,7 +4,7 @@
 
 PY ?= python
 
-.PHONY: test dry-run gate verify-seal audit verify-comite verify-audit
+.PHONY: test dry-run gate verify-seal audit verify-comite verify-audit op21-bench op21-terminal
 
 test:                ## bit-exact regression + leak + seed-invariant tests
 	$(PY) -m pytest -q tests/
@@ -20,6 +20,16 @@ gate:                ## re-run the Minz admissibility cross-check (needs Minz ve
 	$(PY) -c "from nachocausal import generator as g; \
 print('BH gate N=', g.gate('BH')); print('MINK gate N=', g.gate('MINK')); \
 print('accelerator == Minz bit-for-bit at the gated N')"
+
+# --- OP-2.1 reference certifier (decision 034; dev prereg OP21) --------------
+# Deliberately OUTSIDE `make test`: the canonical suite's semantics/runtime must
+# not change (decision 034 §9 R3). MC-based tests are gated on the frozen prereg.
+
+op21-bench:          ## OP-2.1 dev-loop suite (guards + gated MC smoke; not a terminal run)
+	$(PY) -m pytest -q certifier/tests
+
+op21-terminal:       ## the SINGLE authorized terminal-issuing bench run (dev prereg OP21 §7)
+	$(PY) -m certifier.bench --terminal --out results/op21_reference_certifier_report.json
 
 # --- integrity tooling (.claude/skills/auditor + comite) ---------------------
 # No `|| true` here on purpose: a swallowed failure is exactly what `audit`
