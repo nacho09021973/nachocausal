@@ -7,6 +7,8 @@ For any AI or agent connecting to this repo, read [INSTRUCCIONES.md](INSTRUCCION
 the available machinery and the correct workflow between committee, auditor, external consultors,
 and Alloy.
 
+**Current operational roadmap:** [Plan operativo - 15 julio 2026](docs/plan_operativo_15_julio_2026.md).
+
 The project starts deliberately narrow and disciplined: reproduce, blind to coordinates and
 under a success/failure criterion frozen in advance, the known-truth detection of a
 Schwarzschild event horizon in a 1+1D causal set, using the order-only observable validated

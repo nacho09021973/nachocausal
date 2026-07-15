@@ -7,3 +7,5 @@ proved theorems. Not preregistration, not empirical protocol (not a PR-series ar
 |---|---|
 | `geometric_indeterminacy_decision.md` | WP3/WP4 program synthesis (minimax framing) |
 | `pr011_mass_distinguishability_viability.md` | PR011 draft — theoretical–computational TV viability only |
+
+Current cross-program operational roadmap: `../../docs/plan_operativo_15_julio_2026.md`.
