@@ -335,6 +335,17 @@ PR011 puede usarse como banco de integración, nunca como nueva confirmación f�
 
 **Puerta WP5:** produce la tecnología que necesitará 3+1D cuando enumerar posets sea imposible.
 
+**Terminal registrado:** `POSITIVE_CERTIFIER_REFERENCE_PASS` (run 2026-07-15, freeze commit
+`cd3ef51`, artefacto `results/op21_reference_certifier_report.json`, git-ignored por diseño).
+R6 (auditoría independiente, decisión 034 §9) satisfecho por dos pasadas: auditor report 017
+(commit `43b28e4`, `AUDIT_PASS_WITH_WARNINGS`, misma sesión que R1-R5 — advertencia #31 de
+independencia de sesión) y auditor report 018 (commit `22f7719`, `AUDIT_PASS_WITH_WARNINGS`,
+sesión nueva y separada de R1-R5 y del report 017; recomputación independiente de `report_hash`,
+`p0` por tercer método, bandas C1/C2, banda de semillas y detección MUT-A/MUT-B). Los 22 warnings
+restantes en ambos informes son deuda histórica de `data/reports/` ajena a OP-2.1. Este terminal
+es un input verificado del gate de Fase 2 abajo; el gate en su conjunto permanece abierto hasta
+terminal explícito de OP-2.2, terminal explícito de OP-2.3 y decisión explícita sobre PR012.
+
 ### OP-2.2 Testigo de desarrollo en la familia PR011
 
 Solo en `dev/`, con semillas de desarrollo y candidatos declarados antes de scoring:
