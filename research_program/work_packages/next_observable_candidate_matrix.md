@@ -3,6 +3,9 @@
 STATUS: DESIGN_TRIAGE_ONLY
 DATE: 2026-07-11
 AUTHORIZATION: CHEAP_KILL_TESTS_ONLY_AFTER_PREREGISTRATION
+REVISION: §6 step 5 amended 2026-07-17 per `docs/comite/comite_decision_036_
+pr009-pr010-sequencing-adjudication.md` — see that decision for the full rationale and the
+binding caveats on this amendment (it authorizes no candidate opening by itself).
 
 ## 1. Selection rule
 
@@ -151,7 +154,21 @@ joint rather than the hidden horizon.
 2. Implement an abstract-poset input boundary before any Schwarzschild evaluation.
 3. Freeze matched depth, survivor-budget, and Minkowski baselines.
 4. Run the cheap kill test once.
-5. Open Candidate B only if A is killed or survives with a clearly non-depth channel.
+5. Open Candidate B only if A is killed, survives with a clearly non-depth channel, or A's
+   implementation track — across all attempted designs to date (PR009, PR010) — is formally
+   closed at a contract/design-feasibility precedence tier that pre-empts the scientific
+   killed/survived axis (per the precedence convention of
+   `docs/plan_operativo_15_julio_2026.md:87-88,573-579`: `FAILED_DATA_CONTRACT`/
+   `LEAKAGE_DETECTED`/`RESOURCE_ABORT`/`ABSTAIN` precede any scientific terminal). This third
+   branch carries no scientific killed/survived claim, conveys no information about the
+   observable's channel content, and does not authorize retuning or reopening A's closed
+   designs (per §7 below). Opening B under this third branch additionally requires an explicit,
+   dedicated feasibility showing — comparable in rigor to PR010's own coverage study — that B's
+   reference-coverage / matched-cut population demands can be met under a budget comparable to
+   the one that defeated A; absent that showing, B remains closed alongside A. (Amendment
+   adopted per `docs/comite/comite_decision_036_pr009-pr010-sequencing-adjudication.md`; PR009
+   closed `FAILED_DATA_CONTRACT`, PR010 closed `PR010_DESIGN_INFEASIBLE_REFERENCE_COVERAGE` —
+   neither is a scientific result about Candidate A's observable.)
 6. Keep Candidate C as a validation bridge to 3+1D, not as the default locator.
 
 ## 7. Stop rules
