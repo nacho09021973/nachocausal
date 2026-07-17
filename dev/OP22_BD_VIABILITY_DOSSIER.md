@@ -2,7 +2,9 @@
 
 STATUS: DOCUMENTARY_ONLY / NO_EXECUTION / NOT_A_PREREGISTRATION
 SCOPE: DRAFT_FOR_COMMITTEE_AND_PI_REVIEW
-DATE: 2026-07-17
+DATE: 2026-07-17 (rev. 2, same day: gate semantics tightened per PI instruction — V2
+UNRESOLVED branch without execution, V3 exact frozen-formula budget, V4 split into
+`ALGEBRAIC_NONREDUNDANCY` vs `HORIZON_FIDELITY`, no OP-2.2 terminal emitted)
 GOVERNING_DECISIONS: `docs/comite/comite_decision_035_op22-witness-candidate-adjudication.md`
 (candidate returned for revision), `docs/comite/comite_decision_036_pr009-pr010-sequencing-
 adjudication.md` (sequencing amendment; does NOT enable this candidate by itself)
@@ -15,18 +17,30 @@ no PR013, and freezes nothing — it is the documentary precondition check that 
 Route-B preregistration is even worth drafting. Every hand computation below is flagged for
 independent verification before anything is frozen (author ≠ sole verifier, per decision 035 §5).
 
-Gate logic (PI, 2026-07-17):
+Gate logic (PI, 2026-07-17, second instruction — supersedes the first pass where stricter):
 
-- If **V2 fails** → close the candidate without executing anything.
-- If **V1–V3 pass but V4 fails** → the candidate may only be proposed with ceiling terminal
-  `REFERENCE_WITNESS_SEPARATION_ONLY`; the words "proxy de horizonte" and "localizador" are
-  forbidden for it under any outcome (`docs/plan_operativo_15_julio_2026.md:356`,
-  `docs/claim_grammar.md:336`).
+- **V1** is `PASS` only with the exact formula and the exact normalization convention; nothing
+  less counts.
+- **V2** is `PASS` only on an **analytic proof of non-equivalence**. If no analytic proof is
+  available at the required level, the verdict is `UNRESOLVED` — the enumerative test is **not
+  executed** to settle it. If V2 resolves to fail → close the candidate without executing
+  anything.
+- **V3** must state the **exact** `(m, α)` budget from the frozen radius formula, including
+  multiplicity; the PI's 1/√m scaling estimate is a sanity check, never a result.
+- **V4** must separate `ALGEBRAIC_NONREDUNDANCY` from `HORIZON_FIDELITY` explicitly. If the
+  horizon-fidelity contrast is not constructible in PR011 → the candidate may at most be
+  recommended with ceiling terminal `REFERENCE_WITNESS_SEPARATION_ONLY`; the words "proxy de
+  horizonte" and "localizador" are forbidden for it under any outcome
+  (`docs/plan_operativo_15_julio_2026.md:356`, `docs/claim_grammar.md:336`).
 - If **V4 passes** → and only then, a Route-B preregistration with the exact kill test.
+- **This dossier emits no OP-2.2 terminal of any kind.** Enumeration, Monte Carlo and scoring
+  remain unexecuted and unauthorized by this document.
 
 ## V1 — Is the BD formula and its convention correctly fixed?
 
-**Provisional answer: PASS (documentary), with one numeric field pending authorized enumeration.**
+**Provisional answer: PASS (documentary), claimed strictly for the exact formula and the exact
+normalization convention — nothing else.** The numeric endpoints `[S_min, S_max]` are a separate
+field (V1b) that this PASS does not cover; it awaits the (not yet authorized) enumeration.
 
 The formula that would be frozen — and the only formula entitled to the name Benincasa–Dowker in
 D=2 (decision 035 §4 mathematician, §7 literature verdict, both anchored to the primary sources) —
@@ -63,8 +77,9 @@ execution, hence outside this dossier; it is the same authorized run as V2b/V3b 
 
 ## V2 — Can non-equivalence with `f_bench` be demonstrated?
 
-**Provisional answer: PASS at the global level, by hand-exhibited counterexample pair.
-Support-restricted confirmation (V2b) pending the authorized enumeration.**
+**Provisional answer: PASS at the global level, by analytic (hand-exhibited) counterexample
+pair. At the support-restricted level: `UNRESOLVED` — no analytic proof is in hand, and per the
+PI's gate rule the enumerative test is NOT executed to settle it.**
 
 `f_bench(poset) = |relations|/6` is permanently barred from seeding OP-2.2
 (`dev/OP21_REFERENCE_CERTIFIER_PREREGISTRATION.md:130-131`). Decision 035 (logician, point 5)
@@ -98,15 +113,20 @@ Same `n=4`, same `|relations|=5`, different `S` (−6 vs +6). Therefore **`S` is
 reparametrization of `f_bench`. Consistency check: `Σ_{m≥1} N_m = |relations|` holds for both
 (P1: 4+0+1=5; P2: 3+2+0=5), confirming the identity of decision 035 §4 (mathematician, point 2).
 
-**What this does NOT yet establish (V2b, pending).** The bar's relevant domain is the **support
-of the frozen PR011 laws** `P_4(0.95)`, `P_4(1.05)` — not all 4-element posets. Whether a
-distinguishing pair lies inside that support, and whether `S` restricted to that support collapses
-to a function of `|relations|`, is exactly the read-only enumeration already specified as the
-falsifier's minimal test in decision 035 §5/§9 (`build_diamond_family → poset_law_from_grid`;
-compute `(|relations|, S)` per support poset). That run is execution: it requires separate PI
-authorization and must be performed/verified by someone other than this dossier's author. If
-enumeration shows support-restricted collapse → **close the candidate without further
-computation** (PI gate rule).
+**What this does NOT establish (V2b — typed `UNRESOLVED`, not "pending").** The bar's relevant
+domain is the **support of the frozen PR011 laws** `P_4(0.95)`, `P_4(1.05)` — not all 4-element
+posets. Whether a distinguishing pair lies inside that support, and whether `S` restricted to
+that support collapses to a function of `|relations|`, has no analytic proof in this dossier. Per
+the PI's gate semantics (2026-07-17, second instruction), the absence of an analytic proof makes
+the support-restricted verdict `UNRESOLVED`; the read-only enumeration that would settle it
+empirically (decision 035 §5/§9: `build_diamond_family → poset_law_from_grid`; compute
+`(|relations|, S)` per support poset) is **deliberately not executed** — it is execution,
+requires separate PI authorization, and must be performed/verified by someone other than this
+dossier's author. If a later authorized run shows support-restricted collapse → **close the
+candidate without further computation** (PI gate rule). An analytic proof route (e.g., showing
+the counterexample pair P1/P2 both receive positive probability under the frozen copula grid, by
+inspection of the frozen construction rather than by running it) is left open for the committee;
+none is claimed here.
 
 ## V3 — Computable within the pipeline and budget?
 
@@ -117,48 +137,83 @@ computation** (PI gate rule).
   (`dev/pr011_tv_certification_enumeration.py`), read-only. At n=4 the family is **exactly
   enumerable**, so the exact witness gap `|E_P f − E_Q f|` and exact TV are computable without
   Monte Carlo. Trivial budget. No new seed band is needed for the enumeration itself (no RNG).
-- **The statistical caveat that must be resolved before any kill-test threshold is named**
-  (decision 035 falsifier, failure mode 2): the PR011 family's certified near-blind regime bounds
-  TV ≤ ~0.0092, hence any `[0,1]` witness gap ≤ ~0.0092. If a Monte Carlo/Hoeffding certificate
-  is insisted on (as WP5 certifier rehearsal), resolving a gap `g` requires
-  `2·sqrt(ln(4/α)/(2m)) < g`; even in the best case `g = 0.0092` with `α = 0.05` this gives
-  `m ≳ 1.0e5` per stream per cell `[derived this session — re-derive against the actual
-  enumerated gap before freezing anything]`. The actual gap may be far smaller, potentially
-  making the MC route infeasible. **The exact-enumeration route at n=4 avoids this entirely**;
-  the MC route is optional WP5 rehearsal and must be justified as such, with its `(m, α)`
-  feasibility shown against the enumerated gap (V3b, same authorized run as V1b/V2b).
+- **Exact `(m, α)` budget from the frozen formula** (decision 035 falsifier, failure mode 2).
+  The PR011 family's certified near-blind regime bounds TV ≤ ~0.0092, hence any `[0,1]` witness
+  gap `g ≤ 0.0092`. The frozen certificate (op13:59-76; `certifier/bench.py:97-98,120`) is
+  `TV_lower = max(0, |mu_p − mu_q| − r_p − r_q − eps_p − eps_q)` with
+  `r = sqrt(ln(4/α_j)/(2m))`. With `eps = 0` and `m_p = m_q = m`, `BOUND_POSITIVE` is attainable
+  at the expected means only if `2·sqrt(ln(4/α_j)/(2m)) < g`, i.e. **exactly**
+
+  ```text
+  m > 2·ln(4/α_j) / g²        (per stream, per cell)
+  ```
+
+  Evaluated at the ceiling `g = 0.0092` (best case; the true enumerated gap can only be smaller,
+  inflating `m` by the factor `(0.0092/g_true)²`):
+
+  | α_j | m_min per stream |
+  | --- | --- |
+  | 0.05 | 103,546 |
+  | 0.04 (CELL-PR011 allocation) | 108,818 |
+  | 0.01 | 141,576 |
+
+  **Multiplicity is included via the frozen α-ledger** (`sum α_j ≤ alpha_total`, OP-2.1 prereg
+  §4.2, G4): with `K` cells splitting `alpha_total` equally, `α_j = alpha_total/K` and
+  `m_min = 2·ln(4K/alpha_total)/g²` per stream per cell — logarithmic in `K`, so multiplicity
+  adds ~10–40% here, not orders of magnitude. Total draws per cell are `2·m` (two streams).
+  Caveat: this `m_min` is the *attainability* threshold (empirical means at their expectations),
+  not a power guarantee; a preregistered run would need margin above it.
+- **The PI's 1/√m scaling estimate is superseded and must not be cited as the budget.** Scaling
+  CELL-PR011's rehearsal radius (`m = 200, α_j = 0.04` → `r = 0.1073 ≈ 0.11`) by
+  `m ~ 200·(0.11/0.0092)² ≈ 2.9e4` sets **one** radius equal to `g`; the frozen certificate
+  needs `r_p + r_q < g` (each radius `< g/2`), which costs a further factor ≈ 4 — hence the
+  ~3.8× discrepancy with the exact 108,818. This is precisely why the frozen formula, not the
+  scaling heuristic, is the budget (PI, 2026-07-17). The actual gap may be far smaller than
+  0.0092, potentially making the MC route outright infeasible. **The exact-enumeration route at
+  n=4 avoids all of this**; the MC route is optional WP5 rehearsal and must be justified as
+  such, with its `(m, α_j)` feasibility re-evaluated against the actual enumerated gap (V3b,
+  same authorized run as V1b).
 
 ## V4 — Does a mass-versus-shape control exist that can falsify the horizon interpretation?
 
-**Provisional answer: FAIL-structural for the horizon-fidelity question, within the PR011 family
-as parametrized. An algebraic control exists for the weaker question. Consequence: ceiling
-`REFERENCE_WITNESS_SEPARATION_ONLY`.**
+**Provisional answer: the gate splits into two typed sub-gates that must never be conflated
+(PI, 2026-07-17): `ALGEBRAIC_NONREDUNDANCY` — constructible, and `HORIZON_FIDELITY` —
+FAIL-structural (not constructible) within the PR011 family as parametrized. Consequence:
+ceiling `REFERENCE_WITNESS_SEPARATION_ONLY`, regardless of TV quality.**
 
-Two candidate controls were identified in decision 035:
+**The physical distinction that governs this gate (PI, 2026-07-17, verbatim requirement):**
+regressing (or conditioning) `S_BD` against `N` and `|relations|` can demonstrate that the BD
+action contains something beyond size and ordering fraction — **but it does not demonstrate
+horizon sensitivity.** That residual is a control of *algebraic redundancy*, not a
+*mass-versus-shape* control. The two sub-gates are therefore:
 
-1. **Algebraic control (constructible now).** At fixed n=4, `N` is constant, so the control
-   reduces to conditioning on `|relations|`: compare the conditional laws of `S` given
-   `|relations| = k` between τ=0.95 and τ=1.05. If the conditional (residual) TV contribution is
-   zero, the witness separates only through relation count — mass/cardinality-only — and dies as
-   an independent witness. This is definable before scoring (pure algebra on the frozen linear
-   form) and demonstrably can fail. **But it falsifies only "is it `f_bench` in disguise" — it
-   cannot certify or falsify horizon-relevance.**
-2. **Geometric control (exterior-only vs horizon-straddling patches) — NOT constructible in this
-   family.** Decision 035's falsifier (ground-truth-leakage channel i) already established that
-   the PR011 family is parametrized only by `(R, V, τ)` — abstract copula/diamond-family laws
-   with **no embedding, no `r=2M`, no patch placement**. There is no horizon object inside the
-   family for a control to vary. Importing Schwarzschild coordinate/geometry data to build one
-   would put embedding information into a dev promotion decision, which op13 §4 forbids
-   (`FAILED_DEVELOPMENT_PROVENANCE` / leakage).
+1. **V4a — `ALGEBRAIC_NONREDUNDANCY` (constructible now).** At fixed n=4, `N` is constant, so
+   the regression on `(N, |relations|)` degenerates to conditioning on `|relations|`: compare
+   the conditional laws of `S` given `|relations| = k` between τ=0.95 and τ=1.05. If the
+   conditional (residual) TV contribution is zero, the witness separates only through relation
+   count — mass/cardinality-only — and dies as an independent witness. This is definable before
+   scoring (pure algebra on the frozen linear form) and demonstrably can fail. **Its passing
+   certifies only that `S` is not `f_bench` in disguise. It is silent — structurally, not merely
+   in practice — on horizon relevance, and no wording in any later document may launder a V4a
+   pass into a horizon claim.**
+2. **V4b — `HORIZON_FIDELITY` (exterior-only vs horizon-straddling patches) — NOT constructible
+   in this family.** Decision 035's falsifier (ground-truth-leakage channel i) already
+   established that the PR011 family is parametrized only by `(R, V, τ)` — abstract
+   copula/diamond-family laws with **no embedding, no `r=2M`, no patch placement recorded**.
+   The exterior-versus-straddling contrast therefore cannot be built: there is no horizon object
+   inside the family for a control to vary. Importing Schwarzschild coordinate/geometry data to
+   build one would put embedding information into a dev promotion decision, which op13 §4
+   forbids (`FAILED_DEVELOPMENT_PROVENANCE` / leakage).
 
-**Finding.** Within PR011-as-parametrized, no control can separate "detects horizon-relevant
-structure" from "detects mass/global-curvature," because the family contains no horizon structure
-to begin with. This is the PI's anticipated negative branch: *the current 1+1D family cannot
-validate horizon fidelity* — itself a useful, documentable result. It does not kill the
-candidate; it caps it:
+**Finding.** Because PR011 records neither `r=2M` nor patch placement, the horizon-fidelity gate
+**cannot be passed within this family — even if the resulting TV were excellent.** V4a and V4b
+answer different questions; a strong V4a residual plus a strong TV certificate still sums to
+zero evidence of horizon sensitivity. This is the PI's anticipated negative branch: *the current
+1+1D family cannot validate horizon fidelity* — itself a useful, documentable result. It does
+not kill the candidate; it caps it:
 
 - Maximum admissible framing: **separation witness / null-check baseline**, ceiling terminal
-  `REFERENCE_WITNESS_SEPARATION_ONLY`.
+  `REFERENCE_WITNESS_SEPARATION_ONLY` — the cap holds even under an excellent TV result.
 - Forbidden framings: "proxy de horizonte," "localizador," any horizon-fidelity claim
   (`plan:356`, `claim_grammar.md:336`, decision 035 §8 point 6).
 - A genuine V4-pass would require a **different, horizon-bearing family** (embedded Schwarzschild
@@ -169,21 +224,26 @@ candidate; it caps it:
 
 | Gate | Provisional outcome | Pending |
 | --- | --- | --- |
-| V1 | PASS (formula + convention fixed on paper) | V1b: numeric `[S_min,S_max]` from authorized enumeration |
-| V2 | PASS-global (diamond vs Y: `|rel|=5`, `S=-6` vs `+6`) | V2b: support-restricted check, independent verifier |
-| V3 | CONDITIONAL PASS (exact route trivial) | V3b: MC `(m,α)` feasibility vs actual enumerated gap, if MC route kept |
-| V4 | **FAIL-structural** for horizon fidelity in PR011; algebraic control available for the weaker question | — (a horizon-bearing family would be a separate, larger step) |
+| V1 | PASS, strictly for exact formula + exact normalization convention | V1b: numeric `[S_min,S_max]` from a (not yet authorized) enumeration |
+| V2 | PASS-global by analytic counterexample (diamond vs Y: `|rel|=5`, `S=-6` vs `+6`); **support-restricted: `UNRESOLVED`** (no analytic proof; enumerative test deliberately not run) | analytic proof route, or a separately authorized enumeration with independent verifier |
+| V3 | CONDITIONAL PASS (exact route trivial); MC route budget fixed **exactly**: `m > 2·ln(4/α_j)/g²` → 103,546–141,576 per stream at the `g=0.0092` ceiling | V3b: re-evaluate against actual enumerated gap, if MC route kept |
+| V4 | Split verdict — V4a `ALGEBRAIC_NONREDUNDANCY`: constructible; V4b `HORIZON_FIDELITY`: **FAIL-structural** in PR011 (no `r=2M`, no patch placement) | — (a horizon-bearing family would be a separate, larger step) |
 
-**Proposed disposition (for committee + PI, not self-executing):** per the PI's gate logic, the
-candidate is eligible to be proposed for a Route-B preregistration **only** as a
-`SEPARATION_ONLY`-capped separation witness / null-check baseline, and only after the single
-authorized read-only enumeration run discharges V1b/V2b/V3b (one run answers all three). If V2b
-shows support-restricted collapse onto `|relations|`, the candidate closes without execution of
-anything further. Nothing in this dossier opens OP-2.2, drafts a preregistration, or authorizes
-the enumeration run — each remains a separate, explicitly authorized step (decisions 035 §9,
-036 §9).
+**Proposed disposition (for committee + PI, not self-executing):** because V4b is not
+constructible in PR011, the maximum recommendation this dossier can support is
+`REFERENCE_WITNESS_SEPARATION_ONLY` — a `SEPARATION_ONLY`-capped separation witness / null-check
+baseline, even in the best statistical case. Whether BD merits that small separation experiment,
+or PR011 should instead be abandoned as a bench for horizon validation (while remaining valid
+for exercising statistical machinery), turns on V2's support-restricted question — which stays
+`UNRESOLVED` here by design. **No OP-2.2 terminal of any kind is emitted by this dossier.**
+Nothing in it opens OP-2.2, drafts a preregistration, or authorizes enumeration, Monte Carlo or
+scoring — each remains a separate, explicitly authorized step (decisions 035 §9, 036 §9); if a
+later authorized run shows support-restricted collapse onto `|relations|`, the candidate closes
+without further computation.
 
 **Hand-computation verification obligations before any freeze:** the P1/P2 interval counts and
-`S` values (V2), the chain/antichain sanity values (V1), and the `m ≳ 1.0e5` Hoeffding estimate
-(V3) were derived by this dossier's author in one session and must be independently re-derived
-(committee role, `/auditor`, or the authorized enumeration itself) before being relied on.
+`S` values (V2), the chain/antichain sanity values (V1), and the exact budget arithmetic
+(`radius(200, 0.04) = 0.1073`; `m_min = 103,546 / 108,818 / 141,576` at
+`α_j = 0.05 / 0.04 / 0.01`, `g = 0.0092`) (V3) were derived by this dossier's author and must be
+independently re-derived (committee role, `/auditor`, or the authorized enumeration itself)
+before being relied on.
