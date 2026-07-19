@@ -4,7 +4,13 @@ STATUS: DOCUMENTARY_ONLY / NO_EXECUTION / NOT_A_PREREGISTRATION
 SCOPE: DRAFT_FOR_COMMITTEE_AND_PI_REVIEW
 DATE: 2026-07-17 (rev. 2, same day: gate semantics tightened per PI instruction — V2
 UNRESOLVED branch without execution, V3 exact frozen-formula budget, V4 split into
-`ALGEBRAIC_NONREDUNDANCY` vs `HORIZON_FIDELITY`, no OP-2.2 terminal emitted)
+`ALGEBRAIC_NONREDUNDANCY` vs `HORIZON_FIDELITY`, no OP-2.2 terminal emitted); 2026-07-19 (rev. 3:
+corrections from `docs/auditor/auditor_report_019_op22-bd-dossier-rev2-viability-audit.md` —
+E1 fixed (V3 budget table re-anchored to the n=4 certified ceiling `ε=0.004611899229`, dropping
+the mis-anchored rounded n=8 value; nominal-TV realistic scale added), W1 fixed (V3 headline now
+states no compute cap exists), W2 fixed (V4b premise corrected to the frozen generator's actual
+hard-frozen horizon locus/placement; FAIL-structural conclusion unchanged and strengthened). No
+gate verdict, disposition, or OP-2.2 terminal changed by rev. 3; V1/V2/V4a stand as in rev. 2.
 GOVERNING_DECISIONS: `docs/comite/comite_decision_035_op22-witness-candidate-adjudication.md`
 (candidate returned for revision), `docs/comite/comite_decision_036_pr009-pr010-sequencing-
 adjudication.md` (sequencing amendment; does NOT enable this candidate by itself)
@@ -130,32 +136,50 @@ none is claimed here.
 
 ## V3 — Computable within the pipeline and budget?
 
-**Provisional answer: CONDITIONAL PASS.**
+**Provisional answer: CONDITIONAL PASS — calculable from the frozen formula, but not declarable
+viable against any committed resource/compute cap, because no such cap exists anywhere in the
+repo for OP-2.2 (the α-ledger budgets error probability, not compute; corrected per
+`docs/auditor/auditor_report_019_op22-bd-dossier-rev2-viability-audit.md` finding W1).**
 
 - **Computability:** `N` and every `N_m` are order-isomorphism invariants, polynomial-time on the
   relation matrix; the PR011 poset laws are already produced by the frozen dev path
   (`dev/pr011_tv_certification_enumeration.py`), read-only. At n=4 the family is **exactly
   enumerable**, so the exact witness gap `|E_P f − E_Q f|` and exact TV are computable without
   Monte Carlo. Trivial budget. No new seed band is needed for the enumeration itself (no RNG).
-- **Exact `(m, α)` budget from the frozen formula** (decision 035 falsifier, failure mode 2).
-  The PR011 family's certified near-blind regime bounds TV ≤ ~0.0092, hence any `[0,1]` witness
-  gap `g ≤ 0.0092`. The frozen certificate (op13:59-76; `certifier/bench.py:97-98,120`) is
+- **`(m, α)` budget from the frozen formula** (decision 035 falsifier, failure mode 2; table
+  re-anchored per auditor_report_019 finding E1). The frozen certificate (op13:59-76;
+  `certifier/bench.py:97-98,120`) is
   `TV_lower = max(0, |mu_p − mu_q| − r_p − r_q − eps_p − eps_q)` with
   `r = sqrt(ln(4/α_j)/(2m))`. With `eps = 0` and `m_p = m_q = m`, `BOUND_POSITIVE` is attainable
-  at the expected means only if `2·sqrt(ln(4/α_j)/(2m)) < g`, i.e. **exactly**
+  at the expected means only if `2·sqrt(ln(4/α_j)/(2m)) < g`, i.e.
 
   ```text
   m > 2·ln(4/α_j) / g²        (per stream, per cell)
   ```
 
-  Evaluated at the ceiling `g = 0.0092` (best case; the true enumerated gap can only be smaller,
-  inflating `m` by the factor `(0.0092/g_true)²`):
+  This candidate family is pinned at **n=4** throughout this dossier (V1, V2, V4, CELL-PR011).
+  Its own committed certified ceiling is `ε ≤ 0.004611899229`
+  (`data/reports/pr011_tv_certification_n4.csv`, `docs/plan_avanzado_14_julio_2026.md:51`) — this
+  is the correct best-case bound on any `[0,1]` witness gap `g` for **this** family. The n=8
+  ladder value `ε ≤ 0.009223798457` (loosely cited as "~0.0092" in decision 035,
+  `comite_decision_035…md:385`) is a valid but *looser* family-wide bound only — ε grows with n by
+  construction — and must not be substituted for the n=4-pinned family's own tighter ceiling.
+
+  Evaluated at the n=4 ceiling `g = 0.004611899229` (best case for **this** family; the true
+  enumerated gap can only be smaller, inflating `m` by the factor `(0.004611899229/g_true)²`):
 
   | α_j | m_min per stream |
   | --- | --- |
-  | 0.05 | 103,546 |
-  | 0.04 (CELL-PR011 allocation) | 108,818 |
-  | 0.01 | 141,576 |
+  | 0.05 | 412,046 |
+  | 0.04 (CELL-PR011 allocation) | 433,029 |
+  | 0.01 | 563,383 |
+
+  **This is a best-case bound, not a realistic estimate.** The committed *nominal* TV at the
+  exact CELL-PR011 parameters (n=4, `grid_m=12`) is `primary_tv_nominal =
+  0.0014402226592060835` (same CSV, annotation field — nominal, not certified). If the true gap
+  sits near that scale, `m_min ≈ 4.23e6 / 4.44e6 / 5.78e6` per stream — over an order of
+  magnitude above the best-case table above, and the more realistic planning number for the MC
+  route.
 
   **Multiplicity is included via the frozen α-ledger** (`sum α_j ≤ alpha_total`, OP-2.1 prereg
   §4.2, G4): with `K` cells splitting `alpha_total` equally, `α_j = alpha_total/K` and
@@ -164,15 +188,16 @@ none is claimed here.
   Caveat: this `m_min` is the *attainability* threshold (empirical means at their expectations),
   not a power guarantee; a preregistered run would need margin above it.
 - **The PI's 1/√m scaling estimate is superseded and must not be cited as the budget.** Scaling
-  CELL-PR011's rehearsal radius (`m = 200, α_j = 0.04` → `r = 0.1073 ≈ 0.11`) by
-  `m ~ 200·(0.11/0.0092)² ≈ 2.9e4` sets **one** radius equal to `g`; the frozen certificate
-  needs `r_p + r_q < g` (each radius `< g/2`), which costs a further factor ≈ 4 — hence the
-  ~3.8× discrepancy with the exact 108,818. This is precisely why the frozen formula, not the
-  scaling heuristic, is the budget (PI, 2026-07-17). The actual gap may be far smaller than
-  0.0092, potentially making the MC route outright infeasible. **The exact-enumeration route at
-  n=4 avoids all of this**; the MC route is optional WP5 rehearsal and must be justified as
-  such, with its `(m, α_j)` feasibility re-evaluated against the actual enumerated gap (V3b,
-  same authorized run as V1b).
+  CELL-PR011's rehearsal radius (`m = 200, α_j = 0.04` → `r = 0.1073 ≈ 0.11`) by the loose
+  family-wide bound, `m ~ 200·(0.11/0.009223798457)² ≈ 2.8e4`, sets **one** radius equal to that
+  bound; the frozen certificate needs `r_p + r_q < g` (each radius `< g/2`), which costs a
+  further factor ≈ 4 on top of whichever gap is used — a formula-vs-heuristic discrepancy that
+  holds independently of which bound (n=4 or n=8) is chosen. This is precisely why the frozen
+  formula, not the scaling heuristic, is the budget (PI, 2026-07-17). The actual gap may be far
+  smaller than either bound above, potentially making the MC route outright infeasible. **The
+  exact-enumeration route at n=4 avoids all of this**; the MC route is optional WP5 rehearsal and
+  must be justified as such, with its `(m, α_j)` feasibility re-evaluated against the actual
+  enumerated gap (V3b, same authorized run as V1b).
 
 ## V4 — Does a mass-versus-shape control exist that can falsify the horizon interpretation?
 
@@ -197,20 +222,39 @@ horizon sensitivity.** That residual is a control of *algebraic redundancy*, not
    in practice — on horizon relevance, and no wording in any later document may launder a V4a
    pass into a horizon claim.**
 2. **V4b — `HORIZON_FIDELITY` (exterior-only vs horizon-straddling patches) — NOT constructible
-   in this family.** Decision 035's falsifier (ground-truth-leakage channel i) already
-   established that the PR011 family is parametrized only by `(R, V, τ)` — abstract
-   copula/diamond-family laws with **no embedding, no `r=2M`, no patch placement recorded**.
-   The exterior-versus-straddling contrast therefore cannot be built: there is no horizon object
-   inside the family for a control to vary. Importing Schwarzschild coordinate/geometry data to
-   build one would put embedding information into a dev promotion decision, which op13 §4
-   forbids (`FAILED_DEVELOPMENT_PROVENANCE` / leakage).
+   in this family.** **(Premise corrected per auditor_report_019 finding W2 — conclusion
+   unchanged, and strengthened.)** The premise inherited verbatim from decision 035's falsifier
+   (ground-truth-leakage channel i) — "no embedding, no `r=2M`, no patch placement recorded" — is
+   imprecise at the generator level. The frozen builder is in fact EF-Schwarzschild-derived:
+   `W(t,r) = e^{r/t}(r/t − 1)` vanishes at `r = t`, i.e. **`τ` plays the role of `2M`, and the
+   horizon locus `r = τ` is present in the construction**
+   (`research_program/work_packages/wp4_kappa_numeric_reference.py:56-57`); the patch corners
+   are recorded as frozen constants `(r_p,v_p) = (2,0)`, `(r_q,v_q) = (0.5,1)`
+   (`dev/pr011_tv_certification_enumeration.py:41-44`); and placement is not merely unrecorded
+   but **hard-frozen to straddling** by
+   `assert Up < 0 < Uq, "reference shape must straddle the horizon (Up<0<Uq)"`
+   (`wp4_kappa_numeric_reference.py:74-75`). What is true, and load-bearing, is that none of this
+   is exposed as a **family axis**: the poset laws the frozen builder outputs are abstract
+   unlabeled posets, the only variable parameter across the family is `τ`, and an exterior-only
+   (non-straddling) member is not expressible without modifying frozen code — the assert rejects
+   it — or designing a new family. The exterior-versus-straddling contrast is therefore still
+   **not constructible within PR011-as-frozen**, and the finding is if anything sharper than the
+   original wording: the family does not merely omit a horizon object, it hard-forbids
+   non-straddling members outright, and since the two candidate laws (τ=0.95, τ=1.05) differ
+   exactly by moving the horizon locus inside a fixed patch, τ-separation is inseparable from
+   mass/global-curvature response without placement variation. Importing Schwarzschild
+   coordinate/geometry data to *vary placement* — the one axis the frozen family does not expose
+   — would put embedding information into a dev promotion decision, which op13 §4 forbids
+   (`FAILED_DEVELOPMENT_PROVENANCE` / leakage).
 
-**Finding.** Because PR011 records neither `r=2M` nor patch placement, the horizon-fidelity gate
-**cannot be passed within this family — even if the resulting TV were excellent.** V4a and V4b
-answer different questions; a strong V4a residual plus a strong TV certificate still sums to
-zero evidence of horizon sensitivity. This is the PI's anticipated negative branch: *the current
-1+1D family cannot validate horizon fidelity* — itself a useful, documentable result. It does
-not kill the candidate; it caps it:
+**Finding.** Because PR011 fixes the horizon locus (`r=τ`) and the patch placement as frozen
+constants — rather than exposing either as a variable family axis, and in fact hard-forbidding
+non-straddling members via its own assertion — the horizon-fidelity gate **cannot be passed
+within this family — even if the resulting TV were excellent.** V4a and V4b answer different
+questions; a strong V4a residual plus a strong TV certificate still sums to zero evidence of
+horizon sensitivity. This is the PI's anticipated negative branch: *the current 1+1D family
+cannot validate horizon fidelity* — itself a useful, documentable result. It does not kill the
+candidate; it caps it:
 
 - Maximum admissible framing: **separation witness / null-check baseline**, ceiling terminal
   `REFERENCE_WITNESS_SEPARATION_ONLY` — the cap holds even under an excellent TV result.
@@ -226,8 +270,8 @@ not kill the candidate; it caps it:
 | --- | --- | --- |
 | V1 | PASS, strictly for exact formula + exact normalization convention | V1b: numeric `[S_min,S_max]` from a (not yet authorized) enumeration |
 | V2 | PASS-global by analytic counterexample (diamond vs Y: `|rel|=5`, `S=-6` vs `+6`); **support-restricted: `UNRESOLVED`** (no analytic proof; enumerative test deliberately not run) | analytic proof route, or a separately authorized enumeration with independent verifier |
-| V3 | CONDITIONAL PASS (exact route trivial); MC route budget fixed **exactly**: `m > 2·ln(4/α_j)/g²` → 103,546–141,576 per stream at the `g=0.0092` ceiling | V3b: re-evaluate against actual enumerated gap, if MC route kept |
-| V4 | Split verdict — V4a `ALGEBRAIC_NONREDUNDANCY`: constructible; V4b `HORIZON_FIDELITY`: **FAIL-structural** in PR011 (no `r=2M`, no patch placement) | — (a horizon-bearing family would be a separate, larger step) |
+| V3 | CONDITIONAL PASS — calculable, not declarable viable against any cap (none exists); `m > 2·ln(4/α_j)/g²` → 412,046–563,383 per stream at the n=4 certified ceiling `g=0.004611899229`; ≈4.23e6–5.78e6 at the nominal-TV scale | V3b: re-evaluate against actual enumerated gap, if MC route kept |
+| V4 | Split verdict — V4a `ALGEBRAIC_NONREDUNDANCY`: constructible; V4b `HORIZON_FIDELITY`: **FAIL-structural** in PR011 (horizon locus and patch placement hard-frozen, not exposed as a family axis; non-straddling members forbidden by construction) | — (a horizon-bearing family would be a separate, larger step) |
 
 **Proposed disposition (for committee + PI, not self-executing):** because V4b is not
 constructible in PR011, the maximum recommendation this dossier can support is
@@ -242,8 +286,13 @@ later authorized run shows support-restricted collapse onto `|relations|`, the c
 without further computation.
 
 **Hand-computation verification obligations before any freeze:** the P1/P2 interval counts and
-`S` values (V2), the chain/antichain sanity values (V1), and the exact budget arithmetic
-(`radius(200, 0.04) = 0.1073`; `m_min = 103,546 / 108,818 / 141,576` at
-`α_j = 0.05 / 0.04 / 0.01`, `g = 0.0092`) (V3) were derived by this dossier's author and must be
-independently re-derived (committee role, `/auditor`, or the authorized enumeration itself)
-before being relied on.
+`S` values (V2), the chain/antichain sanity values (V1), and the budget arithmetic
+(`radius(200, 0.04) = 0.1073`; `m_min = 412,046 / 433,029 / 563,383` at
+`α_j = 0.05 / 0.04 / 0.01`, `g = 0.004611899229`, the n=4 certified ceiling) (V3) were derived by
+this dossier's author and must be independently re-derived (committee role, `/auditor`, or the
+authorized enumeration itself) before being relied on. The V3/V4b corrections in this revision
+were independently re-derived against `data/reports/pr011_tv_certification_n4.csv` and
+`research_program/work_packages/wp4_kappa_numeric_reference.py` by the agent applying
+`docs/auditor/auditor_report_019_op22-bd-dossier-rev2-viability-audit.md`'s findings — this still
+counts as author-adjacent, not committee-independent, verification, and a further independent
+check remains owed before this text is frozen.
