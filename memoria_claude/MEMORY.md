@@ -1,5 +1,6 @@
 # Memory index
 
+- [PROGRAMA EN PAUSA — marcador de reentrada](program-paused-reentry-marker.md) — pausa limpia 2026-07-19 (decisión PI); único paso siguiente pre-identificado: /comite para el falsifier enumerativo OP-2.2; LEER PRIMERO al retomar
 - [GPU exploration backend](gpu-exploration-backend.md) — optional CuPy GPU path in dev/ only; sealed validation stays CPU numpy 1.26.4, two-venv setup, WSL libcuda gotcha
 - [Next step: blind validation](next-step-blind-validation.md) — step #5 EXECUTED 2026-06-21 → verdict FAIL (coverage 0.30, fp 0.10); seeds burned; next is estimator-v2 dev work
 - [Estimator-v2 exploration](estimator-v2-exploration.md) — post-FAIL dev work: volume observable fixes coverage (ii), false-positive (iv) axis still open; dev scripts + seed hygiene (EXPLORE_POOL / reserved 002 band)
