@@ -26,6 +26,18 @@ feasibility showing for Candidate B itself — see that decision for the full te
 candidate is currently open; the next permitted artifact is either a redesigned Candidate-A
 attempt or the Candidate-B feasibility showing the amendment requires.
 
+The feasibility showing is operationalized as a five-condition cumulative gate (structural
+non-redundancy vs Candidate A/R-VAR, order-only computability, real bench coverage,
+boundary/censoring controls, identifiability plausibility at reachable N) at
+`candidate_b_viability_gate.md`. `docs/comite/comite_decision_037_candidate-b-viability-gate-review.md`
+reviewed the first draft (`RECOMMEND_PROCEED_WITH_SCOPED_NEXT_STEP`, conditional on six textual
+amendments A1–A6); those amendments plus the advisory B4/scope items were folded in, chair-level
+re-verification reproduced clean, and the PI signed off 2026-07-19 (decision 037 §11). The gate
+is now `ADOPTED_AS_GATE_DEFINITION` **as a precondition filter only** — it opens no candidate and
+modifies neither decision 036 nor the matrix; opening Candidate B, exercising B1–B5 against a
+concrete `B`, or any micro-pilot each remain separate committing steps requiring their own
+dedicated committee decision plus PI authorization.
+
 ## WP4 identifiability synthesis
 
 Cross-package roadmap (not a duplicate proof): `../synthesis/geometric_indeterminacy_decision.md`.
