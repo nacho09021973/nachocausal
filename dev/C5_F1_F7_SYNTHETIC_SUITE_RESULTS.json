@@ -1,0 +1,347 @@
+{
+  "overall": "SUITE_FAIL",
+  "summary": {
+    "F1": "PASS",
+    "F1b": "PASS",
+    "F2": "PASS",
+    "F3": "FAIL",
+    "F4": "PASS",
+    "F5": "PASS",
+    "F6": "PASS",
+    "F7": "PASS"
+  },
+  "units": [
+    {
+      "falsifier": "F1",
+      "unit": "bridge_vs_phiV",
+      "status": "PASS",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "control": "ABSTAIN",
+      "control_part": null,
+      "note": "\u03a6\u2605_L EMIT while \u03a6_V abstains (equal V)"
+    },
+    {
+      "falsifier": "F1",
+      "unit": "two_V_classes",
+      "status": "INCONCLUSIVE",
+      "primary": "ABSTAIN_ROOF_UNSTABLE",
+      "primary_part": null,
+      "control": "EMIT",
+      "control_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "note": "primary=ABSTAIN_ROOF_UNSTABLE control=EMIT"
+    },
+    {
+      "falsifier": "F1b",
+      "unit": "bridge",
+      "status": "INFO",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "control": null,
+      "control_part": null,
+      "note": "V=[5, 5, 5, 5]"
+    },
+    {
+      "falsifier": "F1b",
+      "unit": "cross",
+      "status": "INFO",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m3"
+        ],
+        [
+          "m2",
+          "m4"
+        ]
+      ],
+      "control": null,
+      "control_part": null,
+      "note": "V=[5, 5, 5, 5]"
+    },
+    {
+      "falsifier": "F1b",
+      "unit": "pair_separator",
+      "status": "PASS",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "control": "EMIT",
+      "control_part": [
+        [
+          "m1",
+          "m3"
+        ],
+        [
+          "m2",
+          "m4"
+        ]
+      ],
+      "note": "same V=[5, 5, 5, 5]; parts [['m1', 'm2'], ['m3', 'm4']] vs [['m1', 'm3'], ['m2', 'm4']]"
+    },
+    {
+      "falsifier": "F2",
+      "unit": "roof_only_equal_mid",
+      "status": "PASS",
+      "primary": "ABSTAIN_SPECTRAL_MULTIPLICITY",
+      "primary_part": null,
+      "control": null,
+      "control_part": null,
+      "note": "roof-only \u2192 ABSTAIN_SPECTRAL_MULTIPLICITY (no stable detection)"
+    },
+    {
+      "falsifier": "F2",
+      "unit": "roof_only_asymmetric",
+      "status": "PASS",
+      "primary": "ABSTAIN_SPECTRAL_MULTIPLICITY",
+      "primary_part": null,
+      "control": null,
+      "control_part": null,
+      "note": "roof-only \u2192 ABSTAIN_SPECTRAL_MULTIPLICITY (no stable detection)"
+    },
+    {
+      "falsifier": "F3",
+      "unit": "wall_vs_bridge",
+      "status": "FAIL",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "control": "EMIT",
+      "control_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "note": "side-wall surrogate PATTERN_EQ bridge emission (twin-pair ambiguity)"
+    },
+    {
+      "falsifier": "F3",
+      "unit": "wall_vs_cross",
+      "status": "PASS",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m3"
+        ],
+        [
+          "m2",
+          "m4"
+        ]
+      ],
+      "control": "EMIT",
+      "control_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "note": "wall=EMIT/[['m1', 'm2'], ['m3', 'm4']] \u2260 cross"
+    },
+    {
+      "falsifier": "F4",
+      "unit": "same_cloud_mink",
+      "status": "INFO",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "control": null,
+      "control_part": null,
+      "note": ""
+    },
+    {
+      "falsifier": "F4",
+      "unit": "same_cloud_warped",
+      "status": "INFO",
+      "primary": "ABSTAIN_SPECTRAL_MULTIPLICITY",
+      "primary_part": null,
+      "control": null,
+      "control_part": null,
+      "note": ""
+    },
+    {
+      "falsifier": "F4",
+      "unit": "same_cloud_compare",
+      "status": "PASS",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "control": "ABSTAIN_SPECTRAL_MULTIPLICITY",
+      "control_part": null,
+      "note": "MINK=EMIT/[['m1', 'm2'], ['m3', 'm4']] vs warped=ABSTAIN_SPECTRAL_MULTIPLICITY/None"
+    },
+    {
+      "falsifier": "F5",
+      "unit": "density_lobe",
+      "status": "PASS",
+      "primary": "ABSTAIN_SPECTRAL_MULTIPLICITY",
+      "primary_part": null,
+      "control": "EMIT",
+      "control_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "note": "no EMIT on density unit (ABSTAIN_SPECTRAL_MULTIPLICITY)"
+    },
+    {
+      "falsifier": "F6",
+      "unit": "height_base",
+      "status": "INFO",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "control": null,
+      "control_part": null,
+      "note": ""
+    },
+    {
+      "falsifier": "F6",
+      "unit": "height_extended",
+      "status": "INFO",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "control": null,
+      "control_part": null,
+      "note": ""
+    },
+    {
+      "falsifier": "F6",
+      "unit": "height_compare",
+      "status": "PASS",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "control": "EMIT",
+      "control_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "note": "partition stable under roof-tower extension (not pure roof tracking)"
+    },
+    {
+      "falsifier": "F7",
+      "unit": "relabel_bridge",
+      "status": "PASS",
+      "primary": "EMIT",
+      "primary_part": [
+        [
+          "m1",
+          "m2"
+        ],
+        [
+          "m3",
+          "m4"
+        ]
+      ],
+      "control": null,
+      "control_part": null,
+      "note": "all tested relabelings conjugate"
+    }
+  ]
+}

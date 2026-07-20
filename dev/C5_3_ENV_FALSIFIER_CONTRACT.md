@@ -254,3 +254,8 @@ NO_SEEDS
 NO_FREEZE
 NO_RECONSTRUCTION_CLAIM
 ```
+
+**Suite execution (authorized later):** `dev/c5_f1_f7_synthetic_suite.py` →
+`dev/C5_F1_F7_SYNTHETIC_SUITE_REPORT.md` / adjudication
+`dev/C5_F1_F7_SUITE_ADJUDICATION.md`. Outcome: **F1–F2,F4–F7 PASS; F3 FAIL**
+(wall–bridge twin ambiguity). Not a candidate opening.
