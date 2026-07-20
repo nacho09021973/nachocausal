@@ -1,0 +1,47 @@
+{
+  "status": "CONTRACT_FROZEN_NO_EVALUATION_RUN",
+  "frozen_by": "human review",
+  "frozen_date": "2026-07-20",
+  "date": "2026-07-19",
+  "question": "Can a low-L/low-V truncated-futures localizer identify a boundary candidate in SQUARE_BOX_2P4, and does the combined observable T show synergy over its isolated low-L/low-V components?",
+  "contract_draft": "docs/preregistration_square_box_truncated_futures_localization_draft.md",
+  "patch_geometry": {
+    "label": "SQUARE_BOX_2P4",
+    "t_edge": 2.4,
+    "r_edge": 2.4,
+    "r_center": 1.3,
+    "r_low": 0.1,
+    "r_high": 2.5,
+    "box_area": 5.76,
+    "aspect_ratio": 1.0,
+    "r_s": 0.5
+  },
+  "dev_seeds": "4500000..4500015",
+  "eval_seeds": "4600000..4600031",
+  "previous_largest_gap_dev_seeds": "4300000..4300015 excluded from confirmatory evaluation",
+  "previous_rvar_closure": "CLOSED_NEGATIVE_RESULT [GEOMETRY_SPECIFIC]",
+  "sealed_dispersion_result": "BH_MINK_DISPERSION_DIFFERENCE_DETECTED",
+  "synergy_criterion": {
+    "alpha_FWER": 0.01,
+    "d_primary": 2,
+    "alpha_per_contrast": 0.005,
+    "effect_floor_ell": 1.0,
+    "n_pair_min": 26,
+    "min_n_formula": "max(ceil(0.5*n_pair), ceil(log2(d/alpha)))",
+    "min_n_at_n_pair_26": 13,
+    "alpha_edge": 0.01,
+    "d_edge": 1
+  },
+  "random_control_salt": 20260720,
+  "random_control_salt_note": "deterministic stream-separation/reproducibility constant, not an entropy source",
+  "seal_mechanism": "the git commit SHA that introduces the CONTRACT_FROZEN state in the draft's header; not a document-text hash (see draft.md section 17.1)",
+  "terminal_layers": {
+    "primary_localization": "section 16 of the draft: TRUNCATED_FUTURES_BOUNDARY_LOCALIZATION_DETECTED / NO_TRUNCATED_FUTURES_BOUNDARY_LOCALIZATION_DETECTED / INCONCLUSIVE_TRUNCATED_FUTURES_BOUNDARY_LOCALIZATION",
+    "synergy": "section 16.1 of the draft: INSUFFICIENT_VALID_PAIRS / INCONCLUSIVE_TIE_DOMINATED / BOUNDARY_CONFOUND_DETECTED / TRUNCATED_FUTURES_SYNERGY_DETECTED / NO_TRUNCATED_FUTURES_SYNERGY_DETECTED",
+    "co_statement_required": "section 16.2 of the draft: any future summary citing the primary terminal must co-state the synergy terminal"
+  },
+  "evaluation_status": "NOT_RUN",
+  "terminal": "CONTRACT_FROZEN_NO_EVALUATION_RUN",
+  "committee_adjudication": "docs/comite/comite_decision_038_truncated-futures-freeze-adjudication.md",
+  "auditor_preflight": "docs/auditor/auditor_report_021_truncated-futures-freeze-preflight.md"
+}
