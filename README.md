@@ -94,6 +94,16 @@ estimator — localises the horizon-associated boundary *significantly and stabl
 Schwarzschild model within a **finite patch**. It does **not** claim metric reconstruction, the
 global event horizon (future null infinity), 3+1D, Kerr, or manifoldlikeness.
 
+**Post-R-VAR new-geometry result (2026-07-19):** a separate frozen contract on the square patch
+`SQUARE_BOX_2P4` (`T=2.4`, `R=2.4`, aspect ratio `1.0`) found a scientific
+`BH_MINK_DISPERSION_DIFFERENCE_DETECTED` terminal for the order-only future-observable dispersion
+summaries `cv_L` and `cv_V` over minimal elements
+(`docs/new_geometry_future_observables_addendum.md`). Coverage was 24/24 in every cell; at the
+primary endpoint, `median(D_L)=0.4987114017481817`, `median(D_V)=0.47639013575705436`, and both
+paired sign-flip p-values were `1.1920928955078125e-07`. This is a **new scientific question**:
+it does not localise a horizon, does not reconstruct geometry, and does not repair or supersede
+the previous R-VAR closure, which remains `CLOSED_NEGATIVE_RESULT [GEOMETRY_SPECIFIC]`.
+
 ## Program-level question
 
 The deeper program is narrower and more defensible than a generic "geometry from order" slogan:

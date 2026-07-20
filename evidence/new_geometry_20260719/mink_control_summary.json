@@ -1,0 +1,96 @@
+{
+  "min_valid_seeds": 20,
+  "mink_cv_floor": 0.05,
+  "preflight": {
+    "aspect_ratio": 1.0,
+    "box_area": 5.76,
+    "contract": "docs/preregistration_new_geometry_future_observables.md",
+    "contract_sha256": "de2fafc5d7844ff832f051ed94aebb09e92d14db7886b40ebf01b74704b114b6",
+    "dev_smoke_seeds": [
+      4100000,
+      4100001,
+      4100002,
+      4100003,
+      4100004,
+      4100005,
+      4100006,
+      4100007,
+      4100008,
+      4100009,
+      4100010,
+      4100011
+    ],
+    "eval_seeds": [
+      4200000,
+      4200001,
+      4200002,
+      4200003,
+      4200004,
+      4200005,
+      4200006,
+      4200007,
+      4200008,
+      4200009,
+      4200010,
+      4200011,
+      4200012,
+      4200013,
+      4200014,
+      4200015,
+      4200016,
+      4200017,
+      4200018,
+      4200019,
+      4200020,
+      4200021,
+      4200022,
+      4200023
+    ],
+    "git_commit": "0a413580ab724df0617fced201b9302bee6b5856",
+    "numpy": "1.26.4",
+    "patch_geometry": "SQUARE_BOX_2P4",
+    "python": "3.12.3",
+    "r_center": 1.3,
+    "r_edge": 2.4,
+    "r_high": 2.5,
+    "r_low": 0.10000000000000009,
+    "status": "PREFLIGHT_PASS",
+    "t_edge": 2.4
+  },
+  "primary_intensity": 9600.0,
+  "scope": "MINK only: coverage and non-degeneration. No BH rows, no BH-vs-MINK signal, no scientific contrast.",
+  "status": "MINK_CONTROL_ONLY_MEASUREMENT_COMPLETE",
+  "summary_by_intensity": {
+    "1200.0": {
+      "median_cv_L_MINK": 0.04542512520706844,
+      "median_cv_V_MINK": 0.11665174015233362,
+      "passes_support": true,
+      "total_mink_seeds": 24,
+      "valid_mink_seeds": 24
+    },
+    "2400.0": {
+      "median_cv_L_MINK": 0.031294678411653065,
+      "median_cv_V_MINK": 0.11599322670960069,
+      "passes_support": true,
+      "total_mink_seeds": 24,
+      "valid_mink_seeds": 24
+    },
+    "4800.0": {
+      "median_cv_L_MINK": 0.027567137189878483,
+      "median_cv_V_MINK": 0.11362586664737001,
+      "passes_support": true,
+      "total_mink_seeds": 24,
+      "valid_mink_seeds": 24
+    },
+    "9600.0": {
+      "median_cv_L_MINK": 0.019746455489398754,
+      "median_cv_V_MINK": 0.11488594284354918,
+      "passes_support": true,
+      "total_mink_seeds": 24,
+      "valid_mink_seeds": 24
+    }
+  },
+  "terminal": "MINK_CONTROL_NONDEGENERATE_ON_NEW_GEOMETRY",
+  "terminal_layer": "contract/design",
+  "timestamp_utc": "2026-07-19T17:16:01.742635+00:00"
+}

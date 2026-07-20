@@ -1,0 +1,115 @@
+{
+  "artifacts": {
+    "dev_artifact_hashes.sha256": {
+      "path": "evidence/square_box_truncated_futures_localization_20260719/dev_artifact_hashes.sha256"
+    },
+    "dev_per_seed_localization.csv": {
+      "path": "evidence/square_box_truncated_futures_localization_20260719/dev_per_seed_localization.csv"
+    },
+    "dev_support_report.md": {
+      "path": "evidence/square_box_truncated_futures_localization_20260719/dev_support_report.md"
+    },
+    "dev_support_summary.json": {
+      "path": "evidence/square_box_truncated_futures_localization_20260719/dev_support_summary.json"
+    },
+    "dev_terminal.txt": {
+      "path": "evidence/square_box_truncated_futures_localization_20260719/dev_terminal.txt"
+    }
+  },
+  "command": ".venv/bin/python dev/run_truncated_futures_localization.py dev",
+  "contract": "docs/preregistration_square_box_truncated_futures_localization_draft.md",
+  "eval_seeds_consumed": false,
+  "generated_at_utc": "2026-07-20T11:19:39.392059+00:00",
+  "head": "5ec21ff1b6f1b7aaf66608749fd1c074024d16f5",
+  "interpretation_boundary": "development support/viability only; not confirmatory evidence",
+  "numpy": "1.26.4",
+  "primary_intensity_descriptive": {
+    "false_positive_MINK_fraction": 0.0,
+    "median_BH_loc_med": 15.62132964154105,
+    "median_BH_loc_q75": 15.87624294734664,
+    "valid_BH_trunc": 16
+  },
+  "python": "3.12.3",
+  "seeds": [
+    4500000,
+    4500001,
+    4500002,
+    4500003,
+    4500004,
+    4500005,
+    4500006,
+    4500007,
+    4500008,
+    4500009,
+    4500010,
+    4500011,
+    4500012,
+    4500013,
+    4500014,
+    4500015
+  ],
+  "status": "DEV_SUPPORT_RUN_COMPLETED_NO_CONFIRMATORY_CLAIM",
+  "support": {
+    "BH_1200.0": {
+      "abstention_fraction": 0.0,
+      "median_band_size": 2.0,
+      "median_edge_med": 0.46886728218731233,
+      "total": 16,
+      "valid_trunc": 16
+    },
+    "BH_2400.0": {
+      "abstention_fraction": 0.0,
+      "median_band_size": 3.0,
+      "median_edge_med": 0.6467091742406468,
+      "total": 16,
+      "valid_trunc": 16
+    },
+    "BH_4800.0": {
+      "abstention_fraction": 0.0,
+      "median_band_size": 3.0,
+      "median_edge_med": 0.5944818171366257,
+      "total": 16,
+      "valid_trunc": 16
+    },
+    "BH_9600.0": {
+      "abstention_fraction": 0.0,
+      "median_band_size": 4.0,
+      "median_edge_med": 0.7086019770134651,
+      "total": 16,
+      "valid_trunc": 16
+    },
+    "MINK_1200.0": {
+      "abstention_fraction": 0.0,
+      "median_band_size": 2.0,
+      "median_edge_med": 0.9845696487577695,
+      "total": 16,
+      "valid_trunc": 16
+    },
+    "MINK_2400.0": {
+      "abstention_fraction": 0.0,
+      "median_band_size": 2.0,
+      "median_edge_med": 2.2927889210991186,
+      "total": 16,
+      "valid_trunc": 16
+    },
+    "MINK_4800.0": {
+      "abstention_fraction": 0.0,
+      "median_band_size": 2.0,
+      "median_edge_med": 1.44372342167369,
+      "total": 16,
+      "valid_trunc": 16
+    },
+    "MINK_9600.0": {
+      "abstention_fraction": 0.0,
+      "median_band_size": 2.0,
+      "median_edge_med": 1.0443741685066814,
+      "total": 16,
+      "valid_trunc": 16
+    }
+  },
+  "synergy_layer_details_descriptive": {
+    "n_pair": 16
+  },
+  "synergy_layer_terminal_descriptive": "INSUFFICIENT_VALID_PAIRS",
+  "terminal": "INCONCLUSIVE_TRUNCATED_FUTURES_BOUNDARY_LOCALIZATION"
+}

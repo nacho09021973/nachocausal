@@ -1,0 +1,5 @@
+Frozen by human review on 2026-07-19.
+Geometry: SQUARE_BOX_2P4
+Question: BOUNDARY_LOCALIZATION_FROM_FUTURE_OBSERVABLES
+Previous dispersion result and R-VAR closure remain intact.
+No data generated at freeze time.

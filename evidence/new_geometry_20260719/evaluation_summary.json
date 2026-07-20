@@ -1,0 +1,65 @@
+{
+  "coverage": {
+    "BH_1200.0": {
+      "total": 24,
+      "valid": 24
+    },
+    "BH_2400.0": {
+      "total": 24,
+      "valid": 24
+    },
+    "BH_4800.0": {
+      "total": 24,
+      "valid": 24
+    },
+    "BH_9600.0": {
+      "total": 24,
+      "valid": 24
+    },
+    "MINK_1200.0": {
+      "total": 24,
+      "valid": 24
+    },
+    "MINK_2400.0": {
+      "total": 24,
+      "valid": 24
+    },
+    "MINK_4800.0": {
+      "total": 24,
+      "valid": 24
+    },
+    "MINK_9600.0": {
+      "total": 24,
+      "valid": 24
+    }
+  },
+  "effects": {
+    "median_D_L": 0.4987114017481817,
+    "median_D_V": 0.47639013575705436,
+    "p_perm_D_L": 1.1920928955078125e-07,
+    "p_perm_D_V": 1.1920928955078125e-07,
+    "sum_D_L": 11.847364987053723,
+    "sum_D_V": 11.231951198647115
+  },
+  "geometry": "SQUARE_BOX_2P4",
+  "primary_bh": {
+    "median_cv_L": 0.5170298920626035,
+    "median_cv_V": 0.5894871796768844
+  },
+  "primary_intensity": 9600.0,
+  "primary_mink": {
+    "median_cv_L": 0.019746455489398754,
+    "median_cv_V": 0.11488594284354918
+  },
+  "primary_valid_pairs": 24,
+  "question_boundary": "NEW_SCIENTIFIC_QUESTION; previous R-VAR CLOSED_NEGATIVE_RESULT [GEOMETRY_SPECIFIC] remains intact",
+  "seeds": {
+    "count": 24,
+    "max": 4200023,
+    "min": 4200000
+  },
+  "status": "SCIENTIFIC_EVALUATION_COMPLETE",
+  "terminal": "BH_MINK_DISPERSION_DIFFERENCE_DETECTED",
+  "terminal_layer": "scientific",
+  "terminal_text": "BH_MINK_DISPERSION_DIFFERENCE_DETECTED\nlayer=scientific"
+}

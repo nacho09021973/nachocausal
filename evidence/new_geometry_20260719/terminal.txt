@@ -1,0 +1,4 @@
+BH_MINK_DISPERSION_DIFFERENCE_DETECTED
+layer=scientific
+geometry=SQUARE_BOX_2P4
+previous_RVAR_closure=INTACT

@@ -1,0 +1,6 @@
+Frozen by human review on 2026-07-19.
+Geometry: SQUARE_BOX_2P4 (T=2.4, R=2.4, aspect ratio = 1.0)
+Seeds: 4_200_000 .. 4_200_023 (disjoint)
+Non-degeneracy threshold (primary intensity 9600.0): median(cv_L_MINK) >= 0.05 OR median(cv_V_MINK) >= 0.05, with ≥20/24 valid MINK seeds.
+Previous R-VAR closure CLOSED_NEGATIVE_RESULT [GEOMETRY_SPECIFIC] remains intact and untouched.
+This is a new scientific question.
