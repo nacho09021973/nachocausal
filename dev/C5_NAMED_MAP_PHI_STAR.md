@@ -4,6 +4,10 @@ STATUS: CONCEPT_DEFINITION_ONLY / NOT_A_CANDIDATE / CANDIDATE_5_NOT_YET_OPENED
 NO_IMPLEMENTATION / NO_SYNTHETIC_EXECUTION / NO_SEEDS / NO_FREEZE  
 DATE: 2026-07-20
 
+PATH_A_UPDATE: exact-row ensemble channel **rejected** in `dev/C5_2_BRITTLENESS_EMISSION.md`;
+active successor map is **Φ★_L** in `dev/C5_2B_PHI_STAR_L_SPECTRAL.md`. This file remains the
+definition of exact-row Φ★ as a formal/diagnostic object only.
+
 BINDS_TO:
 
 - Decision 040 `docs/comite/comite_decision_040_c5-search-space-adjudication.md` (`d5759e6`)
