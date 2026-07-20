@@ -139,8 +139,12 @@ def test_boundary_confound_terminal_requires_near_wall_and_exclusion_loss() -> N
     assert details["edge"]["loss_after_exclusion"] is True
 
 
-def test_cli_preflight_and_fidelity_run_no_seed_modes() -> None:
+def test_cli_preflight_fidelity_and_dev_dispatch_without_real_seed_run(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     script = _ROOT / "dev" / "run_truncated_futures_localization.py"
+    evidence_dir = _ROOT / "evidence" / "square_box_truncated_futures_localization_20260719"
+    before_dev_artifacts = set(evidence_dir.glob("dev_*"))
     preflight = subprocess.run(
         [sys.executable, str(script), "preflight"],
         cwd=_ROOT,
@@ -159,12 +163,14 @@ def test_cli_preflight_and_fidelity_run_no_seed_modes() -> None:
     )
     assert fidelity.returncode == 0, fidelity.stdout + fidelity.stderr
     assert "IMPLEMENTATION_FIDELITY_PASS" in fidelity.stdout
-    blocked = subprocess.run(
-        [sys.executable, str(script), "dev"],
-        cwd=_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    assert blocked.returncode != 0
-    assert "not authorized" in blocked.stderr
+
+    calls = []
+
+    def fake_dev_support() -> dict[str, object]:
+        calls.append("dev")
+        return {"status": "MOCK_DEV_DISPATCHED_NO_SEEDS"}
+
+    monkeypatch.setattr(trunc, "run_dev_support", fake_dev_support)
+    assert trunc.main(["dev"]) == 0
+    assert calls == ["dev"]
+    assert set(evidence_dir.glob("dev_*")) == before_dev_artifacts
