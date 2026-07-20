@@ -10,10 +10,15 @@ Default CLI modes run no TRUNC_FUT_* seeds and write no empirical artifacts.
 from __future__ import annotations
 
 import argparse
+import csv
+import hashlib
 import json
 import math
+import platform
+import subprocess
 import sys
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Mapping, Sequence
 
@@ -116,6 +121,24 @@ class ArmScoring:
     edge_med: float
     edge_rank_med: float
     loc_med_excl_near_edge: float
+
+
+DEV_CSV_FIELDS = (
+    "seed",
+    "intensity",
+    "kind",
+    "N",
+    "n_min",
+    "arm",
+    "valid",
+    "abstention_reason",
+    "band_size",
+    "loc_med",
+    "loc_q75",
+    "edge_med",
+    "edge_rank_med",
+    "loc_med_excl_near_edge",
+)
 
 
 def ell(intensity: float) -> float:
@@ -441,6 +464,176 @@ def fidelity_audit() -> dict[str, object]:
     }
 
 
+def git_commit() -> str:
+    try:
+        return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    except Exception:
+        return "[UNVERIFIED]"
+
+
+def file_sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def run_dev_support() -> dict[str, object]:
+    """Run the frozen dev support pass. This is not confirmatory evaluation."""
+    if tuple(TRUNC_FUT_DEV_SEEDS) != tuple(range(4_500_000, 4_500_016)):
+        raise RuntimeError("TRUNC_FUT_DEV_SEEDS drifted")
+    if tuple(TRUNC_FUT_EVAL_SEEDS) != tuple(range(4_600_000, 4_600_032)):
+        raise RuntimeError("TRUNC_FUT_EVAL_SEEDS drifted")
+    preflight()
+    EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
+    rows: list[dict[str, object]] = []
+    bh_primary_by_seed: dict[int, Mapping[str, ArmScoring]] = {}
+    for seed in TRUNC_FUT_DEV_SEEDS:
+        for intensity in TRUNC_FUT_INTENSITIES:
+            embedding = sprinkle_square(seed, intensity)
+            for kind in ("BH", "MINK"):
+                C = past_matrix_for_kind(embedding, kind)
+                n_min = int(minimal_elements(C).size)
+                scored = score_realization(embedding, C, seed=seed, intensity=intensity)
+                if kind == "BH" and intensity == TRUNC_FUT_PRIMARY_INTENSITY:
+                    bh_primary_by_seed[seed] = scored
+                for arm, arm_score in scored.items():
+                    rows.append(
+                        {
+                            "seed": seed,
+                            "intensity": intensity,
+                            "kind": kind,
+                            "N": int(embedding.shape[0]),
+                            "n_min": n_min,
+                            "arm": arm,
+                            "valid": arm_score.valid,
+                            "abstention_reason": arm_score.abstention_reason,
+                            "band_size": arm_score.band_size,
+                            "loc_med": arm_score.loc_med,
+                            "loc_q75": arm_score.loc_q75,
+                            "edge_med": arm_score.edge_med,
+                            "edge_rank_med": arm_score.edge_rank_med,
+                            "loc_med_excl_near_edge": arm_score.loc_med_excl_near_edge,
+                        }
+                    )
+    terminal = dev_support_terminal(rows)
+    summary = dev_support_summary(rows, bh_primary_by_seed, terminal)
+    csv_path = EVIDENCE_DIR / "dev_per_seed_localization.csv"
+    summary_path = EVIDENCE_DIR / "dev_support_summary.json"
+    report_path = EVIDENCE_DIR / "dev_support_report.md"
+    terminal_path = EVIDENCE_DIR / "dev_terminal.txt"
+    hashes_path = EVIDENCE_DIR / "dev_artifact_hashes.sha256"
+    _write_dev_csv(csv_path, rows)
+    report_path.write_text(_render_dev_report(summary))
+    terminal_path.write_text(f"{terminal}\n")
+    artifact_paths = [csv_path, summary_path, report_path, terminal_path, hashes_path]
+    summary["artifacts"] = {
+        path.name: {"path": str(path.relative_to(ROOT))}
+        for path in artifact_paths
+    }
+    summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
+    hash_targets = [csv_path, summary_path, report_path, terminal_path]
+    hashes_path.write_text("".join(f"{file_sha256(path)}  {path.name}\n" for path in hash_targets))
+    print(json.dumps(summary, indent=2, sort_keys=True))
+    return summary
+
+
+def dev_support_terminal(rows: Sequence[Mapping[str, object]]) -> str:
+    primary_trunc = [
+        row for row in rows
+        if row["intensity"] == TRUNC_FUT_PRIMARY_INTENSITY and row["arm"] == "trunc"
+    ]
+    if any(not bool(row["valid"]) for row in primary_trunc):
+        return "FAILED_SUPPORT_CONTRACT"
+    if any(int(row["band_size"]) > max(2, math.floor(0.20 * int(row["n_min"]))) for row in primary_trunc):
+        return "LOCALIZER_OVERBROAD_BAND"
+    return "INCONCLUSIVE_TRUNCATED_FUTURES_BOUNDARY_LOCALIZATION"
+
+
+def dev_support_summary(
+    rows: Sequence[Mapping[str, object]],
+    bh_primary_by_seed: Mapping[int, Mapping[str, ArmScoring]],
+    terminal: str,
+) -> dict[str, object]:
+    def arm_rows(kind: str, intensity: float, arm: str) -> list[Mapping[str, object]]:
+        return [
+            row for row in rows
+            if row["kind"] == kind and row["intensity"] == intensity and row["arm"] == arm
+        ]
+
+    support: dict[str, object] = {}
+    for intensity in TRUNC_FUT_INTENSITIES:
+        for kind in ("BH", "MINK"):
+            trunc_rows = arm_rows(kind, intensity, "trunc")
+            valid = [row for row in trunc_rows if bool(row["valid"])]
+            support[f"{kind}_{intensity}"] = {
+                "valid_trunc": len(valid),
+                "total": len(trunc_rows),
+                "abstention_fraction": 1.0 - (len(valid) / len(trunc_rows) if trunc_rows else math.nan),
+                "median_band_size": _median([row["band_size"] for row in valid]),
+                "median_edge_med": _median([row["edge_med"] for row in valid]),
+            }
+    bh_primary = [row for row in arm_rows("BH", TRUNC_FUT_PRIMARY_INTENSITY, "trunc") if bool(row["valid"])]
+    mink_primary = [row for row in arm_rows("MINK", TRUNC_FUT_PRIMARY_INTENSITY, "trunc") if bool(row["valid"])]
+    false_positive_fraction = (
+        sum(float(row["loc_med"]) <= LOC_MED_PASS for row in mink_primary) / len(mink_primary)
+        if mink_primary else math.nan
+    )
+    synergy_terminal_value, synergy_details = synergy_terminal(bh_primary_by_seed)
+    return {
+        "status": "DEV_SUPPORT_RUN_COMPLETED_NO_CONFIRMATORY_CLAIM",
+        "terminal": terminal,
+        "synergy_layer_terminal_descriptive": synergy_terminal_value,
+        "synergy_layer_details_descriptive": synergy_details,
+        "head": git_commit(),
+        "command": ".venv/bin/python dev/run_truncated_futures_localization.py dev",
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "python": platform.python_version(),
+        "numpy": np.__version__,
+        "contract": str(CONTRACT_PATH.relative_to(ROOT)),
+        "seeds": list(TRUNC_FUT_DEV_SEEDS),
+        "eval_seeds_consumed": False,
+        "support": support,
+        "primary_intensity_descriptive": {
+            "valid_BH_trunc": len(bh_primary),
+            "median_BH_loc_med": _median([row["loc_med"] for row in bh_primary]),
+            "median_BH_loc_q75": _median([row["loc_q75"] for row in bh_primary]),
+            "false_positive_MINK_fraction": false_positive_fraction,
+        },
+        "interpretation_boundary": "development support/viability only; not confirmatory evidence",
+    }
+
+
+def _write_dev_csv(path: Path, rows: Sequence[Mapping[str, object]]) -> None:
+    with path.open("w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=DEV_CSV_FIELDS)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({field: row[field] for field in DEV_CSV_FIELDS})
+
+
+def _render_dev_report(summary: Mapping[str, object]) -> str:
+    primary = summary["primary_intensity_descriptive"]
+    return (
+        "# Truncated-Futures Dev Support Run\n\n"
+        f"HEAD: `{summary['head']}`\n\n"
+        f"Terminal: `{summary['terminal']}`\n\n"
+        f"Synergy layer, descriptive only: `{summary['synergy_layer_terminal_descriptive']}`\n\n"
+        "This is a development support/viability run only, not confirmatory evidence.\n\n"
+        "## Primary Intensity Descriptives\n\n"
+        f"- valid_BH_trunc: `{primary['valid_BH_trunc']}`\n"
+        f"- median_BH_loc_med: `{primary['median_BH_loc_med']}`\n"
+        f"- median_BH_loc_q75: `{primary['median_BH_loc_q75']}`\n"
+        f"- false_positive_MINK_fraction: `{primary['false_positive_MINK_fraction']}`\n"
+    )
+
+
+def _median(values: Sequence[object]) -> float:
+    vals = [float(v) for v in values if np.isfinite(float(v))]
+    return float(np.median(vals)) if vals else math.nan
+
+
 def _assert_square_bool_matrix(C: np.ndarray) -> None:
     if C.ndim != 2 or C.shape[0] != C.shape[1] or C.dtype != bool:
         raise ValueError("C must be a square bool past matrix")
@@ -456,9 +649,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "fidelity":
         print(json.dumps(fidelity_audit(), indent=2, sort_keys=True))
         return 0
-    raise SystemExit(
-        f"{args.command} seed execution is not authorized in this phase; run preflight/fidelity only"
-    )
+    if args.command == "dev":
+        run_dev_support()
+        return 0
+    raise SystemExit("confirmatory evaluation is not authorized; dev support only")
 
 
 if __name__ == "__main__":
