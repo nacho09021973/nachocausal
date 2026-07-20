@@ -84,12 +84,11 @@ internal-S4-side principle, arithmetic impossibility, or later frozen F8 failure
 
 Ranked; each needs explicit user/committee OK:
 
-1. **Hand F1b separator for Φ★_L** — finite poset pair, documentary or exact arithmetic by hand /
-   computer algebra **without** the project generator or evaluation seeds. Lowest risk.
+1. ~~**Hand F1b separator for Φ★_L**~~ — **DONE** `PASS` in `dev/C5_F1B_PHI_STAR_L_SEPARATOR.md`.
 2. **Synthetic falsifier suite for F1–F7 only** — still no `CANDIDATE_5`, no real-generator band.
 3. **C6 parallel track** — different physical target (quasi-local expansion/trapping), if patience
    for matrix spectral cuts is gone.
-4. **Open CANDIDATE_5** — only after (1)–(2) pass and Env floors for F8 are freezable. Not now.
+4. **Open CANDIDATE_5** — only after (2) pass and Env floors for F8 are freezable. Not now.
 
 ## 7. One-paragraph scientific summary
 

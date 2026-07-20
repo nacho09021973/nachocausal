@@ -122,11 +122,9 @@ spectral maps — unexpected).
 **Pass:** At least one explicit pair is written in the design dossier (conceptual pairs allowed
 without generator seeds).
 
-**Conceptual pair sketch (not executed):** use `P_close` vs `P_flat` from the non-collapse note
-(all `V=2`). Compute whether `L=D−A` yields distinct simple-`λ_2` sign patterns or distinct
-terminals. If both abstain, strengthen the pair until Φ★_L separates or document spectral
-collapse on that pair and move to a larger hand example. **Status:** obligation on any future
-synthetic phase; not discharged by floating numerics in this paper contract.
+**Discharged:** hand witness pair `C_bridge` vs `C_cross` in
+`dev/C5_F1B_PHI_STAR_L_SEPARATOR.md` — same `V≡(5,5,5,5)`, peel-stable Φ★_L emits
+`{{m1,m2},{m3,m4}}` vs `{{m1,m3},{m2,m4}}` with exact eigenvectors. **Status:** `F1B_PASS`.
 
 ### F2 — Roof domination
 
