@@ -111,8 +111,49 @@ corrige a sí mismo"*. La honestidad-como-método es lo diferencial.
 ### 8. Límites y trabajo futuro honesto
 - Lo que **NO** se afirma: reconstrucción métrica, horizonte de eventos global, 3+1D, área-law,
   identificación de superficie marginal.
-- Qué haría falta para reabrir: un **objeto + target distintos** (no otro autovector; decision 042
-  §8), y una familia horizon-bearing con eje de colocación.
+- Qué haría falta para reabrir: resumen en §8.1 (las dos condiciones se exigen **a la vez**).
+
+#### 8.1 Condiciones de reapertura *(por qué el listón es el banco, no el observable nº 7)*
+
+Reabrir la línea de localización exige **dos condiciones simultáneas**, de **dos hilos distintos**
+del programa. Ninguna basta por sí sola.
+
+**(A) Objeto + target distintos — no otro autovector.** *(hilo localizadores C1–C6; decision 042
+§6, §8.)* La línea C1–C6 cambiaba el observable pero conservaba el mismo problema y la misma
+maquinaria de fondo:
+- *target invariante:* "localizar la **región** de horizonte → partición/bloque espacial";
+- *objeto de fondo invariante:* casi todo se reducía a la matriz de futuros comunes de los
+  minimales y a un resumen espectral suyo (C4 → C5 → `Φ★_L`).
+Elegir otro autovector, otro umbral o otro clustering de **esa misma matriz** es variación
+cosmética, no un objeto nuevo — y por eso todos murieron por la misma pared. Reabrir exige cambiar
+**las dos** cosas: (i) un objeto order-only que **no** sea "resumen de la common-future de
+minimales", y (ii) un target definido por separado (p.ej. un proxy cuasi-local de expansión/trapping
+con su propio criterio, no una etiqueta de región; cf. gramática de claims). Test rápido de
+descarte: **si una idea se puede escribir como "otro autovector/umbral/clustering de la matriz de
+minimales", es la misma línea con otro nombre** — prohibido (decision 042 §6).
+
+**(B) Familia *horizon-bearing* con eje de colocación — el problema del banco.** *(hilo BD/PR011/
+OP-2.2; `docs/marcador_reentrada_2026-07-19.md`, decision 037.)* Esta condición es sobre el
+**test-bench**, no sobre el observable:
+- *horizon-bearing:* la familia de causets sintéticos de validación debe contener la estructura de
+  horizonte de forma controlada;
+- *eje de colocación (placement axis):* la **posición del horizonte debe variar de forma conocida y
+  controlada** a lo largo de un eje, para poder validar *fidelidad de localización* (casos con el
+  horizonte en sitios distintos + comprobar que el observable lo sigue).
+El banco actual **no tiene ese eje**: los tres objetos independientes (R-VAR, Candidate A/PR009/
+PR010, BD/OP-2.2) chocaron con la misma degeneración estructural — la caja alta colapsa los futuros
+en el techo (degeneración MINK-null de caja alta) y la señal de "pared" no se separa de la de
+"bridge" (el `F3` de C5). El banco no puede, ni en principio, separar colocación de horizonte de
+artefactos de la caja; por eso ningún observable order-only podía ganar ahí — **no por la física,
+sino por falta de contraste en el banco**.
+
+**Conclusión operativa.** El paso difícil **no** es inventar el observable nº 7, sino **construir el
+banco**: una familia horizon-bearing con eje de colocación que no herede la degeneración de caja
+alta ni la ambigüedad pared↔bridge. Mientras el test-bench no tenga ese eje, cualquier observable
+nuevo vuelve a morir por la misma pared. Por eso la recomendación viva es **consolidar** (§3–§6),
+no abrir C7: reabrir de verdad significa resolver primero el problema del banco, una empresa de otro
+tamaño. Cualquier reapertura debe pasar por `/comite` dedicado + autorización explícita del PI
+(decisiones 035/036/037), nunca por adaptación post-hoc.
 
 ### 9. Reproducibilidad
 - Sello, seeds (bandas dev vs validación disjuntas), comandos, hashes; separación dev/validación;
