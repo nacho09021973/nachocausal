@@ -1,9 +1,16 @@
 # Ficha «SE BUSCA» — identificabilidad order-only en variación total (especificación de búsqueda bibliográfica)
 
-**Estado:** `BORRADOR / EXPLORACION` (v2, 2026-07-24; v1 del mismo día, sustituida). No es un
-documento congelado; no autoriza preregistros, ejecuciones ni implementaciones. Su única función:
-especificar la búsqueda bibliográfica con precisión suficiente para (a) dirigir cada disparo y
-(b) reconocer un acierto — o descartar un falso positivo — con criterios escritos de antemano.
+**Estado:** `BORRADOR / EXPLORACION` (v3, 2026-07-24; v2 corregida tras auditor_report_023,
+v1 del mismo día sustituida). No es un documento congelado; no autoriza preregistros, ejecuciones
+ni implementaciones. Su única función: especificar la búsqueda bibliográfica con precisión
+suficiente para (a) dirigir cada disparo y (b) reconocer un acierto — o descartar un falso
+positivo — con criterios escritos de antemano.
+
+**v3 — dos disparos del coto 1 ya hechos (§2.1):** Janson 2011 (arXiv:0902.0306) y
+Reitzner–Schulte 2013 (arXiv:1104.1039), ambos leídos íntegros, verificados localmente y
+guardados en `biblioteca/`. Ninguno cierra el hueco central; Reitzner–Schulte lo reduce, para el
+candidato 7.1, a una única desigualdad escalar por par (`p(theta) != p(theta')`), sin verificarla
+para ningún par concreto — eso sería abrir cómputo/prueba nueva, no búsqueda bibliográfica.
 
 **Fuentes internas revisadas para esta versión** (las únicas que esta ficha cita):
 
@@ -127,6 +134,83 @@ Con etiquetas exactas de las fuentes; ninguna promoción de estatus se hace aqu�
   ninguna técnica para (a) acotar `TV(Q)` **por debajo**, ni (b) acotarla por arriba
   *estrictamente por debajo* de la cota puntual. Este hueco es exactamente lo que la búsqueda
   bibliográfica debe intentar cerrar.
+
+## 2.1 Dos hallazgos externos verificados (2026-07-24, búsqueda bibliográfica, sin ejecución)
+
+Ambos PDFs leídos íntegros y guardados en `biblioteca/` (`0902.0306v1.pdf`,
+`1104.1039v3.pdf`). Ninguno de los dos cierra el hueco central por sí solo; cada uno recorta una
+pieza concreta, con precisión sobre qué queda fuera.
+
+**(A) Janson 2011, *Poset limits and exchangeable random posets* (arXiv:0902.0306, Teoremas 1.7,
+1.8, 7.1; Lema 6.6; §6 "cut metric").** Da la **recíproca general** que OP-1.2 §7 marca
+explícitamente como no usada («la recíproca general desde igualdad de todas las leyes finitas a
+isomorfismo causal-medida») y que PR012 §9 pide para promover la rigidez de cópulas de FWP §4 a
+lema citado:
+
+- Teorema 7.1: para dos núcleos (`kernels`) `W_1` en `(S_1,mu_1,≺)` y `W_2` en `(S_2,mu_2,≺)`
+  sobre espacios de Borel, son equivalentes: (i) los límites de poset coinciden,
+  `Pi_{W_1} = Pi_{W_2}`; (ii) `t(Q,Pi_1) = t(Q,Pi_2)` para todo poset finito `Q` (igualdad de
+  TODAS las densidades de subposet, para TODO tamaño); (iv) `P(n,W_1)` y `P(n,W_2)` tienen la
+  misma ley **para todo `n` finito** (exactamente nuestra condición 2 de OP-1.2 §1: igualdad para
+  todo `n`, no un `n` fijo); (vii) distancia de corte `delta_□(W_1,W_2) = 0`; y — solo bajo la
+  hipótesis genérica adicional «`W_2` casi libre de gemelos» (ninguna condición de nuestros
+  patches verificada contra esto todavía) — (ix) existe una biyección bimedible que preserva
+  medida entre los dos espacios (módulo conjuntos nulos) tal que `W_1 = W_2` compuesto con ella.
+  Esta última es la versión medida-teórica general, en cualquier espacio de Borel, del argumento
+  diferencial-geométrico específico de Schwarzschild (isometría vía escalar de Ricci) que usa
+  WP4 Prop 5 — **complementaria, no sustituta**: Janson no necesita estructura métrica ni
+  ecuaciones de campo, pero exige la hipótesis de no-gemelos para la dirección (ix).
+- Lema 6.6: `|t(Q,Pi_1) - t(Q,Pi_2)| <= m * delta_□(W_1,W_2)` (`m` = número de pares
+  comparables en `Q`) — una cota **superior** explícita, misma familia que data processing;
+  no da información nueva para el hueco central (Forma L).
+- **Lo que NO da:** ni una tasa cuantitativa en TV a `n` fijo, ni un enunciado en el régimen
+  `lambda -> infinito` de esta ficha — el teorema compara **el límite exacto sobre toda la
+  escalera** (igualdad/desigualdad de leyes para todo `n` simultáneamente), un objeto distinto de
+  `TV(Q^n)` a `n` fijo o de su asíntota en `n`. Útil para promover la rigidez de cópulas y para
+  auditar el test de órbita (§4) con una herramienta general citada; no resuelve Forma L/U tal
+  como se piden en esta ficha.
+- Estado: `CONFIRMED_DIRECT` (verificado localmente, texto íntegro leído).
+
+**(B) Reitzner–Schulte 2013, *Central limit theorems for U-statistics of Poisson point
+processes* (Ann. Probab. 41(6), arXiv:1104.1039; Lema 3.5, Teoremas 4.7 y 5.2).** Da
+exactamente el **ingrediente 2 de §6** (control de fluctuaciones) para el candidato 7.1 (número
+de pares comparables), con una tasa explícita:
+
+- Un `U`-estadístico de Poisson de orden `k=2`, `F = sum_{x!=y in eta} f(x,y)`, tiene fórmula
+  exacta de varianza (Lema 3.5) y satisface (Teorema 4.7)
+  `d_W((F - E F)/sqrt(Var F), N) <= 2*k^{7/2} * sum M_ij(f)/Var F`; si `f` es fijo,
+  independiente de la intensidad `lambda` (Teorema 5.2), `d_W(...) <= C_f * lambda^{-1/2}` con
+  `C_f` una constante que **no depende de lambda**.
+- **Aplicación directa a 7.1:** tomando `X = [0,1]^2` en coordenadas de rango de la cópula,
+  `mu_theta = lambda * c_theta` (intensidad de Poisson, `c_theta` la densidad normalizada de la
+  cópula — nonatómica, hipótesis de Reitzner–Schulte §2.1 satisfecha) y `f(x,y) = 1[x prec y]`
+  (el orden producto fijo en coordenadas de rango — **no depende de `theta` ni de `lambda`**),
+  `S_lambda,theta := sum_{pares} f` (número de pares comparables observado, order-only: se lee
+  del poset sin coordenadas) es un `U`-estadístico de orden 2 con kernel fijo. Teorema 5.2 da
+  `d_W -> 0` a tasa `lambda^{-1/2}`, con la MISMA constante `C_f` para todo `theta` de la familia
+  (el kernel no depende de `theta`).
+- **Cálculo elemental restante (no en Reitzner–Schulte, aportado aquí, sin verificación por
+  pares independiente):** por Mecke/primer-momento, `E_theta S = lambda^2 * p(theta)` con
+  `p(theta) := int int f dc_theta dc_theta` (la `p(theta)` de §7.1, sin cambios); por Lema 3.5,
+  `Var_theta S = Theta(lambda^3)` genéricamente (el término `i=1` domina). Cociente
+  señal/ruido `~ lambda^{1/2} * (p(theta)-p(theta'))`, que diverge en el régimen 1.3-modo-1
+  (`lambda -> infinito` a dominio fijo) **si y solo si** `p(theta) != p(theta')`.
+- **Lo que esto cierra:** el ingrediente 2 de §6 para 7.1 completo, citado y con tasa explícita,
+  uniforme en `theta`. **Lo que NO cierra — el único punto que falta:** `p(theta) != p(theta')`
+  para el par concreto que se quiera usar (WP4 diamante, OP-1.1/1.2, u otro). Sigue
+  `[OPEN por par]` exactamente como en la v2 de esta ficha; la inyectividad de `tau -> c_tau`
+  (WP4 Prop 5) no implica la de `tau -> p(tau)` — no se ha intentado aquí ningún cálculo o
+  verificación de esa desigualdad para ningún par concreto (eso sería abrir una línea de
+  cómputo/prueba nueva, fuera del alcance de esta búsqueda).
+- Estado: `CONFIRMED_DIRECT` (verificado localmente, texto íntegro leído; hipótesis §2.1 de
+  Reitzner–Schulte — Borel, `mu` sigma-finita no atómica — comprobadas contra nuestra `c_theta`).
+
+**Lectura conjunta.** (B) reduce el candidato 7.1 de «hace falta desarrollar máquinas de
+momentos y CLT para conteos order-only» a «hace falta verificar una única desigualdad escalar,
+`p(theta) != p(theta')`, para el par elegido» — el resto de la cadena (§6, pasos 2-4) queda
+cubierto por un teorema citado con tasa explícita. Esa desigualdad no se ha verificado aquí para
+ningún par; es el siguiente paso natural, y es un cálculo (no una ejecución ni una implementación
+de estimador): una integral doble sobre la cópula concreta de la familia elegida.
 
 ## 3. Las tres formas de resultado buscadas
 
@@ -298,15 +382,22 @@ orden 2, extremal global, conteos locales de todo orden) y el agregado físico e
 2. *Régimen:* definido en los tres modos de §1.3.
 3. *Resultado necesario:* `E S_n = C(n,2) * p(theta)` con `p(theta)` = probabilidad de que dos
    puntos iid de `c_theta` sean comparables (funcional de la cópula; en cajas nulas, comparable
-   ⟺ concordancia de rangos). Hace falta: (a) `p(theta) != p(theta')` para el par — **no
-   probado; no se sigue de Prop 5** `[OPEN por par]`; (b) varianza de U-estadístico (clásico
-   Hoeffding a `n` fijo; en Poisson, U-estadísticos de Poisson vía Malliavin–Stein). Si (a) vale,
-   el cociente señal/ruido crece como `sqrt(n)*|Delta_p|` y §6.3 da Forma L fuerte.
+   ⟺ concordancia de rangos). **Ingrediente de varianza/CLT ahora `CONFIRMED_DIRECT`**: en el
+   canal Poisson (`lambda -> infinito`, modo 1 de §1.3), Reitzner–Schulte 2013 (arXiv:1104.1039,
+   Lema 3.5 + Teoremas 4.7/5.2 — ver §2.1(B)) da la fórmula exacta de varianza y
+   `d_W((S-ES)/sqrt(Var S), N) <= C_f * lambda^{-1/2}`, con `C_f` uniforme en `theta` (el kernel
+   comparabilidad `f = 1[x prec y]` no depende de `theta` ni de `lambda`). Con eso,
+   `Var_theta S = Theta(lambda^3)` (elemental por Mecke, no en la fuente), luego el cociente
+   señal/ruido `Delta_mu/sigma ~ sqrt(lambda)*(p(theta)-p(theta'))` diverge en `lambda`. Queda
+   como único ingrediente pendiente: (a) `p(theta) != p(theta')` para el par — **no probado; no
+   se sigue de Prop 5** `[OPEN por par]`, sin verificación intentada aquí. Si (a) vale, §6.3 da
+   Forma L fuerte, con tasa citada, no solo un esquema.
 4. *Confusores:* la media depende cuadráticamente de la cardinalidad (en Poisson sin condicionar,
    `N` domina — usar `fixed_n` o normalizar); forma del patch y borde entran vía la cópula; la
    escala NO es confusor (funcional de cópula ⟹ pasa el test §4 automáticamente).
-5. *Puede dar:* Forma L (la ruta más corta si (a) se verifica); si `p(theta) = p(theta')`, el
-   candidato es ciego para ese par y solo queda como evidencia auxiliar.
+5. *Puede dar:* Forma L (la ruta más corta; con (B) de §2.1 el único hueco restante es (a)); si
+   `p(theta) = p(theta')`, el candidato es ciego para ese par y solo queda como evidencia
+   auxiliar.
 
 ### 7.2 Altura `H_n` (cadena más larga)
 
@@ -372,11 +463,11 @@ Estados usados (definición local de esta ficha):
 | Boguñá–Krioukov 2024 (PRD 110, 024008; local, WP4 §9) | estimador de distancias espaciales por solapes causales | order + cardinalidad | `rho -> infinito`, Minkowski | error relativo `~1/sqrt(rho V)` | lado alcanzabilidad (upper-bound-side) | flatness local | auxiliar (contraste de canales) | sin cotas inferiores; canal y target distintos | `NOT_APPLICABLE` (leída local) |
 | Höpfner 2014 (biblioteca local, WP4 §8) | familias QMD, contigüidad | genérico iid | asintótica local | `H^2`, contigüidad | superior (vía `TV <= H`) | QMD | herramienta para L/D | nada sobre no etiquetado | `CONFIRMED_TOOL_ONLY` |
 | van der Vaart 1998, Lemma 7.6; Tsybakov 2009 §2.4 | criterio QMD; método de dos puntos | genérico | asintótica local / `n` fijo | `H`, TV | superior | estándar | herramienta | sin copia local verificada | `UNVERIFIED` (estándar) |
-| Last–Penrose (*Lectures on the Poisson Process*) | funcionales de Poisson, Malliavin–Stein | funcional `F` bajo UNA ley | `lambda -> infinito` | `d_W/d_K/d_TV` **a la gaussiana límite** | aproximación, no comparación | momentos/diferencias de `F` | ingrediente 2–3 de §6 para 7.1/7.3 | no compara `theta` vs `theta'`; aplicabilidad a funcionales de orden por comprobar | `POSSIBLE_BRIDGE` / `UNVERIFIED` local |
-| Reitzner–Schulte (U-estadísticos de Poisson, Malliavin–Stein) | U-estadísticos de procesos de Poisson | conteos tipo 7.1/7.3 | `lambda -> infinito` | CLT cuantitativo | fluctuaciones (ingrediente 2) | núcleos `L^2` | puente a L vía §6.3 | separación de medias (ingrediente 1) no incluida | `POSSIBLE_BRIDGE` / `UNVERIFIED` |
+| Last–Penrose (*Lectures on the Poisson Process*; maquinaria general detrás de Reitzner–Schulte) | funcionales de Poisson, expansión de Wiener–Itô | funcional `F` bajo UNA ley | `lambda -> infinito` | `d_W` a la gaussiana límite | aproximación, no comparación | momentos/diferencias de `F` | ingrediente de fondo de Reitzner–Schulte (fila siguiente) | no compara `theta` vs `theta'` directamente | `CONFIRMED_TOOL_ONLY` (citado dentro de Reitzner–Schulte §2.3, no leído aparte) |
+| **Reitzner–Schulte 2013** (Ann. Probab. 41(6); arXiv:1104.1039, local `biblioteca/1104.1039v3.pdf`; Lema 3.5, Teoremas 4.7/5.2) | U-estadísticos de orden `k=2` de procesos de Poisson | conteo order-only de pares comparables (candidato 7.1) | `lambda -> infinito`, dominio fijo (modo 1 de §1.3) | `d_W` a `N(0,1)`, tasa explícita `<= C_f*lambda^{-1/2}` | fluctuaciones (ingrediente 2 de §6), **con tasa citada** | `mu` Borel no atómica (✓ para `c_theta`); `f` fijo, independiente de `lambda`/`theta` (✓ para `f=1[x prec y]`) | puente a Forma L vía §6.3, ver §2.1(B) | solo falta `p(theta) != p(theta')` por par — `[OPEN por par]`, sin verificar | `CONFIRMED_DIRECT` (verificado localmente 2026-07-24) |
 | Deuschel–Zeitouni 1995 (LIS de puntos iid no uniformes) | subsecuencia creciente más larga | permutación de rangos (order-only) | `n -> infinito` | LLN variacional de la media | medias (ingrediente 1 para 7.2) | densidad regular en el plano | puente a L vía 7.2 | fluctuaciones no uniformes; separación `c(theta)!=c(theta')` | `POSSIBLE_BRIDGE` / `UNVERIFIED` |
 | Baik–Deift–Johansson 1999 | fluctuaciones LIS caso uniforme | permutación de rangos | `n -> infinito` | `n^{1/6}`, Tracy–Widom | fluctuaciones (ingrediente 2 para 7.2) | uniformidad | puente a L | extensión a densidades generales | `POSSIBLE_BRIDGE` / `UNVERIFIED` |
-| Janson 2011 (arXiv:0902.0306, poset limits) | límites de posets intercambiables | posets no etiquetados | `n -> infinito` | convergencia de densidades de subposets | representación/límite, sin tasas | intercambiabilidad | herramienta para D (marco del experimento límite) | sin TV cuantitativa | `UNVERIFIED` (snapshot local sin verificar, OP-1.2 §9) |
+| **Janson 2011** (arXiv:0902.0306, local `biblioteca/0902.0306v1.pdf`; Teoremas 1.7, 1.8, 7.1, Lema 6.6) | límites de posets intercambiables, núcleos (`kernels`) | igualdad de leyes de poset **para todo `n`** (no `n` fijo) | régimen «toda la escalera» (no `lambda`/`n` fijo de esta ficha) | distancia de corte `delta_□`; cota `\|t(Q,·)-t(Q,·)\| <= m*delta_□` | recíproca general (Teo. 7.1) + cota superior (Lema 6.6, misma familia que data processing) | espacios de Borel; hipótesis extra «casi libre de gemelos» solo para la dirección de isomorfismo (ix), no verificada contra nuestros patches | promueve la rigidez de cópulas (FWP §4) a lema citado, ver §2.1(A); no da Forma L/U en el régimen de esta ficha | régimen «todo `n`» distinto de `n` fijo o `lambda->infinito`; hipótesis de no-gemelos sin chequear | `CONFIRMED_DIRECT` (verificado localmente 2026-07-24; supera el `UNVERIFIED` de la v2, snapshot no leído entonces) |
 | Kleitman–Rothschild | poset uniforme aleatorio | posets no etiquetados | conteo asintótico | estructura típica (3 niveles) `[UNVERIFIED]` | — | uniformidad sobre TODOS los posets | ninguna: clase de universalidad equivocada (nuestros posets son órdenes 2D de medidas) | — | `NOT_APPLICABLE` (contraste) / `UNVERIFIED` local |
 
 ## 9. Criterios de cierre de la búsqueda
