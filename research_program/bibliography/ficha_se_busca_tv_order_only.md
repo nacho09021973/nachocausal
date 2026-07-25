@@ -1,16 +1,25 @@
 # Ficha «SE BUSCA» — identificabilidad order-only en variación total (especificación de búsqueda bibliográfica)
 
-**Estado:** `BORRADOR / EXPLORACION` (v3, 2026-07-24; v2 corregida tras auditor_report_023,
-v1 del mismo día sustituida). No es un documento congelado; no autoriza preregistros, ejecuciones
-ni implementaciones. Su única función: especificar la búsqueda bibliográfica con precisión
-suficiente para (a) dirigir cada disparo y (b) reconocer un acierto — o descartar un falso
-positivo — con criterios escritos de antemano.
+**Estado:** `BORRADOR / EXPLORACION` (v4, 2026-07-25; v3 del 2026-07-24, v2 corregida tras
+auditor_report_023, v1 sustituida). No es un documento congelado; no autoriza preregistros,
+ejecuciones ni implementaciones. Su única función: especificar la búsqueda bibliográfica con
+precisión suficiente para (a) dirigir cada disparo y (b) reconocer un acierto — o descartar un
+falso positivo — con criterios escritos de antemano.
 
 **v3 — dos disparos del coto 1 ya hechos (§2.1):** Janson 2011 (arXiv:0902.0306) y
 Reitzner–Schulte 2013 (arXiv:1104.1039), ambos leídos íntegros, verificados localmente y
 guardados en `biblioteca/`. Ninguno cierra el hueco central; Reitzner–Schulte lo reduce, para el
 candidato 7.1, a una única desigualdad escalar por par (`p(theta) != p(theta')`), sin verificarla
 para ningún par concreto — eso sería abrir cómputo/prueba nueva, no búsqueda bibliográfica.
+
+**v4 — esa desigualdad ya está verificada (§2.2, nuevo).** El cálculo que la v3 dejaba pendiente
+se hizo: `research_program/work_packages/wp4_comparable_pair_separation.md` (Anexo C de WP4) prueba
+`p(tau) != p(tau')` para la familia diamante de WP4 §4, en forma cerrada al orden dominante en el
+lapso nulo. **Esto cambia el estado de un ingrediente, no el de la ficha:** Forma L sigue `[OPEN]`,
+y el obstáculo que queda no es esta desigualdad sino el **canal** (§2.2, punto 3). Auditado:
+`docs/auditor/auditor_report_024_...md` (`AUDIT_FAIL`, un error de procedencia) y, tras corregirlo,
+`docs/auditor/auditor_report_025_...md` (`AUDIT_PASS_WITH_WARNINGS`, 0 errores). Ninguna ejecución
+del banco sellado; sello sin drift.
 
 **Fuentes internas revisadas para esta versión** (las únicas que esta ficha cita):
 
@@ -113,6 +122,12 @@ Con etiquetas exactas de las fuentes; ninguna promoción de estatus se hace aqu�
   `TV(Q^n_tau, Q^n_{tau+delta}) <= (|delta|/2) * sqrt(n * Ibar)`, con QMD y `Ibar < infinito`
   probados (Lemma R, Prop 4) e inyectividad `tau -> c_tau` probada (Prop 5). Es una cota a `n`
   fijo condicionado `N = n`; **no** es un enunciado `lambda -> infinito`.
+- **[PROVED (orden dominante)] Separación de la fracción de pares comparables (WP4 Anexo C, §2.2).**
+  Familia diamante: `p(tau) = 1/2 + kappa(r_p,r_q)*tau*dv + O(dv^2)` con `kappa > 0`, luego
+  `p(tau) != p(tau')`. Es el ingrediente 1 de §6 (separación de medias) para el candidato 7.1, no
+  una cota de TV: `p` es un funcional de la cópula, y una separación de medias por sí sola **no**
+  es una Forma L (§9.2, segundo guión). Incluye una reducción `[PROVED]` en forma cerrada de la
+  integral cuádruple de concordancia a una doble, reutilizable para otros conteos.
 - **[PROVED] Invariancia de forma (WP4 §5a, Prop 6).** `kappa = V * Ibar` es exactamente
   invariante por dilatación; el suelo `~ ell/sqrt(kappa)` depende solo de la forma del diamante.
   **[NUMERICAL, no probado]**: `kappa ~ 8e-4` para una forma de referencia (`delta_tau ~ 35 ell`)
@@ -196,21 +211,83 @@ de pares comparables), con una tasa explícita:
   señal/ruido `~ lambda^{1/2} * (p(theta)-p(theta'))`, que diverge en el régimen 1.3-modo-1
   (`lambda -> infinito` a dominio fijo) **si y solo si** `p(theta) != p(theta')`.
 - **Lo que esto cierra:** el ingrediente 2 de §6 para 7.1 completo, citado y con tasa explícita,
-  uniforme en `theta`. **Lo que NO cierra — el único punto que falta:** `p(theta) != p(theta')`
-  para el par concreto que se quiera usar (WP4 diamante, OP-1.1/1.2, u otro). Sigue
-  `[OPEN por par]` exactamente como en la v2 de esta ficha; la inyectividad de `tau -> c_tau`
-  (WP4 Prop 5) no implica la de `tau -> p(tau)` — no se ha intentado aquí ningún cálculo o
-  verificación de esa desigualdad para ningún par concreto (eso sería abrir una línea de
-  cómputo/prueba nueva, fuera del alcance de esta búsqueda).
+  uniforme en `theta`. **Lo que NO cerraba — el punto que faltaba:** `p(theta) != p(theta')`
+  para el par concreto que se quiera usar (WP4 diamante, OP-1.1/1.2, u otro). Estaba
+  `[OPEN por par]`; la inyectividad de `tau -> c_tau` (WP4 Prop 5) no implica la de
+  `tau -> p(tau)`, y en la v3 no se había intentado ningún cálculo. **Resuelto en la v4 para la
+  familia diamante — ver §2.2.** Para OP-1.1/1.2 y cualquier otra familia sigue `[OPEN por par]`:
+  el cálculo del Anexo C es específico de la familia de WP4 §4.
 - Estado: `CONFIRMED_DIRECT` (verificado localmente, texto íntegro leído; hipótesis §2.1 de
   Reitzner–Schulte — Borel, `mu` sigma-finita no atómica — comprobadas contra nuestra `c_theta`).
 
 **Lectura conjunta.** (B) reduce el candidato 7.1 de «hace falta desarrollar máquinas de
 momentos y CLT para conteos order-only» a «hace falta verificar una única desigualdad escalar,
 `p(theta) != p(theta')`, para el par elegido» — el resto de la cadena (§6, pasos 2-4) queda
-cubierto por un teorema citado con tasa explícita. Esa desigualdad no se ha verificado aquí para
-ningún par; es el siguiente paso natural, y es un cálculo (no una ejecución ni una implementación
-de estimador): una integral doble sobre la cópula concreta de la familia elegida.
+cubierto por un teorema citado con tasa explícita. Esa desigualdad era el siguiente paso natural,
+y era un cálculo (no una ejecución ni una implementación de estimador). Se hizo: §2.2.
+
+## 2.2 La desigualdad escalar, verificada (2026-07-25, cálculo propio, sin ejecución)
+
+Fuente interna: `research_program/work_packages/wp4_comparable_pair_separation.md` (WP4 Anexo C),
+con script de verificación `wp4_comparable_pair_separation_checks.py` (sympy + cuadratura
+determinista + un cross-check Monte-Carlo con semilla fija; no importa nada de `nachocausal/`, no
+toca umbrales, bandas de semillas ni artefactos de validación).
+
+**Convención (una inconsistencia interna de esta ficha, ahora declarada).** §7.1 define `p(theta)`
+como la probabilidad de que dos puntos iid sean **comparables**; §2.1(B) la define como
+`int int 1[x prec y] dc dc`, que es **la mitad** (a.s. se cumple exactamente una de `x prec y`,
+`y prec x`). El Anexo C calcula la de §7.1. El factor 2 es común a `theta` y `theta'`, luego no
+afecta a la desigualdad; queda declarado para que las dos secciones no se lean como una
+contradicción.
+
+**Resultado.** Para la familia diamante de WP4 §4 (esquinas EF fijas `p=(v_p,r_p)`, `q=(v_q,r_q)`,
+`0 < r_q < tau < r_p`, lapso nulo `dv := v_q - v_p`):
+
+```text
+p(tau) = 1/2 + kappa(r_p, r_q) * tau * dv + O(dv^2),
+kappa(r_p, r_q) = [ (r_p^2 - r_q^2) - 2 r_p r_q log(r_p/r_q) ] / [ 12 r_p r_q (r_p - r_q)^2 ] > 0.
+```
+
+El término dominante es **estrictamente proporcional a `tau`**, luego `p(tau) != p(tau')` para
+`tau != tau'` con `dv` pequeño. Positividad de `kappa` probada (con `x = r_p/r_q > 1`,
+`phi(x) = (x-1/x)/2 - log x` cumple `phi(1)=0`, `phi' = (x-1)^2/(2x^2) > 0`). Verificado además
+numéricamente en un par concreto (`r_p=3`, `r_q=0.5`, `tau=1.0` vs `tau'=1.2`).
+
+**Pieza reutilizable (más allá de la desigualdad).** El Anexo C reduce en forma cerrada la integral
+cuádruple de concordancia a una doble: el integral de un rayo nulo saliente vale
+`rho(r_0,D)^2 - r_0^2 + tau*D`, de donde el volumen de cualquier sub-diamante
+`J^+(x) ^ J^-(q)` es `rho(r_x,D)^2 + rho(r_q,-D)^2 - r_x^2 - r_q^2`. Esto sirve para cualquier
+funcional de conteo de la familia, no sólo para `p`.
+
+**Estados.** Reducción cerrada y lemas elementales: `[PROVED]` (identidades verificadas
+simbólicamente; reducción corroborada por dos rutas numéricas independientes). Asintótica y
+positividad: `[PROVED (orden dominante)]`, con dos pasos declarados como argumentados y no
+escritos (analiticidad en `dv` en `0^+`; uniformidad en `tau` del resto `O(dv^2)`) y con `dv_0` no
+efectivo. El par concreto: `[NUMERICAL]` a precisión de trabajo.
+
+**Test de la órbita (§4), obligatorio, pasado.** `p` es exactamente un funcional de la cópula
+(`p = (1 + tau_K(c_tau))/2`, con `tau_K` la tau de Kendall), luego es ciego a la órbita de escala
+del Teorema A por construcción — verificado numéricamente a `< 1e-15` bajo la dilatación conjunta.
+Un candidato a Forma L que separase un par del Teorema A sería inválido por §4; este no puede.
+
+**Lo que NO cierra — y el obstáculo se ha desplazado al canal.** Forma L sigue `[OPEN]`. Cuatro
+puntos (Anexo C §5, con detalle):
+
+1. La CLT de Reitzner–Schulte vive en el canal **Poisson sin condicionar**, y esta familia tiene
+   volumen dependiente de `tau` (`V(1.0) = 11.501608349297` vs `V(1.2) = 10.794261266781` a
+   `dv = 4`). Con `rho` conocida la marginal `N` separa **por sí sola**: exactamente el mecanismo
+   trivial que §1.2 y §9.2 prohíben contar.
+2. El canal honesto es `fixed_n`, y allí la CLT importada no aplica tal cual: falta un paso de
+   des-Poissonización que Reitzner–Schulte no da. `[OPEN]`
+3. La no degeneración de la varianza a `fixed_n` (`Var S_n = Theta(n^3)`, i.e. proyección de
+   Hoeffding `h_1` no constante) **no se calculó**, aunque es computable con la misma maquinaria
+   del Anexo C §3. `[OPEN]`
+4. El chequeo obligatorio de §6.4 pasa **sólo a nivel de tasas** (ambos umbrales en
+   `delta ~ n^{-1/2}`, sin contradicción con la cota superior probada de WP4 §5, y — condicional
+   al punto 3 — el conteo de pares sería óptimo en tasa frente a ese suelo). El chequeo a nivel de
+   **constantes** no se hizo: compara `kappa*dv` con `sqrt(zeta_1 * Ibar)`, y no se dispone de
+   `Ibar` para estas esquinas (WP4 §5a sólo tiene `V*Ibar` `[NUMERICAL]`, para una forma de
+   referencia) ni de `zeta_1`. `[OPEN]`
 
 ## 3. Las tres formas de resultado buscadas
 
@@ -388,16 +465,21 @@ orden 2, extremal global, conteos locales de todo orden) y el agregado físico e
    `d_W((S-ES)/sqrt(Var S), N) <= C_f * lambda^{-1/2}`, con `C_f` uniforme en `theta` (el kernel
    comparabilidad `f = 1[x prec y]` no depende de `theta` ni de `lambda`). Con eso,
    `Var_theta S = Theta(lambda^3)` (elemental por Mecke, no en la fuente), luego el cociente
-   señal/ruido `Delta_mu/sigma ~ sqrt(lambda)*(p(theta)-p(theta'))` diverge en `lambda`. Queda
-   como único ingrediente pendiente: (a) `p(theta) != p(theta')` para el par — **no probado; no
-   se sigue de Prop 5** `[OPEN por par]`, sin verificación intentada aquí. Si (a) vale, §6.3 da
-   Forma L fuerte, con tasa citada, no solo un esquema.
+   señal/ruido `Delta_mu/sigma ~ sqrt(lambda)*(p(theta)-p(theta'))` diverge en `lambda`.
+   **Ingrediente (a) — `p(theta) != p(theta')` — `CERRADO para la familia diamante de WP4 §4`**
+   (§2.2; `[PROVED (orden dominante)]` vía `p = 1/2 + kappa*tau*dv + O(dv^2)` con `kappa > 0`, más
+   verificación `[NUMERICAL]` en un par concreto). Para otras familias (OP-1.1/1.2, etc.) sigue
+   `[OPEN por par]`. **Importante:** con (a) cerrado, §6.3 **no** da todavía Forma L fuerte — el
+   obstáculo restante es el canal, no la separación de medias: ver §2.2, puntos 1-4 (marginal `N`
+   como confusor en Poisson sin condicionar, des-Poissonización a `fixed_n`, varianza no
+   calculada, chequeo de §6.4 sólo a nivel de tasas).
 4. *Confusores:* la media depende cuadráticamente de la cardinalidad (en Poisson sin condicionar,
    `N` domina — usar `fixed_n` o normalizar); forma del patch y borde entran vía la cópula; la
    escala NO es confusor (funcional de cópula ⟹ pasa el test §4 automáticamente).
-5. *Puede dar:* Forma L (la ruta más corta; con (B) de §2.1 el único hueco restante es (a)); si
-   `p(theta) = p(theta')`, el candidato es ciego para ese par y solo queda como evidencia
-   auxiliar.
+5. *Puede dar:* Forma L (sigue siendo la ruta más corta; con (B) de §2.1 y (a) cerrado por §2.2,
+   los huecos restantes son de canal, no de señal). La rama «si `p(theta) = p(theta')` el candidato
+   es ciego para ese par» queda **descartada para la familia diamante**: `kappa > 0` estrictamente,
+   luego el estadístico nunca es ciego ahí.
 
 ### 7.2 Altura `H_n` (cadena más larga)
 
@@ -464,7 +546,7 @@ Estados usados (definición local de esta ficha):
 | Höpfner 2014 (biblioteca local, WP4 §8) | familias QMD, contigüidad | genérico iid | asintótica local | `H^2`, contigüidad | superior (vía `TV <= H`) | QMD | herramienta para L/D | nada sobre no etiquetado | `CONFIRMED_TOOL_ONLY` |
 | van der Vaart 1998, Lemma 7.6; Tsybakov 2009 §2.4 | criterio QMD; método de dos puntos | genérico | asintótica local / `n` fijo | `H`, TV | superior | estándar | herramienta | sin copia local verificada | `UNVERIFIED` (estándar) |
 | Last–Penrose (*Lectures on the Poisson Process*; maquinaria general detrás de Reitzner–Schulte) | funcionales de Poisson, expansión de Wiener–Itô | funcional `F` bajo UNA ley | `lambda -> infinito` | `d_W` a la gaussiana límite | aproximación, no comparación | momentos/diferencias de `F` | ingrediente de fondo de Reitzner–Schulte (fila siguiente) | no compara `theta` vs `theta'` directamente | `CONFIRMED_TOOL_ONLY` (citado dentro de Reitzner–Schulte §2.3, no leído aparte) |
-| **Reitzner–Schulte 2013** (Ann. Probab. 41(6); arXiv:1104.1039, local `biblioteca/1104.1039v3.pdf`; Lema 3.5, Teoremas 4.7/5.2) | U-estadísticos de orden `k=2` de procesos de Poisson | conteo order-only de pares comparables (candidato 7.1) | `lambda -> infinito`, dominio fijo (modo 1 de §1.3) | `d_W` a `N(0,1)`, tasa explícita `<= C_f*lambda^{-1/2}` | fluctuaciones (ingrediente 2 de §6), **con tasa citada** | `mu` Borel no atómica (✓ para `c_theta`); `f` fijo, independiente de `lambda`/`theta` (✓ para `f=1[x prec y]`) | puente a Forma L vía §6.3, ver §2.1(B) | solo falta `p(theta) != p(theta')` por par — `[OPEN por par]`, sin verificar | `CONFIRMED_DIRECT` (verificado localmente 2026-07-24) |
+| **Reitzner–Schulte 2013** (Ann. Probab. 41(6); arXiv:1104.1039, local `biblioteca/1104.1039v3.pdf`; Lema 3.5, Teoremas 4.7/5.2) | U-estadísticos de orden `k=2` de procesos de Poisson | conteo order-only de pares comparables (candidato 7.1) | `lambda -> infinito`, dominio fijo (modo 1 de §1.3) | `d_W` a `N(0,1)`, tasa explícita `<= C_f*lambda^{-1/2}` | fluctuaciones (ingrediente 2 de §6), **con tasa citada** | `mu` Borel no atómica (✓ para `c_theta`); `f` fijo, independiente de `lambda`/`theta` (✓ para `f=1[x prec y]`) | puente a Forma L vía §6.3, ver §2.1(B) | `p(theta) != p(theta')` ya **no** es el obstáculo: cerrado para la familia diamante (§2.2). Lo pendiente es el canal — su CLT es Poisson sin condicionar, donde la marginal `N` separa sola (§2.2 punto 1); a `fixed_n` falta des-Poissonización (punto 2) | `CONFIRMED_DIRECT` (verificado localmente 2026-07-24) |
 | Deuschel–Zeitouni 1995 (LIS de puntos iid no uniformes) | subsecuencia creciente más larga | permutación de rangos (order-only) | `n -> infinito` | LLN variacional de la media | medias (ingrediente 1 para 7.2) | densidad regular en el plano | puente a L vía 7.2 | fluctuaciones no uniformes; separación `c(theta)!=c(theta')` | `POSSIBLE_BRIDGE` / `UNVERIFIED` |
 | Baik–Deift–Johansson 1999 | fluctuaciones LIS caso uniforme | permutación de rangos | `n -> infinito` | `n^{1/6}`, Tracy–Widom | fluctuaciones (ingrediente 2 para 7.2) | uniformidad | puente a L | extensión a densidades generales | `POSSIBLE_BRIDGE` / `UNVERIFIED` |
 | **Janson 2011** (arXiv:0902.0306, local `biblioteca/0902.0306v1.pdf`; Teoremas 1.7, 1.8, 7.1, Lema 6.6) | límites de posets intercambiables, núcleos (`kernels`) | igualdad de leyes de poset **para todo `n`** (no `n` fijo) | régimen «toda la escalera» (no `lambda`/`n` fijo de esta ficha) | distancia de corte `delta_□`; cota `\|t(Q,·)-t(Q,·)\| <= m*delta_□` | recíproca general (Teo. 7.1) + cota superior (Lema 6.6, misma familia que data processing) | espacios de Borel; hipótesis extra «casi libre de gemelos» solo para la dirección de isomorfismo (ix), no verificada contra nuestros patches | promueve la rigidez de cópulas (FWP §4) a lema citado, ver §2.1(A); no da Forma L/U en el régimen de esta ficha | régimen «todo `n`» distinto de `n` fijo o `lambda->infinito`; hipótesis de no-gemelos sin chequear | `CONFIRMED_DIRECT` (verificado localmente 2026-07-24; supera el `UNVERIFIED` de la v2, snapshot no leído entonces) |
