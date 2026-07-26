@@ -23,7 +23,13 @@
 > lists exactly what still blocks that, and why the blocker is a *channel* problem, not this
 > inequality.
 >
-> Verification script (all checks pass, exit 0):
+> **Addendum 2026-07-25 (§4b).** The variance side is now done too: the first Hoeffding projection
+> `h_1` is in closed form (Prop C7), `zeta_1 = Var(h_1) > 0` strictly (Prop C8), `zeta_1 = 1/36 +
+> O(dv^2)` (Thm C9), and `Var(S_n) = Theta(n^3)` is verified against Monte Carlo. This **closes item
+> 3** of §5 and reduces item 4 to the single inequality `zeta_1 * Ibar >= kappa^2 dv^2 / 54`. Forma
+> L still `[OPEN]`: the live blockers are the *channel* items 1–2, which none of this touches.
+>
+> Verification script (all checks pass, exit 0, ~9 s):
 > `wp4_comparable_pair_separation_checks.py`, run with
 > `.venv/bin/python research_program/work_packages/wp4_comparable_pair_separation_checks.py`.
 
@@ -205,6 +211,90 @@ break it.
 Corollary C6 is an asymptotic statement. For a *named* `dv` the inequality is established
 numerically instead, at working precision — see §6.
 
+## 4b. Variance at fixed `n`, and non-degeneracy (added 2026-07-25)
+
+`S_n` = number of comparable pairs among `n` i.i.d. points of `D_tau`. It is a `U`-statistic with
+the symmetric kernel `f(x,y) = 1[x, y comparable]`, so its exact Hoeffding variance is
+
+```text
+Var(S_n) = C(n,2) [ 2 (n-2) zeta_1 + zeta_2 ],
+zeta_1 = Var( h_1(X) ),   h_1(x) := P( x comparable with Y ),   zeta_2 = Var(f) = p (1-p).
+```
+
+**Proposition C7 (`h_1` in closed form).** For `x = (v_x, r_x)` in `D_tau`, with `D := v_q - v_x`
+and `D' := v_x - v_p = dv - D`,
+
+```text
+h_1(x) = [ vol(J^+(x) ^ D_tau) + vol(J^-(x) ^ D_tau) ] / V(tau),
+vol(J^+(x) ^ D_tau) = rho(r_x, D)^2  + rho(r_q, -D)^2  - r_x^2 - r_q^2,
+vol(J^-(x) ^ D_tau) = rho(r_p, D')^2 + rho(r_x, -D')^2 - r_p^2 - r_x^2.
+```
+
+*Proof.* `J^-(x) ^ D_tau = J^+(p) ^ J^-(x)` because `x in J^-(q)` gives `J^-(x) subset J^-(q)`;
+then apply Proposition C2 to the pair `(p, x)` exactly as it was applied to `(x, q)`. ∎
+
+So `zeta_1` is one more 2D integral of the same kind, with the same spectral convergence.
+**A free consistency check comes with it:** `h_1` is assembled from *both* time directions and must
+average back to `p`, since `E[h_1(X)] = 2 V^{-2} int vol(J^+(x) ^ D) dV = p`. Verified to
+`|diff| = 7.77e-16` at `dv = 4` and `9.10e-15` at `dv = 0.02` (check [10]) — an independent test of
+Proposition C2 in the past direction, which nothing before this section exercised.
+
+**Proposition C8 (non-degeneracy).** `zeta_1 > 0` strictly, for every admissible
+`(tau, r_p, r_q, dv)`.
+
+*Proof.* `h_1` is continuous on the compact `D_tau`, so it suffices that it is non-constant.
+`h_1(p) = h_1(q) = 1`: `D_tau subset J^+(p)` and `D_tau subset J^-(q)`, so both corners are
+comparable with everything. For interior `x`, the set of points spacelike to `x` is the union of the
+two open rectangles `{Utilde < Utilde_x, v > v_x}` and `{Utilde > Utilde_x, v < v_x}` of the null
+box, both of positive measure, so `h_1(x) < 1`. ∎ (Check [11] exhibits the range,
+`h_1 in [0.000265, 0.999852]` at `dv = 4`.)
+
+**Theorem C9 (the independence-limit value, exact).** `zeta_1 -> 1/36` as `dv -> 0^+`, and the
+correction is second order: `zeta_1 = 1/36 + O(dv^2)`.
+
+*Proof of the limit.* As `dv -> 0` the copula tends to independence (§3), so in rank coordinates
+`h_1(u,w) = u w + (1-u)(1-w)`. Substituting `a = u - 1/2`, `b = w - 1/2` gives the exact identity
+`h_1 = 1/2 + 2 a b` with `a, b` independent `U(-1/2, 1/2)`, whence
+`zeta_1 = 4 Var(ab) = 4 E[a^2] E[b^2] = 4 (1/12)^2 = 1/36`. ∎ The `O(dv^2)` order is
+`[NUMERICAL]`: successive halvings of `dv` give ratios `2.17, 2.97, 3.44, 3.70, 3.85 -> 4`
+(check [11]). Note this is *one order better* than `p` itself, whose correction is `O(dv)`.
+
+**Consequences.** `Var(S_n) = Theta(n^3)` with leading coefficient `zeta_1`, so the Chebyshev step
+of ficha §6.3 is available and the statistic is non-degenerate — item 3 of §5 below is **closed**.
+Numbers for the diamond of record (`r_p = 3`, `r_q = 0.5`, `tau = 1`): `zeta_1 = 0.02733369969886`
+at `dv = 4`, `0.02777783467369` at `dv = 0.02`. The exact finite-`n` formula was verified against
+Monte Carlo at `n = 5, 10, 20` — `0.73`, `0.31`, `0.14` sigma (check [12]).
+
+**The §6.4 consistency check, now at the level of constants.** Combining the Chebyshev lower bound
+with `Delta_p = kappa dv delta` and `sigma^2 ~ n^3 zeta_1`,
+
+```text
+TV >= 1 - 32 zeta_1 / ( n kappa^2 dv^2 delta^2 )   against   TV <= (delta/2) sqrt(n Ibar)  [WP4 §5].
+```
+
+Both sides depend on `n` and `delta` only through `t := delta sqrt(n)`, so the requirement that the
+lower bound never exceed the proved upper bound is one scalar inequality. Minimising
+`B t + A/t^2 - 1` over `t > 0` (with `A = 32 zeta_1/(kappa^2 dv^2)`, `B = sqrt(Ibar)/2`) gives
+`3 A^{1/3} B^{2/3} / 2^{2/3} >= 1`, i.e. `A B^2 >= 4/27`, i.e.
+
+```text
+zeta_1 * Ibar >= kappa^2 dv^2 / 54,     and with zeta_1 = 1/36:   Ibar >= (2/3) kappa^2 dv^2.
+```
+
+(Derived symbolically, check [13].) **This is a one-way test:** violation would refute the chain;
+satisfaction proves nothing. It is **stated, not executed** — `Ibar` for these corners is still not
+computed. Numerically the requirement is `Ibar >= 9.754357e-03` at `dv = 4` and
+`2.399599e-07` at `dv = 0.02`.
+
+*Why the test is not as weak as those small numbers suggest* `[UNVERIFIED — reasoning, not
+computed]`. As `dv -> 0` the family degenerates toward independence, so `Ibar` should vanish too:
+with `c_tau = 1 + eps g_tau` and `eps ~ dv`, the score is `~ eps partial_tau g` and hence
+`Ibar ~ C dv^2` for some constant `C`. If so, **both** sides of the requirement are `O(dv^2)`, it
+becomes `dv`-free at leading order, and reduces to `C >= (2/3) kappa^2` — a genuine comparison of
+two constants, neither trivially satisfied nor trivially violated. The `dv`-scaling of `Ibar` has
+not been computed here; establishing it (and `C`) is the precise remaining step, and it is the same
+object WP4 §5a has only as `[NUMERICAL]` `V*Ibar` for one reference shape.
+
 ## 5. What this closes, and what it does NOT
 
 **Closed.** Ingredient (a) of ficha §7.1 — `p(theta) != p(theta')` — for the WP4 §4 diamond
@@ -228,21 +318,20 @@ order they bite:
    Conditioning on `N = n` removes the confounder (ficha §1.3 mode 3, FWP Lemma 0) and puts the
    whole burden on the order — but a de-Poissonisation step is then needed, and Reitzner–Schulte
    supply none. `[OPEN]`
-3. **The variance asymptotics for the `fixed_n` statistic are not verified here.** The Chebyshev
-   route of ficha §6.3 needs `Var_theta S_n = Theta(n^3)`, i.e. non-degeneracy of the first
-   Hoeffding projection `h_1(x) = P(x comparable with Y)`. That is plausible and computable with
-   exactly the machinery of §3 (`h_1` is a ratio of closed-form sub-diamond volumes, by
-   Proposition C2 applied to `J^+(x)` and `J^-(x)`), but it **was not computed**. `[OPEN]`
-4. **Ficha §6.4's mandatory consistency check passes only at the level of rates.** In `fixed_n`,
-   `Delta_mu = C(n,2) * Delta_p` with `Delta_p ~ kappa * dv * delta`, and `sigma = Theta(n^{3/2})`
-   under item 3, so the Chebyshev threshold sits at `delta ~ n^{-1/2}`; the *proved* upper bound
-   `TV(Q^n_tau, Q^n_{tau+delta}) <= (|delta|/2) sqrt(n Ibar)` (WP4 §5) becomes informative at the
-   same `delta ~ n^{-1/2}`. Same rate, no contradiction — and, conditional on item 3, the
-   comparable-pair count would be **rate-optimal in `n`** against WP4's floor, which is a
-   substantive statement worth recording. The *constant*-level check is **not** performed: it
-   compares `kappa * dv` against `sqrt(zeta_1 * Ibar)`, and `Ibar` for these corners is not
-   available (WP4 §5a has `V * Ibar` only `[NUMERICAL]`, for one reference shape) nor is `zeta_1`.
-   `[OPEN]`
+3. ~~The variance asymptotics are not verified here.~~ **CLOSED 2026-07-25, §4b.** `zeta_1 > 0`
+   strictly (Proposition C8, proved), `zeta_1 = 1/36 + O(dv^2)` (Theorem C9), and
+   `Var(S_n) = C(n,2)[2(n-2) zeta_1 + zeta_2] = Theta(n^3)` verified against Monte Carlo at
+   `n = 5, 10, 20`. The Chebyshev step of ficha §6.3 is therefore available. Consequence worth
+   stating: with the variance in hand, the comparable-pair count is **rate-optimal in `n`** against
+   WP4 §5's proved floor — both the Chebyshev threshold and the point at which the upper bound
+   becomes informative sit at `delta ~ n^{-1/2}`.
+4. **Ficha §6.4's consistency check is now reduced to a single scalar inequality, still
+   unexecuted.** §4b shows the requirement is exactly `zeta_1 * Ibar >= kappa^2 dv^2 / 54`, i.e.
+   `Ibar >= (2/3) kappa^2 dv^2` in the small-`dv` regime. With `zeta_1` computed, the only missing
+   quantity is `Ibar` for *these* corners — WP4 §5a has `V * Ibar` only `[NUMERICAL]` and for one
+   reference shape. The test is one-way (violation refutes, satisfaction proves nothing), and the
+   `[UNVERIFIED]` reasoning in §4b suggests both sides are `O(dv^2)`, so it is not vacuous.
+   `[OPEN — one number missing]`
 
 **Also not claimed.** (i) Nothing here is about the 3+1D Schwarzschild pairs of FWP §2 or OP-1.2;
 those are Theorem-A pairs, where `p` is necessarily *equal* (same copula) — and check [6] confirms
@@ -280,7 +369,17 @@ Status labels, in the ficha's own vocabulary:
   remainder — argued rather than written out, and with `dv_0` non-effective.
 - **`p(tau) != p(tau')` at the named pair `(1.0, 1.2)` for the named `dv`** — `[NUMERICAL]` at
   working precision, and `[PROVED]` for all sufficiently small `dv` via Corollary C6.
-- **Forma L for candidate 7.1** — `[OPEN]`. Items 1–4 of §5.
+- **Propositions C7, C8** (`h_1` closed form; `zeta_1 > 0`) — `[PROVED]`. **Theorem C9**: the limit
+  `zeta_1 -> 1/36` is `[PROVED]` (exact, via `h_1 = 1/2 + 2ab`); the `O(dv^2)` *order* of the
+  correction is `[NUMERICAL]`.
+- **`Var(S_n) = C(n,2)[2(n-2) zeta_1 + zeta_2]`** — `[PROVED]` (standard Hoeffding decomposition),
+  and `[NUMERICAL]`-confirmed against Monte Carlo at `n = 5, 10, 20`. `zeta_1` itself is
+  `[NUMERICAL]` (quadrature) except for its `dv -> 0` limit.
+- **`zeta_1 * Ibar >= kappa^2 dv^2 / 54`** (§6.4 consistency requirement) — `[PROVED]` as a
+  *requirement* derived from the two bounds; **not evaluated**, since `Ibar` is unknown for these
+  corners. The claim that both sides are `O(dv^2)` is `[UNVERIFIED]` reasoning.
+- **Forma L for candidate 7.1** — `[OPEN]`. Items 1–2 of §5 (the channel obstructions) are the
+  live blockers; item 3 is closed and item 4 is down to one number.
 
 ## 7. Reproduction
 

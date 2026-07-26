@@ -279,15 +279,18 @@ puntos (Anexo C §5, con detalle):
    trivial que §1.2 y §9.2 prohíben contar.
 2. El canal honesto es `fixed_n`, y allí la CLT importada no aplica tal cual: falta un paso de
    des-Poissonización que Reitzner–Schulte no da. `[OPEN]`
-3. La no degeneración de la varianza a `fixed_n` (`Var S_n = Theta(n^3)`, i.e. proyección de
-   Hoeffding `h_1` no constante) **no se calculó**, aunque es computable con la misma maquinaria
-   del Anexo C §3. `[OPEN]`
-4. El chequeo obligatorio de §6.4 pasa **sólo a nivel de tasas** (ambos umbrales en
-   `delta ~ n^{-1/2}`, sin contradicción con la cota superior probada de WP4 §5, y — condicional
-   al punto 3 — el conteo de pares sería óptimo en tasa frente a ese suelo). El chequeo a nivel de
-   **constantes** no se hizo: compara `kappa*dv` con `sqrt(zeta_1 * Ibar)`, y no se dispone de
-   `Ibar` para estas esquinas (WP4 §5a sólo tiene `V*Ibar` `[NUMERICAL]`, para una forma de
-   referencia) ni de `zeta_1`. `[OPEN]`
+3. ~~La varianza a `fixed_n` no se calculó.~~ **CERRADO 2026-07-25** (Anexo C §4b): `zeta_1 > 0`
+   estricto (Prop C8, probado), `zeta_1 = 1/36 + O(dv^2)` (Teo C9; el límite `1/36` es exacto, vía
+   `h_1 = 1/2 + 2ab` con `a,b ~ U(-1/2,1/2)`), y
+   `Var(S_n) = C(n,2)[2(n-2) zeta_1 + zeta_2] = Theta(n^3)` verificado contra Monte-Carlo a
+   `n = 5, 10, 20`. El paso Chebyshev de §6.3 queda disponible, y el conteo de pares resulta
+   **óptimo en tasa** frente al suelo probado de WP4 §5 (ambos umbrales en `delta ~ n^{-1/2}`).
+4. El chequeo obligatorio de §6.4 queda reducido a **una única desigualdad escalar**, aún sin
+   evaluar: `zeta_1 * Ibar >= kappa^2 dv^2 / 54`, i.e. `Ibar >= (2/3) kappa^2 dv^2` con
+   `zeta_1 = 1/36`. Con `zeta_1` ya calculado, el único número que falta es `Ibar` para **estas**
+   esquinas (WP4 §5a sólo tiene `V*Ibar` `[NUMERICAL]` y para una forma de referencia). Es un test
+   de una sola dirección: violarlo refutaría la cadena, satisfacerlo no prueba nada.
+   `[OPEN — falta un número]`
 
 ## 3. Las tres formas de resultado buscadas
 
