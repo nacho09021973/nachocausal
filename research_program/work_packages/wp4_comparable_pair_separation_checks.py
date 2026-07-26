@@ -129,6 +129,75 @@ def p_monte_carlo(tau, r_p, r_q, dv, n=400_000, seed=20260725):
     )
 
 
+def h1_zeta1(tau, r_p, r_q, dv, n_outer=120, n_inner=120):
+    """First Hoeffding projection and its variance (Annex C §4b).
+
+    h_1(x) = P(x comparable with Y) = [vol(J^+(x)^D) + vol(J^-(x)^D)] / V, both
+    volumes in closed form by Prop C2 (applied to (x,q) and to (p,x)).
+    zeta_1 = Var(h_1(X)). Returns dict with E[h1] (must equal p), zeta_1, h1 range.
+    """
+    c = float(dv)
+    V = area_sub(r_p, c, r_q, tau)
+
+    xD, wD = np.polynomial.legendre.leggauss(n_outer)
+    D = 0.5 * c * (xD + 1.0)                      # D = v_q - v_x
+    wDs = 0.5 * c * wD
+    alpha = rho(r_p, c - D, tau)
+    beta = rho(r_q, -D, tau)
+
+    xR, wR = np.polynomial.legendre.leggauss(n_inner)
+    mid = 0.5 * (alpha + beta)[:, None]
+    half = 0.5 * (alpha - beta)[:, None]
+    r = mid + half * xR[None, :]
+    Dm = D[:, None]
+
+    A_fut = rho(r, Dm, tau) ** 2 + (beta**2)[:, None] - r**2 - r_q**2      # Prop C2, (x,q)
+    A_past = (alpha**2)[:, None] + rho(r, Dm - c, tau) ** 2 - r_p**2 - r**2  # Prop C2, (p,x)
+    h1 = (A_fut + A_past) / V
+
+    w2 = (half * wR[None, :]) * (wDs[:, None])    # area element of D
+    m1 = float((h1 * w2).sum()) / V
+    m2 = float((h1**2 * w2).sum()) / V
+    return dict(E_h1=m1, zeta1=m2 - m1**2, h1_min=float(h1.min()), h1_max=float(h1.max()))
+
+
+def var_S_n(n, p, zeta1):
+    """Exact Hoeffding variance of the comparable-pair count S_n at fixed n:
+    Var(S_n) = C(n,2) [ 2(n-2) zeta_1 + zeta_2 ], zeta_2 = Var(f) = p(1-p)."""
+    C = n * (n - 1) / 2.0
+    return C * (2 * (n - 2) * zeta1 + p * (1.0 - p))
+
+
+def _sample_D(rng, tau, r_p, r_q, dv, n):
+    """n uniform points of D_tau, returned as (v, Utilde). Bounding box as in
+    p_monte_carlo (see the opposite-sense monotonicity note there)."""
+    c = float(dv)
+    r_hi = max(float(rho(r_p, c, tau)), float(r_p))
+    r_lo = min(float(rho(r_q, -c, tau)), float(r_q))
+    vs, rs, got = [], [], 0
+    while got < n:
+        m = 2 * (n - got) + 64
+        vv = rng.uniform(0.0, c, size=m)
+        rr = rng.uniform(r_lo, r_hi, size=m)
+        keep = (rr <= rho(r_p, vv, tau)) & (rr >= rho(r_q, vv - c, tau))
+        vs.append(vv[keep])
+        rs.append(rr[keep])
+        got += int(keep.sum())
+    v = np.concatenate(vs)[:n]
+    r = np.concatenate(rs)[:n]
+    return v, -np.exp(-v / (2.0 * tau)) * omega(r, tau)
+
+
+def S_n_moments_mc(tau, r_p, r_q, dv, n, reps, seed):
+    """Empirical mean/variance of S_n over `reps` independent n-point samples."""
+    rng = np.random.default_rng(seed)
+    out = np.empty(reps)
+    for i in range(reps):
+        v, U = _sample_D(rng, tau, r_p, r_q, dv, n)
+        out[i] = ((v[:, None] < v[None, :]) & (U[:, None] < U[None, :])).sum()
+    return out.mean(), out.var(ddof=1), reps
+
+
 def kappa_closed_form(r_p, r_q):
     """kappa of Theorem C4: [(rp^2-rq^2) - 2 rp rq log(rp/rq)] / [12 rp rq (rp-rq)^2]."""
     num = (r_p**2 - r_q**2) - 2.0 * r_p * r_q * np.log(r_p / r_q)
@@ -362,12 +431,84 @@ def main():
         print("       Kendall tau_K: %.12f vs %.12f" % (2 * pa - 1, 2 * pb - 1))
         assert pa != pb
     print()
+
+    # ---------------------------------------------------------------- §4b
+    print("[10] first Hoeffding projection h_1 and the identity E[h_1] = p:")
+    for dv in (DV_LARGE, DV_ASYMPTOTIC):
+        z = h1_zeta1(TAU_A, R_P, R_Q, dv)
+        pq = p_comparable(TAU_A, R_P, R_Q, dv, 200, 200)[0]
+        print("     dv=%-5.2f E[h_1] = %.15f   p = %.15f   |diff| = %.2e"
+              % (dv, z['E_h1'], pq, abs(z['E_h1'] - pq)))
+        assert abs(z['E_h1'] - pq) < 1e-12, "E[h_1] must equal p"
+    print("     (an independent consistency check on Prop C2 in BOTH time directions:")
+    print("      h_1 is built from J^+ and J^- volumes, and must average back to p)")
+    print()
+
+    print("[11] zeta_1 = Var(h_1(X)) > 0 (non-degeneracy, Annex C §5 item 3):")
+    for dv in (DV_LARGE, DV_ASYMPTOTIC):
+        z = h1_zeta1(TAU_A, R_P, R_Q, dv)
+        pq = p_comparable(TAU_A, R_P, R_Q, dv, 200, 200)[0]
+        print("     dv=%-5.2f zeta_1 = %.14f   zeta_2 = p(1-p) = %.14f   h_1 in [%.6f, %.6f]"
+              % (dv, z['zeta1'], pq * (1 - pq), z['h1_min'], z['h1_max']))
+        assert z['zeta1'] > 0
+    print("     h_1 -> 1 at the corners p, q (D_tau lies in J^+(p) ^ J^-(q), so both are")
+    print("     comparable with everything) and h_1 < 1 in the interior (the two spacelike")
+    print("     wedges have positive measure) => h_1 non-constant => zeta_1 > 0 strictly.")
+    print("     Independence limit, exact: h_1 = uv + (1-u)(1-v) = 1/2 + 2ab with")
+    print("     a,b ~ U(-1/2,1/2), so zeta_1 -> 4*(1/12)^2 = 1/36 = %.14f" % (1.0 / 36.0))
+    prev = None
+    for dv in (0.32, 0.16, 0.08, 0.04, 0.02, 0.01):
+        d = h1_zeta1(TAU_A, R_P, R_Q, dv, 160, 160)['zeta1'] - 1.0 / 36.0
+        print("       dv=%6.3f  zeta_1 - 1/36 = %+.6e   ratio to previous = %s"
+              % (dv, d, "n/a" if prev is None else "%.4f" % (prev / d)))
+        prev = d
+    print("     ratio -> 4 => the correction is O(dv^2): zeta_1 = 1/36 + O(dv^2).")
+    print()
+
+    print("[12] Var(S_n) = C(n,2)[2(n-2) zeta_1 + zeta_2] against Monte Carlo "
+          "(dv=%.1f, tau=%.1f):" % (DV_LARGE, TAU_A))
+    z = h1_zeta1(TAU_A, R_P, R_Q, DV_LARGE)
+    pq = p_comparable(TAU_A, R_P, R_Q, DV_LARGE, 200, 200)[0]
+    for n, reps in ((5, 30000), (10, 15000), (20, 6000)):
+        m_mc, v_mc, _ = S_n_moments_mc(TAU_A, R_P, R_Q, DV_LARGE, n, reps, seed=4242 + n)
+        v_f = var_S_n(n, pq, z['zeta1'])
+        m_f = n * (n - 1) / 2.0 * pq
+        se = v_f * np.sqrt(2.0 / (reps - 1))      # se of a variance estimate, ~normal case
+        print("     n=%2d reps=%5d  Var_MC = %11.5f  Var_formula = %11.5f  (%.2f sigma)   "
+              "E_MC = %8.4f  E_formula = %8.4f"
+              % (n, reps, v_mc, v_f, abs(v_mc - v_f) / se, m_mc, m_f))
+        assert abs(v_mc - v_f) < 4 * se
+    print("     => Var(S_n) = Theta(n^3) with leading coefficient zeta_1 "
+          "(Var/n^3 -> zeta_1 = %.6f)." % z['zeta1'])
+    print()
+
+    print("[13] ficha §6.4 consistency check at the level of CONSTANTS:")
+    print("     Chebyshev lower bound (ficha §6.3):  TV >= 1 - 32 zeta_1 / (n kappa^2 dv^2 delta^2)")
+    print("     proved upper bound  (WP4 §5):        TV <= (delta/2) sqrt(n Ibar)")
+    print("     With t := delta*sqrt(n) both are functions of t alone; requiring the lower")
+    print("     never to exceed the upper for any t gives (min over t, done symbolically):")
+    print("         zeta_1 * Ibar >= kappa^2 dv^2 / 54,   i.e.  Ibar >= kappa^2 dv^2 / (54 zeta_1)")
+    print("     and with zeta_1 = 1/36 (small dv):  Ibar >= (2/3) kappa^2 dv^2.")
+    kap = kappa_closed_form(R_P, R_Q)
+    for dv in (DV_LARGE, DV_ASYMPTOTIC):
+        z1v = h1_zeta1(TAU_A, R_P, R_Q, dv)['zeta1']
+        print("     dv=%-5.2f kappa = %.12f  zeta_1 = %.12f  =>  required Ibar >= %.6e"
+              % (dv, kap, z1v, kap**2 * dv**2 / (54.0 * z1v)))
+    print("     This is a ONE-WAY test: violation would refute the chain, satisfaction")
+    print("     proves nothing. Ibar for THESE corners is still not computed, so the test")
+    print("     is stated, not executed -- see the note's §5 item 4.")
+    print()
+
     print("CONCLUSION: p(tau) != p(tau') for the WP4 §4 diamond family.")
     print("  - PROVED as dv -> 0: p = 1/2 + kappa(r_p,r_q)*tau*dv + O(dv^2), kappa > 0,")
     print("    so the leading term is strictly proportional to tau (check [7]+[8]).")
     print("  - VERIFIED numerically at the concrete pair above (check [9]).")
     print("  This closes ingredient (a) of ficha §7.1 for this family. It does NOT")
     print("  close Forma L: see wp4_comparable_pair_separation.md §5 for what remains.")
+    print("Checks [10]-[13] additionally close item 3 of that §5 (variance non-degeneracy:")
+    print("  zeta_1 > 0, = 1/36 + O(dv^2), Var(S_n) = Theta(n^3) verified against MC) and")
+    print("  reduce item 4 to a single stated inequality on Ibar. Items 1-2 -- the channel")
+    print("  obstructions -- are untouched and remain the reason Forma L stays OPEN.")
 
 
 if __name__ == "__main__":
