@@ -222,7 +222,8 @@ Recommendation to the PI, in order:
    the two caveats named in §6 (enormous constant; non-effective `dv_0`). Then re-prioritise
    `docs/hoja_de_ruta_25_jul_2026.md` §3, whose item 2 is premised on de-Poissonisation being a
    blocker. Because this would change a Forma L status, it is a **`/comite` matter, not a text
-   edit**: ficha §2.4 and roadmap §2.4 both route status changes of this weight through the
+   edit**: la regla vigente está en `docs/hoja_de_ruta_24_jul_2026.md` §2, ítem 4; ambas anclas
+   citadas como «§2.4» eran incorrectas. Esa regla enruta cambios de este peso por el
    committee, and `/comite` may legitimately conclude that an `n ~ 10^9` constant makes the result
    `PROVED_BUT_VACUOUS_IN_PRACTICE` and worth a weaker label than a bare `[PROVED]`.
 2. Fix finding 2 (quote the printed ratios).

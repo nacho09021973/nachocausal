@@ -15,8 +15,9 @@ para ningún par concreto — eso sería abrir cómputo/prueba nueva, no búsque
 **v4 — esa desigualdad ya está verificada (§2.2, nuevo).** El cálculo que la v3 dejaba pendiente
 se hizo: `research_program/work_packages/wp4_comparable_pair_separation.md` (Anexo C de WP4) prueba
 `p(tau) != p(tau')` para la familia diamante de WP4 §4, en forma cerrada al orden dominante en el
-lapso nulo. **Esto cambia el estado de un ingrediente, no el de la ficha:** Forma L sigue `[OPEN]`,
-y el obstáculo que queda no es esta desigualdad sino el **canal** (§2.2, punto 3). Auditado:
+lapso nulo. **Actualización C3/C4 del PI (2026-07-27):** junto con la varianza exacta, esto cierra
+la Forma L fuerte sólo en `fixed_n`, familia diamante y `dv < dv_0` no efectivo; los demás canales,
+familias y la eficiencia a nivel de constantes siguen abiertos. Auditado:
 `docs/auditor/auditor_report_024_...md` (`AUDIT_FAIL`, un error de procedencia) y, tras corregirlo,
 `docs/auditor/auditor_report_025_...md` (`AUDIT_PASS_WITH_WARNINGS`, 0 errores). Ninguna ejecución
 del banco sellado; sello sin drift.
@@ -205,8 +206,9 @@ de pares comparables), con una tasa explícita:
   `d_W -> 0` a tasa `lambda^{-1/2}`, con la MISMA constante `C_f` para todo `theta` de la familia
   (el kernel no depende de `theta`).
 - **Cálculo elemental restante (no en Reitzner–Schulte, aportado aquí, sin verificación por
-  pares independiente):** por Mecke/primer-momento, `E_theta S = lambda^2 * p(theta)` con
-  `p(theta) := int int f dc_theta dc_theta` (la `p(theta)` de §7.1, sin cambios); por Lema 3.5,
+  pares independiente):** por Mecke/primer-momento, `E_theta S = lambda^2 * p(theta) / 2` con
+  `p(theta) := 2 int int 1[x prec y] dc_theta dc_theta`, la probabilidad de comparabilidad de
+  §7.1; por Lema 3.5,
   `Var_theta S = Theta(lambda^3)` genéricamente (el término `i=1` domina). Cociente
   señal/ruido `~ lambda^{1/2} * (p(theta)-p(theta'))`, que diverge en el régimen 1.3-modo-1
   (`lambda -> infinito` a dominio fijo) **si y solo si** `p(theta) != p(theta')`.
@@ -233,12 +235,9 @@ con script de verificación `wp4_comparable_pair_separation_checks.py` (sympy + 
 determinista + un cross-check Monte-Carlo con semilla fija; no importa nada de `nachocausal/`, no
 toca umbrales, bandas de semillas ni artefactos de validación).
 
-**Convención (una inconsistencia interna de esta ficha, ahora declarada).** §7.1 define `p(theta)`
-como la probabilidad de que dos puntos iid sean **comparables**; §2.1(B) la define como
-`int int 1[x prec y] dc dc`, que es **la mitad** (a.s. se cumple exactamente una de `x prec y`,
-`y prec x`). El Anexo C calcula la de §7.1. El factor 2 es común a `theta` y `theta'`, luego no
-afecta a la desigualdad; queda declarado para que las dos secciones no se lean como una
-contradicción.
+**Convención unificada.** En toda la ficha, `p(theta)` es la probabilidad de que dos puntos iid
+sean **comparables**: `p(theta)=2 int int 1[x prec y] dc dc`, pues a.s. se cumple exactamente una
+de `x prec y`, `y prec x`. El Anexo C calcula esta misma cantidad.
 
 **Resultado.** Para la familia diamante de WP4 §4 (esquinas EF fijas `p=(v_p,r_p)`, `q=(v_q,r_q)`,
 `0 < r_q < tau < r_p`, lapso nulo `dv := v_q - v_p`):
@@ -270,15 +269,18 @@ efectivo. El par concreto: `[NUMERICAL]` a precisión de trabajo.
 del Teorema A por construcción — verificado numéricamente a `< 1e-15` bajo la dilatación conjunta.
 Un candidato a Forma L que separase un par del Teorema A sería inválido por §4; este no puede.
 
-**Lo que NO cierra — y el obstáculo se ha desplazado al canal.** Forma L sigue `[OPEN]`. Cuatro
-puntos (Anexo C §5, con detalle):
+**Estado por canal.** La Forma L fuerte queda probada sólo en el canal `fixed_n`, para la familia
+diamante y para `dv < dv_0` no efectivo. El régimen documental fijado es `dv=0.02`; `dv=4` queda
+reportado explícitamente como fuera del régimen probado. Lo que sigue abierto es el canal Poisson
+sin condicionar, otras familias, la eficiencia a nivel de constantes y el defeater con `Ibar`.
 
 1. La CLT de Reitzner–Schulte vive en el canal **Poisson sin condicionar**, y esta familia tiene
    volumen dependiente de `tau` (`V(1.0) = 11.501608349297` vs `V(1.2) = 10.794261266781` a
    `dv = 4`). Con `rho` conocida la marginal `N` separa **por sí sola**: exactamente el mecanismo
    trivial que §1.2 y §9.2 prohíben contar.
-2. El canal honesto es `fixed_n`, y allí la CLT importada no aplica tal cual: falta un paso de
-   des-Poissonización que Reitzner–Schulte no da. `[OPEN]`
+2. En `fixed_n`, Reitzner–Schulte no aplica tal cual, pero la des-Poissonización no bloquea la
+   cadena: los momentos binomiales exactos de `S_n` y Chebyshev dan directamente el test a dos
+   puntos. Una CLT/de-Poissonización sólo sería una vía opcional para constantes más finas.
 3. ~~La varianza a `fixed_n` no se calculó.~~ **CERRADO 2026-07-25** (Anexo C §4b): `zeta_1 > 0`
    estricto (Prop C8, probado), `zeta_1 = 1/36 + O(dv^2)` (Teo C9; el límite `1/36` es exacto, vía
    `h_1 = 1/2 + 2ab` con `a,b ~ U(-1/2,1/2)`), y
@@ -290,7 +292,7 @@ puntos (Anexo C §5, con detalle):
    `zeta_1 = 1/36`. Con `zeta_1` ya calculado, el único número que falta es `Ibar` para **estas**
    esquinas (WP4 §5a sólo tiene `V*Ibar` `[NUMERICAL]` y para una forma de referencia). Es un test
    de una sola dirección: violarlo refutaría la cadena, satisfacerlo no prueba nada.
-   `[OPEN — falta un número]`
+   `[OPEN — sólo a nivel de constantes]`
 
 ## 3. Las tres formas de resultado buscadas
 
@@ -436,8 +438,8 @@ régimen declarado:
      de gaussianas explícitas, `TV(L_theta(T), L_theta'(T)) >= TV(N(mu_theta,sigma^2),
      N(mu_theta',sigma'^2)) - 2*eps_lambda` (desigualdad triangular de TV) — una Forma L débil (`f_0 > 0`) incluso con cociente
      señal/ruido acotado, siempre que `eps_lambda` sea de orden menor que el efecto.
-   - *Anti-concentración:* para estadísticos de valores enteros (conteos) en regímenes sin CLT,
-     haría falta control de átomos; sin él, ni siquiera el paso Chebyshev es citable con TV.
+   - *Anti-concentración:* sólo para la ruta de comparación gaussiana de conteos enteros cuando no
+     se dispone de una cota de momentos exacta; no bloquea el paso Chebyshev binomial de `S_n`.
 4. **Chequeo de consistencia interna:** el miembro derecho nunca puede superar las cotas
    superiores ya probadas. A `n` fijo en la familia diamante,
    `TV(L(T)) <= TV(Q^n) <= (|delta|/2)sqrt(n*Ibar)` (WP4 §5): un candidato cuyo cálculo de
@@ -460,7 +462,7 @@ orden 2, extremal global, conteos locales de todo orden) y el agregado físico e
 
 1. *Order-only:* sí — invariante por isomorfismo.
 2. *Régimen:* definido en los tres modos de §1.3.
-3. *Resultado necesario:* `E S_n = C(n,2) * p(theta)` con `p(theta)` = probabilidad de que dos
+3. *Resultado necesario:* en `fixed_n`, `E S_n = C(n,2) * p(theta)` con `p(theta)` = probabilidad de que dos
    puntos iid de `c_theta` sean comparables (funcional de la cópula; en cajas nulas, comparable
    ⟺ concordancia de rangos). **Ingrediente de varianza/CLT ahora `CONFIRMED_DIRECT`**: en el
    canal Poisson (`lambda -> infinito`, modo 1 de §1.3), Reitzner–Schulte 2013 (arXiv:1104.1039,
@@ -472,17 +474,16 @@ orden 2, extremal global, conteos locales de todo orden) y el agregado físico e
    **Ingrediente (a) — `p(theta) != p(theta')` — `CERRADO para la familia diamante de WP4 §4`**
    (§2.2; `[PROVED (orden dominante)]` vía `p = 1/2 + kappa*tau*dv + O(dv^2)` con `kappa > 0`, más
    verificación `[NUMERICAL]` en un par concreto). Para otras familias (OP-1.1/1.2, etc.) sigue
-   `[OPEN por par]`. **Importante:** con (a) cerrado, §6.3 **no** da todavía Forma L fuerte — el
-   obstáculo restante es el canal, no la separación de medias: ver §2.2, puntos 1-4 (marginal `N`
-   como confusor en Poisson sin condicionar, des-Poissonización a `fixed_n`, varianza no
-   calculada, chequeo de §6.4 sólo a nivel de tasas).
+   `[OPEN por par]`. En `fixed_n`, para la familia diamante y `dv < dv_0`, los momentos exactos más
+   Chebyshev sí dan Forma L fuerte a dos puntos. En Poisson sin condicionar, `N` sigue siendo un
+   confusor; `Var(S_lambda)=Theta(lambda^3)` es una afirmación separada de la identidad binomial.
 4. *Confusores:* la media depende cuadráticamente de la cardinalidad (en Poisson sin condicionar,
    `N` domina — usar `fixed_n` o normalizar); forma del patch y borde entran vía la cópula; la
    escala NO es confusor (funcional de cópula ⟹ pasa el test §4 automáticamente).
-5. *Puede dar:* Forma L (sigue siendo la ruta más corta; con (B) de §2.1 y (a) cerrado por §2.2,
-   los huecos restantes son de canal, no de señal). La rama «si `p(theta) = p(theta')` el candidato
-   es ciego para ese par» queda **descartada para la familia diamante**: `kappa > 0` estrictamente,
-   luego el estadístico nunca es ciego ahí.
+5. *Puede dar:* `FORMA_L_FUERTE_fixed_n = PROVED_LEADING_ORDER / NON_EFFECTIVE_x2 / TWO_POINT_ONLY /
+   DIAMOND_FAMILY_ONLY`, bajo el enunciado de §2.2. `EFICIENCIA_CONSTANTE_fixed_n` permanece
+   `[OPEN — SÓLO A NIVEL DE CONSTANTES]`. `S_N_BLINDNESS_AT_dv_star = PROVED_EXISTS`: existe
+   `dv* in (0.02,4)` con `p(theta)=p(theta')`; la no-ceguera se afirma sólo para `dv < dv_0`.
 
 ### 7.2 Altura `H_n` (cadena más larga)
 
@@ -549,7 +550,7 @@ Estados usados (definición local de esta ficha):
 | Höpfner 2014 (biblioteca local, WP4 §8) | familias QMD, contigüidad | genérico iid | asintótica local | `H^2`, contigüidad | superior (vía `TV <= H`) | QMD | herramienta para L/D | nada sobre no etiquetado | `CONFIRMED_TOOL_ONLY` |
 | van der Vaart 1998, Lemma 7.6; Tsybakov 2009 §2.4 | criterio QMD; método de dos puntos | genérico | asintótica local / `n` fijo | `H`, TV | superior | estándar | herramienta | sin copia local verificada | `UNVERIFIED` (estándar) |
 | Last–Penrose (*Lectures on the Poisson Process*; maquinaria general detrás de Reitzner–Schulte) | funcionales de Poisson, expansión de Wiener–Itô | funcional `F` bajo UNA ley | `lambda -> infinito` | `d_W` a la gaussiana límite | aproximación, no comparación | momentos/diferencias de `F` | ingrediente de fondo de Reitzner–Schulte (fila siguiente) | no compara `theta` vs `theta'` directamente | `CONFIRMED_TOOL_ONLY` (citado dentro de Reitzner–Schulte §2.3, no leído aparte) |
-| **Reitzner–Schulte 2013** (Ann. Probab. 41(6); arXiv:1104.1039, local `biblioteca/1104.1039v3.pdf`; Lema 3.5, Teoremas 4.7/5.2) | U-estadísticos de orden `k=2` de procesos de Poisson | conteo order-only de pares comparables (candidato 7.1) | `lambda -> infinito`, dominio fijo (modo 1 de §1.3) | `d_W` a `N(0,1)`, tasa explícita `<= C_f*lambda^{-1/2}` | fluctuaciones (ingrediente 2 de §6), **con tasa citada** | `mu` Borel no atómica (✓ para `c_theta`); `f` fijo, independiente de `lambda`/`theta` (✓ para `f=1[x prec y]`) | puente a Forma L vía §6.3, ver §2.1(B) | `p(theta) != p(theta')` ya **no** es el obstáculo: cerrado para la familia diamante (§2.2). Lo pendiente es el canal — su CLT es Poisson sin condicionar, donde la marginal `N` separa sola (§2.2 punto 1); a `fixed_n` falta des-Poissonización (punto 2) | `CONFIRMED_DIRECT` (verificado localmente 2026-07-24) |
+| **Reitzner–Schulte 2013** (Ann. Probab. 41(6); arXiv:1104.1039, local `biblioteca/1104.1039v3.pdf`; Lema 3.5, Teoremas 4.7/5.2) | U-estadísticos de orden `k=2` de procesos de Poisson | conteo order-only de pares comparables (candidato 7.1) | `lambda -> infinito`, dominio fijo (modo 1 de §1.3) | `d_W` a `N(0,1)`, tasa explícita `<= C_f*lambda^{-1/2}` | fluctuaciones (ingrediente 2 de §6), **con tasa citada** | `mu` Borel no atómica (✓ para `c_theta`); `f` fijo, independiente de `lambda`/`theta` (✓ para `f=1[x prec y]`) | herramienta opcional para constantes | su CLT es Poisson sin condicionar, donde la marginal `N` separa sola; no da puente a `fixed_n` (p.23: difficult to prove one result by the other, especially with keeping rates), pero tal puente no es necesario para la ruta Chebyshev binomial | `CONFIRMED_DIRECT` (verificado localmente 2026-07-24) |
 | Deuschel–Zeitouni 1995 (LIS de puntos iid no uniformes) | subsecuencia creciente más larga | permutación de rangos (order-only) | `n -> infinito` | LLN variacional de la media | medias (ingrediente 1 para 7.2) | densidad regular en el plano | puente a L vía 7.2 | fluctuaciones no uniformes; separación `c(theta)!=c(theta')` | `POSSIBLE_BRIDGE` / `UNVERIFIED` |
 | Baik–Deift–Johansson 1999 | fluctuaciones LIS caso uniforme | permutación de rangos | `n -> infinito` | `n^{1/6}`, Tracy–Widom | fluctuaciones (ingrediente 2 para 7.2) | uniformidad | puente a L | extensión a densidades generales | `POSSIBLE_BRIDGE` / `UNVERIFIED` |
 | **Janson 2011** (arXiv:0902.0306, local `biblioteca/0902.0306v1.pdf`; Teoremas 1.7, 1.8, 7.1, Lema 6.6) | límites de posets intercambiables, núcleos (`kernels`) | igualdad de leyes de poset **para todo `n`** (no `n` fijo) | régimen «toda la escalera» (no `lambda`/`n` fijo de esta ficha) | distancia de corte `delta_□`; cota `\|t(Q,·)-t(Q,·)\| <= m*delta_□` | recíproca general (Teo. 7.1) + cota superior (Lema 6.6, misma familia que data processing) | espacios de Borel; hipótesis extra «casi libre de gemelos» solo para la dirección de isomorfismo (ix), no verificada contra nuestros patches | promueve la rigidez de cópulas (FWP §4) a lema citado, ver §2.1(A); no da Forma L/U en el régimen de esta ficha | régimen «todo `n`» distinto de `n` fijo o `lambda->infinito`; hipótesis de no-gemelos sin chequear | `CONFIRMED_DIRECT` (verificado localmente 2026-07-24; supera el `UNVERIFIED` de la v2, snapshot no leído entonces) |

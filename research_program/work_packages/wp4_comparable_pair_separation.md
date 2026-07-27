@@ -19,15 +19,17 @@
 >
 > the leading term being **strictly proportional to `tau`**. Hence `p(tau) != p(tau')` for
 > `tau != tau'` once `dv` is small, which settles ingredient **(a)** of ficha §7.1 —
-> `[OPEN por par]` since v2 of that ficha — for this family. It does **not** close Forma L: §5
-> lists exactly what still blocks that, and why the blocker is a *channel* problem, not this
-> inequality.
+> `[OPEN por par]` since v2 of that ficha — for this family. Together with the exact fixed-`n`
+> variance identity of §4b, it supports the narrowly scoped two-point result recorded in §6:
+> `fixed_n` only, diamond family only, and only for sufficiently small `dv`. It does not license a
+> Poisson-unconditioned, reconstruction, localisation, or 3+1D claim.
 >
 > **Addendum 2026-07-25 (§4b).** The variance side is now done too: the first Hoeffding projection
 > `h_1` is in closed form (Prop C7), `zeta_1 = Var(h_1) > 0` strictly (Prop C8), `zeta_1 = 1/36 +
 > O(dv^2)` (Thm C9), and `Var(S_n) = Theta(n^3)` is verified against Monte Carlo. This **closes item
 > 3** of §5 and reduces item 4 to the single inequality `zeta_1 * Ibar >= kappa^2 dv^2 / 54`. Forma
-> L still `[OPEN]`: the live blockers are the *channel* items 1–2, which none of this touches.
+> The former channel blocker is removed only for the conditioned `fixed_n` Chebyshev route; the
+> constant-level efficiency question and the one-way `Ibar` defeater remain open.
 >
 > Verification script (all checks pass, exit 0, ~9 s):
 > `wp4_comparable_pair_separation_checks.py`, run with
@@ -46,12 +48,10 @@ That last clause is the crux and it is correct: Proposition 5 of `wp4_fisher_loc
 proves `tau -> c_tau` injective, but `p` is a single real functional of `c_tau`, and injectivity of
 a family says nothing about injectivity of a scalar reduction of it. This annex computes the scalar.
 
-**Convention note (a discrepancy inside the ficha, harmless here).** Ficha §7.1 defines
-`p(theta)` as the probability that two i.i.d. points are *comparable*; ficha §2.1(B) defines it as
-`int int 1[x prec y] dc dc`, which is **half** of that (exactly one of `x prec y`, `y prec x` holds
-a.s.). This annex computes the §7.1 quantity, written `p(tau)` throughout, and reports Kendall's
-`tau_K = 2 p - 1` alongside. The factor 2 is common to both parameters and so cannot affect the
-inequality `p(theta) != p(theta')`; the ficha should nonetheless be made internally consistent.
+**Convention note.** Throughout the ficha and this annex, `p(theta)` is the probability that two
+i.i.d. points are *comparable*, i.e. `2 int int 1[x prec y] dc dc` because exactly one of
+`x prec y`, `y prec x` holds a.s. This annex computes that quantity, written `p(tau)` throughout,
+and reports Kendall's `tau_K = 2 p - 1` alongside.
 
 ## 2. Setup (all of it taken from WP4 §4, nothing new)
 
@@ -302,8 +302,9 @@ family. Together with ficha §2.1(B) (Reitzner–Schulte 2013, fluctuation ingre
 explicit `lambda^{-1/2}` rate uniform in `theta`), the *mean-separation* and *fluctuation*
 ingredients 1 and 2 of ficha §6 are now both in hand for candidate 7.1 on a named family.
 
-**Not closed — Forma L is not obtained, and the obstruction is the channel.** Four items, in the
-order they bite:
+**Channel split and remaining limits.** The unconditioned Poisson route remains contaminated, but
+the conditioned `fixed_n` route is closed at leading order by the exact U-statistic moments plus
+Chebyshev; no CLT or de-Poissonisation is used in that route.
 
 1. **The cardinality confounder is live in the very channel where Reitzner–Schulte applies.**
    Their CLT is for *unconditioned Poisson* U-statistics (`lambda -> infinity`, mode 1 of ficha
@@ -314,10 +315,10 @@ order they bite:
    its own**, which is exactly the trivial mechanism ficha §1.2 and §9.2 forbid counting. Any
    Forma L built in that channel would be contaminated unless the statistic is normalised (e.g.
    `S / C(N,2)`, whose law is *not* what Reitzner–Schulte controls) or the channel conditioned.
-2. **The honest channel is `fixed_n`, and there the imported CLT does not apply as stated.**
-   Conditioning on `N = n` removes the confounder (ficha §1.3 mode 3, FWP Lemma 0) and puts the
-   whole burden on the order — but a de-Poissonisation step is then needed, and Reitzner–Schulte
-   supply none. `[OPEN]`
+2. **The honest channel is `fixed_n`.** Conditioning on `N = n` removes the confounder (ficha §1.3
+   mode 3, FWP Lemma 0). Reitzner–Schulte's Poisson CLT does not apply there, but it is not needed:
+   `E S_n = C(n,2)p` and the exact variance identity below give the two-point Chebyshev bound
+   directly. De-Poissonisation remains only an optional route to a finer distributional constant.
 3. ~~The variance asymptotics are not verified here.~~ **CLOSED 2026-07-25, §4b.** `zeta_1 > 0`
    strictly (Proposition C8, proved), `zeta_1 = 1/36 + O(dv^2)` (Theorem C9), and
    `Var(S_n) = C(n,2)[2(n-2) zeta_1 + zeta_2] = Theta(n^3)` verified against Monte Carlo at
@@ -378,8 +379,31 @@ Status labels, in the ficha's own vocabulary:
 - **`zeta_1 * Ibar >= kappa^2 dv^2 / 54`** (§6.4 consistency requirement) — `[PROVED]` as a
   *requirement* derived from the two bounds; **not evaluated**, since `Ibar` is unknown for these
   corners. The claim that both sides are `O(dv^2)` is `[UNVERIFIED]` reasoning.
-- **Forma L for candidate 7.1** — `[OPEN]`. Items 1–2 of §5 (the channel obstructions) are the
-  live blockers; item 3 is closed and item 4 is down to one number.
+- **Adopted label block (PI C3/C4, 2026-07-27).**
+
+  ```text
+  FORMA_L_FUERTE_fixed_n
+    = PROVED_LEADING_ORDER / NON_EFFECTIVE_x2 / TWO_POINT_ONLY / DIAMOND_FAMILY_ONLY
+
+  [PROVED (orden dominante en dv; la analiticidad de p en dv en 0^+ queda argumentada, NO escrita)
+  — CONSISTENCIA DE TEST A DOS PUNTOS, canal fixed_n, familia diamante WP4 §4 ÚNICAMENTE]
+
+  Para todo (r_p, r_q) admisible y todo par FIJO tau != tau' en (r_q, r_p), EXISTE dv_0 > 0 NO
+  EFECTIVO tal que para todo 0 < dv < dv_0, TV(Q^n_tau, Q^n_tau') -> 1 cuando n -> infinito.
+  NO EFECTIVO DOS VECES: dv_0 y n_0(dv, tau, tau'). SIN UNIFORMIDAD en (tau, tau').
+  El régimen documental fijado es dv = 0.02; dv = 4 se reporta como fuera del régimen probado.
+  NO es estimador, localización, reconstrucción ni 3+1D. DEFEATER VIVO (no premisa):
+  zeta_1 * Ibar >= kappa^2 dv^2 / 54, enunciado y NO ejecutado.
+
+  EFICIENCIA_CONSTANTE_fixed_n = OPEN_CONSTANT_LEVEL_ONLY
+  [OPEN — SÓLO A NIVEL DE CONSTANTES]: permanecen abiertos el prefactor verdadero de TV(Q^n), la
+  pérdida constante de la compresión Iso_n -> S_n y el chequeo unidireccional con Ibar. Ni
+  observable nuevo, ni CANDIDATE_7, ni estimador.
+
+  S_N_BLINDNESS_AT_dv_star = PROVED_EXISTS (dv* no localizado)
+  Existe dv* in (0.02, 4) con Delta_p(dv*) = 0 exactamente; S_n es ciego a nivel de medias allí
+  para todo n. Ninguna afirmación se extrapola fuera de dv < dv_0.
+  ```
 
 ## 7. Reproduction
 

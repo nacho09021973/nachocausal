@@ -57,17 +57,17 @@ convocó `/comite`, no se reabrió C1–C7, no se abrió ningún candidato. Sell
 (separación de medias) y 2 (fluctuaciones, vía Reitzner–Schulte) de ficha §6 están ambos en mano
 para una familia con nombre.
 
-**No cambia:** **Forma L sigue `[OPEN]`**, y el hueco central de §2 (cotas inferiores a nivel poset)
-sigue abierto. El obstáculo se ha **desplazado al canal**, que es un problema distinto y no
-menor:
+**Actualización por comité 045 (27 jul):** la Forma L fuerte queda cerrada sólo en `fixed_n`, para
+la familia diamante y `dv < dv_0` no efectivo; el resto de los canales y familias sigue abierto.
 
 1. La CLT importada vive en Poisson **sin condicionar**, donde `V(tau)` dependiente de `tau`
    (`11.501608349297` vs `10.794261266781` a `dv=4`) hace que la marginal `N` separe sola — el
    mecanismo trivial que ficha §1.2/§9.2 prohíben contar.
-2. A `fixed_n` falta un paso de des-Poissonización que Reitzner–Schulte no da.
-3. La no degeneración de la varianza a `fixed_n` (`Var S_n = Theta(n^3)`) no se calculó.
-4. El chequeo obligatorio de ficha §6.4 pasa **sólo a nivel de tasas**; a nivel de constantes falta
-   `Ibar` para estas esquinas y `zeta_1`.
+2. La des-Poissonización sólo sería necesaria para importar la CLT de Reitzner–Schulte o mejorar
+   constantes; no bloquea la ruta Chebyshev binomial `fixed_n`.
+3. La no degeneración de la varianza a `fixed_n` está cerrada por la identidad exacta.
+4. El chequeo obligatorio de ficha §6.4 queda abierto **sólo a nivel de constantes**: falta `Ibar`
+   para estas esquinas.
 
 Una separación de medias sin cota de TV no es una Forma L: es literalmente el segundo guión de la
 lista de descarte de ficha §9.2. Esta hoja lo deja escrito para que la v4 de la ficha no se lea
@@ -78,14 +78,10 @@ como más de lo que es.
 Orden de prioridad, uno cada vez. Los tres primeros son cálculos del mismo género que el de hoy
 (compatibles con la pausa); el cuarto no lo es.
 
-1. **`zeta_1` y la varianza a `fixed_n`** (punto 3 de §2). Es el paso más barato y el que más
-   desbloquea: `h_1(x) = P(x comparable con Y)` es un cociente de volúmenes de sub-diamante ya en
-   forma cerrada por Prop C2, luego `zeta_1 = Var(h_1(X))` es otra integral doble con la misma
-   maquinaria. Cierra el ingrediente que falta para el paso Chebyshev de §6.3 y, con `Ibar`,
-   permitiría el chequeo de §6.4 a nivel de constantes.
-2. **Des-Poissonización a `fixed_n`** (punto 2). Buscar en la literatura (coto 1 sigue abierto) un
-   teorema que transporte la CLT de U-estadísticos de Poisson al modelo binomial/`fixed_n` con tasa;
-   es un hueco bibliográfico bien definido, no un cálculo.
+1. **`Ibar` para estas esquinas**. Ejecuta el defeater de §6.4 y cuantifica el prefactor y la
+   pérdida por compresión, sin abrir observable nuevo.
+2. **Des-Poissonización** sólo como herramienta opcional para constantes distribucionales en el
+   canal Poisson; no como bloqueo de `fixed_n`.
 3. **Promoción de la rigidez de cópulas a lema citado** — paso 2 pendiente de la hoja del 24 jul
    §2, no tocado hoy: evaluar si el Teorema 7.1 de Janson (Borel + no-gemelos) cubre nuestra clase,
    o si conviene mantener el argumento diferencial-geométrico propio (FWP §4) como razón
@@ -99,8 +95,7 @@ tocar estados `[PROVED]`/`[OPEN]`, y por `/comite` antes de convertirse en decis
 
 ## 4. No hacer
 
-- No presentar el candidato 7.1 como Forma L. Ni «casi». Los cuatro puntos de §2 son bloqueos, no
-  detalles de redacción.
+- No presentar el candidato 7.1 como Forma L sin acotar canal, familia, par y régimen `dv`.
 - No convertir el Anexo C en implementación de estimador, ni abrir un `CANDIDATE_7`: la
   recomendación viva del marcador de reentrada (consolidar, no observable nuevo) no ha cambiado, y
   nada de hoy la toca.
