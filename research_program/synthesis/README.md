@@ -8,6 +8,7 @@ proved theorems. Not preregistration, not empirical protocol (not a PR-series ar
 | **`phase0_program_north_decision.md`** | **Fase 0 CERRADA:** abandono norte reconstructor horizonte SW 3+1 order-only; R1–R3; N1–N5; vocabulario; PI_SIGN_OFF |
 | **`phase1_limits_paper_outline.md`** | **Fase 1 ABIERTA:** outline autoritativo del paper de límites (P1–P3); claim cards; plan de redacción |
 | **`phase1_section3_nonidentifiability_draft.md`** | **Paso 1.2 HECHO:** draft manuscript §3 — Thm 3.1 scale blindness, Thm 3.2 global EH, Thm 3.8 localization floor + remarks N3/N4 |
+| **`phase1_section1_2_abstract_draft.md`** | **Paso 1.3 HECHO:** title, abstract, §1 claim grammar + abandoned north, §2 setup/targets/labels |
 | `geometric_indeterminacy_decision.md` | WP3/WP4 program synthesis (minimax framing) |
 | `pr011_mass_distinguishability_viability.md` | PR011 draft — theoretical–computational TV viability only |
 | `survival_matrix_1p1_to_3p1.md` | Transfer audit 1+1 → 3+1 (construct-level) |

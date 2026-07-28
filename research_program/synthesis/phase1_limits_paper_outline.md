@@ -267,7 +267,7 @@ order-only data alone.
 |---|---|---|
 | **1.1** | Este outline (hecho al abrir Fase 1) | PI no objeta estructura |
 | **1.2** | §3 draft (T1)–(T3) — **HECHO** `phase1_section3_nonidentifiability_draft.md` (2026-07-28) | Cada claim con etiqueta + ancla file |
-| **1.3** | §1–§2 + abstract skeleton filled | claim_grammar checklist 1–12 por claim |
+| **1.3** | §1–§2 + abstract — **HECHO** `phase1_section1_2_abstract_draft.md` (2026-07-28) | claim_grammar; abandoned north; setup |
 | **1.4** | §4 positivo + §5 ledger (reuse outline antiguo) | R3 labels in every terminal table |
 | **1.5** | §6 literature + §7 open/abandoned + §8 | N2/N5 not in “contributions” |
 | **1.6** | Full manuscript draft `docs/manuscript_limits_draft.md` (or `paper/`) | Internal only; no arXiv until ítem 5 policy applied |
@@ -367,13 +367,15 @@ NOT: proof that every possible order-only map fails
 [x] Plan de pasos 1.2–1.7
 [x] Precedencia sobre outline C1–C6 antiguo declarada
 [x] Paso 1.2 — draft §3 (T1)–(T3): phase1_section3_nonidentifiability_draft.md
-[ ] PI / red-team de wording del draft §3
-[ ] Paso 1.3 — §1–§2 + abstract filled
+[x] Paso 1.3 — abstract + §1 + §2: phase1_section1_2_abstract_draft.md
+[ ] PI / red-team de wording (abstract, §1–§3)
+[ ] Paso 1.4 — §4 positivo + §5 ledger
 
 PHASE_1_OPENED: 2026-07-28
 HEAD al abrir outline: 6787260
 PASO_1_2: 2026-07-28 · phase1_section3_nonidentifiability_draft.md
-NEXT: PI review of §3 wording, then paso 1.3 (§1–§2)
+PASO_1_3: 2026-07-28 · phase1_section1_2_abstract_draft.md
+NEXT: paso 1.4 (§4 prereg-002 + §5 ledger C1–C6)
 ```
 
 ---
