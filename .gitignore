@@ -22,3 +22,9 @@ results/
 
 # local literature library (papers, books, derived notes) -- not committed
 biblioteca/
+
+# outreach drafts for item 5 (external readers): contain recipient names and
+# tactical send decisions. Repo rule (external_reader_candidates_n1_n5.md intro,
+# phase2_novelty_and_item5.md §3.3): no email addresses and no choice of persons
+# in the tracked tree. Local only, never pushed.
+email/
