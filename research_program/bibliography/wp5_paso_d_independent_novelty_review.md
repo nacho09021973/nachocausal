@@ -289,7 +289,7 @@ misma que la decisión 046 fija en su `SCOPE_OF_NEGATIVE`, y se aplica aquí a l
 | 2 | Resolver la contradicción de WP4 §9 sobre Boguñá-Krioukov | ✅ **HECHO** (REV-1 §4.3) — corregido *in situ* con nota fechada |
 | 3 | Búsqueda en base indexada canónica (INSPIRE-HEP) | ✅ **HECHO** (REV-1 §4.3b) — 8 consultas vía API pública, cero antecedentes genuinos |
 | 4 | Redactar el claim de novedad en forma **acotada y comparativa** ("no conocemos antecedente de X; lo más próximo es Müller 2025, que difiere en Y"), nunca absoluta | ⬜ pendiente — es tarea de redacción del paper, no de esta revisión |
-| 5 | **Lectura de un experto del área ajeno al proyecto** | ⬜ **PENDIENTE — NO DESCARGABLE DESDE DENTRO DEL REPOSITORIO** |
+| 5 | **Lectura de un experto del área ajeno al proyecto** | ⬜ **PENDIENTE — NO DESCARGABLE DESDE DENTRO DEL REPOSITORIO.** Material de entrega *preparado* (2026-07-28): `research_program/bibliography/external_adversarial_review_package_n1_n5.md` — paquete adversarial autocontenido con N1–N5, comparación con Müller 2025 y formulario de veredicto. Preparar el material **no** descarga el ítem: sigue faltando el lector humano ajeno |
 
 **Sobre el ítem 5, explícitamente.** Este ítem **no puede** descargarse por búsqueda, por agente, ni
 por ningún procedimiento interno, y **no debe** marcarse como cumplido por aproximación. El
