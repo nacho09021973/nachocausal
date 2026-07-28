@@ -1,6 +1,11 @@
 # WP5 Paso D — Revisión bibliográfica independiente (descarga del gate de novedad)
 
 > **STATUS: INDEPENDENT_SEARCH_PERFORMED / NOVELTY_NOT_REFUTED / NOT_A_NOVELTY_CERTIFICATE.**
+> **REV-1 (2026-07-28, misma sesión):** ampliado con (a) búsqueda en **INSPIRE-HEP** vía su API
+> pública, (b) **verificación a texto completo** de `arXiv:2605.27514` tras descargar el PDF a
+> `biblioteca/`, y (c) **una fuente adicional descubierta y descargada**, de Brito–Eichhorn–Pfeiffer
+> 2023 (revisada por pares), que **ancla Gate A de la decisión 046 en literatura publicada** en vez
+> de en una ausencia de resultados de búsqueda. Ver §4.4 y §4.5 — es el hallazgo principal de REV-1.
 > Documento de registro. No ejecuta código, no consume semillas, no toca el sello, no congela nada,
 > no emite ningún claim público. Su función es **descargar el Paso D** de
 > `research_program/work_packages/wp5_order_only_blindness_map_definition.md` §5 dejando constancia
@@ -127,14 +132,113 @@ Verificado explícitamente sobre esta fuente:
 completo antes de citarlo en cualquier documento público. Hasta entonces su contenido más allá del
 abstract es `[UNVERIFIED]`.
 
+### 4.3b Búsqueda en INSPIRE-HEP (REV-1) — la base canónica del área
+
+Ejecutada contra la API pública (`https://inspirehep.net/api/literature`, campo `ab` = abstract),
+2026-07-28. Consultas y totales **literales**:
+
+| Consulta INSPIRE | `total` | Contenido de los hits |
+|---|---:|---|
+| `ab "causal set" and ab "Fisher information"` | **2** | `2502.09894` (cono de entropía holográfica), `2106.12585` (Lorentzian threads) — **holografía, no CST; falsos positivos léxicos** |
+| `ab "causal set" and ab minimax` | **1** | `2502.09894` — mismo falso positivo |
+| `ab "causal sets" and ab "lower bound"` | **6** | holografía/información cuántica/contextualidad; **ninguno es una cota inferior de estimación geométrica** |
+| `ab "causal set" and ab "Le Cam"` | **0** | — |
+| `ab "causal set" and ab identifiability` | **0** | — |
+| `ab sprinkling and ab estimation and ab geometry` | **0** | — |
+| `ab "causal set" and ab "total variation"` | **2** | agujeros negros primordiales, MERA — no relacionados |
+| `ab "causal set" and ab horizon and ab discrete` | **1** | `2605.06813` = EGS, **ya en `biblioteca/`** |
+
+**Lectura.** INSPIRE, que sí indexa exhaustivamente el corpus gr-qc/hep-th, devuelve **cero**
+trabajos que crucen causal sets con Le Cam, identificabilidad, o estimación geométrica por
+sprinkling. Los únicos cruces léxicos con "Fisher"/"minimax"/"lower bound" son papers de holografía
+donde "causal set" no denota el objeto de CST. Esto **eleva sustancialmente** la fuerza del negativo
+respecto a la búsqueda web de §3, que no podía descartar un sesgo de indexación.
+
+### 4.4 `arXiv:2605.27514` — verificación a TEXTO COMPLETO (REV-1)
+
+PDF descargado a `biblioteca/2605.27514v1.pdf` (6.4 MB) y extraído a texto (21 350 palabras). El
+abstract del PDF **coincide verbatim** con el recuperado por búsqueda web en §4.2 — verificación
+cruzada superada. Conteo de términos sobre el texto completo:
+
+| Término | Ocurrencias | Consecuencia |
+|---|---:|---|
+| Fisher, minimax, Le Cam, Cramér, "lower bound", "total variation", "hypothesis test" | **0** cada uno | **(a) CONFIRMADO a texto completo:** no contiene cota inferior estadística ni maquinaria de imposibilidad. No compite con N1–N5. |
+| Schwarzschild, horizon, "black hole" | **0** cada uno | **(b) CONFIRMADO a texto completo:** no trata horizontes. |
+| variance (11), fluctuation (5), "curvature invariant" (9), Ricci (11) | — | **(c) CONFIRMADO:** las fluctuaciones se tratan en clave práctica/comparativa, no como cota formal. |
+| **Kretschmann (2), Weyl (1)** | — | **hallazgo no anticipado — ver abajo** |
+
+### 4.5 HALLAZGO PRINCIPAL DE REV-1 — Gate A de la decisión 046 queda anclado en literatura publicada
+
+La verificación a texto completo localizó dos pasajes que **no** eran accesibles desde el abstract, y
+que convierten el Gate A de la decisión 046 de *"buscamos y no encontramos"* en *"la literatura
+publicada afirma que no se ha logrado"*:
+
+> `2605.27514`, §I (`:81-85`): "Of these, only the simplest one, namely the **Ricci scalar**, has been
+> constructed [15]; additionally, **□R** can be constructed [16]. It has been conjectured in [16],
+> that additional higher-order invariants may be encoded in so-called **stacked order intervals**,
+> but **no explicit construction of, e.g., the Kretschmann scalar, has so far been achieved**."
+
+> `2605.27514`, Outlook (`:2789-2792`): "So far, in causal sets only expressions for discrete
+> counterparts of **R** [15] and **□R** [16] are known. Therefore, understanding which graph
+> observables are sensitive to changes in, e.g., the **Kretschmann scalar**, may provide a hint
+> towards the construction of a discrete counterpart of this curvature invariant."
+
+Su referencia [16] es una fuente **revisada por pares** que el comité 046 **no** consideró, ausente
+de `biblioteca/` hasta ahora, y directamente en la categoría del trigger de reapertura de 046:
+
+> **de Brito, G. P., Eichhorn, A., Pfeiffer, C. (2023), *Higher-order curvature operators in causal
+> set quantum gravity*, Eur. Phys. J. Plus 138 (7) 592, arXiv:2301.13525.** Descargado a
+> `biblioteca/2301.13525v2.pdf`, extraído y verificado a texto completo (8 176 palabras).
+
+Lo que ese paper **construye**, del abstract verbatim: *"we generalize the discrete d'Alembertian,
+which encodes the Ricci scalar, to higher orders. We prove that curvature invariants of the form
+**`R² − □R`** (and similar invariants at higher powers of derivatives) arise in the continuum
+limit."*
+
+Y lo que **explícitamente no** construye, de su §1 (`:152-157`): tras enumerar la base de invariantes
+—que incluye `R_μνκλ R^μνκλ` (Kretschmann) y señalar que *"The Riemann-invariant can also be traded
+for the square of the **Weyl** tensor"*— concluye: *"As we will find, we can construct `R² − □R`"*.
+Conteo sobre su texto completo: **Kretschmann 0, vacuum 0, Ricci-flat 0, Schwarzschild 0, horizon 0**.
+
+**Consecuencia para la decisión 046 (corroboración, NO cambio de terminal).** El estado del arte en
+operadores de curvatura de orden superior order-only construye **únicamente invariantes derivados del
+escalar de Ricci** (`R`, `□R`, `R² − □R`, y potencias superiores de derivadas). **Todos se anulan
+idénticamente cuando `R ≡ 0`**, que es exactamente el caso de Schwarzschild en vacío 3+1D. Ninguno de
+los dos papers aborda siquiera el caso de vacío (`vacuum`/`Ricci-flat`: cero ocurrencias en ambos).
+Por tanto:
+
+- El Gate A de la 046 pasa de apoyarse en **ausencia de hits de búsqueda** a apoyarse en **dos
+  fuentes publicadas** (una de ellas revisada por pares, EPJ Plus 2023) que delimitan el estado del
+  arte exactamente donde la 046 lo situó. La marca `[UNVERIFIED]` que el brief del físico puso sobre
+  este punto **queda descargada**.
+- El **trigger de reapertura de la 046 NO se ha disparado**: no existe construcción de Kretschmann
+  ni de Weyl². Pero ahora se conoce **la vía concreta por la que podría dispararse**: la conjetura de
+  los *stacked order intervals* de de Brito–Eichhorn–Pfeiffer, señalada en `2605.27514` como
+  dirección abierta. **Ese es el objeto a vigilar**, y es un blanco mucho más preciso que "que
+  aparezca algo en la literatura".
+- Como el terminal de la 046 está **firmado y cerrado** (`STATUS_046 = SIGNED_AND_CLOSED`), esta
+  corroboración se registra **aquí** y no se edita aquel documento. No cambia su polaridad ni su
+  alcance; los refuerza.
+
+**Nota adicional sobre N1/N5.** `2605.27514` §Outlook menciona una *"probabilistic measure of
+distinguishability"* propia, basada en distancias entre histogramas normalizadas por la variación
+intra-clase. Es una medida **heurística y comparativa entre clases**, sin `TV`, sin cota minimax y
+sin garantía; **no compite** con N1/N5, pero es literatura adyacente que cualquier redacción pública
+debe citar y distinguir explícitamente.
+
 ### 4.3 Defecto de documentación detectado en WP4 §9
 
-`wp4_fisher_localization_floor.md` §9 se contradice sobre Boguñá-Krioukov: el bullet dedicado dice
+`wp4_fisher_localization_floor.md` §9 se contradecía sobre Boguñá-Krioukov: el bullet dedicado dice
 "**now locally verified**" (PDF en `biblioteca/PhysRevD.110.024008-accepted.pdf`), pero el párrafo de
-cierre dice "Boguñá-Krioukov **and** the memo's broader corpus claims **remain unverified**".
-Probablemente la frase de cierre quedó obsoleta al verificarse el PDF. **No se corrige aquí** (no
-modificar documentos ajenos al alcance de esta tarea); se registra para que el autor lo resuelva
-antes de la consolidación.
+cierre decía "Boguñá-Krioukov **and** the memo's broader corpus claims **remain unverified**". La
+frase de cierre era un remanente anterior a esa verificación.
+
+**`[RESUELTO en REV-1, 2026-07-28]`** Corregido *in situ* en `wp4_fisher_localization_floor.md` §9
+con una nota de corrección fechada que (i) declara B-K verificado, (ii) **mantiene** la advertencia
+sobre el corpus más amplio del memo, que sigue sin verificarse pieza a pieza, (iii) apunta a este
+documento como la búsqueda independiente ya realizada, y (iv) incorpora la corroboración externa de
+§4.5. El texto original no se borró: se conserva citado dentro de la propia nota de corrección,
+siguiendo el patrón de corrección acotada de la decisión 043.
 
 ## 5. Veredicto
 
@@ -151,9 +255,24 @@ PARIENTE PUBLICADO MÁS CERCANO (reconocido, no desplazado): Müller 2025 Teorem
 fijo, target = distancia/diámetro lorentziano). Sigue siendo el antecedente a citar y distinguir
 explícitamente en cualquier redacción pública.
 
-FUENTE NUEVA A INCORPORAR: Eichhorn-Mack-Le-Wagner 2026 (arXiv:2605.27514) — constructiva, sin cotas
-inferiores, sin horizontes; corrobora independientemente la varianza prohibitiva de los invariantes
-de curvatura (respaldo externo al terminal de la decisión 046).
+FUENTES NUEVAS INCORPORADAS A biblioteca/ EN REV-1 (ambas verificadas a texto completo):
+  - Eichhorn-Mack-Le-Wagner 2026, arXiv:2605.27514 (biblioteca/2605.27514v1.pdf) — constructiva, sin
+    cotas inferiores (Fisher/minimax/Le Cam/TV = 0 ocurrencias), sin horizontes (Schwarzschild/
+    horizon/black hole = 0). Afirma en texto: "no explicit construction of, e.g., the Kretschmann
+    scalar, has so far been achieved".
+  - de Brito-Eichhorn-Pfeiffer 2023, Eur.Phys.J.Plus 138:592, arXiv:2301.13525
+    (biblioteca/2301.13525v2.pdf) — REVISADA POR PARES. Construye invariantes de orden superior
+    SOLO de la forma R^2 - □R, todos derivados del escalar de Ricci; identifica el invariante de
+    Riemann/Weyl^2 como elemento de la base que NO construye. vacuum/Ricci-flat = 0 ocurrencias.
+
+EFECTO SOBRE LA DECISIÓN 046 (corroboración, no cambio de terminal): Gate A pasa de apoyarse en
+ausencia de resultados de búsqueda a apoyarse en dos fuentes publicadas. Todos los invariantes
+order-only construidos hasta hoy se anulan idénticamente si R=0, que es el caso de Schwarzschild en
+vacío. La marca [UNVERIFIED] del brief del físico queda descargada. El trigger NO se ha disparado.
+
+INSPIRE-HEP (base canónica del área, 8 consultas): cero antecedentes genuinos. Los únicos cruces
+léxicos con Fisher/minimax/lower-bound son papers de holografía donde "causal set" no denota el
+objeto de CST.
 ```
 
 **Lectura vinculante del veredicto.** El gate de bloqueo del Paso D queda **descargado en el sentido
@@ -164,11 +283,26 @@ misma que la decisión 046 fija en su `SCOPE_OF_NEGATIVE`, y se aplica aquí a l
 
 ## 6. Qué sigue pendiente antes de cualquier envío
 
-1. Incorporar `arXiv:2605.27514` a `biblioteca/` y verificar su texto completo.
-2. Resolver la contradicción de WP4 §9 sobre Boguñá-Krioukov (§4.3).
-3. Búsqueda en bases indexadas (INSPIRE-HEP como mínimo, por ser la canónica del área) para elevar la
-   cobertura por encima de lo que una búsqueda web permite.
-4. Redactar el claim de novedad en forma **acotada y comparativa** ("no conocemos antecedente de X;
-   el trabajo más próximo es Müller 2025, que difiere en Y"), nunca en forma absoluta.
-5. Someterlo a lectura de un experto del área ajeno al proyecto — el repositorio no puede certificar
-   su propia novedad, igual que el autor de un claim no es su verificador (regla fundacional).
+| # | Ítem | Estado a 2026-07-28 |
+|---|---|---|
+| 1 | Incorporar `arXiv:2605.27514` a `biblioteca/` y verificar texto completo | ✅ **HECHO** (REV-1 §4.4) — PDF descargado, abstract cotejado, conteos verificados |
+| 2 | Resolver la contradicción de WP4 §9 sobre Boguñá-Krioukov | ✅ **HECHO** (REV-1 §4.3) — corregido *in situ* con nota fechada |
+| 3 | Búsqueda en base indexada canónica (INSPIRE-HEP) | ✅ **HECHO** (REV-1 §4.3b) — 8 consultas vía API pública, cero antecedentes genuinos |
+| 4 | Redactar el claim de novedad en forma **acotada y comparativa** ("no conocemos antecedente de X; lo más próximo es Müller 2025, que difiere en Y"), nunca absoluta | ⬜ pendiente — es tarea de redacción del paper, no de esta revisión |
+| 5 | **Lectura de un experto del área ajeno al proyecto** | ⬜ **PENDIENTE — NO DESCARGABLE DESDE DENTRO DEL REPOSITORIO** |
+
+**Sobre el ítem 5, explícitamente.** Este ítem **no puede** descargarse por búsqueda, por agente, ni
+por ningún procedimiento interno, y **no debe** marcarse como cumplido por aproximación. El
+repositorio no puede certificar su propia novedad: es la misma regla fundacional que impide que el
+autor de un claim sea su único verificador, aplicada un nivel más arriba. Simular una revisión
+externa con otra instancia del mismo sistema sería precisamente un guardarraíl que no puede fallar,
+es decir, decoración. Queda como acción humana: identificar un lector competente en causal set theory
+sin implicación en el proyecto, entregarle §2 (las cinco afirmaciones N1–N5), §4.5 (el estado del
+arte anclado) y el par más próximo (Müller 2025), y pedirle específicamente que intente **refutar**
+la novedad, no que la confirme.
+
+**Vía de vigilancia concreta que REV-1 deja identificada.** El trigger de reapertura de la decisión
+046 tiene ahora un blanco preciso en vez de una condición genérica: la conjetura de los **stacked
+order intervals** de de Brito–Eichhorn–Pfeiffer 2023, señalada en `2605.27514` como la dirección por
+la que podría llegar una construcción discreta del Kretschmann. Vigilar citas a `arXiv:2301.13525` es
+el modo más barato y específico de detectar si el trigger se dispara.

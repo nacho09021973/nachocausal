@@ -563,5 +563,26 @@ narrows to: the **regular parametric family + QMD/Fisher expansion + two-point `
 floor for a horizon-location parameter in the order-only channel**, the **exact scale-orbit
 (`TV = 0`) statement**, and the **Kruskal-degeneracy diagnosis** — with Müller's bump
 construction acknowledged as the closest published relative on the indistinguishability side.
-Boguñá-Krioukov and the memo's broader corpus claims remain unverified; an independent search is
-still due before any public novelty statement.
+**`[CORRECCIÓN 2026-07-28 — contradicción interna resuelta]`** La versión previa de este párrafo
+cerraba con "Boguñá-Krioukov and the memo's broader corpus claims remain unverified; an independent
+search is still due before any public novelty statement", lo que **contradecía** el bullet de
+Boguñá-Krioukov de §9 (`:543`), que ya lo declara "**now locally verified**" con el PDF en
+`biblioteca/PhysRevD.110.024008-accepted.pdf`. La frase era un remanente anterior a esa
+verificación. Estado real a 2026-07-28:
+
+- **Boguñá-Krioukov 2024: VERIFICADO localmente** (bullet de §9, PDF presente). Ya no figura como
+  pendiente.
+- **Corpus más amplio del memo: sigue sin verificarse pieza a pieza**, y esa parte de la advertencia
+  **se mantiene**.
+- **La búsqueda independiente EXIGIDA (WP5 Paso D) SE HA REALIZADO** y está registrada, con su
+  método, sus límites y su veredicto, en
+  `research_program/bibliography/wp5_paso_d_independent_novelty_review.md` (2026-07-28). Terminal:
+  `NOVELTY_NOT_REFUTED / NOVELTY_NOT_CERTIFIED` — autoriza un claim de novedad **acotado y
+  comparativo**, no la novedad como hecho establecido.
+- **Corroboración externa nueva y directamente pertinente a este anexo**, incorporada a
+  `biblioteca/` en esa revisión: de Brito–Eichhorn–Pfeiffer 2023 (Eur. Phys. J. Plus 138, 592;
+  `biblioteca/2301.13525v2.pdf`) construye invariantes de orden superior **solo de la forma
+  `R² − □R`** — todos derivados del escalar de Ricci; y Eichhorn–Mack–Le–Wagner 2026
+  (`biblioteca/2605.27514v1.pdf`) afirma en texto que "no explicit construction of, e.g., the
+  Kretschmann scalar, has so far been achieved". Ninguno contiene cota inferior estadística,
+  maquinaria Fisher/Le Cam, ni target de horizonte.
