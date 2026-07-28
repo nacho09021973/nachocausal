@@ -6,6 +6,10 @@ AUTHORIZATION: CHEAP_KILL_TESTS_ONLY_AFTER_PREREGISTRATION
 REVISION: §6 step 5 amended 2026-07-17 per `docs/comite/comite_decision_036_
 pr009-pr010-sequencing-adjudication.md` — see that decision for the full rationale and the
 binding caveats on this amendment (it authorizes no candidate opening by itself).
+REVISION: §8 added 2026-07-28 per `docs/comite/comite_decision_046_weyl-level-sheet-page-shoom-adjudication.md`
+(commit `a0a0f9d`) — records an adjacent, non-matrix candidate adjudicated BLOCKED, and the
+cross-cutting structural obstruction it identified. It closes no candidate in §2 and authorizes
+nothing.
 
 ## 1. Selection rule
 
@@ -179,3 +183,67 @@ joint rather than the hidden horizon.
 - No promotion from 1+1D to 3+1D without a written translation of the cross-sectional
   quantity.
 - A negative result closes the candidate; it does not authorize retuning the same channel.
+
+## 8. Adjacent line adjudicated and closed — Page–Shoom Weyl level-sheet (2026-07-28)
+
+Recorded so a future session does not re-propose this construction under another name. **This
+section closes no candidate of §2 and authorizes nothing.**
+
+### 8.1 What was adjudicated
+
+A four-step pipeline proposed as a causal-set discretization of the Page–Shoom horizon detector:
+(1) build an intrinsic `order+number` Weyl-sensitive profile `K̂(x)`; (2) form approximately radial
+level bands from it; (3) read their causal character via intra-band comparability; (4) approximate
+the sign/zero of `||dK||² = (1-2M/r)(K'(r))²`, which vanishes at `r=2M`.
+
+**Terminal:** `BLOCKED_NO_INTRINSIC_WEYL_SENSITIVE_LEVEL_SET_GENERATOR`
+(`COMMITTEE_DECISION_VERDICT=RECOMMEND_DO_NOT_PROCEED`).
+
+**Decisive reason (Gate A):** the only `ESTABLISHED` order-only curvature channel (Benincasa–Dowker)
+recovers the **Ricci scalar `R`**, not Weyl or Kretschmann (BD 2010 eq. 12); `R≡0` in 3+1D
+Schwarzschild vacuum, so that channel does not distinguish radii there; and the extension to
+Weyl²-order is **explicitly declared unfinished future work** in the primary literature
+(`arXiv:2007.13192` §4). Status `NOT_AVAILABLE`, **not** `IMPOSSIBLE`.
+
+**Gate B was NOT refuted:** it is recorded `UNRESOLVED_FINITE_BAND_IDENTIFIABILITY`. The continuum
+discriminant survives probabilistically (an exact interior `r=const` leaf is spacelike ⇒ `p_comp=0`
+identically; the exterior leaf is timelike ⇒ `p_comp>0`). What is open is finite-resolution: with
+finite band thickness `δ` comparable pairs appear inside too, while the exterior fraction tends
+continuously to zero as `r→2M`. Deciding it requires deriving `p_band(r; δ, patch, ρ)`.
+
+**Binding scope (do not collapse this in any future citation):** decision 046 does **not** show that
+the Page–Shoom detector is indiscretizable. It shows that this repository, and the established
+causal-set literature to date, lack the ingredient (an intrinsic Weyl-sensitive level-set generator)
+needed to discretize it intrinsically.
+
+### 8.2 The cross-cutting finding that bears on §2
+
+The load-bearing result is not the terminal but the obstruction it exposed: **Page–Shoom does not
+fail for curvature reasons, it fails for foliation reasons.** Its causally-native step is (3) —
+comparability is exactly what the order reads for free. What does not exist is the **canonical
+intrinsic foliation/partition** that steps (1)–(2) must supply. That is the *same* object that C4
+(neighbour graph, `comite_decision_039`), C5 (lateral peel, `comite_decision_042`) and C6 (waist
+screen + transport, `comite_decision_043`/`044`) each failed to construct by different routes.
+
+**Consequence for candidates B and C, stated with care.** Both are specified as *intrinsic-cut*
+observables — "candidate cuts arise from antichains, rank-free layers, or other intrinsic poset
+rules" (§4), "the cut is generated without horizon labels" (§5). They therefore **depend on the same
+unbuilt object**, and each must now discharge the intrinsic-cut construction explicitly as part of
+its own kill test rather than assuming it. This **raises the bar** on B and C; it does **not** close
+them, and no adjudication of B or C is performed here.
+
+**What decision 046 explicitly does NOT imply for B and C:** the `R≡0` argument is a **3+1D vacuum**
+fact and does **not** transfer to this project's 1+1D sector, where the induced metric is not
+Ricci-flat (`R = -2τ/r³ ≠ 0`, machine-checked at
+`research_program/work_packages/wp4_fisher_localization_floor_symbolic_checks.py:71`). Any future
+argument that "046 kills the BDG line" is therefore invalid as stated and must be re-derived in the
+correct dimension. Symmetrically, the absence of a 3+1D sprinkler in this repo is a practical
+blocker, and the vacuity of Weyl in `d≤3` is a dimensional one — neither is a physical reason to
+close a construction.
+
+### 8.3 Sole reopening trigger
+
+An order-only observable sensitive to Weyl² (or a higher curvature invariant) with a **proven,
+non-degenerate continuum limit**, appearing in peer-reviewed causal-set literature. This is an
+external condition, not a work item. Absent it, this construction is not to be revisited under a new
+name.
