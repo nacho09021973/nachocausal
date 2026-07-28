@@ -1,7 +1,13 @@
 # Paper outline — Order-only horizon localization: one in-patch positive + a six-channel negative ledger
 
-STATUS: OUTLINE / PROPOSAL_ONLY / NOT_A_CLAIM / NOT_FROZEN / NO_NEW_RESULT
+STATUS: **MATERIAL_SOURCE_ONLY** / SUPERSEDED_AS_PROGRAM_THESIS /
+OUTLINE / PROPOSAL_ONLY / NOT_A_CLAIM / NOT_FROZEN / NO_NEW_RESULT
 DATE: 2026-07-21
+**SUPERSEDED NORTH (2026-07-28):** la tesis y el orden de pilares del manuscript de
+límites los gobierna
+`research_program/synthesis/phase1_limits_paper_outline.md` (Fase 1).
+Este archivo se conserva como **fuente de material** (ledger C1–C6, prereg-002,
+caso C6, adenda TV). No reabre el norte reconstructor abandonado en Fase 0.
 ADDENDUM: 2026-07-26 — §6.1 (tercer resultado: cota inferior de TV order-only) y §8.2 (distancia
 real a Schwarzschild 3+1). Ambas secciones son **material de outline**, no claims; §6.1 depende de
 condiciones aún **no cumplidas** (C3, C4 del acta 045) y lo declara en su propio encabezado.

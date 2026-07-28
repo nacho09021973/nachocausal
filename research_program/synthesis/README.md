@@ -5,7 +5,8 @@ proved theorems. Not preregistration, not empirical protocol (not a PR-series ar
 
 | Document | Role |
 |---|---|
-| **`phase0_program_north_decision.md`** | **Fase 0 (2026-07-28): abandono del norte reconstructor horizonte SW 3+1 order-only; R1–R3; N1–N5; vocabulario `EMPIRICAL_FAILURE_OF_CLASS_L` / `PROVED_NON_IDENTIFIABILITY`; checklist PI** |
+| **`phase0_program_north_decision.md`** | **Fase 0 CERRADA:** abandono norte reconstructor horizonte SW 3+1 order-only; R1–R3; N1–N5; vocabulario; PI_SIGN_OFF |
+| **`phase1_limits_paper_outline.md`** | **Fase 1 ABIERTA:** outline autoritativo del paper de límites (P1 no-gos T1–T3, P2 ledger, P3 prereg-002); claim cards; plan de redacción |
 | `geometric_indeterminacy_decision.md` | WP3/WP4 program synthesis (minimax framing) |
 | `pr011_mass_distinguishability_viability.md` | PR011 draft — theoretical–computational TV viability only |
 | `survival_matrix_1p1_to_3p1.md` | Transfer audit 1+1 → 3+1 (construct-level) |

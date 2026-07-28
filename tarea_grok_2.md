@@ -1,8 +1,10 @@
 # Hoja de ruta del programa — post N1–N5 y cierre del camino reconstructor
 
-> **STATUS: PROGRAM_ROADMAP / PHASE_0_CLOSED / FASE_1_NEXT /
+> **STATUS: PROGRAM_ROADMAP / PHASE_0_CLOSED / PHASE_1_OPEN /
 > NOT_A_PREREGISTRATION / NOT_A_NOVELTY_CERTIFICATE / DOES_NOT_TOUCH_SEAL /
 > DOES_NOT_DISCHARGE_ITEM_5.**
+>
+> **Fase 1 outline:** `research_program/synthesis/phase1_limits_paper_outline.md`
 >
 > Documento de síntesis operativa. Integra: (i) el filtro de la respuesta adversarial
 > bibliográfica sobre N1–N5; (ii) el veredicto de que la vía “otro observable order-only

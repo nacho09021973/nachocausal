@@ -2,7 +2,10 @@
 
 > **STATUS: PHASE_0_CLOSED / PI_SIGN_OFF_RECORDED /
 > NOT_A_PREREGISTRATION / NOT_A_NOVELTY_CERTIFICATE / DOES_NOT_TOUCH_SEAL /
-> DOES_NOT_DISCHARGE_ITEM_5 / FASE_1_AUTHORIZED_AS_NEXT.**
+> DOES_NOT_DISCHARGE_ITEM_5 / FASE_1_OPENED.**
+>
+> **Fase 1 outline:** `research_program/synthesis/phase1_limits_paper_outline.md`
+> (abierto 2026-07-28).
 >
 > Documento de gobernanza. Cierra la Fase 0 de la hoja de ruta
 > `tarea_grok_2.md` (raíz del repo). No ejecuta código, no consume semillas, no
@@ -147,13 +150,13 @@ referencia de *por qué* se abandonó el norte. No autoriza ejecución.
 
 ---
 
-## 6. Fase siguiente (no se ejecuta en Fase 0)
+## 6. Fases siguientes
 
-Tras `PI_SIGN_OFF` completo de §7:
-
-1. **Fase 1** — outline + manuscript de límites (producto R2).  
+1. **Fase 1 — ABIERTA (2026-07-28):** outline autoritativo en
+   `phase1_limits_paper_outline.md`. Siguiente entrega de redacción: draft §3
+   (T1)–(T3) only.
 2. **Fase 2** — biblio N1–N5 + ítem 5 (paralelo; no bloquea redactar límites sin claim de novedad de N1).  
-3. **Fase 3** — preferencia de ruta ya discutida: **B2** (pares testigo / identificabilidad) **después** del manuscript; no B4 prematuro; B1 (Order+Number) solo como programa nuevo con grammar propia.
+3. **Fase 3** — preferencia: **B2** después del manuscript; no B4 prematuro; B1 solo como programa nuevo.
 
 Detalle: `tarea_grok_2.md` §4–§5.
 
