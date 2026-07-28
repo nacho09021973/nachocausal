@@ -266,7 +266,7 @@ order-only data alone.
 | Paso | Entrega | Gate |
 |---|---|---|
 | **1.1** | Este outline (hecho al abrir Fase 1) | PI no objeta estructura |
-| **1.2** | §3 draft (T1)–(T3) only — proofs + wording anti-inflación | Cada claim con etiqueta + ancla file |
+| **1.2** | §3 draft (T1)–(T3) — **HECHO** `phase1_section3_nonidentifiability_draft.md` (2026-07-28) | Cada claim con etiqueta + ancla file |
 | **1.3** | §1–§2 + abstract skeleton filled | claim_grammar checklist 1–12 por claim |
 | **1.4** | §4 positivo + §5 ledger (reuse outline antiguo) | R3 labels in every terminal table |
 | **1.5** | §6 literature + §7 open/abandoned + §8 | N2/N5 not in “contributions” |
@@ -366,12 +366,14 @@ NOT: proof that every possible order-only map fails
 [x] Abstract skeleton
 [x] Plan de pasos 1.2–1.7
 [x] Precedencia sobre outline C1–C6 antiguo declarada
-[ ] PI objeción a estructura (si ninguna en sesión: proceder a §3 draft)
-[ ] Paso 1.2 — draft §3 (T1)–(T3)
+[x] Paso 1.2 — draft §3 (T1)–(T3): phase1_section3_nonidentifiability_draft.md
+[ ] PI / red-team de wording del draft §3
+[ ] Paso 1.3 — §1–§2 + abstract filled
 
 PHASE_1_OPENED: 2026-07-28
-HEAD: 6787260
-NEXT: draft §3 only (proofs + anti-inflation wording)
+HEAD al abrir outline: 6787260
+PASO_1_2: 2026-07-28 · phase1_section3_nonidentifiability_draft.md
+NEXT: PI review of §3 wording, then paso 1.3 (§1–§2)
 ```
 
 ---
