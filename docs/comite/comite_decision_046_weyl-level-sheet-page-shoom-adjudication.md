@@ -453,12 +453,23 @@ de sesión, no como firma formal):**
   `research_program/work_packages/next_observable_candidate_matrix.md` **no** se ha ejecutado en esta
   sesión y sigue requiriendo autorización explícita.
 
-**Recomendación estratégica del chair, PENDIENTE de firma del PI** (no ratificada aquí): detener de
-forma permanente la línea de *localizadores/detectores intrínsecos* — C1–C6 más esta adjudicación
-suman siete ataques independientes bloqueados por el **mismo** obstáculo (ausencia de foliación
-intrínseca canónica) — y pivotar a consolidación/publicación de lo ya probado (prereg-002
-recoverability PASS; prereg-003 suelo operacional O(ℓ); WP4 teorema de dos puntos; Teorema A ceguera
-exacta; suelo Fisher; candidato 7.1 separación asintótica `fixed_n`). Tesis: **el orden RECUERDA el
-horizonte pero no lo DEFINE.**
+**FIRMA FORMAL — 2026-07-28, PI (adnacho@gmail.com).** Ratificada la recomendación estratégica del
+chair:
 
-_(Espacio reservado para la firma formal del PI, fecha y cualquier nota que anule lo anterior.)_
+- **La línea de localizadores/detectores intrínsecos queda CERRADA de forma permanente.** C1–C6 más
+  esta adjudicación suman siete ataques independientes bloqueados por el **mismo** obstáculo: la
+  ausencia de una foliación/partición intrínseca canónica. No se abre `C7` ni ninguna variante
+  renombrada de las vías cerradas.
+- **El programa pivota a consolidación/publicación** de lo ya probado: prereg-002 recoverability
+  PASS; prereg-003 suelo operacional O(ℓ); WP4 teorema de dos puntos; Teorema A (ceguera exacta,
+  `TV=0`); suelo Fisher `O(1/sqrt(n·Ībar))` con `κ=V·I` invariante bajo dilatación; candidato 7.1
+  separación asintótica `fixed_n` (no efectiva).
+- **Tesis del trabajo de consolidación:** *el orden RECUERDA el horizonte pero no lo DEFINE.*
+- **Integración en la matriz de candidatos:** AUTORIZADA y ejecutada (`next_observable_candidate_matrix.md`
+  §8, commit `e954fe2`), cerrando cero candidatos de §2 y sin autorizar nada.
+- **Trigger de reapertura:** el único registrado en §10. Condición externa, no tarea pendiente.
+- **Gate previo al envío:** el Paso D de `wp5_order_only_blindness_map_definition.md` §5 (revisión
+  bibliográfica independiente) sigue siendo condición de bloqueo para **cualquier claim público de
+  novedad**, y debe descargarse antes de someter nada.
+
+`STATUS_046 = SIGNED_AND_CLOSED`
