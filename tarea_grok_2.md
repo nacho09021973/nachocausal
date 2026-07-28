@@ -1,10 +1,11 @@
 # Hoja de ruta del programa — post N1–N5 y cierre del camino reconstructor
 
-> **STATUS: PROGRAM_ROADMAP / PHASE_0_CLOSED / PHASE_1_OPEN /
-> NOT_A_PREREGISTRATION / NOT_A_NOVELTY_CERTIFICATE / DOES_NOT_TOUCH_SEAL /
-> DOES_NOT_DISCHARGE_ITEM_5.**
+> **STATUS: PROGRAM_ROADMAP / PHASE_0_CLOSED / PHASE_1_BODY_COMPLETE /
+> PHASE_2_OPEN / NOT_A_PREREGISTRATION / NOT_A_NOVELTY_CERTIFICATE /
+> DOES_NOT_TOUCH_SEAL / ITEM_5_STILL_PENDING.**
 >
-> **Fase 1 outline:** `research_program/synthesis/phase1_limits_paper_outline.md`
+> **Fase 1 manuscript:** `docs/manuscript_limits_draft.md` (PI review OK; 1.6b+1.7 done).
+> **Fase 2:** `research_program/bibliography/phase2_novelty_and_item5.md`
 >
 > Documento de síntesis operativa. Integra: (i) el filtro de la respuesta adversarial
 > bibliográfica sobre N1–N5; (ii) el veredicto de que la vía “otro observable order-only
@@ -96,11 +97,11 @@ Regla de oro:
 
 | # | Acción | Quién | Descarga ítem 5? |
 |---|---|---|---|
-| B1 | Incorporar las 6+ anclas a §7 del paquete adversarial con nota «pista LLM, verificada a mano» | Operador | No |
-| B2 | Ampliar §3.1 candidatos externos con shape / cópulas / minimax PPP + términos de búsqueda | Operador | No |
-| B3 | Adjudicación formal de estatus N2/N4/N5 (esta hoja propone; el PI confirma) | PI | No |
-| B4 | Lectura humana independiente (Tier A causal sets + Tier B estadística) | Externo | **Sí** |
-| B5 | Archivar respuesta cruda LLM fuera del árbol git (o en anexo no normativo) | Operador | No |
+| B1 | Incorporar anclas a §7 del paquete adversarial | Operador | **Hecho** Fase 2 — No |
+| B2 | Ampliar literaturas + log ST/PR | Operador | **Hecho** Fase 2 — No |
+| B3 | Adjudicación N2/N4/N5 | PI | **Hecho** Fase 0 — No |
+| B4 | Lectura humana independiente (Tier A + rec. Tier B) | Externo | **Pendiente** (`NOT_SENT`) — **Sí** cuando responda |
+| B5 | Trail adversarial en repo (`tarea_grok_*`, `instruccion_grok`) | Operador | **Hecho** — No |
 
 ---
 

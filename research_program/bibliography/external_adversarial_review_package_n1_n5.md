@@ -444,8 +444,14 @@ de la forma **`R² − 2□R`** y explícitamente **no** construye el invariante
 **Alcance y límites de las 8 consultas INSPIRE.** Se buscó sobre **campo `abstract` únicamente**, no
 sobre texto completo ni sobre referencias citantes. Un trabajo que haga esto sin nombrarlo en el
 abstract **no aparecería**. Tampoco se consultaron MathSciNet, zbMATH, Scopus, Web of Science, actas
-de congresos ni tesis. La literatura de **inferencia geométrica y procesos puntuales en variedades**
-—fuera de gravedad cuántica— **no se ha peinado**, y es el hueco que más nos preocupa para N1 y N4.
+de congresos ni tesis.
+
+**REV Fase 2 (2026-07-28).** Se ejecutó un peinado **abstract-level** adicional de math.ST/PR
+(consultas Q1–Q3 en `phase2_novelty_and_item5.md` §2: Le Cam/two-point × Poisson; minimax
+intensidad; Fisher × cópula). Resultado: vecinos de **método** (p.ej. Ray–Schmidt-Hieber
+arXiv:1608.01824; Polyanskiy–Wu arXiv:1902.05616), **ningún sink** de la instanciación N1
+(order-only poset, familia diamante EF / parámetro de localización Schwarzschild 1+1). MathSciNet
+completo y lectura a texto completo de la cola ST **siguen abiertos** — flanco del lector Tier B.
 
 > **Advertencia expresa, vinculante.** Cero resultados **no certifica novedad**. Todo lo anterior
 > establece únicamente que *nosotros* no encontramos antecedente con *estos* medios. Convertir eso en
@@ -455,18 +461,28 @@ de congresos ni tesis. La literatura de **inferencia geométrica y procesos punt
 
 ## 7. Tabla de antecedentes potenciales
 
+> **REV Fase 2 (2026-07-28).** Anclas V1–V9 de
+> `research_program/bibliography/phase2_novelty_and_item5.md` §1
+> (`LLM_LEAD_HUMAN_VERIFIED` donde aplica). Adjudicación de programa Fase 0:
+> N2=lema, N3=remark, N4=corolario dimensional, N5=retirado como contribución,
+> N1=instanciación acotada. Log ST/PR abstract-level: mismo doc §2
+> (`NO_N1_SINK_FOUND` / `NOVELTY_NOT_CERTIFIED`).
+
 | Antecedente | Estado de verificación | Afecta a | Riesgo |
 |---|---|---|---|
-| Folclore "Order + Number" (el orden no fija escala) | `ESTABLISHED_BY_PRIMARY_SOURCE` como principio de la disciplina; **admitido por el propio repo** (`first_witness_pair_candidates.md` §2 Remark A1) | **N2** | **Muy alto** |
-| Müller 2025, Teo. 2 (arXiv:2503.01719) | Texto completo leído | **N2**, marginalmente N1 | Alto para N2 |
-| Teorema de Sklar (invariancia de cópulas) | Textbook | **N4** | Alto |
-| Data processing (Blackwell / Le Cam) | Textbook | **N5** | Muy alto |
-| Le Cam / Tsybakov (método de dos puntos) | Textbook; `biblioteca/Tsybakov_Nonparametric_Estimation.pdf` | **N1** (maquinaria, no instanciación) | Alto sobre la técnica, bajo sobre la instanciación |
-| Invariancia de escala de coordenadas Kruskal | Textbook GR | **N3** | Alto sobre el hecho, bajo sobre el uso diagnóstico |
+| Folclore "Order + Number" (el orden no fija escala) | `ESTABLISHED_BY_PRIMARY_SOURCE` — **localizadores**: Dowker–Zalel arXiv:1703.07556 §1.1 (V1); Madsen arXiv:2607.05840 intro (V2); Braun arXiv:2507.01907 §§3.3–3.4 (V3); repo FWP Remark A1 | **N2** (ahora **lema**, no contribución) | **Muy alto** como novedad; **bajo** si se presenta como lema |
+| Zeeman / Bombelli 1987 PhD (dilataciones en isomorfismos causales Minkowski) | `ESTABLISHED_BY_PRIMARY_SOURCE` en `biblioteca/derived-md/` (V6) | **N2** (precursor continuo de órbita de escala) | Alto sobre el *hecho* continuum; no sustituye TV=0 a `N=n` |
+| HKMM 1976; Malament 1977 | `ESTABLISHED_BY_PRIMARY_SOURCE` (V4–V5; vía refs Braun) | **N2** continuum conformal | Alto sobre escala ausente del orden continuum |
+| Müller 2025, Teo. 2 (arXiv:2503.01719) | Texto completo leído (V8) | **N2**, marginalmente N1 | Alto para N2 como “único resultado”; contrastar con TV=0 exacto / target distinto |
+| Teorema de Sklar + análisis dimensional \(V\cdot I\) | Textbook + deflación Fase 0/2 | **N4** (corolario, no teorema de novedad) | Alto si se vende como novedad |
+| Data processing (Blackwell / Le Cam) | Textbook | **N5** (retirado como contribución) | Muy alto si se vende como novedad |
+| Le Cam / Tsybakov (método de dos puntos) | Textbook; `biblioteca/Tsybakov_Nonparametric_Estimation.pdf` (V9) | **N1** (maquinaria, no instanciación) | Alto sobre la técnica, bajo sobre la instanciación *salvo* prior ST no hallado aún |
+| Invariancia de escala de coordenadas Kruskal | Textbook GR | **N3** (remark de diseño) | Alto sobre el hecho, bajo sobre el uso diagnóstico |
 | de Brito–Eichhorn–Pfeiffer 2023 (`R² − 2□R`) | Texto completo + verificación visual del abstract | Contexto de curvatura; no compite con N1–N5 | Bajo |
 | Eichhorn–Mack–Le–Wagner 2026 | Texto completo | Contexto; su medida de distinguibilidad es heurística, sin `TV` | Bajo |
-| Braun 2025, Madsen 2026, Boguñá–Krioukov 2024 | Verificados en `wp4_fisher_localization_floor.md` §9 | Lado positivo/constructivo | Bajo |
-| **Literatura de inferencia geométrica / procesos puntuales en variedades** | **NO PEINADA** | **N1, N4** | **Desconocido — el hueco principal** |
+| Braun 2025, Madsen 2026, Boguñá–Krioukov 2024 | Verificados en `wp4_fisher_localization_floor.md` §9; B-K también V7 | Lado positivo/constructivo; B-K = anverso de tasas | Bajo como sink de N1 |
+| Vecinos ST de método (Ray–Schmidt-Hieber arXiv:1608.01824; Polyanskiy–Wu arXiv:1902.05616; …) | Abstract-level Fase 2 log Q1–Q2 | **N1** técnica | Medio — no son el teorema del canal poset |
+| **Literatura minimax / geometric inference / shape / cópulas (profundidad ST)** | **Peinado abstract-level Fase 2** (`phase2_novelty_and_item5.md` §2); **sin sink de N1 hallado**; MathSciNet completo **no** ejecutado | **N1** (e N4 conceptual) | **Desconocido residual — flanco del ítem 5 Tier B** |
 
 ---
 

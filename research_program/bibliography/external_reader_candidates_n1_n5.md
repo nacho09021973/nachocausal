@@ -1,13 +1,14 @@
 # Candidatos a lector externo independiente — N1–N5
 
-> **STATUS: WORKING_LIST / NOT_A_NOVELTY_CERTIFICATE / NO_CONTACT_HAS_BEEN_MADE /
-> ITEM_5_STILL_PENDING.**
+> **STATUS: WORKING_LIST / PHASE_2_UPDATED / NOT_A_NOVELTY_CERTIFICATE /
+> NO_CONTACT_HAS_BEEN_MADE / ITEM_5_STILL_PENDING.**
 > Instrumento de trabajo para el ítem 5 de `wp5_paso_d_independent_novelty_review.md` §6. No ejecuta
 > código, no consume semillas, no toca el sello, no congela nada y **no sostiene ningún claim
 > científico**. Identificar candidatos **no** descarga el ítem 5: sólo el envío efectivo y la
-> respuesta de un lector ajeno lo descargan.
+> respuesta de un lector ajeno lo descargan. Protocolo de envío:
+> `phase2_novelty_and_item5.md` §3.
 >
-> FECHA: 2026-07-28 · HEAD `26a2f53` · Sello
+> FECHA: 2026-07-28 · HEAD ref Fase 2 `66cec59` · Sello
 > `thresholds.py sha256 = 6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4` (intacto)
 
 **Alcance deliberadamente limitado de este documento.** Contiene sólo datos bibliográficos públicos
@@ -68,20 +69,37 @@ quedan sin examinar por el flanco que el propio paquete admite no haber peinado.
 | B1 | **T. Trauthwein, J. E. Yukich**, *Second-order Poincaré inequalities and localization on the Poisson space*, arXiv:2605.23292v1 [math.PR], 22 May 2026 | `VERIFICADO` (`biblioteca/2605.23292v1.pdf`); afiliaciones no en portada `[UNVERIFIED]` | **N1, N4** | **El proyecto ya depende de este resultado:** `comite_decision_007` re-calificó el Lema L1 de `IMPOSSIBLE` a `OPEN-CONTINGENT` apoyándose en su Teorema 2.1 (p.5) y su Def. 2.3 de BL-localización (p.8). Comunidad exacta del hueco: funcionales de medidas de Poisson en espacios métricos, Malliavin–Stein, tasas de aproximación normal |
 | B2 | **M. Boguñá, D. Krioukov**, *Measuring spatial distances in causal sets via causal overlaps*, Phys. Rev. D **110**, 024008 (8 Jul 2024), DOI 10.1103/PhysRevD.110.024008 | `VERIFICADO` (`biblioteca/PhysRevD.110.024008-accepted.pdf`) | **N1** | Inferencia geométrica desde orden causal con tasa de error explícita `~1/√(ρV)`: **anverso positivo** del suelo inferior de N1 (acotan por arriba lo que N1 acota por abajo). Comunidad de ciencia de redes / física estadística, distinta de la de gravedad cuántica |
 
-### 3.1 Hueco no cerrado en esta lista
+### 3.1 Hueco no cerrado + literaturas ampliadas (Fase 2)
 
 La comunidad de **estadística minimax** —quien aplica el método de dos puntos de Le Cam/Tsybakov a
 inferencia sobre variedades o procesos puntuales— es el centro del hueco de §7, y **esta lista no
 contiene ningún candidato verificado de ella**. `biblioteca/Tsybakov_Nonparametric_Estimation.pdf` es
 un libro de texto, no un interlocutor.
 
-Este hueco se deja **explícitamente abierto** en vez de rellenarse con nombres no anclados a fuente
-primaria. Dos vías de cierre, ambas de bajo coste y ninguna ejecutada:
+**Fase 2 (2026-07-28):** peinado abstract-level documentado en
+`phase2_novelty_and_item5.md` §2 (`PHASE2_ST_PR_SWEEP = NO_N1_SINK_FOUND`). Vecinos de método
+anotados allí (Ray–Schmidt-Hieber arXiv:1608.01824; Polyanskiy–Wu arXiv:1902.05616; Birgé Poisson
+model selection; Trauthwein–Yukich ya es B1). **No** se rellenó la lista con nombres de
+estadísticos sin ancla a PDF primario en `biblioteca/`.
 
-1. Localizar citas del método de dos puntos (Tsybakov cap. 2) en trabajos recientes de `math.PR` /
-   `math.ST` sobre procesos puntuales o inferencia geométrica, y retener candidatos con fuente
-   primaria verificable.
-2. Preguntárselo a B1, que está dentro de esa comunidad.
+**Subcampos y términos para peinado / para el revisor Tier B** (ampliación del diagnóstico
+adversarial; no son autores contactados):
+
+| Subcampo | Términos / referencias de entrada | Cubre |
+|---|---|---|
+| Minimax + PPP | `two-point method Poisson process`, `Hellinger affinity point process`, `minimax intensity estimation` | N1 |
+| Geometric inference | `minimax manifold estimation`, `support estimation lower bound` | N1 |
+| Shape theory | Kendall; Dryden–Mardia; `Procrustes Fisher information` | N2/N4 conceptual |
+| Cópula / ranks | Joe; Nelsen; `semiparametric efficiency copula` | order-only ≈ rank |
+| Info–computation gaps | Abbe; Decelle–Krzakala–Moore–Zdeborová | disciplina ex-N5 |
+
+Vías de cierre del hueco de interlocutor minimax (ninguna es envío aún):
+
+1. Localizar citas de Tsybakov cap. 2 en `math.PR`/`math.ST` reciente con PDF verificable y
+   retener **un** B3 con fuente primaria en `biblioteca/`.
+2. Preguntar a B1 (Trauthwein–Yukich línea) por un colega minimax — **fuera del repo**, sin
+   almacenar correo aquí.
+3. Ejecutar el protocolo de envío de `phase2_novelty_and_item5.md` §3.
 
 ---
 

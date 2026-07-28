@@ -378,7 +378,8 @@ NOT: proof that every possible order-only map fails
 PHASE_1_OPENED: 2026-07-28
 PHASE_1_BODY+POLISH+AUDIT: 2026-07-28
 Manuscript: docs/manuscript_limits_draft.md
-NEXT: Fase 2 (biblio adversarial anchors + ítem 5 plan) if external claims; else hold internal
+PHASE_2: abierta — `../bibliography/phase2_novelty_and_item5.md` (anclas + log ST/PR + plan ítem 5 NOT_SENT)
+NEXT: PI contacto externo (fuera del repo) o mantener hedge N1 y no arXiv con novelty claim
 ```
 
 ---
