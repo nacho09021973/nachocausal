@@ -152,9 +152,9 @@ referencia de *por qué* se abandonó el norte. No autoriza ejecución.
 
 ## 6. Fases siguientes
 
-1. **Fase 1 — ABIERTA (2026-07-28):** outline autoritativo en
-   `phase1_limits_paper_outline.md`. Siguiente entrega de redacción: draft §3
-   (T1)–(T3) only.
+1. **Fase 1 — ABIERTA (2026-07-28):** outline + drafts §1–§8 + merge
+   `docs/manuscript_limits_draft.md`. Siguiente: PI review / polish 1.6b /
+   number audit 1.7; no arXiv sin política ítem 5.
 2. **Fase 2** — biblio N1–N5 + ítem 5 (paralelo; no bloquea redactar límites sin claim de novedad de N1).  
 3. **Fase 3** — preferencia: **B2** después del manuscript; no B4 prematuro; B1 solo como programa nuevo.
 

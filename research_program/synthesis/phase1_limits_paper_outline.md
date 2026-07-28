@@ -269,8 +269,8 @@ order-only data alone.
 | **1.2** | §3 draft (T1)–(T3) — **HECHO** `phase1_section3_nonidentifiability_draft.md` (2026-07-28) | Cada claim con etiqueta + ancla file |
 | **1.3** | §1–§2 + abstract — **HECHO** `phase1_section1_2_abstract_draft.md` (2026-07-28) | claim_grammar; abandoned north; setup |
 | **1.4** | §4–§5 — **HECHO** `phase1_section4_5_positive_ledger_draft.md` (2026-07-28) | P3 prereg-002; P2 ledger R3 labels |
-| **1.5** | §6 literature + §7 open/abandoned + §8 | N2/N5 not in “contributions” |
-| **1.6** | Full manuscript draft `docs/manuscript_limits_draft.md` (or `paper/`) | Internal only; no arXiv until ítem 5 policy applied |
+| **1.5** | §6–§8 — **HECHO** `phase1_section6_7_8_draft.md` (2026-07-28) | literature; open/abandoned; conclusions |
+| **1.6** | Full merge — **HECHO** `docs/manuscript_limits_draft.md` (ensamblado; polish pendiente) | Internal only; no arXiv until ítem 5 policy applied |
 | **1.7** | Self-audit pass: every number has generator or `[UNVERIFIED]` | Auditor optional |
 
 **Paralelo (Fase 2, no bloquea 1.2–1.5):** anclas biblio en paquete adversarial; plan ítem 5.
@@ -369,15 +369,16 @@ NOT: proof that every possible order-only map fails
 [x] Paso 1.2 — draft §3 (T1)–(T3): phase1_section3_nonidentifiability_draft.md
 [x] Paso 1.3 — abstract + §1 + §2: phase1_section1_2_abstract_draft.md
 [x] Paso 1.4 — §4 positivo + §5 ledger: phase1_section4_5_positive_ledger_draft.md
-[ ] PI / red-team de wording (abstract, §1–§5)
-[ ] Paso 1.5 — §6 literature + §7 open/abandoned + §8 conclusions
+[x] Paso 1.5 — §6–§8: phase1_section6_7_8_draft.md
+[x] Paso 1.6 (merge) — docs/manuscript_limits_draft.md ensamblado
+[ ] PI / red-team de wording (manuscript completo)
+[ ] Paso 1.6b polish: dedupe Lemma 0 / channel text entre §2 y §3
+[ ] Paso 1.7 — number audit / `[UNVERIFIED]` sweep
 
 PHASE_1_OPENED: 2026-07-28
 HEAD al abrir outline: 6787260
-PASO_1_2: 2026-07-28 · phase1_section3_nonidentifiability_draft.md
-PASO_1_3: 2026-07-28 · phase1_section1_2_abstract_draft.md
-PASO_1_4: 2026-07-28 · phase1_section4_5_positive_ledger_draft.md
-NEXT: paso 1.5 (§6–§8)
+PASO_1_2 … 1.5: 2026-07-28 (section drafts + merge)
+NEXT: PI review; optional polish 1.6b; number audit 1.7; Fase 2 (biblio/ítem 5) en paralelo
 ```
 
 ---
