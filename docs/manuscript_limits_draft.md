@@ -1,21 +1,25 @@
 # Manuscript draft — Recoverability limits for finite order-only Schwarzschild patches
 
-> **STATUS: INTERNAL_MANUSCRIPT_DRAFT / NOT_FROZEN / NOT_FOR_ARXIV /
-> NO_NEW_SCIENCE_BEYOND_ANCHORED_RESULTS / DOES_NOT_TOUCH_SEAL /
-> DOES_NOT_DISCHARGE_ITEM_5.**
+> **STATUS: INTERNAL_MANUSCRIPT_DRAFT / PI_REVIEW_OK / POLISH_1_6B_DONE /
+> NUMBER_AUDIT_1_7_PASS_WITH_CAVEATS / NOT_FROZEN / NOT_FOR_ARXIV /
+> DOES_NOT_TOUCH_SEAL / DOES_NOT_DISCHARGE_ITEM_5.**
 >
-> Assembled 2026-07-28 from Phase 1 section drafts (pasos 1.2–1.5).
+> Assembled from Phase 1 section drafts (pasos 1.2–1.5). Re-merged after 1.6b
+> dedupe (Lemma 2.1–2.2 sole definitions in §2; §3 cites by number).
+> Number audit: `research_program/synthesis/phase1_number_audit_17.md`.
 > Authoritative outline: `research_program/synthesis/phase1_limits_paper_outline.md`.
 > Program north: `research_program/synthesis/phase0_program_north_decision.md`.
 >
-> **Sources (do not edit in isolation without syncing):**
+> **PI review:** structure and content accepted 2026-07-28.
+>
+> **Sources:**
 > - `phase1_section1_2_abstract_draft.md` — title, abstract, §1–§2
 > - `phase1_section3_nonidentifiability_draft.md` — §3
 > - `phase1_section4_5_positive_ledger_draft.md` — §4–§5
 > - `phase1_section6_7_8_draft.md` — §6–§8
 >
-> Deduplication of Lemma 0 / channel definitions between §2 and §3 is pending
-> polish (paso 1.6). Every theorem label and number must stay consistent with §3 draft.
+> Before any external circulation: seal verify; optional auditor re-check of Class C
+> numbers; complete Paso D item 5 if claiming instantiation priority.
 
 ---
 
@@ -266,14 +270,16 @@ Write:
 **Lemma 2.1 (cardinality conditioning).** `[PROVED]`  
 Conditioned on \(N=n\), the \(n\) points are i.i.d.\ with law
 \(\mathrm{vol}_g/\mathrm{vol}_g(P)\).  
-(Anchor: FWP Lemma 0.)
+(Anchor: FWP Lemma 0. This is the sole statement of the lemma in the paper;
+later sections cite “Lemma 2.1” rather than re-proving it.)
 
 **Lemma 2.2 (copula reduction on null boxes).** `[PROVED]`  
 If the patch is a coordinate box in global null coordinates with metric
 \(g=-\Omega\,dU\,dV\), \(\Omega>0\) continuous, then the unlabeled poset law at
 fixed \(n\) depends on \(g\) only through the copula of the normalized volume
 measure.  
-(Anchor: FWP Lemma 1. Used for the diamond family in Theorem 3.8.)
+(Anchor: FWP Lemma 1. Used for the diamond family in Theorem 3.8; cited as
+Lemma 2.2 thereafter.)
 
 Total variation \(\mathrm{TV}\) and Hellinger distance \(H\) between laws on the
 space of finite unlabeled posets are the standard ones; we use \(\mathrm{TV}\le H\)
@@ -344,11 +350,10 @@ poset can separate them at a stated rate. In the program vocabulary of
 `PROVED_NON_IDENTIFIABILITY` results. They do **not** depend on the success or
 failure of any particular estimator constructed in this repository.
 
-Throughout, a *completion* is a Lorentzian patch equipped with a Poisson sprinkling
-of intensity \(\rho\) with respect to the volume measure. Conditioning on cardinality
-\(N=n\) makes the \(n\) points i.i.d.\ from the normalized volume measure
-(`[PROVED]` Lemma 0, `first_witness_pair_candidates.md` §1). The *order-only,
-fixed-\(n\) channel* observes only the isomorphism class of the induced causal set.
+**Setup pointer (no re-definition).** Completions, the order-only fixed-\(n\) channel,
+Lemma 2.1 (i.i.d.\ sampling after conditioning on \(N=n\); FWP Lemma 0), and
+Lemma 2.2 (copula reduction on null boxes; FWP Lemma 1) are as in §2. Proof sketches
+below cite those lemmas by number rather than restating them.
 
 ### 3.1 Exact scale blindness at fixed cardinality
 
@@ -384,11 +389,11 @@ order carries no information about \(r_s\) in absolute units**.
 *Proof sketch (full proof: `first_witness_pair_candidates.md` §2, Theorem A).*  
 By direct computation, \(\Phi_s^* g_{s r_s}=s^2 g_{r_s}\). A constant conformal factor
 preserves causal order. Volume forms in 1+1 dimensions scale by \(s^2\), which cancels
-under normalization of the sampling measure. Conditioning on \(N=n\) (Lemma 0), the
-\(n\) i.i.d.\ sample on the dilated geometry is the \(\Phi_s\)-image in law of the
-sample on the original geometry, with identical induced relations. Unlabeled poset
-laws therefore coincide, and total variation vanishes. The estimation consequence is
-the two-point bound at \(\mathrm{TV}=0\) (`wp4_two_point_theorem.md`, Teorema 2). ∎
+under normalization of the sampling measure. By Lemma 2.1, the \(n\) i.i.d.\ sample on
+the dilated geometry is the \(\Phi_s\)-image in law of the sample on the original
+geometry, with identical induced relations. Unlabeled poset laws therefore coincide,
+and total variation vanishes. The estimation consequence is the two-point bound at
+\(\mathrm{TV}=0\) (`wp4_two_point_theorem.md`, Teorema 2). ∎
 
 **3+1 dimensions (scoped).** `[PROVED]` in the scoped class of
 `op12_tv_zero_3p1.md`, not as a general Hauptvermutung. Fix a temporal sector
@@ -578,9 +583,9 @@ and every (possibly randomized) order-only estimator \(\widehat\tau=f(C_n)\):
 
 *Proof sketch (annex §5).*  
 Prop.\ 3.6 bounds Hellinger at the copula level. Hellinger tensorizes over \(n\)
-i.i.d.\ samples. The diamond is a null box, so the unlabeled poset is a function of
-the copula sample (FWP Lemma 1); data processing and \(\mathrm{TV}\le H\) yield (1).
-The nearest-endpoint test reduction yields (2)–(3)
+i.i.d.\ samples (Lemma 2.1). The diamond is a null box, so the unlabeled poset is a
+function of the copula sample (Lemma 2.2); data processing and \(\mathrm{TV}\le H\)
+yield (1). The nearest-endpoint test reduction yields (2)–(3)
 (`wp4_two_point_theorem.md`). ∎
 
 #### What Theorem 3.8 does and does not claim
@@ -1113,3 +1118,13 @@ cross-checked in the adversarial filter / local library where noted in
 ---
 
 <!-- end phase1_section6_7_8_draft.md -->
+
+---
+
+## Appendix E — Number audit (internal)
+
+See `research_program/synthesis/phase1_number_audit_17.md` for the full Class A–E
+sweep. Summary: `AUDIT_PASS_WITH_DECLARED_CAVEATS`. Validation table numbers are
+transcriptions from `docs/preregistration_002_result.md` with supervised MATCH
+re-verification; primary raw artifact remains lost as documented in §4.3. No new
+ensembles were run for this draft. Seal hash unchanged.
