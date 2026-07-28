@@ -184,6 +184,30 @@ Forma típica:
 Este es el nivel al que apuntaría, si llegara a cerrarse, una auténtica "indeterminación
 order/geometría".
 
+### 4.4 Etiquetas operativas Fase 0 (2026-07-28)
+
+Ancla normativa de programa:
+`research_program/synthesis/phase0_program_north_decision.md` §3.
+No sustituyen §4.1–§4.3; las **rotulan** para redacción y comités.
+
+| Etiqueta | Significado | No confundir con |
+|---|---|---|
+| `EMPIRICAL_FAILURE_OF_CLASS_L` | Toda regla en una lista/clase **nombrada** `L` falla bajo un protocolo fijado | Imposibilidad para todo estimador medible del canal |
+| `PROVED_NON_IDENTIFIABILITY` | Ningún estimador medible del canal alcanza riesgo arbitrariamente bajo (par testigo con leyes iguales o TV/Hellinger/Fisher ⇒ suelo minimax; o target no funcional de los datos) | “No encontramos un observable que funcione” |
+
+**Regla R3 (vinculante mientras rija la Fase 0 / paper de límites):** el ledger C1–C6 y los
+terminales de la matriz post-PR008 se citan como `EMPIRICAL_FAILURE_OF_CLASS_L`, nunca como
+prueba de `PROVED_NON_IDENTIFIABILITY`. Los lemas de ceguera de escala (Teorema A, OP-1.2), el
+suelo de dos puntos en familia regular y la no-funcionalidad del horizonte global en un patch
+finito son el tipo de resultado que **sí** puede llevar la segunda etiqueta.
+
+Mapeo rápido:
+
+- §4.1 límite del estimador → `EMPIRICAL_FAILURE_OF_CLASS_L` con `|L|=1`
+- §4.2 límite de familia → `EMPIRICAL_FAILURE_OF_CLASS_L` si la clase se agota por protocolo;
+  `PROVED_NON_IDENTIFIABILITY` solo si hay cota sobre todas las reglas medibles de esa clase
+- §4.3 límite intrínseco del orden → solo `PROVED_NON_IDENTIFIABILITY`
+
 ## 5. Escalas de error e interpretaciones
 
 ### 5.1 Escala discreta

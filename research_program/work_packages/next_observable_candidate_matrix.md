@@ -1,6 +1,6 @@
 # Post-PR008 observable candidate matrix
 
-STATUS: DESIGN_TRIAGE_ONLY
+STATUS: DESIGN_TRIAGE_ONLY / **PROGRAM_NORTH_SUPERSEDED**
 DATE: 2026-07-11
 AUTHORIZATION: CHEAP_KILL_TESTS_ONLY_AFTER_PREREGISTRATION
 REVISION: §6 step 5 amended 2026-07-17 per `docs/comite/comite_decision_036_
@@ -10,8 +10,42 @@ REVISION: §8 added 2026-07-28 per `docs/comite/comite_decision_046_weyl-level-s
 (commit `a0a0f9d`) — records an adjacent, non-matrix candidate adjudicated BLOCKED, and the
 cross-cutting structural obstruction it identified. It closes no candidate in §2 and authorizes
 nothing.
+REVISION: **2026-07-28 Fase 0** —
+`research_program/synthesis/phase0_program_north_decision.md` (HEAD ref `e9744d8`).
+See banner §0 below. Does not rewrite §2–§8 historical triage.
+
+---
+
+## 0. Banner operativo — Fase 0 (vinculante)
+
+```text
+PROGRAM_NORTH = ABANDONED_AS_PROGRAM_NORTH
+```
+
+**Abandonado como norte del programa:** localizar o reconstruir estructura de horizonte
+Schwarzschild **3+1** (evento global, región atrapada, codim-2, trapping, o proxy de los
+mismos) mediante **nuevos** observables order-only en la línea de esta matriz (A–C, retuning
+D, Page–Shoom-like, o “un candidato más” del mismo paquete target+canal).
+
+**Consecuencias inmediatas (sin `PI_SIGN_OFF` que revoque R1 en el doc de Fase 0):**
+
+1. Esta matriz es **archivo histórico de triage** y evidencia de por qué se abandonó el norte.
+   **No autoriza** kill tests, pre-registros ni ejecución de A–C (ni de extensiones) *como ruta a
+   ese norte*.
+2. Los terminales ya adjudicados (p.ej. §8 / decisión 046) **permanecen**; no se reabren bajo
+   otro nombre para el mismo norte.
+3. Trabajo permitido en paralelo: paper de límites de recuperabilidad; no-gos con pares testigo /
+   TV / Fisher; programas **nuevos** con claim grammar propio (p.ej. Order+Number, clasificación)
+   — ver `phase0_program_north_decision.md` y `tarea_grok_2.md`.
+4. Etiquetas: fallos de esta matriz / C1–C6 → `EMPIRICAL_FAILURE_OF_CLASS_L`. No citarlos como
+   `PROVED_NON_IDENTIFIABILITY`.
+
+---
 
 ## 1. Selection rule
+
+> **Historical rule (pre–Fase 0).** Under the abandoned program north, a candidate advanced
+> only if the conditions below held. **Fase 0 does not use this rule to open work.**
 
 A candidate advances only if it introduces information absent from `H_hat`, has a direct
 physical interpretation, can be computed on an abstract finite poset, and admits a cheap

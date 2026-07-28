@@ -5,7 +5,8 @@ recoverability Schwarzschild desde `order+number`. Sigue el formato de
 `docs/plan_avanzado_14_julio_2026.md`: anclajes verificables, dependencias, gates, terminales
 explícitos y reglas de parada.
 
-> **Estado:** `DRAFT_OPERATIONAL_PLAN` / `REVISABLE` / `THEORY_FIRST`
+> **Estado:** `DRAFT_OPERATIONAL_PLAN` / `REVISABLE` / `THEORY_FIRST` /
+> **`PROGRAM_NORTH_PARTIALLY_SUPERSEDED` (2026-07-28)**
 >
 > No es preregistro, no congela umbrales y no autoriza ejecución. Los documentos de fases futuras
 > solo podrán adquirir estado normativo mediante sus propios gates `/comite`, `/auditor` y decisión
@@ -13,9 +14,19 @@ explícitos y reglas de parada.
 
 **Commit de referencia:** `584a9f0`.
 
-**Precedencia:** este documento es la hoja de ruta operativa vigente. Conserva
-`docs/plan_avanzado_14_julio_2026.md` como fotografía histórica del estado del 14-07-2026 y no
-reinterpreta ningún resultado PR-003/PR011/PR012.
+**Precedencia (actualizada 2026-07-28):** la hoja de ruta de **norte de programa** y de producto
+del ciclo vigente es
+
+- `research_program/synthesis/phase0_program_north_decision.md` (Fase 0; R1–R3),
+- `tarea_grok_2.md` (Fases 0–4 unificadas).
+
+En particular, el norte **localizar / reconstruir horizonte Schwarzschild 3+1 order-only**
+mediante nuevos localizadores de la matriz post-PR008 queda
+`ABANDONED_AS_PROGRAM_NORTH` bajo R1 de la Fase 0 (pendiente `PI_SIGN_OFF` del checklist).
+Este plan del 15-jul **se conserva** como fotografía operativa THEORY_FIRST y como referencia de
+PR011/PR012, order+number y transferencia; **no** autoriza reabrir ese norte abandonado.
+Conserva `docs/plan_avanzado_14_julio_2026.md` como fotografía del 14-07-2026 y no reinterpreta
+ningún resultado PR-003/PR011/PR012.
 
 ---
 
