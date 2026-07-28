@@ -262,14 +262,16 @@ Write:
 **Lemma 2.1 (cardinality conditioning).** `[PROVED]`  
 Conditioned on \(N=n\), the \(n\) points are i.i.d.\ with law
 \(\mathrm{vol}_g/\mathrm{vol}_g(P)\).  
-(Anchor: FWP Lemma 0.)
+(Anchor: FWP Lemma 0. This is the sole statement of the lemma in the paper;
+later sections cite “Lemma 2.1” rather than re-proving it.)
 
 **Lemma 2.2 (copula reduction on null boxes).** `[PROVED]`  
 If the patch is a coordinate box in global null coordinates with metric
 \(g=-\Omega\,dU\,dV\), \(\Omega>0\) continuous, then the unlabeled poset law at
 fixed \(n\) depends on \(g\) only through the copula of the normalized volume
 measure.  
-(Anchor: FWP Lemma 1. Used for the diamond family in Theorem 3.8.)
+(Anchor: FWP Lemma 1. Used for the diamond family in Theorem 3.8; cited as
+Lemma 2.2 thereafter.)
 
 Total variation \(\mathrm{TV}\) and Hellinger distance \(H\) between laws on the
 space of finite unlabeled posets are the standard ones; we use \(\mathrm{TV}\le H\)

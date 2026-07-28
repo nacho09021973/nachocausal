@@ -1,8 +1,8 @@
 # Fase 1 — Outline del paper de límites de recuperabilidad
 
-> **STATUS: PHASE_1_OPEN / OUTLINE_AUTHORITATIVE_FOR_MANUSCRIPT /
-> NOT_A_CLAIM / NOT_FROZEN / NO_NEW_SCIENCE / DOES_NOT_TOUCH_SEAL /
-> DOES_NOT_DISCHARGE_ITEM_5.**
+> **STATUS: PHASE_1_BODY_COMPLETE / PI_REVIEW_OK / POLISH_AND_AUDIT_DONE /
+> OUTLINE_AUTHORITATIVE_FOR_MANUSCRIPT / NOT_FROZEN / NOT_FOR_ARXIV /
+> DOES_NOT_TOUCH_SEAL / DOES_NOT_DISCHARGE_ITEM_5.**
 >
 > Producto R2 de Fase 0 (`phase0_program_north_decision.md`). Este outline **gobierna**
 > la redacción del manuscript de límites. Supersede el *norte* de
@@ -371,14 +371,14 @@ NOT: proof that every possible order-only map fails
 [x] Paso 1.4 — §4 positivo + §5 ledger: phase1_section4_5_positive_ledger_draft.md
 [x] Paso 1.5 — §6–§8: phase1_section6_7_8_draft.md
 [x] Paso 1.6 (merge) — docs/manuscript_limits_draft.md ensamblado
-[ ] PI / red-team de wording (manuscript completo)
-[ ] Paso 1.6b polish: dedupe Lemma 0 / channel text entre §2 y §3
-[ ] Paso 1.7 — number audit / `[UNVERIFIED]` sweep
+[x] PI review OK — 2026-07-28 (user)
+[x] Paso 1.6b polish: Lemma 2.1–2.2 only in §2; §3 cites by number
+[x] Paso 1.7 — number audit: phase1_number_audit_17.md → AUDIT_PASS_WITH_DECLARED_CAVEATS
 
 PHASE_1_OPENED: 2026-07-28
-HEAD al abrir outline: 6787260
-PASO_1_2 … 1.5: 2026-07-28 (section drafts + merge)
-NEXT: PI review; optional polish 1.6b; number audit 1.7; Fase 2 (biblio/ítem 5) en paralelo
+PHASE_1_BODY+POLISH+AUDIT: 2026-07-28
+Manuscript: docs/manuscript_limits_draft.md
+NEXT: Fase 2 (biblio adversarial anchors + ítem 5 plan) if external claims; else hold internal
 ```
 
 ---

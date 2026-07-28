@@ -11,7 +11,8 @@ proved theorems. Not preregistration, not empirical protocol (not a PR-series ar
 | **`phase1_section1_2_abstract_draft.md`** | **Paso 1.3 HECHO:** title, abstract, §1 claim grammar + abandoned north, §2 setup/targets/labels |
 | **`phase1_section4_5_positive_ledger_draft.md`** | **Paso 1.4 HECHO:** §4 prereg-002 PASS + caveats (P3); §5 ledger C1–C6 as `EMPIRICAL_FAILURE_OF_CLASS_L` (P2) |
 | **`phase1_section6_7_8_draft.md`** | **Paso 1.5 HECHO:** §6 literature, §7 closed/open/abandoned, §8 conclusions |
-| **`../../docs/manuscript_limits_draft.md`** | **Merge 1.6:** manuscript interno completo (ensamblado desde drafts; polish pendiente) |
+| **`../../docs/manuscript_limits_draft.md`** | **Manuscript interno:** §1–§8 + polish 1.6b + PI review OK; not for arXiv |
+| **`phase1_number_audit_17.md`** | **Paso 1.7:** auditoría de números/identificadores — `AUDIT_PASS_WITH_DECLARED_CAVEATS` |
 | `geometric_indeterminacy_decision.md` | WP3/WP4 program synthesis (minimax framing) |
 | `pr011_mass_distinguishability_viability.md` | PR011 draft — theoretical–computational TV viability only |
 | `survival_matrix_1p1_to_3p1.md` | Transfer audit 1+1 → 3+1 (construct-level) |

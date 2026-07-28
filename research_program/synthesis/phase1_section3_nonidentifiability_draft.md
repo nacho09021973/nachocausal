@@ -34,11 +34,10 @@ poset can separate them at a stated rate. In the program vocabulary of
 `PROVED_NON_IDENTIFIABILITY` results. They do **not** depend on the success or
 failure of any particular estimator constructed in this repository.
 
-Throughout, a *completion* is a Lorentzian patch equipped with a Poisson sprinkling
-of intensity \(\rho\) with respect to the volume measure. Conditioning on cardinality
-\(N=n\) makes the \(n\) points i.i.d.\ from the normalized volume measure
-(`[PROVED]` Lemma 0, `first_witness_pair_candidates.md` §1). The *order-only,
-fixed-\(n\) channel* observes only the isomorphism class of the induced causal set.
+**Setup pointer (no re-definition).** Completions, the order-only fixed-\(n\) channel,
+Lemma 2.1 (i.i.d.\ sampling after conditioning on \(N=n\); FWP Lemma 0), and
+Lemma 2.2 (copula reduction on null boxes; FWP Lemma 1) are as in §2. Proof sketches
+below cite those lemmas by number rather than restating them.
 
 ### 3.1 Exact scale blindness at fixed cardinality
 <!-- (T1) · former N2 → lemma -->
@@ -75,11 +74,11 @@ order carries no information about \(r_s\) in absolute units**.
 *Proof sketch (full proof: `first_witness_pair_candidates.md` §2, Theorem A).*  
 By direct computation, \(\Phi_s^* g_{s r_s}=s^2 g_{r_s}\). A constant conformal factor
 preserves causal order. Volume forms in 1+1 dimensions scale by \(s^2\), which cancels
-under normalization of the sampling measure. Conditioning on \(N=n\) (Lemma 0), the
-\(n\) i.i.d.\ sample on the dilated geometry is the \(\Phi_s\)-image in law of the
-sample on the original geometry, with identical induced relations. Unlabeled poset
-laws therefore coincide, and total variation vanishes. The estimation consequence is
-the two-point bound at \(\mathrm{TV}=0\) (`wp4_two_point_theorem.md`, Teorema 2). ∎
+under normalization of the sampling measure. By Lemma 2.1, the \(n\) i.i.d.\ sample on
+the dilated geometry is the \(\Phi_s\)-image in law of the sample on the original
+geometry, with identical induced relations. Unlabeled poset laws therefore coincide,
+and total variation vanishes. The estimation consequence is the two-point bound at
+\(\mathrm{TV}=0\) (`wp4_two_point_theorem.md`, Teorema 2). ∎
 
 **3+1 dimensions (scoped).** `[PROVED]` in the scoped class of
 `op12_tv_zero_3p1.md`, not as a general Hauptvermutung. Fix a temporal sector
@@ -271,9 +270,9 @@ and every (possibly randomized) order-only estimator \(\widehat\tau=f(C_n)\):
 
 *Proof sketch (annex §5).*  
 Prop.\ 3.6 bounds Hellinger at the copula level. Hellinger tensorizes over \(n\)
-i.i.d.\ samples. The diamond is a null box, so the unlabeled poset is a function of
-the copula sample (FWP Lemma 1); data processing and \(\mathrm{TV}\le H\) yield (1).
-The nearest-endpoint test reduction yields (2)–(3)
+i.i.d.\ samples (Lemma 2.1). The diamond is a null box, so the unlabeled poset is a
+function of the copula sample (Lemma 2.2); data processing and \(\mathrm{TV}\le H\)
+yield (1). The nearest-endpoint test reduction yields (2)–(3)
 (`wp4_two_point_theorem.md`). ∎
 
 #### What Theorem 3.8 does and does not claim
@@ -336,7 +335,8 @@ named region-locators appear in §5 of the outline (ledger), not here.
 
 | Statement | Primary anchor | Supporting |
 |---|---|---|
-| Lemma 0 (i.i.d.\ at fixed \(n\)) | `first_witness_pair_candidates.md` §1 | — |
+| Lemma 2.1 / FWP Lemma 0 | `first_witness_pair_candidates.md` §1; manuscript §2 | — |
+| Lemma 2.2 / FWP Lemma 1 | FWP §1; manuscript §2 | null-box copula |
 | Thm 3.1 1+1 | FWP §2 Theorem A | Lemma 2 dilation |
 | Thm 3.1 3+1 | `op12_tv_zero_3p1.md` §2–§3 | — |
 | Thm 3.2 | `docs/claim_grammar.md` §3 | geometric_indeterminacy teleology |
