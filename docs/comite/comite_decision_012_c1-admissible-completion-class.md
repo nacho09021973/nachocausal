@@ -390,3 +390,85 @@ NEXT_FORBIDDEN_ACTIONS =
 
 OVERALL_VERDICT = C1_DEFINITION_PARTIALLY_CLOSED
 ```
+
+---
+
+# Migración al esquema vigente — 2026-07-28
+
+> Apéndice de compatibilidad documental. No reabre la deliberación, no inventa voces
+> retrospectivas y no altera el bloque normativo original. La decisión 042 absorbió
+> posteriormente esta vía para la planificación futura; los hallazgos históricos de 012 se
+> conservan como procedencia.
+
+```text
+ACTA_DISPOSITION = SUPERSEDED_FOR_FORWARD_PLANNING_BY_DECISION_042
+HISTORICAL_FINDINGS = PRESERVED
+ANNULLED = NO
+SCHEMA_MIGRATION_ONLY = YES
+```
+
+## 1. Decision question
+
+Correspondencia: la pregunta original de §1 sobre la clase admisible C1.
+
+## 2. Verified state
+
+Correspondencia: el inventario de lectura y la jerarquía de evidencia de §§2–3. No se añadió
+evidencia ni se ejecutó código durante esta migración.
+
+## 3. Dossier
+
+El dossier histórico es el enumerado en §2 y el bloque normativo original.
+
+## 4. Expert briefs
+
+Las posiciones históricas están registradas por fila en §4; este apéndice no las reescribe.
+
+### Reproducibility engineer brief
+
+Mapeado a las columnas de ingeniería/reproducibilidad y a los límites de §8.
+
+### Mathematician brief
+
+Mapeado a las columnas matemática/formalista y a D1–D5.
+
+### Mathematical logic brief
+
+No existía como rol separado en el formato original; no se atribuye una opinión retrospectiva.
+
+### Physicist brief
+
+Mapeado a las columnas del físico y a las restricciones de admisibilidad de D1–D2.
+
+## 5. Falsifier attack
+
+Se preservan la regla de no-inferencia de §3 y los bloqueos explícitos del bloque normativo.
+
+## 6. Pre-registration verdict
+
+- Verdict: PASS
+- Motivo: acta documental sin ejecución, semillas, cambio de umbral ni modificación del sello.
+
+## 7. Literature verdict
+
+No se realizó una nueva revisión bibliográfica; valen únicamente las fuentes y alcances citados
+en el acta histórica.
+
+## 8. Synthesis
+
+012 cerró parcialmente la definición de C1 y autorizó solo redacción posterior. Para trabajo
+futuro, su ruta quedó absorbida por el cierre C1–C5 de la decisión 042.
+
+## 9. Next-step spec
+
+No se reactiva el paso histórico. Cualquier trabajo nuevo debe partir del norte vigente y de un
+contrato nuevo; 012 queda como procedencia.
+
+## 10. Verdict
+
+COMMITTEE_DECISION_VERDICT=RECOMMEND_PROCEED_WITH_SCOPED_NEXT_STEP
+
+## 11. User sign-off
+
+La migración de esquema fue autorizada por la instrucción del usuario de 2026-07-28. Esto no
+constituye una nueva aprobación científica del contenido histórico ni autoriza ejecución.

@@ -335,3 +335,80 @@ NO_IMPLEMENTATION
 NO_SYNTHETIC_EXECUTION
 NO_SEEDS
 ```
+
+---
+
+# Current-schema migration — 2026-07-28
+
+> Compatibility appendix only. It preserves the original search-space result and records that
+> decisions 041–042 later resolved its forward status.
+
+```text
+ACTA_DISPOSITION = ABSORBED_AS_HISTORICAL_PRECURSOR_BY_DECISION_042
+HISTORICAL_FINDINGS = PRESERVED
+ANNULLED = NO
+SCHEMA_MIGRATION_ONLY = YES
+```
+
+## 1. Decision question
+
+Maps to original §1 on whether any C5 concept family deserved one bounded conceptual step.
+
+## 2. Verified state
+
+Maps to original §§2–3. No evidence, code, seeds, or sealed state changed in this migration.
+
+## 3. Dossier
+
+The historical dossier is the anchor inventory and three-family comparison in §§3–8.
+
+## 4. Expert briefs
+
+The legacy act integrated its assessments by family rather than by current-schema role.
+
+### Reproducibility engineer brief
+
+Mapped to the boundary-falsifier contract and forbidden actions in §§9–10.
+
+### Mathematician brief
+
+Mapped to the closure and invariance requirements for the matrix-to-block map.
+
+### Mathematical logic brief
+
+No separate legacy role existed; no retrospective opinion is asserted.
+
+### Physicist brief
+
+Mapped to the localization-versus-classification distinction and boundary controls.
+
+## 5. Falsifier attack
+
+Maps to original §9 and the map bottleneck stated in §11.
+
+## 6. Pre-registration verdict
+
+- Verdict: PASS
+- Reason: concept-only narrowing; no candidate, implementation, execution, seeds, or thresholds.
+
+## 7. Literature verdict
+
+No new literature adjudication is asserted in this migration.
+
+## 8. Synthesis
+
+040 permitted only one documentary C5.1 adjudication. Decision 041 found no closed map, and
+decision 042 then closed the C1–C5 localizer line.
+
+## 9. Next-step spec
+
+The historical C5.1 step was discharged by decision 041 and is not reopened here.
+
+## 10. Verdict
+
+COMMITTEE_DECISION_VERDICT=RECOMMEND_PROCEED_WITH_SCOPED_NEXT_STEP
+
+## 11. User sign-off
+
+The user authorized this schema migration on 2026-07-28. It is not a new scientific adjudication
+and authorizes no execution.

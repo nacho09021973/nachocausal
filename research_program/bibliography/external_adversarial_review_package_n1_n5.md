@@ -1,11 +1,11 @@
 # Paquete adversarial para revisión externa — afirmaciones de novedad N1–N5
 
-> **STATUS: REVIEW_PACKAGE / PREPARED_FOR_EXTERNAL_READER / NOT_A_NOVELTY_CERTIFICATE /
-> NO_EXTERNAL_REVIEW_HAS_TAKEN_PLACE.**
-> Documento de preparación. No ejecuta código, no consume semillas, no toca el sello, no congela
-> nada, no emite ningún claim público, y **no** afirma que ninguna revisión externa se haya
-> realizado. Su única función es que un investigador independiente pueda **intentar refutar** las
-> afirmaciones N1–N5 con el mínimo esfuerzo de contexto.
+> **STATUS: REVIEW_PACKAGE / POST_RESPONSE_AMENDED /
+> EXTERNAL_RESPONSES_FROM_BOTH_TIERS_ADJUDICATED / NOT_A_NOVELTY_CERTIFICATE.**
+> Documento de revisión y trazabilidad. No ejecuta código, no consume semillas, no toca el sello,
+> no congela nada y no emite ningún claim público. La versión enviada recibió respuestas de ambos
+> tiers; esta revisión incorpora sus correcciones. Registro sin identidades:
+> `phase2_novelty_and_item5.md` §3.4–§3.6.
 
 FECHA: 2026-07-28 · HEAD: `883c6d1` · Árbol: limpio
 Sello: `thresholds.py sha256 = 6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4` (intacto)
@@ -19,6 +19,7 @@ Sello: `thresholds.py sha256 = 6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc
 | `BOUNDED_NOVELTY_CLAIM` | Afirmación de novedad **acotada y comparativa** que se somete a refutación |
 | `POSSIBLE_PRIOR_ART` | Antecedente identificado que podría contener la afirmación, total o parcialmente |
 | `NOT_EXTERNALLY_VERIFIED` | Nadie ajeno al proyecto lo ha comprobado |
+| `EXTERNALLY_REVIEWED_NOT_CERTIFIED` | Revisado por lector externo; no equivale a novedad ni a corrección certificada |
 
 ---
 
@@ -30,8 +31,9 @@ Estimado/a colega:
 
 Le enviamos cinco afirmaciones (N1–N5) sobre resultados obtenidos en un banco de pruebas de
 *recuperabilidad* order-only para estructura tipo horizonte en un parche finito 1+1D de
-Schwarzschild. Hemos hecho una búsqueda bibliográfica interna, documentada y con sus límites
-declarados, y no hemos encontrado antecedente para ninguna de las cinco. **Sabemos que eso no
+Schwarzschild. Antes del envío, N2 ya se había degradado a lema, N3 a remark, N4 a corolario
+dimensional y N5 se había retirado como contribución; solo N1 seguía como claim de instanciación
+acotado. La búsqueda interna no encontró un antecedente que contuviera N1. **Sabemos que eso no
 establece novedad.** Una búsqueda con resultado cero, hecha por los propios autores, es
 exactamente el tipo de guardarraíl que no puede fallar, y por eso no la tratamos como prueba.
 
@@ -58,8 +60,8 @@ Gracias por el tiempo.
 
 ## 2. Alcance y límites de la revisión solicitada
 
-**Lo que se somete a revisión:** cinco afirmaciones de novedad **acotadas**, N1–N5, en su
-formulación mínima de §4. Nada más.
+**Lo que se sometió a revisión:** cinco fichas N1–N5 en su formulación mínima de §4, con la
+adjudicación previa visible; solo N1 conservaba pretensión de instanciación acotada. Nada más.
 
 **Lo que NO se somete a revisión, y no debe leerse como pretendido:**
 
@@ -70,8 +72,10 @@ formulación mínima de §4. Nada más.
   (`CLAUDE.md`, `docs/claim_grammar.md` §3).
 - No se afirma ningún no-go general sobre causal sets. Los negativos del proyecto son de
   construcciones concretas.
-- **Ninguna revisión externa se ha realizado hasta la fecha.** Este documento la prepara; no la
-  sustituye ni la simula. `NOT_EXTERNALLY_VERIFIED` es el estado de las cinco afirmaciones.
+- Las respuestas externas de ambos tiers se adjudicaron el 2026-07-28. El resultado fue el
+  escenario (B): N1 sobrevive como instanciación acotada; la maquinaria es estándar; N2 sigue como
+  lema; Müller Thm 3 debe reconocerse como precursor cuantitativo. Esto es
+  `EXTERNALLY_REVIEWED_NOT_CERTIFIED`, no un certificado de novedad.
 
 **Sesgo declarado del preparador.** Este paquete lo redacta el mismo proyecto cuyas afirmaciones
 somete a examen. Hemos intentado compensarlo marcando explícitamente los puntos débiles (§4.2, §4.5,
@@ -115,8 +119,9 @@ La formulación bibliográfica acotada que el proyecto se permite hoy, y que ped
 > `TV(Q^n_τ, Q^n_{τ+δ}) ≤ (|δ|/2)·sqrt(n·Ībar)`. Por reducción estimación→test, ningún estimador
 > order-only —incluidos los aleatorizados— localiza `τ` con precisión `|δ|/2` y confianza `1−ε` en
 > ambos extremos si `|δ| < 2(1−2ε)/sqrt(n·Ībar)`. Hasta donde hemos podido comprobar, no conocemos
-> un enunciado previo de este tipo —cota inferior de tasa de localización para un parámetro de
-> posición de horizonte en el canal order-only de causal sets— y agradeceríamos que se nos señale
+> un enunciado previo de este tipo —cota inferior de tasa de localización para un parámetro
+> geométrico continuo en esta familia de Schwarzschild, observado en el canal order-only
+> de causal sets— y agradeceríamos que se nos señale
 > uno.
 
 **(2) Qué afirma.** Que existe un suelo `Ω(1/sqrt(n·Ībar))` para la localización del parámetro `τ`
@@ -146,7 +151,9 @@ pero **sin ninguna maquinaria estadística** (verificado a texto completo: `Fish
 **(6) Diferencia exacta.** Frente a (a): la contribución no es la técnica sino su **instanciación**
 con una familia cuya regularidad QMD se prueba, en un canal (poset no etiquetado) donde la
 regularidad **no** es automática — dos de las tres familias examinadas en el mismo anexo son
-degeneradas o no regulares (§2, §3). Frente a (b): Müller no enuncia tasa alguna.
+degeneradas o no regulares (§2, §3). Frente a (b): Müller Thm 3 sí contiene una cota cuantitativa
+explícita para una familia continua de cilindros planos, pero mediante colapso degenerado al orden
+total; no prueba QMD, un suelo local paramétrico ni una tasa minimax para esta familia regular.
 
 **(7) Vía de refutación.** Exhibir (i) cualquier trabajo que acote por debajo el error de estimación
 de un parámetro geométrico desde órdenes causales finitos; o (ii) literatura de *inferencia
@@ -155,7 +162,8 @@ que este sea corolario inmediato; o (iii) mostrar que el paso QMD es estándar p
 cópulas y que el resultado es folclore.
 
 **(8) Nivel de confianza actual.** Moderado-alto en que la *instanciación* no está publicada;
-**bajo** en que sea profunda. `BOUNDED_NOVELTY_CLAIM`, `NOT_EXTERNALLY_VERIFIED`.
+**bajo** en que sea profunda. `BOUNDED_NOVELTY_CLAIM`,
+`EXTERNALLY_REVIEWED_NOT_CERTIFIED`.
 
 **(9) Evidencia que obligaría a retirar o reducir.** Cualquier cota de tipo Le Cam/van Trees
 publicada para estimación de parámetros geométricos desde órdenes parciales aleatorios, o desde
@@ -175,8 +183,9 @@ de puntos? ¿Y en literatura de inferencia geométrica fuera de gravedad cuánti
 > Para 1+1D Schwarzschild con radio de horizonte `r_s` y parche `P`, y su imagen bajo la dilatación
 > `Φ_s` (radio `s·r_s`, parche `Φ_s(P)`), las leyes del poset no etiquetado condicionadas a `N = n`
 > coinciden **exactamente**: `TV(P_n(θ), P_n(θ')) = 0` para todo `n` y todo `s > 0`. En consecuencia,
-> el orden observado no porta información alguna sobre `r_s` **en unidades absolutas**, a cualquier
-> `n` fijo. **Presentamos esto como la formalización exacta de un principio conocido en causal set
+> el orden observado no porta información alguna sobre `r_s` **en unidades absolutas a lo largo de
+> esta órbita de dilatación**, a cualquier `n` fijo. **Presentamos esto como la formalización exacta
+> de un principio conocido en causal set
 > theory —que el orden por sí solo no fija escala ("Order + Number")— no como un descubrimiento
 > físico nuevo.**
 
@@ -217,9 +226,10 @@ Müller**, cuya restricción de volumen unidad es más exigente.
 línea de la invariancia conforme de la causalidad 2D, que es esencialmente lo que hace nuestra
 demostración.
 
-**(8) Nivel de confianza actual.** **Bajo.** Es el claim que menos defenderíamos.
-`POSSIBLE_PRIOR_ART`, `NOT_EXTERNALLY_VERIFIED`. Recomendación interna: **no presentarlo como
-contribución independiente**, sino como lema instrumental dentro de N1/N3.
+**(8) Nivel de confianza actual.** **Adjudicado como background/lema.** El lector Tier A confirmó
+que el hecho es folclore, que la forma finita exacta no le consta publicada y que el crédito
+correcto es lema instrumental, no contribución. `POSSIBLE_PRIOR_ART`,
+`EXTERNALLY_REVIEWED_NOT_CERTIFIED`.
 
 **(9) Evidencia que obligaría a retirar o reducir.** Prácticamente cualquier cita explícita del
 argumento de dilatación. Consideramos más probable que exista a que no exista.
@@ -388,6 +398,13 @@ abstract).
 **invariantes bajo permutaciones**; y para la **medida producto** `µ^K` sobre `X^K`,
 `C_K(X)(q) := µ^K(A_q(X))`.
 
+**Su Teorema 3, omitido en la versión enviada y añadido tras la respuesta Tier A.** Para cilindros
+lorentzianos planos normalizados \(C(T)\), la probabilidad \(E\) del orden total satisface
+\(E\ge 1-4\pi K^2T^{-1/n}\), mientras la distancia \(d^-\) entre cilindros queda acotada por debajo
+por la diferencia de sus diámetros temporales. Es, por tanto, un antecedente **cuantitativo** para
+una familia continua. El mecanismo es degenerado —la ley colapsa al orden total al crecer \(T\)— y
+no es una familia local QMD ni un suelo minimax, pero debe concederse explícitamente.
+
 | Dimensión | Este trabajo | Müller 2025 | Diferencia potencialmente novedosa | Riesgo de solapamiento |
 |---|---|---|---|---|
 | **Proceso de muestreo** | Sprinkling de Poisson condicionado a `N=n` ⇒ `n` i.i.d. de la medida de volumen normalizada (FWP Lema 0) | Medida producto `µ^K` sobre `X^K` ⇒ `K` i.i.d. (`:109-110`). `Poisson`/`sprinkl`: **0 ocurrencias** | Ninguna en sustancia: **es el mismo canal**. Sólo difiere el encuadre (él nunca lo llama sprinkling) | **ALTO** |
@@ -396,23 +413,24 @@ abstract).
 | **Grado de indistinguibilidad** | `TV = 0` **exacto** (N2) | `‖·‖₁ < ε` con `ε ∈ (0;1)` arbitrario pero **> 0** | Exacto vs aproximado — diferencia real | Medio |
 | **Dependencia del par en el tamaño de muestra** | El par de N2 es **independiente de `n`**: una órbita sirve a todo `n` | El par **depende de `K`**: la prueba elige `v` con `(1−v)^K > ε` (`:133`) | Uniformidad en `n` — diferencia real y a nuestro favor | Medio |
 | **Volumen de los dos modelos** | **Distintos** (`V` vs `s²V`); por eso el canal order+número los separa vía `N` (Remark A3) | **Iguales** (`vol = 1 = vol`) | La restricción de Müller es **más exigente**; aquí la diferencia **nos perjudica** | **ALTO (en contra)** |
-| **Target geométrico** | Radio de horizonte `r_s` absoluto (N2); parámetro de localización `τ` (N1) | Diámetro temporal / distancia de Gromov–Hausdorff lorentziana `d⁻` (`:121-123`) | Target de horizonte vs target de distancia — diferencia real | Bajo |
-| **Mecanismo** | Difeomorfismo de dilatación exacto (factor conforme constante) | Factor conforme tipo *bump* en vecindad delgada de un maximizador (`:135-137`) | Mecanismos distintos | Bajo |
+| **Target geométrico** | Radio de horizonte `r_s` absoluto a lo largo de una órbita (N2); parámetro geométrico continuo `τ` (N1) | Diámetro temporal / distancia de Gromov–Hausdorff lorentziana `d⁻`; Thm 3 usa una familia continua de cilindros planos | Familia Schwarzschild regular vs cilindros planos degenerados | Medio |
+| **Mecanismo** | Difeomorfismo de dilatación exacto (N2); QMD/Fisher + data processing (N1) | Thm 2: *bump* conforme de pequeño volumen; Thm 3: concentración de la ley sobre el orden total | Mecanismos distintos, pero ambos producen indistinguibilidad cuantificada | Medio |
 | **Maquinaria estadística** | Fisher / QMD / Hellinger / Le Cam (N1) | **Ninguna**: `Fisher`, `minimax`, `Le Cam`, `total variation` = **0 ocurrencias** cada uno | Toda N1 | **BAJO** |
-| **Tasa / cota de localización** | Suelo `Ω(1/sqrt(n·Ībar))` (N1) | No hay enunciado de tasa | Toda N1 | **BAJO** |
+| **Tasa / cota de localización** | Suelo local `Ω(1/sqrt(n·Ībar))` sobre familia QMD (N1) | Thm 3 da la cota explícita `1−4πK²T^(−1/n)`; puede invertirse como degeneración muestra/geometría, pero no formula riesgo ni una tasa local paramétrica | La forma minimax/QMD sigue distinta; la cuantificación ya tiene precursor | **MEDIO** |
 | **Horizonte / Schwarzschild** | Es el objeto | `Schwarzschild`, `horizon` = **0 ocurrencias** | Contexto físico distinto | **BAJO** |
 
 **Lectura honesta de la tabla.** El solapamiento con Müller es **alto en el canal y en la métrica, y
-bajo en el aparato estadístico y en el target**. Esto perjudica sobre todo a **N2** —que comparte
+no nulo en cuantificación, aunque bajo en el aparato estadístico y en la familia**. Esto perjudica
+sobre todo a **N2** —que comparte
 canal, métrica y género de enunciado, y sólo gana en exactitud y uniformidad en `n`, mientras pierde
-en la restricción de volumen— y apenas afecta a **N1**, cuyo contenido (regularidad probada + tasa)
-Müller no toca en absoluto.
+en la restricción de volumen—. Para **N1**, Thm 3 es el precursor cuantitativo publicado más
+cercano; no contiene su regularidad QMD ni su reducción minimax local, pero prohíbe decir que Müller
+carece de toda cota o dependencia explícita de muestra.
 
-**No verificado en Müller (`NOT_VERIFIED`, no inferir del resumen ni del título):** su Teorema 1
-(Hauptvermutung numerable) no se ha leído en detalle; su categoría `CS` y la definición de `d⁻` se
-han leído sólo en la medida necesaria para la tabla; no se ha auditado si algún pasaje suyo contiene
-una observación de escala equivalente a N2. **Ese último punto es exactamente lo que pedimos
-comprobar al revisor.**
+**Resultado de la revisión Tier A.** No se localizó en Müller una observación de escala equivalente
+a N2; su normalización a volumen unidad excluye precisamente la órbita de dilatación del proyecto.
+La comparación con Thm 2 era fiel, pero la omisión de Thm 3 hacía injusta la frase “no hay
+enunciado de tasa”. Los Teoremas 1 y 4 pueden citarse como contrapunto contextual; no implican N1.
 
 ---
 
@@ -471,9 +489,9 @@ completo y lectura a texto completo de la cola ST **siguen abiertos** — flanco
 | Antecedente | Estado de verificación | Afecta a | Riesgo |
 |---|---|---|---|
 | Folclore "Order + Number" (el orden no fija escala) | `ESTABLISHED_BY_PRIMARY_SOURCE` — **localizadores**: Dowker–Zalel arXiv:1703.07556 §1.1 (V1); Madsen arXiv:2607.05840 intro (V2); Braun arXiv:2507.01907 §§3.3–3.4 (V3); repo FWP Remark A1 | **N2** (ahora **lema**, no contribución) | **Muy alto** como novedad; **bajo** si se presenta como lema |
-| Zeeman / Bombelli 1987 PhD (dilataciones en isomorfismos causales Minkowski) | `ESTABLISHED_BY_PRIMARY_SOURCE` en `biblioteca/derived-md/` (V6) | **N2** (precursor continuo de órbita de escala) | Alto sobre el *hecho* continuum; no sustituye TV=0 a `N=n` |
-| HKMM 1976; Malament 1977 | `ESTABLISHED_BY_PRIMARY_SOURCE` (V4–V5; vía refs Braun) | **N2** continuum conformal | Alto sobre escala ausente del orden continuum |
-| Müller 2025, Teo. 2 (arXiv:2503.01719) | Texto completo leído (V8) | **N2**, marginalmente N1 | Alto para N2 como “único resultado”; contrastar con TV=0 exacto / target distinto |
+| Zeeman / Bombelli 1987 PhD (dilataciones en isomorfismos causales Minkowski) | `ESTABLISHED_BY_PRIMARY_SOURCE`; `biblioteca/derived-md/Bombelli_1987_PhD.md:500-502` dice directamente “up to a global scale factor” y Poincaré + dilataciones (V6) | **N2** (precursor continuo directo de órbita de escala) | Alto sobre el *hecho* continuum; no sustituye TV=0 a `N=n` |
+| HKMM 1976; Malament 1977 | `ESTABLISHED_BY_PRIMARY_SOURCE` (V4–V5; vía refs Braun); precursores de la dirección causal-isomorfismo→conforme, no maquinaria usada por N2 | **N2** continuum conformal | Alto sobre escala ausente del orden continuum |
+| Müller 2025, Teos. 2–3 (arXiv:2503.01719) | Texto completo leído (V8) + objeción Tier A verificada contra PDF | **N2** y **N1** | Alto para N2 como “único resultado”; medio para N1 porque Thm 3 es precursor cuantitativo, aunque degenerado/no-QMD |
 | Teorema de Sklar + análisis dimensional \(V\cdot I\) | Textbook + deflación Fase 0/2 | **N4** (corolario, no teorema de novedad) | Alto si se vende como novedad |
 | Data processing (Blackwell / Le Cam) | Textbook | **N5** (retirado como contribución) | Muy alto si se vende como novedad |
 | Le Cam / Tsybakov (método de dos puntos) | Textbook; `biblioteca/Tsybakov_Nonparametric_Estimation.pdf` (V9) | **N1** (maquinaria, no instanciación) | Alto sobre la técnica, bajo sobre la instanciación *salvo* prior ST no hallado aún |
@@ -482,7 +500,8 @@ completo y lectura a texto completo de la cola ST **siguen abiertos** — flanco
 | Eichhorn–Mack–Le–Wagner 2026 | Texto completo | Contexto; su medida de distinguibilidad es heurística, sin `TV` | Bajo |
 | Braun 2025, Madsen 2026, Boguñá–Krioukov 2024 | Verificados en `wp4_fisher_localization_floor.md` §9; B-K también V7 | Lado positivo/constructivo; B-K = anverso de tasas | Bajo como sink de N1 |
 | Vecinos ST de método (Ray–Schmidt-Hieber arXiv:1608.01824; Polyanskiy–Wu arXiv:1902.05616; …) | Abstract-level Fase 2 log Q1–Q2 | **N1** técnica | Medio — no son el teorema del canal poset |
-| **Literatura minimax / geometric inference / shape / cópulas (profundidad ST)** | **Peinado abstract-level Fase 2** (`phase2_novelty_and_item5.md` §2); **sin sink de N1 hallado**; MathSciNet completo **no** ejecutado | **N1** (e N4 conceptual) | **Desconocido residual — flanco del ítem 5 Tier B** |
+| **Literatura minimax / geometric inference / shape / cópulas (profundidad ST)** | Peinado abstract-level + respuesta Tier B; **sin sink de N1 hallado**; MathSciNet completo **no** ejecutado | **N1** (e N4 conceptual) | **Desconocido residual — no impide descargar el ítem 5, sí prohíbe primacía absoluta** |
+| Grafos geométricos aleatorios / modelos de espacio latente | `READER_LEAD_UNVERIFIED`: comunidad Bubeck–Ding–Eldan–Rácz sugerida por ambos tiers; ningún paper concreto anclado aún | **N1** | Hueco residual más plausible |
 
 ---
 
@@ -553,6 +572,11 @@ como *sección de posicionamiento*: "estos resultados ya se conocen en la forma 
 el canal Y y los usamos para acotar el alcance de nuestro positivo sellado". El paper conserva
 intactos sus otros dos bloques —el positivo pre-registrado y el ledger de seis negativos tipados—,
 que **no dependen de N1–N5**. Conviene decirlo desde ahora: **el paper no se cae si N1–N5 caen.**
+
+**Adjudicación recibida (2026-07-28): escenario (B).** Ambos tiers aceptan la cadena matemática de
+N1 como instanciación sobre la familia regular; ninguno aporta un antecedente que la contenga. La
+maquinaria posterior a QMD es estándar, Müller Thm 3 es el precursor cuantitativo más cercano, N2
+permanece como lema y todo lenguaje de primacía absoluta sigue prohibido.
 
 ---
 

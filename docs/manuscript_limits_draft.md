@@ -2,7 +2,7 @@
 
 > **STATUS: INTERNAL_MANUSCRIPT_DRAFT / PI_REVIEW_OK / POLISH_1_6B_DONE /
 > NUMBER_AUDIT_1_7_PASS_WITH_CAVEATS / NOT_FROZEN / NOT_FOR_ARXIV /
-> DOES_NOT_TOUCH_SEAL / DOES_NOT_DISCHARGE_ITEM_5.**
+> DOES_NOT_TOUCH_SEAL / ITEM_5_DISCHARGED_BY_PHASE_2_2026-07-28.**
 >
 > Assembled from Phase 1 section drafts (pasos 1.2–1.5). Re-merged after 1.6b
 > dedupe (Lemma 2.1–2.2 sole definitions in §2; §3 cites by number).
@@ -19,7 +19,8 @@
 > - `phase1_section6_7_8_draft.md` — §6–§8
 >
 > Before any external circulation: seal verify; optional auditor re-check of Class C
-> numbers; complete Paso D item 5 if claiming instantiation priority.
+> numbers. Paso D item 5 was discharged with both tiers on 2026-07-28; this is not a
+> novelty certificate and absolute priority language remains forbidden.
 
 ---
 
@@ -49,7 +50,8 @@ under patch-shape-preserving dilations in \(1{+}1\) dimensions and under
 co-scaling in a scoped \(3{+}1\) class: the total variation between the induced
 poset laws vanishes on the entire mass orbit. Second, the global event horizon of
 a spacetime is not a functional of any observation determined by a single finite
-patch. Third, in a regular one-parameter family of \(1{+}1\) causal diamonds with
+causally convex patch. Third, in a regular one-parameter family of \(1{+}1\)
+causal diamonds with
 fixed Eddington–Finkelstein corners and finite Fisher information, no order-only
 procedure can localize the continuous geometric parameter below a two-point rate
 of order \(n^{-1/2}\). These limits are measure-theoretic or definitional; they do
@@ -124,7 +126,7 @@ The claim grammar of the project forces a permanent trichotomy
 
 1. **Global event horizon** — a set defined by the causal structure of the full
    spacetime (e.g.\ boundary of the past of future null infinity). It depends on
-   the continuation outside any finite patch (Theorem 3.2).
+   the continuation outside any finite causally convex patch (Theorem 3.2).
 2. **Singularity-truncation cut** — in a frozen *singular* Schwarzschild family,
    an in-patch locus associated with the artificial edge of the computational
    domain near \(r=0\). It is not a quasi-local trapping surface and must not be
@@ -155,7 +157,8 @@ order-only data by inventing a better combinatorial observable. That ambition is
 
 The reasons are structural rather than motivational fatigue: absolute mass is
 non-identifiable at fixed \(n\) already in scoped \(3{+}1\) (Theorem 3.1); the
-global event horizon is not a finite-patch functional (Theorem 3.2); the scalar
+global event horizon is not a functional of data from a finite causally convex
+patch (Theorem 3.2); the scalar
 proxy used in \(1{+}1\) does not transfer as a horizon locator
 (`survival_matrix_1p1_to_3p1.md`); and a named class of in-bank region-locators
 terminated with typed empirical failures (Section 5 of the full manuscript plan;
@@ -188,11 +191,13 @@ We claim three pillars only:
   sections);
 - that causal sets “cannot see black holes” in any unrestricted sense.
 
-**Independent literature check.** Novelty wording for the geometric instantiation
-in Theorem 3.8 remains subject to an external literature pass (project Paso D,
-item 5). Until that pass is complete, the manuscript must not assert priority as
-an absolute (“first in the literature”); hedges of the form “to our knowledge, in
-the order-only causal-set channel” are the maximum allowed.
+**Independent literature check.** The external pass required by project Paso D,
+item 5 was completed with responses from both tiers on 2026-07-28
+(`phase2_novelty_and_item5.md` §3.4–§3.6). Neither reader found a prior containing
+the family-specific instantiation, but Müller’s Theorem 3 is a quantitative
+precursor and all steps after family regularity are standard. This is not a
+novelty certificate: absolute priority language (“first in the literature”)
+remains forbidden, and the manuscript retains bounded comparative wording.
 
 ### 1.7 Closing sentence of the introduction
 
@@ -301,7 +306,7 @@ Targets used in this paper:
 |---|---|---|
 | Absolute horizon radius / mass | \(r_s\), \(M\) | Non-identifiable at fixed \(n\) (Thm 3.1) |
 | Continuous diamond parameter | \(\tau\in[\tau_0,\tau_1]\) | Rate floor (Thm 3.8); **not** named “horizon detection” as physics |
-| Global event horizon | \(T_{\mathrm{EH}}\) | Not a finite-patch functional (Thm 3.2) |
+| Global event horizon | \(T_{\mathrm{EH}}\) | Not a functional of a finite causally convex patch (Thm 3.2) |
 | In-patch future-volume score | as in prereg-002 | Bounded recoverability (Pillar P3; later section) |
 | Region-locators C1–C6 | named combinatorial constructions | Empirical class failure (Pillar P2; later section) |
 
@@ -383,8 +388,9 @@ and every \(s\neq 1\),
 
 so no order-only procedure can recover absolute horizon radius on both ends of the
 orbit with total error probability less than one. Since \(s\) is arbitrary, the entire
-orbit \(\{r_s>0\}\) shares a single poset law at each fixed \(n\): **the observed finite
-order carries no information about \(r_s\) in absolute units**.
+dilation orbit \(\{r_s>0\}\) shares a single poset law at each fixed \(n\): **within this
+orbit, the observed finite order carries no information about \(r_s\) in absolute
+units**.
 
 *Proof sketch (full proof: `first_witness_pair_candidates.md` §2, Theorem A).*  
 By direct computation, \(\Phi_s^* g_{s r_s}=s^2 g_{r_s}\). A constant conformal factor
@@ -438,12 +444,15 @@ order-only channel inside each fixed sector and shape. Dimensionless targets suc
    slogan that order alone does not fix scale (“Order + Number”; e.g.\ Dowker–Zalel,
    arXiv:1703.07556; Madsen, arXiv:2607.05840; Braun, arXiv:2507.01907,
    §§3.3–3.4). Continuum precursors include the conformal character of causal
-   isomorphisms (Hawking–King–McCarthy 1976; Malament 1977) and dilatations among
-   causal automorphisms of Minkowski space (Zeeman, via Bombelli 1987). The
+   isomorphisms (Hawking–King–McCarthy 1976; Malament 1977). Those are precursors of
+   the difficult causal-isomorphism-to-conformal direction, not machinery used in the
+   three-line proof above. More directly, Bombelli’s 1987 thesis states recovery only
+   up to a global scale factor and records Zeeman’s Poincaré-plus-dilatations result
+   for causal isomorphisms of Minkowski space. The
    contribution here is the **exact finite-\(n\) TV statement** for the sprinkling
    channel, not a new continuum theorem.
 
-### 3.2 The global event horizon is not a finite-patch functional
+### 3.2 The global event horizon is not a functional of data from a finite causally convex patch
 
 #### Theorem 3.2 (teleological non-identifiability)
 `[PROVED]` as a definitional theorem · Label: `PROVED_NON_IDENTIFIABILITY`
@@ -451,22 +460,25 @@ order-only channel inside each fixed sector and shape. Dimensionless targets suc
 Let \(T_{\mathrm{EH}}(M,g)\) denote the event horizon of a time-oriented Lorentzian
 manifold \((M,g)\) (the boundary of the causal past of future null infinity, in the
 standard asymptotically flat setting, or the appropriate analogue in the completion
-under study). Let \(P\subset M\) be a region of finite volume, and let
-\(\mathcal{D}(P)\) be any \(\sigma\)-algebra of observables determined by the
-restriction of the geometry and of a sprinkling to \(P\) alone (in particular: the
-unlabeled causal set of the sprinkling in \(P\)).
+under study). Let \(P\subset M\) be a finite-volume **causally convex** region common
+to the admissible completions, and let \(\mathcal{D}(P)\) be any
+\(\sigma\)-algebra of observables determined by the restriction of the geometry and
+of a sprinkling to \(P\) alone (in particular: the unlabeled causal set of the
+sprinkling in \(P\)).
 
 **Claim.** \(T_{\mathrm{EH}}\) is not \(\mathcal{D}(P)\)-measurable in general: there
 exist pairs of completions that induce identical data on \(P\) and distinct global
 event horizons.
 
 *Reason.* By definition, the event horizon depends on the causal structure of the
-*entire* future development, not on a single compact region. One may modify the
-metric (or the conformal factor, or the topology of the continuation) outside \(P\)
-so that the past of future null infinity changes while the geometry on \(P\) is held
-fixed; the induced sprinkling law on \(P\) is then unchanged, while
-\(T_{\mathrm{EH}}\) need not be. Hence no function of finite-patch order-only data
-can equal \(T_{\mathrm{EH}}\) on all admissible completions.
+*entire* future development, not on a single compact region. Choose two completions
+whose metrics agree on a neighborhood of \(P\), in both of which \(P\) remains
+causally convex, but whose continuation outside \(P\) changes the past of future null
+infinity. Causal convexity prevents a relation between two points of \(P\) from being
+created by a causal curve that leaves and re-enters \(P\); therefore both the
+normalized sprinkling measure and the induced order law on \(P\) agree, while
+\(T_{\mathrm{EH}}\) need not. Hence no function of finite-patch order-only data can
+equal \(T_{\mathrm{EH}}\) on all admissible completions.
 (`[BACKGROUND]` claim grammar: `docs/claim_grammar.md` §3; program synthesis on
 teleology.)
 
@@ -583,9 +595,11 @@ and every (possibly randomized) order-only estimator \(\widehat\tau=f(C_n)\):
 
 *Proof sketch (annex §5).*  
 Prop.\ 3.6 bounds Hellinger at the copula level. Hellinger tensorizes over \(n\)
-i.i.d.\ samples (Lemma 2.1). The diamond is a null box, so the unlabeled poset is a
-function of the copula sample (Lemma 2.2); data processing and \(\mathrm{TV}\le H\)
-yield (1). The nearest-endpoint test reduction yields (2)–(3)
+i.i.d.\ samples (Lemma 2.1). In copula coordinates every family member is the unit
+square with the same product order, while all \(\tau\)-dependence lies in the
+sampling density. The map from the sample to the unlabeled poset is therefore
+parameter-independent (Lemma 2.2); data processing and \(\mathrm{TV}\le H\) yield
+(1). The nearest-endpoint test reduction yields (2)–(3)
 (`wp4_two_point_theorem.md`). ∎
 
 #### What Theorem 3.8 does and does not claim
@@ -633,7 +647,7 @@ dimensionless. The annex proves the invariance on this family; we do **not** pre
 | Result | Target | Channel | Guarantee | Label |
 |---|---|---|---|---|
 | Thm 3.1 | Absolute \(r_s\) or \(M\) | order-only, \(N=n\) | \(\mathrm{TV}=0\) on dilation orbit (1+1 and scoped 3+1) | `PROVED_NON_IDENTIFIABILITY` |
-| Thm 3.2 | Global event horizon | any finite-patch data | not a functional of the patch | `PROVED_NON_IDENTIFIABILITY` |
+| Thm 3.2 | Global event horizon | data from a finite causally convex patch | not a functional of those data | `PROVED_NON_IDENTIFIABILITY` |
 | Thm 3.8 | Parameter \(\tau\) of the EF diamond family | order-only, \(N=n\) | floor \(\sim 1/\sqrt{n\bar I}\) | `PROVED_NON_IDENTIFIABILITY` (rate) |
 | Prop 3.3–3.4 | design of families | — | Kruskal sterile; fixed EF box non-regular | `[REMARK]` |
 
@@ -936,23 +950,28 @@ finite-order results.
 Theorem 3.1 does not invent this slogan. It supplies an **exact finite-\(n\)**
 total-variation statement for Poisson sprinklings of Schwarzschild patches under
 dilation (and a scoped \(3{+}1\) co-scaling statement): absolute mass is
-non-identifiable in the order-only fixed-\(n\) channel. Continuum precursors
-include the conformal character of causal determination of the metric
-(Hawking–King–McCarthy, J.\ Math.\ Phys.\ 17, 174, 1976; Malament, J.\ Math.\
-Phys.\ 18, 1399, 1977) and dilatations among causal automorphisms of Minkowski
-space (Zeeman, via Bombelli’s 1987 thesis). Those continuum facts motivate the
-orbit; they are not a substitute for the sprinkling-channel TV calculation.
+non-identifiable in the order-only fixed-\(n\) channel. Hawking–King–McCarthy
+(J.\ Math.\ Phys.\ 17, 174, 1976) and Malament (J.\ Math.\ Phys.\ 18, 1399,
+1977) are continuum precursors for the difficult causal-isomorphism-to-conformal
+direction; that machinery is not used in Theorem 3.1’s easy direction. More
+directly, Bombelli’s 1987 thesis states recovery only up to a global scale factor
+and records Zeeman’s Poincaré-plus-dilatations result for Minkowski causal
+isomorphisms. Those facts motivate the orbit; they are not a substitute for the
+sprinkling-channel TV calculation.
 
 ### 6.2 Indistinguishability of orders without rates
 
 Müller (arXiv:2503.01719) constructs pairs of non-isometric Lorentzian geometries
 that admit finite causal sets with nearly identical order laws at fixed
 cardinality—precise negative results for naive formulations of the
-Hauptvermutung. That work is the closest published *qualitative* neighbor of our
-indistinguishability theme. It does not develop Fisher information, Le Cam
-two-point rates, or localization floors for a continuous geometric parameter of a
-Schwarzschild family. Theorem 3.8 lives in a different genre: a rate lower bound
-on a proved-regular parametric family in the order-only channel.
+Hauptvermutung. His Theorem 3 is also the closest published **quantitative**
+precursor: for normalized flat cylinders, the probability of observing a total
+order has an explicit \(K\)-dependent lower bound while temporal diameter varies.
+The mechanism is degeneration toward one order type, not a QMD family, and the
+paper does not formulate Fisher information, a Le Cam risk bound, or a local
+minimax floor for a Schwarzschild parameter. Theorem 3.8 is the family-specific
+regular-parametric instantiation; it is not the first quantitative
+indistinguishability statement for a continuous geometric family.
 
 ### 6.3 Constructive geometric estimators
 
@@ -987,9 +1006,11 @@ two-point (Le Cam) lower bounds are textbook
 the **instantiation**: a geometric family for which regularity is proved and for
 which several “natural” alternative families are degenerate or non-regular
 (Section 3.3.1). We do not claim a new method of nonparametric statistics.
-Novelty wording for that instantiation remains subject to an independent
-literature check (project Paso D, item 5); absolute priority language is
-disallowed until that check is complete.
+The independent check required by project Paso D, item 5 was completed with
+responses from both tiers on 2026-07-28. Neither reader found a prior containing
+this family-specific instantiation, but both treated the machinery after QMD as
+standard and identified residual literature in random geometric graphs and
+latent-space models. Absolute priority language remains disallowed.
 
 ### 6.6 What we do not cite as competition
 
@@ -1007,7 +1028,7 @@ fixed-\(n\) order-only blindness for absolute mass.
 | Question | Status | Where |
 |---|---|---|
 | Absolute \(r_s\) / \(M\) from order-only data at fixed \(N=n\) (stated families) | **Non-identifiable** (\(\mathrm{TV}=0\) on the orbit) | Thm 3.1 · `PROVED_NON_IDENTIFIABILITY` |
-| Global event horizon from a single finite patch | **Not a functional** of patch data | Thm 3.2 · `PROVED_NON_IDENTIFIABILITY` |
+| Global event horizon from a single finite causally convex patch | **Not a functional** of patch data | Thm 3.2 · `PROVED_NON_IDENTIFIABILITY` |
 | Localization rate for \(\tau\) on the regular EF diamond family | **Floor** \(\sim n^{-1/2}\) | Thm 3.8 · `PROVED_NON_IDENTIFIABILITY` (rate) |
 | Sealed future-volume in-patch score under prereg-002 | **PASS** (caveated artifact status) | §4 · `VALIDATED` (caveated) |
 | Named region-localizers C1–C6 in this bank | **Terminated** as listed | §5 · `EMPIRICAL_FAILURE_OF_CLASS_L` |
@@ -1035,7 +1056,7 @@ alone.
 | Regular parametric family + Fisher floor in \(3{+}1\) | `OPEN` | Template from Thm 3.8; new proof required |
 | Order+number with known \(\rho\): separation of absolute mass | Open as **new program** | OP-1.2 §5: Poisson means differ when \(M\) differs; not developed here (Fase 3 B1) |
 | Witness-pair or rate no-go for a *named* quasi-local proxy \(Q\neq T_{\mathrm{EH}}\) | `OPEN` | Fase 3 **B2** (adversarial pairs)—preferred scientific sequel |
-| Independent literature check for instantiation priority (Thm 3.8) | Pending | Paso D item 5; hedge until done |
+| Deeper prior-art sweep in random geometric graphs / latent-space minimax inference | `OPEN` bibliographic residual | Both external tiers identified this as the most plausible remaining neighborhood; no concrete sink anchored |
 | Ordering-fraction / Chebyshev TV lower separation for fixed pairs | Conditional | Only if project conditions C3–C4 (comité 045) are closed; omitted from claims until then |
 
 ### 7.4 Explicitly not claimed open problems
@@ -1054,7 +1075,8 @@ when continuum labels are used only to score, never to define, the estimator.
 
 **Pillar P1.** Three non-identifiability statements are proved. Absolute horizon
 radius (mass) is invisible at fixed \(n\) along dilation and co-scaling orbits
-(Theorem 3.1). The global event horizon is not a functional of finite-patch data
+(Theorem 3.1). The global event horizon is not a functional of data from a finite
+causally convex patch
 (Theorem 3.2). On a regular one-parameter family of \(1{+}1\) causal diamonds with
 finite Fisher information, no order-only procedure localizes the continuous
 parameter below a two-point rate of order \(n^{-1/2}\) (Theorem 3.8). These results

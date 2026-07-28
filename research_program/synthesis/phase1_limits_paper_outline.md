@@ -1,8 +1,9 @@
 # Fase 1 — Outline del paper de límites de recuperabilidad
 
 > **STATUS: PHASE_1_BODY_COMPLETE / PI_REVIEW_OK / POLISH_AND_AUDIT_DONE /
-> OUTLINE_AUTHORITATIVE_FOR_MANUSCRIPT / NOT_FROZEN / NOT_FOR_ARXIV /
-> DOES_NOT_TOUCH_SEAL / DOES_NOT_DISCHARGE_ITEM_5.**
+> POST_EXTERNAL_REVIEW_AMENDMENTS_APPLIED / OUTLINE_AUTHORITATIVE_FOR_MANUSCRIPT /
+> NOT_FROZEN / NOT_FOR_ARXIV /
+> DOES_NOT_TOUCH_SEAL / ITEM_5_DISCHARGED_BY_PHASE_2_2026-07-28.**
 >
 > Producto R2 de Fase 0 (`phase0_program_north_decision.md`). Este outline **gobierna**
 > la redacción del manuscript de límites. Supersede el *norte* de
@@ -60,7 +61,7 @@ En el canal **order-only** (poset no etiquetado; a menudo condicionado a \(N=n\)
 - order-only, finite patch, 1+1 primary arena; 3+1 only where TV=0 de masa está probado;
 - exact scale/mass blindness at \(N=n\);
 - localization floor in a regular 1+1 family;
-- global event horizon is not a functional of finite-patch data;
+- global event horizon is not a functional of data from a finite causally convex patch;
 - six-channel negative ledger (empirical failure of a named class);
 - one sealed in-patch positive (future-volume), not horizon reconstruction.
 
@@ -82,7 +83,9 @@ En el canal **order-only** (poset no etiquetado; a menudo condicionado a \(N=n\)
 | N4 | Corolario dimensional / reparametrización; no teorema de novedad |
 | N5 | **No** es contribución; 2–4 frases de disciplina DPI en notación |
 
-**Ítem 5 Paso D:** si el manuscript afirma novedad de N1/T3, el ítem 5 debe estar descargado o el wording debe ser “to our knowledge / pending independent literature check” sin “first in the literature” absoluto.
+**Ítem 5 Paso D:** descargado con respuestas de ambos tiers el 2026-07-28. La adjudicación es
+escenario (B), no certificado de novedad: N1/T3 se presenta como instanciación acotada, Müller
+Thm 3 como precursor cuantitativo y “first in the literature” permanece prohibido.
 
 ---
 
@@ -132,11 +135,11 @@ Esta es la sección **matemática** principal. Tres subsecciones = (T1)(T2)(T3).
 | **Background (lemma, not novelty)** | Dowker–Zalel arXiv:1703.07556; Madsen arXiv:2607.05840; Braun arXiv:2507.01907 §§3.3–3.4; HKMM 1976; Malament 1977; Zeeman via Bombelli 1987 PhD |
 | **N\*** | Former N2 → **lemma** |
 
-#### §3.2 (T2) Global event horizon is not a finite-patch functional
+#### §3.2 (T2) Global event horizon is not a functional of data from a finite causally convex patch
 
 | | |
 |---|---|
-| **Claim** | The global event horizon of a complete spacetime is not determined by the causal set (or even the continuum geometry) restricted to a single finite patch: distinct extensions can agree on the patch and disagree on the horizon. |
+| **Claim** | The global event horizon of a complete spacetime is not determined by data on a single finite **causally convex** patch common to the completions: distinct extensions can agree on the patch and disagree on the horizon. |
 | **Etiqueta** | `PROVED_NON_IDENTIFIABILITY` (definitional / teleological) |
 | **Ancla** | `docs/claim_grammar.md` §3; geometric_indeterminacy notes on teleology |
 | **What it is not** | Does **not** by itself kill quasi-local trapping / expansion proxies. |
@@ -213,12 +216,12 @@ Material reutilizable: `docs/paper_outline_c1c6_plus_prereg002.md` §§4–6.
 |---|---|
 | New order-only SW 3+1 horizon region-locators (matrix A–C, etc.) | **`ABANDONED_AS_PROGRAM_NORTH`** (Fase 0 R1) |
 | Absolute mass at \(N=n\) | **Closed** by (T1) — non-identifiable |
-| Global event horizon from finite patch | **Closed** by (T2) |
+| Global event horizon from finite causally convex patch | **Closed** by (T2) |
 | Rate-optimal constants / \(\bar I\) numerics for (T3) | `OPEN` / numerical reference only where marked |
 | 3+1 regular family + Fisher floor | `OPEN` (template only) |
 | Order+number with known \(\rho\): mass separation | Open as **new program** (Fase 3 option B1); OP-1.2 §5 already notes Poisson means differ |
 | Witness-pair no-gos for named quasi-local \(Q\) | Open as Fase 3 **B2** (preferred after manuscript) |
-| Independent novelty check for N1/T3 (ítem 5) | Pending; wording discipline in §0.5 |
+| Deeper prior-art sweep in random geometric graphs / latent-space minimax inference | `OPEN` residual; ítem 5 ya descargado |
 
 ### §8 Conclusions
 
@@ -270,10 +273,10 @@ order-only data alone.
 | **1.3** | §1–§2 + abstract — **HECHO** `phase1_section1_2_abstract_draft.md` (2026-07-28) | claim_grammar; abandoned north; setup |
 | **1.4** | §4–§5 — **HECHO** `phase1_section4_5_positive_ledger_draft.md` (2026-07-28) | P3 prereg-002; P2 ledger R3 labels |
 | **1.5** | §6–§8 — **HECHO** `phase1_section6_7_8_draft.md` (2026-07-28) | literature; open/abandoned; conclusions |
-| **1.6** | Full merge — **HECHO** `docs/manuscript_limits_draft.md` (ensamblado; polish pendiente) | Internal only; no arXiv until ítem 5 policy applied |
+| **1.6** | Full merge — **HECHO** `docs/manuscript_limits_draft.md` (ensamblado y enmendado tras respuestas) | Internal only; no absolute priority wording |
 | **1.7** | Self-audit pass: every number has generator or `[UNVERIFIED]` | Auditor optional |
 
-**Paralelo (Fase 2, no bloquea 1.2–1.5):** anclas biblio en paquete adversarial; plan ítem 5.
+**Paralelo (Fase 2): CERRADO 2026-07-28.** Anclas, búsqueda, respuestas Tier A/B y parches.
 
 **No en Fase 1:** código de estimadores, kill tests de matriz A–C, reabrir norte R1, tocar sello.
 
@@ -353,7 +356,7 @@ NOT: proof that every possible order-only map fails
 | `docs/paper_outline_c1c6_plus_prereg002.md` | **Material** para §4–§5; tesis antigua (“un positivo + seis negativos como mensaje principal”) **reordenada**: P1 matemático primero |
 | `docs/claim_grammar.md` | Normativo para wording |
 | `geometric_indeterminacy_decision.md` | Framing minimax; exclusiones Heisenberg |
-| Paquete adversarial N1–N5 | Biblio; ítem 5 pendiente |
+| Paquete adversarial N1–N5 | Biblio; respuestas adjudicadas, escenario (B) |
 
 ---
 
@@ -378,8 +381,9 @@ NOT: proof that every possible order-only map fails
 PHASE_1_OPENED: 2026-07-28
 PHASE_1_BODY+POLISH+AUDIT: 2026-07-28
 Manuscript: docs/manuscript_limits_draft.md
-PHASE_2: abierta — `../bibliography/phase2_novelty_and_item5.md` (anclas + log ST/PR + plan ítem 5 NOT_SENT)
-NEXT: PI contacto externo (fuera del repo) o mantener hedge N1 y no arXiv con novelty claim
+PHASE_2: cerrada — `../bibliography/phase2_novelty_and_item5.md`
+ITEM_5: discharged both tiers / novelty not certified
+NEXT: verificación del parche; Fase 3 B2 solo bajo contrato científico separado
 ```
 
 ---

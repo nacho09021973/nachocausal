@@ -426,3 +426,82 @@ NO_SYNTHETIC_EXECUTION
 NO_SEEDS
 C5_NOT_OPENED
 ```
+
+---
+
+# Current-schema migration — 2026-07-28
+
+> Compatibility appendix only. It preserves the scoped negative in this act and records that
+> decision 042 later absorbed it into the C1–C5 line closure.
+
+```text
+ACTA_DISPOSITION = ABSORBED_AS_HISTORICAL_PRECURSOR_BY_DECISION_042
+HISTORICAL_FINDINGS = PRESERVED
+ANNULLED = NO
+SCHEMA_MIGRATION_ONLY = YES
+```
+
+## 1. Decision question
+
+Maps to the original §1 question on a closed intrinsic neighbor graph for C4.
+
+## 2. Verified state
+
+Maps to original §§2–4. No evidence, code, seeds, or sealed state changed in this migration.
+
+## 3. Dossier
+
+The historical dossier is the repository anchors and two published families reviewed in §§5–8.
+
+## 4. Expert briefs
+
+The legacy act used an integrated adjudication rather than separate current-schema briefs.
+
+### Reproducibility engineer brief
+
+Mapped to the operational boundary in original §11.
+
+### Mathematician brief
+
+Mapped to the domain and closure arguments in §§4–8.
+
+### Mathematical logic brief
+
+No separate legacy role existed; no retrospective opinion is asserted.
+
+### Physicist brief
+
+Mapped to the domain-transfer and physical-meaning restrictions in §§5–8.
+
+## 5. Falsifier attack
+
+Maps directly to original §9; its scope limitation is preserved.
+
+## 6. Pre-registration verdict
+
+- Verdict: PASS
+- Reason: documentary adjudication only; no implementation, execution, seeds, or seal change.
+
+## 7. Literature verdict
+
+No new literature adjudication is asserted. The two audited source families retain their original
+scoped treatment.
+
+## 8. Synthesis
+
+C4 was rejected only as a closed order-only localizer on the observed minimal antichain under the
+two audited families. Decision 042 later incorporated this result without upgrading it to a
+universal theorem.
+
+## 9. Next-step spec
+
+No C4 restart is authorized. Any future target must come from a separate scientific contract.
+
+## 10. Verdict
+
+COMMITTEE_DECISION_VERDICT=RECOMMEND_DO_NOT_PROCEED
+
+## 11. User sign-off
+
+The user authorized this schema migration on 2026-07-28. It is not a new scientific adjudication
+and authorizes no execution.

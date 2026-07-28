@@ -1,7 +1,7 @@
 # Fase 1 · Paso 1.3 — Draft abstract + §1 + §2
 
 > **STATUS: MANUSCRIPT_SECTION_DRAFT / NOT_FROZEN / NO_NEW_SCIENCE /
-> DOES_NOT_TOUCH_SEAL / DOES_NOT_DISCHARGE_ITEM_5.**
+> DOES_NOT_TOUCH_SEAL / ITEM_5_DISCHARGED_BY_PHASE_2_2026-07-28.**
 >
 > Completa el front matter del paper de límites junto a
 > `phase1_section3_nonidentifiability_draft.md` (§3). Outline autoritativo:
@@ -39,7 +39,8 @@ under patch-shape-preserving dilations in \(1{+}1\) dimensions and under
 co-scaling in a scoped \(3{+}1\) class: the total variation between the induced
 poset laws vanishes on the entire mass orbit. Second, the global event horizon of
 a spacetime is not a functional of any observation determined by a single finite
-patch. Third, in a regular one-parameter family of \(1{+}1\) causal diamonds with
+causally convex patch. Third, in a regular one-parameter family of \(1{+}1\)
+causal diamonds with
 fixed Eddington–Finkelstein corners and finite Fisher information, no order-only
 procedure can localize the continuous geometric parameter below a two-point rate
 of order \(n^{-1/2}\). These limits are measure-theoretic or definitional; they do
@@ -115,7 +116,7 @@ The claim grammar of the project forces a permanent trichotomy
 
 1. **Global event horizon** — a set defined by the causal structure of the full
    spacetime (e.g.\ boundary of the past of future null infinity). It depends on
-   the continuation outside any finite patch (Theorem 3.2).
+   the continuation outside any finite causally convex patch (Theorem 3.2).
 2. **Singularity-truncation cut** — in a frozen *singular* Schwarzschild family,
    an in-patch locus associated with the artificial edge of the computational
    domain near \(r=0\). It is not a quasi-local trapping surface and must not be
@@ -146,7 +147,8 @@ order-only data by inventing a better combinatorial observable. That ambition is
 
 The reasons are structural rather than motivational fatigue: absolute mass is
 non-identifiable at fixed \(n\) already in scoped \(3{+}1\) (Theorem 3.1); the
-global event horizon is not a finite-patch functional (Theorem 3.2); the scalar
+global event horizon is not a functional of data from a finite causally convex
+patch (Theorem 3.2); the scalar
 proxy used in \(1{+}1\) does not transfer as a horizon locator
 (`survival_matrix_1p1_to_3p1.md`); and a named class of in-bank region-locators
 terminated with typed empirical failures (Section 5 of the full manuscript plan;
@@ -179,11 +181,13 @@ We claim three pillars only:
   sections);
 - that causal sets “cannot see black holes” in any unrestricted sense.
 
-**Independent literature check.** Novelty wording for the geometric instantiation
-in Theorem 3.8 remains subject to an external literature pass (project Paso D,
-item 5). Until that pass is complete, the manuscript must not assert priority as
-an absolute (“first in the literature”); hedges of the form “to our knowledge, in
-the order-only causal-set channel” are the maximum allowed.
+**Independent literature check.** The external pass required by project Paso D,
+item 5 was completed with responses from both tiers on 2026-07-28
+(`phase2_novelty_and_item5.md` §3.4–§3.6). Neither reader found a prior containing
+the family-specific instantiation, but Müller’s Theorem 3 is a quantitative
+precursor and all steps after family regularity are standard. This is not a
+novelty certificate: absolute priority language (“first in the literature”)
+remains forbidden, and the manuscript retains bounded comparative wording.
 
 ### 1.7 Closing sentence of the introduction
 
@@ -293,7 +297,7 @@ Targets used in this paper:
 |---|---|---|
 | Absolute horizon radius / mass | \(r_s\), \(M\) | Non-identifiable at fixed \(n\) (Thm 3.1) |
 | Continuous diamond parameter | \(\tau\in[\tau_0,\tau_1]\) | Rate floor (Thm 3.8); **not** named “horizon detection” as physics |
-| Global event horizon | \(T_{\mathrm{EH}}\) | Not a finite-patch functional (Thm 3.2) |
+| Global event horizon | \(T_{\mathrm{EH}}\) | Not a functional of a finite causally convex patch (Thm 3.2) |
 | In-patch future-volume score | as in prereg-002 | Bounded recoverability (Pillar P3; later section) |
 | Region-locators C1–C6 | named combinatorial constructions | Empirical class failure (Pillar P2; later section) |
 
@@ -369,7 +373,7 @@ No `VALIDATED` or numerical PASS appears in §1–§2 (those wait for §4).
 [x] §1.3 embedding scores only
 [x] §1.4 trichotomy EH / truncation / quasi-local
 [x] §1.5 abandoned north R1
-[x] §1.6 contributions P1–P3 only; N2/N5 non-contributions; ítem 5 hedge
+[x] §1.6 contributions P1–P3 only; N2/N5 non-contributions; ítem 5 response adjudicated
 [x] §1.7 closing sentence
 [x] §2.1 1+1 geometry + diamond + dilation
 [x] §2.2 3+1 scoped only

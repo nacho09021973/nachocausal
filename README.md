@@ -7,7 +7,9 @@ For any AI or agent connecting to this repo, read [INSTRUCCIONES.md](INSTRUCCION
 the available machinery and the correct workflow between committee, auditor, external consultors,
 and Alloy.
 
-**Current operational roadmap:** [Plan operativo - 15 julio 2026](docs/plan_operativo_15_julio_2026.md).
+**Current program roadmap:** [post-N1–N5 limits-paper route](tarea_grok_2.md).
+The earlier [15 July operational plan](docs/plan_operativo_15_julio_2026.md) remains historical
+input where not superseded by the current roadmap.
 
 The project starts deliberately narrow and disciplined: reproduce, blind to coordinates and
 under a success/failure criterion frozen in advance, the known-truth detection of a

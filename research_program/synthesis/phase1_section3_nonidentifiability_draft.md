@@ -1,7 +1,8 @@
 # Fase 1 · Paso 1.2 — Draft §3: Proved non-identifiability
 
 > **STATUS: MANUSCRIPT_SECTION_DRAFT / NOT_FROZEN / NO_NEW_SCIENCE /
-> ANCHORS_TO_EXISTING_PROOFS / DOES_NOT_TOUCH_SEAL / DOES_NOT_DISCHARGE_ITEM_5.**
+> ANCHORS_TO_EXISTING_PROOFS / DOES_NOT_TOUCH_SEAL /
+> ITEM_5_DISCHARGED_BY_PHASE_2_2026-07-28.**
 >
 > Redacción de la sección matemática principal del paper de límites
 > (`phase1_limits_paper_outline.md` §3). **No inventa teoremas:** resume y unifica
@@ -68,8 +69,9 @@ and every \(s\neq 1\),
 
 so no order-only procedure can recover absolute horizon radius on both ends of the
 orbit with total error probability less than one. Since \(s\) is arbitrary, the entire
-orbit \(\{r_s>0\}\) shares a single poset law at each fixed \(n\): **the observed finite
-order carries no information about \(r_s\) in absolute units**.
+dilation orbit \(\{r_s>0\}\) shares a single poset law at each fixed \(n\): **within this
+orbit, the observed finite order carries no information about \(r_s\) in absolute
+units**.
 
 *Proof sketch (full proof: `first_witness_pair_candidates.md` §2, Theorem A).*  
 By direct computation, \(\Phi_s^* g_{s r_s}=s^2 g_{r_s}\). A constant conformal factor
@@ -123,12 +125,15 @@ order-only channel inside each fixed sector and shape. Dimensionless targets suc
    slogan that order alone does not fix scale (“Order + Number”; e.g.\ Dowker–Zalel,
    arXiv:1703.07556; Madsen, arXiv:2607.05840; Braun, arXiv:2507.01907,
    §§3.3–3.4). Continuum precursors include the conformal character of causal
-   isomorphisms (Hawking–King–McCarthy 1976; Malament 1977) and dilatations among
-   causal automorphisms of Minkowski space (Zeeman, via Bombelli 1987). The
+   isomorphisms (Hawking–King–McCarthy 1976; Malament 1977). Those are precursors of
+   the difficult causal-isomorphism-to-conformal direction, not machinery used in the
+   three-line proof above. More directly, Bombelli’s 1987 thesis states recovery only
+   up to a global scale factor and records Zeeman’s Poincaré-plus-dilatations result
+   for causal isomorphisms of Minkowski space. The
    contribution here is the **exact finite-\(n\) TV statement** for the sprinkling
    channel, not a new continuum theorem.
 
-### 3.2 The global event horizon is not a finite-patch functional
+### 3.2 The global event horizon is not a functional of data from a finite causally convex patch
 <!-- (T2) -->
 
 #### Theorem 3.2 (teleological non-identifiability)
@@ -137,22 +142,25 @@ order-only channel inside each fixed sector and shape. Dimensionless targets suc
 Let \(T_{\mathrm{EH}}(M,g)\) denote the event horizon of a time-oriented Lorentzian
 manifold \((M,g)\) (the boundary of the causal past of future null infinity, in the
 standard asymptotically flat setting, or the appropriate analogue in the completion
-under study). Let \(P\subset M\) be a region of finite volume, and let
-\(\mathcal{D}(P)\) be any \(\sigma\)-algebra of observables determined by the
-restriction of the geometry and of a sprinkling to \(P\) alone (in particular: the
-unlabeled causal set of the sprinkling in \(P\)).
+under study). Let \(P\subset M\) be a finite-volume **causally convex** region common
+to the admissible completions, and let \(\mathcal{D}(P)\) be any
+\(\sigma\)-algebra of observables determined by the restriction of the geometry and
+of a sprinkling to \(P\) alone (in particular: the unlabeled causal set of the
+sprinkling in \(P\)).
 
 **Claim.** \(T_{\mathrm{EH}}\) is not \(\mathcal{D}(P)\)-measurable in general: there
 exist pairs of completions that induce identical data on \(P\) and distinct global
 event horizons.
 
 *Reason.* By definition, the event horizon depends on the causal structure of the
-*entire* future development, not on a single compact region. One may modify the
-metric (or the conformal factor, or the topology of the continuation) outside \(P\)
-so that the past of future null infinity changes while the geometry on \(P\) is held
-fixed; the induced sprinkling law on \(P\) is then unchanged, while
-\(T_{\mathrm{EH}}\) need not be. Hence no function of finite-patch order-only data
-can equal \(T_{\mathrm{EH}}\) on all admissible completions.
+*entire* future development, not on a single compact region. Choose two completions
+whose metrics agree on a neighborhood of \(P\), in both of which \(P\) remains
+causally convex, but whose continuation outside \(P\) changes the past of future null
+infinity. Causal convexity prevents a relation between two points of \(P\) from being
+created by a causal curve that leaves and re-enters \(P\); therefore both the
+normalized sprinkling measure and the induced order law on \(P\) agree, while
+\(T_{\mathrm{EH}}\) need not. Hence no function of finite-patch order-only data can
+equal \(T_{\mathrm{EH}}\) on all admissible completions.
 (`[BACKGROUND]` claim grammar: `docs/claim_grammar.md` §3; program synthesis on
 teleology.)
 
@@ -270,9 +278,11 @@ and every (possibly randomized) order-only estimator \(\widehat\tau=f(C_n)\):
 
 *Proof sketch (annex §5).*  
 Prop.\ 3.6 bounds Hellinger at the copula level. Hellinger tensorizes over \(n\)
-i.i.d.\ samples (Lemma 2.1). The diamond is a null box, so the unlabeled poset is a
-function of the copula sample (Lemma 2.2); data processing and \(\mathrm{TV}\le H\)
-yield (1). The nearest-endpoint test reduction yields (2)–(3)
+i.i.d.\ samples (Lemma 2.1). In copula coordinates every family member is the unit
+square with the same product order, while all \(\tau\)-dependence lies in the
+sampling density. The map from the sample to the unlabeled poset is therefore
+parameter-independent (Lemma 2.2); data processing and \(\mathrm{TV}\le H\) yield
+(1). The nearest-endpoint test reduction yields (2)–(3)
 (`wp4_two_point_theorem.md`). ∎
 
 #### What Theorem 3.8 does and does not claim
@@ -320,7 +330,7 @@ dimensionless. The annex proves the invariance on this family; we do **not** pre
 | Result | Target | Channel | Guarantee | Label |
 |---|---|---|---|---|
 | Thm 3.1 | Absolute \(r_s\) or \(M\) | order-only, \(N=n\) | \(\mathrm{TV}=0\) on dilation orbit (1+1 and scoped 3+1) | `PROVED_NON_IDENTIFIABILITY` |
-| Thm 3.2 | Global event horizon | any finite-patch data | not a functional of the patch | `PROVED_NON_IDENTIFIABILITY` |
+| Thm 3.2 | Global event horizon | data from a finite causally convex patch | not a functional of those data | `PROVED_NON_IDENTIFIABILITY` |
 | Thm 3.8 | Parameter \(\tau\) of the EF diamond family | order-only, \(N=n\) | floor \(\sim 1/\sqrt{n\bar I}\) | `PROVED_NON_IDENTIFIABILITY` (rate) |
 | Prop 3.3–3.4 | design of families | — | Kruskal sterile; fixed EF box non-regular | `[REMARK]` |
 
@@ -351,7 +361,8 @@ named region-locators appear in §5 of the outline (ledger), not here.
 1. Pointwise \(I(\tau)>0\) at every single \(\tau\) (annex: only no vanishing on a subinterval is proved). **Not needed** for Thm 3.8.
 2. Numerical value of \(\bar I\) / \(\bar\kappa\) for reference corners — NUMERICAL elsewhere; do not promote to `PROVED` here.
 3. Ordering-fraction Chebyshev separation (outline antiguo §6.1) — **omitted** until comité 045 conditions C3–C4 close.
-4. Independent literature check for “first order-only geometric floor” wording (ítem 5) — if used, hedge or complete Paso D.
+4. Residual prior-art search in random geometric graphs / latent-space minimax inference; item 5
+   is complete, but “first in the literature” remains forbidden.
 
 ## Checklist paso 1.2
 

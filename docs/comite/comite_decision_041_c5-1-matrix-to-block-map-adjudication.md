@@ -343,6 +343,83 @@ NO_SYNTHETIC_EXECUTION
 NO_SEEDS
 ```
 
+---
+
+# Current-schema migration — 2026-07-28
+
+> Compatibility appendix only. It preserves the negative C5.1 terminal and records its later
+> absorption into decision 042.
+
+```text
+ACTA_DISPOSITION = ABSORBED_AS_HISTORICAL_PRECURSOR_BY_DECISION_042
+HISTORICAL_FINDINGS = PRESERVED
+ANNULLED = NO
+SCHEMA_MIGRATION_ONLY = YES
+```
+
+## 1. Decision question
+
+Maps to original §1 on a closed matrix-to-block/subset/partition-or-abstention map.
+
+## 2. Verified state
+
+Maps to original §§2–6. No evidence, code, seeds, or sealed state changed in this migration.
+
+## 3. Dossier
+
+The historical dossier is the three-family comparison under simultaneous criteria S1–S4.
+
+## 4. Expert briefs
+
+The legacy act integrated the technical assessments rather than separating current-schema roles.
+
+### Reproducibility engineer brief
+
+Mapped to input discipline, abstention terminals, and the no-execution boundary.
+
+### Mathematician brief
+
+Mapped to the algebraic, spectral, and hierarchical family assessments.
+
+### Mathematical logic brief
+
+No separate legacy role existed; no retrospective opinion is asserted.
+
+### Physicist brief
+
+Mapped to S4 symmetry/boundary control and the localization claim ceiling.
+
+## 5. Falsifier attack
+
+Maps to the simultaneous S1–S4 criterion and explicit non-survival in original §§9–10.
+
+## 6. Pre-registration verdict
+
+- Verdict: PASS
+- Reason: documentary negative; no implementation, synthetic construction, generator run, or seed.
+
+## 7. Literature verdict
+
+No new literature adjudication is asserted in this migration.
+
+## 8. Synthesis
+
+No compared family supplied a closed map. `CANDIDATE_5` remained unopened, and decision 042 later
+made this terminal part of the C1–C5 line closure.
+
+## 9. Next-step spec
+
+No construction step is authorized. A different future target requires a separate contract.
+
+## 10. Verdict
+
+COMMITTEE_DECISION_VERDICT=RECOMMEND_DO_NOT_PROCEED
+
+## 11. User sign-off
+
+The user authorized this schema migration on 2026-07-28. It is not a new scientific adjudication
+and authorizes no execution.
+
 ## 12. Next-step posture (documentary only; not authorized work)
 
 No next construction step is authorized by this decision. If a later, separate authorization is
