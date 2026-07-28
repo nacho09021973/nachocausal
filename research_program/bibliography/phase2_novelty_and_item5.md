@@ -155,7 +155,15 @@ ITEM_5_PROTOCOL =
   ENVÍO_MÍNIMO: 1× Tier A  (cumple la letra)
   ENVÍO_RECOMENDADO: 1× Tier A + 1× Tier B  (cumple letra + espíritu para N1)
   HASTA_RESPUESTA: N1 wording = hedge only (ya en manuscript §1.6 / §6.5)
+
+  DESCARGA DEL ÍTEM 5 (resuelto por el PI, 2026-07-28):
+    SALIDA_(a) — exige respuesta registrada de AMBOS tiers.
+    Ver external_reader_candidates_n1_n5.md §4.1 para la regla completa.
+    Un solo tier, DECLINED o NO_REPLY ⇒ ítem 5 SIGUE ABIERTO.
 ```
+
+Con la salida (a) fijada, «envío recomendado» y «envío exigido para descargar» coinciden: el
+`ENVÍO_MÍNIMO` de 1× Tier A cumple la letra del ítem pero ya **no** basta para marcarlo descargado.
 
 Un solo Tier A **descarga la letra** del ítem 5 pero **no** certifica N1 frente a math.ST.
 El manuscript interno puede vivir con hedge; **arXiv con “first lower bound…”** exige al menos

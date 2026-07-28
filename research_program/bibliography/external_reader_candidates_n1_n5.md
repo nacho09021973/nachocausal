@@ -124,6 +124,28 @@ Dos salidas admisibles, **decisión del PI, no de este documento**:
 - **(b)** Enmendar la letra del ítem 5 a «lector competente **en el canal de la afirmación**», con
   nota fechada, reconociendo que N1/N4 y N2/N3/N5 viven en comunidades distintas.
 
+### 4.1 Resolución del PI (fechada)
+
+```text
+ITEM_5_DISCHARGE_RULE = SALIDA_(a)_AMBOS_TIERS
+DECIDIDO_POR: PI
+FECHA: 2026-07-28
+ESTADO_EN_LA_FECHA: ningún envío realizado (decisión tomada antes de ver respuesta alguna)
+```
+
+**Contenido de la regla.** El ítem 5 **no** se marca descargado hasta que exista respuesta
+registrada de **un lector Tier A y un lector Tier B**. Consecuencias:
+
+- Una respuesta Tier A sola cierra la *letra* del ítem pero deja N1/N4 sin examinar por la
+  comunidad que podría contener su antecedente → ítem 5 **abierto**.
+- Una respuesta Tier B sola examina el hueco de §7 pero no satisface la letra → ítem 5 **abierto**.
+- `DECLINED` o `NO_REPLY` en cualquiera de los dos tiers → ítem 5 **abierto**; el manuscript
+  conserva el hedge de N1 y arXiv sigue bloqueado para lenguaje de primacía
+  (`phase2_novelty_and_item5.md` §3.1, §5).
+
+La decisión se toma **antes** de cualquier envío precisamente para que la lectura de la regla no
+pueda elegirse después en función de lo que responda quien responda.
+
 **Salida explícitamente inadmisible:** obtener un `APPARENTLY_DISTINCT` del Tier A y marcar el ítem 5
 como descargado. Eso dejaría el hueco de §7 intacto con un sello encima, que es la forma exacta de
 guardarraíl-que-no-puede-fallar que la regla fundacional prohíbe.
