@@ -301,3 +301,24 @@ THRESHOLDS = NOT_APPLICABLE
 SEALED_PATH = UNTOUCHED
 COMMIT_OR_PUSH = NOT_AUTHORIZED_BY_THIS_DOCUMENT
 ```
+
+## 12. Registro terminal (añadido 2026-07-29, posterior a la adjudicación 048)
+
+> Sección append-only. El texto de §0–§11 no se ha modificado; el blob adjudicado por la
+> Decisión 048 (`c7512a7f0bfb8757a5db2a78a20720bf0a8b882d`) sigue siendo la referencia de lo que
+> G1–G9 calificaron, y queda citado en
+> `docs/comite/comite_decision_048_q-fmots-target-adjudication.md:37-39`.
+
+```text
+TERMINAL_EMITTED = B2_TARGET_BLOCKED_EXTERNAL_SURFACE_LABEL
+CLASSIFICATION = FATAL_FOR_CURRENT_TARGET, NOT_UNIVERSAL_NO_GO
+EMITTED_BY = decisión delegada del PI (2026-07-29)
+RECORD = research_program/work_packages/phase3_b2_qfmots_terminal_decision.md
+SUCCESSOR_CANDIDATE_CONTRACT = research_program/work_packages/phase3_b2_trapped_surface_preopening_contract.md
+TARGET_ADOPTION = TERMINATED_FOR_Q_FMOTS
+```
+
+Fundamento resumido: la regla del §2.2 de este contrato, la exigencia vinculante de la
+Decisión 048 §6, la refutación del selector "borde de región compacta" y el veredicto
+`REQUIRES_TARGET_CHANGE` de la vía de extremo asintótico (ver el documento de registro para las
+citas exactas). Per §10, este bloqueo cierra esta instanciación; no refuta B2 en general.
