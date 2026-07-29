@@ -61,9 +61,12 @@ indistinguishability statement for a continuous geometric family.
 Boguñá and Krioukov (Phys.\ Rev.\ D 110, 024008, 2024) estimate spacelike
 distances from causal overlaps with errors that vanish in a continuum limit, with
 discreteness scales of the form \(\rho^{-1/(d+1)}\) in their conventions. Their
-direction is complementary to Theorem 3.8: they give **constructive upper rates**
-for geometric functionals; we give **estimator-independent lower bounds** on a
-localization problem for a named family. Neither result implies the other.
+direction is complementary to Theorems 3.8–3.9: they give **constructive upper
+rates** for spacelike-distance functionals; Theorem 3.8 gives an
+**estimator-independent lower bound** for a named parametric family, while
+Theorem 3.9 supplies an elementary order-only test attaining the same boundary
+exponent for that family. Theorem 3.9 is not a spacelike-distance estimator, and
+neither line implies the other.
 
 ### 6.4 Horizons and quasi-local structure in causal sets
 
@@ -82,18 +85,23 @@ statements.
 
 ### 6.5 Statistical methods
 
-Quadratic-mean differentiability, Hellinger tensorization, data processing, and
-two-point (Le Cam) lower bounds are textbook
+Quadratic-mean differentiability, Hellinger tensorization, data processing,
+Hoeffding variance identities, Chebyshev testing, and two-point (Le Cam) lower
+bounds are textbook
 (`[BACKGROUND]`; e.g.\ van der Vaart, *Asymptotic Statistics*; Tsybakov,
-*Introduction to Nonparametric Estimation*). Theorem 3.8’s claim to attention is
-the **instantiation**: a geometric family for which regularity is proved and for
-which several “natural” alternative families are degenerate or non-regular
-(Section 3.3.1). We do not claim a new method of nonparametric statistics.
+*Introduction to Nonparametric Estimation*). Theorems 3.8–3.9 claim the
+**instantiation**: a geometric family for which regularity, a uniform small-lapse
+expansion of a concrete order statistic, and both sides of the \(n^{-1/2}\)
+boundary exponent are proved. Several “natural” alternative families are
+degenerate or non-regular (Section 3.3.1). We do not claim a new method of
+nonparametric statistics or an optimal critical-scale constant.
 The independent check required by project Paso D, item 5 was completed with
 responses from both tiers on 2026-07-28. Neither reader found a prior containing
-this family-specific instantiation, but both treated the machinery after QMD as
-standard and identified residual literature in random geometric graphs and
-latent-space models. Absolute priority language remains disallowed.
+the family-specific localization-floor instantiation now stated as Theorem 3.8,
+but both treated the machinery after QMD as standard and identified residual
+literature in random geometric graphs and latent-space models. Theorem 3.9 has
+not yet received a theorem-specific priority audit and is advanced here without a
+novelty claim. Absolute priority language remains disallowed.
 
 ### 6.6 What we do not cite as competition
 
@@ -114,6 +122,7 @@ fixed-\(n\) order-only blindness for absolute mass.
 | Absolute \(r_s\) / \(M\) from order-only data at fixed \(N=n\) (stated families) | **Non-identifiable** (\(\mathrm{TV}=0\) on the orbit) | Thm 3.1 · `PROVED_NON_IDENTIFIABILITY` |
 | Global event horizon from a single finite causally convex patch | **Not a functional** of patch data | Thm 3.2 · `PROVED_NON_IDENTIFIABILITY` |
 | Localization rate for \(\tau\) on the regular EF diamond family | **Floor** \(\sim n^{-1/2}\) | Thm 3.8 · `PROVED_NON_IDENTIFIABILITY` (rate) |
+| Fixed-\(n\) separation of \(\tau\ne\tau'\) by comparable-pair count, for \(0<dv<dv_0\) | **Consistent for each fixed pair**; matching \(o/\omega\) boundary exponent | Thm 3.9 / Cor 3.10 · `PROVED_FIXED_N_SEPARATION` |
 | Sealed future-volume in-patch score under prereg-002 | **PASS** (caveated artifact status) | §4 · `VALIDATED` (caveated) |
 | Named region-localizers C1–C6 in this bank | **Terminated** as listed | §5 · `EMPIRICAL_FAILURE_OF_CLASS_L` |
 
@@ -136,12 +145,12 @@ alone.
 | Item | Status | Preferred path |
 |---|---|---|
 | Pointwise \(I(\tau)>0\) at every \(\tau\) (only no vanishing on subintervals is proved) | `OPEN` | Analyticity route noted in annex; not required for Thm 3.8 |
-| Numerical \(\bar I\) / \(\bar\kappa\) for reference diamonds | `OPEN` / NUMERICAL where marked | Deterministic generators only |
+| Numerical \(\bar I\) / \(\bar\kappa_{\mathrm{dim}}\) for reference diamonds | `OPEN` / NUMERICAL where marked | Deterministic generators only |
 | Regular parametric family + Fisher floor in \(3{+}1\) | `OPEN` | Template from Thm 3.8; new proof required |
 | Order+number with known \(\rho\): separation of absolute mass | Open as **new program** | OP-1.2 §5: Poisson means differ when \(M\) differs; not developed here (Fase 3 B1) |
 | Witness-pair or rate no-go for a *named* quasi-local proxy \(Q\neq T_{\mathrm{EH}}\) | `OPEN` | Fase 3 **B2** (adversarial pairs)—preferred scientific sequel |
-| Deeper prior-art sweep in random geometric graphs / latent-space minimax inference | `OPEN` bibliographic residual | Both external tiers identified this as the most plausible remaining neighborhood; no concrete sink anchored |
-| Ordering-fraction / Chebyshev TV lower separation for fixed pairs | Conditional | Only if project conditions C3–C4 (comité 045) are closed; omitted from claims until then |
+| Theorem-specific priority audit for Thm 3.9, including random geometric graphs / latent-space minimax inference | `OPEN` bibliographic residual | Existing external tiers audited the Thm 3.8 instantiation; no novelty claim is made for Thm 3.9 |
+| Critical-scale constant, constant efficiency of \(S_n\), and a numerically certified \(dv_0\) | `OPEN` | Theorem 3.9 closes the exponent and fixed-pair consistency only; deterministic quantitative analysis required |
 
 ### 7.4 Explicitly not claimed open problems
 
@@ -158,15 +167,21 @@ We asked what a finite unlabeled causal set can identify about Schwarzschild
 geometry when the observation is order-only—often conditioned on cardinality—and
 when continuum labels are used only to score, never to define, the estimator.
 
-**Pillar P1.** Three non-identifiability statements are proved. Absolute horizon
+**Pillar P1.** Three non-identifiability statements and one companion separation
+theorem are proved. Absolute horizon
 radius (mass) is invisible at fixed \(n\) along dilation and co-scaling orbits
 (Theorem 3.1). The global event horizon is not a functional of data from a finite
 causally convex patch
 (Theorem 3.2). On a regular one-parameter family of \(1{+}1\) causal diamonds with
 finite Fisher information, no order-only procedure localizes the continuous
-parameter below a two-point rate of order \(n^{-1/2}\) (Theorem 3.8). These results
-are labeled `PROVED_NON_IDENTIFIABILITY`. They are not failures of particular
-estimators, and they are not a slogan that causal sets cannot see black holes.
+parameter below a two-point rate of order \(n^{-1/2}\) (Theorem 3.8). For the same
+family at sufficiently small \(dv\), the comparable-pair count separates every
+fixed distinct parameter pair, and succeeds for moving alternatives at
+\(\omega(n^{-1/2})\) (Theorem 3.9). Thus the boundary exponent is matched in the
+\(o/\omega\) sense, without a constant-optimality claim. The results are labeled
+`PROVED_NON_IDENTIFIABILITY` and `PROVED_FIXED_N_SEPARATION`. They are not failures
+of particular estimators, and they are not a slogan that causal sets cannot see
+black holes.
 
 **Pillar P3.** Under a frozen pre-registration, a future-volume observable passes a
 sealed blind validation contract for in-patch localization of a horizon-associated
@@ -185,7 +200,8 @@ cardinality, is not the channel with which one reconstructs a \(3{+}1\)
 Schwarzschild event horizon. It is the channel with which one can prove, by
 equality of laws and by definition of global objects, the limits of what that
 experiment can see—and with which one can still validate bounded in-patch
-recoverability of a carefully contracted geometric score. Further scientific work,
+recoverability of a carefully contracted geometric score and separate a continuous
+shape parameter at the matching boundary exponent. Further scientific work,
 if any, should open a **new** contract (order+number; non-horizon targets;
 adversarial pairs for named quasi-local proxies), not another estimator under the
 abandoned region-localizer north.

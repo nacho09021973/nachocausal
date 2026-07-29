@@ -43,13 +43,13 @@ R3: ledger = EMPIRICAL_FAILURE_OF_CLASS_L
 
 ### 0.2 Tesis (una frase)
 
-En el canal **order-only** (poset no etiquetado; a menudo condicionado a \(N=n\)), sobre **parches finitos** de Schwarzschild, se demuestran **límites de identificabilidad** (escala absoluta; horizonte de eventos global; suelo de tasa en familias regulares 1+1) y se documenta un **ledger** de seis vías de localización de *región* agotadas en este banco; el único positivo sellado del banco es de **recoverability acotada** de una señal geométrica order-only, no de reconstrucción de horizonte.
+En el canal **order-only** (poset no etiquetado; a menudo condicionado a \(N=n\)), sobre **parches finitos** de Schwarzschild, se demuestran **límites de identificabilidad** (escala absoluta; horizonte de eventos global; suelo de tasa en familias regulares 1+1) y, en la misma familia regular, una **separación positiva `fixed_n`** cuyo exponente coincide con el suelo en el sentido \(o/\omega\); además se documenta un **ledger** de seis vías de localización de *región* agotadas en este banco y un positivo sellado de **recoverability acotada** de una señal geométrica order-only, ninguno de ellos reconstrucción de horizonte.
 
 ### 0.3 Tres pilares (orden de aparición en el paper = orden de peso)
 
 | Pilar | Etiqueta | ¿Es “contribución principal”? |
 |---|---|---|
-| **P1** No-identificabilidad demostrada (T1)–(T3) | `PROVED_NON_IDENTIFIABILITY` | **Sí** — el corazón del paper |
+| **P1** Frontera exacta y estadística (T1)–(T4): no-identificabilidad + separación `fixed_n` | `PROVED_NON_IDENTIFIABILITY`; `PROVED_FIXED_N_SEPARATION` | **Sí** — el corazón del paper |
 | **P2** Ledger C1–C6 | `EMPIRICAL_FAILURE_OF_CLASS_L` | **Sí** — como evidencia tipada de banco, no como no-go |
 | **P3** Positivo prereg-002 (volumen de futuro) | `VALIDATED` / caveats de re-verificación | **Sí, acotado** — el canal no está vacío; el target fuerte sí está bloqueado |
 
@@ -61,6 +61,7 @@ En el canal **order-only** (poset no etiquetado; a menudo condicionado a \(N=n\)
 - order-only, finite patch, 1+1 primary arena; 3+1 only where TV=0 de masa está probado;
 - exact scale/mass blindness at \(N=n\);
 - localization floor in a regular 1+1 family;
+- comparable-pair separation for fixed distinct parameters at sufficiently small \(dv\), with matching \(n^{-1/2}\) boundary exponent only in the \(o/\omega\) sense;
 - global event horizon is not a functional of data from a finite causally convex patch;
 - six-channel negative ledger (empirical failure of a named class);
 - one sealed in-patch positive (future-volume), not horizon reconstruction.
@@ -118,9 +119,10 @@ Thm 3 como precursor cuantitativo y “first in the literature” permanece proh
 | 2.4 | Targets \(T\): absolute mass/scale; continuous shape parameter \(\tau\); global horizon; in-patch score targets | claim_grammar lista 1–12 |
 | 2.5 | Vocabulary: `EMPIRICAL_FAILURE_OF_CLASS_L` vs `PROVED_NON_IDENTIFIABILITY` | taxonomy §4.4; Fase 0 §3 |
 
-### §3 Proved non-identifiability (Pilar P1)
+### §3 Exact obstructions and fixed-\(n\) statistical limits (Pilar P1)
 
-Esta es la sección **matemática** principal. Tres subsecciones = (T1)(T2)(T3).
+Esta es la sección **matemática** principal: tres resultados negativos
+(T1)–(T3) y su compañero positivo (T4).
 
 #### §3.1 (T1) Exact scale / mass blindness at \(N=n\)
 
@@ -148,22 +150,23 @@ Esta es la sección **matemática** principal. Tres subsecciones = (T1)(T2)(T3).
 
 | | |
 |---|---|
-| **Claim** | For the EF-corner diamond family with proved QMD and finite \(\bar I\), in the order-only \(N=n\) channel, \(\mathrm{TV}(Q^n_\tau,Q^n_{\tau+\delta})\le C|\delta|\sqrt{n\bar I}\); hence no order-only estimator (randomized included) localizes \(\tau\) below the corresponding two-point threshold. |
+| **Claim** | For the EF-corner diamond family with proved QMD and finite \(\bar I\), in the order-only \(N=n\) channel, \(\mathrm{TV}(Q^n_\tau,Q^n_{\tau+\delta})\le C\lvert\delta\rvert\sqrt{n\bar I}\); hence no order-only estimator (randomized included) localizes \(\tau\) below the corresponding two-point threshold. |
 | **Etiqueta** | `PROVED_NON_IDENTIFIABILITY` (rate / minimax lower bound via two-point) |
 | **Ancla** | `wp4_fisher_localization_floor.md` §4–§5; symbolic checks script |
 | **What it is not** | Bound may be loose for posets (data processing from points); \(\bar I\) finiteness proved, not necessarily numerically computed for reference corners; not a 3+1 theorem; not “horizon information”. |
 | **Physics caveat (mandatory)** | In 1+1 Schwarzschild, \(\tau\) is simultaneously horizon radius and curvature amplitude; no threshold structure at \(r=\tau\). **Forbidden:** calling (T3) “horizon detection information”. |
 | **N\*** | Former N1 → **bounded instantiation**; Le Cam/Hellinger = textbook |
-| **Related optional paragraph** | Ordering-fraction / Chebyshev lower separation when \(\Delta_p\neq 0\) (material outline antiguo §6.1) — only if C3/C4 of comité 045 are closed; otherwise omit or mark `OPEN` |
+| **Companion theorem (T4, mandatory)** | For one \(dv_0\) uniform on \(K=[\tau_0,\tau_1]\), every fixed \(0<dv<dv_0\) makes the comparable-pair probability strictly increasing; \(S_n\) gives \(\mathrm{TV}(Q_\tau^n,Q_{\tau'}^n)\to1\) for each fixed \(\tau\ne\tau'\), with pair-dependent \(n_0\), and a uniform \(n_0\) only under \(\lvert\tau-\tau'\rvert\ge\eta>0\). Combined with (T3), the boundary exponent is sharp only in the \(o/\omega\) sense. |
+| **T4 anchor / claim ceiling** | `wp4_comparable_pair_separation.md` §4–§4b, closed at commit `141cccc`; no named numerical \(dv\), no constant optimality, no 3+1 or horizon-reconstruction claim. |
 
 #### §3.4 Design remark: sterile Kruskal-box mass family (ex-N3)
 
 Short paragraph: fixed Kruskal box ⇒ mass dependence cancels after normalization ⇒ Fisher zero.  
 **Not** a numbered contribution. Ancla: `wp4_fisher_localization_floor.md` Prop. 1 / §2.
 
-#### §3.5 Dimensional corollary: \(\kappa=V\cdot I\) (ex-N4)
+#### §3.5 Dimensional corollary: \(\kappa_{\mathrm{dim}}=V\cdot I\) (ex-N4)
 
-One paragraph: under dilation, \(V\cdot I\) is dimensionless; intrinsic floor \(\delta_n/\ell\sim 1/\sqrt{\bar\kappa}\).  
+One paragraph: under dilation, \(V\cdot I\) is dimensionless; intrinsic floor \(\delta_n/\ell\sim 1/\sqrt{\bar\kappa_{\mathrm{dim}}}\).
 **Not** a novelty theorem. Present as reparametrization / units.
 
 #### §3.6 Notational discipline (ex-N5, two–four sentences)
@@ -191,7 +194,7 @@ Cite DPI as textbook; optional analogy to information–computation gaps in othe
 | 5.2 | Master table (C3-early … C6) | outline antiguo §4; decisiones 039–044 |
 | 5.3 | Cross-cutting structural lessons | ceiling/wall; no lateral pairing; scale↔depth; no stable codim-2 screen |
 | 5.4 | Case study C6 (optional depth) | antichain waist; comité 043→044 self-correction vignette |
-| 5.5 | **Mandatory label** | Entire section = `EMPIRICAL_FAILURE_OF_CLASS_L` for the named locator class in this bank — **not** (T1)–(T3) |
+| 5.5 | **Mandatory label** | Entire section = `EMPIRICAL_FAILURE_OF_CLASS_L` for the named locator class in this bank — **not** (T1)–(T4) |
 
 **Frase prohibida en §5:** “therefore it is impossible to localize a horizon order-only.”  
 **Frase permitida:** “within this bank and this named class of constructions, every channel terminated as listed; this does not replace the measure-theoretic limits of §3.”
@@ -205,10 +208,10 @@ Material reutilizable: `docs/paper_outline_c1c6_plus_prereg002.md` §§4–6.
 | Order + Number | Dowker–Zalel; Braun; Madsen; Bombelli/Zeeman | Background for (T1) as formalized folklore |
 | Continuum causal determination | HKMM; Malament | Order → conformal; scale missing |
 | Indistinguishability constructions | Müller arXiv:2503.01719 | Closest published relative for *qualitative* order indistinguishability; no Fisher rates |
-| Constructive distances | Boguñá–Krioukov PRD 110, 024008 | Upper rates from causal overlaps; opposite direction to (T3) |
+| Constructive distances | Boguñá–Krioukov PRD 110, 024008 | Upper rates from causal overlaps; complementary but different target from (T3)–(T4) |
 | Horizon phenomenology in CST | Eichhorn–Gamito–Stokes arXiv:2605.06813 | Motivates quasi-local ideas; does not supply order-only codim-2 in our sense |
 | Curvature / observables | BD, BDG, Eichhorn et al. graph observables | Classification / curvature, not our abandoned north |
-| Methods | Tsybakov / Le Cam textbook | Technique for (T3) |
+| Methods | Tsybakov / Le Cam; Hoeffding / Chebyshev textbook | Techniques for (T3)–(T4), not novelty claims |
 
 ### §7 What remains open (and what is abandoned)
 
@@ -218,6 +221,7 @@ Material reutilizable: `docs/paper_outline_c1c6_plus_prereg002.md` §§4–6.
 | Absolute mass at \(N=n\) | **Closed** by (T1) — non-identifiable |
 | Global event horizon from finite causally convex patch | **Closed** by (T2) |
 | Rate-optimal constants / \(\bar I\) numerics for (T3) | `OPEN` / numerical reference only where marked |
+| Critical-scale constant, numerical \(dv_0\), and theorem-specific priority audit for (T4) | `OPEN`; none is needed for the proved fixed-pair and \(o/\omega\) statements |
 | 3+1 regular family + Fisher floor | `OPEN` (template only) |
 | Order+number with known \(\rho\): mass separation | Open as **new program** (Fase 3 option B1); OP-1.2 §5 already notes Poisson means differ |
 | Witness-pair no-gos for named quasi-local \(Q\) | Open as Fase 3 **B2** (preferred after manuscript) |
@@ -234,7 +238,7 @@ Material reutilizable: `docs/paper_outline_c1c6_plus_prereg002.md` §§4–6.
 | App | Content |
 |---|---|
 | A | Full proof of (T1) 1+1 + 3+1 co-scaling |
-| B | Full proof of (T3) / QMD regularity sketch + symbolic check pointer |
+| B | Full proof of (T3) / QMD regularity and (T4) / comparable-pair separation + check pointers |
 | C | Antichain theorem for C6 (if §5.4 kept long) |
 | D | Prereg-002 contract summary + seal hash pointer (no seal change) |
 
@@ -243,23 +247,23 @@ Material reutilizable: `docs/paper_outline_c1c6_plus_prereg002.md` §§4–6.
 ## 2. Abstract skeleton (English, ≤200 words)
 
 ```text
-We study what can and cannot be recovered from the isomorphism class of a finite
-causal set obtained by Poisson sprinkling into a Schwarzschild region, when only
-the unlabeled order (often conditioned on cardinality N=n) is observed. We prove
-three non-identifiability statements: (i) absolute mass (horizon radius in absolute
-units) is exactly non-identifiable at fixed n under patch-shape-preserving
-dilations/co-scalings in 1+1 and 3+1; (ii) the global event horizon is not a
-functional of any single finite-patch observation; (iii) in a regular one-parameter
-1+1 diamond family with finite Fisher information, no order-only procedure can
-localize the parameter below a two-point rate ~ n^{-1/2}. These are measure-theoretic
-and definitional limits, not failures of particular estimators. Separately, we
-report a sealed in-patch recoverability PASS for a future-volume observable under
-a frozen pre-registration, and a typed ledger of six exhausted region-localization
-channels in the same 1+1 bank, labeled as empirical failure of a named construction
-class rather than as a universal no-go. The paper is a recoverability-limits
-benchmark: it is not a claim that black-hole horizons have been reconstructed from
-causal sets, nor a pathway to 3+1 event-horizon reconstruction from finite
-order-only data alone.
+We ask which continuum-geometric properties are identifiable from the isomorphism
+class of a finite causal set sprinkled into a Schwarzschild patch when only the
+unlabeled order is observed, typically conditional on N=n. Three obstructions are
+proved. Absolute mass is exactly invisible at fixed n under patch-shape-preserving
+dilations in 1+1 dimensions and co-scaling in a scoped 3+1 class. The global event
+horizon is not a functional of data from one finite causally convex patch. In a
+regular one-parameter family of 1+1 causal diamonds with finite Fisher information,
+no order-only procedure localizes the parameter below a two-point rate of order
+n^{-1/2}. Conversely, for sufficiently small null lapse dv, the comparable-pair
+count separates every fixed distinct parameter pair and is consistent whenever
+sqrt(n)|delta_n| -> infinity. Thus n^{-1/2} is the boundary exponent in the
+o/omega sense; critical-scale constants remain open. These statements are
+measure-theoretic or definitional, not conclusions from failed estimators. We also
+report a sealed in-patch future-volume recoverability result and a typed ledger of
+six exhausted region-localization channels, explicitly not a universal no-go. This
+is a map of finite order-only channel limits, not a reconstruction of a black-hole
+event horizon or a route to 3+1 reconstruction from such data alone.
 ```
 
 ---
@@ -269,7 +273,7 @@ order-only data alone.
 | Paso | Entrega | Gate |
 |---|---|---|
 | **1.1** | Este outline (hecho al abrir Fase 1) | PI no objeta estructura |
-| **1.2** | §3 draft (T1)–(T3) — **HECHO** `phase1_section3_nonidentifiability_draft.md` (2026-07-28) | Cada claim con etiqueta + ancla file |
+| **1.2** | §3 draft (T1)–(T4) — **ACTUALIZADO** `phase1_section3_nonidentifiability_draft.md` (promoción C6, 2026-07-29) | Cada claim con etiqueta + ancla file |
 | **1.3** | §1–§2 + abstract — **HECHO** `phase1_section1_2_abstract_draft.md` (2026-07-28) | claim_grammar; abandoned north; setup |
 | **1.4** | §4–§5 — **HECHO** `phase1_section4_5_positive_ledger_draft.md` (2026-07-28) | P3 prereg-002; P2 ledger R3 labels |
 | **1.5** | §6–§8 — **HECHO** `phase1_section6_7_8_draft.md` (2026-07-28) | literature; open/abandoned; conclusions |
@@ -325,6 +329,25 @@ NOT: tight constant; 3+1; horizon-threshold physics
 NOVELTY WORDING: bounded instantiation; technique textbook; ítem 5 if “first”
 ```
 
+### Card T4 — Comparable-pair separation
+
+```text
+DIMENSION: 1+1
+FAMILY: EF diamond family; K=[τ0,τ1]; one proof-defined dv0 uniform on K
+CHANNEL: order-only, N=n
+TARGET: continuous parameter τ (NOT “horizon” as a distinct physical invariant)
+STATISTIC: S_n = number of comparable unordered pairs
+GUARANTEE: for each fixed 0<dv<dv0 and τ≠τ', TV(Q^n_τ,Q^n_τ') -> 1;
+           n0 is pair-dependent; uniform n0 requires |τ-τ'|≥η>0;
+           consistency for sqrt(n)|τ_n-τ'_n| -> infinity
+LABEL: PROVED_FIXED_N_SEPARATION
+ANCHOR: wp4_comparable_pair_separation.md §4–§4b; commit 141cccc
+NOT: named numerical dv; critical-scale constant; constant efficiency; arbitrary dv;
+     Poisson-unconditioned channel; estimator of a horizon; 3+1
+NOVELTY WORDING: family-specific instantiation; statistical machinery textbook;
+                 theorem-specific priority audit pending; no absolute priority claim
+```
+
 ### Card P3 — Prereg-002 positive
 
 ```text
@@ -369,7 +392,7 @@ NOT: proof that every possible order-only map fails
 [x] Abstract skeleton
 [x] Plan de pasos 1.2–1.7
 [x] Precedencia sobre outline C1–C6 antiguo declarada
-[x] Paso 1.2 — draft §3 (T1)–(T3): phase1_section3_nonidentifiability_draft.md
+[x] Paso 1.2 — draft §3 (T1)–(T4): phase1_section3_nonidentifiability_draft.md
 [x] Paso 1.3 — abstract + §1 + §2: phase1_section1_2_abstract_draft.md
 [x] Paso 1.4 — §4 positivo + §5 ledger: phase1_section4_5_positive_ledger_draft.md
 [x] Paso 1.5 — §6–§8: phase1_section6_7_8_draft.md
