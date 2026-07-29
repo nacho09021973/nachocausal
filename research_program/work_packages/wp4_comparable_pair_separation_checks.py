@@ -13,7 +13,7 @@ istic Gauss-Legendre quadrature, and one fixed-seed Monte-Carlo cross-check of
 the quadrature.
 
 Run with:
-    .venv/bin/python research_program/work_packages/wp4_comparable_pair_separation_checks.py
+    PYTHONDONTWRITEBYTECODE=1 python3 research_program/work_packages/wp4_comparable_pair_separation_checks.py
 
 Checks, in order:
   [1] sqrt(-det g) = 1 in EF coordinates (v, r): the sampling measure is dv dr.
@@ -28,6 +28,11 @@ Checks, in order:
       against Richardson-extrapolated quadrature.
   [8] Positivity of kappa's numerator, (x - 1/x)/2 - log(x) > 0 for x > 1.
   [9] The concrete pair: p(tau) != p(tau') at working precision.
+  [10] First Hoeffding projection and the identity E[h_1(X)] = p.
+  [11] Non-degeneracy zeta_1 > 0 and the independence-limit value zeta_1 -> 1/36.
+  [12] Exact fixed-n variance identity for S_n, cross-checked against Monte Carlo.
+  [13] One-way constant-level consistency requirement
+       zeta_1 * Ibar >= kappa^2 dv^2 / 54 (stated, not evaluated).
 """
 import numpy as np
 import sympy as sp
@@ -499,16 +504,18 @@ def main():
     print("     is stated, not executed -- see the note's §5 item 4.")
     print()
 
-    print("CONCLUSION: p(tau) != p(tau') for the WP4 §4 diamond family.")
-    print("  - PROVED as dv -> 0: p = 1/2 + kappa(r_p,r_q)*tau*dv + O(dv^2), kappa > 0,")
-    print("    so the leading term is strictly proportional to tau (check [7]+[8]).")
-    print("  - VERIFIED numerically at the concrete pair above (check [9]).")
-    print("  This closes ingredient (a) of ficha §7.1 for this family. It does NOT")
-    print("  close Forma L: see wp4_comparable_pair_separation.md §5 for what remains.")
-    print("Checks [10]-[13] additionally close item 3 of that §5 (variance non-degeneracy:")
-    print("  zeta_1 > 0, = 1/36 + O(dv^2), Var(S_n) = Theta(n^3) verified against MC) and")
-    print("  reduce item 4 to a single stated inequality on Ibar. Items 1-2 -- the channel")
-    print("  obstructions -- are untouched and remain the reason Forma L stays OPEN.")
+    print("CONCLUSION: checks [1]-[13] support the current Annex C status.")
+    print("  - Checks [7]+[8] prove the leading coefficient")
+    print("      p = 1/2 + kappa(r_p,r_q)*tau*dv + O(dv^2),  kappa > 0.")
+    print("  - The written analytic argument in Theorem C4 (not a numerical certification here)")
+    print("    supplies one dv_0 for the whole fixed compact tau interval.")
+    print("  - In fixed_n, the exact moments plus Chebyshev give TV(Q^n_tau,Q^n_tau') -> 1")
+    print("    for every fixed tau != tau' and 0 < dv < dv_0; n_0 remains pair-dependent")
+    print("    unless a minimum separation |tau-tau'| >= eta > 0 is imposed.")
+    print("  - Check [9] verifies the named dv values numerically; no claim is extrapolated to")
+    print("    arbitrary dv, the unconditioned Poisson channel, reconstruction, localisation, or 3+1D.")
+    print("Checks [10]-[13] establish variance non-degeneracy and reduce the constant-level")
+    print("  efficiency question to the stated one-way Ibar inequality, which remains unevaluated.")
 
 
 if __name__ == "__main__":

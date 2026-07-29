@@ -31,9 +31,17 @@
 > The former channel blocker is removed only for the conditioned `fixed_n` Chebyshev route; the
 > constant-level efficiency question and the one-way `Ibar` defeater remain open.
 >
+> **Addendum 2026-07-29 (§4).** The two analytic steps previously only argued are now written out.
+> After pulling the varying diamond back to the unit square, the ray flow gives a jointly
+> real-analytic extension `P(tau, dv)` through `dv = 0`. Taylor's formula on a compact rectangle
+> yields both `|R| <= C_0 dv^2` and `|partial_tau R| <= C_1 dv^2`, uniformly in `tau`. The derivative
+> bound — stronger than the absolute remainder bound alone — closes Corollary C6 for the whole
+> compact `tau` interval. The proof does not numerically evaluate `C_1` or certify a named `dv_0`.
+>
 > Verification script (all checks pass, exit 0, ~9 s):
 > `wp4_comparable_pair_separation_checks.py`, run with
-> `.venv/bin/python research_program/work_packages/wp4_comparable_pair_separation_checks.py`.
+> `PYTHONDONTWRITEBYTECODE=1 python3
+> research_program/work_packages/wp4_comparable_pair_separation_checks.py`.
 
 ## 1. The question, in the ficha's own terms
 
@@ -155,32 +163,142 @@ is the independence/flat value (a 1+1D Minkowski causal interval has comparable 
 
 ## 4. Leading asymptotics in the null lapse
 
-**Theorem C4.** Fix admissible `(tau, r_p, r_q)`. As `dv -> 0^+`,
+**Theorem C4 (joint analytic extension and uniform remainder).** Fix
+`0 < r_q < tau_0 <= tau_1 < r_p` and put `K := [tau_0, tau_1]`. There are
+`epsilon > 0` and finite constants `C_0, C_1`, depending only on
+`(r_p, r_q, tau_0, tau_1)`, such that for every `tau in K` and
+`0 < dv <= epsilon`,
 
 ```text
-p(tau) = 1/2 + kappa(r_p, r_q) * tau * dv + O(dv^2),
-kappa(r_p, r_q) = [ (r_p^2 - r_q^2) - 2 r_p r_q log(r_p / r_q) ] / [ 12 r_p r_q (r_p - r_q)^2 ].
+p(tau) = 1/2 + kappa(r_p, r_q) * tau * dv + R(tau, dv),
+kappa(r_p, r_q)
+  = [ (r_p^2-r_q^2) - 2 r_p r_q log(r_p/r_q) ]
+    / [ 12 r_p r_q (r_p-r_q)^2 ],
+
+|R(tau, dv)|             <= C_0 dv^2,
+|partial_tau R(tau, dv)| <= C_1 dv^2.
 ```
 
-*Derivation (machine-verified, check [7]).* Expand the ray flow as a series in the lapse from the
-ODE of §2, `rho = r + D (r-tau)/(2r) + D^2 tau (r-tau)/(8 r^3) + ...`; substitute into
-Proposition C3; integrate the retained orders in `r` in closed form (the antiderivatives are
-elementary, `r(r-2tau)/2`, `r/4 - tau log(r)/4`, …); put `D = dv * t` and integrate `t` over
-`[0,1]`. Writing `N = dv^2 * Nhat(dv)` and `V = dv * Vhat(dv)` — the leading coefficients are
-`Nhat(0) = (r_p-r_q)^2/4` and `Vhat(0) = r_p - r_q != 0` — the ratio `p = 2 Nhat / Vhat^2` extends
-to `dv = 0` with value exactly `1/2`, and its first Taylor coefficient is the stated
-`kappa * tau`. Sympy confirms both the `dv^0` coefficient (`= 1/2`) and that the `dv^1`
-coefficient equals `kappa * tau` identically. ∎
+*Proof.* Write `a := r_p`, `b := r_q`, `d := dv`, and
+`Rho(tau,r,D) := rho_tau(r,D)`. We first remove both moving integration boundaries and the apparent
+singularity at `d = 0`.
 
-*Two steps are argued rather than written out,* and both are labelled as such in §6. **(i)** That
-`p` is analytic in `dv` at `0^+`, which licenses reading Taylor coefficients off the formal series.
-It holds because `N` and `V` are integrals of analytic integrands over analytically-varying domains,
-hence analytic in `dv`, and `Vhat(0) != 0` removes the apparent singularity of the ratio.
-**(ii)** That the `O(dv^2)` remainder is uniform in `tau` over `[tau_0, tau_1]` (used in Corollary
-C6). Continuity in `tau` of each expansion coefficient — which does follow from the explicit
-formulas — is *not* by itself enough for a uniform remainder bound; that needs joint control, e.g.
-analyticity in `(dv, tau)` on a neighbourhood of `{0} x [tau_0, tau_1]`, which the same argument as
-(i) should give but which is not carried out. A fully written proof would spell both out.
+**Step 1: the ray flow is jointly analytic on one uniform neighbourhood.** It is defined implicitly
+by
+
+```text
+F(tau,r,D,y) := omega_tau(y) - exp(D/(2 tau)) omega_tau(r) = 0.
+```
+
+At `D = 0`, `y = r`, while
+`partial_y F = omega_tau'(y) = y exp(y/tau)/tau^2 > 0`. The real-analytic implicit-function theorem
+therefore makes `Rho` real-analytic in `(tau,r,D)` near every `(tau,r,0)` with
+`tau > 0`, `r > 0`. Choose a compact `tau`-interval slightly larger than `K` but still inside
+`(b,a)`, and a compact positive `r`-interval whose interior contains `[b,a]`. A finite subcover of
+their product gives a single
+`eta > 0` on which `Rho` is jointly analytic for `|D| < eta`. Shrinking `eta` if needed keeps every
+radius below inside that same positive `r`-interval; the local branches agree because
+`omega_tau` is strictly increasing. Equivalently, the explicit formula
+`Rho=tau[1+W_0(exp(D/(2tau)) omega_tau(r)/e)]` makes the uniform choice transparent: on those
+compact intervals and for small uniform `|D|`, the argument of `W_0` stays in a compact subset of
+`(-1/e,infinity)`, away from its branch point.
+
+**Step 2: pull Proposition C3 back to a fixed square and factor the vanishing orders.** For
+`s,u in [0,1]` set
+
+```text
+A(tau,s,d) := Rho(tau,a,(1-s)d),
+B(tau,s,d) := Rho(tau,b,-s d),
+x(tau,s,u,d) := B + u(A-B),
+H(tau,s,u,d) := Rho(tau,x,s d)^2 + B^2 - x^2 - b^2.
+```
+
+Since `A-B=a-b>0` at `d=0`, one uniform shrink of `eta` also ensures `A>B` on the compact
+`(tau,s)` domain for `0<d<eta`; this is the physical slice orientation.
+For positive `d`, the substitutions `D = s d` and `r = B + u(A-B)` turn the numerator `N` of
+Proposition C3 into
+
+```text
+N(tau,d) = d int_0^1 int_0^1 (A-B) H du ds.
+```
+
+All factors are jointly analytic. At `d = 0`, `A=a`, `B=b`,
+`x=b+u(a-b)`, and `H=0`. Hence analytic division by `d` (equivalently,
+`H/d = int_0^1 partial_d H(tau,s,u,lambda d) dlambda`) gives a jointly analytic `Hhat` with
+`H=d Hhat`. Consequently
+
+```text
+N(tau,d) = d^2 Nhat(tau,d)
+```
+
+for a jointly analytic `Nhat`, including at `d=0`: compactness of the unit square supplies one
+common analytic neighbourhood, so its convergent local power series may be integrated term by term.
+
+The patch volume satisfies
+
+```text
+V(tau,d) = Rho(tau,a,d)^2 + Rho(tau,b,-d)^2 - a^2 - b^2
+         = d Vhat(tau,d).
+```
+
+Indeed `V(tau,0)=0`, and the ray ODE gives
+
+```text
+partial_d V(tau,0)
+  = 2a (a-tau)/(2a) - 2b (b-tau)/(2b)
+  = a-b.
+```
+
+Analytic division, now written
+`Vhat(tau,d)=int_0^1 partial_d V(tau,lambda d) dlambda`, shows that `Vhat` is jointly analytic and
+`Vhat(tau,0)=a-b>0`, uniformly in `tau`. After one more uniform shrink of `eta`, `Vhat` has no zero
+on a neighbourhood of `K x {0}`. Therefore
+
+```text
+P(tau,d) := 2 Nhat(tau,d) / Vhat(tau,d)^2
+```
+
+is a jointly real-analytic extension through `d=0` of the physical probability `p(tau)` for
+`d>0`.
+
+**Step 3: identify the first two coefficients.** Expand the analytic ray flow from its ODE,
+
+```text
+Rho(tau,r,D)
+  = r + D (r-tau)/(2r) + D^2 tau(r-tau)/(8r^3) + O(D^3),
+```
+
+substitute into the fixed-square formula above, and integrate the retained coefficients. The
+elementary antiderivatives are `r(r-2tau)/2`, `r/4-tau log(r)/4`, and their polynomial
+combinations. The resulting coefficients are
+
+```text
+Nhat(tau,0) = (a-b)^2/4,       Vhat(tau,0) = a-b,
+P(tau,0) = 1/2,               partial_d P(tau,0) = kappa(a,b) tau.
+```
+
+This is exactly the closed algebra checked symbolically in check [7]; Steps 1–2 now license the
+coefficient extraction from that series.
+
+**Step 4: obtain the uniform bounds.** Choose `0 < epsilon < eta` so that the closed rectangle
+`K x [-epsilon,epsilon]` lies in the analytic domain of `P`, and define the finite constants
+
+```text
+C_0 := (1/2) max_{K x [-epsilon,epsilon]} |partial_d^2 P|,
+C_1 := (1/2) max_{K x [-epsilon,epsilon]} |partial_tau partial_d^2 P|.
+```
+
+Taylor's formula with integral remainder gives, for `0 <= d <= epsilon`,
+
+```text
+R(tau,d)
+  = d^2 int_0^1 (1-z) partial_d^2 P(tau,z d) dz,
+
+partial_tau R(tau,d)
+  = d^2 int_0^1 (1-z) partial_tau partial_d^2 P(tau,z d) dz.
+```
+
+The two asserted bounds follow simultaneously and uniformly in `tau`. ∎
 
 **Lemma C5 (positivity of `kappa`).** `kappa(r_p, r_q) > 0` strictly for all `0 < r_q < r_p`.
 
@@ -198,18 +316,54 @@ particular
 p(tau) != p(tau')    for every    tau != tau'    in [tau_0, tau_1].
 ```
 
-*Proof.* Theorem C4 with Lemma C5: the `dv^1` coefficient is `kappa * tau` with `kappa > 0` fixed,
-strictly increasing in `tau`, and the remainder is `O(dv^2)` uniformly in `tau` over the compact
-`[tau_0, tau_1]` (the expansion's coefficients are continuous in `tau` there). ∎
+*Proof.* Put `kappa := kappa(r_p,r_q)>0`. The derivative bound in Theorem C4 gives
+
+```text
+partial_tau p(tau) >= kappa dv - C_1 dv^2.
+```
+
+If `C_1=0`, take `dv_0=epsilon`; otherwise take
+`dv_0=min{epsilon, kappa/(2C_1)}`. Then
+`partial_tau p(tau) >= kappa dv/2 > 0` throughout `[tau_0,tau_1]` whenever
+`0<dv<dv_0`, proving strict increase and hence the asserted inequality. Notice that the absolute
+uniform bound on `R` alone would prove separation only for each pre-fixed pair; the
+`partial_tau R` bound is what makes one `dv_0` work for the whole interval. ∎
+
+**Quantifier ledger.** The uniformity just proved concerns the small-lapse radius, not the testing
+cardinality. More precisely:
+
+1. There is one `dv_0= dv_0(r_p,r_q,tau_0,tau_1)>0` such that, for every fixed
+   `0<dv<dv_0` and all `tau,tau' in K`,
+
+   ```text
+   |p(tau')-p(tau)| >= (kappa dv/2) |tau'-tau|.
+   ```
+
+2. In the `fixed_n` channel, for every such fixed `dv` and every fixed pair
+   `tau != tau'`, midpoint Chebyshev and data processing give
+
+   ```text
+   TV(Q^n_tau,Q^n_tau')
+     >= 1 - 4(2n-3) / [n(n-1) |p(tau')-p(tau)|^2]  -> 1.
+   ```
+
+   Thus `n_0` depends on `(dv,tau,tau')` (and on the requested error level).
+
+3. No `n_0` is uniform over all distinct pairs in `K`, because `|tau'-tau|` may approach zero.
+   If one restricts instead to `|tau'-tau|>=eta>0`, the first display gives the uniform gap
+   `|Delta_p| >= kappa dv eta/2`, and the same Chebyshev bound supplies an `n_0` uniform over that
+   separated parameter set.
 
 **Consistency with scale invariance.** `kappa` is homogeneous of degree `-2`, so `kappa * tau * dv`
 is invariant under `(tau, r_p, r_q, dv) -> s (tau, r_p, r_q, dv)` — as it must be, since `p` is
 (check [6]). This is a nontrivial check on the closed form: an algebra slip would generically
 break it.
 
-**Effectivity caveat.** `dv_0` is **not** made explicit: no remainder bound was computed, so
-Corollary C6 is an asymptotic statement. For a *named* `dv` the inequality is established
-numerically instead, at working precision — see §6.
+**Quantitative caveat.** The proof defines valid constants `C_0`, `C_1` as compact suprema and gives
+`dv_0=min{epsilon,kappa/(2C_1)}` when `C_1>0`, but it does **not** evaluate or certify those suprema
+numerically. Thus Corollary C6 is now fully proved and uniform in `tau`, but no named `dv` is admitted
+by the analytic bound alone. The named values in §6 remain numerical statements at working
+precision.
 
 ## 4b. Variance at fixed `n`, and non-degeneracy (added 2026-07-25)
 
@@ -336,9 +490,10 @@ Chebyshev; no CLT or de-Poissonisation is used in that route.
 
 **Also not claimed.** (i) Nothing here is about the 3+1D Schwarzschild pairs of FWP §2 or OP-1.2;
 those are Theorem-A pairs, where `p` is necessarily *equal* (same copula) — and check [6] confirms
-the statistic respects that rather than falsely separating them. (ii) No global monotonicity in
-`tau`: the numerics show `p` *decreasing* in `tau` at `dv = 4`, far outside the asymptotic regime,
-while Theorem C4 gives increase for small `dv`. The theorem is asymptotic and is stated as such.
+the statistic respects that rather than falsely separating them. (ii) No monotonicity claim at
+arbitrary `dv`: the numerics show `p` *decreasing* in `tau` at `dv = 4`, far outside the asymptotic
+regime, while Corollary C6 proves uniform increase on a fixed compact `tau` interval only for
+sufficiently small `dv`. The theorem is asymptotic and is stated as such.
 (iii) Nothing here touches the sealed prereg-002 result, the C1–C6 negative ledger, or the
 programme's pause; no candidate is opened and no observable is implemented.
 
@@ -365,9 +520,12 @@ Status labels, in the ficha's own vocabulary:
 - **Facts C0, Lemma C1, Propositions C2, C3** — `[PROVED]`. Elementary; the two symbolic identities
   and the closed forms are machine-verified, and the reduction is cross-checked by two independent
   numerical routes.
-- **Theorem C4, Lemma C5, Corollary C6** — `[PROVED (leading order)]`, with the **two** steps noted
-  in §4 — (i) analyticity of `p` in `dv` at `0^+`, (ii) uniformity in `tau` of the `O(dv^2)`
-  remainder — argued rather than written out, and with `dv_0` non-effective.
+- **Theorem C4, Lemma C5, Corollary C6** — `[PROVED]`. Theorem C4 constructs the joint analytic
+  extension and proves `C^1`-uniform `O(dv^2)` control; Corollary C6 uses the derivative bound to make
+  one `dv_0` work on the whole compact `tau` interval. `dv_0` is proof-defined but not numerically
+  certified. The downstream `fixed_n` convergence `TV -> 1` is for each fixed pair; its `n_0`
+  remains pair-dependent unless a positive minimum separation `|tau'-tau|>=eta` is imposed. This is
+  the internal mathematical status of a working draft; external adversarial review remains pending.
 - **`p(tau) != p(tau')` at the named pair `(1.0, 1.2)` for the named `dv`** — `[NUMERICAL]` at
   working precision, and `[PROVED]` for all sufficiently small `dv` via Corollary C6.
 - **Propositions C7, C8** (`h_1` closed form; `zeta_1 > 0`) — `[PROVED]`. **Theorem C9**: the limit
@@ -379,7 +537,7 @@ Status labels, in the ficha's own vocabulary:
 - **`zeta_1 * Ibar >= kappa^2 dv^2 / 54`** (§6.4 consistency requirement) — `[PROVED]` as a
   *requirement* derived from the two bounds; **not evaluated**, since `Ibar` is unknown for these
   corners. The claim that both sides are `O(dv^2)` is `[UNVERIFIED]` reasoning.
-- **Adopted label block (PI C3/C4, 2026-07-27).**
+- **Adopted label block (PI C3/C4, 2026-07-27; retained below as historical wording).**
 
   ```text
   FORMA_L_FUERTE_fixed_n
@@ -405,13 +563,22 @@ Status labels, in the ficha's own vocabulary:
   para todo n. Ninguna afirmación se extrapola fuera de dv < dv_0.
   ```
 
+  **Mathematical update 2026-07-29.** Theorem C4 now closes the analyticity and uniform-remainder
+  caveats, and Corollary C6 proves the stronger common-`dv_0` statement on every fixed compact
+  `tau` interval. Consequently, the historical line `SIN UNIFORMIDAD en (tau,tau')` is superseded
+  as a statement about `dv_0`; it remains valid only for the pair-dependent testing cardinality
+  `n_0` when no minimum parameter separation is imposed. The historical block is not silently
+  rewritten here: promoting its governance label, propagating the result into the manuscript, and
+  computing a certified numerical `dv_0` are separate documentary or quantitative actions not
+  performed in this addendum.
+
 ## 7. Reproduction
 
 ```text
-.venv/bin/python research_program/work_packages/wp4_comparable_pair_separation_checks.py
+PYTHONDONTWRITEBYTECODE=1 python3 research_program/work_packages/wp4_comparable_pair_separation_checks.py
 ```
 
 Deterministic apart from check [4], whose Monte Carlo is seeded (`seed=20260725`) and reported with
-standard errors. Environment: sympy 1.14.0, numpy 1.26.4, scipy 1.17.1 (the repo `.venv`; the
-sealed validation path's numpy pin is untouched and irrelevant here — this script is not part of
-it). The script asserts every check and exits non-zero on any failure.
+standard errors. Verified environment in this checkout: Python 3 with sympy 1.14.0, numpy 1.26.4,
+scipy 1.17.1. The sealed validation path's numpy pin is untouched and irrelevant here — this script
+is not part of it. The script asserts every check and exits non-zero on any failure.
