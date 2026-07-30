@@ -287,3 +287,81 @@ NO_EVALUATION_SEEDS
 NO_RECONSTRUCTION_CLAIM
 END_OF_DAY_HANDOFF = CLEAN
 ```
+
+---
+
+# Migración al esquema vigente — 2026-07-28
+
+> Apéndice de compatibilidad documental. La decisión no se anula: sigue siendo el registro
+> rector del cierre C1–C5 para localización de región bajo el norte abandonado.
+
+```text
+ACTA_DISPOSITION = ACTIVE_GOVERNING_C1_C5_LOCALIZER_LINE_CLOSURE
+HISTORICAL_FINDINGS = PRESERVED
+ANNULLED = NO
+SCHEMA_MIGRATION_ONLY = YES
+```
+
+## 1. Decision question
+
+¿Debe cerrarse la línea C1–C5 como localizador de región y prohibirse su reapertura incremental?
+
+## 2. Verified state
+
+Corresponde al contexto y ledger de §§2–4. Esta migración no añade evidencia, código ni ejecución.
+
+## 3. Dossier
+
+El dossier es el ledger C1–C5, las decisiones 039–041 y las anclas de §9.
+
+## 4. Expert briefs
+
+El acta histórica sintetizó transversalmente los fallos sin el reparto de roles del esquema actual.
+
+### Reproducibility engineer brief
+
+Mapeado a las reglas de no reapertura y al cierre sin semillas ni implementación.
+
+### Mathematician brief
+
+Mapeado al ledger de bloqueos lógicos, algebraicos y de definición.
+
+### Mathematical logic brief
+
+No existía como rol separado en el formato original; no se atribuye opinión retrospectiva.
+
+### Physicist brief
+
+Mapeado a la distinción entre localización, clasificación y target físico.
+
+## 5. Falsifier attack
+
+Las lecciones transversales de §5 impiden convertir fracasos de clase en un no-go universal.
+
+## 6. Pre-registration verdict
+
+- Verdict: PASS
+- Motivo: cierre documental sin ejecución, semillas, implementación ni cambio de sello.
+
+## 7. Literature verdict
+
+No se realiza revisión bibliográfica nueva; se conservan las anclas históricas de §9.
+
+## 8. Synthesis
+
+C1–C5 quedan cerrados para localización incremental. El cierre no afirma imposibilidad de todo
+target ni de todo método order-only; impide repetir la misma línea como norte de programa.
+
+## 9. Next-step spec
+
+No se autoriza reabrir C1–C5. Un trabajo posterior solo puede partir de un objeto, target y
+contrato científicos distintos.
+
+## 10. Verdict
+
+COMMITTEE_DECISION_VERDICT=RECOMMEND_DO_NOT_PROCEED
+
+## 11. User sign-off
+
+El usuario autorizó esta migración de esquema el 2026-07-28. El terminal histórico permanece
+vigente y la migración no autoriza ejecución.

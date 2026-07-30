@@ -600,3 +600,84 @@ NEXT_FORBIDDEN_ACTIONS =
 
 OVERALL_VERDICT = BCE_DEFINITION_PARTIALLY_CLOSED
 ```
+
+---
+
+# Migración al esquema vigente — 2026-07-28
+
+> Apéndice de compatibilidad documental. No reabre la deliberación ni altera el bloque normativo
+> original. La decisión 042 absorbió después la línea C1 para la planificación futura.
+
+```text
+ACTA_DISPOSITION = SUPERSEDED_FOR_FORWARD_PLANNING_BY_DECISION_042
+HISTORICAL_FINDINGS = PRESERVED
+ANNULLED = NO
+SCHEMA_MIGRATION_ONLY = YES
+```
+
+## 1. Decision question
+
+Correspondencia: la pregunta original de §1 sobre el cierre no circular del candidato BCE.
+
+## 2. Verified state
+
+Correspondencia: el estado de entrada de §2. No se añadió evidencia ni se ejecutó código en esta
+migración.
+
+## 3. Dossier
+
+El dossier histórico es el inventario de §2 y el bloque normativo original.
+
+## 4. Expert briefs
+
+Las posiciones históricas están distribuidas en D1–D5; no se reconstruyen retrospectivamente.
+
+### Reproducibility engineer brief
+
+Mapeado a los límites de autorización y a la disciplina de no ejecución.
+
+### Mathematician brief
+
+Mapeado a las auditorías de groundedness, regla de referencia y pullback.
+
+### Mathematical logic brief
+
+No existía como rol separado en el formato original; no se le atribuye una opinión retrospectiva.
+
+### Physicist brief
+
+Mapeado a la interpretabilidad física y a los bloqueos de la regla de referencia.
+
+## 5. Falsifier attack
+
+Se preservan la no trivialidad, la invariancia y el bloqueo por regla de referencia como ataques
+centrales del acta.
+
+## 6. Pre-registration verdict
+
+- Verdict: PASS
+- Motivo: acta documental; ninguna ejecución, semilla, implementación o cambio del sello.
+
+## 7. Literature verdict
+
+No se hace revisión bibliográfica nueva. Solo se conservan las anclas verificadas en el documento
+histórico.
+
+## 8. Synthesis
+
+013 cerró parcialmente BCE y dejó la cláusula C en desarrollo documental. La decisión 014 revisó
+esa senda y la decisión 042 la retiró de la planificación futura.
+
+## 9. Next-step spec
+
+No se reactiva el paso autorizado en 013. Cualquier nueva investigación requiere un contrato
+separado bajo el norte vigente.
+
+## 10. Verdict
+
+COMMITTEE_DECISION_VERDICT=RECOMMEND_PROCEED_WITH_SCOPED_NEXT_STEP
+
+## 11. User sign-off
+
+La migración de esquema fue autorizada por la instrucción del usuario de 2026-07-28. No equivale
+a una nueva aprobación científica ni autoriza ejecución.

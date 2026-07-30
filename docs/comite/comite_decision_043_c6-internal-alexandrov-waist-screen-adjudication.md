@@ -583,3 +583,83 @@ CANDIDATE_6 = NOT_OPENED
 C1_C5_LOCALIZER_LINE = STILL_CLOSED_NOT_REOPENED
 REVISION = comite_decision_044 (terminal 2→1; over-claims de §7/§9/§12 corregidos)
 ```
+
+---
+
+# Migración al esquema vigente — 2026-07-28
+
+> Apéndice de compatibilidad documental. El acta no se anula: permanece vigente en la versión
+> corregida y firmada mediante la decisión 044.
+
+```text
+ACTA_DISPOSITION = ACTIVE_AS_REVISED_AND_SIGNED_OFF_BY_DECISION_044
+HISTORICAL_FINDINGS = PRESERVED
+ANNULLED = NO
+SCHEMA_MIGRATION_ONLY = YES
+```
+
+## 1. Decision question
+
+Correspondencia: la pregunta original de §1 sobre `INTERNAL_ALEXANDROV_WAIST_SCREENS`.
+
+## 2. Verified state
+
+Corresponde a la inspección de §2 y a la revisión 044. No se añadió evidencia ni se ejecutó código
+en esta migración.
+
+## 3. Dossier
+
+El dossier histórico es el acta 043 completa, con las correcciones exigidas y verificadas en 044.
+
+## 4. Expert briefs
+
+Los briefs formales están en la revisión 044 y no se duplican aquí.
+
+### Reproducibility engineer brief
+
+Véase decisión 044 §4; el sello y la ausencia de ejecución fueron verificados allí.
+
+### Mathematician brief
+
+Véase decisión 044 §4; la propiedad de antichain y el alcance del transporte se revisaron allí.
+
+### Mathematical logic brief
+
+Véase decisión 044 §4; motivó el recorte de lenguaje universal y la precedencia conservadora.
+
+### Physicist brief
+
+Véase decisión 044 §4; preserva el límite 1+1 y la no atribución de codim-2 físico.
+
+## 5. Falsifier attack
+
+La revisión 044 aportó el contraejemplo de cadena y obligó a corregir §§7, 9, 12 y 18.
+
+## 6. Pre-registration verdict
+
+- Verdict: PASS
+- Motivo: adjudicación y revisión documentales; sin implementación, datos, semillas ni freeze.
+
+## 7. Literature verdict
+
+Corresponde a decisión 044 §7; esta migración no añade citas ni cambia sus veredictos.
+
+## 8. Synthesis
+
+`W(p,q)` conserva su teorema de antichain, pero no establece una familia estable codim-2.
+El terminal rector es `C6_BLOCKED_NO_STABLE_CODIM2_SCREEN`; el transporte queda como bloqueo
+independiente adicional.
+
+## 9. Next-step spec
+
+No se abre `CANDIDATE_6` ni se reabre la línea de localizadores. Un target nuevo exige contrato
+separado.
+
+## 10. Verdict
+
+COMMITTEE_DECISION_VERDICT=RECOMMEND_DO_NOT_PROCEED
+
+## 11. User sign-off
+
+La corrección científica fue firmada por el usuario en decisión 044 §11. La migración de esquema
+fue autorizada por la instrucción del usuario de 2026-07-28 y no autoriza ejecución.

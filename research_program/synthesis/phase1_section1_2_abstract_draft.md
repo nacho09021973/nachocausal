@@ -1,7 +1,7 @@
 # Fase 1 · Paso 1.3 — Draft abstract + §1 + §2
 
 > **STATUS: MANUSCRIPT_SECTION_DRAFT / NOT_FROZEN / NO_NEW_SCIENCE /
-> DOES_NOT_TOUCH_SEAL / DOES_NOT_DISCHARGE_ITEM_5.**
+> DOES_NOT_TOUCH_SEAL / ITEM_5_DISCHARGED_BY_PHASE_2_2026-07-28.**
 >
 > Completa el front matter del paper de límites junto a
 > `phase1_section3_nonidentifiability_draft.md` (§3). Outline autoritativo:
@@ -30,27 +30,24 @@ from finite unlabeled order.
 ## Abstract
 <!-- manuscript body -->
 
-We study what can and cannot be recovered from the isomorphism class of a finite
-causal set obtained by Poisson sprinkling into a Schwarzschild region, when only
-the unlabeled causal order is observed—typically conditioned on cardinality
-\(N=n\). We prove three non-identifiability statements. First, absolute mass
-(horizon radius in absolute units) is exactly non-identifiable at fixed \(n\)
-under patch-shape-preserving dilations in \(1{+}1\) dimensions and under
-co-scaling in a scoped \(3{+}1\) class: the total variation between the induced
-poset laws vanishes on the entire mass orbit. Second, the global event horizon of
-a spacetime is not a functional of any observation determined by a single finite
-patch. Third, in a regular one-parameter family of \(1{+}1\) causal diamonds with
-fixed Eddington–Finkelstein corners and finite Fisher information, no order-only
-procedure can localize the continuous geometric parameter below a two-point rate
-of order \(n^{-1/2}\). These limits are measure-theoretic or definitional; they do
-not depend on the success or failure of particular estimators. Separately, we
-record a sealed in-patch recoverability result for a future-volume observable
-under a frozen pre-registration, and a typed ledger of six exhausted
-region-localization channels in the same \(1{+}1\) bank, labeled as empirical
-failure of a named construction class rather than as a universal no-go. The paper
-is a recoverability benchmark and a map of channel limits. It is not a claim that
-black-hole horizons have been reconstructed from causal sets, and it is not a
-pathway to \(3{+}1\) event-horizon reconstruction from finite order-only data
+We ask which continuum-geometric properties are identifiable from the isomorphism
+class of a finite causal set sprinkled into a Schwarzschild patch when only the
+unlabeled order is observed, typically conditional on \(N=n\). Three obstructions
+are proved. Absolute mass is exactly invisible at fixed \(n\) under
+patch-shape-preserving dilations in \(1{+}1\) dimensions and co-scaling in a
+scoped \(3{+}1\) class. The global event horizon is not a functional of data from
+one finite causally convex patch. In a regular one-parameter family of \(1{+}1\)
+causal diamonds with finite Fisher information, no order-only procedure localizes
+the parameter below a two-point rate of order \(n^{-1/2}\). Conversely, for
+sufficiently small null lapse \(dv\), the comparable-pair count separates every
+fixed distinct parameter pair and is consistent whenever
+\(\sqrt n\,|\delta_n|\to\infty\). Thus \(n^{-1/2}\) is the boundary exponent in
+the \(o/\omega\) sense; critical-scale constants remain open. These statements
+are measure-theoretic or definitional, not conclusions from failed estimators.
+We also report a sealed in-patch future-volume recoverability result and a typed
+ledger of six exhausted region-localization channels, explicitly not a universal
+no-go. This is a map of finite order-only channel limits, not a reconstruction of
+a black-hole event horizon or a route to \(3{+}1\) reconstruction from such data
 alone.
 
 **Keywords.** causal sets; order-only observation; Schwarzschild; identifiability;
@@ -92,7 +89,7 @@ relation. Two observation models must be kept distinct
 
 | Channel | Observation | Role in this paper |
 |---|---|---|
-| **Order-only, fixed \(n\)** | Isomorphism class of the poset conditioned on \(N=n\) | Primary channel for Theorems 3.1 and 3.8 |
+| **Order-only, fixed \(n\)** | Isomorphism class of the poset conditioned on \(N=n\) | Primary channel for Theorems 3.1, 3.8, and 3.9 |
 | **Order+number** | Joint law of order and cardinality (e.g.\ \(N\sim\mathrm{Poisson}(\rho V)\) with \(\rho\) known) | Contrast only: scale can re-enter through \(N\) (Remark after Thm 3.1) |
 
 Conditioning on \(N=n\) removes the total-volume leak through cardinality: the \(n\)
@@ -115,7 +112,7 @@ The claim grammar of the project forces a permanent trichotomy
 
 1. **Global event horizon** — a set defined by the causal structure of the full
    spacetime (e.g.\ boundary of the past of future null infinity). It depends on
-   the continuation outside any finite patch (Theorem 3.2).
+   the continuation outside any finite causally convex patch (Theorem 3.2).
 2. **Singularity-truncation cut** — in a frozen *singular* Schwarzschild family,
    an in-patch locus associated with the artificial edge of the computational
    domain near \(r=0\). It is not a quasi-local trapping surface and must not be
@@ -146,11 +143,12 @@ order-only data by inventing a better combinatorial observable. That ambition is
 
 The reasons are structural rather than motivational fatigue: absolute mass is
 non-identifiable at fixed \(n\) already in scoped \(3{+}1\) (Theorem 3.1); the
-global event horizon is not a finite-patch functional (Theorem 3.2); the scalar
+global event horizon is not a functional of data from a finite causally convex
+patch (Theorem 3.2); the scalar
 proxy used in \(1{+}1\) does not transfer as a horizon locator
 (`survival_matrix_1p1_to_3p1.md`); and a named class of in-bank region-locators
 terminated with typed empirical failures (Section 5 of the full manuscript plan;
-label `EMPIRICAL_FAILURE_OF_CLASS_L`, not a substitute for Theorems 3.1–3.8).
+label `EMPIRICAL_FAILURE_OF_CLASS_L`, not a substitute for Theorems 3.1–3.9).
 
 What remains legitimate is exactly the content of this paper: **limits of the
 finite order-only channel**, a sealed bounded recoverability result, and an
@@ -164,7 +162,7 @@ We claim three pillars only:
 
 | Pillar | Content | Program label |
 |---|---|---|
-| **P1** | Theorems 3.1, 3.2, 3.8 (scale blindness; global EH teleology; rate floor on a regular \(1{+}1\) family) | `PROVED_NON_IDENTIFIABILITY` |
+| **P1** | Theorems 3.1, 3.2, 3.8–3.9 (scale blindness; global EH teleology; rate floor and matching fixed-\(n\) separation exponent on a regular \(1{+}1\) family) | `PROVED_NON_IDENTIFIABILITY`; `PROVED_FIXED_N_SEPARATION` |
 | **P2** | Typed ledger of six exhausted region-localization channels in the project bank | `EMPIRICAL_FAILURE_OF_CLASS_L` |
 | **P3** | Sealed pre-registered in-patch recoverability PASS for a future-volume observable, with documented verification caveats | `VALIDATED` (caveated) |
 
@@ -172,18 +170,22 @@ We claim three pillars only:
 
 - the Order+Number slogan or continuum conformal determination of the metric
   (`[BACKGROUND]`; Theorem 3.1 is a finite-\(n\) formalization);
-- textbook two-point / Hellinger / data-processing machinery
-  (`[BACKGROUND]`; Theorem 3.8 is an *instantiation* on a proved-regular family);
+- textbook two-point / Hellinger / data-processing / Hoeffding / Chebyshev machinery
+  (`[BACKGROUND]`; Theorems 3.8–3.9 instantiate it on a proved-regular family);
 - a “blindness map” as mathematical novelty (data-processing asymmetry is
   textbook; we use only a few sentences of notational discipline in later
   sections);
 - that causal sets “cannot see black holes” in any unrestricted sense.
 
-**Independent literature check.** Novelty wording for the geometric instantiation
-in Theorem 3.8 remains subject to an external literature pass (project Paso D,
-item 5). Until that pass is complete, the manuscript must not assert priority as
-an absolute (“first in the literature”); hedges of the form “to our knowledge, in
-the order-only causal-set channel” are the maximum allowed.
+**Independent literature check.** The external pass required by project Paso D,
+item 5 was completed with responses from both tiers on 2026-07-28
+(`phase2_novelty_and_item5.md` §3.4–§3.6). Neither reader found a prior containing
+the family-specific localization-floor instantiation now stated as Theorem 3.8,
+but Müller’s Theorem 3 is a quantitative precursor and all steps after family
+regularity are standard. The newly promoted Theorem 3.9 has not yet received a
+theorem-specific priority audit. This is not a novelty certificate: absolute
+priority language (“first in the literature”) remains forbidden, and the
+manuscript retains bounded comparative wording.
 
 ### 1.7 Closing sentence of the introduction
 
@@ -216,7 +218,7 @@ coordinates \((\tilde U,v)\) exist in which the causal order is the product orde
 and the horizon sits at \(\tilde U=0\)
 (`[PROVED]` formulas: `wp4_fisher_localization_floor.md` §4).
 
-**Diamond family (regular family for Theorem 3.8).** Fix corners
+**Diamond family (regular family for Theorems 3.8–3.9).** Fix corners
 \(p=(v_p,r_p)\) (exterior) and \(q=(v_q,r_q)\) (interior) with
 \(0<r_q<\tau_0\le\tau_1<r_p\) and \(v_p<v_q\). For each
 \(\tau\in[\tau_0,\tau_1]\) the patch is the causal diamond
@@ -292,8 +294,8 @@ Targets used in this paper:
 | Target | Symbol | Status in this paper |
 |---|---|---|
 | Absolute horizon radius / mass | \(r_s\), \(M\) | Non-identifiable at fixed \(n\) (Thm 3.1) |
-| Continuous diamond parameter | \(\tau\in[\tau_0,\tau_1]\) | Rate floor (Thm 3.8); **not** named “horizon detection” as physics |
-| Global event horizon | \(T_{\mathrm{EH}}\) | Not a finite-patch functional (Thm 3.2) |
+| Continuous diamond parameter | \(\tau\in[\tau_0,\tau_1]\) | Rate floor and matching \(o/\omega\) separation boundary (Thms 3.8–3.9); **not** named “horizon detection” as physics |
+| Global event horizon | \(T_{\mathrm{EH}}\) | Not a functional of a finite causally convex patch (Thm 3.2) |
 | In-patch future-volume score | as in prereg-002 | Bounded recoverability (Pillar P3; later section) |
 | Region-locators C1–C6 | named combinatorial constructions | Empirical class failure (Pillar P2; later section) |
 
@@ -303,15 +305,16 @@ channel; target and loss; direction of guarantee (\(\mathrm{TV}=0\), rate lower
 bound, PASS under pre-registration, …); and what is *not* claimed
 (claim grammar items 1–12, `docs/claim_grammar.md` §1).
 
-### 2.5 Two labels that must not be mixed
+### 2.5 Labels that must not be mixed
 
 | Label | Meaning | Used for |
 |---|---|---|
 | `PROVED_NON_IDENTIFIABILITY` | No measurable estimator of the channel can drive risk to zero (equal laws, or two-point / Fisher lower bound; or target not a functional of the data) | Theorems 3.1, 3.2, 3.8 |
+| `PROVED_FIXED_N_SEPARATION` | A named order-only statistic yields tests with vanishing total error under the theorem's stated family, lapse, and parameter-separation quantifiers | Theorem 3.9 |
 | `EMPIRICAL_FAILURE_OF_CLASS_L` | Every rule in a **named** list or class \(L\) fails under a fixed protocol | Ledger C1–C6 |
 
 **Rule R3 (binding).** The ledger is never cited as a proof of
-`PROVED_NON_IDENTIFIABILITY`. Conversely, Theorems 3.1–3.8 are never presented as
+`PROVED_NON_IDENTIFIABILITY`. Conversely, Theorems 3.1–3.9 are never presented as
 “we tried estimators and they failed.”
 
 ### 2.6 Notational discipline for upper bounds
@@ -369,7 +372,7 @@ No `VALIDATED` or numerical PASS appears in §1–§2 (those wait for §4).
 [x] §1.3 embedding scores only
 [x] §1.4 trichotomy EH / truncation / quasi-local
 [x] §1.5 abandoned north R1
-[x] §1.6 contributions P1–P3 only; N2/N5 non-contributions; ítem 5 hedge
+[x] §1.6 contributions P1–P3 only; N2/N5 non-contributions; ítem 5 response adjudicated
 [x] §1.7 closing sentence
 [x] §2.1 1+1 geometry + diamond + dilation
 [x] §2.2 3+1 scoped only

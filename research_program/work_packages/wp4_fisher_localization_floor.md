@@ -23,7 +23,8 @@
 >   reference shape, degrading as `~ell/lambda^3` (empirical `kappa ~ lambda^6`) toward thin
 >   near-horizon diamonds — the floor does not stay `O(ell)` under reshaping.
 >
-> Taxonomy labels (taxonomy §10): object = horizon-location parameter of a 1+1D family; task =
+> Taxonomy labels (taxonomy §10): object = continuous geometric position/curvature parameter of a
+> 1+1D Schwarzschild family; task =
 > localization lower bound; evidence level = intrinsic (laws, not estimators); claim type =
 > theorem/proof on a named family; what it does NOT show — see §7.
 
@@ -277,9 +278,11 @@ every `tau, tau + delta in [tau_0, tau_1]`, and every (possibly randomized) orde
    a localization floor of order `1 / sqrt( n Ibar )` at fixed `n`.
 
 *Proof.* (1) Chain: Proposition 4 gives `H^2( c_tau, c_{tau+delta} ) <= (delta^2/4) Ibar`;
-Hellinger tensorization `1 - H^2_n/2 = (1 - H^2/2)^n` gives `H^2_n <= n H^2`; the poset is a
-function of the `n` copula samples (Lemma 1 of `first_witness_pair_candidates.md`; the diamond is
-a null box, so the lemma applies), so by data processing and `TV <= H`
+Hellinger tensorization `1 - H^2_n/2 = (1 - H^2/2)^n` gives `H^2_n <= n H^2`. In copula
+coordinates every member of the family is the unit square with the same product order; all
+`tau`-dependence sits in the sampling density `c_tau`. Hence the measurable map from the `n`
+copula samples to the unlabeled poset is parameter-independent (Lemma 1 of
+`first_witness_pair_candidates.md`; the diamond is a null box), so by data processing and `TV <= H`
 (`wp4_two_point_theorem.md` Obs. 5.3), `TV( Q^n ) <= H_n <= sqrt(n) * (|delta|/2) sqrt(Ibar)`.
 (2) The estimation-to-testing reduction: the test "nearest endpoint to `tau_hat`" errs only if
 `tau_hat` is at distance `>= |delta|/2` from the truth; apply Teorema 2 of
@@ -528,8 +531,13 @@ one terminological caveat: the memo calls the floor "minimax", while this annex 
   `first_witness_pair_candidates.md` §4 (fixed distinct pairs separate; fixed-`n` witnesses need
   `n`-dependent geometry); (c) the small-volume-bump mechanism is a **candidate technique** for a
   horizon-existence witness at fixed `n` — see the post-study note added to that document. What
-  Müller does **not** contain: any Fisher/Hellinger/QMD machinery, any localization-rate floor,
-  any horizon-related target, or the exact (`TV = 0`) scale-orbit statement.
+  Müller does **not** contain: Fisher/Hellinger/QMD machinery, a local minimax floor on a regular
+  parametric family, a horizon-related target, or the exact (`TV = 0`) scale-orbit statement.
+  **External-reader correction (2026-07-28):** his Theorem 3 must nevertheless be counted as the
+  closest quantitative precursor. For normalized flat cylinders it gives
+  `P(total order) >= 1 - 4*pi*K^2*T^(-1/n)` while `d^-` grows with temporal-diameter separation.
+  This is a continuous one-parameter family with an explicit sample-size/geometric-degeneracy
+  bound, albeit by collapse to total order rather than QMD/local two-point regularity.
 - **Madsen 2026** (arXiv:2607.05840, `biblioteca/2607.05840v1.pdf`), *On the uniqueness of
   embeddings of causal sets*. Positive-side, general `d`, globally hyperbolic: a
   "well-conditioned embedding" (order + volume-faithfulness + longest-chain/proper-time
@@ -549,20 +557,23 @@ one terminological caveat: the memo calls the floor "minimax", while this annex 
   in the **order + cardinality** channel of WP3 §2, not order-only. Complementary to this annex
   in the clean sense: their upper-bound-side `1/sqrt(n)`-type rate for a *different* target
   (spatial distance, flat space) matches the parametric scale at which our two-point floor says
-  order-only discrimination of the horizon-location parameter becomes impossible. No lower
+  order-only discrimination of the continuous geometric parameter becomes impossible. No lower
   bounds, no horizon target, no Fisher/Le Cam machinery — as the memo reported.
 
 **On the memo's novelty verdict — revised after reading the three primary sources.** The memo's
-core negative finding is confirmed on this sample: none of the three contains Fisher/Hellinger/
-QMD machinery, a Le Cam two-point argument, a localization-rate floor, or a horizon-location
-target. But the memo's framing "no antecedent for finite-`n` indistinguishability constructions"
+core negative finding is confirmed on this sample: none of the three contains the project's
+Fisher/Hellinger/QMD chain, a Le Cam risk statement on a regular Schwarzschild family, or a
+horizon-related target. Müller Thm 3 does contain a quantitative bound for a continuous geometric
+family, so the earlier blanket phrase “no localization-rate floor” was too strong. The memo's
+framing "no antecedent for finite-`n` indistinguishability constructions"
 must be narrowed: **Müller's Theorem 2 is exactly such a construction** (fixed `K`,
 `epsilon`-close order laws, arbitrarily different geometry), published December 2025, for the
 target "Lorentzian distance/diameter". The honest novelty claim for this annex therefore
 narrows to: the **regular parametric family + QMD/Fisher expansion + two-point `1/sqrt(n)`
-floor for a horizon-location parameter in the order-only channel**, the **exact scale-orbit
+floor for a continuous geometric parameter in the order-only channel**, the **exact scale-orbit
 (`TV = 0`) statement**, and the **Kruskal-degeneracy diagnosis** — with Müller's bump
-construction acknowledged as the closest published relative on the indistinguishability side.
+construction (Thm 2) and quantitative cylinder degeneration (Thm 3) acknowledged as the closest
+published relatives on the indistinguishability side.
 **`[CORRECCIÓN 2026-07-28 — contradicción interna resuelta]`** La versión previa de este párrafo
 cerraba con "Boguñá-Krioukov and the memo's broader corpus claims remain unverified; an independent
 search is still due before any public novelty statement", lo que **contradecía** el bullet de

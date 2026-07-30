@@ -1,11 +1,11 @@
 # Candidatos a lector externo independiente — N1–N5
 
-> **STATUS: WORKING_LIST / PHASE_2_UPDATED / NOT_A_NOVELTY_CERTIFICATE /
-> NO_CONTACT_HAS_BEEN_MADE / ITEM_5_STILL_PENDING.**
+> **STATUS: WORKING_LIST / PHASE_2_RESPONSES_REGISTERED /
+> NOT_A_NOVELTY_CERTIFICATE / ITEM_5_DISCHARGED_BOTH_TIERS.**
 > Instrumento de trabajo para el ítem 5 de `wp5_paso_d_independent_novelty_review.md` §6. No ejecuta
 > código, no consume semillas, no toca el sello, no congela nada y **no sostiene ningún claim
-> científico**. Identificar candidatos **no** descarga el ítem 5: sólo el envío efectivo y la
-> respuesta de un lector ajeno lo descargan. Protocolo de envío:
+> científico**. Identificar candidatos por sí solo **no** descarga el ítem 5; en esta revisión,
+> las respuestas efectivas de ambos tiers sí lo descargaron bajo la regla §4.1. Registro:
 > `phase2_novelty_and_item5.md` §3.
 >
 > FECHA: 2026-07-28 · HEAD ref Fase 2 `66cec59` · Sello
@@ -89,6 +89,7 @@ adversarial; no son autores contactados):
 |---|---|---|
 | Minimax + PPP | `two-point method Poisson process`, `Hellinger affinity point process`, `minimax intensity estimation` | N1 |
 | Geometric inference | `minimax manifold estimation`, `support estimation lower bound` | N1 |
+| Random geometric graphs / latent space | Bubeck–Ding–Eldan–Rácz como pista de comunidad `READER_LEAD_UNVERIFIED`; `unlabeled geometric graph minimax lower bound`, `latent position DAG` | N1 |
 | Shape theory | Kendall; Dryden–Mardia; `Procrustes Fisher information` | N2/N4 conceptual |
 | Cópula / ranks | Joe; Nelsen; `semiparametric efficiency copula` | order-only ≈ rank |
 | Info–computation gaps | Abbe; Decelle–Krzakala–Moore–Zdeborová | disciplina ex-N5 |
@@ -145,6 +146,21 @@ registrada de **un lector Tier A y un lector Tier B**. Consecuencias:
 
 La decisión se toma **antes** de cualquier envío precisamente para que la lectura de la regla no
 pueda elegirse después en función de lo que responda quien responda.
+
+### 4.2 Ejecución de la regla
+
+El 2026-07-28 quedaron registradas respuestas de ambos tiers en
+`phase2_novelty_and_item5.md` §3.4–§3.6. Por tanto:
+
+```text
+ITEM_5_DISCHARGE_RULE = SALIDA_(a)_AMBOS_TIERS
+ITEM_5_STATUS = DISCHARGED_BOTH_TIERS_2026-07-28
+NOVELTY_CERTIFIED = NO
+```
+
+La descarga es procedimental. La adjudicación sustantiva es escenario (B): N1 queda como
+instanciación acotada, con Müller Thm 3 reconocido como precursor cuantitativo y con la maquinaria
+estadística declarada estándar.
 
 **Salida explícitamente inadmisible:** obtener un `APPARENTLY_DISTINCT` del Tier A y marcar el ítem 5
 como descargado. Eso dejaría el hueco de §7 intacto con un sello encima, que es la forma exacta de

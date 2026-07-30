@@ -1074,3 +1074,82 @@ NEXT_FORBIDDEN_ACTIONS = Alloy 003 | Lean como sustituto de definición física 
 
 OVERALL_VERDICT = Q_REFERENCE_PATH_REMAINS_BLOCKED
 ```
+
+---
+
+# Migración al esquema vigente — 2026-07-28
+
+> Apéndice de compatibilidad documental. No reabre Q ni altera el terminal histórico. La decisión
+> 042 absorbió posteriormente la línea C1–C5 para la planificación futura.
+
+```text
+ACTA_DISPOSITION = SUPERSEDED_FOR_FORWARD_PLANNING_BY_DECISION_042
+HISTORICAL_FINDINGS = PRESERVED
+ANNULLED = NO
+SCHEMA_MIGRATION_ONLY = YES
+```
+
+## 1. Decision question
+
+Correspondencia: la pregunta original sobre la disposición de la regla de referencia Q.
+
+## 2. Verified state
+
+Correspondencia: §2 y los estados literales de entrada. No se añadió evidencia ni se ejecutó
+código en esta migración.
+
+## 3. Dossier
+
+El dossier histórico es el inventario original, D1–D9 y su bloque normativo.
+
+## 4. Expert briefs
+
+Las posiciones del formato histórico permanecen en las tablas y auditorías originales.
+
+### Reproducibility engineer brief
+
+Mapeado a las prohibiciones de ejecución, implementación y autorización de Alloy/Lean.
+
+### Mathematician brief
+
+Mapeado a D1–D7: realizador, marcador, dominio, groundedness, pullback y abandono.
+
+### Mathematical logic brief
+
+No existía como rol separado en el formato original; no se inventa una opinión retrospectiva.
+
+### Physicist brief
+
+Mapeado a la interpretación física provisional y a los bloqueos de admisibilidad.
+
+## 5. Falsifier attack
+
+Se preservan los cuatro bloqueos y los criterios de abandono precomprometidos de D7.
+
+## 6. Pre-registration verdict
+
+- Verdict: PASS
+- Motivo: deliberación documental sin ejecución, semillas, cambio de umbral ni sello.
+
+## 7. Literature verdict
+
+No se realizó una nueva revisión bibliográfica; las fuentes conservan el alcance histórico.
+
+## 8. Synthesis
+
+La ruta Q permaneció bloqueada y solo permitió una especificación escrita. No se alcanzó cierre
+físico ni autorización de búsqueda. La decisión 042 retiró después esta línea de la planificación.
+
+## 9. Next-step spec
+
+El paso A6.4 histórico no se reactiva. Cualquier target Q futuro deberá pertenecer a un contrato
+nuevo y no podrá presentarse como continuación de C1.
+
+## 10. Verdict
+
+COMMITTEE_DECISION_VERDICT=RECOMMEND_REVISE_AND_RECONVENE
+
+## 11. User sign-off
+
+La migración de esquema fue autorizada por la instrucción del usuario de 2026-07-28. No constituye
+una nueva aprobación científica ni una autorización de ejecución.

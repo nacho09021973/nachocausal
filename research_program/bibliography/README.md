@@ -13,12 +13,13 @@ Aquí van documentos de trabajo del tipo:
 
 | Documento | Rol |
 |---|---|
-| **`phase2_novelty_and_item5.md`** | **Fase 2 abierta:** anclas V1–V9, log ST/PR, protocolo ítem 5 (`NOT_SENT`), política si hunden N1 |
-| `external_adversarial_review_package_n1_n5.md` | Paquete al revisor; §6–§7 actualizados Fase 2 |
-| `external_reader_candidates_n1_n5.md` | Tier A/B por obra pública; literaturas ampliadas §3.1 |
-| `wp5_paso_d_independent_novelty_review.md` | Paso D búsqueda (descargado como search; novedad no certificada) |
+| **`phase2_novelty_and_item5.md`** | **Fase 2 cerrada:** respuestas de ambos tiers, adjudicación escenario (B), huellas y acciones |
+| `external_adversarial_review_package_n1_n5.md` | Paquete post-respuesta; Müller Thm 3 y límites de N1 incorporados |
+| `external_reader_candidates_n1_n5.md` | Tier A/B por obra pública; regla (a) ejecutada; hueco latent-space residual |
+| `wp5_paso_d_independent_novelty_review.md` | Paso D + ítem 5 descargados; novedad no certificada |
 
-**Ítem 5:** solo lo descarga un envío real + respuesta humana (o prior verificado que hunda el claim).
+**Ítem 5:** descargado el 2026-07-28 por respuesta real de ambos tiers. Eso satisface el
+procedimiento; no establece prioridad ni novedad como hecho.
 
 ## Post-PR008 observable review
 

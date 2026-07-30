@@ -1,8 +1,9 @@
 # Hoja de ruta del programa — post N1–N5 y cierre del camino reconstructor
 
-> **STATUS: PROGRAM_ROADMAP / PHASE_0_CLOSED / PHASE_1_BODY_COMPLETE /
-> PHASE_2_OPEN / NOT_A_PREREGISTRATION / NOT_A_NOVELTY_CERTIFICATE /
-> DOES_NOT_TOUCH_SEAL / ITEM_5_STILL_PENDING.**
+> **STATUS: PROGRAM_ROADMAP / PHASE_0_CLOSED / PHASE_1_BODY_AMENDED_AFTER_EXTERNAL_REVIEW /
+> PHASE_2_CLOSED / ITEM_5_DISCHARGED_BOTH_TIERS /
+> PHASE_3_B2_PREOPENING_CONTRACT_READY_FOR_2026-07-29 / SCIENTIFIC_EXECUTION_NOT_OPENED /
+> NOT_A_PREREGISTRATION / NOT_A_NOVELTY_CERTIFICATE / DOES_NOT_TOUCH_SEAL.**
 >
 > **Fase 1 manuscript:** `docs/manuscript_limits_draft.md` (PI review OK; 1.6b+1.7 done).
 > **Fase 2:** `research_program/bibliography/phase2_novelty_and_item5.md`
@@ -10,8 +11,9 @@
 > Documento de síntesis operativa. Integra: (i) el filtro de la respuesta adversarial
 > bibliográfica sobre N1–N5; (ii) el veredicto de que la vía “otro observable order-only
 > → horizonte SW 3+1” no es el camino; (iii) la distinción entre **imposibilidad demostrada**
-> y **fracaso al construir**. No congela umbrales, no ejecuta código, no descarga el ítem 5
-> del Paso D (lector humano independiente).
+> y **fracaso al construir**. No congela umbrales ni ejecuta código. El ítem 5
+> del Paso D quedó descargado el 2026-07-28 tras respuestas de ambos tiers; esa descarga
+> procedimental no certifica novedad.
 >
 > FECHA: 2026-07-28 · HEAD de referencia al abrir: `e9744d8`
 > **Fase 0 cerrada** con `PI_SIGN_OFF` en
@@ -36,7 +38,8 @@
 ```text
 SÍ teorema (canal + target fijos):
   (T1) Masa / escala absoluta a N=n  →  TV ≡ 0  (1+1 Teorema A; 3+1 OP-1.2)
-  (T2) Horizonte de eventos GLOBAL desde un patch finito  →  no es funcional de los datos del patch
+  (T2) Horizonte de eventos GLOBAL desde un patch finito causalmente convexo
+       → no es funcional de los datos del patch
   (T3) Suelo de localización ~ n^{-1/2} en familia regular QMD  →  1+1 diamantes EF (N1);
        plantilla lista; 3+1 requiere familia regular probada
 
@@ -55,13 +58,14 @@ Regla de oro:
 
 | Claim | Propuesta | Motivo (post-filtro adversarial) |
 |---|---|---|
-| **N1** | **Mantener acotado** como instanciación (técnica de libro) | No hundido; hueco residual math.ST/PR sin peinar |
+| **N1** | **Mantener acotado** como instanciación (técnica de libro) | No hundido; Müller Thm 3 = precursor cuantitativo; hueco residual latent-space/math.ST |
 | **N2** | **Degradar a lema** (ya lo pedía el paquete §4.2) | Folclore con anclas: Dowker–Zalel, Madsen, Braun, HKMM, Malament, Zeeman/Bombelli |
 | **N3** | **Remark de diseño**, no N-número | Hecho GR de libro; diagnóstico estadístico sin prior hallado |
 | **N4** | **Debilitar** a corolario dimensional de N2 + reparametrización | `κ = V·I` adimensional por análisis dimensional; no medalla de novedad |
 | **N5** | **Retirar** como contribución | DPI de libro + disciplina de redacción; analogía: information–computation gaps |
 
-**Ítem 5 del Paso D sigue pendiente:** ninguna salida de LLM lo descarga. Solo un lector humano independiente.
+**Ítem 5 del Paso D descargado el 2026-07-28:** respondieron ambos tiers conforme a la salida (a).
+No hubo sink de N1; tampoco certificado de novedad. Resultado: escenario (B) del paquete.
 
 ---
 
@@ -90,8 +94,12 @@ Regla de oro:
 1. **N2/N5 frágiles:** el paquete ya lo declaraba. Grok no lo descubrió; **coincidió**.
 2. **Ganancia real N2:** anclas publicadas (sobre todo Zeeman en Bombelli 1987) donde antes había “patrimonio de la disciplina”. La vía de refutación §4.2(7) del paquete queda parcialmente satisfecha en el **continuo**; el TV=0 discreto del Teorema A sigue siendo formalización exacta del canal \(N=n\), no descubrimiento físico.
 3. **Golpe técnico sobre N4:** invariancia de \(\kappa = V\cdot I\) bajo dilatación es, en lo esencial, **análisis dimensional** + el hecho de que \(\Phi_s\) preserva cocientes adimensionales (hermano de N2). Re-evaluar §4.4 del paquete: no vender como teorema de novedad.
-4. **N1 intacto como claim de instanciación**; riesgo residual: paper math.ST/PR 1990–2015 con dos puntos sobre funcional de PPP + parámetro de posición. **Hueco de lectura humana Tier B sigue abierto.**
-5. **Literaturas a añadir al peinado:** shape theory (Kendall, Dryden–Mardia); cópulas/rangos (Joe, Nelsen); information–computation gaps (para la *disciplina* de N5, no como prior del mapa CST).
+4. **N1 intacto como claim de instanciación**, pero Müller Thm 3 es el precursor cuantitativo más
+   cercano y prohíbe la frase “no hay enunciado de tasa”. Riesgo residual: grafos geométricos
+   aleatorios / espacio latente y math.ST/PR 1990–2015.
+5. **Literaturas residuales:** grafos geométricos/latent-space (pista
+   Bubeck–Ding–Eldan–Rácz, `READER_LEAD_UNVERIFIED`), shape theory, cópulas/rangos e
+   information–computation gaps.
 
 ### 1.3 Acciones bibliográficas pendientes (operativas)
 
@@ -100,7 +108,7 @@ Regla de oro:
 | B1 | Incorporar anclas a §7 del paquete adversarial | Operador | **Hecho** Fase 2 — No |
 | B2 | Ampliar literaturas + log ST/PR | Operador | **Hecho** Fase 2 — No |
 | B3 | Adjudicación N2/N4/N5 | PI | **Hecho** Fase 0 — No |
-| B4 | Lectura humana independiente (Tier A + rec. Tier B) | Externo | **Pendiente** (`NOT_SENT`) — **Sí** cuando responda |
+| B4 | Lectura humana independiente Tier A + Tier B | Externo | **Hecho** — respuestas adjudicadas; ítem 5 descargado |
 | B5 | Trail adversarial en repo (`tarea_grok_*`, `instruccion_grok`) | Operador | **Hecho** — No |
 
 ---
@@ -126,7 +134,7 @@ No ha fallado “causal sets”. Ha fallado **esta conjunción**.
 | OP-1.2 | Clase TV=0 de masas a `fixed_n` en SW 3+1 | Que order+number también sea ciego a M |
 | N2 / Teorema A | Escala absoluta ciega a N=n | Ceguera a localización relativa en unidades de ℓ o del patch |
 | Físico del comité (1+1) | `τ` es radio **y** curvatura; no hay umbral en el horizonte | No-go 3+1 de trapping |
-| claim_grammar §3 | Horizonte global no es objeto de un patch finito | Que no exista proxy cuasi-local legítimo |
+| claim_grammar §3 | Horizonte global no es objeto de datos de un patch finito causalmente convexo | Que no exista proxy cuasi-local legítimo |
 
 ### 2.3 Prohibición operativa (R1)
 
@@ -183,7 +191,7 @@ Esto **no** usa la existencia o no de un estimador construido por el proyecto.
 
 | | |
 |---|---|
-| **Datos** | Cualquier estructura inducida solo en un patch finito \(P\) |
+| **Datos** | Cualquier estructura inducida solo en un patch finito causalmente convexo \(P\) común a las completions |
 | **Target** | Horizonte de eventos de la spacetime completa |
 | **Conclusión** | Existen extensiones que coinciden en \(P\) y difieren en el horizonte global ⇒ no hay mapa datos\(_P\) → horizonte global |
 | **Ancla** | `docs/claim_grammar.md` §3; teleología en `geometric_indeterminacy_decision.md` |
@@ -262,17 +270,18 @@ Si no existe tal par, \(Q\) podría ser identificable y el ledger solo habría f
 - C1–C6 en sección empírica/metodológica, **no** como demostración de (T1)–(T3).  
 - Una frase en abstract: *this is not a path to 3+1 event-horizon reconstruction from finite order-only data*.
 
-**Gate de Fase 1:** outline congelado + adjudicación N1–N5 + anclas file:line en cada teorema.  
-Aún **sin** ítem 5 cumplido no hay claim público de *novedad* de N1; el paper puede escribirse como límites con citas de background.
+**Gate de Fase 1:** outline congelado + adjudicación N1–N5 + anclas file:line en cada teorema.
+El ítem 5 está cumplido, pero sigue sin haber certificado de novedad: el paper usa wording
+comparativo y acotado, nunca “first in the literature”.
 
 ### Fase 2 — Cerrar bibliografía de novedad (paralelo a Fase 1, no bloquea redactar límites)
 
-| Paso | Entrega |
-|---|---|
-| 2.1 | Meter anclas §1.1 en paquete adversarial §7 |
-| 2.2 | Lista de búsqueda math.ST/PR (términos de la respuesta adversarial) ejecutada por humano o con API, con log |
-| 2.3 | Envío ítem 5: al menos un lector Tier A y, si se puede, uno Tier B |
-| 2.4 | Si Tier B hunde N1: retirar o reescribir N1 antes de cualquier abstract “first lower bound…” |
+| Paso | Entrega | Estado |
+|---|---|---|
+| 2.1 | Meter anclas §1.1 en paquete adversarial §7 | `HECHO` |
+| 2.2 | Lista de búsqueda math.ST/PR ejecutada con log | `HECHO` |
+| 2.3 | Envío y respuesta Tier A + Tier B bajo salida (a) | `HECHO` 2026-07-28 |
+| 2.4 | Adjudicar respuestas y parchear claims/manuscript | `HECHO`; escenario (B), N1 no hundido |
 
 ### Fase 3 — Bifurcaciones **después** del paper de límites (elegir como máximo una)
 
@@ -347,9 +356,13 @@ no: un almost-PASS en un proxy 1+1 ya conocido.
 
 ## 7. Checklist de adjudicación PI (rellenar)
 
-> **Fase 0 cerrada 2026-07-28.** Checklist firmado en
+> **Fases 0–2 cerradas 2026-07-28.** Checklist de Fase 0 firmado en
 > `research_program/synthesis/phase0_program_north_decision.md` §7.
-> Siguiente: **Fase 1** (paper de límites). Ítem 5 sigue pendiente.
+> Manuscript de Fase 1 enmendado tras las respuestas. La bifurcación preferida
+> **Fase 3 B2** tiene contrato de preapertura preparado en
+> `research_program/work_packages/phase3_b2_witness_pair_preopening_contract.md`.
+> El target y la construcción científica siguen sin abrir hasta la adjudicación
+> del 29 de julio de 2026.
 
 ```text
 [x] R1 — Abandonar norte reconstructor horizonte SW 3+1 order-only
@@ -361,7 +374,8 @@ no: un almost-PASS en un proxy 1+1 ya conocido.
 [x] N4 — debilitar a corolario dimensional / enmienda: ninguna
 [x] N5 — retirar como contribución / enmienda: ninguna
 [x] Fase 3 preferida: B2 (default)
-[ ] Ítem 5: plan de envío a lector(es): ________  (pendiente; no bloquea Fase 1 sin claim de novedad N1)
+[x] Contrato de preapertura B2 preparado para 2026-07-29; target/adopción pendientes
+[x] Ítem 5: respuestas Tier A + Tier B registradas; escenario (B), no certificado de novedad
 [x] 0.2 — banner en next_observable_candidate_matrix (2026-07-28)
 [x] 0.3 — vocabulario en phase0 §3 + taxonomy §4.4 (2026-07-28)
 
@@ -374,7 +388,9 @@ HEAD al firmar: e9744d8 (lote Fase 0 commiteado a continuación)
 
 ## 8. Resumen ejecutivo final
 
-1. **Bibliografía:** el lote adversarial filtrado es usable; ancla N2 al folclore con localizadores; deflacta N4; no hunde N1; no descarga el ítem 5.  
+1. **Bibliografía:** ambos tiers respondieron; N2 queda como lema, N4 como corolario, Müller Thm 3
+   como precursor cuantitativo y N1 como instanciación acotada; el ítem 5 queda descargado sin
+   certificar novedad.
 2. **Estrategia:** dejar de buscar el observable que reconstruya SW 3+1 order-only; ese no es el camino.  
 3. **Matemática:** sí hay no-gos demostrables — **igualdad de leyes** (masa a \(N=n\)) y **no-funcionalidad** (horizonte global) y **suelos de tasa** (familia regular) — **sin** basarse en “no supimos construirlo”.  
 4. **Producto:** paper de límites de recuperabilidad con claim grammar estricto.  

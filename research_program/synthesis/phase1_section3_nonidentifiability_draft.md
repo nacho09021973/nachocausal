@@ -1,7 +1,8 @@
-# Fase 1 · Paso 1.2 — Draft §3: Proved non-identifiability
+# Fase 1 · Paso 1.2 — Draft §3: exact obstructions and fixed-\(n\) statistical limits
 
 > **STATUS: MANUSCRIPT_SECTION_DRAFT / NOT_FROZEN / NO_NEW_SCIENCE /
-> ANCHORS_TO_EXISTING_PROOFS / DOES_NOT_TOUCH_SEAL / DOES_NOT_DISCHARGE_ITEM_5.**
+> ANCHORS_TO_EXISTING_PROOFS / DOES_NOT_TOUCH_SEAL /
+> ITEM_5_DISCHARGED_BY_PHASE_2_2026-07-28.**
 >
 > Redacción de la sección matemática principal del paper de límites
 > (`phase1_limits_paper_outline.md` §3). **No inventa teoremas:** resume y unifica
@@ -18,21 +19,23 @@
 | `[PROVED]` | Teorema con prueba en el repo; aquí se reexpone |
 | `[BACKGROUND]` | Hecho de literatura / libro; no se reclama como contribución |
 | `[REMARK]` | Diseño o corolario; no contribución numerada |
+| `PROVED_FIXED_N_SEPARATION` | Separación por un estadístico order-only bajo los cuantificadores declarados |
 | `EMPIRICAL_FAILURE_OF_CLASS_L` | **No se usa en §3** (reservado al ledger) |
 
 ---
 
-## §3 Proved non-identifiability
+## §3 Exact obstructions and fixed-\(n\) statistical limits
 <!-- manuscript body starts -->
 
-This section records three statements of **non-identifiability** for geometric targets
-under finite order-only observation. Each statement is of the form: either two
-geometries with distinct target values induce **identical** laws on the observed
-unlabeled poset, or their laws are so close that **no** measurable function of the
-poset can separate them at a stated rate. In the program vocabulary of
-`identifiability_taxonomy.md` §4.4 these are
-`PROVED_NON_IDENTIFIABILITY` results. They do **not** depend on the success or
-failure of any particular estimator constructed in this repository.
+This section records three **non-identifiability** statements for geometric targets
+under finite order-only observation and one companion **positive separation**
+theorem. The negative statements show either that distinct target values induce
+identical laws on the observed unlabeled poset, or that no measurable function of
+the poset can separate nearby parameters below a stated rate. The companion theorem
+exhibits a named order-only statistic that separates fixed distinct parameters above
+that rate. In the program vocabulary these are, respectively,
+`PROVED_NON_IDENTIFIABILITY` and `PROVED_FIXED_N_SEPARATION`. Neither label is
+inferred from the success or failure of the empirical locator classes in §5.
 
 **Setup pointer (no re-definition).** Completions, the order-only fixed-\(n\) channel,
 Lemma 2.1 (i.i.d.\ sampling after conditioning on \(N=n\); FWP Lemma 0), and
@@ -68,8 +71,9 @@ and every \(s\neq 1\),
 
 so no order-only procedure can recover absolute horizon radius on both ends of the
 orbit with total error probability less than one. Since \(s\) is arbitrary, the entire
-orbit \(\{r_s>0\}\) shares a single poset law at each fixed \(n\): **the observed finite
-order carries no information about \(r_s\) in absolute units**.
+dilation orbit \(\{r_s>0\}\) shares a single poset law at each fixed \(n\): **within this
+orbit, the observed finite order carries no information about \(r_s\) in absolute
+units**.
 
 *Proof sketch (full proof: `first_witness_pair_candidates.md` §2, Theorem A).*  
 By direct computation, \(\Phi_s^* g_{s r_s}=s^2 g_{r_s}\). A constant conformal factor
@@ -123,12 +127,15 @@ order-only channel inside each fixed sector and shape. Dimensionless targets suc
    slogan that order alone does not fix scale (“Order + Number”; e.g.\ Dowker–Zalel,
    arXiv:1703.07556; Madsen, arXiv:2607.05840; Braun, arXiv:2507.01907,
    §§3.3–3.4). Continuum precursors include the conformal character of causal
-   isomorphisms (Hawking–King–McCarthy 1976; Malament 1977) and dilatations among
-   causal automorphisms of Minkowski space (Zeeman, via Bombelli 1987). The
+   isomorphisms (Hawking–King–McCarthy 1976; Malament 1977). Those are precursors of
+   the difficult causal-isomorphism-to-conformal direction, not machinery used in the
+   three-line proof above. More directly, Bombelli’s 1987 thesis states recovery only
+   up to a global scale factor and records Zeeman’s Poincaré-plus-dilatations result
+   for causal isomorphisms of Minkowski space. The
    contribution here is the **exact finite-\(n\) TV statement** for the sprinkling
    channel, not a new continuum theorem.
 
-### 3.2 The global event horizon is not a finite-patch functional
+### 3.2 The global event horizon is not a functional of data from a finite causally convex patch
 <!-- (T2) -->
 
 #### Theorem 3.2 (teleological non-identifiability)
@@ -137,22 +144,25 @@ order-only channel inside each fixed sector and shape. Dimensionless targets suc
 Let \(T_{\mathrm{EH}}(M,g)\) denote the event horizon of a time-oriented Lorentzian
 manifold \((M,g)\) (the boundary of the causal past of future null infinity, in the
 standard asymptotically flat setting, or the appropriate analogue in the completion
-under study). Let \(P\subset M\) be a region of finite volume, and let
-\(\mathcal{D}(P)\) be any \(\sigma\)-algebra of observables determined by the
-restriction of the geometry and of a sprinkling to \(P\) alone (in particular: the
-unlabeled causal set of the sprinkling in \(P\)).
+under study). Let \(P\subset M\) be a finite-volume **causally convex** region common
+to the admissible completions, and let \(\mathcal{D}(P)\) be any
+\(\sigma\)-algebra of observables determined by the restriction of the geometry and
+of a sprinkling to \(P\) alone (in particular: the unlabeled causal set of the
+sprinkling in \(P\)).
 
 **Claim.** \(T_{\mathrm{EH}}\) is not \(\mathcal{D}(P)\)-measurable in general: there
 exist pairs of completions that induce identical data on \(P\) and distinct global
 event horizons.
 
 *Reason.* By definition, the event horizon depends on the causal structure of the
-*entire* future development, not on a single compact region. One may modify the
-metric (or the conformal factor, or the topology of the continuation) outside \(P\)
-so that the past of future null infinity changes while the geometry on \(P\) is held
-fixed; the induced sprinkling law on \(P\) is then unchanged, while
-\(T_{\mathrm{EH}}\) need not be. Hence no function of finite-patch order-only data
-can equal \(T_{\mathrm{EH}}\) on all admissible completions.
+*entire* future development, not on a single compact region. Choose two completions
+whose metrics agree on a neighborhood of \(P\), in both of which \(P\) remains
+causally convex, but whose continuation outside \(P\) changes the past of future null
+infinity. Causal convexity prevents a relation between two points of \(P\) from being
+created by a causal curve that leaves and re-enters \(P\); therefore both the
+normalized sprinkling measure and the induced order law on \(P\) agree, while
+\(T_{\mathrm{EH}}\) need not. Hence no function of finite-patch order-only data can
+equal \(T_{\mathrm{EH}}\) on all admissible completions.
 (`[BACKGROUND]` claim grammar: `docs/claim_grammar.md` §3; program synthesis on
 teleology.)
 
@@ -270,18 +280,130 @@ and every (possibly randomized) order-only estimator \(\widehat\tau=f(C_n)\):
 
 *Proof sketch (annex §5).*  
 Prop.\ 3.6 bounds Hellinger at the copula level. Hellinger tensorizes over \(n\)
-i.i.d.\ samples (Lemma 2.1). The diamond is a null box, so the unlabeled poset is a
-function of the copula sample (Lemma 2.2); data processing and \(\mathrm{TV}\le H\)
-yield (1). The nearest-endpoint test reduction yields (2)–(3)
+i.i.d.\ samples (Lemma 2.1). In copula coordinates every family member is the unit
+square with the same product order, while all \(\tau\)-dependence lies in the
+sampling density. The map from the sample to the unlabeled poset is therefore
+parameter-independent (Lemma 2.2); data processing and \(\mathrm{TV}\le H\) yield
+(1). The nearest-endpoint test reduction yields (2)–(3)
 (`wp4_two_point_theorem.md`). ∎
 
-#### What Theorem 3.8 does and does not claim
+#### Theorem 3.9 (fixed-\(n\) separation by comparable-pair count)
+`[PROVED]` · Label: `PROVED_FIXED_N_SEPARATION`
+
+Retain the diamond family above and put \(dv:=v_q-v_p>0\) and
+\(K:=[\tau_0,\tau_1]\). Let \(p(\tau)\) be the probability that two independent
+points drawn from normalized volume on \(D_\tau\) are causally comparable, and let
+\(S_n\) be the number of comparable unordered pairs in the observed unlabeled
+poset. Define
+
+\[
+\kappa(r_p,r_q)
+:=
+\frac{(r_p^2-r_q^2)-2r_pr_q\log(r_p/r_q)}
+     {12r_pr_q(r_p-r_q)^2}
+>0.
+\]
+
+There exists
+\(dv_0=dv_0(r_p,r_q,\tau_0,\tau_1)>0\) such that, for every fixed
+\(0<dv<dv_0\):
+
+1. **Uniform mean separation on \(K\).** The map \(\tau\mapsto p(\tau)\) is
+   strictly increasing and, for all \(\tau,\tau'\in K\),
+   \[
+   |p(\tau')-p(\tau)|
+   \;\ge\;
+   \frac{\kappa(r_p,r_q)\,dv}{2}\,|\tau'-\tau|.
+   \]
+2. **Fixed-pair total-variation separation.** For every \(n\ge2\) and every
+   fixed pair \(\tau\ne\tau'\) in \(K\),
+   \[
+   \mathrm{TV}(Q^n_\tau,Q^n_{\tau'})
+   \;\ge\;
+   1-
+   \frac{4(2n-3)}
+        {n(n-1)|p(\tau')-p(\tau)|^2}
+   \;\longrightarrow\;1.
+   \]
+   Thus the midpoint test based only on \(S_n\) is consistent for each fixed
+   pair.
+3. **Separated and moving alternatives.** The testing cardinality \(n_0\) is
+   pair-dependent when distinct parameters may approach one another. It is uniform
+   on sets satisfying \(|\tau'-\tau|\ge\eta>0\). More generally, for any sequences
+   \(\tau_n,\tau_n'\in K\) with
+   \(\sqrt n\,|\tau_n'-\tau_n|\to\infty\), the same \(S_n\)-test has total error
+   tending to zero.
+
+*Proof sketch (full proof: `wp4_comparable_pair_separation.md` §4–§4b).*
+After pulling the varying diamond back to a fixed square, the outgoing-ray flow
+gives a jointly real-analytic extension through \(dv=0\):
+\[
+p(\tau)
+=
+\frac12+\kappa(r_p,r_q)\tau\,dv+R(\tau,dv),
+\qquad
+|\partial_\tau R(\tau,dv)|\le C_1dv^2
+\]
+uniformly for \(\tau\in K\). Positivity of \(\kappa\) and
+\(dv_0\le\kappa/(2C_1)\) (with the evident convention when \(C_1=0\)) give (1).
+For the symmetric Bernoulli kernel
+\(f(x,y)=\mathbf 1\{x,y\text{ comparable}\}\), the exact fixed-\(n\)
+Hoeffding identity is
+\[
+\operatorname{Var}_\tau(S_n)
+=
+\binom n2\{2(n-2)\zeta_{1,\tau}+\zeta_{2,\tau}\}.
+\]
+Here
+\(\zeta_{1,\tau}:=\operatorname{Var}_\tau(
+\mathbb E_\tau[f(X,Y)\mid X])\) and
+\(\zeta_{2,\tau}:=\operatorname{Var}_\tau(f(X,Y))\). Since both variables inside
+these variances take values in \([0,1]\),
+\(\zeta_{1,\tau},\zeta_{2,\tau}\le1/4\), and hence
+\[
+\operatorname{Var}_\tau(S_n)
+\le
+\binom n2\frac{2n-3}{4}.
+\]
+The two means differ by
+\(\Delta_m=\binom n2|p(\tau')-p(\tau)|\). Chebyshev's inequality at their midpoint
+bounds the sum of the two testing errors by
+\[
+\frac{4\{\operatorname{Var}_\tau(S_n)+
+          \operatorname{Var}_{\tau'}(S_n)\}}{\Delta_m^2}
+\le
+\frac{4(2n-3)}
+     {n(n-1)|p(\tau')-p(\tau)|^2}.
+\]
+For any test, total variation is at least one minus its total error; data
+processing is legitimate because \(S_n\) is a function of the unlabeled poset.
+This proves (2), and combining it with (1) gives (3). ∎
+
+#### Corollary 3.10 (sharp boundary exponent in the \(o/\omega\) sense)
+`[PROVED]`
+
+For fixed admissible \(0<dv<dv_0\), Theorems 3.8–3.9 locate the statistical
+boundary at exponent \(n^{-1/2}\):
+
+- if \(|\delta_n|=o(n^{-1/2})\), then
+  \(\mathrm{TV}(Q^n_{\tau_n},Q^n_{\tau_n+\delta_n})\to0\) whenever both endpoints
+  remain in \(K\);
+- if \(|\delta_n|=\omega(n^{-1/2})\), the comparable-pair test separates the two
+  laws with total error tending to zero.
+
+This does not identify the critical-scale constant when
+\(|\delta_n|\asymp n^{-1/2}\), and it does not claim that \(S_n\) is
+constant-optimal.
+
+#### What Theorems 3.8–3.9 do and do not claim
 
 | Claims | Does **not** claim |
 |---|---|
 | A lower bound on risk for **all** order-only estimators (randomized included) | That the bound is **tight** for posets (it is inherited by data processing from the point process and may be loose) |
-| Rate exponent \(n^{-1/2}\) on this named regular family | That \(\bar I\) is evaluated in closed form for reference corners (finiteness is proved; numerical \(\kappa\) is marked NUMERICAL elsewhere) |
-| Technique: QMD + Hellinger + two-point | Novelty of Le Cam / Hellinger machinery `[BACKGROUND]` (textbook) |
+| A consistent test based on one order-only statistic for every fixed pair, at sufficiently small \(dv\) | A numerically certified value of \(dv_0\), or monotonicity at arbitrary \(dv\) |
+| Boundary exponent \(n^{-1/2}\) in the \(o/\omega\) sense on this named family | Constant optimality, or a conclusion at \(\lvert\delta_n\rvert=c/\sqrt n\) |
+| One \(dv_0\) uniform over \(\tau\in K\) | One \(n_0\) uniform over all \(\tau\ne\tau'\); this requires \(\lvert\tau-\tau'\rvert\ge\eta>0\) |
+| Techniques: QMD, Hellinger, Hoeffding moments, Chebyshev, and two-point testing | Novelty of that statistical machinery `[BACKGROUND]` (textbook) |
 | | Any result in 3+1 dimensions |
 | | That \(\tau\) is “horizon information” as a distinct physical invariant |
 
@@ -296,16 +418,17 @@ event horizon has been localized as a codimension-one object. Naming the theorem
 #### Intrinsic units `[REMARK]` (former N4, deflated)
 
 Under simultaneous dilation of corners and parameter, the combination
-\(\kappa(\tau):=V(\tau)\,I(\tau)\) is exactly dilation-invariant (annex §5a): it depends
+\(\kappa_{\mathrm{dim}}(\tau):=V(\tau)\,I(\tau)\) is exactly dilation-invariant
+(annex §5a): it depends
 on the dimensionless shape of the diamond, not on absolute size. With
 \(n=\rho V\) and \(\ell=\rho^{-1/2}\),
 
 \[
 \frac{\delta_n}{\ell}
 \;\sim\;
-\frac{1}{\sqrt{\bar\kappa}},
+\frac{1}{\sqrt{\bar\kappa_{\mathrm{dim}}}},
 \qquad
-\bar\kappa
+\bar\kappa_{\mathrm{dim}}
 :=
 V\cdot\bar I.
 \]
@@ -313,15 +436,16 @@ V\cdot\bar I.
 `[BACKGROUND]` Dimensionally, Fisher information for a length parameter scales as
 \(\mathrm{length}^{-2}\) and area as \(\mathrm{length}^{2}\), so \(V\cdot I\) is
 dimensionless. The annex proves the invariance on this family; we do **not** present
-\(\kappa\) as an independent novelty theorem.
+\(\kappa_{\mathrm{dim}}\) as an independent novelty theorem.
 
 ### 3.4 Summary of §3
 
 | Result | Target | Channel | Guarantee | Label |
 |---|---|---|---|---|
 | Thm 3.1 | Absolute \(r_s\) or \(M\) | order-only, \(N=n\) | \(\mathrm{TV}=0\) on dilation orbit (1+1 and scoped 3+1) | `PROVED_NON_IDENTIFIABILITY` |
-| Thm 3.2 | Global event horizon | any finite-patch data | not a functional of the patch | `PROVED_NON_IDENTIFIABILITY` |
+| Thm 3.2 | Global event horizon | data from a finite causally convex patch | not a functional of those data | `PROVED_NON_IDENTIFIABILITY` |
 | Thm 3.8 | Parameter \(\tau\) of the EF diamond family | order-only, \(N=n\) | floor \(\sim 1/\sqrt{n\bar I}\) | `PROVED_NON_IDENTIFIABILITY` (rate) |
+| Thm 3.9 / Cor 3.10 | Same parameter and family, \(0<dv<dv_0\) | order-only, \(N=n\) | fixed-pair \(\mathrm{TV}\to1\); matching \(n^{-1/2}\) boundary exponent | `PROVED_FIXED_N_SEPARATION` |
 | Prop 3.3–3.4 | design of families | — | Kruskal sterile; fixed EF box non-regular | `[REMARK]` |
 
 None of these results is an `EMPIRICAL_FAILURE_OF_CLASS_L` statement. Failures of
@@ -343,15 +467,17 @@ named region-locators appear in §5 of the outline (ledger), not here.
 | Prop 3.3 Kruskal | `wp4_fisher_localization_floor.md` Prop 1 | — |
 | Prop 3.4 fixed EF box | annex Props 2–3 | — |
 | Lemma 3.5–Prop 3.7, Thm 3.8 | annex §4–§5 | symbolic checks script |
-| \(\kappa\) dilation | annex §5a | — |
+| Thm 3.9 / Cor 3.10 | `wp4_comparable_pair_separation.md` §4–§4b | comparable-pair checks script |
+| \(\kappa_{\mathrm{dim}}=VI\) dilation | annex §5a | — |
 | Two-point / TV–H | `wp4_two_point_theorem.md` | — |
 
 ## Open gaps intentionally left open in this draft
 
 1. Pointwise \(I(\tau)>0\) at every single \(\tau\) (annex: only no vanishing on a subinterval is proved). **Not needed** for Thm 3.8.
-2. Numerical value of \(\bar I\) / \(\bar\kappa\) for reference corners — NUMERICAL elsewhere; do not promote to `PROVED` here.
-3. Ordering-fraction Chebyshev separation (outline antiguo §6.1) — **omitted** until comité 045 conditions C3–C4 close.
-4. Independent literature check for “first order-only geometric floor” wording (ítem 5) — if used, hedge or complete Paso D.
+2. Numerical value of \(\bar I\) / \(\bar\kappa_{\mathrm{dim}}\) for reference corners — NUMERICAL elsewhere; do not promote to `PROVED` here.
+3. Critical-scale constant, constant efficiency of \(S_n\), and a numerically certified \(dv_0\). Theorem 3.9 closes none of these.
+4. Residual prior-art search in random geometric graphs / latent-space minimax inference; item 5
+   is complete, but “first in the literature” remains forbidden.
 
 ## Checklist paso 1.2
 
@@ -359,16 +485,17 @@ named region-locators appear in §5 of the outline (ledger), not here.
 [x] (T1) enunciado + prueba sketch + qué no dice + background lema
 [x] (T2) enunciado teleológico + qué no dice
 [x] (T3) familia regular + floor + física del parámetro τ
+[x] (T4) separación comparable-pair + cuantificadores de \(dv_0\) y \(n_0\)
 [x] N3/N4 como remarks dentro de §3
 [x] N5 ausente como contribución
 [x] Ningún claim de ledger como no-go
 [x] Anclas file por teorema
 [ ] Revisión PI / red-team de wording
-[ ] Integrar en manuscript completo (paso 1.3+)
+[x] Integrar en manuscript completo
 ```
 
-## Siguiente paso (1.3)
+## Actualización de promoción (2026-07-29)
 
-Redactar §1 (claim grammar + abandoned north) y §2 (setup), reutilizando el abstract
-skeleton de `phase1_limits_paper_outline.md` §2, y alinear numeración de teoremas
-con el manuscript unificado.
+C6 queda incorporado como Teorema 3.9 y Corolario 3.10, con prueba completa remitida
+al Anexo C y sin ampliar su techo de reclamo. La revisión pendiente de wording se
+refiere al manuscrito integrado, no a un hueco matemático de C6.

@@ -312,11 +312,12 @@ ningún estatus.
    modo diagnóstico (`DIAGNOSTIC_ONLY` / incluso un futuro `VALIDATED_BOUND` de `kappa_bar`, que
    certifica solo el lado ciego); **sí bloquea** cualquier claim de visibilidad derivado de sus
    outputs.
-5. **Revisión bibliográfica independiente sigue pendiente** (WP5-def §5, Paso D, condición de
-   bloqueo explícita) — ningún resultado de Paso B (ni siquiera una malla densa que confirme
-   `kappa ~ lambda^6` en más puntos) habilita un claim público de novedad antes de completar ese
-   paso. **No bloquea** la implementación diagnóstica del escáner en sí; **sí bloquea** cualquier
-   claim público de novedad basado en sus resultados.
+5. **Revisión bibliográfica independiente completada después de esta especificación**
+   (2026-07-28; `research_program/bibliography/phase2_novelty_and_item5.md`
+   §3.4–§3.6). El ítem 5 quedó descargado con ambos tiers, sin certificado de novedad. Esto no
+   convierte ningún resultado de Paso B —ni siquiera
+   una malla densa que confirme `kappa ~ lambda^6`— en claim público ni relaja los demás gates del
+   escáner.
 6. **`REQUIRED_BEFORE_VALIDATION`: check de normalización de cópula.** El docstring del
    kappa-script afirma haber "impreso" un chequeo de que la cópula integra ~1 sobre el cuadrado
    unidad; ese chequeo **no está implementado** en el código leído (§5) — se documenta como

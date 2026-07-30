@@ -1,11 +1,16 @@
 # WP5 Paso D — Revisión bibliográfica independiente (descarga del gate de novedad)
 
-> **STATUS: INDEPENDENT_SEARCH_PERFORMED / NOVELTY_NOT_REFUTED / NOT_A_NOVELTY_CERTIFICATE.**
+> **STATUS: INDEPENDENT_SEARCH_PERFORMED / BOTH_EXTERNAL_TIERS_RESPONDED /
+> ITEM_5_DISCHARGED / NOVELTY_NOT_REFUTED / NOT_A_NOVELTY_CERTIFICATE.**
 > **REV-1 (2026-07-28, misma sesión):** ampliado con (a) búsqueda en **INSPIRE-HEP** vía su API
 > pública, (b) **verificación a texto completo** de `arXiv:2605.27514` tras descargar el PDF a
 > `biblioteca/`, y (c) **una fuente adicional descubierta y descargada**, de Brito–Eichhorn–Pfeiffer
 > 2023 (revisada por pares), que **ancla Gate A de la decisión 046 en literatura publicada** en vez
 > de en una ausencia de resultados de búsqueda. Ver §4.4 y §4.5 — es el hallazgo principal de REV-1.
+> **REV-2 (2026-07-28):** respuestas de lector Tier A y Tier B recibidas y adjudicadas bajo la
+> salida (a). Ítem 5 descargado; escenario (B): N1 queda como instanciación acotada, Müller Thm 3
+> como precursor cuantitativo y la maquinaria estadística como background estándar. Registro
+> anonimizado y huellas: `phase2_novelty_and_item5.md` §3.4–§3.6.
 > Documento de registro. No ejecuta código, no consume semillas, no toca el sello, no congela nada,
 > no emite ningún claim público. Su función es **descargar el Paso D** de
 > `research_program/work_packages/wp5_order_only_blindness_map_definition.md` §5 dejando constancia
@@ -36,7 +41,7 @@ contrastar contra literatura externa es exactamente esto, y **nada más amplio**
 
 | # | Afirmación candidata a novedad | Origen en repo |
 |---|---|---|
-| N1 | Familia paramétrica regular + expansión QMD/Fisher + suelo de dos puntos `1/sqrt(n·Ībar)` **para un parámetro de localización de horizonte en el canal order-only** | `wp4_fisher_localization_floor.md` §4–§5 |
+| N1 | Familia paramétrica regular + expansión QMD/Fisher + suelo de dos puntos `1/sqrt(n·Ībar)` **para un parámetro geométrico continuo de una familia Schwarzschild en el canal order-only** | `wp4_fisher_localization_floor.md` §4–§5 |
 | N2 | Enunciado exacto de órbita de escala: `TV = 0` con `r_s` distinto (Teorema A, ceguera exacta) | `first_witness_pair_candidates.md` §2 |
 | N3 | Diagnóstico de degeneración de Kruskal (`I ≡ 0` en caja de Kruskal fija con parámetro de masa) | `wp4_fisher_localization_floor.md` §2, Prop. 1 |
 | N4 | `κ(τ) = V(τ)·I(τ)` exactamente invariante bajo dilatación ⇒ suelo en forma intrínseca `δ_n ~ ℓ/sqrt(κ̄)` | `wp4_fisher_localization_floor.md` §5a, Prop. 6 |
@@ -281,25 +286,21 @@ resultado es *"no se encontró antecedente"*, que **autoriza a redactar un claim
 cuidadosamente acotado**, y **no** a afirmar novedad como hecho establecido. La diferencia es la
 misma que la decisión 046 fija en su `SCOPE_OF_NEGATIVE`, y se aplica aquí a la propia revisión.
 
-## 6. Qué sigue pendiente antes de cualquier envío
+## 6. Estado de los ítems antes de circulación externa del manuscript
 
 | # | Ítem | Estado a 2026-07-28 |
 |---|---|---|
 | 1 | Incorporar `arXiv:2605.27514` a `biblioteca/` y verificar texto completo | ✅ **HECHO** (REV-1 §4.4) — PDF descargado, abstract cotejado, conteos verificados |
 | 2 | Resolver la contradicción de WP4 §9 sobre Boguñá-Krioukov | ✅ **HECHO** (REV-1 §4.3) — corregido *in situ* con nota fechada |
 | 3 | Búsqueda en base indexada canónica (INSPIRE-HEP) | ✅ **HECHO** (REV-1 §4.3b) — 8 consultas vía API pública, cero antecedentes genuinos |
-| 4 | Redactar el claim de novedad en forma **acotada y comparativa** ("no conocemos antecedente de X; lo más próximo es Müller 2025, que difiere en Y"), nunca absoluta | ⬜ pendiente — es tarea de redacción del paper, no de esta revisión |
-| 5 | **Lectura de un experto del área ajeno al proyecto** | ⬜ **PENDIENTE — NO DESCARGABLE DESDE DENTRO DEL REPOSITORIO.** Material de entrega *preparado* (2026-07-28): `research_program/bibliography/external_adversarial_review_package_n1_n5.md` — paquete adversarial autocontenido con N1–N5, comparación con Müller 2025 y formulario de veredicto. Preparar el material **no** descarga el ítem: sigue faltando el lector humano ajeno. Candidatos identificados con fuente primaria verificada en `research_program/bibliography/external_reader_candidates_n1_n5.md` (dos tiers por comunidad; su §4 plantea una decisión pendiente del PI sobre la **letra** de este ítem, que dice «competente en causal set theory» y excluiría a los candidatos capaces de examinar el hueco de N1/N4) |
+| 4 | Redactar el claim en forma **acotada y comparativa**, nunca absoluta | ✅ **HECHO** — manuscript y fuentes enmendados tras respuestas; Müller Thm 3 reconocido |
+| 5 | **Lectura de expertos ajenos al proyecto en ambos tiers** | ✅ **HECHO 2026-07-28** — salida (a) satisfecha; registro anonimizado en `phase2_novelty_and_item5.md` §3.4–§3.6 |
 
-**Sobre el ítem 5, explícitamente.** Este ítem **no puede** descargarse por búsqueda, por agente, ni
-por ningún procedimiento interno, y **no debe** marcarse como cumplido por aproximación. El
-repositorio no puede certificar su propia novedad: es la misma regla fundacional que impide que el
-autor de un claim sea su único verificador, aplicada un nivel más arriba. Simular una revisión
-externa con otra instancia del mismo sistema sería precisamente un guardarraíl que no puede fallar,
-es decir, decoración. Queda como acción humana: identificar un lector competente en causal set theory
-sin implicación en el proyecto, entregarle §2 (las cinco afirmaciones N1–N5), §4.5 (el estado del
-arte anclado) y el par más próximo (Müller 2025), y pedirle específicamente que intente **refutar**
-la novedad, no que la confirme.
+**Sobre el ítem 5, explícitamente.** La regla previa se respetó: no se descargó mediante búsqueda,
+agente ni preparación interna. Se descargó solo después de recibir y registrar una respuesta Tier A
+y una Tier B. Las respuestas no aportaron un prior que contuviera N1, pero sí obligaron a reconocer
+Müller Thm 3, a corregir Thm 3.2 con causal convexidad y a hacer explícita la independencia en
+\(\tau\) del mapa a poset. La consecuencia es `ITEM_5_DISCHARGED`, no `NOVELTY_CERTIFIED`.
 
 **Vía de vigilancia concreta que REV-1 deja identificada.** El trigger de reapertura de la decisión
 046 tiene ahora un blanco preciso en vez de una condición genérica: la conjetura de los **stacked
