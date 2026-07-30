@@ -9,6 +9,13 @@
 > `docs/hoja_de_ruta_30_jul_2026.md` §1–§9. No cierra ningún gate de §5 de esa
 > hoja de ruta. Es el acta de evidencia que `/auditor` debe usar como punto de
 > partida, no una adjudicación.
+>
+> **Alcance del título.** El título incluye el Corolario 3.10 porque hereda la
+> numeración del manuscrito, pero la pregunta de adjudicación de §1 conserva
+> únicamente T39-B/C. T39-E (y, por extensión, el Corolario 3.10, que solo
+> combina 3.8 y 3.9) queda clasificado como **síntesis estándar** —
+> `TECHNICAL_BACKGROUND` vía las anclas V9 de Fase 2 — y **no forma parte** del
+> candidato residual de prioridad que se pasa a `/auditor`.
 
 FECHA: 2026-07-30
 
@@ -28,9 +35,9 @@ HEAD al registrar este acta: `c1a14a4074116590710f012035f75b922e8addc3`
 
 ```text
 ROUND_1_SEARCH = EXECUTED_TARGETED_PRIMARY_READ
-T39-A = TECHNICAL_BACKGROUND (Janson 2011; Reid 2004 / McGough 2021)
+T39-A = TECHNICAL_BACKGROUND (Janson 2011; Reid 2003/2004 / McGough 2021)
 T39-B = PRECURSOR_ONLY_AT_TECHNIQUE_LEVEL / NO_EXACT_INSTANTIATION_SINK_FOUND
-T39-C = NO_MATCH_AFTER_FULL_READ
+T39-C = NO_MATCH_IN_SCOPED_FULL_TEXT_READ
 T39-D = DISCHARGED_BY_WP4_AUDIT (no novedad; ver
         wp4_dimension_free_order_statistic_priority_audit.md)
 T39-E = TECHNICAL_BACKGROUND (anclas V9 / Fase 2)
@@ -53,7 +60,7 @@ geométrica concreta no tiene un sumidero localizado, a diferencia de T39-D
 |---|---|---|---|
 | **T39-A** | \(p(\tau)\) como funcional order-only / fracción de comparabilidad | Maquinaria y observable con precedentes esperables | `TECHNICAL_BACKGROUND` |
 | **T39-B** | Expansión \(p(\tau)=1/2+\kappa\tau\,dv+O(dv^2)\) con control \(C^1\) uniforme | Posible aporte específico de la familia | `PRECURSOR_ONLY` (técnica); sin sumidero exacto |
-| **T39-C** | Monotonía uniforme y separación Lipschitz para \(0<dv<dv_0\) | Corolario geométrico específico | `NO_MATCH_AFTER_FULL_READ` |
+| **T39-C** | Monotonía uniforme y separación lineal inferior (*co-Lipschitz*) para \(0<dv<dv_0\) | Corolario geométrico específico | `NO_MATCH_IN_SCOPED_FULL_TEXT_READ` |
 | **T39-D** | Cota inferior de TV mediante \(S_n\), momentos exactos y Chebyshev | Aplicación de estadística estándar al canal `fixed_n` | `DISCHARGED` — caso \(m=2\) del lema WP4 ya auditado |
 | **T39-E** | Frontera \(o(n^{-1/2})/\omega(n^{-1/2})\) al combinar 3.8 y 3.9 | Posible síntesis específica; constantes no cerradas | `TECHNICAL_BACKGROUND` |
 
@@ -65,8 +72,15 @@ DIRECT_PRECURSOR
 TECHNICAL_BACKGROUND
 ANALOGUE_OTHER_MODEL
 ORTHOGONAL
-NO_MATCH_AFTER_FULL_READ
+SCREENED_NO_MATCH / NOT_FULL_READ_THIS_ROUND
+NO_MATCH_IN_SCOPED_FULL_TEXT_READ
 ```
+
+**Alcance de `NO_MATCH_IN_SCOPED_FULL_TEXT_READ`.** Se aplica únicamente a los
+candidatos efectivamente leídos a texto completo en esta ronda (§4.1–4.5, 4.7).
+No es una afirmación sobre el resto de la literatura de causal sets ni sobre
+los tres documentos solo cribados por grep en §4.6 (ver ahí su propia
+etiqueta, `SCREENED_NO_MATCH`).
 
 ## 3. Método y límites de la búsqueda (Ronda 1)
 
@@ -91,18 +105,21 @@ Fase 2):
 - `NO_EXACT_PRECEDENT_FOUND_IN_SCOPED_SEARCH` no equivale a
   `NOVELTY_CERTIFIED`.
 
-## 4. Fuentes primarias leídas y veredicto por fuente
+## 4. Fuentes consideradas y profundidad de lectura
 
 ### 4.1 Hoeffding (1963) y Janson (2011) — ya discharged vía WP4
 
 Ambos ya fueron leídos a fuente primaria en
-`wp4_dimension_free_order_statistic_priority_audit.md` §4.1–4.2. Cubren
-íntegramente T39-D (Chebyshev/TV vía \(S_n\) es el caso \(m=2\) del lema
-general ya auditado) y aportan `TECHNICAL_BACKGROUND` para T39-A (marco de
-posets no etiquetados de Janson). No se releyeron en esta ronda; se referencian
-por número de sección.
+`wp4_dimension_free_order_statistic_priority_audit.md` §4.1–4.2. Sitúan el
+mecanismo central de T39-D (Chebyshev/TV vía \(S_n\), caso \(m=2\) del lema
+general ya auditado) como especialización estándar y descargan su reclamación
+de novedad — no necesariamente contienen literalmente la identidad de momentos
+y la cota de Chebyshev con las mismas constantes, pero sí el mecanismo
+probabilístico subyacente. Aportan además `TECHNICAL_BACKGROUND` para T39-A
+(marco de posets no etiquetados de Janson). No se releyeron en esta ronda; se
+referencian por número de sección.
 
-### 4.2 Reid (2004) — estimador de dimensión Myrheim-Meyer en espaciotiempos curvos
+### 4.2 Reid (2003; arXiv v2, 2004) — estimador de dimensión Myrheim-Meyer en espaciotiempos curvos
 
 D. D. Reid, "The Manifold Dimension of a Causal Set: tests in conformally flat
 spacetimes", *Phys. Rev. D* **67**, 024034 (2003),
@@ -159,17 +176,19 @@ coeficiente geométrico + resto de orden superior. Sin embargo:
 
 1. Su expansión es **local** (RNC alrededor de un único punto, curvatura
    evaluada en el origen) y para un diamante que se **encoge a un punto**
-   (\(T\to0\)); T39-B es una expansión **exacta** para la familia diamante EF
-   de Schwarzschild con esquinas fijas \(r_p,r_q\), expandida en el ancho de
-   coordenada nula \(dv\) (no en un parámetro de proximidad a un punto), con
-   \(\kappa(r_p,r_q)\) en forma cerrada que integra la geometría exacta, no
-   solo invariantes de curvatura locales.
+   (\(T\to0\)); T39-B es una **expansión *small-lapse* derivada para la
+   geometría exacta Schwarzschild-EF**, con esquinas fijas \(r_p,r_q\),
+   expandida en el ancho de coordenada nula \(dv\) (no en un parámetro de
+   proximidad a un punto), con \(\kappa(r_p,r_q)\) en forma cerrada y control
+   uniforme \(C^1\) del resto — no solo invariantes de curvatura locales, y
+   con un resto \(O(dv^2)\) explícito, no una identidad cerrada.
 2. No tratan una **familia** parametrizada por una variable como \(\tau\); su
    \(R(0)\) es fijo para un diamante dado. No hay, por tanto, antecedente de
-   T39-C (monotonía uniforme en \(\tau\), separación Lipschitz).
+   T39-C (monotonía uniforme en \(\tau\), separación lineal inferior / *co-Lipschitz*).
 
 **Relación:** `DIRECT_PRECURSOR` de la **técnica** de T39-B (expansión de
-curvatura de la fracción de orden); **`NO_MATCH` de la instanciación exacta**
+curvatura de la fracción de orden); **`NO_MATCH` de la instanciación
+small-lapse exacta**
 de T39-B (familia Schwarzschild-EF, \(\kappa(r_p,r_q)\) cerrada) y **`NO_MATCH`
 de T39-C** (sin familia paramétrica ni monotonía).
 
@@ -186,16 +205,22 @@ sustantivo.
 
 **Relación:** `ORTHOGONAL` a T39-A–E.
 
-### 4.6 Glaser–Surya (2013), Benincasa PhD (2013), *A Causal Set Black Hole*
+### 4.6 Glaser–Surya (2013), Benincasa PhD (2013), *A Causal Set Black Hole* — cribado, no lectura completa
 
-Grep dirigido por "ordering fraction" / "comparable pair" / "curvature
-correction" no produjo coincidencias en ninguno de los tres documentos. Todos
-trabajan con abundancias de **intervalos inclusivos-\(k\)** (acción
-Benincasa–Dowker) u otras observables, que Roy–Sinha–Surya (2013, §4) señalan
-explícitamente como order-teóricamente distintas de las \(k\)-cadenas usadas
-para la fracción de orden.
+**Profundidad de lectura:** `SCREENED_NOT_FULL_READ_THIS_ROUND`. A diferencia de
+4.1–4.5, estos tres documentos **no se leyeron íntegramente** en esta ronda;
+se aplicó únicamente un grep dirigido por "ordering fraction" / "comparable
+pair" / "curvature correction", que no produjo coincidencias en ninguno de los
+tres. Lo que sigue es una inferencia de bajo riesgo a partir de lo que sí se
+sabe de su contenido (todos trabajan con abundancias de **intervalos
+inclusivos-\(k\)**, acción Benincasa–Dowker, u otras observables que
+Roy–Sinha–Surya 2013 §4 señalan explícitamente como order-teóricamente
+distintas de las \(k\)-cadenas usadas para la fracción de orden), no de una
+lectura primaria de estos tres textos para T39-A–E.
 
-**Relación:** `ORTHOGONAL` (objeto order-teórico distinto).
+**Relación:** `SCREENED_NO_MATCH / NOT_FULL_READ_THIS_ROUND` (objeto
+order-teórico presumiblemente distinto, pendiente de confirmación por lectura
+completa si se considera necesario en una ronda futura).
 
 ### 4.7 Dos candidatos externos residuales — verificados y descartados
 
@@ -222,11 +247,11 @@ local.
 |---|---|---|---|---|---|
 | Hoeffding 1963 (vía WP4) | — | — | — | `SUBSUMES` | — |
 | Janson 2011 (vía WP4) | `TECHNICAL_BACKGROUND` | — | — | `DIRECT_PRECURSOR` | — |
-| Reid 2004 | `TECHNICAL_BACKGROUND` | `NO_MATCH` | `NO_MATCH` | — | — |
+| Reid 2003/2004 | `TECHNICAL_BACKGROUND` | `NO_MATCH` | `NO_MATCH` | — | — |
 | McGough/Bhandari 2021 | `TECHNICAL_BACKGROUND` | `TECHNICAL_BACKGROUND` | `NO_MATCH` | — | — |
 | Roy–Sinha–Surya 2013 | — | `DIRECT_PRECURSOR` (técnica) | `NO_MATCH` | — | — |
 | Eichhorn–Gamito–Stokes | — | `ORTHOGONAL` | `ORTHOGONAL` | — | — |
-| Glaser–Surya 2013 / Benincasa PhD / *Causal Set Black Hole* | `ORTHOGONAL` | `ORTHOGONAL` | `ORTHOGONAL` | — | — |
+| Glaser–Surya 2013 / Benincasa PhD / *Causal Set Black Hole* (cribado, no lectura completa) | `SCREENED_NO_MATCH` | `SCREENED_NO_MATCH` | `SCREENED_NO_MATCH` | — | — |
 | Kambor–Nomaan 2020 | — | `ANALOGUE_OTHER_MODEL` | `NO_MATCH` | — | — |
 | Wang 2019 | — | `ORTHOGONAL` | `ORTHOGONAL` | — | — |
 | Tsybakov / Ray–Schmidt-Hieber / Polyanskiy–Wu (anclas V9, Fase 2) | — | — | — | — | `TECHNICAL_BACKGROUND` |
@@ -255,9 +280,11 @@ abierta — no como `NO_MATCH` ni como gate cerrado.
 ### Formulación permitida ahora
 
 > Roy–Sinha–Surya (2013) establecen la técnica de expansión RNC de la fracción
-> de orden en curvatura local; el Teorema 3.9 instancia una expansión análoga,
-> pero exacta y para una familia paramétrica concreta de diamantes
-> Schwarzschild-EF, con monotonía uniforme demostrada. Un barrido acotado (no
+> de orden en curvatura local; el Teorema 3.9 instancia una expansión
+> *small-lapse* análoga, pero derivada para la geometría exacta
+> Schwarzschild-EF y para una familia paramétrica concreta de diamantes, con
+> \(\kappa(r_p,r_q)\) cerrada, control uniforme \(C^1\) del resto y monotonía
+> uniforme demostrada. Un barrido acotado (no
 > sistemático, sin acceso a MathSciNet/Scopus, con el coto de grafos
 > geométricos/modelos latentes aún sin agotar) no localizó un antecedente para
 > esta instanciación.
@@ -276,6 +303,7 @@ abierta — no como `NO_MATCH` ni como gate cerrado.
 NO_EXACT_PRECEDENT_FOUND_IN_SCOPED_SEARCH
 PRIORITY_NOT_YET_CERTIFIED
 T39-D_DISCHARGED_NO_NOVELTY_CLAIM
+T39-E_AND_COROLLARY_3.10_STANDARD_SYNTHESIS_NOT_A_PRIORITY_CANDIDATE
 T39-B/C_SURVIVING_CANDIDATE_FOR_ORIGINAL_CONTRIBUTION
 RESIDUAL_GAP_OPEN: random_geometric_graphs / latent_space_models
 ```
