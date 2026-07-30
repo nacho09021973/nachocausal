@@ -1,11 +1,15 @@
 # Nota técnica WP4 — separación `fixed_n` dimension-free por patrones de orden
 
-> **STATUS: INTERNAL_PROOF_AUDITED / EXPLORATORY_GENERALIZATION / COMMIT_READY_DOC_ONLY /
-> NO_NOVELTY_CLAIM / NO_MANUSCRIPT_CHANGE / NO_CODE / NO_SIMULATION.**
+> **STATUS: INTERNAL_PROOF_AUDITED / PRIORITY_GATE=PRECURSOR_ONLY /
+> STANDARD_COROLLARY / REUSABLE_LEMMA / NO_NOVELTY_CLAIM /
+> NO_MANUSCRIPT_CHANGE / NO_CODE / NO_SIMULATION.**
 >
 > Esta nota extrae la capa estadística abstracta que ya aparece, para pares comparables, en
 > `research_program/work_packages/wp4_comparable_pair_separation.md` y en el Teorema 3.9 de
-> `docs/manuscript_limits_draft.md`. La nueva formulación no
+> `docs/manuscript_limits_draft.md`. La formulación registrada aquí es una especialización
+> explícita, con cota cuantitativa, de la desigualdad de Hoeffding para U-estadísticos acotados y
+> del marco de densidades inducidas y posets intercambiables de Janson; no se reclama novedad
+> abstracta. Esta especialización no
 > prueba que una geometría concreta en dimensión superior cambie ninguna frecuencia de orden:
 > prueba únicamente que **si** existe un patrón finito cuya probabilidad cambia, **entonces** las
 > leyes `fixed_n` de los posets no etiquetados se separan en variación total cuando `n -> infinity`.
@@ -78,9 +82,9 @@ donde \(\widetilde C\) es cualquier representante etiquetado de \(C\). El valor 
 representante: una permutación de las etiquetas solo permuta los subconjuntos \(I\). Por tanto
 \(T_{n,m,A}\) es un estadístico legítimo del **poset no etiquetado**.
 
-## 2. Teorema general
+## 2. Lema reutilizable
 
-### Teorema 1 (amplificación `fixed_n` por un patrón finito)
+### Lema 1 (amplificación `fixed_n` por un patrón finito)
 
 Bajo el marco de §1, fije \(m\ge2\), \(A\subseteq\Omega_m\) y
 \(\theta,\theta'\in\Theta\). Ponga
@@ -206,7 +210,7 @@ Más precisamente, como \(\Omega_m\) es finito, existe un evento
 =
 \operatorname{TV}(Q_\theta^m,Q_{\theta'}^m).
 \]
-El Teorema 1 da
+El Lema 1 da
 \[
 \operatorname{TV}(Q_\theta^n,Q_{\theta'}^n)
 \ge
@@ -234,7 +238,7 @@ p(\theta)
 \mathbb P_\theta(X_1\text{ y }X_2\text{ son comparables}),
 \]
 y \(T_{n,2,A_{\rm chain}}=S_n/\binom n2\), donde \(S_n\) es el número de pares comparables.
-El Teorema 1 se especializa a
+El Lema 1 se especializa a
 \[
 \boxed{
 \operatorname{TV}(Q_\theta^n,Q_{\theta'}^n)
@@ -340,7 +344,7 @@ En la familia diamante \(1+1\) de
 \ge
 \frac{\kappa(r_p,r_q)\,dv}{2}\,|\tau-\tau'|.
 \]
-El Teorema 1 da entonces
+El Lema 1 da entonces
 \[
 \boxed{
 \operatorname{TV}(Q_\tau^n,Q_{\tau'}^n)
@@ -387,14 +391,15 @@ Esta sección **no reemplaza** la parte geométrica del Corolario C6. La usa com
 
 **Lo probado en esta nota, tras revisión adversarial interna:**
 
-- un teorema abstracto sobre leyes de posets no etiquetados inducidas por muestras i.i.d.;
+- un lema abstracto reutilizable sobre leyes de posets no etiquetados inducidas por muestras
+  i.i.d.;
 - una cota explícita exponencial a partir de cualquier diferencia de patrón finito;
-- el teorema dimension-free de pares comparables como caso \(m=2\);
+- la especialización dimension-free de pares comparables como caso \(m=2\);
 - el fortalecimiento cuantitativo de la conclusión estadística del Corolario C6.
 
 **Comprobación de consistencia con la ceguera de escala.** En la órbita de dilatación del
 Teorema 3.1 se tiene \(Q_\theta^m=Q_{\theta'}^m\) para todo \(m\). Por tanto
-\(\Delta_{m,A}=0\) para todo patrón y el antecedente del Teorema 1 no se activa. El nuevo resultado
+\(\Delta_{m,A}=0\) para todo patrón y el antecedente del Lema 1 no se activa. Esta especialización
 no contradice la TV exactamente nula de esa órbita: distingue solo grados de libertad que cambian
 alguna ley de orden finita.
 
@@ -405,12 +410,17 @@ alguna ley de orden finita.
 - reconstrucción de métrica, horizonte, localización o parámetro a partir del poset;
 - separación en el canal no condicionado;
 - constante óptima a escala crítica \(n^{-1/2}\);
-- prioridad o novedad frente a la literatura de U-estadísticos, estructuras intercambiables,
-  límites de posets o modelos geométricos latentes.
+- prioridad de la especialización geométrica del Corolario C6; la auditoría bibliográfica cerrada
+  para este lema abstracto no certifica ni refuta esa cuestión separada.
 
-La concentración usada es matemática estándar; no se reclama novedad por Hoeffding ni por el
-test a punto medio. El valor potencial de la nota es estructural: separa con precisión una capa
-estadística completamente general de la carga geométrica específica de dimensión.
+La auditoría bibliográfica específica clasifica el lema como
+`PRECURSOR_ONLY / STANDARD_COROLLARY / NOVELTY_CERTIFIED=NO`: Hoeffding contiene la concentración
+con las constantes usadas, Janson aporta el antecedente directo para densidades de subposets
+inducidos y posets intercambiables, y el test a punto medio es teoría elemental. El valor de la
+nota es estructural y reutilizable: separa con precisión una capa estadística estándar de la carga
+geométrica específica de dimensión. La posible aportación propia de WP4 permanece en esta segunda
+capa, en particular en la variación estricta de \(p(\tau;dv)\) y el control uniforme del resto en
+el Corolario C6.
 
 **Cierre de auditoría interna (2026-07-30):**
 
@@ -435,15 +445,16 @@ estadística completamente general de la carga geométrica específica de dimens
 4. **PASS — compatibilidad con el Anexo C.** El \(dv_0\) sigue siendo el mismo umbral uniforme
    sobre \(K\), \(dv\) queda fijo cuando \(n\to\infty\), y no se añade ninguna conclusión
    geométrica, Poisson, reconstructiva o de dimensión superior.
-5. **SEPARATE_GATE — prioridad.** La auditoría bibliográfica sigue siendo obligatoria antes de
-   cualquier claim de novedad. No condiciona la corrección matemática de esta nota y no se
-   satisface mediante la referencia estándar de §8.
+5. **PASS — prioridad abstracta adjudicada.** La auditoría bibliográfica específica fija
+   `PRIORITY_GATE=PRECURSOR_ONLY`, `STANDARD_COROLLARY` y `NOVELTY_CERTIFIED=NO`. Este cierre no
+   condiciona la corrección matemática del lema ni adjudica la prioridad de la especialización
+   geométrica del Corolario C6.
 
-El cierre anterior elimina los bloqueos matemáticos internos detectados y deja la nota preparada
-para un eventual commit documental separado. No autoriza por sí mismo ese commit, un cambio en el
-manuscrito ni lenguaje de prioridad.
+El cierre anterior elimina los bloqueos matemáticos internos, fija el techo bibliográfico del lema
+abstracto y deja la nota preparada para un eventual commit documental separado. No autoriza por sí
+mismo ese commit, un cambio en el manuscrito, un PR ni lenguaje de prioridad para C6.
 
-## 8. Fuente estándar consultada
+## 8. Antecedentes estándar consultados
 
 - W. Hoeffding, “Probability Inequalities for Sums of Bounded Random Variables,”
   *Journal of the American Statistical Association* **58** (1963), 13–30, §4a,
@@ -451,5 +462,15 @@ manuscrito ni lenguaje de prioridad.
   [doi:10.1080/01621459.1963.10500830](https://doi.org/10.1080/01621459.1963.10500830).
   Es la fuente primaria de la desigualdad clásica para U-estadísticos acotados. La demostración
   necesaria está reproducida en §2 para que la cota y sus constantes puedan auditarse sin
-  depender de una referencia externa. Esta cita no constituye una auditoría de prioridad del
-  teorema de transferencia a leyes de posets.
+  depender de una referencia externa.
+- S. Janson, “Poset limits and exchangeable random posets,”
+  *Combinatorica* **31** (2011), 529–563,
+  [doi:10.1007/s00493-011-2591-x](https://doi.org/10.1007/s00493-011-2591-x);
+  [arXiv:0902.0306](https://arxiv.org/abs/0902.0306). Es el antecedente directo para subposets
+  inducidos, densidades \(t_{\rm ind}\), leyes de restricciones finitas y posets aleatorios
+  intercambiables. Su convergencia al límite de poset proporciona la separación cualitativa entre
+  límites distintos; no se le atribuye la cota exponencial de TV, que procede de Hoeffding y del
+  test bipuntual.
+
+La combinación de ambas fuentes vuelve rutinario el lema abstracto. La derivación se conserva
+porque ofrece una cota explícita, autosuficiente y reutilizable en el canal causal `fixed_n`.
