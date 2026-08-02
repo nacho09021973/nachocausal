@@ -685,18 +685,137 @@ There exists
    \(\sqrt n\,|\tau_n'-\tau_n|\to\infty\), the same \(S_n\)-test has total error
    tending to zero.
 
-*Proof sketch (full proof: `wp4_comparable_pair_separation.md` §4–§4b).*
-After pulling the varying diamond back to a fixed square, the outgoing-ray flow
-gives a jointly real-analytic extension through \(dv=0\):
+*Proof.* Write \(a:=r_p\), \(b:=r_q\), \(d:=dv\). Put
+\(\omega_\tau(r):=e^{r/\tau}(r/\tau-1)\), a strictly increasing bijection
+\((0,\infty)\to(-1,\infty)\) with \(\omega_\tau(\tau)=0\) and
+\(\omega_\tau'(r)=r\,e^{r/\tau}/\tau^2>0\). Then
+\(\tilde U:=-e^{-v/(2\tau)}\omega_\tau(r)\) is the exactly null coordinate of
+§2.1, \((\tilde U,v)\) is a global double-null chart on \(r>0\), and the causal
+order is the product order with **both coordinates increasing to the future**:
+for \(x,y\in D_\tau\),
+\[
+x\prec y
+\quad\Longleftrightarrow\quad
+\tilde U_x\le\tilde U_y
+\ \ \text{and}\ \
+v_x\le v_y .
+\]
+At fixed \(v\), \(\tilde U\) is strictly decreasing in \(r\), and the horizon
+\(r=\tau\) is the ray \(\tilde U=0\). Let \(\rho_\tau(r_0,D)\) be the areal radius
+at \(v=v_0+D\) of the outgoing null ray through \((v_0,r_0)\), i.e. the solution
+of \(\omega_\tau(\rho)=e^{D/(2\tau)}\omega_\tau(r_0)\); differentiating,
+\[
+\frac{\partial\rho}{\partial D}=\frac{\rho-\tau}{2\rho},
+\qquad
+\rho_\tau(r_0,0)=r_0 .
+\]
+(The subscript distinguishes \(\rho_\tau\) from the sprinkling intensity \(\rho\)
+of §2.3.)
+
+**Reduction to a two-fold integral.** By §2.1, \(\det g_\tau=-1\), so
+\(\mathrm{vol}_{g_\tau}=dv\,dr\) and the normalized sampling law on \(D_\tau\) is
+absolutely continuous with respect to \(dv\,dr\) (indeed uniform). Consequently
+the coincidence sets \(\{\tilde U_x=\tilde U_y\}\) and \(\{v_x=v_y\}\), and the
+null boundaries of \(D_\tau\), all carry product measure zero, so two independent
+points are a.s. untied and the trichotomy \(x\prec y\), \(y\prec x\), spacelike is
+a.s. clean. Both sides of
+\[
+\int_{v_0}^{v_0+D}\rho_\tau(r_0,v-v_0)\,dv=\rho_\tau(r_0,D)^2-r_0^2+\tau D
+\]
+vanish at \(D=0\) and have the same \(D\)-derivative by the ray flow, so they
+agree. At fixed \(v\in[v_x,v_q]\), \(\tilde U\) is decreasing in \(r\), so the
+slice of \(J^+(x)\cap J^-(q)\) is \(\{r:R_q(v)\le r\le R_x(v)\}\) between the
+outgoing rays through \(q\) and through \(x\), non-empty precisely because
+\(\tilde U_x\le\tilde U_q\); integrating and cancelling the two \(\tau D\) terms
+gives, for \(x=(v_x,r_x)\in D_\tau\) and \(D:=v_q-v_x\),
+\[
+\operatorname{vol}\bigl(J^+(x)\cap D_\tau\bigr)
+=\rho_\tau(r_x,D)^2+\rho_\tau(r_q,-D)^2-r_x^2-r_q^2 ,
+\]
+and in particular
+\(V(\tau)=\rho_\tau(r_p,dv)^2+\rho_\tau(r_q,-dv)^2-r_p^2-r_q^2\). Points are
+exchangeable and a.s. untied, and comparability in a product order means exactly
+\(x\prec y\) or \(y\prec x\), so \(p=2\,\mathbb P(X\prec Y)\); Fubini then gives,
+with \(\alpha(D):=\rho_\tau(r_p,dv-D)\) and \(\beta(D):=\rho_\tau(r_q,-D)\),
+\[
+p(\tau)=\frac{2}{V(\tau)^2}\int_0^{dv}\!\!\int_{\beta(D)}^{\alpha(D)}
+\bigl[\rho_\tau(r,D)^2+\beta(D)^2-r^2-r_q^2\bigr]\,dr\,dD .
+\]
+
+**Step 1 (one uniform analytic neighbourhood).** The flow is defined implicitly by
+\(F(\tau,r,D,y):=\omega_\tau(y)-e^{D/(2\tau)}\omega_\tau(r)=0\), with
+\(\partial_yF=\omega_\tau'(y)>0\) and \(y=r\) at \(D=0\). The real-analytic
+implicit-function theorem makes \(\rho_\tau\) jointly real-analytic in
+\((\tau,r,D)\) near every \((\tau,r,0)\) with \(\tau,r>0\). A finite subcover of
+the product of a compact \(\tau\)-interval slightly larger than \(K\) (still
+inside \((b,a)\)) with a compact positive \(r\)-interval containing \([b,a]\)
+yields one \(\eta>0\) on which \(\rho_\tau\) is jointly analytic for \(|D|<\eta\);
+the local branches agree because \(\omega_\tau\) is strictly increasing.
+
+**Step 2 (fixed square and analytic division).** For \(s,u\in[0,1]\) put
+\(A:=\rho_\tau(a,(1-s)d)\), \(B:=\rho_\tau(b,-sd)\), \(x:=B+u(A-B)\) and
+\(H:=\rho_\tau(x,sd)^2+B^2-x^2-b^2\). Since \(A-B=a-b>0\) at \(d=0\), one uniform
+shrink of \(\eta\) keeps \(A>B\). The substitutions \(D=sd\) and \(r=B+u(A-B)\)
+turn the numerator of the display above into
+\(N(\tau,d)=d\int_0^1\!\!\int_0^1(A-B)H\,du\,ds\). At \(d=0\) one has \(H=0\), so
+analytic division \(H=d\widehat H\), with
+\(\widehat H=\int_0^1\partial_dH(\tau,s,u,\lambda d)\,d\lambda\), gives
+\(N=d^2\widehat N\) with \(\widehat N\) jointly analytic — compactness of the unit
+square supplies one common analytic neighbourhood, so the local power series may
+be integrated term by term. Likewise \(V(\tau,d)=d\widehat V\) with
+\(\widehat V(\tau,0)=a-b>0\) uniformly in \(\tau\), since \(V(\tau,0)=0\) and
+\(\partial_dV(\tau,0)=a-b\) by the ray flow. After one further uniform shrink of
+\(\eta\), \(\widehat V\) has no zero near \(K\times\{0\}\), so
+\(P(\tau,d):=2\widehat N(\tau,d)/\widehat V(\tau,d)^2\)
+is a jointly real-analytic extension through \(d=0\) of \(p(\tau)\) for \(d>0\).
+
+**Step 3 (first two coefficients).** Expanding the flow from its ODE,
+\(\rho_\tau(r,D)=r+D\,(r-\tau)/(2r)+D^2\tau(r-\tau)/(8r^3)+O(D^3)\), substituting
+and integrating the retained coefficients (antiderivatives \(r(r-2\tau)/2\) and
+\(r/4-\tau\log r/4\)) gives \(\widehat N(\tau,0)=(a-b)^2/4\),
+\(\widehat V(\tau,0)=a-b\), hence \(P(\tau,0)=1/2\) and
+\(\partial_dP(\tau,0)=\kappa(r_p,r_q)\,\tau\). Writing
 \[
 p(\tau)
 =
-\frac12+\kappa(r_p,r_q)\tau\,dv+R(\tau,dv),
+\frac12+\kappa(r_p,r_q)\tau\,dv+R(\tau,dv)
+\]
+defines \(R\).
+
+**Step 4 (uniform remainder).** Choose \(0<\varepsilon<\eta\) with
+\(K\times[-\varepsilon,\varepsilon]\) inside the analytic domain of \(P\) and set
+\(C_1:=\tfrac12\max_{K\times[-\varepsilon,\varepsilon]}
+|\partial_\tau\partial_d^2P|\), finite by compactness and depending only on
+\((r_p,r_q,\tau_0,\tau_1)\). Taylor's formula with integral remainder gives, for
+\(0\le dv\le\varepsilon\),
+\[
+\partial_\tau R(\tau,dv)
+=
+dv^2\int_0^1(1-z)\,\partial_\tau\partial_d^2P(\tau,z\,dv)\,dz ,
 \qquad
 |\partial_\tau R(\tau,dv)|\le C_1dv^2
 \]
-uniformly for \(\tau\in K\). Positivity of \(\kappa\) and
-\(dv_0\le\kappa/(2C_1)\) (with the evident convention when \(C_1=0\)) give (1).
+uniformly for \(\tau\in K\).
+
+**Positivity of \(\kappa\) and choice of \(dv_0\).** With \(x:=r_p/r_q>1\) the
+numerator of \(\kappa\) is \(2r_pr_q\varphi(x)\), where
+\(\varphi(x):=(x-1/x)/2-\log x\); since \(\varphi(1)=0\) and
+\(\varphi'(x)=(x-1)^2/(2x^2)>0\) for \(x\ne1\), \(\varphi>0\) on \((1,\infty)\)
+and \(\kappa>0\). Step 4 then gives
+\(\partial_\tau p(\tau)\ge\kappa\,dv-C_1dv^2\) on \(K\). Take
+\[
+dv_0:=
+\begin{cases}
+\varepsilon, & C_1=0,\\
+\min\{\varepsilon,\ \kappa/(2C_1)\}, & C_1>0;
+\end{cases}
+\]
+then \(\partial_\tau p\ge\kappa\,dv/2>0\) throughout \(K\) for every
+\(0<dv<dv_0\), which is (1). The bound on \(R\) alone would give separation only
+for each pre-fixed pair; the \(\partial_\tau R\) bound is what makes one \(dv_0\)
+serve the whole interval. (Traceability, not a dependency: the same argument is
+§4 of `wp4_comparable_pair_separation.md`.)
+
 For the symmetric Bernoulli kernel
 \(f(x,y)=\mathbf 1\{x,y\text{ comparable}\}\), the exact fixed-\(n\)
 Hoeffding identity is
