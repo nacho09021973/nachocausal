@@ -304,9 +304,37 @@ measure.
 Lemma 2.2 thereafter.)
 
 Total variation \(\mathrm{TV}\) and Hellinger distance \(H\) between laws on the
-space of finite unlabeled posets are the standard ones; we use \(\mathrm{TV}\le H\)
-and Hellinger tensorization for product samples
-(`[BACKGROUND]` / project note `wp4_two_point_theorem.md`).
+space of finite unlabeled posets are the standard ones, with the convention fixed
+once and for all as
+
+\[
+H^2(P,Q)
+:=
+\int\bigl(\sqrt{dP}-\sqrt{dQ}\bigr)^2
+\;=\;
+2\Bigl(1-\!\int\!\sqrt{dP\,dQ}\Bigr)
+\;\in[0,2].
+\]
+
+We use \(\mathrm{TV}\le H\), the data-processing inequality for both distances
+under a common measurable map, and the **exact tensorization identity** for
+product samples: since the affinity \(\int\sqrt{dP\,dQ}=1-\tfrac12H^2(P,Q)\)
+factorizes over independent coordinates,
+
+\[
+1-\tfrac12\,H^2\bigl(P^{\otimes n},Q^{\otimes n}\bigr)
+\;=\;
+\Bigl(1-\tfrac12\,H^2(P,Q)\Bigr)^{\!n}.
+\]
+
+With \(t:=\tfrac12H^2(P,Q)\in[0,1]\), Bernoulli's inequality \((1-t)^n\ge 1-nt\)
+turns this into the form used in Theorem 3.8,
+
+\[
+H^2\bigl(P^{\otimes n},Q^{\otimes n}\bigr)\;\le\;n\,H^2(P,Q).
+\]
+
+(`[BACKGROUND]`. Traceability, not a dependency: `wp4_two_point_theorem.md`.)
 
 ### 2.4 Targets
 
@@ -535,7 +563,8 @@ The dilation orbit of Theorem 3.1 kills absolute scale. Relative geometric
 parameters can still vary inside a fixed coordinate chart. Two natural attempts to
 encode “horizon location in the box” fail regularity or information content; a third
 family is regular and yields a genuine rate lower bound. We record the diagnosis and
-the floor. Full proofs:
+the floor. Section 3.3.2 and Theorem 3.8 are self-contained below; the two sterile
+designs of §3.3.1 and Proposition 3.7 are stated here and proved in
 `wp4_fisher_localization_floor.md` (annex).
 
 #### 3.3.1 Two sterile or non-regular designs `[REMARK]`
@@ -569,28 +598,355 @@ J^+_\tau(p)\cap J^-_\tau(q),
 \qquad
 p=(v_p,r_p),\; q=(v_q,r_q)
 \]
-in the ingoing EF chart of 1+1 Schwarzschild of horizon radius \(\tau\). In global
-null coordinates adapted to \(g_\tau\), \(D_\tau\) is a coordinate box straddling the
-horizon \(\tilde U=0\), with singularity avoided (\(r\ge r_q>0\)).
+in the ingoing EF chart of 1+1 Schwarzschild of horizon radius \(\tau\). Fix once
+and for all an open interval \(J\) with \([\tau_0,\tau_1]\subset J\) and
+\(\overline J\subset(r_q,r_p)\); nothing below uses more than \(r_q<\tau<r_p\), so
+every statement of this subsection holds verbatim for \(\tau\in J\), with all
+constants uniform on compact subsets of \(J\). (The enlargement is free and is what
+lets Proposition 3.6 quote a criterion stated on an open parameter set.)
+
+**Null coordinates and the product order.** Put
+
+\[
+\omega_\tau(r):=e^{r/\tau}\bigl(r/\tau-1\bigr),
+\qquad
+\omega_\tau'(r)=\frac{r\,e^{r/\tau}}{\tau^{2}}>0,
+\]
+
+a smooth strictly increasing bijection \((0,\infty)\to(-1,\infty)\) with
+\(\omega_\tau(\tau)=0\), and define on \(r>0\)
+
+\[
+\tilde U:=-e^{-v/(2\tau)}\,\omega_\tau(r).
+\]
+
+Outgoing null curves of \(g_\tau\) satisfy \(dr=\tfrac12(1-\tau/r)\,dv\). Along an
+arbitrary curve,
+\(d\tilde U=e^{-v/(2\tau)}\bigl[\omega_\tau(r)\,dv/(2\tau)-\omega_\tau'(r)\,dr\bigr]\),
+while
+
+\[
+\omega_\tau'(r)\cdot\frac{1-\tau/r}{2}
+=
+\frac{r\,e^{r/\tau}}{\tau^{2}}\cdot\frac{r-\tau}{2r}
+=
+\frac{e^{r/\tau}(r/\tau-1)}{2\tau}
+=
+\frac{\omega_\tau(r)}{2\tau},
+\]
+
+so substituting \(dr=\tfrac12(1-\tau/r)\,dv\) gives \(d\tilde U=0\) **exactly**:
+\(\tilde U\) is constant on outgoing null rays, with no approximation and no
+near-horizon restriction. Along future-directed ingoing null curves (\(dv=0\),
+\(dr<0\)) one has \(d\tilde U=-e^{-v/(2\tau)}\omega_\tau'(r)\,dr>0\). Hence
+\((\tilde U,v)\) is a global double-null chart on \(r>0\), smooth across the horizon
+\(r=\tau\) (which is the ray \(\tilde U=0\)), both coordinates are non-decreasing
+along future-directed causal curves and strictly increasing along the two null
+directions, and the causal order is **exactly** the product order:
+
+\[
+x\preceq y
+\quad\Longleftrightarrow\quad
+\tilde U_x\le\tilde U_y
+\ \ \text{and}\ \
+v_x\le v_y .
+\]
+
+**The diamond is the corresponding null box.** For \(\tau\in J\) we have
+\(r_q<\tau<r_p\), hence \(\omega_\tau(r_q)<0<\omega_\tau(r_p)\) and therefore
+\(\tilde U_p(\tau)<0<\tilde U_q(\tau)\), where \(\tilde U_p(\tau):=\tilde U(p)\) and
+\(\tilde U_q(\tau):=\tilde U(q)\); with \(v_p<v_q\) this gives \(q\in J^+_\tau(p)\)
+for every \(\tau\in J\). By the product order,
+
+\[
+D_\tau=[\tilde U_p(\tau),\,\tilde U_q(\tau)]\times[v_p,v_q],
+\]
+
+a nonempty coordinate box straddling the horizon \(\tilde U=0\). Write
+
+\[
+r_\tau(\tilde U,v):=\omega_\tau^{-1}\bigl(-e^{v/(2\tau)}\tilde U\bigr)
+\]
+
+for the areal radius in the chart; \(r_\tau\) is strictly decreasing in
+\(\tilde U\). Its minimum over the closed box is attained at the corner \(q\) and
+equals \(r_q\); its maximum is attained at \((\tilde U_p(\tau),v_q)\) and equals
+\(r_+(\tau)=\omega_\tau^{-1}\bigl(e^{(v_q-v_p)/(2\tau)}\omega_\tau(r_p)\bigr)\),
+continuous in \(\tau\). Consequently, for every compact \(K'\subset J\), with
+\(R:=\max_{\tau\in K'}r_+(\tau)<\infty\),
+
+\[
+r_\tau(\tilde U,v)\in[r_q,R]\subset(0,\infty)
+\qquad\text{for all }(\tilde U,v)\in D_\tau,\ \tau\in K' :
+\]
+
+the radial parameter is confined to a **compact interval that does not depend on
+\(\tau\)** and is bounded away from \(0\) and \(\infty\). The singularity is avoided
+automatically, and \(\omega_\tau'(r)=r\,e^{r/\tau}/\tau^2\) is bounded above and
+below by positive constants on that range, uniformly in \(\tau\in K'\).
+
+**Sampling density, normalization and marginals.** Since \(\det g_\tau=-1\), the
+volume measure is \(dv\,dr\) and, by Lemma 2.1, the fixed-\(n\) sample is i.i.d.\
+uniform on \(D_\tau\) in the \((v,r)\) chart. Differentiating
+\(\omega_\tau(r)=-e^{v/(2\tau)}\tilde U\) at fixed \(v\) gives
+\(\partial r/\partial\tilde U=-e^{v/(2\tau)}/\omega_\tau'(r)\), so
+\(dv\,dr=\bigl(e^{v/(2\tau)}/\omega_\tau'(r_\tau(\tilde U,v))\bigr)\,d\tilde U\,dv\)
+and the normalized sampling density on the null box is
+
+\[
+\pi_\tau(\tilde U,v)
+=
+\frac{e^{v/(2\tau)}}{V(\tau)\,\omega_\tau'\bigl(r_\tau(\tilde U,v)\bigr)}
+=
+\frac{\tau^{2}\,e^{v/(2\tau)}}{V(\tau)\;r\,e^{r/\tau}}\bigg|_{\,r=r_\tau(\tilde U,v)},
+\]
+
+normalized by the \(g_\tau\)-area of the diamond,
+
+\[
+V(\tau)
+:=
+\operatorname{vol}_{g_\tau}(D_\tau)
+=
+\int_{v_p}^{v_q}\!\!\int_{\tilde U_p(\tau)}^{\tilde U_q(\tau)}
+\frac{e^{v/(2\tau)}}{\omega_\tau'\bigl(r_\tau(\tilde U,v)\bigr)}\,d\tilde U\,dv
+\;\in(0,\infty),
+\]
+
+which is the same \(V(\tau)\) used in Theorem 3.9. The two marginals of
+\(\pi_\tau\) on the box are
+
+\[
+\pi_1(\tilde U;\tau):=\int_{v_p}^{v_q}\pi_\tau(\tilde U,v)\,dv,
+\qquad
+\pi_2(v;\tau):=\int_{\tilde U_p(\tau)}^{\tilde U_q(\tau)}\pi_\tau(\tilde U,v)\,d\tilde U .
+\]
+
+**Distribution functions and quantiles.** Define
+
+\[
+F_\tau(\tilde U):=\int_{\tilde U_p(\tau)}^{\tilde U}\pi_1(s;\tau)\,ds,
+\qquad
+G_\tau(v):=\int_{v_p}^{v}\pi_2(s;\tau)\,ds,
+\]
+
+the marginal distribution functions of \(\pi_\tau\) on the box, and let
+\(F_\tau^{-1},G_\tau^{-1}:[0,1]\to\) (the respective edges of the box) be the
+marginal quantile maps. Their regularity is item (iv) of the next lemma.
 
 **Lemma 3.5 (regularity).** `[PROVED]`  
-The copula density \(c_\tau\) of the normalized sampling measure on \(D_\tau\) is
-jointly continuous, \(C^1\) in \(\tau\), and bounded above and below by positive
-constants on the compact parameter interval, with uniformly bounded score.  
-(Annex Lemma R.)
+Let \(K'\subset J\) be compact. Uniformly in \(\tau\in K'\):
+
+(i) \(r_\tau(\tilde U,v)\) is jointly smooth in \((\tilde U,v,\tau)\) on the closed
+box, and \(|\partial r/\partial\tilde U|\) is bounded above and below by positive
+constants;
+
+(ii) \(\pi_\tau\) is jointly smooth in \((\tilde U,v,\tau)\) and bounded above and
+below by positive constants;
+
+(iii) the marginals \(\pi_1(\cdot\,;\tau)\) and \(\pi_2(\cdot\,;\tau)\) are smooth
+in all arguments and bounded above and below by positive constants;
+
+(iv) \(F_\tau\) and \(G_\tau\) are \(C^1\) strictly increasing bijections onto
+\([0,1]\) with derivatives bounded away from \(0\), and the quantile maps
+\((x,\tau)\mapsto F_\tau^{-1}(x)\) and \((y,\tau)\mapsto G_\tau^{-1}(y)\) are
+\(C^1\);
+
+(v) consequently the copula density
+
+\[
+c_\tau(x,y)
+=
+\frac{\pi_\tau\bigl(F_\tau^{-1}(x),\,G_\tau^{-1}(y)\bigr)}
+     {\pi_1\bigl(F_\tau^{-1}(x);\tau\bigr)\,\pi_2\bigl(G_\tau^{-1}(y);\tau\bigr)},
+\qquad (x,y)\in[0,1]^2,
+\]
+
+is jointly continuous, \(C^1\) in \(\tau\) with \(\partial_\tau c_\tau\) jointly
+continuous, bounded above and below by positive constants, and
+\(|\partial_\tau c_\tau|\) is bounded; in particular the score
+\(\partial_\tau\log c_\tau\) is bounded uniformly on \([0,1]^2\times K'\).
+
+*Proof.* Write \(\sigma_\tau(\tilde U,v):=e^{v/(2\tau)}/\omega_\tau'\bigl(r_\tau(\tilde
+U,v)\bigr)\) for the unnormalized density, so \(\pi_\tau=\sigma_\tau/V(\tau)\).
+
+*Preliminary: a fixed open domain.* The defining relation
+\(\omega_\tau(r)=-e^{v/(2\tau)}\tilde U\) has a (unique) solution \(r>0\) exactly
+when \(-e^{v/(2\tau)}\tilde U>-1\), because \(\omega_\tau\) is an increasing
+bijection \((0,\infty)\to(-1,\infty)\). Hence \(r_\tau\) and \(\sigma_\tau\) are
+defined and smooth on the **open** set
+
+\[
+\mathcal O:=\bigl\{(\tilde U,v,\tau)\in\mathbb R^3:\ \tau>0,\ e^{v/(2\tau)}\tilde U<1\bigr\},
+\]
+
+which contains the compact set
+\(\mathcal K:=\{(\tilde U,v,\tau):\tau\in K',\,(\tilde U,v)\in D_\tau\}\) (on the box
+the corresponding radius satisfies \(r\ge r_q>0\), so the inequality is strict).
+Every differentiation below is performed on \(\mathcal O\); in particular
+\(\tau\mapsto\sigma_\tau(\tilde U,v)\) may be differentiated **at fixed
+\((\tilde U,v)\)**, including at points that leave the moving box \(D_\tau\). Since
+\(\mathcal K\subset\mathcal O\) is compact, it has a compact neighbourhood
+\(\mathcal K^+\subset\mathcal O\), and each two-sided bound below is the statement
+that a continuous non-vanishing function is pinched on \(\mathcal K^+\).
+
+(i) On \(\mathcal O\) the relation \(\omega_\tau(r)+e^{v/(2\tau)}\tilde U=0\) has
+\(r\)-derivative \(\omega_\tau'(r)\), pinched between positive constants on the
+uniform compact radial range \([r_q,R]\) established above; the implicit function
+theorem with smooth data gives joint smoothness of \(r_\tau\) and
+\(\partial r/\partial\tilde U=-e^{v/(2\tau)}/\omega_\tau'(r)\), whose modulus is
+pinched because \(v\) runs over the compact \([v_p,v_q]\).
+
+(ii) By (i), \(\sigma_\tau\) is smooth on \(\mathcal O\) and pinched between positive
+constants on \(\mathcal K^+\). The normalizer has **fixed** limits in \(v\) and
+**moving** limits in \(\tilde U\); the Leibniz rule for variable limits (smooth
+integrand on \(\mathcal O\), edges \(\tilde U_p(\tau),\tilde U_q(\tau)\) explicit
+smooth functions of \(\tau\)) gives that \(V\) is smooth with
+
+\[
+V'(\tau)=\int_{v_p}^{v_q}\Bigl[
+\tilde U_q'(\tau)\,\sigma_\tau\bigl(\tilde U_q(\tau),v\bigr)
+-\tilde U_p'(\tau)\,\sigma_\tau\bigl(\tilde U_p(\tau),v\bigr)
++\int_{\tilde U_p(\tau)}^{\tilde U_q(\tau)}\partial_\tau\sigma_\tau\,d\tilde U
+\Bigr]dv .
+\]
+
+Moreover \(0<V(\tau)<\infty\) with both bounds uniform on \(K'\), since
+\(\sigma_\tau\) is pinched and the box has edge lengths \(v_q-v_p>0\) (fixed) and
+\(\tilde U_q(\tau)-\tilde U_p(\tau)\), continuous and strictly positive on the
+compact \(K'\), hence pinched. Therefore \(\pi_\tau=\sigma_\tau/V(\tau)\) is smooth
+on \(\mathcal O\) and pinched on \(\mathcal K^+\).
+
+(iii) The two marginals are of different types and must be treated separately.
+\(\pi_1(\tilde U;\tau)=\int_{v_p}^{v_q}\pi_\tau\,dv\) has **fixed** limits: ordinary
+differentiation under the integral sign (smooth integrand, compact fixed interval)
+gives joint smoothness in \((\tilde U,\tau)\), with no boundary terms.
+\(\pi_2(v;\tau)=\int_{\tilde U_p(\tau)}^{\tilde U_q(\tau)}\pi_\tau\,d\tilde U\) has
+**moving** limits: the same Leibniz rule as in (ii) gives joint smoothness in
+\((v,\tau)\), with the two boundary terms
+\(\tilde U_q'(\tau)\pi_\tau(\tilde U_q(\tau),v)-\tilde U_p'(\tau)\pi_\tau(\tilde
+U_p(\tau),v)\). In both cases the two-sided bounds are the pinching of \(\pi_\tau\)
+multiplied by the corresponding interval length, itself pinched by (ii).
+
+(iv) \(G_\tau(v)=\int_{v_p}^{v}\pi_2\,ds\) has a fixed lower limit; \(F_\tau(\tilde
+U)=\int_{\tilde U_p(\tau)}^{\tilde U}\pi_1\,ds\) has a **moving** lower limit and
+therefore acquires the boundary term \(-\tilde U_p'(\tau)\,\pi_1(\tilde
+U_p(\tau);\tau)\) on differentiating in \(\tau\); both are jointly \(C^1\), and
+\(F_\tau(\tilde U_q(\tau))=G_\tau(v_q)=1\) by normalization, so each is a strictly
+increasing bijection onto \([0,1]\) with \(F_\tau'=\pi_1>0\) and \(G_\tau'=\pi_2>0\)
+bounded away from \(0\) by (iii). The implicit function theorem applied to
+\(F_\tau(\tilde U)-x=0\) and \(G_\tau(v)-y=0\) then gives joint \(C^1\) dependence of
+the inverses on \((x,\tau)\) and \((y,\tau)\), one-sided in \(x,y\) at the endpoints
+\(0,1\) (where the inverses return the box edges).
+
+(v) Compose (ii)–(iv): the quotient has smooth numerator and denominator bounded
+away from \(0\); each factor is \(C^1\) in \(\tau\) with jointly continuous
+\(\tau\)-derivative, so \(\partial_\tau c_\tau\) is jointly continuous on the
+compact \([0,1]^2\times K'\) and hence bounded there; all bounds are uniform because
+every ingredient is pinched on compact domains. Boundedness of the score follows
+from \(|\partial_\tau\log c_\tau|\le|\partial_\tau c_\tau|/c_{\min}\).
+\(\blacksquare\)  
+(Traceability, not a dependency: annex Lemma R.)
 
 **Proposition 3.6 (QMD and finite Fisher).** `[PROVED]`  
-The Fisher information \(I(\tau)=\int (\partial_\tau\log c_\tau)^2\,c_\tau\) is finite
-and continuous on \([\tau_0,\tau_1]\); set \(\bar I:=\sup I(\tau)<\infty\). The family
-is differentiable in quadratic mean, and
+The Fisher information
+\(I(\tau)=\int_{[0,1]^2}(\partial_\tau\log c_\tau)^2\,c_\tau\) is finite and
+continuous on \([\tau_0,\tau_1]\); set \(\bar I:=\sup I(\tau)<\infty\). The family
+is differentiable in quadratic mean, and, writing \(J_\delta\) for the closed
+interval with endpoints \(\tau\) and \(\tau+\delta\),
 
 \[
 H^2(c_\tau,c_{\tau+\delta})
 \;\le\;
+|\delta|\int_{J_\delta}\frac{I(s)}{4}\,ds
+\;\le\;
 \frac{\delta^2}{4}\,\bar I.
 \]
 
-(Annex Prop.\ 4; Hellinger convention \(H^2=\int(\sqrt{p}-\sqrt{q})^2\in[0,2]\).)
+*Proof.* **Finiteness and continuity of \(I\).** By Lemma 3.5(v) the integrand
+\((\partial_\tau\log c_\tau)^2c_\tau\) is bounded uniformly on
+\([0,1]^2\times[\tau_0,\tau_1]\) and, for each \((x,y)\), continuous in \(\tau\).
+The unit square carries finite Lebesgue measure, so dominated convergence gives
+both finiteness of \(I(\tau)\) and continuity of \(I\) on \([\tau_0,\tau_1]\);
+compactness then gives \(\bar I=\sup I=\max I<\infty\) — the supremum is attained,
+and in particular finite.
+
+**Integrated bound.** Since \(c_\tau\ge c_{\min}>0\) and \(c_\tau\) is \(C^1\) in
+\(\tau\) (Lemma 3.5(v)), \(\sqrt{c_\tau}\) is \(C^1\) in \(\tau\) with
+\(\partial_\tau\sqrt{c_\tau}=\partial_\tau c_\tau/(2\sqrt{c_\tau})\) bounded, and
+
+\[
+\int_{[0,1]^2}\bigl(\partial_s\sqrt{c_s}\bigr)^2
+=
+\frac14\int_{[0,1]^2}\frac{(\partial_s c_s)^2}{c_s}
+=
+\frac{I(s)}{4}.
+\]
+
+Taking \(\delta>0\) (the case \(\delta<0\) is identical with the endpoints
+exchanged), the fundamental theorem of calculus and Cauchy–Schwarz along the
+parameter path give, pointwise in \((x,y)\),
+
+\[
+\bigl(\sqrt{c_{\tau+\delta}}-\sqrt{c_\tau}\bigr)^2
+=
+\Bigl(\int_\tau^{\tau+\delta}\partial_s\sqrt{c_s}\,ds\Bigr)^{\!2}
+\le
+\delta\int_\tau^{\tau+\delta}\bigl(\partial_s\sqrt{c_s}\bigr)^2 ds ;
+\]
+
+integrating over \([0,1]^2\) and applying Fubini (the integrand is bounded on a
+finite-measure product) yields the displayed bound. No expansion in \(\delta\) is
+used, so the bound holds for **every** admissible \(\delta\), not only
+asymptotically; \(\bar I<\infty\) is exactly what makes it uniform over the
+parameter interval.
+
+**QMD.** In copula coordinates the family lives on a **fixed** domain: every
+\(c_\tau\) is a probability density on the same unit square with respect to
+Lebesgue measure, the \(\tau\)-dependent box edges having been absorbed by the
+quantile transforms of Lemma 3.5(iv). In this compact, smooth, fixed-domain
+setting the definition of quadratic-mean differentiability can be verified
+directly. By Lemma 3.5(v), \(c_\tau\ge c_{\min}>0\) and \(\partial_\tau c_\tau\) is
+jointly continuous, so
+
+\[
+(z,\tau)\longmapsto\partial_\tau\sqrt{c_\tau(z)}
+=\frac{\partial_\tau c_\tau(z)}{2\sqrt{c_\tau(z)}}
+=\tfrac12\bigl(\partial_\tau\log c_\tau(z)\bigr)\sqrt{c_\tau(z)}
+\]
+
+is continuous on the compact \([0,1]^2\times K'\), hence bounded and **uniformly**
+continuous there. Fix \(\tau\in[\tau_0,\tau_1]\), which is interior to \(J\), and put
+
+\[
+G_\delta(z)
+:=\sqrt{c_{\tau+\delta}(z)}-\sqrt{c_\tau(z)}-\delta\,\partial_\tau\sqrt{c_\tau(z)}
+=\int_0^\delta\Bigl[\partial_s\sqrt{c_s(z)}\big|_{s=\tau+u}-\partial_\tau\sqrt{c_\tau(z)}\Bigr]du .
+\]
+
+Uniform continuity gives \(\sup_z|G_\delta(z)|\le|\delta|\,\varepsilon(\delta)\) with
+\(\varepsilon(\delta)\to0\) as \(\delta\to0\), so \(\int_{[0,1]^2}G_\delta^2=o(\delta^2)\):
+the family is differentiable in quadratic mean at \(\tau\), with \(L^2\)-derivative
+\(\partial_\tau\sqrt{c_\tau}\) and score \(\partial_\tau\log c_\tau\). Expanding
+\(H^2(c_\tau,c_{\tau+\delta})=\int(\delta\,\partial_\tau\sqrt{c_\tau}+G_\delta)^2\)
+and bounding the cross term by Cauchy–Schwarz yields the local form
+\(H^2(c_\tau,c_{\tau+\delta})=(\delta^2/4)I(\tau)+o(\delta^2)\), since
+\(\int(\partial_\tau\sqrt{c_\tau})^2=I(\tau)/4\). \(\blacksquare\)
+
+*Relation to the standard criterion, and what depends on it.* The three properties
+used above — an open parameter set with a \(\tau\)-independent dominating measure;
+\(\tau\mapsto\sqrt{c_\tau(z)}\) continuously differentiable for every \(z\); and a
+finite, continuous Fisher information — are exactly the hypotheses of the textbook
+sufficient condition for QMD (van der Vaart [11, Lemma 7.6]), and the open interval
+\(J\) of the construction is what supplies the first. We record the correspondence
+for orientation only: **nothing here relies on that citation**, whose edition is not
+held in the local library (`[UNVERIFIED]` as to numbering; the locally held
+\(L^2\)-differentiability treatment gives the same statement under the same
+hypotheses), because the two displays above verify the definition directly. Nor
+does **Theorem 3.8 depend on QMD at all**: the floor uses only the non-asymptotic
+integrated bound, which is proved by Cauchy–Schwarz without any expansion.
+(Hellinger convention \(H^2=\int(\sqrt p-\sqrt q)^2\in[0,2]\) as in §2.3.
+Traceability, not a dependency: annex Prop.\ 4.)
 
 **Proposition 3.7 (no exact re-identification).** `[PROVED]`  
 \(c_\tau\neq c_{\tau'}\) whenever \(\tau\neq\tau'\) in \([\tau_0,\tau_1]\). In
@@ -629,14 +985,60 @@ and every (possibly randomized) order-only estimator \(\widehat\tau=f(C_n)\):
    \]
    Thus the minimax localization radius is of order \(1/\sqrt{n\bar I}\) at fixed \(n\).
 
-*Proof sketch (annex §5).*  
-Prop.\ 3.6 bounds Hellinger at the copula level. Hellinger tensorizes over \(n\)
-i.i.d.\ samples (Lemma 2.1). In copula coordinates every family member is the unit
-square with the same product order, while all \(\tau\)-dependence lies in the
-sampling density. The map from the sample to the unlabeled poset is therefore
-parameter-independent (Lemma 2.2); data processing and \(\mathrm{TV}\le H\) yield
-(1). The nearest-endpoint test reduction yields (2)–(3)
-(`wp4_two_point_theorem.md`). ∎
+*Proof.*  
+**(1).** By Lemma 2.1 the \(n\) points are i.i.d.\ from the normalized volume
+measure on \(D_\tau\). By §3.3.2, \(D_\tau\) is a coordinate box in the global
+double-null chart \((\tilde U,v)\), in which the causal order is exactly the product
+order, so Lemma 2.2 applies: the fixed-\(n\) unlabeled poset law depends on
+\(g_\tau\) only through the copula \(c_\tau\). Concretely, the coordinatewise
+quantile transform \((\tilde U,v)\mapsto(F_\tau(\tilde U),G_\tau(v))\) is increasing
+in each coordinate, hence order-preserving, and carries the sample to \(n\)
+i.i.d.\ points of \([0,1]^2\) with density \(c_\tau\); the induced map \(\Phi\)
+from \(n\) unit-square points to the unlabeled poset is *the same* measurable map
+for every \(\tau\), all of the \(\tau\)-dependence having been moved into
+\(c_\tau\). Proposition 3.6 gives
+\(H^2(c_\tau,c_{\tau+\delta})\le\delta^2\bar I/4\); the tensorization corollary of
+§2.3 gives
+\(H^2\bigl(c_\tau^{\otimes n},c_{\tau+\delta}^{\otimes n}\bigr)\le n\delta^2\bar
+I/4\); and data processing under \(\Phi\) together with \(\mathrm{TV}\le H\) gives
+
+\[
+\mathrm{TV}\bigl(Q^n_\tau,Q^n_{\tau+\delta}\bigr)
+\;\le\;
+H\bigl(c_\tau^{\otimes n},c_{\tau+\delta}^{\otimes n}\bigr)
+\;\le\;
+\frac{|\delta|}{2}\sqrt{n\bar I}.
+\]
+
+**(2).** Put \(A:=\{|\widehat\tau-\tau|<|\delta|/2\}\). On \(A\) the triangle
+inequality gives \(|\widehat\tau-(\tau+\delta)|\ge|\delta|-|\widehat\tau-\tau|>
+|\delta|/2\), so \(A\subseteq\{|\widehat\tau-(\tau+\delta)|\ge|\delta|/2\}\), while
+\(A^c=\{|\widehat\tau-\tau|\ge|\delta|/2\}\). Hence
+
+\[
+\mathbb{P}_\tau\bigl(|\widehat\tau-\tau|\ge|\delta|/2\bigr)
++
+\mathbb{P}_{\tau+\delta}\bigl(|\widehat\tau-(\tau+\delta)|\ge|\delta|/2\bigr)
+\;\ge\;
+1-\bigl[\mathbb{P}_\tau(A)-\mathbb{P}_{\tau+\delta}(A)\bigr]
+\;\ge\;
+1-\mathrm{TV}\bigl(Q^n_\tau,Q^n_{\tau+\delta}\bigr),
+\]
+
+by the definition of \(\mathrm{TV}\) as a supremum over events; now insert (1).
+For randomized \(\widehat\tau=f(C_n,U)\) with \(U\) independent of the data, the
+same computation runs on the product space, whose total variation is again
+\(\mathrm{TV}(Q^n_\tau,Q^n_{\tau+\delta})\) because the extra factor is common to
+both models.
+
+**(3).** If some order-only procedure had both error probabilities at most
+\(\varepsilon\), then by (2) \(2\varepsilon\ge1-(|\delta|/2)\sqrt{n\bar I}\), i.e.
+\(|\delta|\ge2(1-2\varepsilon)/\sqrt{n\bar I}\). The contrapositive is (3), with the
+inequality strict as stated. \(\blacksquare\)
+
+(The two-point testing inequality and the data-processing / \(\mathrm{TV}\le H\)
+steps are `[BACKGROUND]`, §2.3 and [10]. Traceability, not a dependency: annex §5
+and `wp4_two_point_theorem.md`.)
 
 #### Theorem 3.9 (fixed-\(n\) separation by comparable-pair count)
 `[PROVED]` · Label: `PROVED_FIXED_N_SEPARATION`
