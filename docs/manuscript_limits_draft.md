@@ -335,11 +335,20 @@ bound, PASS under pre-registration, …); and what is *not* claimed
 
 ### 2.5 Labels that must not be mixed
 
-| Label | Meaning | Used for |
-|---|---|---|
-| `PROVED_NON_IDENTIFIABILITY` | No measurable estimator of the channel can drive risk to zero (equal laws, or two-point / Fisher lower bound; or target not a functional of the data) | Theorems 3.1, 3.2, 3.8 |
-| `PROVED_FIXED_N_SEPARATION` | A named order-only statistic yields tests with vanishing total error under the theorem's stated family, lapse, and parameter-separation quantifiers | Theorem 3.9 |
-| `EMPIRICAL_FAILURE_OF_CLASS_L` | Every rule in a **named** list or class \(L\) fails under a fixed protocol | Ledger C1–C6 |
+- `PROVED_NON_IDENTIFIABILITY`
+  - *Meaning:* No measurable estimator of the channel can drive risk to zero
+    (equal laws, or two-point / Fisher lower bound; or target not a functional
+    of the data)
+  - *Used for:* Theorems 3.1, 3.2, 3.8
+- `PROVED_FIXED_N_SEPARATION`
+  - *Meaning:* A named order-only statistic yields tests with vanishing total
+    error under the theorem's stated family, lapse, and parameter-separation
+    quantifiers
+  - *Used for:* Theorem 3.9
+- `EMPIRICAL_FAILURE_OF_CLASS_L`
+  - *Meaning:* Every rule in a **named** list or class \(L\) fails under a
+    fixed protocol
+  - *Used for:* Ledger C1–C6
 
 **Rule R3 (binding).** The ledger is never cited as a proof of
 `PROVED_NON_IDENTIFIABILITY`. Conversely, Theorems 3.1–3.9 are never presented as
@@ -418,7 +427,7 @@ under normalization of the sampling measure. By Lemma 2.1, the \(n\) i.i.d.\ sam
 the dilated geometry is the \(\Phi_s\)-image in law of the sample on the original
 geometry, with identical induced relations. Unlabeled poset laws therefore coincide,
 and total variation vanishes. The estimation consequence is the two-point bound at
-\(\mathrm{TV}=0\) (`wp4_two_point_theorem.md`, Teorema 2). ∎
+\(\mathrm{TV}=0\) (`wp4_two_point_theorem.md`, Teorema 2). \(\blacksquare\)
 
 **3+1 dimensions (scoped).** `[PROVED]` in the scoped class of
 `op12_tv_zero_3p1.md`, not as a general Hauptvermutung. Fix a temporal sector
@@ -719,7 +728,7 @@ bounds the sum of the two testing errors by
 \]
 For any test, total variation is at least one minus its total error; data
 processing is legitimate because \(S_n\) is a function of the unlabeled poset.
-This proves (2), and combining it with (1) gives (3). ∎
+This proves (2), and combining it with (1) gives (3). \(\blacksquare\)
 
 #### Corollary 3.10 (sharp boundary exponent in the \(o/\omega\) sense)
 `[PROVED]`
@@ -782,13 +791,32 @@ dimensionless. The annex proves the invariance on this family; we do **not** pre
 
 ### 3.4 Summary of §3
 
-| Result | Target | Channel | Guarantee | Label |
-|---|---|---|---|---|
-| Thm 3.1 | Absolute \(r_s\) or \(M\) | order-only, \(N=n\) | \(\mathrm{TV}=0\) on dilation orbit (1+1 and scoped 3+1) | `PROVED_NON_IDENTIFIABILITY` |
-| Thm 3.2 | Global event horizon | data from a finite causally convex patch | not a functional of those data | `PROVED_NON_IDENTIFIABILITY` |
-| Thm 3.8 | Parameter \(\tau\) of the EF diamond family | order-only, \(N=n\) | floor \(\sim 1/\sqrt{n\bar I}\) | `PROVED_NON_IDENTIFIABILITY` (rate) |
-| Thm 3.9 / Cor 3.10 | Same parameter and family, \(0<dv<dv_0\) | order-only, \(N=n\) | fixed-pair \(\mathrm{TV}\to1\); matching \(n^{-1/2}\) boundary exponent | `PROVED_FIXED_N_SEPARATION` |
-| Prop 3.3–3.4 | design of families | — | Kruskal sterile; fixed EF box non-regular | `[REMARK]` |
+- **Thm 3.1**
+  - *Target:* Absolute \(r_s\) or \(M\)
+  - *Channel:* order-only, \(N=n\)
+  - *Guarantee:* \(\mathrm{TV}=0\) on dilation orbit (1+1 and scoped 3+1)
+  - *Label:* `PROVED_NON_IDENTIFIABILITY`
+- **Thm 3.2**
+  - *Target:* Global event horizon
+  - *Channel:* data from a finite causally convex patch
+  - *Guarantee:* not a functional of those data
+  - *Label:* `PROVED_NON_IDENTIFIABILITY`
+- **Thm 3.8**
+  - *Target:* Parameter \(\tau\) of the EF diamond family
+  - *Channel:* order-only, \(N=n\)
+  - *Guarantee:* floor \(\sim 1/\sqrt{n\bar I}\)
+  - *Label:* `PROVED_NON_IDENTIFIABILITY` (rate)
+- **Thm 3.9 / Cor 3.10**
+  - *Target:* Same parameter and family, \(0<dv<dv_0\)
+  - *Channel:* order-only, \(N=n\)
+  - *Guarantee:* fixed-pair \(\mathrm{TV}\to1\); matching \(n^{-1/2}\) boundary
+    exponent
+  - *Label:* `PROVED_FIXED_N_SEPARATION`
+- **Prop 3.3–3.4**
+  - *Target:* design of families
+  - *Channel:* —
+  - *Guarantee:* Kruskal sterile; fixed EF box non-regular
+  - *Label:* `[REMARK]`
 
 None of these results is an `EMPIRICAL_FAILURE_OF_CLASS_L` statement. Failures of
 named region-locators appear in §5 of the outline (ledger), not here.
@@ -973,15 +1001,47 @@ Anchors: `docs/comite/comite_decision_042_c1-c5-localizer-line-closure.md` §3�
 `docs/paper_outline_c1c6_plus_prereg002.md` §4–§5. Label on every row:
 `EMPIRICAL_FAILURE_OF_CLASS_L`.
 
-| ID | Construction (one line) | Terminal | Lesson (one line) | Program label |
-|---|---|---|---|---|
-| **C3-early** | Future-width / funnel collapse as horizon proxy | `REJECTED_HAYWARD` | Funnel tracks singularity truncation, not trapping (fails regular Hayward control) | `EMPIRICAL_FAILURE_OF_CLASS_L` |
-| **C1** | Bottleneck / ideal / flow through `Max` | `BLOCKED_UNCLOSED` + `MAX_TRIVIAL` | Finite `Max` trivializes; definition never closed as frozen localizer | `EMPIRICAL_FAILURE_OF_CLASS_L` |
-| **C2** | Common-future overlap / \(\kappa\) on a wavefront | `BLOCKED_E_INDEP` + `TRUNCATION` | Without null structure + ceiling control, confounds with box truncation | `EMPIRICAL_FAILURE_OF_CLASS_L` |
-| **C3-third** | Truncated-future selectors \((L,V)\) on minimals | `INCONCLUSIVE_EDGE_MARGINAL` | Edge-dominated marginal channel; insufficient pair synergy | `EMPIRICAL_FAILURE_OF_CLASS_L` |
-| **C4** | Common-future convergence conditioned on neighbors | `REJECTED_NO_E_M` | No order-only, relabel-invariant neighbor graph \(E_M\) (decision 039) | `EMPIRICAL_FAILURE_OF_CLASS_L` |
-| **C5** | Global common-future matrix → spectral block / partition | `EXHAUSTED` (F3) | Wall \(\neq\) `Max`; twin/bridge ambiguity; no lateral dual (040–041) | `EMPIRICAL_FAILURE_OF_CLASS_L` |
-| **C6** | Antichain waist \(W(p,q)\) of an Alexandrov interval | `BLOCKED_NO_STABLE_CODIM2` | Antichain exists as order object; stable codim-2 screen and transport do not | `EMPIRICAL_FAILURE_OF_CLASS_L` |
+- **C3-early**
+  - *Construction:* Future-width / funnel collapse as horizon proxy
+  - *Terminal:* `REJECTED_HAYWARD`
+  - *Lesson:* Funnel tracks singularity truncation, not trapping (fails regular
+    Hayward control)
+  - *Program label:* `EMPIRICAL_FAILURE_OF_CLASS_L`
+- **C1**
+  - *Construction:* Bottleneck / ideal / flow through `Max`
+  - *Terminal:* `BLOCKED_UNCLOSED` + `MAX_TRIVIAL`
+  - *Lesson:* Finite `Max` trivializes; definition never closed as frozen
+    localizer
+  - *Program label:* `EMPIRICAL_FAILURE_OF_CLASS_L`
+- **C2**
+  - *Construction:* Common-future overlap / \(\kappa\) on a wavefront
+  - *Terminal:* `BLOCKED_E_INDEP` + `TRUNCATION`
+  - *Lesson:* Without null structure + ceiling control, confounds with box
+    truncation
+  - *Program label:* `EMPIRICAL_FAILURE_OF_CLASS_L`
+- **C3-third**
+  - *Construction:* Truncated-future selectors \((L,V)\) on minimals
+  - *Terminal:* `INCONCLUSIVE_EDGE_MARGINAL`
+  - *Lesson:* Edge-dominated marginal channel; insufficient pair synergy
+  - *Program label:* `EMPIRICAL_FAILURE_OF_CLASS_L`
+- **C4**
+  - *Construction:* Common-future convergence conditioned on neighbors
+  - *Terminal:* `REJECTED_NO_E_M`
+  - *Lesson:* No order-only, relabel-invariant neighbor graph \(E_M\)
+    (decision 039)
+  - *Program label:* `EMPIRICAL_FAILURE_OF_CLASS_L`
+- **C5**
+  - *Construction:* Global common-future matrix → spectral block / partition
+  - *Terminal:* `EXHAUSTED` (F3)
+  - *Lesson:* Wall \(\neq\) `Max`; twin/bridge ambiguity; no lateral dual
+    (040–041)
+  - *Program label:* `EMPIRICAL_FAILURE_OF_CLASS_L`
+- **C6**
+  - *Construction:* Antichain waist \(W(p,q)\) of an Alexandrov interval
+  - *Terminal:* `BLOCKED_NO_STABLE_CODIM2`
+  - *Lesson:* Antichain exists as order object; stable codim-2 screen and
+    transport do not
+  - *Program label:* `EMPIRICAL_FAILURE_OF_CLASS_L`
 
 **Line status.** C1–C5: `EXHAUSTED_FOR_LOCALIZATION` as a localizer line for
 horizon/edge structure in this bank (decision 042). C6: closed at the conservative
@@ -1187,21 +1247,34 @@ fixed-\(n\) order-only blindness for absolute mass.
 
 ### 7.1 Closed in this paper
 
-| Question | Status | Where |
-|---|---|---|
-| Absolute \(r_s\) / \(M\) from order-only data at fixed \(N=n\) (stated families) | **Non-identifiable** (\(\mathrm{TV}=0\) on the orbit) | Thm 3.1 · `PROVED_NON_IDENTIFIABILITY` |
-| Global event horizon from a single finite causally convex patch | **Not a functional** of patch data | Thm 3.2 · `PROVED_NON_IDENTIFIABILITY` |
-| Localization rate for \(\tau\) on the regular EF diamond family | **Floor** \(\sim n^{-1/2}\) | Thm 3.8 · `PROVED_NON_IDENTIFIABILITY` (rate) |
-| Fixed-\(n\) separation of \(\tau\ne\tau'\) by comparable-pair count, for \(0<dv<dv_0\) | **Consistent for each fixed pair**; matching \(o/\omega\) boundary exponent | Thm 3.9 / Cor 3.10 · `PROVED_FIXED_N_SEPARATION` |
-| Sealed future-volume in-patch score under prereg-002 | **PASS** (caveated artifact status) | §4 · `VALIDATED` (caveated) |
-| Named region-localizers C1–C6 in this bank | **Terminated** as listed | §5 · `EMPIRICAL_FAILURE_OF_CLASS_L` |
+- Absolute \(r_s\) / \(M\) from order-only data at fixed \(N=n\) (stated families)
+  - *Status:* **Non-identifiable** (\(\mathrm{TV}=0\) on the orbit)
+  - *Where:* Thm 3.1 · `PROVED_NON_IDENTIFIABILITY`
+- Global event horizon from a single finite causally convex patch
+  - *Status:* **Not a functional** of patch data
+  - *Where:* Thm 3.2 · `PROVED_NON_IDENTIFIABILITY`
+- Localization rate for \(\tau\) on the regular EF diamond family
+  - *Status:* **Floor** \(\sim n^{-1/2}\)
+  - *Where:* Thm 3.8 · `PROVED_NON_IDENTIFIABILITY` (rate)
+- Fixed-\(n\) separation of \(\tau\ne\tau'\) by comparable-pair count, for
+  \(0<dv<dv_0\)
+  - *Status:* **Consistent for each fixed pair**; matching \(o/\omega\) boundary
+    exponent
+  - *Where:* Thm 3.9 / Cor 3.10 · `PROVED_FIXED_N_SEPARATION`
+- Sealed future-volume in-patch score under prereg-002
+  - *Status:* **PASS** (caveated artifact status)
+  - *Where:* §4 · `VALIDATED` (caveated)
+- Named region-localizers C1–C6 in this bank
+  - *Status:* **Terminated** as listed
+  - *Where:* §5 · `EMPIRICAL_FAILURE_OF_CLASS_L`
 
 ### 7.2 Abandoned as program north
 
 ```text
 ABANDONED_AS_PROGRAM_NORTH:
-  further order-only region-locators aimed at Schwarzschild 3+1 horizon structure
-  (global EH, trapping, codim-2 screen, or proxy) in the post-PR008 candidate line.
+  further order-only region-locators aimed at Schwarzschild
+  3+1 horizon structure (global EH, trapping, codim-2 screen,
+  or proxy) in the post-PR008 candidate line.
 ```
 
 This is a **governance** closure for the reconstruction ambition under the
