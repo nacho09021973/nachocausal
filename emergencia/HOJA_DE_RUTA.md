@@ -770,11 +770,19 @@ AUDIT_ITEMS = (1) definicion literal de S, (2) ANOVA empirico exacto,
               (3) funcion de influencia + etiqueta "correccion intrabin"
 CV4_4_POPULATION_LEMMA = SCOPED_DOWN (P1a_count_volume_lema_kl_d2.md): solo la
                    pieza Beta-producto, NO el b completo. Identidad exacta
-                   CV^2 = 1/(R(k,n)R(l,n))-1 derivada algebraicamente; cadena de
-                   Wendel escrita (no-degeneracion uniforme k,l>=eps*n basta para
-                   O(1/n), sin suponer limite de proporciones). Estados:
+                   Var(ell|k,l)=kl/(n+1)^2*(1-R(k,n)R(l,n)) derivada
+                   algebraicamente; cadena de Wendel escrita y uniforme sobre
+                   TODAS las formas 1<=k,l<=n, incluidas las degeneradas:
+                   P_{1,n}<= (n+1/4)/(n+1)^2 <= 1/n. La cota puntual elimina la
+                   dependencia de w_n para P_1; no hace falta un lema de
+                   no-degeneracion ni controlar colas del selector. Estados:
                    BETA_PRODUCT_IDENTITY = NUMERICALLY_VERIFIED_DERIVATION_PENDING
-                   UNIFORM_NONDEGENERACY_LEMMA = NOT_PROVED
+                   WENDEL_SOURCE = UNVERIFIED_LOCALLY
+                   A2_CONDITIONAL_VARIANCE_BOUND = UNIFORM_ALL_SHAPES_PENDING_AUDIT
+                   A3_SELECTOR_TAIL_OR_NONDEGENERACY_FOR_P1 = UNNECESSARY
+                   A4_P1_ANALYTIC_REGIME = RESOLVED_PENDING_IDENTITY_WENDEL_AUDIT
+                   A4_NEW_EXECUTION_REQUIRED = NO
+                   P2_SCALING = OPEN_REQUIRES_W_N
                    FULL_B_SCALING = NOT_ESTABLISHED
                    La heuristica 1/(4k)+1/(4l) queda RECHAZADA como base de prueba:
                    yerra hasta +143% cuando k,l = Theta(n).
