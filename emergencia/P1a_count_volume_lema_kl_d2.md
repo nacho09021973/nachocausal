@@ -1,276 +1,450 @@
-# P1a — Lema de la pieza Beta-producto en términos de `(k,l)` (`d=2`)
+# P1a — Cierre formal de `P_{1,n}` y aislamiento de `P_{2,n}` (`d=2`)
 
-> **ESTADO: OBJETIVO ANALÍTICO MÍNIMO · `NOT_PROVED` · ALCANCE RESTRINGIDO A LA
-> PIEZA BETA-PRODUCTO · SIN DATOS NUEVOS · SIN EJECUCIÓN ESTOCÁSTICA.**
+> **ESTADO: `PROVED` PARA `P_{1,n}` · CANAL `fixed-n`, `d=2` ·
+> PIEZA BETA-PRODUCTO ÚNICAMENTE · SIN EJECUCIÓN NUMÉRICA NUEVA.**
 >
-> Primer paso de la ruta abierta en `emergencia/HOJA_DE_RUTA.md` §18 y en
-> `P1a_count_volume_canal_sigma_m_d2.md`: si `Var(Y_n)` y `E[Var(Y_n|G_n)]` son
-> ambas `O(1/n)`, entonces `rho_max` tiene meseta no trivial. Este documento **no**
-> aborda esa hipótesis completa. Aborda **solo** la pieza que la ley Beta-producto
-> puede alcanzar, y deja explícito lo que queda fuera.
+> El resultado probado es uniforme respecto de la ley de formas seleccionadas.
+> `P_{2,n}` queda definido, pero no resuelto. No se reabre ningún gate.
 
-## 0. Qué es y qué no es este documento
+## 0. Enunciado
 
-La descomposición exacta del objetivo es
+Fíjense `n`, un lado `h in {PAST,FUTURE}` y el evento `S` de selección única de
+`MIN_COVERAGE_LEX`, con `P_n(S)>0`. Se suprime `h,S` de la notación cuando no hay
+ambigüedad. Si `T=(K,L)` es la forma del intervalo seleccionado y `ell` su duración
+relativa normalizada, entonces
 
 ```text
-b_n := E[Var(Y|m)]  =  P_{1,n} + P_{2,n},
-P_{1,n} := E_s[ Var(ell|s) ],
-P_{2,n} := E_m[ Var_s( E[ell|s] | m ) ].
-                         └─ pieza Beta-producto ─┘   └── requiere w ──┘
+P_{1,n} := E[ Var(ell | T,n,h,S) | n,h,S ]
+           <= (n+1/4)/(n+1)^2
+           <= 1/n.
 ```
 
-Este lema se ocupa **únicamente del primer sumando**. Conserva el condicionamiento
-por la forma `s=(k,l)`, pero obtiene una cota puntual uniforme en todas las formas
-admisibles. Por ello puede tomar `E_s[·]` sin conocer la ley de formas `w_n`. No
-toca el segundo sumando y, por tanto, **no demuestra `b_n = O(1/n)`**.
+Por tanto `P_{1,n} -> 0`. La convergencia es uniforme respecto de cualquier ley
+seleccionada de `T` compatible con el experimento. La prueba no usa `w_n`, balance
+de la forma, no degeneración asintótica ni simulación.
+
+## 1. Experimento, selector y variables
+
+El experimento congelado en
+`P1a_count_volume_experimento_condicionado_d2.md` §1 y
+`P1a_contrato_representaciones_alternativas_d2.md` §2 es
 
 ```text
-LEMMA_SCOPE = BETA_PRODUCT_PIECE_ONLY
-LEMMA_DOES_NOT_COVER = E_m[ Var_s( E[ell|s] | m ) ]
+(U_i,V_i) iid Uniform([0,1]^2), i=1,...,n, condicionado a N=n,
+x_i prec x_j  iff  U_i<U_j y V_i<V_j,
+ds^2 = du dv,
+ell(x,y) = sqrt((U_y-U_x)(V_y-V_x)) in [0,1].
 ```
 
-## 1. Dominio admisible y cotas de partida
+La normalización es la del cuadrado unidad; `ell` es una duración relativa y
+adimensional, no una escala propia absoluta.
 
-Del modelo congelado (`P1a_contrato_representaciones_alternativas_d2.md` §2):
-`(u_i,v_i)` iid `Uniform([0,1]^2)` condicionado a `N=n`, y
-`ell(x,y) = sqrt((u_y-u_x)(v_y-v_x))`.
+El poset queda representado por la permutación `Pi` que asigna a cada rango en `U`
+el rango en `V`. El selector examina cuádruplas
+`q=(a,b,c,d)` con `a prec b prec c prec d` y con los dos intervalos cerrados de
+cardinalidad al menos tres. Maximiza lexicográficamente
 
 ```text
-DOMINIO:  1 <= k <= n,  1 <= l <= n     (para que Beta(k,n+1-k) sea propia)
-X ~ Beta(k, n+1-k),  Y ~ Beta(l, n+1-l),  X perp Y     (CV-3.5, ya demostrado)
-ell = sqrt(X Y)
+( min(m_-(q),m_+(q)), m_-(q)+m_+(q) )
 ```
 
-**Cota uniforme de `ell` (no es una hipótesis: se sigue del modelo).** `X,Y in [0,1]`
-casi seguramente, luego `ell = sqrt(XY) in [0,1]` y `E[ell|s] <= 1` para todo
-`(k,l,n)` admisible. Verificado numéricamente en todo el dominio de `n=64,96,128`
-como control, pero la razón es el soporte de la Beta, no el cálculo.
+y solo observa la cuádrupla ganadora `q*` cuando es única; ese es el evento `S`.
+Tanto `S` como `q*`, las cardinalidades `m_-,m_+` y todos los rangos son funciones
+de `Pi`.
 
-Esto da el control auxiliar
+Para el lado pasado, escribiendo
 
 ```text
-Var(ell|s) = E[ell|s]^2 * CV^2(ell|s) <= CV^2(ell|s).
+alpha=rank_U(a), beta=rank_U(b),
+alpha'=rank_V(a), beta'=rank_V(b),
+K=beta-alpha, L=beta'-alpha', M=m_-(q*),
 ```
 
-La nueva cadena principal no usa este paso: trabaja directamente con la identidad
-exacta de la varianza de la Proposición 3. Se conserva aquí como control del modelo.
-
-## 2. Identidad exacta (derivación algebraica)
-
-Defínase el **déficit de medio momento**
+se tiene
 
 ```text
-A(x) := Gamma(x+1/2)^2 / ( x * Gamma(x)^2 ),        x > 0.
+Delta U = U_(beta)-U_(alpha),
+Delta V = V_(beta')-V_(alpha'),
+ell = sqrt(Delta U Delta V).
 ```
 
-**Proposición 1.** Para `X ~ Beta(k,n+1-k)`,
+El lado futuro es idéntico sustituyendo `(a,b)` por `(c,d)`. En adelante
+`T=(K,L)` significa la forma **del lado fijado**; no la cuádrupla completa.
+
+### 1.1 Dominio real y bordes
+
+Los rangos de endpoints comparables son estrictamente crecientes, luego `K,L>=1` y
+los casos `K=0` o `L=0` tienen probabilidad cero y no pertenecen al soporte. Además,
+el contrato exige `M>=3` en ambos lados. Cada intervalo contiene por tanto al menos
+un punto interior, lo que fuerza `K,L>=2` en el lado considerado y también gaps de
+al menos dos rangos en el otro lado. Entre ambos lados hay al menos un gap porque
+`b prec c`. En consecuencia, si `S` ocurre,
 
 ```text
-R(k,n) := (E[sqrt(X)])^2 / E[X] = A(k) / A(n+1).
+n >= 6,                 2 <= K,L <= n-4.
 ```
 
-*Demostración.* `E[sqrt(X)] = B(k+1/2, n+1-k)/B(k, n+1-k)
-= Gamma(k+1/2)Gamma(n+1) / (Gamma(k)Gamma(n+3/2))` y `E[X] = k/(n+1)`. Luego
+La prueba analítica se formula en el sobreconjunto `1<=k,l<=n`, donde las Betas
+siguen siendo propias. Esto cubre todo el soporte seleccionado y deja claro que no
+se ha eliminado ningún borde por conveniencia.
+
+## 2. Ley Beta-producto bajo el selector
+
+### 2.1 Independencia rango–magnitud
+
+Los vectores de muestras `(U_i)_{i=1}^n` y `(V_i)_{i=1}^n` son independientes. Para
+una muestra iid continua, su permutación de rangos es uniforme e independiente de
+sus estadísticos de orden: al particionar el dominio según los `n!` órdenes
+posibles, la densidad es la misma en cada región y la ordenación no altera la
+densidad conjunta de los valores ordenados. Sean `R_U,R_V` esas dos permutaciones
+de rangos. La independencia de los vectores de coordenadas implica que `R_U,R_V`
+son independientes entre sí y conjuntamente independientes de ambos vectores de
+estadísticos de orden. Como `Pi=R_V circ R_U^{-1}`, se obtiene
 
 ```text
-R(k,n) = [Gamma(k+1/2)^2 Gamma(n+1)^2] / [Gamma(k)^2 Gamma(n+3/2)^2] * (n+1)/k
-       = { Gamma(k+1/2)^2 / (k Gamma(k)^2) } * { (n+1) Gamma(n+1)^2 / Gamma(n+3/2)^2 }
-       = A(k) / A(n+1).                                                        QED
+Pi perp (U_(1),...,U_(n), V_(1),...,V_(n)),
+(U_(1),...,U_(n)) perp (V_(1),...,V_(n)).
 ```
 
-**Proposición 2 (identidad del coeficiente de variación).** Para todo `(k,l,n)`
-admisible,
+### 2.2 Ley de los gaps
+
+Para los estadísticos de orden uniformes, los `n+1` spacings, incluidos los dos
+bordes, tienen ley `Dirichlet(1,...,1)`: la densidad conjunta de
+`U_(1)<...<U_(n)` es la constante `n!`, y el cambio triangular a spacings tiene
+Jacobiano uno y lleva el dominio al simplex. La propiedad de agregación se prueba
+con la representación `D_i=E_i/sum_j E_j`, donde `E_0,...,E_n` son exponenciales
+iid: las sumas disjuntas son Gamma independientes. Así, la suma de `k` componentes
+y la suma de las `n+1-k` restantes forman una `Dirichlet(k,n+1-k)`. Por tanto, para
+`1<=i<j<=n`,
 
 ```text
-CV^2(ell | k,l) := Var(ell|k,l) / E[ell|k,l]^2 = 1/( R(k,n) R(l,n) ) - 1.
+U_(j)-U_(i) ~ Beta(j-i,n+1-j+i).
 ```
 
-*Demostración.* Por independencia de `X` e `Y`, `E[ell] = E[sqrt(X)]E[sqrt(Y)]` y
-`E[ell^2] = E[XY] = E[X]E[Y]`. Entonces
+### 2.3 Condicionamiento por selección
+
+Fíjese `Pi=p` compatible con `S`. El selector y los rangos de los endpoints quedan
+entonces determinados, mientras que la ley de las magnitudes ordenadas no cambia
+por la independencia de §2.1. Si la forma lateral es `T=(k,l)`, §2.2 y la
+independencia entre coordenadas dan
 
 ```text
-CV^2 = E[ell^2]/E[ell]^2 - 1
-     = E[X]E[Y] / ( (E[sqrt X])^2 (E[sqrt Y])^2 ) - 1
-     = { E[X]/(E[sqrt X])^2 } * { E[Y]/(E[sqrt Y])^2 } - 1
-     = 1/( R(k,n) R(l,n) ) - 1.                                                QED
+X_k := Delta U ~ Beta(k,n+1-k),
+Y_l := Delta V ~ Beta(l,n+1-l),
+X_k perp Y_l,
+ell = sqrt(X_k Y_l).
 ```
 
-**Proposición 3 (identidad exacta de la varianza).** Escribiendo
-`R_k := R(k,n)` y `R_l := R(l,n)`,
+Esta ley depende de `p` solo mediante `(k,l)`. Mezclar sobre todos los `p`
+compatibles con un mismo `(T,M,S)` no la cambia. En particular,
 
 ```text
-Var(ell | k,l) = kl/(n+1)^2 * (1 - R_k R_l).
+L(ell | T=(k,l),M=m,n,h,S) = L(ell | T=(k,l),n,h,S)
+                            = L(sqrt(X_k Y_l)).                 (2.1)
 ```
 
-*Demostración.* Por la Proposición 1,
-`E[sqrt(X)]^2 = E[X]R_k = kR_k/(n+1)` y análogamente para `Y`. Por independencia,
+Así queda verificada la hipótesis del resultado condicionado existente
+(`P1a_count_volume_ley_condicionada_d2.md` §§4 y 7): la selección modifica la ley
+de la forma, no la geometría condicionada por una forma fija.
+
+## 3. Identidades exactas
+
+Para `X_k~Beta(k,n+1-k)`, la fórmula de momentos de una Beta da
 
 ```text
-E[ell]^2 = E[sqrt(X)]^2 E[sqrt(Y)]^2 = kl R_k R_l/(n+1)^2,
-E[ell^2] = E[XY] = E[X]E[Y] = kl/(n+1)^2.
+E[X_k] = k/(n+1),
+
+E[sqrt(X_k)]
+  = B(k+1/2,n+1-k)/B(k,n+1-k)
+  = Gamma(k+1/2) Gamma(n+1) / (Gamma(k) Gamma(n+3/2)).          (3.1)
 ```
 
-Restando ambas expresiones se obtiene la identidad. `QED`
-
-Las tres proposiciones son **algebraicas**; no dependen de ninguna evaluación numérica.
-La malla numérica de §5 es un control de transcripción, **no** una demostración.
-
-## 3. Cadena de Wendel — objetivo del lema
-
-**Desigualdad de Wendel.** Para `0 < s < 1` y `x > 0`,
-`(x/(x+s))^{1-s} <= Gamma(x+s)/(x^s Gamma(x)) <= 1`. Con `s = 1/2` y elevando al
-cuadrado:
+Defínase
 
 ```text
-x/(x+1/2) <= A(x) <= 1,        x > 0.
+R(k,n) := (E[sqrt(X_k)])^2 / E[X_k]
+        = [ Gamma(k+1/2) Gamma(n+1)
+            / (Gamma(k) Gamma(n+3/2)) ]^2 * (n+1)/k.           (3.2)
 ```
 
-> Referencia estándar: J. G. Wendel, *Note on the gamma function*, Amer. Math.
-> Monthly **55** (1948), 563–564. `[UNVERIFIED-LOCALLY]` — no está en
-> `biblioteca/`; procede verificarla contra la fuente en la auditoría. La
-> desigualdad sí está comprobada numéricamente en todo el rango usado (§5).
+No hay desplazamiento de índices: el segundo parámetro es `n+1-k` porque el gap
+entre los rangos `i<j` agrega `k=j-i` de los `n+1` spacings.
 
-**Lema CV-4.4a (`NOT_PROVED`, cadena escrita).** Sea `1 <= k,l <= n`. Entonces
+Por independencia de `X_k,Y_l`,
 
 ```text
-(i)   R(k,n) = A(k)/A(n+1) >= A(k) >= k/(k+1/2),
-      usando A(n+1) <= 1 y la cota inferior de Wendel en A(k);
+E[ell^2 | k,l] = E[X_k]E[Y_l] = kl/(n+1)^2,
 
-(ii)  Var(ell|k,l)
-      = kl/(n+1)^2 * (1 - R_k R_l)
-      <= [((k+l)/2 + 1/4)/(n+1)^2]
-         * [k/(k+1/2)] * [l/(l+1/2)];
-
-(iii) como k+l <= 2n y los dos ultimos factores son <= 1,
-      Var(ell|k,l) <= (n+1/4)/(n+1)^2 <= 1/n
-      UNIFORMEMENTE para todo 1 <= k,l <= n;
-
-(iv)  P_{1,n} := E_s[Var(ell|s)]
-      <= (n+1/4)/(n+1)^2 <= 1/n.
+E[ell | k,l]^2
+  = E[sqrt(X_k)]^2 E[sqrt(Y_l)]^2
+  = kl R(k,n)R(l,n)/(n+1)^2.
 ```
 
-La expectativa de (iv) elimina cualquier dependencia de `w_n` porque la cota de
-(iii) es puntual y uniforme. No se escribe `P_{1,n} = E_s(1/n)`: `1/n` es una
-cota, no el valor de la varianza condicionada. No se exige balance, no degeneración
-uniforme ni convergencia de `k_n/n` o `l_n/n`; la cadena incluye las formas
-extremadamente desbalanceadas.
-
-Los pasos (i)–(iv) están escritos pero **no auditados**. El estado permanece
-`NOT_PROVED` hasta que la auditoría verifique la cadena, incluida la forma exacta de
-la identidad de la Proposición 3, la desigualdad de Wendel y el paso
-`A(n+1) <= 1`.
-
-## 4. Diagnóstico: por qué NO se usa la heurística `1/(4k)+1/(4l)`
-
-**Este apartado es diagnóstico. No forma parte de la demostración.**
-
-La intuición de «ruido de conteo» sugiere `CV^2 ~ 1/(4k) + 1/(4l)`. En el régimen
-relevante (`k,l = Theta(n)`) esa aproximación **falla**: la expansión asintótica
-tiene un término `-1/(2n)` del mismo orden que el principal y de signo opuesto.
-
-| `n` | `k=l` | `CV^2` exacto | `1/(4k)+1/(4l)` | error | `+(-1/(2n))` | error |
-|---:|---:|---:|---:|---:|---:|---:|
-| 64 | 12 | 0.034546 | 0.041667 | +21 % | 0.033854 | −2.0 % |
-| 64 | 25 | 0.012382 | 0.020000 | +62 % | 0.012188 | −1.6 % |
-| 64 | 38 | 0.005480 | 0.013158 | **+140 %** | 0.005345 | −2.5 % |
-| 128 | 25 | 0.016253 | 0.020000 | +23 % | 0.016094 | −1.0 % |
-| 128 | 51 | 0.005945 | 0.009804 | +65 % | 0.005898 | −0.8 % |
-| 128 | 76 | 0.002707 | 0.006579 | **+143 %** | 0.002673 | −1.3 % |
-
-**Consecuencia operativa:** cualquier intento de identificar la constante `b` a
-partir de la heurística ingenua está mal fundado. La cadena de Wendel evita el
-problema porque acota, no aproxima. La nueva cota uniforme tampoco identifica una
-constante límite para `P_{1,n}` ni para `b_n`.
-
-## 5. Controles numéricos (transcripción, no demostración)
-
-Deterministas, solo lectura, reutilizando `e_sqrt_beta` y `var_ell_given_shape` de
-`emergencia/p1a_count_volume_cota_resolucion_evaluacion_d2.py` (ya auditado). No se
-añade script nuevo.
+Restando se obtiene algebraicamente, no mediante una malla,
 
 ```text
-(1) max |R(k,n) - A(k)/A(n+1)|  sobre 1<=k<=n, n=64,96,128   =  1.7e-13
-(2) x/(x+1/2) <= A(x) <= 1  para x=1..600 y x=64,96,128,129  =  True
-(3) (1+1/2k)(1+1/2l)-1 >= CV^2 exacto en TODO 1<=k,l<=n,
-    n=64,96,128                                              =  True
-    holgura maxima 2.05x, en la esquina degenerada (k,l)=(1,1)
-(4) E[ell|s] <= 1 en todo el dominio                          =  True
+Var(ell | k,l)
+  = kl/(n+1)^2 * (1-R(k,n)R(l,n)).                            (3.3)
 ```
 
-El control (3) es el falsable: una cadena mal escrita habría producido una cota por
-debajo del valor exacto en algún `(k,l)`.
+## 4. Paso especial de Wendel: prueba autocontenida
 
-La comparación documental de la nueva cota uniforme con el máximo exacto ya
-disponible es:
-
-| `n` | máximo exacto | cota uniforme | cota − máximo | máximo/cota |
-|---:|---:|---:|---:|---:|
-| 64 | 0.00345920 | 0.01520710 | 0.01174790 | 22.75 % |
-| 96 | 0.00236862 | 0.01022957 | 0.00786095 | 23.15 % |
-| 128 | 0.00180384 | 0.00770687 | 0.00590303 | 23.41 % |
-
-Esta tabla no interviene en la demostración ni autoriza una ejecución nueva.
-
-## 6. Los cuatro límites explícitos
-
-1. **Dominio.** Todo lo anterior vale solo para `1 <= k,l <= n`. Fuera de ahí la
-   Beta no es propia y `A(x)` no está definida en `x=0`.
-2. **Modelo y dimensión.** La identidad usa la factorización Beta-producto del
-   modelo `fixed-n` en `d=2`. No se extrapola a otras dimensiones, al canal de
-   Poisson ni a una escala física absoluta sin rederivación.
-3. **La identidad exacta debe leerse en §2, no en §5.** Las Proposiciones 1–3
-   están demostradas algebraicamente; la malla numérica es control de
-   transcripción. Una malla no es una demostración.
-4. **El lema no controla `E_m[ Var_s( E[ell|s] | m ) ]`.** Ese sumando —la
-   dispersión entre formas que `m` no resuelve— sigue requiriendo `w`. Por tanto
-   este lema **no** establece `b_n = O(1/n)`, ni siquiera si se demuestra.
-
-## 7. Qué quedaría aislado si el lema pasa a demostrado
-
-La pieza Beta-producto dejaría de ser el obstáculo, y lo pendiente sería, en orden:
-
-1. el segundo sumando, `P_{2,n} = E_m[Var_s(E[ell|s]|m)]`, que sí necesita `w_n`;
-2. y solo después `a_n = n Var(Y_n)`, que es la parte realmente difícil porque es
-   íntegramente una propiedad de la distribución de salida del selector.
-
-No hace falta controlar las colas del selector ni demostrar no degeneración de
-`(k,l)` para cerrar `P_{1,n}`. Bajo las dos entradas pendientes de auditoría
-(identidad algebraica y Wendel), su régimen analítico queda resuelto y no requiere
-ejecución.
-
-## 8. Estado de control
+Para `x>0` defínase
 
 ```text
-BETA_PRODUCT_IDENTITY = NUMERICALLY_VERIFIED_DERIVATION_PENDING
-WENDEL_SOURCE = UNVERIFIED_LOCALLY
-A2_CONDITIONAL_VARIANCE_BOUND = UNIFORM_ALL_SHAPES_WRITTEN_PENDING_AUDIT
-A3_SELECTOR_TAIL_OR_NONDEGENERACY_CONTROL_FOR_P1 = UNNECESSARY
-A4_P1_ANALYTIC_REGIME = RESOLVED_PENDING_IDENTITY_AND_WENDEL_AUDIT
-A4_NEW_EXECUTION_REQUIRED = NO
-P2_SCALING = OPEN_REQUIRES_W_N
-FULL_B_SCALING = NOT_ESTABLISHED
-NEW_DATA = NONE
+A(x) := Gamma(x+1/2)^2 / (x Gamma(x)^2).
 ```
 
-> **Nota para la auditoría.** Las Proposiciones 1–3 de §2 están escritas con
-> demostración algebraica completa, y §3 contiene la cadena de Wendel entera. La
-> identidad y la cota uniforme son por tanto candidatas a ascenso **en la auditoría**,
-> no por decisión propia. Se registran conservadoramente a propósito: dos rondas
-> previas de auditoría en esta línea devolvieron `FAIL_MATERIAL` por sobreafirmación
-> y por retractaciones formuladas pero no aplicadas.
+Primero se prueba la única desigualdad gamma necesaria. La función `Gamma` es
+log-convexa en `(0,infinity)`: para `a,b>0` y `0<theta<1`, Hölder aplicado a la
+integral de Euler da
 
 ```text
-LEMMA_SCOPE = BETA_PRODUCT_PIECE_ONLY
-LEMMA_REQUIRES_BALANCE_OR_NONDEGENERACY = NO
-LEMMA_IDENTIFIES_LIMITING_CONSTANT = NO
-HEURISTIC_1_OVER_4K = REJECTED_AS_PROOF_BASIS (Seccion 4, error hasta +143%)
-NEW_SCRIPT_ADDED = NO
+Gamma(theta*a+(1-theta)*b)
+ <= Gamma(a)^theta Gamma(b)^(1-theta).
+```
+
+Con `theta=1/2`, los pares `(x,x+1)` y `(x+1/2,x+3/2)` dan respectivamente
+
+```text
+Gamma(x+1/2)^2 <= Gamma(x)Gamma(x+1) = x Gamma(x)^2,
+
+Gamma(x+1)^2 <= Gamma(x+1/2)Gamma(x+3/2)
+              = (x+1/2)Gamma(x+1/2)^2.
+```
+
+Como `Gamma(x+1)=x Gamma(x)`, ambas desigualdades equivalen a
+
+```text
+x/(x+1/2) <= A(x) <= 1,        x>0.                           (4.1)
+```
+
+Esta es exactamente la especialización `s=1/2`, elevada al cuadrado, de la
+desigualdad habitualmente atribuida a Wendel. La prueba anterior es autocontenida;
+la referencia bibliográfica verificada es J. G. Wendel, *Note on the Gamma
+Function*, **American Mathematical Monthly** 55(9) (1948), 563–564,
+[doi:10.2307/2304460](https://doi.org/10.2307/2304460).
+
+De (3.1)–(3.2),
+
+```text
+R(k,n) = A(k)/A(n+1).
+```
+
+Como `A(n+1)<=1` y `A(k)>=k/(k+1/2)`, se concluye para todo `1<=k<=n`:
+
+```text
+R(k,n) >= A(k) >= k/(k+1/2).                                 (4.2)
+```
+
+## 5. Cota puntual uniforme
+
+Por Cauchy–Schwarz, `0<R(k,n)<=1`. Sean `a_k=k/(k+1/2)` y
+`a_l=l/(l+1/2)`. Por (3.3), (4.2) y la positividad de todos los factores,
+
+```text
+Var(ell | k,l)
+ <= kl/(n+1)^2 * (1-a_k a_l).
+```
+
+La igualdad algebraica
+
+```text
+kl(1-a_k a_l)
+ = ((k+l)/2+1/4) * k/(k+1/2) * l/(l+1/2)
+```
+
+produce
+
+```text
+Var(ell | k,l)
+ <= [((k+l)/2+1/4)/(n+1)^2]
+    * [k/(k+1/2)] * [l/(l+1/2)].                            (5.1)
+```
+
+Para `1<=k,l<=n`, se tiene `k+l<=2n` y cada uno de los dos últimos factores está
+en `(0,1)`. Luego
+
+```text
+Var(ell | k,l) <= (n+1/4)/(n+1)^2.                           (5.2)
+```
+
+Finalmente, para `n>0`,
+
+```text
+n(n+1/4) <= (n+1)^2
+```
+
+porque la diferencia es `7n/4+1>0`. Por tanto
+
+```text
+sup_{1<=k,l<=n} Var(ell | k,l)
+ <= (n+1/4)/(n+1)^2
+ <= 1/n.                                                       (5.3)
+```
+
+El soporte seleccionado real `2<=k,l<=n-4` es un subconjunto de este dominio. La
+cota incluye, con margen, cualquier forma extremadamente desbalanceada admisible.
+
+## 6. Integración sobre la ley seleccionada: cierre de `P_{1,n}`
+
+Sea
+
+```text
+w_n^h(s|S) = P(T=s | n,h,S)
+```
+
+la ley marginal de la forma del lado fijado. Es una probabilidad sobre un soporte
+finito, aunque no se conozca su expresión. Por (2.1) y (5.2),
+
+```text
+P_{1,n}
+ := E[ Var(ell | T,n,h,S) | n,h,S ]
+  = sum_s w_n^h(s|S) Var(ell | s)
+ <= sum_s w_n^h(s|S) (n+1/4)/(n+1)^2
+  = (n+1/4)/(n+1)^2
+ <= 1/n.                                                       (6.1)
+```
+
+La expectativa no pierde el condicionamiento por `T`: promedia varianzas
+condicionadas. Tampoco se escribe `P_{1,n}=E_s(1/n)`; `1/n` es una cota puntual,
+no el integrando. Como (6.1) vale para toda probabilidad `w_n^h`, el resultado es
+uniforme respecto de la ley de formas y `P_{1,n}->0`.
+
+```text
+P1_STATUS = PROVED
+P1_RATE_UPPER_BOUND = O(1/n)
+P1_REQUIRES_W_N = NO
+P1_REQUIRES_BALANCE_OR_NONDEGENERACY = NO
+```
+
+## 7. Descomposición correcta y único objetivo posterior `P_{2,n}`
+
+`M` y `T=(K,L)` son funciones de la permutación `Pi`, pero **no se supone que `M`
+sea función del par `T`**. De hecho, la ley hipergeométrica del candidato fijado en
+`P1a_count_volume_ley_condicionada_d2.md` §5 muestra por qué la forma lateral no
+determina algebraicamente el conteo. La sigma-álgebra correcta para refinar el
+condicionamiento es siempre
+
+```text
+sigma(M) subseteq sigma(M,T).
+```
+
+Defínase, usando la ley Beta-producto,
+
+```text
+mu_n(s) := E[ell | T=s,n,h,S]
+         = E[sqrt(X_k)] E[sqrt(Y_l)],       s=(k,l),
+
+v_n(s)  := Var(ell | T=s,n,h,S).
+```
+
+La identidad (2.1) da la independencia condicional necesaria:
+
+```text
+E[ell | M,T,n,h,S]   = mu_n(T),
+Var(ell | M,T,n,h,S) = v_n(T).
+```
+
+La ley de varianza total, primero dentro de cada valor de `M` y después promediada
+sobre `M`, da rigurosamente
+
+```text
+Var(ell | M,n,h,S)
+ = E[v_n(T) | M,n,h,S]
+   + Var(mu_n(T) | M,n,h,S),
+
+E[Var(ell | M,n,h,S) | n,h,S]
+ = P_{1,n} + P_{2,n},                                         (7.1)
+
+P_{2,n}
+ := E_M[ Var_T(mu_n(T) | M,n,h,S) | n,h,S ].                  (7.2)
+```
+
+Si
+
+```text
+w_n^h(s|m,S) = P(T=s | M=m,n,h,S),
+```
+
+entonces el objetivo analítico equivalente es
+
+```text
+P_{2,n}
+ = sum_m P(M=m | n,h,S)
+   * { sum_s w_n^h(s|m,S) mu_n(s)^2
+       - [sum_s w_n^h(s|m,S) mu_n(s)]^2 }.                    (7.3)
+```
+
+### 7.1 Qué contienen los artefactos existentes
+
+La inspección, sin ejecutar nada, muestra que
+`resultados/p1a_representaciones_intervalos_d2.csv` registra `M` y `ell`, pero no
+`K,L` ni `T`; `resultados/p1a_enumeracion_exacta_d2.csv` registra estados y
+probabilidades del selector, pero tampoco formas. La derivación existente deja
+explícitamente `w_n^h(s|m,S)` sin calcular. Por tanto los runs actuales no permiten
+separar `P_{2,n}` de la varianza condicional total ni decidir su asintótica.
+
+El único paso posterior es caracterizar analíticamente `w_n^h(s|m,S)` con la
+representación por permutaciones ya existente e insertarla en (7.3), distinguiendo
+cotas superiores, cotas inferiores y diagnósticos finitos. En particular, exhibir
+dos formas con el mismo `m` no prueba una obstrucción persistente: una cota
+`liminf P_{2,n}>0` requiere masa no evanescente y separación cuantitativa de
+`mu_n(s)`.
+
+Los únicos desenlaces científicos registrados son:
+
+1. `P_{2,n}->0`: junto con (6.1), el estimador de Bayes
+   `E[ell|M,n,h,S]` reconstruye la duración relativa con error cuadrático tendente a
+   cero;
+2. `liminf P_{2,n}>0`: existe una obstrucción persistente para la reconstrucción
+   basada solo en `M`, causada por variación entre formas con el mismo conteo;
+3. `P_{2,n}->0` lentamente o sin una ley simple: hay consistencia basada en `M`,
+   pero con resolución limitada y régimen asintótico por caracterizar.
+
+Ninguna obstrucción del canal `sigma(M)` es un no-go para el poset completo ni para
+orden+número.
+
+```text
+P2_STATUS = OPEN_UNIQUE_NEXT_ANALYTIC_OBJECTIVE
+P2_EXISTING_RUNS_SUFFICIENT = NO
+P2_NEXT_STEP = CHARACTERIZE_w_n(s|m,n,side,S)_ANALYTICALLY
+```
+
+## 8. Techo de afirmación
+
+El cierre de `P_{1,n}` controla solo el ruido Beta-producto dentro de una forma en
+el canal `fixed-n`, `d=2`. No demuestra:
+
+- `P_{2,n}->0` ni ninguno de los otros desenlaces de §7;
+- el escalado del residual completo de (7.1);
+- una meseta de `rho_max`;
+- ningún resultado sobre `a_n=Var(Y_n)`;
+- consistencia fuera del estimando lateral seleccionado;
+- escala temporal absoluta, tiempo propio general u horizontes;
+- nada para `d>2`, el canal de Poisson o el poset completo.
+
+No modifica los gates congelados de `COUNT_VOLUME`, ratio, dimensiones superiores
+o ejecución numérica.
+
+## 9. Controles previos y estado final
+
+Las mallas y tablas numéricas preexistentes son controles de transcripción de
+(3.2)–(5.3); no intervienen en ninguna implicación de la prueba. En esta auditoría no
+se ejecutó ningún script, test científico, simulación ni generador de artefactos.
+
+```text
+P1_BETA_PRODUCT_UNDER_SELECTION = PROVED
+P1_ACTUAL_SELECTED_DOMAIN = 2<=k,l<=n-4 (n>=6, condicionado a S)
+P1_GAMMA_IDENTITY = PROVED_ALGEBRAICALLY
+P1_WENDEL_SPECIAL_CASE = PROVED_SELF_CONTAINED
+P1_UNIFORM_BOUND = PROVED
+P1_INTEGRATED_BOUND = PROVED_UNIFORM_IN_w_n
+P1_STATUS = PROVED
+P2_STATUS = OPEN_UNIQUE_NEXT_ANALYTIC_OBJECTIVE
+NEW_RUNS = NONE
+NEW_ARTIFACTS = NONE
+NEW_SCRIPTS = NONE
+GATES_REOPENED = NONE
 NOVELTY_CERTIFIED = NO
 ```
-
-**Consecuencia científica, con techo de afirmación:** el ruido Beta-producto dentro
-de una forma desaparece uniformemente como `O(1/n)`, incluso para formas
-degeneradas. Esto aporta una pieza de emergencia métrica. No establece el escalado
-del residual completo `b_n = P_{1,n}+P_{2,n}`, porque `P_{2,n}` permanece abierto,
-ni demuestra la meseta de `rho_max`.
