@@ -376,7 +376,146 @@ P_{2,n}
        - [sum_s w_n^h(s|m,S) mu_n(s)]^2 }.                    (7.3)
 ```
 
-### 7.1 Qué contienen los artefactos existentes
+### 7.1 Reducción escalar: basta el `pushforward` por `sqrt(KL)`
+
+Escribiendo
+
+```text
+g_n(k) := E[sqrt(X_k)],
+```
+
+la identidad (3.2) equivale a
+
+```text
+g_n(k)^2 = k R(k,n)/(n+1).
+```
+
+Todos los factores son positivos, luego
+
+```text
+mu_n(k,l)
+ = sqrt(kl)/(n+1) * sqrt(R(k,n)R(l,n)).                       (7.4)
+```
+
+Defínase el estadístico simétrico
+
+```text
+H_n(k,l) := sqrt(kl)/(n+1).
+Z_n := H_n(K,L) = sqrt(KL)/(n+1).
+```
+
+Por §5, `0<R(k,n)<=1`; por (4.2),
+`R(k,n)>=k/(k+1/2)`. Para `a,b in [0,1]` se tiene
+`sqrt(ab)>=ab` y `1-ab<=(1-a)+(1-b)`. Por tanto, uniformemente para
+`1<=k,l<=n`,
+
+```text
+0 <= H_n(k,l)-mu_n(k,l)
+   = H_n(k,l) [1-sqrt(R(k,n)R(l,n))]
+  <= H_n(k,l) [(1-R(k,n))+(1-R(l,n))]
+  <= H_n(k,l) [1/(2k)+1/(2l)]
+   = [sqrt(l/k)+sqrt(k/l)]/[2(n+1)]
+  <= 1/(2sqrt(n)).                                            (7.5)
+```
+
+La última desigualdad usa que, si `1<=k,l<=n`, el cociente entre el mayor y el
+menor no supera `n`; la función `t+1/t` es creciente para `t>=1`, de modo que el
+máximo es `sqrt(n)+1/sqrt(n)=(n+1)/sqrt(n)`.
+
+Sea
+
+```text
+Q_{2,n}
+ := E_M[ Var_T(H_n(T) | M,n,h,S) | n,h,S ].                  (7.6)
+```
+
+En el espacio de probabilidad ya condicionado por `(n,h,S)`, sea
+`P_M Z=E[Z|M,n,h,S]`. El operador `I-P_M` es la proyección ortogonal sobre el
+complemento de las variables `sigma(M)`-medibles y es una contracción en `L^2`.
+Así,
+
+```text
+sqrt(P_{2,n}) = ||(I-P_M)mu_n(T)||_2,
+sqrt(Q_{2,n}) = ||(I-P_M)H_n(T)||_2.
+```
+
+La desigualdad triangular inversa, la contracción y (7.5) dan
+
+```text
+|sqrt(P_{2,n})-sqrt(Q_{2,n})|
+ <= ||(I-P_M)(mu_n(T)-H_n(T))||_2
+ <= ||mu_n(T)-H_n(T)||_2
+ <= 1/(2sqrt(n)).                                             (7.7)
+```
+
+Como `mu_n(T),H_n(T) in [0,1]`, Popoviciu da
+`P_{2,n},Q_{2,n}<=1/4`. Multiplicando (7.7) por
+`sqrt(P_{2,n})+sqrt(Q_{2,n})<=1`, se obtiene además
+
+```text
+|P_{2,n}-Q_{2,n}| <= 1/(2sqrt(n)).                           (7.8)
+```
+
+Finalmente, al ser `H_n(K,L)=sqrt(KL)/(n+1)`,
+
+```text
+Q_{2,n}
+ = E_M[Var(sqrt(KL) | M,n,h,S)]/(n+1)^2.                     (7.9)
+```
+
+De (7.7)–(7.9) se siguen las equivalencias asintóticas rigurosas
+
+```text
+P_{2,n}->0
+ iff Q_{2,n}->0
+ iff E_M[Var(sqrt(KL) | M,n,h,S)] = o(n^2),                  (7.10)
+
+liminf P_{2,n}>0 iff liminf Q_{2,n}>0.                       (7.11)
+```
+
+Por (7.8), de hecho `P_{2,n}` y `Q_{2,n}` tienen el mismo `liminf`. La ley
+bidimensional completa `w_n^h(k,l|m,S)` no es necesaria para decidir (7.10) o
+(7.11): basta su `pushforward` escalar por `(k,l) -> sqrt(kl)`.
+
+#### 7.1.1 La concentración de `K` es solo un criterio suficiente
+
+La recurrencia gamma en (3.1) da
+
+```text
+g_n(k+1)/g_n(k) = (k+1/2)/k = 1+1/(2k).
+```
+
+Como `0<=mu_n<=1` y el soporte condicionado por `M=m` satisface
+`k,l>=m-1`, telescopar en cada coordenada produce
+
+```text
+|mu_n(k,l)-mu_n(k',l')|
+ <= [|k-k'|+|l-l'|]/[2(m-1)].                                (7.12)
+```
+
+Aplicando `Var(Z)=E[(Z-Z')^2]/2` a dos formas condicionalmente independientes y
+`(a+b)^2<=2a^2+2b^2`,
+
+```text
+Var(mu_n(T)|M=m,n,h,S)
+ <= [Var(K|M=m,n,h,S)+Var(L|M=m,n,h,S)]/[2(m-1)^2].           (7.13)
+```
+
+El intercambio de coordenadas manda la permutación uniforme a su inversa, conserva
+el poset, el score, `M` y la unicidad `S`, y permuta `K,L`; por ello sus varianzas
+condicionales coinciden. Integrando (7.13),
+
+```text
+P_{2,n}
+ <= E_M[Var(K|M,n,h,S)/(M-1)^2].                             (7.14)
+```
+
+Esta condición es suficiente, pero no necesaria. Una ley con masa `1/2` en
+`(a,b)` y `1/2` en `(b,a)` puede tener `Var(K)=Theta(n^2)`, mientras que
+`mu_n(a,b)=mu_n(b,a)` y su contribución a `P_{2,n}` es cero. El objeto intrínseco
+es la dispersión condicional de `sqrt(KL)`, no la de cada coordenada por separado.
+
+### 7.2 Qué contienen los artefactos existentes
 
 La inspección, sin ejecutar nada, muestra que
 `resultados/p1a_representaciones_intervalos_d2.csv` registra `M` y `ell`, pero no
@@ -385,30 +524,35 @@ probabilidades del selector, pero tampoco formas. La derivación existente deja
 explícitamente `w_n^h(s|m,S)` sin calcular. Por tanto los runs actuales no permiten
 separar `P_{2,n}` de la varianza condicional total ni decidir su asintótica.
 
-El único paso posterior es caracterizar analíticamente `w_n^h(s|m,S)` con la
-representación por permutaciones ya existente e insertarla en (7.3), distinguiendo
-cotas superiores, cotas inferiores y diagnósticos finitos. En particular, exhibir
-dos formas con el mismo `m` no prueba una obstrucción persistente: una cota
-`liminf P_{2,n}>0` requiere masa no evanescente y separación cuantitativa de
-`mu_n(s)`.
+El paso mínimo posterior es caracterizar o acotar la ley condicional unidimensional
+de `Z_n=sqrt(KL)/(n+1)` dado `(M,n,h,S)`. Solo si este `pushforward` no puede
+controlarse directamente será necesario caracterizar la ley bidimensional completa
+`w_n^h(s|m,S)`. En particular, exhibir dos formas con el mismo `m` no prueba una
+obstrucción persistente: una cota `liminf P_{2,n}>0` requiere masa no evanescente y
+separación cuantitativa de `sqrt(kl)/(n+1)`.
 
-Los únicos desenlaces científicos registrados son:
+Las dos rutas analíticas prioritarias —no una dicotomía exclusiva ni exhaustiva— son:
 
-1. `P_{2,n}->0`: junto con (6.1), el estimador de Bayes
+1. concentración condicional de `sqrt(KL)/(n+1)`, que por (7.10) implica
+   `P_{2,n}->0`; junto con (6.1), el estimador de Bayes
    `E[ell|M,n,h,S]` reconstruye la duración relativa con error cuadrático tendente a
    cero;
-2. `liminf P_{2,n}>0`: existe una obstrucción persistente para la reconstrucción
-   basada solo en `M`, causada por variación entre formas con el mismo conteo;
-3. `P_{2,n}->0` lentamente o sin una ley simple: hay consistencia basada en `M`,
-   pero con resolución limitada y régimen asintótico por caracterizar.
+2. separación persistente con masa no evanescente en el `pushforward`, que por
+   (7.11) implica `liminf P_{2,n}>0` y una obstrucción persistente para la
+   reconstrucción basada solo en `M`.
+
+También son posibles comportamientos no cubiertos por esas dos rutas, por ejemplo
+oscilaciones entre subsecuencias o convergencia a cero sin una ley simple. No se
+presentan concentración y separación como clasificación exhaustiva.
 
 Ninguna obstrucción del canal `sigma(M)` es un no-go para el poset completo ni para
 orden+número.
 
 ```text
-P2_STATUS = OPEN_UNIQUE_NEXT_ANALYTIC_OBJECTIVE
-P2_EXISTING_RUNS_SUFFICIENT = NO
-P2_NEXT_STEP = CHARACTERIZE_w_n(s|m,n,side,S)_ANALYTICALLY
+P2_STATUS = OPEN
+REDUCTION_TO_SQRT_KL = PROVED
+VAR_K_CRITERION = SUFFICIENT_NOT_NECESSARY
+NEXT_OBJECTIVE = CONDITIONAL_PUSHFORWARD_LAW_OF_SQRT_KL
 ```
 
 ## 8. Techo de afirmación
@@ -441,7 +585,10 @@ P1_WENDEL_SPECIAL_CASE = PROVED_SELF_CONTAINED
 P1_UNIFORM_BOUND = PROVED
 P1_INTEGRATED_BOUND = PROVED_UNIFORM_IN_w_n
 P1_STATUS = PROVED
-P2_STATUS = OPEN_UNIQUE_NEXT_ANALYTIC_OBJECTIVE
+P2_STATUS = OPEN
+REDUCTION_TO_SQRT_KL = PROVED
+VAR_K_CRITERION = SUFFICIENT_NOT_NECESSARY
+NEXT_OBJECTIVE = CONDITIONAL_PUSHFORWARD_LAW_OF_SQRT_KL
 NEW_RUNS = NONE
 NEW_ARTIFACTS = NONE
 NEW_SCRIPTS = NONE
