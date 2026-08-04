@@ -5,9 +5,30 @@ Guidance for working in this repository.
 ## What this project is
 
 nachocausal is a **recoverability benchmark** (not a reconstruction claim): recovering 1+1D
-Schwarzschild event-horizon structure from causal-set order alone. See `README.md` and the
-**frozen** pre-registration in `docs/preregistration.md`. The reuse/tooling decision is in
-`docs/reuse_check.md`.
+Schwarzschild event-horizon structure from **causal-set order and counting** — the
+*Order + Number* data of the theory. See `README.md` and the **frozen** pre-registration in
+`docs/preregistration.md`. The reuse/tooling decision is in `docs/reuse_check.md`.
+
+### "order-only" means blind-to-embedding, NOT count-free
+
+The repo uses `order-only` in two senses. Only one is correct; do not conflate them.
+
+- **Correct sense — blind to the embedding.** The estimator sees the isomorphism class of the
+  unlabelled poset and nothing else: no coordinates, no ground truth. This is the guardrail
+  that matters, and almost every `order-only` in `README.md` means this.
+- **Wrong sense — "order without counting".** Cardinalities *are* legitimate observables:
+  `Order + Number = Geometry` is the theory's own premise. An estimator that counts elements
+  of an interval is not cheating. Treating counts as suspect is a self-imposed handicap that
+  cost this project real effort (see `emergencia/HOJA_DE_RUTA.md`).
+
+What conditioning on `N=n` removes is **only the global scale information carried by `N`**, and
+hence absolute scale. It does **not** remove internal counts, which still carry relative-volume
+information. The absolute-scale no-go therefore belongs to the conditioned `N=n` channel, not to
+causal sets in general.
+
+The genuine statistical issue with a count-based estimator is **selection-induced dependence**
+(the selector maximises a cardinality and the estimator then uses it — winner's-curse-type bias),
+not the use of cardinalities as such. Keep those two apart in any write-up.
 
 ## Founding rules (honor these in any change)
 

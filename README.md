@@ -1,7 +1,11 @@
 # nachocausal
 
-Recovering black-hole horizon structure from causal-set order alone — framed as a
-*recoverability* benchmark, not a reconstruction claim.
+Recovering black-hole horizon structure from causal-set **order and counting** (the theory's
+*Order + Number* data) — framed as a *recoverability* benchmark, not a reconstruction claim.
+
+> **Note on "order-only".** Throughout this README `order-only` means **blind to the
+> embedding** — no coordinates, no ground truth reach the estimator. It does **not** mean
+> "without counting": cardinalities are legitimate observables. See `CLAUDE.md`.
 
 For any AI or agent connecting to this repo, read [INSTRUCCIONES.md](INSTRUCCIONES.md) first for
 the available machinery and the correct workflow between committee, auditor, external consultors,
@@ -91,8 +95,8 @@ is demonstrated under a fully frozen protocol.** The arc:
   (`docs/prereg002_reverification_result.md`). This verifies the transcription, not the lost
   artifact; it is never presented as the original blind evaluation.
 
-**Bounded claim (do not overstate):** the causal order alone — no coordinates accessible to the
-estimator — localises the horizon-associated boundary *significantly and stably* in a 1+1D
+**Bounded claim (do not overstate):** the causal order and its counts — no coordinates accessible
+to the estimator — localise the horizon-associated boundary *significantly and stably* in a 1+1D
 Schwarzschild model within a **finite patch**. It does **not** claim metric reconstruction, the
 global event horizon (future null infinity), 3+1D, Kerr, or manifoldlikeness.
 
@@ -111,9 +115,9 @@ the previous R-VAR closure, which remains `CLOSED_NEGATIVE_RESULT [GEOMETRY_SPEC
 The deeper program is narrower and more defensible than a generic "geometry from order" slogan:
 
 - How much continuous geometry, and in particular horizon-type structure, can be recovered from
-  causal order alone?
+  causal order plus counting?
 - Are there geometric observables whose localisation is not arbitrarily refinable from finite
-  discrete order data alone?
+  discrete order-and-count data?
 
 The current repo does **not** claim a universal no-go theorem or a new physical uncertainty
 principle. What it does claim today is more limited:
@@ -246,7 +250,7 @@ floor, is separately frozen in `docs/preregistration_003.md`). The honest bounda
   orientation was provably empty for every `R` (tombstone theorem `relationalHorizonOld_eq_empty`);
   the corrected orientation carries an explicit non-emptiness witness and the structural one-way
   lemma `relationalBlackRegion_no_escape` (no causal relation leaves the black-region candidate).
-- **Open:** selecting `R(C)` from the causal order alone in a closed, robust, physically
+- **Open:** selecting `R(C)` from the causal order and its counts in a closed, robust, physically
   discriminating way. The only written draft rule, `R = Max(C)`, provably trivialises on finite
   posets (`NO_INTERFACE`; `nachocausal/c1_selector.py`, `dev/PR003_C1_RELATIONAL_SPEC.md` §8-9).
   The interface does not discover the horizon; it delimits what a (still missing) selector already
