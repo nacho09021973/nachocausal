@@ -768,7 +768,16 @@ CV4_AUDIT_STATUS = PENDING_INDEPENDENT_RE_AUDIT_ROUND_4
 AUDIT_POINT = emergencia/p1a_count_volume_canal_sigma_m_d2.py
 AUDIT_ITEMS = (1) definicion literal de S, (2) ANOVA empirico exacto,
               (3) funcion de influencia + etiqueta "correccion intrabin"
-CV4_4_POPULATION_LEMMA = NOT_STARTED (bloqueado hasta que la auditoria pase)
+CV4_4_POPULATION_LEMMA = SCOPED_DOWN (P1a_count_volume_lema_kl_d2.md): solo la
+                   pieza Beta-producto, NO el b completo. Identidad exacta
+                   CV^2 = 1/(R(k,n)R(l,n))-1 derivada algebraicamente; cadena de
+                   Wendel escrita (no-degeneracion uniforme k,l>=eps*n basta para
+                   O(1/n), sin suponer limite de proporciones). Estados:
+                   BETA_PRODUCT_IDENTITY = NUMERICALLY_VERIFIED_DERIVATION_PENDING
+                   UNIFORM_NONDEGENERACY_LEMMA = NOT_PROVED
+                   FULL_B_SCALING = NOT_ESTABLISHED
+                   La heuristica 1/(4k)+1/(4l) queda RECHAZADA como base de prueba:
+                   yerra hasta +143% cuando k,l = Theta(n).
 CV4_RICHER_CHANNEL_STATUS = OUT_OF_SCOPE_ONLY_LINEAR_FAMILY_TESTED
 CURRENT_NUMERICAL_AUTHORIZATION = NONE (sin cambio para muestras nuevas/estocasticas)
 ```
