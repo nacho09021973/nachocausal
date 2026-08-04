@@ -330,6 +330,12 @@ condicionamiento es siempre
 sigma(M) subseteq sigma(M,T).
 ```
 
+Aquí `M` es la cardinalidad del intervalo causal cerrado del lado seleccionado,
+incluidos sus extremos: `M=m_-(q*)=|I[a,b]|` en `PAST` y
+`M=m_+(q*)=|I[c,d]|` en `FUTURE`. En cambio, `K,L` son los gaps discretos entre
+los rangos de esos extremos en las dos coordenadas; no son extensiones nulas
+continuas ni están determinados algebraicamente por `M`.
+
 Defínase, usando la ley Beta-producto,
 
 ```text
@@ -475,7 +481,10 @@ liminf P_{2,n}>0 iff liminf Q_{2,n}>0.                       (7.11)
 
 Por (7.8), de hecho `P_{2,n}` y `Q_{2,n}` tienen el mismo `liminf`. La ley
 bidimensional completa `w_n^h(k,l|m,S)` no es necesaria para decidir (7.10) o
-(7.11): basta su `pushforward` escalar por `(k,l) -> sqrt(kl)`.
+(7.11): basta su `pushforward` escalar por `(k,l) -> sqrt(kl)`. Esto es una
+caracterización asintótica del término de riesgo `P_{2,n}` mediante `Z_n`, no una
+afirmación de que `Z_n` sea un estadístico suficiente en sentido formal para la ley
+finito-muestral completa.
 
 #### 7.1.1 La concentración de `K` es solo un criterio suficiente
 
@@ -531,6 +540,20 @@ controlarse directamente será necesario caracterizar la ley bidimensional compl
 obstrucción persistente: una cota `liminf P_{2,n}>0` requiere masa no evanescente y
 separación cuantitativa de `sqrt(kl)/(n+1)`.
 
+Ni siquiera es obligatorio construir toda la tabla del `pushforward`. Si
+
+```text
+C_n^h(m,r) := #{pi : S(pi), M_h(pi)=m, K(pi)L(pi)=r},
+```
+
+entonces normalizar `C_n^h(m,r)` sí daría su ley completa, pero para `Q_{2,n}`
+basta obtener directamente, por ejemplo mediante una recurrencia o función
+generatriz, los dos momentos
+
+```text
+E[Z_n | M=m,n,h,S],    E[Z_n^2 | M=m,n,h,S].
+```
+
 Las dos rutas analíticas prioritarias —no una dicotomía exclusiva ni exhaustiva— son:
 
 1. concentración condicional de `sqrt(KL)/(n+1)`, que por (7.10) implica
@@ -545,12 +568,27 @@ También son posibles comportamientos no cubiertos por esas dos rutas, por ejemp
 oscilaciones entre subsecuencias o convergencia a cero sin una ley simple. No se
 presentan concentración y separación como clasificación exhaustiva.
 
+El alcance negativo se obtiene exactamente de la proyección de Bayes:
+
+```text
+inf_f E[(ell-f(M))^2 | n,h,S]
+ = E[Var(ell | M,n,h,S) | n,h,S]
+ = P_{1,n}+P_{2,n},                                           (7.15)
+```
+
+donde el ínfimo recorre las funciones `sigma(M)`-medibles de cuadrado integrable.
+Como `P_{1,n}->0` y (7.10) caracteriza `P_{2,n}->0`, si `Q_{2,n}` no converge a
+cero no existe reconstrucción consistente de `ell` basada solo en `M`. Para una
+obstrucción persistentemente positiva hace falta la condición más fuerte
+`liminf Q_{2,n}>0`. Ninguno de los dos enunciados excluye estimadores que usen otra
+información de la cuádrupla ganadora o del poset completo.
+
 Ninguna obstrucción del canal `sigma(M)` es un no-go para el poset completo ni para
 orden+número.
 
 ```text
 P2_STATUS = OPEN
-REDUCTION_TO_SQRT_KL = PROVED
+CHARACTERIZATION_BY_Z_N = PROVED
 VAR_K_CRITERION = SUFFICIENT_NOT_NECESSARY
 NEXT_OBJECTIVE = CONDITIONAL_PUSHFORWARD_LAW_OF_SQRT_KL
 ```
@@ -586,7 +624,7 @@ P1_UNIFORM_BOUND = PROVED
 P1_INTEGRATED_BOUND = PROVED_UNIFORM_IN_w_n
 P1_STATUS = PROVED
 P2_STATUS = OPEN
-REDUCTION_TO_SQRT_KL = PROVED
+CHARACTERIZATION_BY_Z_N = PROVED
 VAR_K_CRITERION = SUFFICIENT_NOT_NECESSARY
 NEXT_OBJECTIVE = CONDITIONAL_PUSHFORWARD_LAW_OF_SQRT_KL
 NEW_RUNS = NONE
