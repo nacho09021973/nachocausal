@@ -405,6 +405,46 @@ distributed points in Minkowski space**» — el caso plano/uniforme, igual que 
 métrica. Refuerza el patrón ya observado: la literatura de causal sets 2D trabaja en el
 caso plano, y la densidad **no uniforme** —de la que habla la conjetura B— no es su objeto.
 
+### 2.5quinquies Artefacto propio del PI: revival del código Bombelli–Meyer 1987
+
+**Artefacto**: J. I. Martín Gandul, *Bombelli & Meyer 1987 Causal Set Simulated Annealing
+Revival*, 2026. DOI `10.5281/zenodo.20307735`;
+`https://nacho09021973.github.io/bombelli/`; repositorio `nacho09021973/bombelli`; MIT.
+Puerto fiel a Python 3.12 del programa Pascal de recocido simulado de la tesis de Bombelli
+(1987), con David Meyer, que embebe causal sets pequeños en Minkowski. **Leído esta sesión
+vía la página y el README, no ejecutado aquí.**
+
+**Qué establece.** Preservando función de energía y conjunto de movimientos originales, sobre
+el caso canónico de 12 elementos: el calendario original (`T_0 = 100`, `alpha = 0.9`) da
+energía final media `22.735` sobre 100 semillas y **ningún embebido logrado**; un calendario
+retocado (`T_0 = 180`, `alpha = 0.8`) da media `0.000` y **95/100** ejecuciones de energía
+cero. Mismo algoritmo, misma energía, mismos movimientos. Cobertura `d ∈ {2,3,4}`,
+`n = 6, 12`, hasta `n = 256` para estudios de dimensión; semillas deterministas.
+
+**Dónde encaja, y dónde NO.** Encaja en la **formulación A** de §2.5ter —embebidos fieles de
+un causal set individual, la Hauptvermutung de la tesis del 87—. **No toca la formulación
+B** (leyes `P_n(C|G)`, JMP 2000), que es la que ataca
+`research_program/work_packages/wp6_d2_null_copula_dichotomy.md`. No aporta nada a (E') ni
+al parámetro `b`, y no debe citarse como si lo hiciera. En `d=2` además el problema de
+embebido es trivial —todo poset de dimensión 2 embebe—, luego las celdas informativas de
+ese trabajo son `d = 3, 4`.
+
+**Para qué sí sirve aquí.** Da respaldo **empírico, reproducible y con DOI** a una tesis que
+este repositorio sostiene por otras vías: que la ruta de **embebido** es frágil —dependiente
+del optimizador hasta el punto de dar 0/100 frente a 95/100 con el mismo algoritmo—,
+mientras que la ruta de **leyes** no requiere encontrar embebido alguno. Es un argumento
+independiente a favor de trabajar con `P_n(C|G)` y no con embebidos.
+
+**Lo que un auditor atacaría, y hay que anticiparlo.** La afirmación «con los parámetros
+originales no se logra ningún embebido» es fuerte respecto de un programa histórico
+publicado, y descansa por completo en la **fidelidad del puerto**. No es una afirmación de
+que los resultados de 1987 fueran erróneos, sino sobre *ese calendario, en ese banco de
+pruebas, tal como está portado*. Cualquier cita debe conservar esa distinción.
+
+**Estado**: `SUPPORTED_AS_ARTEFACT` (existe, tiene DOI y es público); `[UNVERIFIED]` en
+cuanto a fidelidad del puerto y reproducción de sus cifras — no ejecutado ni auditado por
+este repositorio.
+
 ### 2.6 Myrheim–Meyer dimension estimator: what it estimates, and what it is *not*
 
 **Enunciado exacto**: Ordering fraction r = 2R/[n(n−1)] (Eq. 14), R = number of related pairs.
