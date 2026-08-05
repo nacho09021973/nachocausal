@@ -443,7 +443,15 @@ order-only channel inside each fixed sector and shape. Dimensionless targets suc
 3. **Novelty as physics.** `[BACKGROUND]` The statement formalizes the causal-set
    slogan that order alone does not fix scale (“Order + Number”; e.g.\ Dowker–Zalel,
    arXiv:1703.07556; Madsen, arXiv:2607.05840; Braun, arXiv:2507.01907,
-   §§3.3–3.4). Continuum precursors include the conformal character of causal
+   §§3.3–3.4). **Dimensional scope of those two citations.** Braun assumes
+   \(d\ge 3\) throughout (arXiv:2507.01907, p.\ 2: “we assume all spacetimes have
+   the same dimension \(d\in\mathbb{N}\) no less than 3”), and Madsen’s error
+   optimisation holds the covariance term subdominant only “for \(d>2\)”
+   (arXiv:2607.05840, Thm.\ 4.18). Both are therefore background for the scoped
+   \(3{+}1\) statement, and **neither licenses the \(1{+}1\) results**; the
+   restriction is inherited from Malament’s \(d>2\) hypothesis, not a gap in
+   technique (`docs/bibliography_claims.md` §§1.1, 1.3, 2.5bis).
+   Continuum precursors include the conformal character of causal
    isomorphisms (Hawking–King–McCarthy 1976; Malament 1977). Those are precursors of
    the difficult causal-isomorphism-to-conformal direction, not machinery used in the
    three-line proof above. More directly, Bombelli’s 1987 thesis states recovery only
@@ -1058,6 +1066,21 @@ separating chronological isomorphy / conformal content from volume-preservation 
 isometry). Madsen (arXiv:2607.05840) states explicitly that order alone is
 “famously insufficient,” connecting that insufficiency to Müller’s negative
 finite-order results.
+
+Three qualifications keep those results from being read as more than background
+here. First, **dimension**: Braun assumes \(d\ge 3\) (p.\ 2) and Madsen’s rate is
+optimised for \(d>2\) (Thm.\ 4.18), so neither covers the \(1{+}1\) setting of
+Theorem 3.1. Second, **what Braun’s hypothesis consumes**: his Theorem 1.4
+requires the laws of the adjacency matrices to agree *for every* \(k\in\mathbb{N}\),
+and the proof passes to the projective limit \(\nu_\infty\); it is a statement about
+the full order data at all cardinalities, not about any scalar summary or any single
+\(k\). Third, **what kind of statement it is**: Theorem 1.4 is an
+identifiability-in-law result — an injectivity statement with no estimator, no rate,
+and no finite-\(n\) risk bound. It therefore neither competes with nor is weakened by
+finite-\(n\) risk statements such as Theorem 3.1; the two occupy different layers.
+Braun’s sampling model does, however, coincide with the channel used here: he models
+\(\{X_1,\dots,X_k\}\) as “the random support of a PPP conditioned on \(k\) elements”
+(p.\ 4), i.e.\ fixed-cardinality conditioning.
 
 Theorem 3.1 does not invent this slogan. It supplies an **exact finite-\(n\)**
 total-variation statement for Poisson sprinklings of Schwarzschild patches under

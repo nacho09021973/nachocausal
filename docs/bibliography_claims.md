@@ -105,6 +105,57 @@ directly for a benchmark that scores a *single* causal set instance, not an ense
 **Estado**: `SUPPORTED` for the general claim; `PARTIAL` for single-instance applicability
 (ensemble-average caveat).
 
+### 1.3 Braun (2025): the probabilistic discrete analogue of §1.1 — and it carries the same d≥3 exclusion
+
+**Enunciado exacto**: "Theorem 1.4 (Probabilistic spacetime reconstruction, unweighted case).
+Let (M,g) and (M′,g′) be two causally continuous and future chronocomplete spacetimes of finite
+volume λ>0. Then the two spacetimes (M,g) and (M′,g′) are smoothly isometric if and only if for
+every k ∈ N, the distributions of the random adjacency matrices C_k(X_1,…,X_k) and
+C′_k(X′_1,…,X′_k) under P coincide." The author's own framing: "In a probabilistic way, our
+result makes a key paradigm of causal set theory rigorous: spacetime can be recovered by only
+knowing 'order' and 'number' of its points. It confirms a weak version of Bombelli's conjecture."
+
+**Fuente primaria**: M. Braun, "Spacetime reconstruction by order and number," arXiv:2507.01907v1
+[gr-qc], 2 Jul 2025. Locally archived at
+`biblioteca/emergencia/2507.01907v1_Braun_Spacetime_Reconstruction_Order_Number.pdf`. Read this
+session via alphaXiv (pages 1–5, 7, 9, 11, 13, 15); no `derived-md` conversion exists yet, so
+citations below are to PDF pages, not conversion lines.
+
+**Hipótesis**: (i) both spacetimes causally continuous (= distinguishing + reflecting, Hawking–
+Sachs) and future chronocomplete — global hyperbolicity implies both (Lemma 2.10); (ii) finite
+volume λ>0, the *same* for both; (iii) **d ≥ 3**, stated verbatim on p.2: "we assume all
+spacetimes have the same dimension d ∈ N no less than 3"; (iv) the laws coincide **for every
+k ∈ N** simultaneously — the proof passes to ν_∞ by Kolmogorov extension (§3.3) and then to
+generic sequences, so no single k suffices.
+
+**Dimensión y clase de espacios**: **d ≥ 3 only.** The mechanism is inherited from §1.1: Braun's
+proof routes through Theorem 2.13 (Malament) to get conformal isometry from chronological
+isomorphy (§3.3), then upgrades to isometry by volume-preservation (§3.4). Malament's theorem is
+exactly the d>2 input, so Braun's dimensional restriction is not an artefact of technique but the
+same structural fact recorded in §1.1.
+
+**Qué respalda**: The strongest existing evidence that the *information* is present in the
+order+number channel. Two points bear directly on this project. First, the sampling model is
+**ours**: p.4, "Given k ∈ N, we think of {X_1,…,X_k} as the random support of a PPP conditioned
+on k elements" — that is fixed-cardinality conditioning, the channel used throughout `emergencia/`
+and the pre-registration. Second, it settles identifiability-in-law affirmatively, which means
+this project must **not** be framed as testing whether order+number determines geometry.
+
+**Qué NO demuestra**: (1) **d ≥ 3; the 1+1D work in `emergencia/` is outside the theorem's stated
+scope**, exactly as in §1.1 and for the same reason. Nothing read this session extends Braun to
+d=2, and in d=2 the conformal group is infinite-dimensional, so the "9 of 10 degrees of freedom
+from order" accounting Braun cites on p.3 does not transfer. (2) It is a statement about the
+**full** adjacency matrix at **all** k. It licenses nothing about a scalar summary, a single k, or
+a selected sub-configuration; in particular it does not bound, and is not in tension with, the
+conditional-variance measurements of the σ(M) channel. (3) It is an injectivity/rigidity result:
+**no estimator, no rate, no finite-n guarantee, no risk bound.** "If the laws coincide then the
+spacetimes are isometric" says nothing about how much of the geometry a finite sample recovers.
+(4) arXiv v1 preprint, not peer-reviewed as of this reading. `[UNVERIFIED as to internal
+correctness — read for statement and hypotheses, not audited line by line]`.
+
+**Estado**: `SUPPORTED` as a statement of the reviewed theorem; `PARTIAL` as backing for this
+project, for two independent reasons — the d=2 exclusion and the full-data hypothesis.
+
 ---
 
 ## §2. Manifold-likeness, sprinkling, and what is/isn't proven to be recoverable
@@ -210,6 +261,62 @@ unique/near-unique admissible completion — by sheer combinatorial dominance mo
 KR-like, not manifold-like.
 
 **Estado**: `PARTIAL` (conjectural in general; only case-by-case sub-results proven).
+
+### 2.5bis Müller (2025) and Madsen (2026): the finite-order Hauptvermutung is FALSE; order+volume+chains gives only ε-approximate isometry
+
+**Enunciado exacto** (negative half, Müller via Madsen's restatement): "Müller showed this
+version is false: he constructs examples of finite causal sets admitting causal-order-preserving
+embeddings into geometrically distinct manifolds. The underlying issue is that without volume
+information, finite causal data is too sparse to pin down the manifold; an adversary can rearrange
+the embedded points in different spacetimes while preserving the order." (positive half, Madsen
+Cor. 5.6): a causal set presented as a Poisson sprinkling at common density ρ of two globally
+hyperbolic d-dimensional spacetimes admits, with probability ≥ 1−2(ρV_max)^(−K′_d), a smooth
+diffeomorphism Φ : M°_1 → M°_2 with Φ*g_2 = g_1 + E and
+‖E‖ = O(ρ^(−2/(5d)) λ^(−2/5) log^(3/2)(ρV_max)).
+
+**Fuente primaria**: N. Madsen, "On the Uniqueness of Embeddings of Causal Sets,"
+arXiv:2607.05840v1 [gr-qc], 7 Jul 2026 —
+`biblioteca/emergencia/2607.05840v1_Madsen_Uniqueness_Embeddings_Causal_Sets.pdf`; read this
+session via alphaXiv (pages 1–5, 10, 22–24, 29–31, 38–39). O. Müller, "On the Hauptvermutung of
+causal set theory," arXiv:2503.01719 — present in `biblioteca/2503.01719v2.pdf` but **not read
+this session**; the negative result above is cited here *through Madsen's §6.2 restatement*, not
+from the primary source.
+
+**Hipótesis** (Madsen): a "well-conditioned embedding" — (F1) exact order preservation; (F2)
+scale-dependent uniform density, |f(C)∩D| − ρVol(D)| ≤ δ_D·ρVol(D) with
+δ_D = K_d √(log(ρV_M)/(ρ Vol(D))); (F3) longest-chain/proper-time correspondence, via
+Bollobás–Brightwell (1992) at rate 1/(2d). Plus global hyperbolicity, scale separation
+ρλ^d ≥ c_*^(−2d)(log ρV_M)², and a conclusion restricted to the **deep interior** M°.
+
+**Dimensión y clase de espacios**: stated for general d, but the error optimization in Thm 4.18
+holds the covariance term subdominant **"for d > 2"**; the quoted rate is therefore not
+established in d=2. Together with §1.1 and §1.3, this is the third independent result whose
+stated scope excludes the dimension this project works in.
+
+**Qué respalda**: (1) Müller's negative half is the strongest external support for this repo's
+own framing that finite causal order *remembers* without *defining* — it is now a theorem that
+order alone, finitely, is insufficient, not a suspicion. (2) Madsen's proof architecture is an
+external template for the kind of argument `emergencia/` §13 attempts: a purely deterministic
+geometric part plus **one** probabilistic concentration input, the author stating explicitly that
+the argument "isolates the geometric content of the conjecture from its probabilistic content."
+His (F2) tolerance has the same √(log/count) shape, and the same Chernoff-plus-union-bound
+provenance, as the discrepancy lemma used there.
+
+**Qué NO demuestra**: (1) **Not exact uniqueness** — ε-approximate isometry only, with ε→0 only
+in the high-density limit ρ→∞. (2) Not a fixed-n finite-sample statement in this project's sense:
+the guarantee is asymptotic in density, and Remark 5.4 states no almost-sure statement is
+available for infinite-volume M at all (second Borel–Cantelli). (3) The deep-interior restriction
+does **not** vanish: Remark 5.5(b) concedes that for a fixed manifold with boundary the excluded
+layer of width c_*λ "does not shrink as ρ→∞" — so nothing is claimed near a boundary, which is
+where horizon-adjacent questions live. (4) (F3) is **assumed, not derived**: footnote 1, p.4,
+"its logical relationship to (F1)–(F2) is open … Whether (F2) implies (F3) is left to future
+work." (5) arXiv v1, single author, 39 pages of heavy machinery (Karcher means, Lorentzian
+Procrustes, degree argument), not peer-reviewed.
+
+**Estado**: `PARTIAL`, and `[UNVERIFIED as to internal correctness — statement and hypotheses read,
+argument not audited]`. Reading note, flagged rather than asserted: Corollary 3.7 (p.10) invokes
+Lemma 4.1 from a later section, a forward dependency that a referee would be expected to query;
+this is a structural observation about presentation, not a claim that the result is wrong.
 
 ### 2.6 Myrheim–Meyer dimension estimator: what it estimates, and what it is *not*
 
