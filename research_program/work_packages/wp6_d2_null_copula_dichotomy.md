@@ -359,7 +359,27 @@ escriben literalmente:
 > isomorphic to `Q`.»
 
 Fuente citada allí: L. Bombelli, *Statistical Lorentzian geometry and the closeness of
-Lorentzian manifolds*, J. Math. Phys. **41** (2000) 6944–6958.
+Lorentzian manifolds*, J. Math. Phys. **41** (2000) 6944–6958. **Leída en primaria**
+(2026-08-05): `biblioteca/gr-qc0002053_Bombelli_Statistical_Lorentzian_Geometry_Closeness.pdf`,
+arXiv:gr-qc/0002053v2. La conjetura es la (iii) de §III, verbatim:
+
+> «(iii) For any two arbitrary (distinguishing, finite-volume) different geometries `G` and
+> `G'` there is a finite `n` such that `d_n(G,G') > 0`, with `d_n(G,G') -> 1` as
+> `n -> infinity`.»
+
+con «Lorentzian geometry» definido como clase de equivalencia por difeomorfismo y muestreo
+«with uniform density according to the volume element». La restatement de Brightwell–Luczak
+es fiel. Ver `docs/bibliography_claims.md` §2.5ter.
+
+**§VII del mismo artículo plantea el programa de este WP, palabra por palabra.** Bombelli
+propone como dirección abierta estudiar «how they are affected by **conformal
+transformations as opposed to changes in the conformal structure**», con puntos de partida
+sugeridos «comparing a two-dimensional and a three-dimensional manifold, or **modifying one
+by a conformal transformation**; and studying analytically **the effect of small variations
+`g -> g + delta g`**». Eso es, en orden: el Teorema C, su instanciación en `d=2`, y el
+análisis `O(lambda^2)` de R2. Que el autor lo propusiera en 2000 **no prueba que siga
+abierto en 2026** — lo decide la auditoría de novedad — pero fija el enunciado y la
+paternidad de la pregunta.
 
 **Eso es exactamente (E'), en general.** El muestreo «iid uniform sample from `U`» es
 literalmente el Lema 2.1 de este repositorio (condicionar a `N=n` da `n` puntos iid según
@@ -415,7 +435,8 @@ BIBLIOGRAPHY_CLAIMS_5_3         = ANSWERED_NEGATIVELY_NO_LONGER_AN_OPEN_CITATION
 PUENTE_E_PRIMA_INYECTIVIDAD_EN_PI = OPEN_REDUCED_TO_ONE_EVEN_DIRECTION_AT_N4
 (E_PRIMA)_ES                    = CONJETURA_DE_BOMBELLI_RESTRINGIDA_A_D2_CAJA_NULA
 CONTRIBUCION_REAL_DE_WP6        = REDUCCION_DE_BOMBELLI_D2_A_(E)_MAS_CASO_PERMUTACION_RESUELTO
-BOMBELLI_2000_JMP_41_6944       = UNVERIFIED_NO_LEIDO_EN_PRIMARIA
+BOMBELLI_2000_JMP_41_6944       = LEIDO_EN_PRIMARIA_CONJETURA_(iii)_DE_§III
+BOMBELLI_2000_§VII              = PROPONE_EL_PROGRAMA_DE_WP6_LITERALMENTE_EN_2000
 BRIGHTWELL_LUCZAK_2015          = LEIDO_ESTA_SESION_FUENTE_SECUNDARIA_DE_LA_CONJETURA
 WINKLER_RANDOM_ORDERS_1985      = MODELO_UNIFORME_=_CASO_PLANO; calculo la probabilidad
                                   limite de realizabilidad unica -> §5.2bis es folclore

@@ -354,10 +354,43 @@ de un causal set concreto y de isometría **aproximada**; B habla de **leyes** �
 de patrones— y de difeomorfismo que preserva la medida, **exacto**. `research_program/
 work_packages/wp6_d2_null_copula_dichotomy.md` ataca **B**, no A.
 
-**Estado de fuentes.** A: `SUPPORTED`, leída en primaria. B: `[UNVERIFIED en primaria]` —
-el artículo de 2000 **no está en `biblioteca/`**; se conoce solo a través de la restatement
-de Brightwell–Luczak, arXiv:1510.05612 §2, leída esta sesión. **Adquirir el JMP 2000 es el
-único hueco de fuente primaria que le queda a WP6.**
+**Formulación B, ahora LEÍDA EN PRIMARIA** (2026-08-05). Preprint descargado a
+`biblioteca/gr-qc0002053_Bombelli_Statistical_Lorentzian_Geometry_Closeness.pdf`
+(arXiv:gr-qc/0002053v2, 11 jun 2000 = J. Math. Phys. **41** (2000) 6944–6958). La
+conjetura está en §III, como la tercera de tres «reasonable conjectures» sobre `d_n(G,G')`:
+
+> «(iii) For any two arbitrary (distinguishing, finite-volume) different geometries `G` and
+> `G'` there is a finite `n` such that `d_n(G,G') > 0`, with `d_n(G,G') -> 1` as
+> `n -> infinity`.»
+
+donde «Lorentzian geometry» está definido en la introducción como **una clase de
+equivalencia por difeomorfismo**, y el muestreo es «points randomly scattered in a
+Lorentzian manifold, **with uniform density according to the volume element**» (abstract).
+**La restatement de Brightwell–Luczak es fiel**: «diferentes» significa no relacionadas por
+difeomorfismo que preserve la medida, y `t(Q;U)` es su `P_n(C|G)`.
+
+**Y §VII plantea explícitamente el programa de WP6.** Bombelli escribe que las `P_n(C|G)`
+son interesantes en sí mismas «as a **complete set of invariants** (together with the
+volume) of finite volume, distinguishing Lorentzian geometries», y propone como dirección
+abierta:
+
+> «It would be worth while to study the type of information about the manifold that those
+> different invariants contain; for example, how they encode dimensionality, **how they are
+> affected by conformal transformations as opposed to changes in the conformal structure**,
+> or how one can tell "localized" changes from "global" changes... Possible starting points
+> ... e.g., comparing a two-dimensional and a three-dimensional manifold, or **modifying one
+> by a conformal transformation**; and studying analytically **the effect of small
+> variations `g -> g + delta g`**.»
+
+Las tres cursivas son, respectivamente: el Teorema C de WP6 (qué transformaciones conformes
+son exactamente invisibles), su instanciación en `d=2`, y el análisis de primer orden de R2
+(`O(lambda^2)`). **Que el autor lo proponga como dirección abierta en 2000 no prueba que
+siga abierta en 2026**; eso lo decide la auditoría de novedad. Pero fija el enunciado y la
+paternidad de la pregunta.
+
+**Estado de fuentes.** A: `SUPPORTED`, tesis 1987 leída en primaria. B: `SUPPORTED`,
+preprint 2000 leído en primaria esta sesión. El hueco de fuente primaria de WP6 **queda
+cerrado**.
 
 ### 2.5quater Aghili–Bombelli–Pilgrim (2018): 2D, pero el caso uniforme
 
