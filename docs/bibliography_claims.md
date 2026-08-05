@@ -475,15 +475,51 @@ más estrecho de lo que sugiere la frase de portada:
 - La media `0.000` de la fila `tuned` es **visualización redondeada a tres decimales**, no
   exactitud: 5 de 100 ejecuciones no alcanzaron el umbral.
 
-**Lo que la verificación NO establece.** Que el puerto sea fiel al Pascal de 1987 — eso
-exigiría el original, que no está aquí. Lo verificado es **reproducibilidad interna**: el
-código publicado, ejecutado limpio en otra máquina, produce exactamente las cifras
-publicadas. La distinción del párrafo anterior sobre 1987 sigue vigente en su totalidad.
+**FIDELIDAD AL PASCAL DE 1987: VERIFICADA LÍNEA A LÍNEA.** El original **sí está aquí**: el
+listado mecanografiado es el apéndice A.2 de la tesis, `biblioteca/Bombelli_1987_PhD.pdf`
+páginas 154–159 del PDF (paginación interna 149–154), con capa de texto extraíble. Cotejo
+directo contra `cones.py` del puerto:
+
+| Pascal 1987 (apéndice A.2) | `cones.py` | |
+| --- | --- | --- |
+| `program cones(input,output);` | el módulo se llama `cones.py` | ✓ |
+| `seed: integer:= 1959;` | `seed: int = 1959` (`:510`) | ✓ |
+| `if totalcount=O then T:= 100;` | `initial_temp: float = 100.0` (`:516`) | ✓ |
+| `if continue='y' then T:= T*0.9;` | `cooling_factor: float = 0.9` (`:517`) | ✓ |
+| `if Ndata=35 then continue:= 'n';` | `max_data: int = 35` (`:512`) | ✓ |
+| `while (count<100) and (E[1]>0)` | `warmup_limit`/`anneal_limit = 100` (`:514-515`) | ✓ |
+| `roottwo = sqrt(2)` | `roottwo = math.sqrt(2.0)` (`:586`) | ✓ |
+| `s2:= -(Rij**2)+Xij` | `s2 = -(rij**2) + xij_sq` (`:597`) | ✓ |
+| `Enew[i,j]:=(Xij+Rij)/(roottwo*Rave)` | (`:601`) | ✓ |
+| `sqrt(s2 ? 2*(Rij**2))/Rave` | `math.sqrt(s2 + 2.0*(rij**2))/rave` (`:603`) | ✓ con reserva |
+| `(abs(Rij)-Xij)/(roottwo*Rave)` | (`:610`) | ✓ |
+| `Efraction:= 2*Eold[i,i]/E[1]` | (`:616`) | ✓ |
+| `if ran2(seed)<4*exp(-deltaE/T)` | `acceptance_scale = 4.0` (`:518`, `:681`) | ✓ |
+| `ran2`, `gasdev`, `glir: array[1..97]` | portados (`:73-118`), misma tabla de 97 | ✓ |
+
+**El factor `4` del criterio de aceptación es de Bombelli**, no una invención del puerto:
+`procedure decide` dice literalmente `if ran2(seed)<4*exp(-deltaE/T)`. Y **el `1959` de las
+semillas es el valor por defecto del original**.
+
+**Consecuencia sobre la afirmación fuerte.** «Con los parámetros originales no se logra
+ningún embebido» ya no descansa en la palabra de nadie: `T_0 = 100` y `alpha = 0.9` **están
+en el fuente de 1987**, verbatim, en `procedure statistics` y `procedure anneal`
+respectivamente. La afirmación es sobre las constantes reales del programa histórico.
+
+**Las dos reservas, exactas.** Hay dos caracteres que el OCR no resuelve y donde el puerto
+**interpreta**:
+
+1. `sq~t(s2~2*(Rij**2))` — el puerto lee `sqrt(s2 + 2*(rij**2))`. El `+` es lectura
+   plausible, no legible.
+2. `if s2>0 then Enew[i,11:= n` — el puerto lee `0.0`. Contextualmente forzado (energía nula
+   cuando el par ya está correctamente no relacionado), pero es interpretación.
+
+Ninguna de las dos afecta a las constantes del calendario, que se leen limpias.
 
 **Estado**: `SUPPORTED_AS_ARTEFACT` (existe, DOI, público);
 `REPRODUCED_INDEPENDENTLY_BYTE_EXACT` para los cuatro CSV (`make verify-data`, EXIT=0) y su
-suite de 24 tests;
-`[UNVERIFIED]` la fidelidad al Pascal original de 1987.
+suite de 24 tests; `FIDELITY_VERIFIED_LINE_BY_LINE_VS_1987_APPENDIX_A2`, con dos caracteres
+OCR-ambiguos interpretados y señalados.
 
 ### 2.6 Myrheim–Meyer dimension estimator: what it estimates, and what it is *not*
 
