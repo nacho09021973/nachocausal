@@ -918,6 +918,11 @@ No se autoriza sustituir este lema por una simulación ni por una nueva represen
 > **ESTADO DE ESTA SECCIÓN: BORRADOR ANALÍTICO · SIN EJECUCIÓN.** Cada lema lleva
 > etiqueta `PROVED`, `SKETCH` u `OPEN`. No modifica ningún gate congelado. Sustituye
 > la ruta de §12 (marco vacío), no la corrige.
+>
+> **Resumen del alcance.** El certificado `Pr(S) >= e^{-o(n)}` queda `PROVED` sin
+> dependencias pendientes. `P2_STATUS` sigue `OPEN`, y la Advertencia 13.16 muestra
+> que cerrarlo **no** daría recuperabilidad: la magnitud decisiva es el cociente
+> normalizado `T_n = 1-rho_max^2`, no el riesgo absoluto.
 
 ### 13.0 Por qué prescribir en vez de vaciar
 
@@ -1379,9 +1384,53 @@ respete todavía tiene que escribirse, y no se escribe aquí. **No se afirma que
 exista.**
 
 En consecuencia, la ruta B cierra el certificado de unicidad y **no** decide
-`P_{2,n}`. `P2_STATUS` sigue `OPEN`, y también sigue abierta la reconstrucción
-`inf_f E[(ell-f(M))^2] -> 0`, que por (7.15) requiere `P_{1,n}+P_{2,n} -> 0`: el
-primer sumando está cerrado, el segundo no.
+`P_{2,n}`. `P2_STATUS` sigue `OPEN`.
+
+**Advertencia 13.16 (`PROVED`: `P_{1,n}+P_{2,n} -> 0` no es recuperabilidad).** Este
+punto es más importante que el eslabón que falta, porque afecta a cómo debe leerse
+(7.15) y no solo a si se puede demostrar.
+
+`P_{1,n}+P_{2,n} = E[Var(ell|M,n,h,S)]` es un error **absoluto**, no normalizado. La
+magnitud que decide si `M` recupera `ell` es el cociente
+
+```text
+T_n = E[Var(ell|M,n,h,S)] / Var(ell|n,h,S) = 1 - rho_max^2,
+```
+
+por el Lema 3 de `P1a_count_volume_canal_sigma_m_d2.md:65-73`
+(`1-eta^2 = E[Var(Y|G)]/Var(Y)`, con `rho_max=eta` la razón de correlación, óptima
+sobre **toda** función medible de `M`, no solo afín). En la muestra sellada
+(`P1a_count_volume_canal_sigma_m_d2.md:104-113`), con `SSW = E[Var(ell|M)]` y
+`SST = Var(ell)` sin normalizar por `N`:
+
+| `n` | `N` | `SSW` | `SSW/N` | `SST/N` | `T_emp` | `rho_max_emp` |
+|---:|---:|---:|---:|---:|---:|---:|
+| 64 | 7014 | 19.72 | `2.81e-3` | `4.15e-3` | 0.6774 | 0.5680 |
+| 96 | 7918 | 15.17 | `1.92e-3` | `2.67e-3` | 0.7175 | 0.5315 |
+| 128 | 8334 | 11.28 | `1.35e-3` | `1.94e-3` | 0.6995 | 0.5482 |
+
+El numerador decae; el denominador decae al mismo ritmo; el cociente permanece en
+`0.68-0.72` en todo el rango sellado. Es decir, los datos son **compatibles con**
+`P_{1,n}+P_{2,n} -> 0` y **simultáneamente** con `liminf T_n > 0`. Ambas cosas a la
+vez, sin contradicción.
+
+Por tanto: demostrar `P_{2,n} -> 0` sería un enunciado verdadero y vacío. No
+implicaría recuperabilidad de `ell` desde `M`; implicaría que `ell` y `M` se
+concentran juntos y que el estimador de Bayes converge a una constante. Ningún texto
+de este repositorio debe encadenar `P_{1,n}->0` y `P_{2,n}->0` con la conclusión
+«reconstrucción consistente» sin exhibir además `Var(ell|n,h,S)` y comprobar que el
+cociente no se estanca. La formulación de (7.15) en
+`P1a_count_volume_lema_kl_d2.md:571-584` es correcta en la dirección que enuncia
+—si `Q_{2,n}` no converge a cero, no hay reconstrucción consistente— y es la
+dirección recíproca la que no está protegida.
+
+La pregunta con contenido es `liminf T_n > 0`, es decir la ruta 2 de
+`P1a_count_volume_lema_kl_d2.md:563-565`: separación persistente con masa no
+evanescente en el `pushforward` de `sqrt(KL)`. **El certificado de §13 no sirve para
+eso.** `Pr(S) >= e^{-o(n)}` es una herramienta para cotas **superiores** por
+división; una cota inferior sobre la varianza condicional necesita masa y
+separación, que §13 no aporta en absoluto. Conviene no confundir lo que la ruta B
+compra con lo que haría falta.
 
 ### 13.7 Veredicto y flags
 
@@ -1401,8 +1450,9 @@ primer sumando está cerrado, el segundo no.
 | unicidad sobre `F_B intersect G_n` | `PROVED` | Prop. 13.12 |
 | puente a `S` | `PROVED` | citado, sin hipótesis extra |
 | `Pr(S) >= e^{-o(n)}` | `PROVED` | Cor. 13.14, sin división |
+| `P_{1,n}+P_{2,n} -> 0` no es recuperabilidad | `PROVED` | Adv. 13.16, cociente sellado `0.68-0.72` |
 | `P_{2,n} -> 0` | `OPEN` | el eslabón no existe en el repositorio |
-| reconstrucción `inf_f E[(ell-f(M))^2] -> 0` | `OPEN` | depende del anterior |
+| `liminf T_n > 0` (canal normalizado) | `OPEN` | la pregunta con contenido; §13 no aporta |
 
 ```text
 PRESCRIBED_BAND_UNIQUENESS_CERTIFICATE = PROVED
@@ -1412,7 +1462,9 @@ PRESCRIBED_BAND_EXACT_UNIFORMITY = PROVED
 GLOBAL_DISCREPANCY_LEMMA = PROVED
 SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = PROVED
 EMPTY_FRAME_UNIQUENESS_CERTIFICATE = SUPERSEDED
+ABSOLUTE_RISK_IS_NOT_RECOVERABILITY = PROVED
 P2_STATUS = OPEN
+NORMALISED_CHANNEL_STATUS = OPEN
 ```
 
 `EMPTY_FRAME_UNIQUENESS_CERTIFICATE` pasa de `OPEN` a `SUPERSEDED`: la ruta de §12
@@ -1423,21 +1475,33 @@ objetivo: ya no hace falta.
 
 El certificado ya no depende de ninguna demostración pendiente: el Lema 13.10 cierra
 el único ingrediente probabilístico de §13. `P2_STATUS` **no** pasa a `PROVED` por
-una razón distinta y ajena al certificado: el puente de §13.6 no existe.
+una razón distinta y ajena al certificado: el puente de §13.6 no existe. Y aunque
+existiera, la Advertencia 13.16 muestra que `P_{2,n}->0` no sería el enunciado
+buscado.
 
 ### 13.8 Lista `OPEN`
 
-1. **Puente a `P_{2,n}`.** No existe. Cualquier construcción debe respetar la
+1. **Canal normalizado.** Decidir `liminf T_n > 0`, con `T_n = 1-rho_max^2`. Es la
+   ruta 2 de `P1a_count_volume_lema_kl_d2.md:563-565` —separación persistente con
+   masa no evanescente en el `pushforward` de `sqrt(KL)`— y la única pregunta cuya
+   respuesta cambia algo. §13 no aporta herramientas: un certificado de rareza sirve
+   para dividir en cotas superiores, no para cotas inferiores de varianza.
+2. **Puente a `P_{2,n}`.** No existe. Si alguna vez se escribe, debe respetar la
    contabilidad de escalas de la Observación 13.15: solo cotas incondicionales
-   `e^{-c(epsilon)n}` sobreviven a la división por `Pr(S)`.
-2. **Caso impar, contabilidad fina.** El balance del producto en Def. 13.2 se
+   `e^{-c(epsilon)n}` sobreviven a la división por `Pr(S)`. Prioridad baja tras la
+   Advertencia 13.16.
+3. **Caso impar, contabilidad fina.** El balance del producto en Def. 13.2 se
    verifica con `u_- = u_+ - 1/N`, `v_- = v_+ + 1/N`; conviene reescribir Def. 13.2
    con las cinco prescripciones auxiliares listadas explícitamente en vez de
    descritas, para que el conteo `2 rho + 5` sea comprobable línea a línea.
-3. **Constantes.** `C` solo está restringida por `rho - 1 > 2 eta_n`, que se cumple
+4. **Constantes.** `C` solo está restringida por `rho - 1 > 2 eta_n`, que se cumple
    asintóticamente para cualquier `C>0` fijo. El acoplamiento `C >= (32 A_0)^(2/3)`
    de §12.13 ya **no** es necesario, porque no hay peeling; conviene comprobar que
    ninguna otra parte del argumento lo reintroduce.
+5. **Transferencia a 3+1D.** No evaluada. La maquinaria de §13 —filas y columnas,
+   prescripción de rangos, conservación de flujo entre bloques— vive en la
+   representación por permutación, que **es** la estructura `d=2`. No se afirma que
+   transfiera; se registra que la cuestión no se ha examinado.
 
-**Próximo paso único.** El punto 1. Los puntos 2 y 3 son deuda de redacción, no
-huecos lógicos, y el certificado no depende de ninguno de los tres.
+**Próximo paso único.** El punto 1. Los puntos 3 y 4 son deuda de redacción, no
+huecos lógicos; el 2 ha perdido interés; el 5 es una decisión de programa.
