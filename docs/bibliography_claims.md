@@ -318,6 +318,60 @@ argument not audited]`. Reading note, flagged rather than asserted: Corollary 3.
 Lemma 4.1 from a later section, a forward dependency that a referee would be expected to query;
 this is a structural observation about presentation, not a claim that the result is wrong.
 
+### 2.5ter Bombelli tiene DOS formulaciones, y solo una es la que WP6 ataca
+
+**Leído en primaria esta sesión** (2026-08-05): `biblioteca/Bombelli_1987_PhD.pdf`,
+*Space-time as a causal set*, Syracuse University, diciembre 1987, 171 pp., con capa de
+texto extraíble.
+
+**Formulación A — tesis 1987, versión de EMBEBIDO.** §2.3 («Our main conjecture») y §2.9:
+
+> «Our main conjecture (Hauptvermutung) is that the topology and differentiable structure
+> are unique, and the metric is determined up to "small variations", i.e., if there exist
+> two such faithful embeddings, the two manifolds are approximately isometric.»
+
+y su forma precisa en §2.9:
+
+> «Our "main conjecture" was that any pair of faithful embeddings, `f : P -> (M,g_ab)` and
+> `f' : P -> (M',g'_ab)`, are related by a `P`-preserving diffeomorphism `phi : M -> M'`
+> which is an approximate isometry of `g_ab` to `g'_ab`.»
+
+Es un enunciado sobre **un causal set individual** y sus embebidos, con isometría
+**aproximada**. La tesis aporta un argumento parcial (unicidad de la dimensión vía
+`n`-pixies, cubrimiento por conjuntos de Alexandrov pequeños) y lo llama explícitamente
+«a start in proving such a statement».
+
+**Formulación B — la que cita Brightwell–Luczak, versión ESTADÍSTICA.** Atribuida a
+L. Bombelli, *Statistical Lorentzian geometry and the closeness of Lorentzian manifolds*,
+J. Math. Phys. **41** (2000) 6944–6958: si `U` y `V` son regiones de variedades
+lorentzianas de volumen finito **sin difeomorfismo que preserve la medida** entre ellas,
+entonces existe un poset finito `Q` con `t(Q;U) != t(Q;V)`, donde `t(Q;U)` es la
+probabilidad de que una muestra iid uniforme de `|Q|` elementos de `U` induzca un poset
+isomorfo a `Q`.
+
+**La diferencia es material y hay que respetarla en cualquier texto.** A habla de embebidos
+de un causal set concreto y de isometría **aproximada**; B habla de **leyes** —densidades
+de patrones— y de difeomorfismo que preserva la medida, **exacto**. `research_program/
+work_packages/wp6_d2_null_copula_dichotomy.md` ataca **B**, no A.
+
+**Estado de fuentes.** A: `SUPPORTED`, leída en primaria. B: `[UNVERIFIED en primaria]` —
+el artículo de 2000 **no está en `biblioteca/`**; se conoce solo a través de la restatement
+de Brightwell–Luczak, arXiv:1510.05612 §2, leída esta sesión. **Adquirir el JMP 2000 es el
+único hueco de fuente primaria que le queda a WP6.**
+
+### 2.5quater Aghili–Bombelli–Pilgrim (2018): 2D, pero el caso uniforme
+
+`biblioteca/emergencia/1805.07312v1_Aghili_Bombelli_Pilgrim_Path_Length_2D_Causal_Sets.pdf`,
+leído en abstract e introducción esta sesión. Distribución de longitudes de cadenas
+maximales en causal sets 2-dimensionales, con relación de recursión para `n_k`, usada como
+medida de embebibilidad y de dimensionalidad.
+
+**Riesgo de novedad para WP6: bajo.** El objeto es «causal sets obtained from **uniformly
+distributed points in Minkowski space**» — el caso plano/uniforme, igual que el modelo
+`P_d(n)` de Winkler. No hay densidad no uniforme, ni cópula, ni identificabilidad de la
+métrica. Refuerza el patrón ya observado: la literatura de causal sets 2D trabaja en el
+caso plano, y la densidad **no uniforme** —de la que habla la conjetura B— no es su objeto.
+
 ### 2.6 Myrheim–Meyer dimension estimator: what it estimates, and what it is *not*
 
 **Enunciado exacto**: Ordering fraction r = 2R/[n(n−1)] (Eq. 14), R = number of related pairs.
