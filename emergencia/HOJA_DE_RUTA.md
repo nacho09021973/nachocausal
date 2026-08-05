@@ -789,3 +789,79 @@ CV4_4_POPULATION_LEMMA = SCOPED_DOWN (P1a_count_volume_lema_kl_d2.md): solo la
 CV4_RICHER_CHANNEL_STATUS = OUT_OF_SCOPE_ONLY_LINEAR_FAMILY_TESTED
 CURRENT_NUMERICAL_AUTHORIZATION = NONE (sin cambio para muestras nuevas/estocasticas)
 ```
+
+## 19. Decisión del PI (2026-08-05) — estado limpio y redirección
+
+Cierra la ruta B (§13 de `emergencia/P1a_puerta_teorica_en_Minkowski.md`, certificado
+de unicidad por familia prescrita). Firmada en
+`docs/comite/comite_decision_050_p1a-seccion-13-certificado-familia-prescrita.md` §11;
+detalle técnico en §13.9 de la puerta teórica.
+
+### 19.1 El estado limpio, en cuatro puntos
+
+1. **Mecanismo plantado: válido.** La ruta B aportó una idea combinatoria real —
+   prescribir `F_B` y colocar la cuádrupla en el máximo exacto del paisaje libre.
+2. **Certificado: incompleto e innecesario.** No cierra (inconsistencia de banda —
+   Def. 13.1 mal formada para `rho >= n/4` y Lema 13.4 `FALSE_AS_WRITTEN`— y cota
+   aplicada al bloque equivocado —Lema 13.9, caso 2 de la Prop. 13.12—). Y aun
+   parcheado seguiría siendo estratégicamente vacío en `n ≈ 64–128`: `n_0` cae entre
+   `5.7e4` y `1.2e9` según `C`. Una cota de `Pr(S)` que solo empieza a funcionar tan
+   lejos no aporta nada utilizable.
+3. **Objetivo absoluto `P_{2,n} -> 0`: descartado por vacuidad.** El colapso conjunto
+   de numerador y denominador (Advertencia 13.16) lo liquida como demostración de
+   recuperación. No es que sea difícil: es que sería verdadero y no diría nada.
+4. **Problema normalizado: abierto.** Solo el cociente `T_n = 1 - rho_max^2` conserva
+   sustancia. El `~0.70` observado hasta `n = 16000` (`T_emp ∈ [0.6773, 0.7175]`,
+   seis estratos) es **evidencia numérica sólida, no un teorema**. La pregunta es
+   `liminf T_n > 0`, o una variante cuantitativa más fina.
+
+Esto evita cerrar un teorema correcto pero científicamente vacío, y señala el lugar
+exacto donde podría residir el resultado real.
+
+### 19.2 Lo que NO se prioriza
+
+- **Reparar el certificado.** No se reanuda. Las reparaciones escritas en §13.2 y
+  §13.5 quedan como `SKETCH` no verificado por terceros, y ahí se quedan.
+- **Más fuerza bruta computacional.** La verificación exhaustiva C2 del comité 050
+  no se ejecuta y su contrato no se congela. `G_n` es vacuo a todo `n` enumerable;
+  el propio comité no la recomendaba.
+
+### 19.3 Redirección
+
+La **objeción dimensional** (Braun `d >= 3`, `docs/bibliography_claims.md` §1.3;
+Madsen `d > 2` vía Müller, §2.5bis) afecta la **vía de identificabilidad** que
+exploraba esta hoja de ruta —reconstrucción/embedding a partir de orden y número—,
+que es donde esos teoremas viven y donde excluyen `d=2`.
+
+**No toca automáticamente la línea de horizonte** en la reducción esféricamente
+simétrica `(t, r)`, que es el programa principal del repositorio (`README.md`,
+`docs/preregistration*.md`): ahí la pregunta es de **recuperabilidad** de estructura
+de horizonte, no de identificabilidad del espaciotiempo. El esfuerzo se concentra ahí
+a partir de ahora.
+
+Registrado con precisión, porque la diferencia importa: «no toca automáticamente» es
+un enunciado de **alcance**, no una afirmación de transferencia. Que la exclusión
+dimensional no se aplique no demuestra que la línea de horizonte esté libre; demuestra
+que la objeción publicada no la alcanza por ese camino.
+
+### 19.4 Deuda que NO se cancela
+
+- La auditoría independiente de punto único de §18
+  (`emergencia/p1a_count_volume_canal_sigma_m_d2.py`) sigue **pendiente**; el cierre
+  de la ruta B no la sustituye ni la anula.
+- Los puntos 3, 4 y 5 de la lista `OPEN` de §13.8 quedan como deuda **archivada** de
+  una sección cerrada, no como trabajo pendiente.
+
+```text
+RUTA_B_STATUS = CLOSED_UNREPAIRED_BY_PI_2026-08-05
+PLANTED_MECHANISM = VALID_IDEA_RETAINED
+PRESCRIBED_FAMILY_CERTIFICATE = INCOMPLETE_AND_UNNECESSARY
+ABSOLUTE_TARGET_P2_TO_ZERO = DISCARDED_AS_VACUOUS
+NORMALISED_CHANNEL_LIMINF_T_N = OPEN_ONLY_LIVE_QUESTION
+T_N_EVIDENCE = EMPIRICAL_UP_TO_N_16000_NOT_A_THEOREM
+CERTIFICATE_REPAIR = NOT_PRIORITISED
+BRUTE_FORCE_VERIFICATION = NOT_AUTHORISED
+DIMENSIONAL_OBJECTION_SCOPE = IDENTIFIABILITY_ROUTE_NOT_AUTOMATICALLY_HORIZON_LINE
+NEXT_FOCUS = HORIZON_LINE_IN_SPHERICALLY_SYMMETRIC_T_R_REDUCTION
+CV4_SINGLE_POINT_AUDIT = STILL_PENDING_NOT_CANCELLED
+```

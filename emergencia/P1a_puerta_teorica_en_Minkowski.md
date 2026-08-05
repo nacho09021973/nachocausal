@@ -1691,3 +1691,47 @@ buscado.
 es una decisión de programa. El comité 050 recomienda **no seguir invirtiendo en esta
 rama**: sirve a un objetivo que 13.16 mostró vacío, es ~90 órdenes de magnitud más
 floja que la medición, y su maquinaria no transfiere.
+
+### 13.9 Decisión del PI (2026-08-05) — la sección se cierra sin reparar
+
+Esta sección **no se repara y no se reconvoca**. La decisión es del PI, firmada en
+`docs/comite/comite_decision_050_p1a-seccion-13-certificado-familia-prescrita.md` §11,
+y su motivo es **estratégico antes que técnico**: los cuatro huecos deductivos
+(Def. 13.1 mal formada para `rho >= n/4`, Lema 13.4 `FALSE_AS_WRITTEN`, Lema 13.9
+`FALSE_AS_WRITTEN`, caso 2 de la Prop. 13.12 non sequitur) son en principio
+reparables —hay reparaciones escritas en §13.2 y §13.5, sin verificar por terceros—,
+pero **un §13 reparado seguiría sin servir para nada**:
+
+1. sirve a `P_{2,n} -> 0`, que la Advertencia 13.16 mostró **verdadero y vacío**
+   (numerador y denominador colapsan juntos; no es recuperación);
+2. su `n_0` está entre `5.7e4` y `1.2e9` según `C`, con techo de buena definición
+   `rho < floor(n/4)`, mientras la muestra sellada corre en `n ∈ {64,96,128}`
+   (`PRESCRIBED_FAMILY_EMPIRICALLY_TESTABLE = NO`, §13.8 punto 4);
+3. su maquinaria vive en la representación por permutación, que **es** `d=2`
+   (§13.8 punto 6).
+
+**Lo que sobrevive de la ruta B.** El mecanismo plantado —prescribir una familia
+`F_B` y colocar la cuádrupla en el máximo **exacto** del paisaje libre
+(`u_- = u_+ = v_- = v_+ = 1/2`, Lema 13.7, `PROVED` en el caso par)— es una idea
+combinatoria válida, junto con la uniformidad exacta del residual, el balance `K=L`
+y la necesidad de la colocación diagonal. Se conserva como registro; no se conserva
+como certificado.
+
+**Lo que queda abierto y sigue importando.** Solo `liminf T_n > 0`, con
+`T_n = 1 - rho_max^2` (§13.8 punto 1). El `T_emp ∈ [0.6773, 0.7175]` medido hasta
+`n = 16000` es evidencia numérica sólida y **no** un teorema; el enunciado buscado es
+ese liminf, o alguna variante cuantitativa más fina. §13 no aporta herramientas para
+atacarlo: un certificado de rareza da cotas superiores, no cotas inferiores de
+varianza.
+
+**No autorizado:** la verificación por fuerza bruta (C2 del comité 050) y cualquier
+reanudación de la reparación. Ver `emergencia/HOJA_DE_RUTA.md` §19 para la
+redirección del esfuerzo.
+
+```text
+PRESCRIBED_FAMILY_TRACK = CLOSED_UNREPAIRED_BY_PI_2026-08-05
+PRESCRIBED_FAMILY_PLANTED_MECHANISM = RETAINED_AS_IDEA_NOT_AS_CERTIFICATE
+ABSOLUTE_TARGET_P2_TO_ZERO = DISCARDED_AS_VACUOUS_NOT_AS_HARD
+NORMALISED_CHANNEL_STATUS = OPEN_AND_ONLY_LIVE_QUESTION
+BRUTE_FORCE_VERIFICATION = NOT_AUTHORISED
+```

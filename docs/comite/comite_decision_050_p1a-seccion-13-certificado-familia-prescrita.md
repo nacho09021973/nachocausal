@@ -521,4 +521,30 @@ the record and cannot later be re-fitted. The committee endorses that sequencing
 COMMITTEE_DECISION_VERDICT=RECOMMEND_REVISE_AND_RECONVENE
 
 ## 11. User sign-off
-_(left blank for the user — decision, date, and any overriding notes)_
+
+**Decisión del PI, 2026-08-05.** La recomendación de fondo del comité (`no seguir invirtiendo en
+esta rama`) se **acepta**; la forma `REVISE_AND_RECONVENE` se **agota aquí**: no se reconvoca.
+
+- **R1–R4: ya aplicadas** en `2aafb77` (bajada a `SKETCH`, residuos de remediación corregidos,
+  reparaciones escritas y atribuidas, `n_0` y `PRESCRIBED_FAMILY_EMPIRICALLY_TESTABLE = NO`).
+- **C1 (commit/push de R1–R4): autorizado y ejecutado** (`2aafb77`, ya empujado).
+- **C2 (verificación por fuerza bruta): NO se ejecuta.** No se congela el contrato que el warden
+  exigía; la rama se cierra antes de necesitarlo.
+- **Reparación del certificado (Def. 13.1, Lemas 13.4, 13.9, caso 2 de la Prop. 13.12): NO se
+  prioriza.** Motivo del PI, más fuerte que el estado de la demostración: aun parcheado, el
+  resultado sería estratégicamente vacío en el régimen que importa (`n ≈ 64–128`). Una cota de
+  `Pr(S)` que solo empieza a funcionar en `n_0 ~ 1e5–1e9` no aporta nada utilizable.
+- **Lo que sí se conserva** de la ruta B: el **mecanismo plantado** (prescribir una familia y
+  colocar la cuádrupla en el máximo exacto del paisaje libre) es una idea combinatoria válida y
+  queda en el registro como tal.
+- **Objetivo absoluto `P_{2,n} -> 0`: descartado por vacuidad**, no por dificultad — el colapso
+  conjunto de numerador y denominador (Adv. 13.16) lo liquida como demostración de recuperación.
+- **Única pregunta con sustancia: `liminf T_n > 0`** (punto 1 de la lista `OPEN`). El `~0.70`
+  observado hasta `n = 16000` es evidencia numérica sólida, **no** un teorema.
+- **Redirección.** El esfuerzo no continúa aquí ni en más fuerza bruta computacional. Ver
+  `emergencia/HOJA_DE_RUTA.md` §19 y `emergencia/P1a_puerta_teorica_en_Minkowski.md` §13.9.
+
+```text
+COMMITTEE_050_SIGNOFF = ACCEPTED_WITH_OVERRIDE_NO_RECONVENE
+COMMITTEE_050_C2_BRUTE_FORCE = DECLINED_BY_PI
+```
