@@ -897,13 +897,20 @@ demostrada.
 | certificado completo y cota subexponencial de `Pr(S)` | `OPEN` | depende del lema anterior |
 | comportamiento de `P_{2,n}` | `OPEN` | no se modifica en esta sección |
 
+> **BLOQUE SUPERSEDIDO POR §13.7. No leer estos valores como vigentes.** Se conserva
+> como registro histórico de la ruta del marco vacío. Dos de ellos son hoy
+> **falsos**: `SUBEXPONENTIAL_UNIQUENESS_COROLLARY = OPEN` quedó cerrado por el
+> Corolario 13.14 (`SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = PROVED`), y
+> `EMPTY_FRAME_UNIQUENESS_CERTIFICATE = OPEN` pasó a `SUPERSEDED`. Los valores
+> vigentes están en el bloque de §13.7, que es el único que debe citarse.
+
 ```text
-EMPTY_FRAME_UNIQUENESS_CERTIFICATE = OPEN
-EMPTY_FRAME_GEOMETRY = PROVED
-EMPTY_FRAME_ENTROPIC_COST = PROVED
-EMPTY_FRAME_CONDITIONAL_DISCREPANCY = OPEN
-SUBEXPONENTIAL_UNIQUENESS_COROLLARY = OPEN
-P2_STATUS = OPEN
+[SUPERSEDED — ver §13.7] EMPTY_FRAME_UNIQUENESS_CERTIFICATE = OPEN
+[SUPERSEDED — ver §13.7] EMPTY_FRAME_GEOMETRY = PROVED
+[SUPERSEDED — ver §13.7] EMPTY_FRAME_ENTROPIC_COST = PROVED
+[SUPERSEDED — ver §13.7] EMPTY_FRAME_CONDITIONAL_DISCREPANCY = OPEN
+[SUPERSEDED — ver §13.7] SUBEXPONENTIAL_UNIQUENESS_COROLLARY = OPEN
+[SUPERSEDED — ver §13.7] P2_STATUS = OPEN
 ```
 
 **Próximo paso único (`OPEN`).** Probar una Bernstein/Freedman uniforme para conteos
@@ -919,8 +926,10 @@ No se autoriza sustituir este lema por una simulación ni por una nueva represen
 > etiqueta `PROVED`, `SKETCH` u `OPEN`. No modifica ningún gate congelado. Sustituye
 > la ruta de §12 (marco vacío), no la corrige.
 >
-> **Resumen del alcance.** El certificado `Pr(S) >= e^{-o(n)}` queda `PROVED` sin
-> dependencias pendientes. `P2_STATUS` sigue `OPEN`, y la Advertencia 13.16 muestra
+> **Resumen del alcance.** El certificado `Pr(S) >= e^{-o(n)}` queda demostrado para
+> `n` par, esbozado para `n` impar, y su paso probabilístico descansa en una fuente no
+> archivada; §13 **no** ha pasado auditoría matemática independiente (auditoría 031,
+> hallazgo 13). `P2_STATUS` sigue `OPEN`, y la Advertencia 13.16 muestra
 > que cerrarlo **no** daría recuperabilidad: la magnitud decisiva es el cociente
 > normalizado `T_n = 1-rho_max^2`, no el riesgo absoluto.
 
@@ -998,7 +1007,13 @@ a_0=(1,1), b_0=(s,s), c_0=(s+1,s+1), d_0=(n,n),
 exactamente la de Construcción 12.7. Las filas y columnas no prescritas quedan,
 condicionadas a `F_B`, en biyección uniforme; escribimos `N = n - r_n`.
 
-**Definición 13.2 (`PROVED`: caso impar).** Sea `n=2s+1`, `s>=3`. Se toma
+**Definición 13.2 (`SKETCH`: caso impar).** *Etiqueta rebajada de `PROVED` a `SKETCH`
+tras la auditoría 031 (finding 5): las cinco prescripciones auxiliares se describen
+en prosa en vez de listarse, de modo que el conteo `2 rho + 5` no es comprobable
+línea a línea. La identidad de flujo del Lema 13.5 y el balance del producto del Lema
+13.7 se han verificado algebraicamente para esta paridad, pero heredan esta etiqueta
+hasta que la definición se reescriba (lista `OPEN`, punto 3). El caso par no está
+afectado.* Sea `n=2s+1`, `s>=3`. Se toma
 `L={1,...,s}`, `M={s+1}`, `H={s+2,...,n}`, la cuádrupla de Construcción 12.8
 
 ```text
@@ -1127,7 +1142,8 @@ y por tanto `u_-=u_+=v_-=v_+=1/2` **exactamente**, que es el maximizador de
 E[K|F_B] = E[L|F_B] = (rho+1) + N/4.
 ```
 
-En el caso impar el reparto no es simétrico por unidades, pero sí lo es el producto:
+En el caso impar (`SKETCH`, heredado de Def. 13.2) el reparto no es simétrico por
+unidades, pero sí lo es el producto:
 las fracciones libres cumplen `u_- = u_+ - 1/N` y `v_- = v_+ + 1/N`, de modo que
 `u_-v_-` y `u_+v_+` coinciden y difieren del óptimo `1/4` en `1/(4N^2)`, es decir en
 menos de una unidad de conteo, irrelevante frente a los drifts empleados más
@@ -1240,8 +1256,19 @@ es la media del Lema 13.6.
 una suma de un muestreo **sin** reemplazo de una población finita, entonces
 `E[f(X)] <= E[f(Y)]` con `Y` la suma correspondiente **con** reemplazo. Como las
 cotas de Chernoff se obtienen aplicando `f(x)=e^{tx}`, toda desigualdad de
-Chernoff–Hoeffding para la binomial vale literalmente para la hipergeométrica. En
-particular
+Chernoff–Hoeffding para la binomial vale literalmente para la hipergeométrica.
+
+> `[UNVERIFIED]` W. Hoeffding, "Probability inequalities for sums of bounded random
+> variables", J. Amer. Statist. Assoc. 58 (1963) 13-30, §6, **no está en
+> `biblioteca/`** y no se ha leído contra la fuente primaria. Este es el único paso
+> de §13 que descansa en literatura externa no archivada localmente; se marca aquí
+> siguiendo el precedente de `docs/bibliography_claims.md:76-78` para HKMM. La
+> etiqueta `GLOBAL_DISCREPANCY_LEMMA = PROVED` debe leerse condicionada a este paso.
+> Sustituto disponible si se prefiere evitar la dependencia: asociación negativa de
+> los indicadores bajo permutación uniforme (Joag-Dev–Proschan 1983), que da la misma
+> cola y tampoco está archivada.
+
+En particular
 
 ```text
 Pr(|X - E[X]| >= t) <= 2 exp(-2 t^2 / N).
@@ -1400,19 +1427,27 @@ T_n = E[Var(ell|M,n,h,S)] / Var(ell|n,h,S) = 1 - rho_max^2,
 por el Lema 3 de `P1a_count_volume_canal_sigma_m_d2.md:65-73`
 (`1-eta^2 = E[Var(Y|G)]/Var(Y)`, con `rho_max=eta` la razón de correlación, óptima
 sobre **toda** función medible de `M`, no solo afín). En la muestra sellada
-(`P1a_count_volume_canal_sigma_m_d2.md:104-113`), con `SSW = E[Var(ell|M)]` y
-`SST = Var(ell)` sin normalizar por `N`:
+(`P1a_count_volume_canal_sigma_m_d2.md:109-114`, los **seis** estratos, sin
+seleccionar), `SSW` es la suma de cuadrados intra-conjunto-de-nivel de `M` sobre esa
+muestra —es decir, el **estimador empírico** de `E[Var(ell|M,n,h,S)] = P_{1,n}+P_{2,n}`,
+no esa cantidad poblacional— y `SST` el estimador empírico de `Var(ell|n,h,S)`. Ambos
+sin normalizar por `N`. Que los bins coincidan con los conjuntos de nivel de `M` está
+verificado por los controles del propio script (`biyectiva`, `monotona`,
+`media_bin_alcanza_rho_max`, todos `True`):
 
-| `n` | `N` | `SSW` | `SSW/N` | `SST/N` | `T_emp` | `rho_max_emp` |
-|---:|---:|---:|---:|---:|---:|---:|
-| 64 | 7014 | 19.72 | `2.81e-3` | `4.15e-3` | 0.6774 | 0.5680 |
-| 96 | 7918 | 15.17 | `1.92e-3` | `2.67e-3` | 0.7175 | 0.5315 |
-| 128 | 8334 | 11.28 | `1.35e-3` | `1.94e-3` | 0.6995 | 0.5482 |
+| `n` | lado | `N` | `SSW` | `SSW/N` | `SST/N` | `T_emp` | `rho_max_emp` |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 64 | futuro | 7014 | 19.72 | `2.81e-3` | `4.15e-3` | 0.6774 | 0.5680 |
+| 64 | pasado | 7014 | 19.20 | `2.74e-3` | `4.04e-3` | 0.6773 | 0.5681 |
+| 96 | futuro | 7918 | 15.17 | `1.92e-3` | `2.67e-3` | 0.7175 | 0.5315 |
+| 96 | pasado | 7918 | 14.44 | `1.82e-3` | `2.59e-3` | 0.7041 | 0.5439 |
+| 128 | futuro | 8334 | 11.28 | `1.35e-3` | `1.94e-3` | 0.6995 | 0.5482 |
+| 128 | pasado | 8334 | 11.99 | `1.44e-3` | `2.02e-3` | 0.7139 | 0.5349 |
 
 El numerador decae; el denominador decae al mismo ritmo; el cociente permanece en
-`0.68-0.72` en todo el rango sellado. Es decir, los datos son **compatibles con**
-`P_{1,n}+P_{2,n} -> 0` y **simultáneamente** con `liminf T_n > 0`. Ambas cosas a la
-vez, sin contradicción.
+`[0.6773, 0.7175]` en los seis estratos sellados. Es decir, los datos son
+**compatibles con** `P_{1,n}+P_{2,n} -> 0` y **simultáneamente** con
+`liminf T_n > 0`. Ambas cosas a la vez, sin contradicción.
 
 Por tanto: demostrar `P_{2,n} -> 0` sería un enunciado verdadero y vacío. No
 implicaría recuperabilidad de `ell` desde `M`; implicaría que `ell` y `M` se
@@ -1436,12 +1471,14 @@ compra con lo que haría falta.
 
 | Objeto | Estado | Alcance exacto |
 | --- | --- | --- |
-| definición de `F_B`, ambas paridades | `PROVED` | Def. 13.1-13.2 |
+| definición de `F_B`, caso par | `PROVED` | Def. 13.1 |
+| definición de `F_B`, caso impar | `SKETCH` | Def. 13.2; conteo `2rho+5` no comprobable línea a línea (`OPEN` 3) |
 | uniformidad exacta del residual | `PROVED` | biyección de `N=n-r_n` elementos |
 | coste `Pr(F_B)` y presupuesto entrópico | `PROVED` | `exp[-Theta(n^(2/3)(log n)^(4/3))]`, `r_n=o(n/log n)` |
 | vaciado del cuadrado central | `PROVED` | determinista, sin evento |
 | balance `K=L` | `PROVED` | exacto, por conservación de flujo |
-| plantada en el máximo del paisaje libre | `PROVED` | `u=v=1/2` exacto (par); producto exacto (impar) |
+| plantada en el máximo del paisaje libre, caso par | `PROVED` | `u=v=1/2` exacto |
+| plantada en el máximo del paisaje libre, caso impar | `SKETCH` | producto exacto verificado; hereda Def. 13.2 |
 | necesidad de la colocación diagonal | `PROVED` | la antidiagonal destruye el certificado |
 | régimen determinista `delta<=mu_n` | `PROVED` | usa convención cerrada y `K=L` |
 | diferencial de puntos prescritos | `PROVED` | signo favorable para `delta<1/4`; absorbido si `delta>=1/4` |
@@ -1455,17 +1492,27 @@ compra con lo que haría falta.
 | `liminf T_n > 0` (canal normalizado) | `OPEN` | la pregunta con contenido; §13 no aporta |
 
 ```text
-PRESCRIBED_BAND_UNIQUENESS_CERTIFICATE = PROVED
+PRESCRIBED_BAND_UNIQUENESS_CERTIFICATE = PROVED_EVEN_N_SKETCH_ODD_N
 PRESCRIBED_BAND_GEOMETRY = PROVED
 PRESCRIBED_BAND_ENTROPIC_COST = PROVED
 PRESCRIBED_BAND_EXACT_UNIFORMITY = PROVED
-GLOBAL_DISCREPANCY_LEMMA = PROVED
-SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = PROVED
+GLOBAL_DISCREPANCY_LEMMA = PROVED_MODULO_UNARCHIVED_HOEFFDING
+SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = PROVED_EVEN_N_SKETCH_ODD_N
 EMPTY_FRAME_UNIQUENESS_CERTIFICATE = SUPERSEDED
 ABSOLUTE_RISK_IS_NOT_RECOVERABILITY = PROVED
 P2_STATUS = OPEN
 NORMALISED_CHANNEL_STATUS = OPEN
+MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED = NO
 ```
+
+Los dos sufijos no son cautela retórica. `_EVEN_N_SKETCH_ODD_N` registra que la
+construcción está completa solo para `n` par (Def. 13.1); para `n` impar el
+argumento está esbozado y su contabilidad pendiente (Def. 13.2, `OPEN` 3).
+`_MODULO_UNARCHIVED_HOEFFDING` registra que el único paso probabilístico descansa en
+una fuente no archivada ni leída (Lema 13.10(b)). Y
+`MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED = NO` registra el hallazgo 13 de la
+auditoría 031: §13 fue escrita y comprobada en la misma sesión, sin lectura
+adversarial independiente.
 
 `EMPTY_FRAME_UNIQUENESS_CERTIFICATE` pasa de `OPEN` a `SUPERSEDED`: la ruta de §12
 no se completa ni se corrige, se abandona. Su contenido geométrico (§12.2, §12.3)
@@ -1473,9 +1520,10 @@ se reutiliza literalmente y sigue vigente; lo que se abandona es el condicionami
 a un evento de vaciedad. `EMPTY_FRAME_CONDITIONAL_DISCREPANCY` deja de ser un
 objetivo: ya no hace falta.
 
-El certificado ya no depende de ninguna demostración pendiente: el Lema 13.10 cierra
-el único ingrediente probabilístico de §13. `P2_STATUS` **no** pasa a `PROVED` por
-una razón distinta y ajena al certificado: el puente de §13.6 no existe. Y aunque
+El Lema 13.10 cierra el único ingrediente probabilístico de §13, con las dos reservas
+que la auditoría 031 dejó registradas: la fuente de su paso (b) no está archivada, y
+la construcción está completa solo para `n` par. `P2_STATUS` **no** pasa a `PROVED`
+por una razón distinta y ajena al certificado: el puente de §13.6 no existe. Y aunque
 existiera, la Advertencia 13.16 muestra que `P_{2,n}->0` no sería el enunciado
 buscado.
 
