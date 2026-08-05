@@ -262,6 +262,66 @@ canal, y el Teorema C dejaría de ser el límite máximo de invisibilidad.
 
 En ambas ramas hay resultado. Eso es lo que hace que (E') merezca el ataque.
 
+### 5.4bis Ataque a `b`: dos resultados
+
+Ejecutados esta sesión, ambos deterministas y en aritmética exacta.
+
+**(1) La consistencia por borrado NO cierra (E'), y empeora.**
+`dev/r3_bridge_e_deletion.py`. Un permutón no elige sus densidades de nivel 4 libremente:
+las de nivel `k` quedan determinadas por las de `k+1` mediante borrado. Imponiendo a la vez
+las restricciones de fibra en el nivel superior **y** que el empuje hacia abajo satisfaga
+las de todos los niveles inferiores:
+
+```
+ n   dim nucleo   parte PAR   parte IMPAR
+ 3            1           0             1
+ 4            8           1             7
+ 5           57          10            47
+```
+
+La parte impar es la ambigüedad `U <-> V` (`C` frente a `C^T`), inevitable e inocua. La
+parte **par**, que es la que amenaza la dicotomía, **sobrevive y crece**: 1 en `n=4`, 10 en
+`n=5`. Conclusión metodológica: **(E') no se cierra por álgebra lineal a ningún orden
+finito**; hace falta un argumento de **realizabilidad**.
+
+**(2) `b` NO es realizable a primer orden alrededor de `Pi`.** `[PROVED]`
+`dev/r3_bridge_e_first_order.py`. Perturbando el permutón uniforme por
+`dC_eps = (1 + eps*h) dx dy` con marginales nulas, y usando
+
+```
+d_sigma(eps) = 1/24 + 4*eps*<h, G_sigma> + O(eps^2),
+```
+
+donde `G_sigma(x,y)` es la probabilidad de que un punto fijo en `(x,y)` más tres uniformes
+den el patrón `sigma`. `G_sigma` se calcula **exactamente**, sin integración numérica,
+repartiendo los tres puntos entre las cuatro regiones que `(x,y)` induce (dentro de cada
+región `X` e `Y` son independientes y uniformes, luego los órdenes son uniformes e
+independientes). Controles superados: `sum_sigma G_sigma = 1` e `int G_sigma = 1/24` para
+las 24.
+
+Como `G_sigma` tiene grado `<= 3` en cada variable y `h` tiene marginales nulas, el
+emparejamiento **solo ve** la proyección de `h` sobre `span{p_i(x) p_j(y) : 1<=i,j<=3}`
+(Legendre desplazados): un espacio de dimensión exactamente **9**. Imponiendo
+`<h, G_sigma> = 0` para las **21** permutaciones cuya densidad está forzada a `1/24`:
+
+```
+nucleo de las 21 restricciones: dimension 0
+```
+
+Solo `h = 0`. Y las perturbaciones **fuera** de ese subespacio de dimensión 9 tienen
+`<h, G_sigma> = 0` para las 24, luego tampoco producen `b`. Por tanto:
+
+> **Toda perturbación de primer orden de `Pi` que preserve las 21 densidades forzadas
+> tiene `b = 0`.** No hay parche curvo infinitesimalmente cercano al plano que sea
+> invisible al orden a 4 puntos.
+
+**Alcance exacto, y es una limitación real.** Esto excluye el **entorno** de `Pi` a primer
+orden. **No** cierra (E'): (a) las direcciones transversales al subespacio visible de
+dimensión 9 son invisibles a primer orden y su efecto empieza en **segundo orden**, que no
+se ha calculado; (b) un contraejemplo podría estar **lejos** de `Pi`, y este cálculo no
+dice nada de ese régimen. Lo que sí establece es que la búsqueda natural —perturbar el
+plano un poco— está **cerrada**.
+
 ### 5.5 Rutas
 
 - **(a) Directa.** Decidir (E') por álgebra de banderas / construcción explícita sobre la
@@ -432,7 +492,12 @@ COROLARIO_ORBITA_G              = PROVED
 TEOREMA_D_COMPLETITUD           = PROVED_MODULO_HKMMRS_2013_Y_GRUBEL_2024
 PUENTE_E_UNICIDAD_REALIZADOR    = FALSE_WITH_EXPLICIT_WITNESS_N4
 BIBLIOGRAPHY_CLAIMS_5_3         = ANSWERED_NEGATIVELY_NO_LONGER_AN_OPEN_CITATION
-PUENTE_E_PRIMA_INYECTIVIDAD_EN_PI = OPEN_REDUCED_TO_ONE_EVEN_DIRECTION_AT_N4
+PUENTE_E_PRIMA_INYECTIVIDAD_EN_PI = OPEN_PERO_ENTORNO_DE_PI_EXCLUIDO
+DELETION_CONSISTENCY_ATTACK     = FAILS_EVEN_PART_GROWS_1_AT_N4_TO_10_AT_N5
+(E_PRIMA)_NO_SE_CIERRA_POR      = ALGEBRA_LINEAL_A_NINGUN_ORDEN_FINITO
+B_REALIZABLE_A_PRIMER_ORDEN     = NO_PROVED_NUCLEO_DIMENSION_0_DE_9
+B_SEGUNDO_ORDEN_TRANSVERSAL     = NO_CALCULADO
+B_LEJOS_DE_PI                   = NO_EXAMINADO
 (E_PRIMA)_ES                    = CONJETURA_DE_BOMBELLI_RESTRINGIDA_A_D2_CAJA_NULA
 CONTRIBUCION_REAL_DE_WP6        = REDUCCION_DE_BOMBELLI_D2_A_(E)_MAS_CASO_PERMUTACION_RESUELTO
 BOMBELLI_2000_JMP_41_6944       = LEIDO_EN_PRIMARIA_CONJETURA_(iii)_DE_§III
