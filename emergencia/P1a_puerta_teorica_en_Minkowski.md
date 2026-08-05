@@ -1214,21 +1214,62 @@ está *exactamente* en el máximo del paisaje libre, ningún rival puede ganar e
 media; basta entonces una única cota de discrepancia a escala global, y no un perfil
 local multiescala.
 
-**Entrada 13.10 (`SKETCH`: discrepancia global uniforme).** Sobre una biyección
-uniforme de `N` elementos, con probabilidad `1-O(N^(4-L))`, simultáneamente para
-todas las cuádruplas y sus dos bloques,
+**Lema 13.10 (`PROVED`: discrepancia global uniforme).** Sea `pi` una biyección
+uniforme entre las `N` filas libres y las `N` columnas libres. Defínase
+`eta_n := sqrt(N Lambda_n)`. Entonces, con probabilidad al menos
+`1 - 4 n^(4-2L)`, simultáneamente para **todos** los rectángulos de índices
+`I x J` con `I` un intervalo de filas libres y `J` uno de columnas libres,
 
 ```text
-| free(bloque) - N u v | <= A_0 ( sqrt(N Lambda_n) + Lambda_n ) =: eta_n.
+| #{i in I : pi(i) in J} - |I||J|/N | <= eta_n.
 ```
 
-Es el extremo `delta=Theta(1)` del perfil invocado en §12.6, es decir una cola de
-Bernstein para un único conteo hipergeométrico más union bound sobre `<= N^4`
-cuádruplas. **Se hereda con el mismo estatus que en §12: entrada, no teorema
-probado en este repositorio.** La ruta B exige estrictamente menos que §12, que
-necesitaba el perfil local completo `min(N delta, sqrt(N delta Lambda)+Lambda)` para
-todas las escalas; aquí solo se usa el caso clásico. Nótese
-`eta_n = O(sqrt(n log n))`.
+*Prueba.* Tres pasos, ninguno específico de este problema.
+
+*(a) Ley exacta.* Para `I,J` **fijos**, `X = #{i in I : pi(i) in J}` es
+hipergeométrica: `pi(I)` es un subconjunto uniforme de tamaño `|I|` del conjunto de
+`N` columnas libres, y `X = |pi(I) cap J|`. Luego `E[X] = |I||J|/N` exactamente, que
+es la media del Lema 13.6.
+
+*(b) Cola.* Hoeffding (1963), §6, prueba que si `f` es convexa y continua y `X` es
+una suma de un muestreo **sin** reemplazo de una población finita, entonces
+`E[f(X)] <= E[f(Y)]` con `Y` la suma correspondiente **con** reemplazo. Como las
+cotas de Chernoff se obtienen aplicando `f(x)=e^{tx}`, toda desigualdad de
+Chernoff–Hoeffding para la binomial vale literalmente para la hipergeométrica. En
+particular
+
+```text
+Pr(|X - E[X]| >= t) <= 2 exp(-2 t^2 / N).
+```
+
+Con `t = eta_n = sqrt(N Lambda_n)` y `Lambda_n = L log n`, esto es
+`2 exp(-2 Lambda_n) = 2 n^(-2L)`.
+
+*(c) Union bound sobre índices, no sobre cuádruplas.* Aquí está el único punto
+delicado. Los bloques de una cuádrupla están determinados por **puntos** de `pi`,
+que son aleatorios; tomar la unión sobre cuádruplas realizadas introduciría
+dependencia inducida por la selección —el mismo peligro que `CLAUDE.md` señala para
+el estimador basado en conteos—. Se evita tomando la unión sobre los rectángulos de
+**índices** `I x J`, que son deterministas: hay a lo sumo `N^2` intervalos de filas
+por `N^2` de columnas, es decir `<= N^4 <= n^4` eventos, y los dos bloques de
+cualquier cuádrupla realizada son dos de ellos. Por tanto
+
+```text
+Pr(fallo) <= 2 n^4 * 2 n^(-2L) = 4 n^(4-2L),
+```
+
+que tiende a cero para `L > 2`, y en particular para el `L > 8` fijado en §13.1.
+`[]`
+
+Aplicado a los dos bloques de una cuádrupla, esto da
+`|free(bloque) - N u v| <= eta_n` con `eta_n = sqrt(N Lambda_n) = O(sqrt(n log n))`,
+que es la forma usada en §13.5. Llamamos `G_n` al evento del Lema 13.10.
+Obsérvese que la constante `A_0` de §12.6
+desaparece: aquí vale `A_0 = 1` y no hay término aditivo `Lambda_n`, porque solo se
+necesita el extremo `delta = Theta(1)`. La ruta B exige estrictamente menos que §12,
+que invocaba el perfil local completo
+`min(N delta, sqrt(N delta Lambda)+Lambda)` a todas las escalas y lo dejaba como
+entrada no demostrada.
 
 **Lema 13.11 (`PROVED`: clasificación por la fila de `b`).** Sobre `F_B`, todo punto
 con índice de fila en `B_n` es de uno de cuatro tipos: escalera baja (filas
@@ -1254,12 +1295,12 @@ alta, luego `v_+ = 1/4+o(1)` (caso 3). Si `b=b_0`, la fila de `c` es mayor que `
 o bien `c=c_0` (caso 1), o bien `c` es de escalera alta (caso 3), o bien su fila
 supera la banda y se pierde la escalera alta (caso 2). `[]`
 
-**Proposición 13.12 (`PROVED` dada la Entrada 13.10).** Sobre
+**Proposición 13.12 (`PROVED`).** Sobre
 `F_B intersect G_n`, la cuádrupla plantada es el único maximizador de `S_min`.
 
 *Prueba.* Sea `q != q_0` admisible. Por el Lema 13.7,
 `E[min(K,L)(q)|F_B] <= N/4 + P(q)` con `P(q) <= rho+1` (Lema 13.9), y la plantada
-alcanza `N/4 + rho + 1` en media y `K=L` exactamente (Lema 13.5). Por la Entrada
+alcanza `N/4 + rho + 1` en media y `K=L` exactamente (Lema 13.5). Por el Lema
 13.10, cada conteo dista a lo sumo `eta_n` de su media.
 
 *Caso 1.* `b=b_0`, `c=c_0`: el Lema 13.8 da `min(K,L)(q) <= min(K,L) - 1`
@@ -1279,7 +1320,7 @@ es `Theta(n^(1/6) Lambda_n^(-1/6)) -> infinity`: se cumple para todo `n` grande.
 *Caso 3.* `min(K,L)(q) <= N/8 + o(N) + rho + 1 + eta_n`, mientras la plantada es al
 menos `N/4 - eta_n`. La diferencia es `N/8 - o(N) >> rho + 2 eta_n`. `[]`
 
-**Corolario 13.13 (`PROVED` dada la Entrada 13.10).** `F_B intersect G_n subset S`,
+**Corolario 13.13 (`PROVED`).** `F_B intersect G_n subset S`,
 con la plantada como cuádrupla seleccionada. En efecto, la Proposición 13.12 da un
 único maximizador de `S_min`, es decir `MIN_ONLY` único; y por el puente citado en
 `P1a_resultados_comparacion_selectores_balanceados_d2.md:133-141` —todo competidor
@@ -1292,14 +1333,14 @@ exige hipótesis adicionales más allá de que ambos selectores corran sobre el 
 Queda por comprobar la admisibilidad de la plantada, es decir `K,L>=3`: por el Lema
 13.7, `K=L=(rho+1)+N/4+O(eta_n) -> infinity`. `[]`
 
-**Corolario 13.14 (`PROVED` dada la Entrada 13.10).** Como `G_n` se evalúa bajo la
+**Corolario 13.14 (`PROVED`).** Como `G_n` se evalúa bajo la
 ley condicionada a `F_B`, que es exactamente uniforme sobre biyecciones de `N`
 elementos, `Pr(G_n | F_B) = 1 - O(N^(4-L)) = 1-o(1)` **sin ninguna división por
 `Pr(F_B)`**. Por tanto
 
 ```text
 Pr(S) >= Pr(F_B intersect G_n)
-      = (1-o(1)) Pr(F_B)
+      >= (1-4n^(4-2L)) Pr(F_B)
       = exp[-Theta(n^(2/3)(log n)^(4/3))]
       = e^{-o(n)}.
 ```
@@ -1356,20 +1397,20 @@ primer sumando está cerrado, el segundo no.
 | régimen determinista `delta<=mu_n` | `PROVED` | usa convención cerrada y `K=L` |
 | diferencial de puntos prescritos | `PROVED` | signo favorable para `delta<1/4`; absorbido si `delta>=1/4` |
 | tricotomía de rivales | `PROVED` | Lema 13.11 |
-| discrepancia global uniforme | `SKETCH` | **entrada heredada**, no probada aquí |
-| unicidad sobre `F_B intersect G_n` | `PROVED` dada la entrada | Prop. 13.12 |
+| discrepancia global uniforme | `PROVED` | Lema 13.10, Hoeffding 1963 §6 + unión sobre índices |
+| unicidad sobre `F_B intersect G_n` | `PROVED` | Prop. 13.12 |
 | puente a `S` | `PROVED` | citado, sin hipótesis extra |
-| `Pr(S) >= e^{-o(n)}` | `PROVED` dada la entrada | Cor. 13.14, sin división |
+| `Pr(S) >= e^{-o(n)}` | `PROVED` | Cor. 13.14, sin división |
 | `P_{2,n} -> 0` | `OPEN` | el eslabón no existe en el repositorio |
 | reconstrucción `inf_f E[(ell-f(M))^2] -> 0` | `OPEN` | depende del anterior |
 
 ```text
-PRESCRIBED_BAND_UNIQUENESS_CERTIFICATE = PROVED_MODULO_GLOBAL_DISCREPANCY_INPUT
+PRESCRIBED_BAND_UNIQUENESS_CERTIFICATE = PROVED
 PRESCRIBED_BAND_GEOMETRY = PROVED
 PRESCRIBED_BAND_ENTROPIC_COST = PROVED
 PRESCRIBED_BAND_EXACT_UNIFORMITY = PROVED
-GLOBAL_DISCREPANCY_INPUT = SKETCH
-SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = PROVED_MODULO_GLOBAL_DISCREPANCY_INPUT
+GLOBAL_DISCREPANCY_LEMMA = PROVED
+SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = PROVED
 EMPTY_FRAME_UNIQUENESS_CERTIFICATE = SUPERSEDED
 P2_STATUS = OPEN
 ```
@@ -1380,27 +1421,23 @@ se reutiliza literalmente y sigue vigente; lo que se abandona es el condicionami
 a un evento de vaciedad. `EMPTY_FRAME_CONDITIONAL_DISCREPANCY` deja de ser un
 objetivo: ya no hace falta.
 
-`P2_STATUS` **no** pasa a `PROVED`, y no por prudencia sino porque dos eslabones lo
-impiden: la Entrada 13.10 y, sobre todo, la inexistencia del puente de §13.6.
+El certificado ya no depende de ninguna demostración pendiente: el Lema 13.10 cierra
+el único ingrediente probabilístico de §13. `P2_STATUS` **no** pasa a `PROVED` por
+una razón distinta y ajena al certificado: el puente de §13.6 no existe.
 
 ### 13.8 Lista `OPEN`
 
-1. **Entrada 13.10.** Escribir la cota de discrepancia global uniforme para
-   biyecciones uniformes de `N` elementos —Bernstein hipergeométrico más union bound
-   sobre `<= N^4` cuádruplas— o citarla de la literatura. Es estrictamente más
-   débil que la entrada que §12 daba por buena, y es el único ingrediente
-   probabilístico de toda §13.
-2. **Puente a `P_{2,n}`.** No existe. Cualquier construcción debe respetar la
+1. **Puente a `P_{2,n}`.** No existe. Cualquier construcción debe respetar la
    contabilidad de escalas de la Observación 13.15: solo cotas incondicionales
    `e^{-c(epsilon)n}` sobreviven a la división por `Pr(S)`.
-3. **Caso impar, contabilidad fina.** El balance del producto en Def. 13.2 se
+2. **Caso impar, contabilidad fina.** El balance del producto en Def. 13.2 se
    verifica con `u_- = u_+ - 1/N`, `v_- = v_+ + 1/N`; conviene reescribir Def. 13.2
    con las cinco prescripciones auxiliares listadas explícitamente en vez de
    descritas, para que el conteo `2 rho + 5` sea comprobable línea a línea.
-4. **Constantes.** `C` solo está restringida por `rho - 1 > 2 eta_n`, que se cumple
+3. **Constantes.** `C` solo está restringida por `rho - 1 > 2 eta_n`, que se cumple
    asintóticamente para cualquier `C>0` fijo. El acoplamiento `C >= (32 A_0)^(2/3)`
    de §12.13 ya **no** es necesario, porque no hay peeling; conviene comprobar que
    ninguna otra parte del argumento lo reintroduce.
 
-**Próximo paso único.** El punto 1. Nada más de §13 depende de una demostración
-pendiente, y el punto 2 pertenece a otra sección del programa, no al certificado.
+**Próximo paso único.** El punto 1. Los puntos 2 y 3 son deuda de redacción, no
+huecos lógicos, y el certificado no depende de ninguno de los tres.
