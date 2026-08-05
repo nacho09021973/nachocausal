@@ -870,9 +870,31 @@ dossier — found and closed out by `/auditor` (`docs/auditor/auditor_report_003
 finding #2) on 2026-07-03, not by the original dossier pass. §5.5's earlier claim that only item 2
 was "genuinely missing" is corrected below.
 
-### 5.3 Uniqueness / automorphisms / modular decomposition: still `UNSUPPORTED_GAP`
+### 5.3 Uniqueness / automorphisms / modular decomposition: `RESOLVED_NEGATIVELY` (2026-08-05)
 
-**No source read to date — including the primary 1941 paper (§5.1) and the 1976 Trotter note
+> **Resolución, 2026-08-05.** Este ítem deja de ser una cita pendiente: la afirmación es
+> **falsa**, con testigo explícito y verificable. Enumeración exhaustiva determinista de
+> `S_n` clasificando el poset inducido `P_sigma` (`i < j` y `sigma(i) < sigma(j)`) por
+> isomorfismo — `dev/r3_bridge_e_fibers.py`, sin aleatoriedad ni semillas — da fibras
+> iguales a la órbita por inversión para `n <= 3` y **falla en `n = 4`**: la clase del
+> poset «una 2-cadena más dos puntos aislados» tiene fibra de tamaño **tres**,
+> `{3421, 4231, 4312}`, donde `4231` es auto-inversa y `4312 = 3421^{-1}`. Comprobación:
+> `P_3421` tiene la única relación `1<2`, `P_4231` la única relación `2<3`, `P_4312` la
+> única relación `3<4`; los tres son isomorfos. Luego un poset de dimensión 2 **puede
+> tener realizadores esencialmente distintos**, y no solo el intercambio de los dos
+> órdenes. Coherente con la descomposición modular de Gallai: el grafo de
+> incomparabilidad del testigo es `K_4` menos una arista, descomponible y con varias
+> orientaciones transitivas `[UNVERIFIED: Gallai 1967 no leído en primaria]`.
+>
+> **Consecuencia operativa.** La instrucción de abajo («do not adopt "realizer uniqueness
+> up to swap" as literature-backed») se **refuerza**: no es que falte respaldo, es que el
+> enunciado es falso y no debe usarse en ninguna forma. Kelly–Trotter 1982 y Trotter 1995
+> dejan de ser rutas a perseguir para esta pregunta; el OCR de §5.2 pierde esta
+> motivación. Uso en curso: `research_program/work_packages/wp6_d2_null_copula_dichotomy.md`
+> §5.2bis, donde el testigo obliga a reformular el puente E como injectividad en un único
+> punto (E') en lugar de unicidad del realizador.
+
+**Registro histórico previo a la resolución.** No source read to date — including the primary 1941 paper (§5.1) and the 1976 Trotter note
 (§5.2bis), both now fully read — states or proves, for general dimension-2 posets, that the
 realizer/conjugate is unique up to swapping the two linear orders.** The two most likely
 remaining candidates to contain this (Kelly–Trotter 1982, Trotter 1995) are now physically present

@@ -180,15 +180,94 @@ literatura*. Dushnik–Miller 1941 (§5.1, leído en primaria, `SUPPORTED`) prue
 **existencia** del conjugado, y el propio dossier registra que "says nothing about
 uniqueness of the realizer/conjugate up to swapping the two orders".
 
-Dos rutas, ninguna cara:
-
-- **(a) Bibliográfica.** OCR de Kelly–Trotter 1982 / Trotter 1995, ya presentes físicamente
-  en `biblioteca/` pero no extraíbles con las herramientas de la sesión que los archivó
-  (§5.2).
-- **(b) Directa.** Es un enunciado combinatorio finito. No depende de nada geométrico.
-
 **Lo que NO toca el hueco.** El Teorema C (invisibilidad) es inmune: un engrosamiento
 preserva la igualdad de leyes. La mitad no-go de la dicotomía está cerrada sin (E).
+
+### 5.2bis (E) es FALSA — contraejemplo exhaustivo en `n=4`
+
+`[PROVED — enumeración exhaustiva determinista]`
+Ejecutable: `dev/r3_bridge_e_fibers.py` (sin aleatoriedad, sin semillas, no escribe).
+
+Enumerando `S_n` y clasificando `P_sigma` por isomorfismo:
+
+```
+ n   |S_n|  clases   histograma de |fibra|   fibra == órbita inversa?
+ 1       1       1   1:1                     SI
+ 2       2       2   1:2                     SI
+ 3       6       5   1:4, 2:1                SI
+ 4      24      16   1:9, 2:6, 3:1           NO  (1 clase)
+```
+
+El contraejemplo mínimo es la clase del poset **«una 2-cadena más dos puntos aislados»**,
+cuya fibra tiene **tres** elementos:
+
+```
+3421,  4231 (auto-inversa),  4312 = 3421^{-1}
+```
+
+Comprobación directa: `P_3421` tiene la única relación `1<2`; `P_4231` la única relación
+`2<3`; `P_4312` la única relación `3<4`. Los tres posets son isomorfos, y `4231` no es la
+inversa de ninguno de los otros dos.
+
+**Consecuencia bibliográfica.** Esto refuta la unicidad del realizador salvo intercambio
+para posets de dimensión 2. El ítem `docs/bibliography_claims.md` §5.3, registrado como
+`UNSUPPORTED_GAP` desde hace meses, queda **respondido por la negativa con testigo
+explícito**: no era una cita pendiente, era un enunciado falso. Coherente con la teoría de
+descomposición modular de Gallai —el grafo de incomparabilidad del testigo es `K_4` menos
+una arista, que es descomponible y admite varias orientaciones transitivas—
+`[UNVERIFIED: Gallai 1967 no leído en primaria]`.
+
+### 5.4 Reformulación correcta de (E), y la reducción que deja
+
+(E) como unicidad del realizador era **suficiente pero no necesaria**. Lo que la dicotomía
+necesita es mucho más débil: no injectividad en todas partes, sino **injectividad en un
+único punto**.
+
+> **(E')** Si las densidades de patrones de poset de `C` coinciden con las de `Pi` a todo
+> `n`, ¿es `C = Pi`?
+
+La enumeración da la estructura fina de la obstrucción a nivel `n=4`. Las 16 ecuaciones de
+clase sobre 24 incógnitas dejan un núcleo de dimensión 8, y ese núcleo se descompone:
+
+- **9 fibras unitarias** — todas de permutaciones auto-inversas: sus densidades quedan
+  **forzadas** a `1/24`. Sin libertad.
+- **6 fibras de tamaño 2** — todas pares inversos exactos `{sigma, sigma^{-1}}`. Su
+  dirección libre es `d(sigma) - d(sigma^{-1})`, **impar bajo transposición**: es
+  exactamente la ambigüedad `U <-> V`, que ya sabíamos inevitable y que no rompe nada,
+  porque `C` y `C^T` tienen idénticas leyes de poset por construcción.
+- **1 fibra de tamaño 3** — aporta 2 dimensiones, de las cuales una es impar y **una es
+  par**: `d(3421) = d(4312) = 1/24 + b`, `d(4231) = 1/24 - 2b`.
+
+**Toda la obstrucción par a nivel de 4 puntos es, por tanto, exactamente unidimensional: el
+parámetro `b`.** Restringido a permutones simétricos (`C = C^T`), que anulan todas las
+direcciones impares, `b` es la **única** libertad.
+
+**Palanca disponible.** Si se cita que un permutón con todas las densidades de tamaño 4
+iguales a `1/24` es necesariamente `Pi` —resultado de cuasialeatoriedad de permutaciones
+caracterizada por densidades de 4 puntos, atribuido a Král'–Pikhurko (2013)
+`[UNVERIFIED: citado de memoria, requiere verificación en primaria como se hizo con
+HKMMRS y Grübel]`— entonces (E') se reduce a una pregunta finita y concreta:
+
+> ¿Existe un permutón, no uniforme, con `b != 0` y todas las demás densidades de tamaño 4
+> iguales a `1/24`, que además siga coincidiendo con `Pi` a todo `n > 4`?
+
+Si **no existe**, la dicotomía queda completa a nivel del observable físico. Si **existe**,
+el resultado es igual de publicable y más llamativo: sería un parche **curvo exactamente
+indistinguible del plano por orden a todo `n`**, es decir una ceguera de curvatura del
+canal, y el Teorema C dejaría de ser el límite máximo de invisibilidad.
+
+En ambas ramas hay resultado. Eso es lo que hace que (E') merezca el ataque.
+
+### 5.5 Rutas
+
+- **(a) Directa.** Decidir (E') por álgebra de banderas / construcción explícita sobre la
+  única dirección par `b`. Es finita y no depende de nada geométrico.
+- **(b) Bibliográfica.** Verificar Král'–Pikhurko en primaria; y leer Janson, *Poset limits
+  and exchangeable random posets*, Combinatorica **31** (2011) 529–563, que es la teoría de
+  límites del objeto exacto de este WP —posets aleatorios intercambiables— y probablemente
+  ya contiene el enunciado de unicidad que (E') necesita. `[UNVERIFIED: no leído]`.
+  **Kelly–Trotter / Trotter dejan de ser la ruta**: preguntaban por la unicidad del
+  realizador, que §5.2bis acaba de refutar.
 
 ### 5.3 Testigo suficiente que esquiva el hueco
 
@@ -247,12 +326,18 @@ PROP_B_SEPARABLE_IFF_FLAT       = PROVED (elemental + control por curvatura)
 TEOREMA_C_INVISIBILIDAD_EXACTA  = PROVED (no usa permutones)
 COROLARIO_ORBITA_G              = PROVED
 TEOREMA_D_COMPLETITUD           = PROVED_MODULO_HKMMRS_2013_Y_GRUBEL_2024
-PUENTE_E_POSET_VS_PERMUTACION   = OPEN (= bibliography_claims.md §5.3 UNSUPPORTED_GAP)
+PUENTE_E_UNICIDAD_REALIZADOR    = FALSE_WITH_EXPLICIT_WITNESS_N4
+BIBLIOGRAPHY_CLAIMS_5_3         = ANSWERED_NEGATIVELY_NO_LONGER_AN_OPEN_CITATION
+PUENTE_E_PRIMA_INYECTIVIDAD_EN_PI = OPEN_REDUCED_TO_ONE_EVEN_DIRECTION_AT_N4
+KRAL_PIKHURKO_2013              = UNVERIFIED_CITED_FROM_MEMORY
+JANSON_POSET_LIMITS_2011        = UNVERIFIED_NOT_READ_LIKELY_RIGHT_SOURCE
 TESTIGO_COMPARABLES             = PROVED_SUFFICIENT_NOT_NECESSARY
 CONSISTENCIA_CON_R2             = CORROBORADA_EN_AMBOS_SENTIDOS
 NOVELTY_CERTIFIED               = NO
 SEMILLAS = 0 · SIMULACION = NINGUNA · SELLO = INTACTO
 ```
 
-**Próximo paso único.** Cerrar el puente E por la ruta (b) o la (a). Es lo único que
-separa la dicotomía de estar completa a nivel del observable físico.
+**Próximo paso único.** Decidir (E') sobre su única dirección par `b`, por §5.5(a) o (b).
+Las dos ramas del resultado son publicables: si `b` no es realizable, la dicotomía se
+completa a nivel del observable físico; si lo es, existe un parche curvo exactamente
+invisible al orden a todo `n`, que es un enunciado más fuerte que el propio Teorema C.
