@@ -343,6 +343,65 @@ independiente de ambos.
    `NOVELTY_CERTIFIED = NO`. Y por la regla fundacional del repositorio, esto **no lo puede
    firmar ni un comité interno ni esta sesión**: exige búsqueda en primaria.
 
+## 7bis. Qué es realmente (E'): la conjetura de Bombelli
+
+`[VERIFICADO en fuente secundaria leída esta sesión]`
+
+Brightwell y Luczak, *The mathematics of causal sets*, arXiv:1510.05612 (2015), §2, tras
+exponer la teoría de límites de posets de Janson y de Hladký–Máthé–Patel–Pikhurko,
+escriben literalmente:
+
+> «The theory of poset limits highlights the following **conjecture of Bombelli** as
+> fundamental: if `U` and `V` are regions of Lorentzian manifolds of finite volume, such
+> that there is no measure-preserving diffeomorphism between the two, then there is some
+> finite poset `Q` such that `t(Q;U) != t(Q;V)`. Here the density `t(Q;U)` is the
+> probability that an iid uniform sample of `|Q|` elements from `U` yields a poset
+> isomorphic to `Q`.»
+
+Fuente citada allí: L. Bombelli, *Statistical Lorentzian geometry and the closeness of
+Lorentzian manifolds*, J. Math. Phys. **41** (2000) 6944–6958.
+
+**Eso es exactamente (E'), en general.** El muestreo «iid uniform sample from `U`» es
+literalmente el Lema 2.1 de este repositorio (condicionar a `N=n` da `n` puntos iid según
+la medida de volumen normalizada). Y la relación de equivalencia de la conjetura
+—difeomorfismo que preserva la medida— es exactamente la que el Corolario de §4 identifica
+en `d=2`: el par `(phi,psi)` de reparametrizaciones nulas **es** un difeomorfismo que
+preserva la medida.
+
+Reubicación honesta de cada pieza de este WP frente a la conjetura:
+
+| Pieza | Papel real |
+| --- | --- |
+| Teorema C | **Dirección fácil**, instanciada: si existe el difeo que preserva medida, las densidades coinciden. Su valor no es la implicación sino **caracterizar la clase**: en `d=2` sobre cajas nulas, la órbita es exactamente `{separable}` = exactamente `{plano}` |
+| Teorema D | **Dirección difícil, resuelta a nivel de permutación**, vía unicidad del permutón |
+| Puente (E) | El residuo: la conjetura está enunciada sobre **posets**, y `P_n` es un engrosamiento de `Q_n` |
+| §5.4 | La obstrucción del residuo en `n=4` es **unidimensional** |
+
+**Enunciado de lo que este WP tiene, sin adornos:** una reducción de la conjetura de
+Bombelli, restringida a `d=2` y a parches que son caja de coordenadas nulas, a la pregunta
+de engrosamiento (E) — junto con la resolución completa del caso a nivel de permutación.
+No es una prueba de la conjetura. Es una reducción con una obstrucción explícita y finita.
+
+**Consecuencia sobre el triaje de novedad de §7.5.** Que el Teorema C sea probablemente
+folclore deja de ser el riesgo principal: el Teorema C no es la contribución. Lo es la
+reducción. Y el objetivo de la auditoría cambia: ya no es «¿existe el Teorema C?» sino
+**«¿ha resuelto alguien la conjetura de Bombelli en `d=2`?»**. Las búsquedas de esta sesión
+no encontraron resolución alguna `[UNVERIFIED: búsqueda web, no exhaustiva; Bombelli 2000,
+Janson 2011 y HMPP no leídos en primaria]`.
+
+**Corrección adicional sobre §5.2bis.** Winkler, *Random orders*, Order **1** (1985)
+317–335, además de introducir el modelo `P_d(n)`, **calculó la probabilidad límite de que
+un orden 2-dimensional sea unívocamente realizable**. La no-unicidad del realizador no solo
+es clásica: está cuantificada desde 1985. El testigo `n=4` queda confirmado como folclore,
+sin margen de duda.
+
+**Y una precisión de alcance que juega a favor.** El modelo estándar de la literatura de
+órdenes aleatorios —Winkler `P_d(n)`, intersección de `d` órdenes lineales uniformes
+independientes— es, según el propio Brightwell–Luczak, equivalente a un proceso de Poisson
+en `[0,1]^d`: es decir, **el caso uniforme, o sea el plano**. La densidad **no uniforme**
+—el caso curvo, que es de lo que habla la conjetura de Bombelli— no es el objeto estándar
+de esa literatura. Ahí es donde vive este WP.
+
 ## 8. Estado
 
 ```text
@@ -354,8 +413,15 @@ TEOREMA_D_COMPLETITUD           = PROVED_MODULO_HKMMRS_2013_Y_GRUBEL_2024
 PUENTE_E_UNICIDAD_REALIZADOR    = FALSE_WITH_EXPLICIT_WITNESS_N4
 BIBLIOGRAPHY_CLAIMS_5_3         = ANSWERED_NEGATIVELY_NO_LONGER_AN_OPEN_CITATION
 PUENTE_E_PRIMA_INYECTIVIDAD_EN_PI = OPEN_REDUCED_TO_ONE_EVEN_DIRECTION_AT_N4
+(E_PRIMA)_ES                    = CONJETURA_DE_BOMBELLI_RESTRINGIDA_A_D2_CAJA_NULA
+CONTRIBUCION_REAL_DE_WP6        = REDUCCION_DE_BOMBELLI_D2_A_(E)_MAS_CASO_PERMUTACION_RESUELTO
+BOMBELLI_2000_JMP_41_6944       = UNVERIFIED_NO_LEIDO_EN_PRIMARIA
+BRIGHTWELL_LUCZAK_2015          = LEIDO_ESTA_SESION_FUENTE_SECUNDARIA_DE_LA_CONJETURA
+WINKLER_RANDOM_ORDERS_1985      = MODELO_UNIFORME_=_CASO_PLANO; calculo la probabilidad
+                                  limite de realizabilidad unica -> §5.2bis es folclore
 KRAL_PIKHURKO_2013              = UNVERIFIED_CITED_FROM_MEMORY
-JANSON_POSET_LIMITS_2011        = UNVERIFIED_NOT_READ_LIKELY_RIGHT_SOURCE
+JANSON_POSET_LIMITS_2011        = UNVERIFIED_NOT_READ_CONFIRMED_RELEVANT_BY_SURVEY
+HLADKY_MATHE_PATEL_PIKHURKO     = UNVERIFIED_NOT_READ_SEGUNDA_FUENTE_DE_LIMITES_DE_POSETS
 TESTIGO_COMPARABLES             = PROVED_SUFFICIENT_NOT_NECESSARY
 CONSISTENCIA_CON_R2             = CORROBORADA_EN_AMBOS_SENTIDOS
 NOVELTY_CERTIFIED               = NO
