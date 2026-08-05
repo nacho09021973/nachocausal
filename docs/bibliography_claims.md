@@ -886,6 +886,17 @@ was "genuinely missing" is corrected below.
 > incomparabilidad del testigo es `K_4` menos una arista, descomponible y con varias
 > orientaciones transitivas `[UNVERIFIED: Gallai 1967 no leído en primaria]`.
 >
+> **ESTO NO ES UNA CONTRIBUCIÓN.** El testigo es casi con certeza folclore. La estructura
+> de las orientaciones transitivas de un grafo de comparabilidad está caracterizada por la
+> **descomposición modular de Gallai (1967)**, y `K_4` menos una arista es el caso
+> descomponible de manual; la terminología está en el propio survey local
+> (`biblioteca/ordenes dimension 004.pdf`, l. 127-134, equivalencia de Baker et al. 1970, y
+> problemas abiertos sobre *recognizing permutation graphs and transitively orientable
+> graphs*). El valor de la enumeración fue **interno**: impedir que este repositorio
+> siguiera persiguiendo un lema falso y reformular el puente E. No debe aparecer como
+> resultado en ningún texto sometible. `[UNVERIFIED: Gallai 1967 y Golumbic no leídos en
+> primaria; el enunciado de que esto es clásico es él mismo una conjetura bibliográfica.]`
+>
 > **Consecuencia operativa.** La instrucción de abajo («do not adopt "realizer uniqueness
 > up to swap" as literature-backed») se **refuerza**: no es que falte respaldo, es que el
 > enunciado es falso y no debe usarse en ninguna forma. Kelly–Trotter 1982 y Trotter 1995

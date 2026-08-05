@@ -210,12 +210,16 @@ Comprobación directa: `P_3421` tiene la única relación `1<2`; `P_4231` la ún
 inversa de ninguno de los otros dos.
 
 **Consecuencia bibliográfica.** Esto refuta la unicidad del realizador salvo intercambio
-para posets de dimensión 2. El ítem `docs/bibliography_claims.md` §5.3, registrado como
-`UNSUPPORTED_GAP` desde hace meses, queda **respondido por la negativa con testigo
-explícito**: no era una cita pendiente, era un enunciado falso. Coherente con la teoría de
-descomposición modular de Gallai —el grafo de incomparabilidad del testigo es `K_4` menos
-una arista, que es descomponible y admite varias orientaciones transitivas—
-`[UNVERIFIED: Gallai 1967 no leído en primaria]`.
+para posets de dimensión 2, y con ello el ítem `docs/bibliography_claims.md` §5.3 deja de
+ser una cita pendiente: el enunciado era falso.
+
+**Y no es una contribución.** Casi con certeza es folclore: la estructura de las
+orientaciones transitivas de un grafo de comparabilidad está caracterizada por la
+**descomposición modular de Gallai (1967)**, y el grafo de incomparabilidad del testigo es
+`K_4` menos una arista, el caso descomponible de manual. El valor de la enumeración fue
+**interno** —evitar que este WP persiguiera un lema falso— y así debe presentarse.
+`[UNVERIFIED: Gallai 1967 y Golumbic no leídos en primaria; que esto sea clásico es él
+mismo una conjetura bibliográfica.]`
 
 ### 5.4 Reformulación correcta de (E), y la reducción que deja
 
@@ -314,9 +318,30 @@ independiente de ambos.
    resultado es precisamente que `d=2` es lo que la literatura de reconstrucción excluye.
 4. **No es reconstrucción de horizonte.** Es identificabilidad de la clase conforme módulo
    reparametrización nula. Dirección opuesta al objetivo clausurado.
-5. **Novedad no certificada.** La conexión causal set 2D ↔ permutación es folclore
-   (Myrheim; BDJ, en `biblioteca/`). Lo que se propone como nuevo es la formulación por
-   permutones y la dicotomía exacta. `NOVELTY_CERTIFIED = NO` hasta auditoría.
+5. **Novedad no certificada, y el riesgo es alto pieza por pieza.** Triaje honesto, de
+   mayor a menor probabilidad de que ya exista:
+
+   | Pieza | Riesgo de ser previo | Por qué |
+   | --- | --- | --- |
+   | Lema A (invariancia por rangos) | **Casi seguro previo** | Teoría de cópulas estándar |
+   | Prop. B (separable ⟺ plano) | **Seguro previo** | Relatividad 2D de manual |
+   | Causal set 2D ⟷ permutación; plano ⟷ uniforme | **Seguro previo** | Folclore CST (Myrheim; BDJ) |
+   | §5.2bis, testigo `n=4` | **Casi seguro previo** | Descomposición modular de Gallai |
+   | Teorema C (invisibilidad exacta a todo `n`) | **Alto** | Sale en dos líneas de lo anterior |
+   | Clase de invisibilidad = órbita de `Diff+ x Diff+` | Medio | En el continuo es clásico; en el canal discreto, menos claro |
+   | Teorema D (completitud vía permutones) | Medio-bajo | El permutón es de 2013; aplicarlo aquí es el paso plausiblemente nuevo |
+   | §5.4, reducción de (E') a una dirección par | Bajo | Específico de este cálculo |
+
+   **Objetivo prioritario de la auditoría de novedad, que el repositorio aún no tiene
+   fichado:** la literatura de **órdenes aleatorios de dimensión 2** — Winkler, *Random
+   orders*; Brightwell, *Models of random partial orders*; Bollobás–Brightwell. Si alguien
+   estudió órdenes 2-dimensionales aleatorios con densidad no uniforme, es ahí donde el
+   Teorema C ya puede estar escrito. Es un objetivo mucho más afilado que el coto genérico
+   «graphon/poset-kernel» de `docs/hoja_de_ruta_30_jul_2026.md:131`.
+   `[UNVERIFIED: ninguno leído; no están en biblioteca/.]`
+
+   `NOVELTY_CERTIFIED = NO`. Y por la regla fundacional del repositorio, esto **no lo puede
+   firmar ni un comité interno ni esta sesión**: exige búsqueda en primaria.
 
 ## 8. Estado
 
