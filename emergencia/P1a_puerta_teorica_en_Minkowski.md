@@ -912,3 +912,495 @@ con perfil local
 `min(n delta,sqrt(n delta Lambda_n)+Lambda_n)` y pérdida relativa `o(1)`; de forma
 equivalente, contar directamente las permutaciones del marco que satisfacen `G_n`.
 No se autoriza sustituir este lema por una simulación ni por una nueva representación.
+
+## 13. Certificado de unicidad por familia prescrita
+
+> **ESTADO DE ESTA SECCIÓN: BORRADOR ANALÍTICO · SIN EJECUCIÓN.** Cada lema lleva
+> etiqueta `PROVED`, `SKETCH` u `OPEN`. No modifica ningún gate congelado. Sustituye
+> la ruta de §12 (marco vacío), no la corrige.
+
+### 13.0 Por qué prescribir en vez de vaciar
+
+El hueco de §12.7 es estructural, no técnico. Condicionar a que una región esté
+vacía produce una ley residual —permutaciones que evitan un tablero— que ya no es
+uniforme, y la única forma registrada de recuperar una cota de discrepancia sobre
+ella era dividir la cota incondicional por `Pr(E_n^0)`. Esa división es ilegítima
+porque el error del union bound es polinómico y `Pr(E_n^0)` es superpolinómicamente
+pequeño.
+
+La observación que abre la ruta B ya está implícita en §12.6: el peeling de allí se
+prueba **condicionado solo a los puntos plantados**, no al marco vacío, y en ese
+caso el residual sí es exactamente uniforme. Prescribir un conjunto de filas
+conserva esa propiedad. Si `F` es un conjunto de `r` filas con imágenes fijadas,
+
+```text
+Ley(pi | F_B) = uniforme sobre las biyecciones
+                {filas libres} -> {columnas libres},
+```
+
+una biyección de `N=n-r` elementos, **exactamente**, sin corrección. Toda cota de
+discrepancia para permutaciones uniformes se aplica tal cual con `n -> N`, y no hay
+nada que dividir. El precio es entrópico: `Pr(F_B)=1/(n)_r` en vez de
+`exp[-Theta(n mu_n^2)]`. La ruta B paga más entropía a cambio de uniformidad exacta.
+
+El vaciado del cuadrado central no desaparece: se obtiene como **consecuencia
+determinista** de la prescripción (Lema 13.4), no como evento probabilístico.
+
+### 13.1 La familia `F_B`
+
+Fijamos `Lambda_n=L log n` con `L>8`, y
+
+```text
+mu_n = C (Lambda_n/n)^(1/3),
+rho_n = floor(mu_n (n-1)).
+```
+
+Identificamos cada punto con su par de rangos en `{1,...,n}^2` y normalizamos por
+`(j-1)/(n-1)`; la fila `i` tiene abscisa normalizada `x_i=(i-1)/(n-1)`. La **banda**
+es el conjunto de índices de fila
+
+```text
+B_n = {i : |x_i - 1/2| <= mu_n},
+```
+
+un intervalo de índices, determinista, de cardinal `2 rho_n + O(1)`.
+
+**Definición 13.1 (`PROVED`: caso par).** Sea `n=2s`. Escribimos
+`B_n^- = {s-rho+1,...,s}` y `B_n^+ = {s+1,...,s+rho}` (`rho=rho_n`), y fijamos los
+bloques de columnas de cuartil
+
+```text
+Q^- = {q_1+1,...,q_1+rho-1},   q_1 = floor(n/4),
+Q^+ = {q_3+1,...,q_3+rho-1},   q_3 = floor(3n/4).
+```
+
+La familia `F_B` es el evento de que `pi` tome los valores prescritos
+
+```text
+pi(1)=1,        pi(n)=n,
+pi(s)=s,        pi(s+1)=s+1,
+pi(s-rho+j)=q_1+j,     j=1,...,rho-1,
+pi(s+1+j)=q_3+j,       j=1,...,rho-1.
+```
+
+Las filas prescritas son `B_n cup {1,n}`, en total `r_n = 2 rho + 2`. La cuádrupla
+plantada es
+
+```text
+a_0=(1,1), b_0=(s,s), c_0=(s+1,s+1), d_0=(n,n),
+```
+
+exactamente la de Construcción 12.7. Las filas y columnas no prescritas quedan,
+condicionadas a `F_B`, en biyección uniforme; escribimos `N = n - r_n`.
+
+**Definición 13.2 (`PROVED`: caso impar).** Sea `n=2s+1`, `s>=3`. Se toma
+`L={1,...,s}`, `M={s+1}`, `H={s+2,...,n}`, la cuádrupla de Construcción 12.8
+
+```text
+a_0=(1,1), b_0=(s,s), c_0=(s+2,s+2), d_0=(n,n),
+```
+
+las dos prescripciones auxiliares `pi(2)=s+1`, `pi(s+1)=n-1`, la banda
+`B_n^-={s-rho+1,...,s}`, `B_n^+={s+2,...,s+rho+1}` con las mismas imágenes de
+cuartil para `B_n^- \ {s}` y `B_n^+ \ {s+2}`, y una prescripción de balance
+adicional `pi(n-1) in Q^+`. Filas prescritas: `2 rho + 5`.
+
+La colocación se llama *de cuartil lejano*. Obsérvese que es **diagonal**, no
+antidiagonal: la mitad inferior de la banda va al primer cuartil de columnas y la
+superior al último. La variante antidiagonal (inferior al último cuartil) está
+**excluida** y no es una elección de gusto; véase el Lema 13.7.
+
+**Lema 13.3 (`PROVED`: coste y presupuesto).** `Pr(F_B) = 1/(n)_{r_n}` con
+`(n)_j=n(n-1)...(n-j+1)`, y condicionada a `F_B` la biyección restante es uniforme.
+Como `r_n = 2 mu_n n (1+o(1)) = 2C n^(2/3) Lambda_n^(1/3)`,
+
+```text
+log Pr(F_B) = -(1+o(1)) r_n log n
+            = -Theta(n^(2/3) (log n)^(4/3)),
+Pr(F_B)     = exp[-Theta(n^(2/3)(log n)^(4/3))] = e^{-o(n)},
+```
+
+porque `n^(2/3)(log n)^(4/3)/n = (log n)^(4/3)/n^(1/3) -> 0`. Además
+`r_n/(n/log n) = 2C Lambda_n^(4/3)/n^(1/3) -> 0`, es decir `r_n = o(n/log n)`: la
+prescripción consume una fracción evanescente del presupuesto entrópico. El coste
+excede al de §12.11 (`n^(1/3)Lambda^(2/3)`) en un factor `n^(1/3)Lambda^(2/3)`, y
+sigue siendo subexponencial con amplio margen.
+
+**Lema 13.4 (`PROVED`: vaciado determinista del cuadrado central).** Sobre `F_B`, y
+sin ningún evento probabilístico,
+
+```text
+{|x-1/2|<=mu_n} x {|y-1/2|<=mu_n} \ {b_0,c_0}  no contiene ningun punto.
+```
+
+En efecto, un punto de esa región tiene índice de fila en `B_n`, luego es una fila
+prescrita. Sus columnas posibles son `s` y `s+1` —que dan exactamente `b_0,c_0`— o
+un elemento de `Q^- cup Q^+`, cuya abscisa normalizada dista de `1/2` al menos
+`1/4 - o(1) > mu_n` para `n` grande. En el caso impar se añaden las columnas `s+1`
+y `n-1`, ocupadas por filas fuera de la banda salvo `pi(s+1)=n-1`, cuya columna
+también dista `1/2 - o(1)` del centro. `[]`
+
+Este es el enunciado que en §12 costaba `exp[-Theta(n mu_n^2)]` como evento y aquí
+es una identidad de la construcción.
+
+### 13.2 Balance exacto y coordenadas libres
+
+Se usa la convención de conteo sellada: `m = n_C(a,b) = |[a,b]_C|` con extremos
+incluidos (`P1a_count_volume_experimento_condicionado_d2.md:162`;
+`p1a_enumeracion_simulacion.py:174-178`, *closed-interval cardinalities … inclusive
+axis-aligned rectangle*).
+
+**Lema 13.5 (`PROVED`: `K=L` exacto sobre `F_B`).** Para toda `pi in F_B`,
+
+```text
+K := |[a_0,b_0]| = |[c_0,d_0]| =: L.
+```
+
+Caso par: como `a_0=(1,1)` es el mínimo global y `d_0=(n,n)` el máximo global,
+`K = #(L->L)` y `L = #(H->H)` con `L={1,...,s}`, `H={s+1,...,n}`, y la conservación
+de flujo de Construcción 12.7 da `#(L->L)=#(H->H)` para **toda** permutación. Caso
+impar: los flujos prescritos son `L->M = M->H = 1` y `M->L=M->M=H->M=0`, de donde
+`L->L = s-1-(L->H)` por filas de `L`, `L->L = s-(H->L)` por columnas de `L` y
+`H->H = s-(H->L)` por filas de `H`, luego `L->L=H->H`.
+
+Lo esencial es que ninguna de las dos cuentas depende de las prescripciones de
+banda: la identidad es válida para cualquier asignación de `B_n` a columnas, porque
+solo usa los flujos entre bloques. La colocación de cuartil no la puede romper. `[]`
+
+**Lema 13.6 (`PROVED`: el paisaje medio es exactamente el producto).** Condicionada
+a `F_B`, para cualesquiera conjuntos `A` de filas libres y `D` de columnas libres,
+
+```text
+E[ #{i in A : pi(i) in D} | F_B ] = |A| |D| / N,
+```
+
+exactamente, por uniformidad de la biyección residual. Escribiendo para una
+cuádrupla `q` la descomposición
+
+```text
+count(bloque) = P(bloque) + free(bloque),
+P = puntos prescritos en el bloque,
+```
+
+resulta `E[free(bloque)|F_B] = N u v`, donde `u,v in [0,1]` son las **fracciones
+libres** de filas y de columnas del bloque respecto de `N`. Como los dos bloques de
+una cuádrupla admisible ocupan rangos de filas y de columnas disjuntos,
+
+```text
+u_- + u_+ <= 1,   v_- + v_+ <= 1,
+```
+
+que es exactamente la restricción de §12.2 con `(x_1,x_2,y_1,y_2)` sustituidas por
+`(u_-,u_+,v_-,v_+)`. Por tanto la identidad del Lema 12.5 y la coercividad del Lema
+12.6 se aplican **literalmente en coordenadas libres**, sin ninguna corrección de
+banda: el paisaje medio exacto es el mismo producto, reparametrizado.
+
+Este es el punto que la formulación ingenua pierde. Si se escribiera la media como
+`n * area`, la banda induciría una corrección de tamaño `Theta(rho_n)=Theta(mu_n n)`
+que, en el rango `delta = Theta(mu_n)`, es mayor que el drift `n delta^2 =
+Theta(n mu_n^2)` por un factor `1/mu_n -> infinity`, y el argumento se hundiría. La
+media hipergeométrica exacta no tiene ese término: la corrección no es un error,
+es un cambio de coordenadas.
+
+**Lema 13.7 (`PROVED`: la plantada está exactamente en el máximo libre).** En el
+caso par, las filas prescritas en `{1,...,s}` son `{1} cup B_n^-`, es decir
+`1+rho`, y en `{s+1,...,n}` son `{n} cup B_n^+`, también `1+rho`. Las columnas
+prescritas en `{1,...,s}` son `{1,s} cup Q^-`, es decir `2+(rho-1)=rho+1`, y en
+`{s+1,...,n}` son `{s+1,n} cup Q^+`, también `rho+1`. Luego
+
+```text
+filas libres en cada mitad    = s - rho - 1 = (n-2rho-2)/2 = N/2,
+columnas libres en cada mitad = s - rho - 1 = N/2,
+```
+
+y por tanto `u_-=u_+=v_-=v_+=1/2` **exactamente**, que es el maximizador de
+`min(u_-v_-,u_+v_+)`. Además los puntos prescritos se reparten a partes iguales:
+`{a_0,b_0} cup (B_n^- -> Q^-)` da `rho+1` en el bloque pasado y
+`{c_0,d_0} cup (B_n^+ -> Q^+)` da `rho+1` en el futuro. En consecuencia
+
+```text
+E[K|F_B] = E[L|F_B] = (rho+1) + N/4.
+```
+
+En el caso impar el reparto no es simétrico por unidades, pero sí lo es el producto:
+las fracciones libres cumplen `u_- = u_+ - 1/N` y `v_- = v_+ + 1/N`, de modo que
+`u_-v_-` y `u_+v_+` coinciden y difieren del óptimo `1/4` en `1/(4N^2)`, es decir en
+menos de una unidad de conteo, irrelevante frente a los drifts empleados más
+adelante.
+
+Aquí se ve por qué la colocación debe ser diagonal. Con la variante antidiagonal
+—mitad inferior de la banda al último cuartil— los `rho-1` puntos inferiores caen
+en abscisa `< 1/2` y ordenada `= 3/4 + o(1)`, luego **no** pertenecen a ningún
+bloque de la cuádrupla plantada; pero un rival que baje `c` a `(1/2-delta,
+1/2-delta)` con `delta > mu_n` los absorbe **todos** en su bloque futuro, ganando
+`rho-1 = Theta(mu_n n)` conteos frente a un drift `Theta(n mu_n^2)`, menor por un
+factor `mu_n`. La antidiagonal destruye el certificado. Con la diagonal, cada punto
+de banda pertenece a exactamente un bloque plantado y ningún rival puede
+capturarlo sin pagarlo (Lema 13.9).
+
+### 13.3 Régimen determinista: `delta <= mu_n`
+
+Medimos la desviación de un rival `q=(a,b,c,d)` respecto de la plantada por
+`delta = ||q - q_0||_infinity` en coordenadas normalizadas.
+
+**Lema 13.8 (`PROVED`, determinista sobre `F_B`).** Si `delta <= mu_n` y `q != q_0`,
+entonces `min(K(q),L(q)) < min(K,L)`. La demostración enumera los tipos de rival.
+
+*(iii) cambia `b` y/o `c`.* Si `b != b_0` con `delta <= mu_n`, entonces `b` está en
+el cuadrado central de semilado `mu_n`, y por el Lema 13.4 los únicos puntos ahí son
+`b_0` y `c_0`. Luego `b=c_0`; pero entonces se exigiría `c > c_0` con
+`|c - c_0|_infinity <= mu_n`, imposible por la misma razón salvo `c=b_0`, que
+violaría el orden `b prec c`. Simétricamente para `c`. Por tanto `b=b_0`, `c=c_0`.
+Este es el único paso que en §12 requería un evento de probabilidad pequeña.
+
+*(i) cambia `a`.* Con `b=b_0`, `c=c_0`: como `a_0=(1,1)` es el mínimo global,
+`a_0 prec a` para todo `a != a_0`, luego
+`[a,b_0] subset [a_0,b_0] \ {a_0}` y, con la convención cerrada,
+`K(q) <= K - 1`. Como `K=L` exactamente (Lema 13.5),
+
+```text
+min(K(q),L(q)) <= K-1 < K = min(K,L),
+```
+
+desigualdad **estricta**, sin empate. *(ii) cambia `d`* es simétrico usando que
+`d_0=(n,n)` es el máximo global. *(iv) mixtos:* si cambian `a` y `d`, ambas
+desigualdades valen y el mínimo baja al menos uno. `[]`
+
+El balance exacto `K=L` es indispensable aquí: si fuese `K = L+1`, perder un conteo
+en el lado de `K` no bajaría el mínimo y aparecería un empate, que por el Lema 12.2
+deja el selector `UNDEFINED` y **no** ocurre `S`. La convención cerrada es igualmente
+indispensable: si los extremos no contasen, sustituir `a_0` por otro punto no
+eliminaría a `a_0` del conteo y este mecanismo daría `<=` en vez de `<`. Ambas
+condiciones están verificadas contra el repo, no supuestas.
+
+### 13.4 Diferencial de los puntos prescritos
+
+**Lema 13.9 (`PROVED`, determinista sobre `F_B`).** Sea `q` un rival con
+`delta < 1/4` y sean `P_-(q),P_+(q)` los números de puntos prescritos de banda en
+sus dos bloques. Entonces
+
+```text
+P_-(q) <= rho-1,   P_+(q) <= rho-1,
+```
+
+que son los valores alcanzados por la plantada. Es decir, el diferencial de los
+puntos prescritos nunca favorece al rival.
+
+En efecto, los `rho-1` puntos de `B_n^- -> Q^-` tienen abscisa en
+`[1/2-mu_n,1/2)` y ordenada `1/4+o(1)`. Para que uno de ellos entre en el bloque
+**futuro** de un rival haría falta que la ordenada de `c` fuese `<= 1/4+o(1)`, es
+decir `delta >= 1/4-o(1)`, excluido. Para entrar en su bloque **pasado** basta que
+`b` los domine, cosa que ya ocurre en la plantada; y un rival solo puede perderlos,
+al encoger `b`. Simétricamente, los `rho-1` puntos de `B_n^+ -> Q^+` tienen ordenada
+`3/4+o(1)` y no pueden entrar en el bloque pasado de un rival con `delta < 1/4`. `[]`
+
+Para `delta >= 1/4` no se afirma signo: se acota el diferencial en valor absoluto
+por el total de puntos prescritos,
+
+```text
+|diferencial| <= r_n = O(n^(2/3) Lambda_n^(1/3)),
+```
+
+mientras el drift del Lema 12.6 en coordenadas libres es `Theta(N delta^2) =
+Theta(n)`. Como `n^(2/3)Lambda_n^(1/3) = o(n)`, queda absorbido con margen
+polinómico. Este es el único punto donde el tamaño de la banda entra en la
+comparación, y lo hace con holgura.
+
+### 13.5 Tricotomía y una sola cota de discrepancia
+
+Al escribir el argumento aparece una simplificación que conviene registrar: **la
+ruta B no necesita peeling diádico**. La razón es el Lema 13.7. Como la plantada
+está *exactamente* en el máximo del paisaje libre, ningún rival puede ganar en
+media; basta entonces una única cota de discrepancia a escala global, y no un perfil
+local multiescala.
+
+**Entrada 13.10 (`SKETCH`: discrepancia global uniforme).** Sobre una biyección
+uniforme de `N` elementos, con probabilidad `1-O(N^(4-L))`, simultáneamente para
+todas las cuádruplas y sus dos bloques,
+
+```text
+| free(bloque) - N u v | <= A_0 ( sqrt(N Lambda_n) + Lambda_n ) =: eta_n.
+```
+
+Es el extremo `delta=Theta(1)` del perfil invocado en §12.6, es decir una cola de
+Bernstein para un único conteo hipergeométrico más union bound sobre `<= N^4`
+cuádruplas. **Se hereda con el mismo estatus que en §12: entrada, no teorema
+probado en este repositorio.** La ruta B exige estrictamente menos que §12, que
+necesitaba el perfil local completo `min(N delta, sqrt(N delta Lambda)+Lambda)` para
+todas las escalas; aquí solo se usa el caso clásico. Nótese
+`eta_n = O(sqrt(n log n))`.
+
+**Lema 13.11 (`PROVED`: clasificación por la fila de `b`).** Sobre `F_B`, todo punto
+con índice de fila en `B_n` es de uno de cuatro tipos: escalera baja (filas
+`s-rho+1,...,s-1`, columnas en `Q^-`), `b_0`, `c_0`, escalera alta (filas
+`s+2,...,s+rho`, columnas en `Q^+`). Sea `q` un rival admisible. Entonces se da una
+y solo una de:
+
+1. `b=b_0` y `c=c_0`;
+2. `q` pierde los `rho-1` puntos de una de las dos escaleras respecto de la
+   plantada;
+3. `min(u_-v_-,u_+v_+) <= 1/8 + o(1)`.
+
+*Prueba.* Si la fila de `b` está por debajo de la banda, el bloque pasado no
+contiene ningún punto de la escalera baja (todas sus filas la superan): caso 2. Si
+está por encima de la banda, entonces la fila de `c` también, y el bloque futuro no
+contiene ningún punto de la escalera alta: caso 2. Si está en la banda, `b` es de
+uno de los cuatro tipos. Si es de escalera baja, `col(b)=n/4+o(n)`, luego
+`v_- = 1/4+o(1)` y `u_-v_- <= 1/8+o(1)`: caso 3. Si es de escalera alta,
+`v_- = 3/4+o(1)`, luego `v_+ <= 1/4+o(1)` y `u_+v_+ <= 1/8+o(1)`: caso 3. Quedan
+`b in {b_0,c_0}`. Si `b=c_0`, entonces `c` cumple `c > c_0`; si su fila supera la
+banda se pierde la escalera alta (caso 2) y si está en la banda `c` es de escalera
+alta, luego `v_+ = 1/4+o(1)` (caso 3). Si `b=b_0`, la fila de `c` es mayor que `s`:
+o bien `c=c_0` (caso 1), o bien `c` es de escalera alta (caso 3), o bien su fila
+supera la banda y se pierde la escalera alta (caso 2). `[]`
+
+**Proposición 13.12 (`PROVED` dada la Entrada 13.10).** Sobre
+`F_B intersect G_n`, la cuádrupla plantada es el único maximizador de `S_min`.
+
+*Prueba.* Sea `q != q_0` admisible. Por el Lema 13.7,
+`E[min(K,L)(q)|F_B] <= N/4 + P(q)` con `P(q) <= rho+1` (Lema 13.9), y la plantada
+alcanza `N/4 + rho + 1` en media y `K=L` exactamente (Lema 13.5). Por la Entrada
+13.10, cada conteo dista a lo sumo `eta_n` de su media.
+
+*Caso 1.* `b=b_0`, `c=c_0`: el Lema 13.8 da `min(K,L)(q) <= min(K,L) - 1`
+deterministamente, sin usar `G_n`.
+
+*Caso 2.* El bloque que pierde una escalera tiene `P <= 2`, luego
+
+```text
+min(K,L)(q) <= N/4 + 2 + eta_n,
+min(K,L)(q_0) >= N/4 + rho + 1 - eta_n,
+```
+
+y la plantada gana estrictamente si `rho - 1 > 2 eta_n`. Como
+`rho = C n^(2/3) Lambda_n^(1/3) (1+o(1))` y `eta_n = O(sqrt(n log n))`, el cociente
+es `Theta(n^(1/6) Lambda_n^(-1/6)) -> infinity`: se cumple para todo `n` grande.
+
+*Caso 3.* `min(K,L)(q) <= N/8 + o(N) + rho + 1 + eta_n`, mientras la plantada es al
+menos `N/4 - eta_n`. La diferencia es `N/8 - o(N) >> rho + 2 eta_n`. `[]`
+
+**Corolario 13.13 (`PROVED` dada la Entrada 13.10).** `F_B intersect G_n subset S`,
+con la plantada como cuádrupla seleccionada. En efecto, la Proposición 13.12 da un
+único maximizador de `S_min`, es decir `MIN_ONLY` único; y por el puente citado en
+`P1a_resultados_comparacion_selectores_balanceados_d2.md:133-141` —todo competidor
+tiene primer componente estrictamente menor, luego el segundo no puede desplazarlo
+ni crear empate— el argmax de `S_lex` es también único y es la misma cuádrupla,
+esto es, `MIN_COVERAGE_LEX` está definido y ocurre `S` (Lema 12.2). El puente no
+exige hipótesis adicionales más allá de que ambos selectores corran sobre el mismo
+`Q_3`, congelado en `P1a_contrato_comparacion_selectores_balanceados_d2.md:36`.
+
+Queda por comprobar la admisibilidad de la plantada, es decir `K,L>=3`: por el Lema
+13.7, `K=L=(rho+1)+N/4+O(eta_n) -> infinity`. `[]`
+
+**Corolario 13.14 (`PROVED` dada la Entrada 13.10).** Como `G_n` se evalúa bajo la
+ley condicionada a `F_B`, que es exactamente uniforme sobre biyecciones de `N`
+elementos, `Pr(G_n | F_B) = 1 - O(N^(4-L)) = 1-o(1)` **sin ninguna división por
+`Pr(F_B)`**. Por tanto
+
+```text
+Pr(S) >= Pr(F_B intersect G_n)
+      = (1-o(1)) Pr(F_B)
+      = exp[-Theta(n^(2/3)(log n)^(4/3))]
+      = e^{-o(n)}.
+```
+
+Este es el enunciado que §12.15 dejaba `OPEN`. El hueco de §12.7 no se repara: se
+evita, porque la familia prescrita nunca abandona la uniformidad.
+
+### 13.6 Qué NO se sigue de aquí
+
+El eslabón que baja de `Pr(S) >= e^{-o(n)}` a `P_{2,n} -> 0` **no existe en este
+repositorio**. Se buscó y no está:
+
+- no hay flag `SUBEXPONENTIAL_UNIQUENESS` en ningún fichero; el único
+  `SUFFICIENT_NOT_NECESSARY` es `VAR_K_CRITERION`
+  (`P1a_count_volume_lema_kl_d2.md:592`), que califica el criterio `Var(K)` de
+  (7.14), un objeto distinto;
+- las únicas apariciones de `Pr(S)` en el repositorio están en §12.7-§12.8 de este
+  mismo fichero, es decir en el texto que la ruta B sustituye;
+- lo que sí existe es la caracterización (7.10),
+  `P_{2,n}->0 iff E_M[Var(sqrt(KL)|M,n,h,S)] = o(n^2)`
+  (`P1a_count_volume_lema_kl_d2.md:475-477`), donde `S` es condicionante y su
+  probabilidad no se divide en ningún punto.
+
+**Observación 13.15 (`OPEN`: contabilidad de escalas para un eventual puente).** Si
+alguna vez se escribe ese eslabón por el camino habitual —acotar
+`Pr(malo)` incondicionalmente y dividir por `Pr(S)`— la cota incondicional debe ser
+**exponencial en `n`**. Con el certificado de la ruta B,
+`Pr(S) >= exp[-Theta(n^(2/3)(log n)^(4/3))]`, sobreviven a la división exactamente
+las cotas `e^{-c(epsilon) n}` de desviaciones macroscópicas `epsilon n`, y **no**
+sobrevive ninguna cota de escala fina: `O(n^(4-L))` dividido por
+`exp[-Theta(n^(2/3)(log n)^(4/3))]` diverge. Esto es la misma aritmética que hunde
+al marco vacío en §12.7, y aquí solo se registra como restricción sobre pruebas
+futuras. Obsérvese que el objetivo (7.10) es `o(n^2)`, una exigencia macroscópica,
+de modo que la restricción no es prohibitiva a priori; pero un argumento que la
+respete todavía tiene que escribirse, y no se escribe aquí. **No se afirma que
+exista.**
+
+En consecuencia, la ruta B cierra el certificado de unicidad y **no** decide
+`P_{2,n}`. `P2_STATUS` sigue `OPEN`, y también sigue abierta la reconstrucción
+`inf_f E[(ell-f(M))^2] -> 0`, que por (7.15) requiere `P_{1,n}+P_{2,n} -> 0`: el
+primer sumando está cerrado, el segundo no.
+
+### 13.7 Veredicto y flags
+
+| Objeto | Estado | Alcance exacto |
+| --- | --- | --- |
+| definición de `F_B`, ambas paridades | `PROVED` | Def. 13.1-13.2 |
+| uniformidad exacta del residual | `PROVED` | biyección de `N=n-r_n` elementos |
+| coste `Pr(F_B)` y presupuesto entrópico | `PROVED` | `exp[-Theta(n^(2/3)(log n)^(4/3))]`, `r_n=o(n/log n)` |
+| vaciado del cuadrado central | `PROVED` | determinista, sin evento |
+| balance `K=L` | `PROVED` | exacto, por conservación de flujo |
+| plantada en el máximo del paisaje libre | `PROVED` | `u=v=1/2` exacto (par); producto exacto (impar) |
+| necesidad de la colocación diagonal | `PROVED` | la antidiagonal destruye el certificado |
+| régimen determinista `delta<=mu_n` | `PROVED` | usa convención cerrada y `K=L` |
+| diferencial de puntos prescritos | `PROVED` | signo favorable para `delta<1/4`; absorbido si `delta>=1/4` |
+| tricotomía de rivales | `PROVED` | Lema 13.11 |
+| discrepancia global uniforme | `SKETCH` | **entrada heredada**, no probada aquí |
+| unicidad sobre `F_B intersect G_n` | `PROVED` dada la entrada | Prop. 13.12 |
+| puente a `S` | `PROVED` | citado, sin hipótesis extra |
+| `Pr(S) >= e^{-o(n)}` | `PROVED` dada la entrada | Cor. 13.14, sin división |
+| `P_{2,n} -> 0` | `OPEN` | el eslabón no existe en el repositorio |
+| reconstrucción `inf_f E[(ell-f(M))^2] -> 0` | `OPEN` | depende del anterior |
+
+```text
+PRESCRIBED_BAND_UNIQUENESS_CERTIFICATE = PROVED_MODULO_GLOBAL_DISCREPANCY_INPUT
+PRESCRIBED_BAND_GEOMETRY = PROVED
+PRESCRIBED_BAND_ENTROPIC_COST = PROVED
+PRESCRIBED_BAND_EXACT_UNIFORMITY = PROVED
+GLOBAL_DISCREPANCY_INPUT = SKETCH
+SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = PROVED_MODULO_GLOBAL_DISCREPANCY_INPUT
+EMPTY_FRAME_UNIQUENESS_CERTIFICATE = SUPERSEDED
+P2_STATUS = OPEN
+```
+
+`EMPTY_FRAME_UNIQUENESS_CERTIFICATE` pasa de `OPEN` a `SUPERSEDED`: la ruta de §12
+no se completa ni se corrige, se abandona. Su contenido geométrico (§12.2, §12.3)
+se reutiliza literalmente y sigue vigente; lo que se abandona es el condicionamiento
+a un evento de vaciedad. `EMPTY_FRAME_CONDITIONAL_DISCREPANCY` deja de ser un
+objetivo: ya no hace falta.
+
+`P2_STATUS` **no** pasa a `PROVED`, y no por prudencia sino porque dos eslabones lo
+impiden: la Entrada 13.10 y, sobre todo, la inexistencia del puente de §13.6.
+
+### 13.8 Lista `OPEN`
+
+1. **Entrada 13.10.** Escribir la cota de discrepancia global uniforme para
+   biyecciones uniformes de `N` elementos —Bernstein hipergeométrico más union bound
+   sobre `<= N^4` cuádruplas— o citarla de la literatura. Es estrictamente más
+   débil que la entrada que §12 daba por buena, y es el único ingrediente
+   probabilístico de toda §13.
+2. **Puente a `P_{2,n}`.** No existe. Cualquier construcción debe respetar la
+   contabilidad de escalas de la Observación 13.15: solo cotas incondicionales
+   `e^{-c(epsilon)n}` sobreviven a la división por `Pr(S)`.
+3. **Caso impar, contabilidad fina.** El balance del producto en Def. 13.2 se
+   verifica con `u_- = u_+ - 1/N`, `v_- = v_+ + 1/N`; conviene reescribir Def. 13.2
+   con las cinco prescripciones auxiliares listadas explícitamente en vez de
+   descritas, para que el conteo `2 rho + 5` sea comprobable línea a línea.
+4. **Constantes.** `C` solo está restringida por `rho - 1 > 2 eta_n`, que se cumple
+   asintóticamente para cualquier `C>0` fijo. El acoplamiento `C >= (32 A_0)^(2/3)`
+   de §12.13 ya **no** es necesario, porque no hay peeling; conviene comprobar que
+   ninguna otra parte del argumento lo reintroduce.
+
+**Próximo paso único.** El punto 1. Nada más de §13 depende de una demostración
+pendiente, y el punto 2 pertenece a otra sección del programa, no al certificado.
