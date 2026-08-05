@@ -899,8 +899,9 @@ demostrada.
 
 > **BLOQUE SUPERSEDIDO POR §13.7. No leer estos valores como vigentes.** Se conserva
 > como registro histórico de la ruta del marco vacío. Dos de ellos son hoy
-> **falsos**: `SUBEXPONENTIAL_UNIQUENESS_COROLLARY = OPEN` quedó cerrado por el
-> Corolario 13.14 (`SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = PROVED`), y
+> **falsos**: `SUBEXPONENTIAL_UNIQUENESS_COROLLARY = OPEN` quedó superado por el
+> Corolario 13.14 (hoy `SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = SKETCH_EVEN_N` tras el
+> comité 050), y
 > `EMPTY_FRAME_UNIQUENESS_CERTIFICATE = OPEN` pasó a `SUPERSEDED`. Los valores
 > vigentes están en el bloque de §13.7, que es el único que debe citarse.
 
@@ -926,10 +927,15 @@ No se autoriza sustituir este lema por una simulación ni por una nueva represen
 > etiqueta `PROVED`, `SKETCH` u `OPEN`. No modifica ningún gate congelado. Sustituye
 > la ruta de §12 (marco vacío), no la corrige.
 >
-> **Resumen del alcance.** El certificado `Pr(S) >= e^{-o(n)}` queda demostrado para
-> `n` par, esbozado para `n` impar, y su paso probabilístico descansa en una fuente no
-> archivada; §13 **no** ha pasado auditoría matemática independiente (auditoría 031,
-> hallazgo 13). `P2_STATUS` sigue `OPEN`, y la Advertencia 13.16 muestra
+> **Resumen del alcance, tras el comité 050.** El certificado `Pr(S) >= e^{-o(n)}`
+> está **esbozado, no demostrado**, incluso para `n` par: su conclusión se verificó
+> numéricamente hasta `n=16000`, pero el caso 2 de la Prop. 13.12 es un non sequitur,
+> el Lema 13.4 es falso como está escrito, la Def. 13.1 está mal formada para
+> `rho >= n/4`, y el paso probabilístico descansa en una fuente no archivada. Además
+> `n_0 >= 5.7e4`, de modo que **nada de esto es comprobable a ningún `n` enumerable**
+> y la cota resultante es ~90 órdenes de magnitud más floja que el `Pr(S)` ya medido
+> (0.59/0.65/0.70 a `n=64/96/128`, y creciendo). `P2_STATUS` sigue `OPEN`, y la
+> Advertencia 13.16 muestra
 > que cerrarlo **no** daría recuperabilidad: la magnitud decisiva es el cociente
 > normalizado `T_n = 1-rho_max^2`, no el riesgo absoluto.
 
@@ -979,7 +985,15 @@ B_n = {i : |x_i - 1/2| <= mu_n},
 
 un intervalo de índices, determinista, de cardinal `2 rho_n + O(1)`.
 
-**Definición 13.1 (`PROVED`: caso par).** Sea `n=2s`. Escribimos
+**Definición 13.1 (`PROVED`: caso par, con la condición de buena definición del
+comité 050).** Requiere `rho_n < floor(n/4)`; **fuera de ese rango la definición está
+mal formada**, no meramente incompleta: `Q^+` invade columnas `> n` y las columnas
+prescritas colisionan, corrompiendo `N` en silencio. El falsador del comité 050 lo
+encontró con su primera elección natural de parámetros (`C=1, L=9, n=4000`, que da
+`rho=1060 > n/4`); el matemático localizó la primera colisión exactamente en
+`rho = floor(n/4)+1`. La condición se cumple asintóticamente —`rho/n -> 0` por el
+Lema 13.3— pero define un `n` mínimo por debajo del cual nada de §13 aplica:
+`C=0.5 -> n>=418`, `C=1.0 -> n>=4878`, `C=2.0 -> n>=49826`. Sea `n=2s`. Escribimos
 `B_n^- = {s-rho+1,...,s}` y `B_n^+ = {s+1,...,s+rho}` (`rho=rho_n`), y fijamos los
 bloques de columnas de cuartil
 
@@ -1046,7 +1060,27 @@ prescripción consume una fracción evanescente del presupuesto entrópico. El c
 excede al de §12.11 (`n^(1/3)Lambda^(2/3)`) en un factor `n^(1/3)Lambda^(2/3)`, y
 sigue siendo subexponencial con amplio margen.
 
-**Lema 13.4 (`PROVED`: vaciado determinista del cuadrado central).** Sobre `F_B`, y
+**Lema 13.4 (`FALSE_AS_WRITTEN`; reparable, ver abajo).** *Etiqueta rebajada de
+`PROVED` por el comité 050, confirmada por tres barridos independientes (295/600,
+46-57%, 83/179 pares `(C,n)`).* El defecto es definicional: `B_n` se define arriba
+por la desigualdad `{i : |x_i-1/2| <= mu_n}` pero se prescribe como el conjunto de
+índices `{s-rho+1,...,s+rho}`, y ambos difieren siempre que
+`frac(mu_n(n-1)) >= 1/2` —aproximadamente la mitad de los casos—. Entonces las filas
+`s-rho` y `s+rho+1` cumplen la desigualdad pero quedan **libres**, y el paso "fila en
+banda ⟹ columna prescrita" falla. El cuadrado central no está vacío con probabilidad
+`Theta(mu_n)`, que tiende a cero pero **no es cero**, mientras el lema afirma una
+identidad determinista.
+
+> **Reparación (`SKETCH`, atribuida al falsador y al matemático del comité 050; no
+> verificada por nadie más).** Definir `B_n` *como* el conjunto de índices prescrito
+> y encoger el cuadrado a semilado `(rho-1/2)/(n-1)`; alternativamente prescribir la
+> banda geométrica entera (`2rho+2` filas, `rho+1` columnas por bloque de cuartil).
+> El falsador verifica que el reparto exacto `u=v=1/2` del Lema 13.7 sobrevive sin
+> cambios a esa sustitución, y que la cota final seguiría siendo `(1-o(1))Pr(F_B)`.
+> **No se etiqueta `PROVED`**: su autor pide expresamente que no entre bajo su
+> palabra.
+
+El enunciado original, para constancia — sobre `F_B`, y
 sin ningún evento probabilístico,
 
 ```text
@@ -1164,7 +1198,14 @@ capturarlo sin pagarlo (Lema 13.9).
 Medimos la desviación de un rival `q=(a,b,c,d)` respecto de la plantada por
 `delta = ||q - q_0||_infinity` en coordenadas normalizadas.
 
-**Lema 13.8 (`PROVED`, determinista sobre `F_B`).** Si `delta <= mu_n` y `q != q_0`,
+**Lema 13.8 (determinista sobre `F_B`; casos (i),(ii),(iv) `PROVED`, caso (iii)
+`PROVED_MODULO_13.4`).** *Dos observaciones del comité 050. Primera: el caso (iii)
+invoca el Lema 13.4, hoy `FALSE_AS_WRITTEN`, y hereda su reparación. Segunda: la
+hipótesis `delta <= mu_n` del enunciado es más fuerte de lo que el contenido
+necesita —los casos (i),(ii),(iv) solo usan que `a_0` y `d_0` son extremos globales
+más la convención cerrada, y valen para `delta` arbitrario—, y la Prop. 13.12 caso 1
+efectivamente lo invoca sin acotar `delta`. El enunciado correcto los condiciona a
+`{b=b_0, c=c_0}` en vez de a `delta`.* Si `delta <= mu_n` y `q != q_0`,
 entonces `min(K(q),L(q)) < min(K,L)`. La demostración enumera los tipos de rival.
 
 *(iii) cambia `b` y/o `c`.* Si `b != b_0` con `delta <= mu_n`, entonces `b` está en
@@ -1196,7 +1237,17 @@ condiciones están verificadas contra el repo, no supuestas.
 
 ### 13.4 Diferencial de los puntos prescritos
 
-**Lema 13.9 (`PROVED`, determinista sobre `F_B`).** Sea `q` un rival con
+**Lema 13.9 (`FALSE_AS_WRITTEN`; el enunciado correcto es más débil).** *Etiqueta
+rebajada por el comité 050.* La cota mostrada abajo (`P_-(q), P_+(q) <= rho-1`) es
+falsa: el rival `q=(a_0, c_0, c, d_0)` con `c` justo por encima de `c_0` tiene
+`delta = O(1/n) < 1/4` y su bloque pasado contiene la escalera baja **más** `b_0`
+**más** `c_0`, es decir `P_-(q) = rho+1`. El lema solo es cierto bajo la lectura
+"punto de banda = punto de escalera", que contradice la clasificación en cuatro tipos
+del Lema 13.11. Peor: la Prop. 13.12 lo cita para una cota (`P(q) <= rho+1`) que el
+lema no enuncia, y para `delta >= 1/4` incluso esa es falsa —un solo bloque puede
+tragarse **ambas** escaleras, `P ≈ 2rho+2`—. Lo que sobrevive es el enunciado
+cualitativo: los puntos de escalera nunca favorecen al rival para `delta < 1/4`, y su
+diferencial está acotado por `r_n` en general. Sea `q` un rival con
 `delta < 1/4` y sean `P_-(q),P_+(q)` los números de puntos prescritos de banda en
 sus dos bloques. Entonces
 
@@ -1303,11 +1354,18 @@ que invocaba el perfil local completo
 `min(N delta, sqrt(N delta Lambda)+Lambda)` a todas las escalas y lo dejaba como
 entrada no demostrada.
 
-**Lema 13.11 (`PROVED`: clasificación por la fila de `b`).** Sobre `F_B`, todo punto
+**Lema 13.11 (`PROVED_MODULO_13.4`: clasificación por la fila de `b`).** *El comité
+050 confirma que el reparto en casos es **exhaustivo** —que es lo único que el
+argumento usa— pero su premisa ("todo punto con fila en `B_n` es de uno de cuatro
+tipos") hereda el defecto del Lema 13.4: bajo la lectura por desigualdad, las filas
+`s-rho` y `s+rho+1` escapan a los cuatro tipos. El falsador comprueba que esas filas
+caen igualmente en el caso 2, de modo que la **conclusión** del lema se mantiene.*
+Sobre `F_B`, todo punto
 con índice de fila en `B_n` es de uno de cuatro tipos: escalera baja (filas
 `s-rho+1,...,s-1`, columnas en `Q^-`), `b_0`, `c_0`, escalera alta (filas
-`s+2,...,s+rho`, columnas en `Q^+`). Sea `q` un rival admisible. Entonces se da una
-y solo una de:
+`s+2,...,s+rho`, columnas en `Q^+`). Sea `q` un rival admisible. Entonces se da **al
+menos una** de (los casos **no** son mutuamente excluyentes; la afirmación "una y
+solo una" que figuraba aquí es falsa —comité 050—, y solo se usa la exhaustividad):
 
 1. `b=b_0` y `c=c_0`;
 2. `q` pierde los `rho-1` puntos de una de las dos escaleras respecto de la
@@ -1327,7 +1385,42 @@ alta, luego `v_+ = 1/4+o(1)` (caso 3). Si `b=b_0`, la fila de `c` es mayor que `
 o bien `c=c_0` (caso 1), o bien `c` es de escalera alta (caso 3), o bien su fila
 supera la banda y se pierde la escalera alta (caso 2). `[]`
 
-**Proposición 13.12 (`PROVED`).** Sobre
+**Proposición 13.12 (`SKETCH`: el caso 2 es un non sequitur).** *Etiqueta rebajada de
+`PROVED` por el comité 050. La **conclusión** se sostiene —matemático y falsador la
+verificaron por maximización exhaustiva sobre todos los rivales realizables— pero la
+**demostración escrita abajo es inválida en su caso 2**, y el margen que afirma es el
+doble del real.*
+
+> **El defecto.** El caso 2 concluye `min(K,L)(q) <= N/4 + 2 + eta_n` de que "el
+> bloque que pierde una escalera tiene `P<=2`". Eso aplica `u·v <= 1/4` al bloque que
+> **pierde la escalera**, cuando el Lema 13.6 solo lo licencia para el bloque que
+> **minimiza**. No tienen por qué ser el mismo. Tres contraejemplos independientes:
+> `b=(1680,3999)` en `n=4000, rho=320` da `P_-=1` pero `u_-=0.5, v_-=1.0`, media
+> `1680.0` frente al tope afirmado `841.5`; el lógico exhibe `b` libre en fila
+> `≈ s-rho-5`, columna `≈ 0.99n`; el falsador reproduce el primero aritméticamente.
+>
+> **El margen real.** Maximización exhaustiva sobre rivales realizables
+> (`a=a_0, d=d_0`, `b,c` sobre prescritos ∪ libres, prefix-max 2-D), en
+> `n ∈ {2000,4000,8000,16000}`: la plantada **es** el maximizador estricto, pero
+> `gap/rho = 0.503, 0.502, 0.501, 0.501`, es decir `rho/2`, **no** `rho-1`. Y
+> `gap/(2 eta_n) = 0.152 → 0.186`, por debajo de 1 en todos los `n` computables.
+>
+> **Reparación (`SKETCH`, atribuida al falsador del comité 050).** Con `f = u_l v_l`
+> y `g = (1-u_l)(1-v_l)`, AM–GM da `g <= (1-sqrt f)^2`, luego `f = 1/4+eps` implica
+> `g <= 1/4-eps+eps^2`. Combinado con `P_l <= 2` y `P_k <= rho+1` cierra el caso 2.
+> El matemático propone una ruta equivalente en tres pasos: (i) `f_- f_+ <= 1/16`,
+> (ii) el presupuesto `P_- + P_+ <= 2rho+2` (los bloques son disjuntos y la plantada
+> lo satura), (iii) un bloque que contenga ambas escaleras tiene `v >= 1/2-o(1)`,
+> forzando `v <= 1/4+o(1)` en el otro. **Ninguna de las dos está verificada por nadie
+> distinto de su autor**, y el falsador pide explícitamente que la suya no se
+> etiquete `PROVED` bajo su palabra.
+>
+> **Casos 1 y 3 resisten.** El falsador atacó ambos. El caso 3 identifica el bloque
+> por `uv` pequeño y aplica `min(K,L) <= count_j` a ese mismo bloque — válido. El
+> caso 1 es determinista. La asimetría con el caso 2 es exactamente que este
+> identifica el bloque por pérdida de escalera y luego necesita `uv<=1/4` para él.
+
+El enunciado, que se mantiene: sobre
 `F_B intersect G_n`, la cuádrupla plantada es el único maximizador de `S_min`.
 
 *Prueba.* Sea `q != q_0` admisible. Por el Lema 13.7,
@@ -1352,7 +1445,9 @@ es `Theta(n^(1/6) Lambda_n^(-1/6)) -> infinity`: se cumple para todo `n` grande.
 *Caso 3.* `min(K,L)(q) <= N/8 + o(N) + rho + 1 + eta_n`, mientras la plantada es al
 menos `N/4 - eta_n`. La diferencia es `N/8 - o(N) >> rho + 2 eta_n`. `[]`
 
-**Corolario 13.13 (`PROVED`).** `F_B intersect G_n subset S`,
+**Corolario 13.13 (`PROVED` *condicionado a la Prop. 13.12*).** *El puente en sí lo
+atacó el falsador del comité 050 y resiste sin reservas; lo que queda condicionado es
+su hipótesis, no su razonamiento.* `F_B intersect G_n subset S`,
 con la plantada como cuádrupla seleccionada. En efecto, la Proposición 13.12 da un
 único maximizador de `S_min`, es decir `MIN_ONLY` único; y por el puente citado en
 `P1a_resultados_comparacion_selectores_balanceados_d2.md:133-141` —todo competidor
@@ -1365,10 +1460,14 @@ exige hipótesis adicionales más allá de que ambos selectores corran sobre el 
 Queda por comprobar la admisibilidad de la plantada, es decir `K,L>=3`: por el Lema
 13.7, `K=L=(rho+1)+N/4+O(eta_n) -> infinity`. `[]`
 
-**Corolario 13.14 (`PROVED`).** Como `G_n` se evalúa bajo la
+**Corolario 13.14 (`PROVED` *condicionado a la Prop. 13.12*).** Para todo `C>0` y
+todo `L>8` **existe `n_0`** tal que, para todo `n` par `>= n_0` (ver §13.8 punto 4:
+`n_0` no es pequeño), y como `G_n` se evalúa bajo la
 ley condicionada a `F_B`, que es exactamente uniforme sobre biyecciones de `N`
-elementos, `Pr(G_n | F_B) = 1 - O(N^(4-L)) = 1-o(1)` **sin ninguna división por
-`Pr(F_B)`**. Por tanto
+elementos, `Pr(G_n | F_B) >= 1 - 4n^(4-2L) = 1-o(1)` **sin ninguna división por
+`Pr(F_B)`**. *El exponente `O(N^(4-L))` que figuraba aquí era inconsistente con el
+`4n^(4-2L)` que demuestra el Lema 13.10 (comité 050); se usa el del lema. El
+cuantificador `exists n_0` faltaba por completo.* Por tanto
 
 ```text
 Pr(S) >= Pr(F_B intersect G_n)
@@ -1471,48 +1570,64 @@ compra con lo que haría falta.
 
 | Objeto | Estado | Alcance exacto |
 | --- | --- | --- |
-| definición de `F_B`, caso par | `PROVED` | Def. 13.1 |
+| definición de `F_B`, caso par | `PROVED` bajo `rho < floor(n/4)` | Def. 13.1; mal formada fuera de ese rango |
 | definición de `F_B`, caso impar | `SKETCH` | Def. 13.2; conteo `2rho+5` no comprobable línea a línea (`OPEN` 3) |
 | uniformidad exacta del residual | `PROVED` | biyección de `N=n-r_n` elementos |
 | coste `Pr(F_B)` y presupuesto entrópico | `PROVED` | `exp[-Theta(n^(2/3)(log n)^(4/3))]`, `r_n=o(n/log n)` |
-| vaciado del cuadrado central | `PROVED` | determinista, sin evento |
+| vaciado del cuadrado central | `FALSE_AS_WRITTEN` | Lema 13.4; `B_n` desigualdad vs índices; reparable |
 | balance `K=L` | `PROVED` | exacto, por conservación de flujo |
 | plantada en el máximo del paisaje libre, caso par | `PROVED` | `u=v=1/2` exacto |
 | plantada en el máximo del paisaje libre, caso impar | `SKETCH` | producto exacto verificado; hereda Def. 13.2 |
 | necesidad de la colocación diagonal | `PROVED` | la antidiagonal destruye el certificado |
-| régimen determinista `delta<=mu_n` | `PROVED` | usa convención cerrada y `K=L` |
-| diferencial de puntos prescritos | `PROVED` | signo favorable para `delta<1/4`; absorbido si `delta>=1/4` |
-| tricotomía de rivales | `PROVED` | Lema 13.11 |
-| discrepancia global uniforme | `PROVED` | Lema 13.10, Hoeffding 1963 §6 + unión sobre índices |
-| unicidad sobre `F_B intersect G_n` | `PROVED` | Prop. 13.12 |
-| puente a `S` | `PROVED` | citado, sin hipótesis extra |
-| `Pr(S) >= e^{-o(n)}` | `PROVED` | Cor. 13.14, sin división |
-| `P_{1,n}+P_{2,n} -> 0` no es recuperabilidad | `PROVED` | Adv. 13.16, cociente sellado `0.68-0.72` |
+| régimen determinista, casos (i),(ii),(iv) | `PROVED` | Lema 13.8; usa convención cerrada y `K=L`, sin `delta` |
+| régimen determinista, caso (iii) | `PROVED_MODULO_13.4` | Lema 13.8; depende del vaciado, hoy `FALSE_AS_WRITTEN` |
+| diferencial de puntos prescritos | `FALSE_AS_WRITTEN` | Lema 13.9; cota `rho-1` falsa, sobrevive el enunciado cualitativo |
+| tricotomía de rivales | `PROVED_MODULO_13.4` | Lema 13.11; exhaustiva, no excluyente |
+| discrepancia global uniforme | `PROVED_MODULO_UNARCHIVED_HOEFFDING` | Lema 13.10; Hoeffding §6 no archivado |
+| unicidad sobre `F_B intersect G_n` | `SKETCH` | Prop. 13.12; caso 2 non sequitur, conclusión verificada numéricamente |
+| puente a `S` | `PROVED` | citado, sin hipótesis extra; atacado y resiste |
+| `Pr(S) >= e^{-o(n)}` | `SKETCH` | Cor. 13.14; sin división, pero hereda 13.12 |
+| identidad `T_n = 1-rho_max^2` | `PROVED` | Adv. 13.16, Lema 3 de `canal_sigma_m_d2.md:65-73` |
+| `T_n` no decae en la muestra sellada | `EMPIRICAL_3_SIZES` | seis estratos, `[0.6773, 0.7175]`; no es prueba de `liminf T_n>0` |
 | `P_{2,n} -> 0` | `OPEN` | el eslabón no existe en el repositorio |
 | `liminf T_n > 0` (canal normalizado) | `OPEN` | la pregunta con contenido; §13 no aporta |
 
 ```text
-PRESCRIBED_BAND_UNIQUENESS_CERTIFICATE = PROVED_EVEN_N_SKETCH_ODD_N
-PRESCRIBED_BAND_GEOMETRY = PROVED
+PRESCRIBED_BAND_UNIQUENESS_CERTIFICATE = SKETCH_EVEN_N_GAP_IN_PROP_13_12_CASE_2
+PRESCRIBED_BAND_GEOMETRY = SKETCH_BAND_OFF_BY_ONE_AND_UNSTATED_RHO_LT_N_OVER_4
 PRESCRIBED_BAND_ENTROPIC_COST = PROVED
 PRESCRIBED_BAND_EXACT_UNIFORMITY = PROVED
 GLOBAL_DISCREPANCY_LEMMA = PROVED_MODULO_UNARCHIVED_HOEFFDING
-SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = PROVED_EVEN_N_SKETCH_ODD_N
+SUBEXPONENTIAL_LOWER_BOUND_ON_PR_S = SKETCH_EVEN_N
 EMPTY_FRAME_UNIQUENESS_CERTIFICATE = SUPERSEDED
 ABSOLUTE_RISK_IS_NOT_RECOVERABILITY = PROVED
+PRESCRIBED_FAMILY_N0 = UNSTATED_C_DEPENDENT_GE_5E4
+PRESCRIBED_FAMILY_EMPIRICALLY_TESTABLE = NO
 P2_STATUS = OPEN
 NORMALISED_CHANNEL_STATUS = OPEN
-MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED = NO
+MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED = NO_TWO_BREAKS_CONFIRMED_BY_COMITE_050
 ```
 
-Los dos sufijos no son cautela retórica. `_EVEN_N_SKETCH_ODD_N` registra que la
-construcción está completa solo para `n` par (Def. 13.1); para `n` impar el
-argumento está esbozado y su contabilidad pendiente (Def. 13.2, `OPEN` 3).
-`_MODULO_UNARCHIVED_HOEFFDING` registra que el único paso probabilístico descansa en
-una fuente no archivada ni leída (Lema 13.10(b)). Y
-`MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED = NO` registra el hallazgo 13 de la
-auditoría 031: §13 fue escrita y comprobada en la misma sesión, sin lectura
-adversarial independiente.
+Ninguno de estos sufijos es cautela retórica; cada uno registra un hecho localizado.
+`SKETCH_EVEN_N_GAP_IN_PROP_13_12_CASE_2`: la conclusión de la Prop. 13.12 está
+verificada numéricamente hasta `n=16000`, pero su caso 2 es un non sequitur y la
+reparación no está demostrada por nadie distinto de su autor.
+`SKETCH_BAND_OFF_BY_ONE_AND_UNSTATED_RHO_LT_N_OVER_4`: el Lema 13.4 es falso como
+está escrito y la Def. 13.1 está mal formada para `rho >= n/4`.
+`_MODULO_UNARCHIVED_HOEFFDING`: el único paso probabilístico descansa en una fuente
+no archivada (Lema 13.10(b)); el verificador de literatura del comité 050 confirmó
+que **no existe** sustituto en `biblioteca/` y que la marca no puede saldarse en
+local. `PRESCRIBED_FAMILY_N0` y `PRESCRIBED_FAMILY_EMPIRICALLY_TESTABLE = NO`: ver
+§13.8 punto 4. Y `NO_TWO_BREAKS_CONFIRMED_BY_COMITE_050` sustituye al `NO` anterior:
+ya no es que nadie haya mirado, es que tres lecturas adversariales miraron y
+encontraron dos roturas.
+
+Se conserva `NO` y no `PARTIAL` —pese a que el lógico del comité lo consideraba
+defendible— por dos razones registradas en el acta: el modelo configurado para el rol
+falsador no estuvo disponible y fue sustituido, de modo que el diseño de
+independencia del comité no se ejecutó como está especificado; y toda comprobación de
+esta cadena, incluidas las adversariales, es una verificación **numérica de paisajes
+en media**, no una auditoría de demostración.
 
 `EMPTY_FRAME_UNIQUENESS_CERTIFICATE` pasa de `OPEN` a `SUPERSEDED`: la ruta de §12
 no se completa ni se corrige, se abandona. Su contenido geométrico (§12.2, §12.3)
@@ -1520,9 +1635,10 @@ se reutiliza literalmente y sigue vigente; lo que se abandona es el condicionami
 a un evento de vaciedad. `EMPTY_FRAME_CONDITIONAL_DISCREPANCY` deja de ser un
 objetivo: ya no hace falta.
 
-El Lema 13.10 cierra el único ingrediente probabilístico de §13, con las dos reservas
-que la auditoría 031 dejó registradas: la fuente de su paso (b) no está archivada, y
-la construcción está completa solo para `n` par. `P2_STATUS` **no** pasa a `PROVED`
+El Lema 13.10 cierra el único ingrediente probabilístico de §13, con la reserva de
+que la fuente de su paso (b) no está archivada. Lo que **no** está cerrado, tras el
+comité 050, es la cadena determinista que lo consume: Def. 13.1, Lema 13.4, Lema 13.9
+y el caso 2 de la Prop. 13.12. `P2_STATUS` **no** pasa a `PROVED`
 por una razón distinta y ajena al certificado: el puente de §13.6 no existe. Y aunque
 existiera, la Advertencia 13.16 muestra que `P_{2,n}->0` no sería el enunciado
 buscado.
@@ -1542,14 +1658,36 @@ buscado.
    verifica con `u_- = u_+ - 1/N`, `v_- = v_+ + 1/N`; conviene reescribir Def. 13.2
    con las cinco prescripciones auxiliares listadas explícitamente en vez de
    descritas, para que el conteo `2 rho + 5` sea comprobable línea a línea.
-4. **Constantes.** `C` solo está restringida por `rho - 1 > 2 eta_n`, que se cumple
-   asintóticamente para cualquier `C>0` fijo. El acoplamiento `C >= (32 A_0)^(2/3)`
-   de §12.13 ya **no** es necesario, porque no hay peeling; conviene comprobar que
-   ninguna otra parte del argumento lo reintroduce.
-5. **Transferencia a 3+1D.** No evaluada. La maquinaria de §13 —filas y columnas,
+4. **Constantes y `n_0` — corregido por el comité 050.** La versión anterior de este
+   punto decía que `C` solo está restringida por `rho - 1 > 2 eta_n`. **Es falso**:
+   con el margen real `rho/2` (no `rho-1`) el criterio pasa a `rho > 4 eta_n`, lo que
+   mueve `n_0` hasta dos órdenes de magnitud. Valores de cruce medidos por el
+   falsador:
+
+   ```text
+   corregido (rho>4 eta):   C=0.3 -> n_0 ~ 1.2e9 | C=0.5 -> 4.0e7 | C=1.0 -> 3.6e5 | C=2.0 -> 5.7e4
+   texto anterior (rho-1>2eta): C=0.3 -> n_0 ~ 1.4e7 | C=0.5 -> 4.7e5 | C=1.0 -> 5.4e3 | C=2.0 -> 5.7e4
+   ```
+
+   Combinado con el techo de buena definición `rho < floor(n/4)` (Def. 13.1), esto
+   significa que **el certificado no es empíricamente comprobable a ningún `n`
+   enumerable**: la muestra sellada corre a `n ∈ {64,96,128}`, entre cuatro y siete
+   órdenes de magnitud por debajo. Ningún texto debe sugerir lo contrario. `C` y `L`
+   deberían congelarse antes de que nadie sepa qué `n` es alcanzable, para cerrar la
+   superficie de ajuste de constantes que el falsador señala. El acoplamiento
+   `C >= (32 A_0)^(2/3)` de §12.13 sigue sin ser necesario (no hay peeling).
+5. **Reparaciones pendientes de verificación.** Las dos reparaciones escritas en
+   §13.2 y §13.5 (la del `B_n` y la AM–GM del caso 2) están etiquetadas `SKETCH` y
+   **cada una la escribió quien la propuso**. Ninguna ha sido leída por un tercero.
+   Hasta que lo sean, `PRESCRIBED_BAND_UNIQUENESS_CERTIFICATE` no puede subir de
+   `SKETCH`.
+6. **Transferencia a 3+1D.** No evaluada. La maquinaria de §13 —filas y columnas,
    prescripción de rangos, conservación de flujo entre bloques— vive en la
    representación por permutación, que **es** la estructura `d=2`. No se afirma que
    transfiera; se registra que la cuestión no se ha examinado.
 
-**Próximo paso único.** El punto 1. Los puntos 3 y 4 son deuda de redacción, no
-huecos lógicos; el 2 ha perdido interés; el 5 es una decisión de programa.
+**Próximo paso único.** El punto 1, que es el único con contenido. Los puntos 3, 4 y
+5 son deuda de esta sección; el 2 ha perdido interés tras la Advertencia 13.16; el 6
+es una decisión de programa. El comité 050 recomienda **no seguir invirtiendo en esta
+rama**: sirve a un objetivo que 13.16 mostró vacío, es ~90 órdenes de magnitud más
+floja que la medición, y su maquinaria no transfiere.
