@@ -441,9 +441,49 @@ publicado, y descansa por completo en la **fidelidad del puerto**. No es una afi
 que los resultados de 1987 fueran erróneos, sino sobre *ese calendario, en ese banco de
 pruebas, tal como está portado*. Cualquier cita debe conservar esa distinción.
 
-**Estado**: `SUPPORTED_AS_ARTEFACT` (existe, tiene DOI y es público); `[UNVERIFIED]` en
-cuanto a fidelidad del puerto y reproducción de sus cifras — no ejecutado ni auditado por
-este repositorio.
+**VERIFICACIÓN INDEPENDIENTE, 2026-08-05.** Ejecutado en un segundo entorno desde clon
+limpio (`github.com/nacho09021973/bombelli`, HEAD `d351c7b`, Python 3.12.3, numpy 1.26.4),
+fuera de este repositorio y sin tocar nada suyo:
+
+```text
+python3 experiments.py schedule --data-dir <scratch>     (1m47s)
+diff -u data/schedule_comparison.csv <scratch>/schedule_comparison.csv   -> vacio, exit 0
+sha256 de ambos: 2bbe8632c2b583a58e655076e30d584e5e673e43c86e0457d6d7ff738ebadd72
+python3 -m pytest -q                                     -> 24 passed
+PYTHON=python3 make verify-data                          -> EXIT=0, salida VACIA
+```
+
+El objetivo `verify-data` del propio proyecto regenera **los cuatro** CSV en un directorio
+temporal y hace `diff` contra los comprometidos; salida vacía y código 0 significa que
+`dimension_atlas.csv`, `schedule_comparison.csv`, `warmup_comparison.csv` y
+`correlate_summary.csv` se reproducen **todos** sin deriva.
+
+**Las dos filas se reproducen byte a byte**, incluido el hash del CSV completo:
+`bombelli_defaults` (`T_0=100`, `alpha=0.9`) → media `22.735`, `0/100`; `tuned`
+(`T_0=180`, `alpha=0.8`) → media `0.000`, `95/100`.
+
+**Alcance exacto de lo verificado**, leído del código (`experiments.py:145-230`), porque es
+más estrecho de lo que sugiere la frase de portada:
+
+- La dimensión es **`SCHEDULE_DIM = 3`**, no 2. Es un enunciado sobre embebido en Minkowski
+  **tridimensional**.
+- Semillas `1959..2058` (`SCHEDULE_BASE_SEED = 1959`, 100 consecutivas), fijas en el código.
+- «Energía cero» es `< 1e-6` (`SCHEDULE_ZERO_EPS`); el docstring declara que energía 0
+  significa embebido fiel.
+- Entre las dos filas **solo** cambian `initial_temp` y `cooling_factor`: misma energía,
+  mismos movimientos, mismo annealer.
+- La media `0.000` de la fila `tuned` es **visualización redondeada a tres decimales**, no
+  exactitud: 5 de 100 ejecuciones no alcanzaron el umbral.
+
+**Lo que la verificación NO establece.** Que el puerto sea fiel al Pascal de 1987 — eso
+exigiría el original, que no está aquí. Lo verificado es **reproducibilidad interna**: el
+código publicado, ejecutado limpio en otra máquina, produce exactamente las cifras
+publicadas. La distinción del párrafo anterior sobre 1987 sigue vigente en su totalidad.
+
+**Estado**: `SUPPORTED_AS_ARTEFACT` (existe, DOI, público);
+`REPRODUCED_INDEPENDENTLY_BYTE_EXACT` para los cuatro CSV (`make verify-data`, EXIT=0) y su
+suite de 24 tests;
+`[UNVERIFIED]` la fidelidad al Pascal original de 1987.
 
 ### 2.6 Myrheim–Meyer dimension estimator: what it estimates, and what it is *not*
 
