@@ -839,6 +839,26 @@ simétrica `(t, r)`, que es el programa principal del repositorio (`README.md`,
 de horizonte, no de identificabilidad del espaciotiempo. El esfuerzo se concentra ahí
 a partir de ahora.
 
+**Perímetro vigente de esa línea, que esta redirección NO altera.** La línea de
+horizonte está bajo cierre **deóntico** (`docs/program_closure_note_2026-07-30.md`,
+firmado tras el acta 049) con reapertura **acotada**
+(`docs/program_reopening_note_2026-07-31.md`), cuyo perímetro es una lista cerrada de
+dos ítems —**R1**, llevar `docs/manuscript_limits_draft.md` a entregable; **R2**,
+derivar analíticamente el exponente `kappa ~ lambda^6`— y cuya regla §6.1 dice
+literalmente: *«Perímetro fijo: R1 y R2. Nada entra sin una nueva nota firmada.»*
+Reconstrucción de horizonte en cualquier reformulación sigue **cerrada**. La
+redirección de §19.3 apunta en la dirección de **límites**, que es la que la
+reapertura autoriza; cualquier cosa fuera de R1/R2 exige nota nueva firmada, no esta
+sección. Cajas de tiempo vigentes: R2 hasta **2026-08-14**, conjunto hasta
+**2026-09-11**.
+
+**Ampliación efectiva (2026-08-05).** El perímetro pasó a tres ítems con la firma de
+`docs/program_reopening_note_2026-08-05_R3.md`: **R3**, la dicotomía de cópula nula en
+`d=2` (`research_program/work_packages/wp6_d2_null_copula_dichotomy.md`). R3 cede
+explícitamente el gate de WP5 —`1+1D` deja de tener que servir a `3+1D`— porque su valor
+está en que `d=2` es la dimensión que HKMM, Braun y Madsen excluyen. Las cajas de tiempo
+de R1 y R2 **no** se prorrogan por ello.
+
 Registrado con precisión, porque la diferencia importa: «no toca automáticamente» es
 un enunciado de **alcance**, no una afirmación de transferencia. Que la exclusión
 dimensional no se aplique no demuestra que la línea de horizonte esté libre; demuestra
