@@ -1,7 +1,8 @@
 # Manuscript draft — Recoverability limits for finite order-only Schwarzschild patches
 
-> **STATUS: INTERNAL_MANUSCRIPT_DRAFT / PI_REVIEW_OK / POLISH_1_6B_DONE /
-> NUMBER_AUDIT_1_7_PASS_WITH_CAVEATS / NOT_FROZEN / NOT_FOR_ARXIV /
+> **STATUS: MANUSCRIPT_DRAFT / PI_REVIEW_OK / POLISH_1_6B_DONE /
+> NUMBER_AUDIT_1_7_PASS_WITH_CAVEATS / NOT_FROZEN /
+> CLEARED_FOR_ARXIV_BY_PI_2026-08-06 / SEAL_VERIFIED_AT_CLEARANCE /
 > DOES_NOT_TOUCH_SEAL / ITEM_5_DISCHARGED_BY_PHASE_2_2026-07-28.**
 >
 > Assembled from Phase 1 section drafts (pasos 1.2–1.5). Re-merged after 1.6b
@@ -18,9 +19,27 @@
 > - `phase1_section4_5_positive_ledger_draft.md` — §4–§5
 > - `phase1_section6_7_8_draft.md` — §6–§8
 >
-> Before any external circulation: seal verify; optional auditor re-check of Class C
-> numbers. Paso D item 5 was discharged with both tiers on 2026-07-28; this is not a
-> novelty certificate and absolute priority language remains forbidden.
+> **arXiv clearance (PI, 2026-08-06).** The `NOT_FOR_ARXIV` token is withdrawn. The
+> seal-verify precondition below was discharged at clearance:
+> `nachocausal/thresholds.py sha256 = 6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4`,
+> matching `docs/preregistration_002.md`.
+>
+> **What this clearance does and does not override.** The closure note
+> (`docs/program_closure_note_2026-07-30.md`) carries two separate constraints, and only
+> one of them is affected. Clause 3 — manuscripts kept "as a record … not as an
+> announcement" — is **superseded** by this decision. `NO_PUBLIC_NOVELTY_CLAIM` is **not**
+> superseded and remains fully in force: this is a limits paper, it asserts no priority,
+> and posting it is not a novelty claim. The two are compatible precisely because the
+> content already complies.
+>
+> Standing constraints, unchanged: seal verify before any external circulation; optional
+> auditor re-check of Class C numbers. Paso D item 5 was discharged with both tiers on
+> 2026-07-28; this is not a novelty certificate and absolute priority language remains
+> forbidden.
+>
+> **Not yet done before posting:** the five figures in `viz/` are ready and English but
+> are **not inserted** in this text. The Figure 2 caption must carry the
+> laws-versus-realisations distinction (`viz/README.md`), which is where a referee looks.
 
 ---
 

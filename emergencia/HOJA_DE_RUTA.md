@@ -1048,7 +1048,13 @@ Queda pendiente, y es lo único que separa el material de un entregable:
 1. insertar las cinco en `docs/manuscript_limits_draft.md` con sus pies —el pie de la
    Figura 2 debe llevar la distinción leyes/realizaciones de §21.3, que es donde mira un
    árbitro—;
-2. retirar el token `NOT_FOR_ARXIV` de la cabecera del manuscrito.
+2. ~~retirar el token `NOT_FOR_ARXIV`~~ — **HECHO (2026-08-06)**. Sustituido por
+   `CLEARED_FOR_ARXIV_BY_PI_2026-08-06`, con la condición previa de verificación de
+   sello descargada en el propio acto (`thresholds.py sha256 = 6e2c3888…`, coincide
+   con `docs/preregistration_002.md`). La cabecera registra qué anula esa decisión y
+   qué no: anula la cláusula 3 de la nota de cierre («se conservan como registro… no
+   como anuncio»); **no** anula `NO_PUBLIC_NOVELTY_CLAIM`, que sigue vigente y es
+   compatible, porque un paper de límites no afirma prioridad.
 
 **Estado del repositorio en esta fecha:** siete ramas locales sincronizadas con
 `origin`; `covtree/n6-gate` sellada en `87c2d49` y `covtree/regularidad-u` en `c98ed7d`;
@@ -1065,6 +1071,8 @@ BOX_WALL_QUANTIFIED = 91_PERCENT_OF_VARIANCE_IS_THE_APPARATUS
 LAWS_VS_REALISATIONS_TRAP = RECORDED_IN_VIZ_README
 SEAL = UNTOUCHED_6e2c3888
 MANUSCRIPT_INSERTION = PENDING
-NOT_FOR_ARXIV_TOKEN = STILL_PRESENT
+NOT_FOR_ARXIV_TOKEN = WITHDRAWN_2026-08-06_SEAL_VERIFIED_AT_CLEARANCE
+NO_PUBLIC_NOVELTY_CLAIM = STILL_IN_FORCE_NOT_SUPERSEDED
+CLOSURE_NOTE_CLAUSE_3 = SUPERSEDED_BY_PI_CLEARANCE
 WORK_LIVES_ON_BRANCH_NOT_MAIN = TRUE
 ```
