@@ -1,76 +1,71 @@
-# `viz/` — figuras pedagógicas del manuscrito de límites
+# `viz/` — pedagogical figures for the limits manuscript
 
-> **ESTADO: FIGURAS_DE_APOYO / NO_TOCAN_EL_SELLO / SIN_SEMILLAS_DE_VALIDACIÓN /
-> NO_AFIRMAN_RECONSTRUCCIÓN.**
+> **STATUS: SUPPORTING_FIGURES / DOES_NOT_TOUCH_THE_SEAL / NO_VALIDATION_SEEDS /
+> NO_RECONSTRUCTION_CLAIM.**
 >
-> Estas figuras ilustran teoremas ya demostrados en `docs/manuscript_limits_draft.md`.
-> No producen resultados nuevos, no consumen la banda de semillas reservada
-> `[2.000.000–2.999.999]` y no tocan `thresholds.py`.
+> These figures illustrate theorems already proved in `docs/manuscript_limits_draft.md`.
+> They produce no new results, consume none of the reserved seed band
+> `[2,000,000–2,999,999]`, and do not touch `thresholds.py`.
 
-## Para qué existen
+## Why they exist
 
-La relatividad general se explica sola con la malla elástica hundida. Los conjuntos
-causales se dibujan siempre de dos maneras —diagramas de Hasse abstractos, o puntos
-en Minkowski con conos encima— y **ninguna de las dos enseña qué deja de ver el
-orden**, que es justamente de lo que vive este manuscrito.
+General relativity explains itself with the sagging rubber sheet. Causal sets are
+always drawn one of two ways — abstract Hasse diagrams, or points in Minkowski with
+light cones on top — and **neither shows what the order fails to see**, which is
+precisely what this manuscript is about.
 
-Estas cinco figuras están pensadas para un estudiante, no para un especialista. Esa
-elección **sube** el listón de exactitud, no lo baja: un experto lee el pie de figura
-y perdona una imprecisión; un estudiante se cree el dibujo literalmente.
+These five figures are aimed at a student, not a specialist. That choice **raises**
+the accuracy bar rather than lowering it: an expert reads the caption and forgives an
+imprecision; a student believes the picture literally.
 
-## Las figuras
+## The figures
 
-| # | Fichero | Qué demuestra | Ancla |
+| # | File | What it shows | Anchor |
 |---|---|---|---|
-| 1 | `fig01_diccionario.py` | Qué se tira a la basura al pasar del espaciotiempo al causet | — |
-| 2 | `fig02_escala_invisible.py` | La escala absoluta es invisible al orden | Teorema 3.1 |
-| 3 | `fig03_teleologia.py` | Lo que pasa fuera del parche no está en el parche | Teorema 3.2 |
-| 4 | `fig04_pared_de_la_caja.py` | Por qué murieron los localizadores C1–C5 | acta 042 |
-| 5 | `fig05_lo_recuperable.py` | Lo que el orden **sí** lee: `r/r_s` | pareja de la Fig. 2 |
+| 1 | `fig01_dictionary.py` | What is discarded in passing from spacetime to a causet | — |
+| 2 | `fig02_invisible_scale.py` | Absolute scale is invisible to the order | Theorem 3.1 |
+| 3 | `fig03_teleology.py` | What happens outside the patch is not in the patch | Theorem 3.2 |
+| 4 | `fig04_box_wall.py` | Why the C1–C5 localisers died | acta 042 |
+| 5 | `fig05_what_is_recoverable.py` | What the order **does** read: `r/r_s` | partner of Fig. 2 |
 
-Las figuras 2 y 5 son una pareja y deben ir juntas: la 2 dice que `r_s` es invisible,
-la 5 dice que `r/r_s` no lo es. Juntas son la tesis del manuscrito en dos imágenes.
+Figures 2 and 5 are a pair and must travel together: 2 says `r_s` is invisible, 5 says
+`r/r_s` is not. Together they are the thesis of the manuscript in two images.
 
-## Uso
+## Usage
 
 ```bash
-python3 viz/hacer_figuras.py     # genera las cinco en viz/salida/ e imprime sus números
+python3 viz/make_figures.py     # writes all five to viz/output/ and prints their numbers
 ```
 
-Cada figura fija su semilla: dos ejecuciones dan bytes idénticos. Los números que
-imprime el runner son los que van impresos en los paneles; si cambian, el pie de
-figura del manuscrito ha dejado de coincidir con la figura.
+Every figure fixes its seed: two runs give byte-identical files. The numbers the
+runner prints are the ones printed inside the panels; if they change, the manuscript
+caption has stopped agreeing with the figure.
 
-## Exactitud: por qué esto no es un dibujo bonito
+## Accuracy: why this is not decoration
 
-Dos propiedades de Schwarzschild 1+1 hacen que todo el código sea exacto y auditable
-de un vistazo (`causet_core.py` lo documenta línea a línea):
+Two properties of 1+1 Schwarzschild make the whole codebase exact and auditable at a
+glance (`causet_core.py` documents them line by line):
 
-1. **`det g = −1`**, luego la forma de volumen es `dt dr` y el sprinkling es
-   **uniforme en el rectángulo `(t, r)`**. Cualquier peso en el código sería un error.
-2. Con la tortuga `r* = r + r_s ln|r/r_s − 1|` la métrica es conformemente plana,
-   luego el orden causal es **exactamente** el orden producto en las nulas
-   `(u, v) = (t − r*, t + r*)`. No se integran geodésicas ni se aproxima nada.
+1. **`det g = −1`**, so the volume form is `dt dr` and the sprinkling is **uniform on
+   the `(t, r)` rectangle**. Any weighting in the code would be a bug.
+2. With the tortoise coordinate `r* = r + r_s ln|r/r_s − 1|` the metric is conformally
+   flat, so the causal order is **exactly** the product order in the null coordinates
+   `(u, v) = (t − r*, t + r*)`. No geodesics are integrated, nothing is approximated.
 
-Comprobaciones que se ejecutan **antes** de dibujar, y que abortan la figura si fallan:
+Checks that run **before** drawing, and abort the figure if they fail:
 
-- `fig02` verifica que `Φ_s` preserva el orden **elemento a elemento** (0 discrepancias);
-  si no, lanza `AssertionError` en vez de dibujar algo falso.
-- `fig03` verifica que las dos continuaciones dejan el parche observado **idéntico**.
+- `fig02` verifies that `Φ_s` preserves the order **element by element** (0
+  discrepancies); otherwise it raises `AssertionError` instead of drawing something
+  false.
+- `fig03` verifies that both continuations leave the observed patch **identical**.
 
-## Una trampa que la figura 2 evita, y hay que seguir evitando
+## A trap Figure 2 avoids, and that must keep being avoided
 
-El Teorema 3.1 es `TV = 0` entre **leyes**, no entre realizaciones. Dos sprinklings
-*independientes* a masas distintas **no** dan el mismo poset. Lo que ocurre es que
-`Φ_s` es un isomorfismo de orden, así que el mismo conjunto de puntos, transportado,
-es un sprinkling legítimo del otro modelo con las mismas relaciones — y el teorema es
-lo que convierte esa construcción en genérica en vez de en un caso escogido.
+Theorem 3.1 is `TV = 0` between **laws**, not between realisations. Two *independent*
+sprinklings at different masses do **not** give the same poset. What happens is that
+`Φ_s` is an order isomorphism, so the same point set, transported, is a legitimate
+sprinkling of the other model with the same relations — and the theorem is what makes
+that construction generic rather than cherry-picked.
 
-Si una versión futura de la figura sugiere «dos tiradas independientes salieron
-iguales», está afirmando algo falso y hay que rechazarla.
-
-## Pendiente
-
-**Idioma.** Las etiquetas están en español; `docs/manuscript_limits_draft.md` está en
-inglés. Antes de incorporarlas hay que decidir uno de los dos, y el cambio es
-mecánico: todas las cadenas viven en las funciones `dibujar()`.
+If a future version of the figure suggests "two independent draws came out equal", it
+is asserting something false and must be rejected.

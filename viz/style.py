@@ -1,7 +1,7 @@
-"""Estilo común de las figuras pedagógicas.
+"""Shared style for the pedagogical figures.
 
-Paleta segura para daltonismo (Okabe–Ito) y tipografía grande: estas figuras están
-pensadas para proyectarse en un aula, no para mirarse al 400 % en un PDF.
+Colourblind-safe palette (Okabe–Ito) and large type: these figures are meant to be
+projected in a lecture room, not squinted at in a PDF at 400 %.
 """
 
 from __future__ import annotations
@@ -10,20 +10,20 @@ import matplotlib as mpl
 import numpy as np
 
 # Okabe–Ito
-AZUL = "#0072B2"
-NARANJA = "#E69F00"
-VERDE = "#009E73"
-ROJO = "#D55E00"
-MORADO = "#CC79A7"
-CIELO = "#56B4E9"
-AMARILLO = "#F0E442"
-GRIS = "#5A5A5A"
+BLUE = "#0072B2"
+ORANGE = "#E69F00"
+GREEN = "#009E73"
+RED = "#D55E00"
+PURPLE = "#CC79A7"
+SKY = "#56B4E9"
+YELLOW = "#F0E442"
+GREY = "#5A5A5A"
 
-HORIZONTE = "#111111"
-PUNTO = "#0072B2"
+HORIZON = "#111111"
+POINT = "#0072B2"
 
 
-def usar_estilo():
+def use_style():
     mpl.rcParams.update({
         "figure.dpi": 130,
         "savefig.dpi": 200,
@@ -41,70 +41,70 @@ def usar_estilo():
     })
 
 
-def dibujar_horizonte(ax, rs, etiqueta=True):
-    """Línea vertical del horizonte `r = rs`, con la región interior sombreada."""
-    ax.axvline(rs, color=HORIZONTE, lw=2.0, zorder=3)
+def draw_horizon(ax, rs, label=True):
+    """Vertical horizon line `r = rs`, with the interior region shaded."""
+    ax.axvline(rs, color=HORIZON, lw=2.0, zorder=3)
     lo, hi = ax.get_ylim()
-    ax.fill_betweenx([lo, hi], 0, rs, color=HORIZONTE, alpha=0.07, zorder=0)
+    ax.fill_betweenx([lo, hi], 0, rs, color=HORIZON, alpha=0.07, zorder=0)
     ax.set_ylim(lo, hi)
-    if etiqueta:
-        ax.text(rs, hi, "  horizonte  $r=r_s$", ha="left", va="top",
-                fontsize=9, color=HORIZONTE, rotation=90)
+    if label:
+        ax.text(rs, hi, "  horizon  $r=r_s$", ha="left", va="top",
+                fontsize=9, color=HORIZON, rotation=90)
 
 
-def dibujar_conos(ax, t, r, rs, escala=0.35, color=GRIS, alpha=0.55):
-    """Conos de luz en `(t, r)`: las nulas tienen `dt/dr = ±(1 - rs/r)^{-1}`.
+def draw_cones(ax, t, r, rs, scale=0.35, color=GREY, alpha=0.55):
+    """Light cones in `(t, r)`: null rays have `dt/dr = ±(1 - rs/r)^{-1}`.
 
-    Se estrechan al acercarse al horizonte — que es *el* dibujo que hay que ver.
+    They narrow as the horizon is approached — which is *the* picture to see.
     """
     for ti, ri in zip(np.atleast_1d(t), np.atleast_1d(r)):
-        pend = 1.0 / (1.0 - rs / ri)
-        dr = escala
-        dt = pend * dr
-        # cono futuro
+        slope = 1.0 / (1.0 - rs / ri)
+        dr = scale
+        dt = slope * dr
+        # future cone
         ax.plot([ri, ri + dr], [ti, ti + dt], color=color, lw=1.1, alpha=alpha, zorder=2)
         ax.plot([ri, ri - dr], [ti, ti + dt], color=color, lw=1.1, alpha=alpha, zorder=2)
 
 
-def layout_orden(rel, layer, edges=None, pasadas=6):
-    """Posiciones del Hasse derivadas **sólo del orden**, nunca de coordenadas.
+def order_layout(rel, layer, edges=None, sweeps=6):
+    """Hasse positions derived **only from the order**, never from coordinates.
 
-    `y` = altura en el orden (contenido real).  `x` = orden dentro de la capa,
-    fijado primero por una regla canónica y refinado después por baricentro para
-    reducir cruces.  El eje `x` **no transporta información**: es legibilidad, y
-    reordenar dentro de una capa no cambia el poset.
+    `y` = height in the order (real content).  `x` = position within the layer, set
+    first by a canonical rule and then refined by a barycentre heuristic to reduce
+    edge crossings.  The `x` axis **carries no information**: it is legibility only,
+    and reordering within a layer does not change the poset.
     """
     npred = rel.sum(axis=0)
     nsucc = rel.sum(axis=1)
-    capas = {int(L): sorted(np.nonzero(layer == L)[0].tolist(),
-                            key=lambda i: (int(npred[i]), -int(nsucc[i]), int(i)))
-             for L in np.unique(layer)}
+    layers = {int(L): sorted(np.nonzero(layer == L)[0].tolist(),
+                             key=lambda i: (int(npred[i]), -int(nsucc[i]), int(i)))
+              for L in np.unique(layer)}
 
     if edges:
-        vecinos_arriba = {i: [] for i in range(rel.shape[0])}
-        vecinos_abajo = {i: [] for i in range(rel.shape[0])}
+        up = {i: [] for i in range(rel.shape[0])}
+        down = {i: [] for i in range(rel.shape[0])}
         for i, j in edges:
-            vecinos_arriba[i].append(j)
-            vecinos_abajo[j].append(i)
+            up[i].append(j)
+            down[j].append(i)
 
-        def ranking(capa):
-            return {nodo: k for k, nodo in enumerate(capa)}
+        def ranking(layer_nodes):
+            return {node: k for k, node in enumerate(layer_nodes)}
 
-        niveles = sorted(capas)
-        for paso in range(pasadas):
-            secuencia = niveles[1:] if paso % 2 == 0 else niveles[-2::-1]
-            for L in secuencia:
-                referencia = ranking(capas[L - 1]) if paso % 2 == 0 else ranking(capas[L + 1])
-                lado = vecinos_abajo if paso % 2 == 0 else vecinos_arriba
+        levels = sorted(layers)
+        for sweep in range(sweeps):
+            sequence = levels[1:] if sweep % 2 == 0 else levels[-2::-1]
+            for L in sequence:
+                reference = ranking(layers[L - 1]) if sweep % 2 == 0 else ranking(layers[L + 1])
+                side = down if sweep % 2 == 0 else up
 
-                def baricentro(nodo):
-                    vs = [referencia[v] for v in lado[nodo] if v in referencia]
+                def barycentre(node):
+                    vs = [reference[v] for v in side[node] if v in reference]
                     return sum(vs) / len(vs) if vs else -1.0
 
-                capas[L] = sorted(capas[L], key=lambda nodo: (baricentro(nodo), int(nodo)))
+                layers[L] = sorted(layers[L], key=lambda node: (barycentre(node), int(node)))
 
     pos = {}
-    for L, idx in capas.items():
+    for L, idx in layers.items():
         k = len(idx)
         for j, i in enumerate(idx):
             x = 0.0 if k == 1 else (j - (k - 1) / 2.0) / max(k - 1, 1) * 2.0
@@ -112,27 +112,36 @@ def layout_orden(rel, layer, edges=None, pasadas=6):
     return pos
 
 
-def dibujar_hasse(ax, rel, edges, layer, pos=None, color_nodo=PUNTO,
-                  valores=None, cmap="viridis", tam=110, borde="white", grosor_borde=1.2):
-    """Diagrama de Hasse.  `valores` colorea los nodos por un escalar de orden."""
+def draw_hasse(ax, rel, edges, layer, pos=None, node_color=POINT,
+               values=None, cmap="viridis", size=110, edgecolor="white", edgewidth=1.2):
+    """Hasse diagram.  `values` colours the nodes by an order-theoretic scalar."""
     if pos is None:
-        pos = layout_orden(rel, layer, edges)
+        pos = order_layout(rel, layer, edges)
     for i, j in edges:
         x0, y0 = pos[i]
         x1, y1 = pos[j]
-        ax.plot([x0, x1], [y0, y1], color=GRIS, lw=0.9, alpha=0.55, zorder=1)
+        ax.plot([x0, x1], [y0, y1], color=GREY, lw=0.9, alpha=0.55, zorder=1)
     xs = [pos[i][0] for i in range(rel.shape[0])]
     ys = [pos[i][1] for i in range(rel.shape[0])]
-    if valores is None:
-        ax.scatter(xs, ys, s=tam, c=color_nodo, edgecolor=borde,
-                   linewidth=grosor_borde, zorder=3)
+    if values is None:
+        ax.scatter(xs, ys, s=size, c=node_color, edgecolor=edgecolor,
+                   linewidth=edgewidth, zorder=3)
         sc = None
     else:
-        sc = ax.scatter(xs, ys, s=tam, c=valores, cmap=cmap, edgecolor=borde,
-                        linewidth=grosor_borde, zorder=3)
+        sc = ax.scatter(xs, ys, s=size, c=values, cmap=cmap, edgecolor=edgecolor,
+                        linewidth=edgewidth, zorder=3)
     ax.set_xticks([])
     ax.set_yticks([])
     ax.grid(False)
-    for lado in ("left", "bottom"):
-        ax.spines[lado].set_visible(False)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_visible(False)
     return sc
+
+
+def strip_axes(ax):
+    """Remove ticks, grid and left/bottom spines — for pure order panels."""
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.grid(False)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_visible(False)
