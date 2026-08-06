@@ -969,3 +969,102 @@ NON_STRICT_740 = OUTSIDE_LEMMA_5_2_TEST_BY_CONSTRUCTION
 N_GE_7 = NOT_OPENED_REQUIRES_NEW_DECISION
 COVTREE_PERIMETER_RELATION = DISJOINT_DOES_NOT_CONSUME_R1_R2_R3
 ```
+
+## 21. Figuras del manuscrito de límites — LISTAS (2026-08-06)
+
+Decisión del PI: hacer el manuscrito **pedagógico**, dirigido a estudiantes antes que a
+especialistas. Registrado aquí porque cambia el vehículo, no el contenido: los teoremas
+son los mismos, lo que cambia es a quién se le explican.
+
+**Motivo.** La relatividad general se vende sola con la malla elástica hundida. Los
+conjuntos causales se dibujan siempre de dos maneras —diagramas de Hasse abstractos, o
+puntos en Minkowski con conos encima— y **ninguna enseña qué deja de ver el orden**, que
+es exactamente de lo que vive este manuscrito. Esa figura no existe en el campo.
+
+Nota de método que conviene no perder: dirigir las figuras a estudiantes **sube** el
+listón de exactitud, no lo baja. Un especialista lee el pie de figura y perdona una
+imprecisión; un estudiante se cree el dibujo literalmente.
+
+### 21.1 Lo entregado
+
+Cinco figuras en `viz/`, en inglés (el manuscrito lo está), commits `e4eb5d5`
+(primera versión) y `0f6e8a6` (traducción íntegra: etiquetas, docstrings, nombres de
+función, ficheros y README).
+
+| # | Fichero | Qué demuestra | Ancla |
+|---|---|---|---|
+| 1 | `fig01_dictionary.py` | Qué se tira a la basura al pasar del espaciotiempo al causet | — |
+| 2 | `fig02_invisible_scale.py` | La escala absoluta es invisible al orden | Teorema 3.1 |
+| 3 | `fig03_teleology.py` | Lo que pasa fuera del parche no está en el parche | Teorema 3.2 |
+| 4 | `fig04_box_wall.py` | Por qué murieron los localizadores C1–C5 | acta 042 |
+| 5 | `fig05_what_is_recoverable.py` | Lo que el orden **sí** lee: `r/r_s` | pareja de la 2 |
+
+**Las figuras 2 y 5 son una pareja y deben ir juntas.** La 2 dice que `r_s` es
+invisible; la 5, que `r/r_s` no lo es. Son la tesis del manuscrito en dos imágenes.
+
+Ejecución: `python3 viz/make_figures.py`. Semilla fija por figura; dos ejecuciones dan
+hashes idénticos.
+
+### 21.2 Por qué esto no son ilustraciones sino cálculos
+
+Dos propiedades exactas de Schwarzschild 1+1 hacen el código auditable de un vistazo,
+documentadas línea a línea en `viz/causet_core.py`:
+
+1. `det g = -1`, luego la forma de volumen es `dt dr` y el sprinkling es **uniforme en
+   el rectángulo `(t, r)`** — cualquier peso en el código sería un error;
+2. en coordenadas tortuga la métrica es conformemente plana, luego el orden causal es
+   **exactamente** el orden producto en las nulas `(u, v)`. No se integra ninguna
+   geodésica ni se aproxima nada.
+
+Dos comprobaciones **abortan la figura** en vez de dibujar algo falso: `fig02` verifica
+que `Φ_s` preserva el orden elemento a elemento; `fig03`, que las dos continuaciones
+dejan el parche observado idéntico.
+
+Cifras impresas en los propios paneles:
+
+- `fig02` — 0 discrepancias de orden en 12×12 relaciones.
+- `fig04` — `corr(|J+|, t) = -0.951`, `corr(|J+|, r) = +0.164`, en banda `+0.465`. Es
+  decir: **la pared de la caja explica el 91 % de la varianza** del observable más
+  natural del orden, y la física sólo reaparece al condicionar a una banda temporal
+  estrecha. Es el modo de fallo del ledger C1–C5, ahora con cifras propias.
+- `fig05` — `|r_s=1 − r_s=7|` máx = `0.0101` frente a desviación típica `0.0248`.
+
+### 21.3 Trampa registrada para que no se reintroduzca
+
+El Teorema 3.1 es `TV = 0` entre **leyes**, no entre realizaciones. Dos sprinklings
+*independientes* a masas distintas **no** dan el mismo poset. Lo que ocurre es que
+`Φ_s` es un isomorfismo de orden, y el teorema es lo que convierte esa construcción en
+genérica en vez de en un caso escogido. Si una versión futura de la figura —o un pie de
+figura— sugiere «dos tiradas independientes salieron iguales», **afirma algo falso y hay
+que rechazarla**. Va escrito en `viz/README.md` para que sobreviva a esta sesión.
+
+### 21.4 Lo que sigue sin hacerse
+
+Las figuras no tocan el sello (`thresholds.py sha256 = 6e2c3888…` verificado intacto),
+no consumen la banda de semillas reservada y no afirman reconstrucción.
+
+Queda pendiente, y es lo único que separa el material de un entregable:
+
+1. insertar las cinco en `docs/manuscript_limits_draft.md` con sus pies —el pie de la
+   Figura 2 debe llevar la distinción leyes/realizaciones de §21.3, que es donde mira un
+   árbitro—;
+2. retirar el token `NOT_FOR_ARXIV` de la cabecera del manuscrito.
+
+**Estado del repositorio en esta fecha:** siete ramas locales sincronizadas con
+`origin`; `covtree/n6-gate` sellada en `87c2d49` y `covtree/regularidad-u` en `c98ed7d`;
+`emergencia/p1a-canal-sigma-m` en cabeza. El trabajo vive en rama, **no en `main`**: quien
+llegue a la portada del repositorio no ve nada de esto.
+
+```text
+FIGURES_STATUS = READY_FIVE_FIGURES_ENGLISH_COMMITTED
+FIGURES_LANGUAGE = ENGLISH_MATCHING_MANUSCRIPT
+FIGURES_REPRODUCIBLE = BYTE_IDENTICAL_ACROSS_RUNS
+FIGURES_SELF_CHECKING = FIG02_AND_FIG03_ABORT_ON_FALSE_HYPOTHESIS
+FIG02_FIG05 = A_PAIR_MUST_TRAVEL_TOGETHER
+BOX_WALL_QUANTIFIED = 91_PERCENT_OF_VARIANCE_IS_THE_APPARATUS
+LAWS_VS_REALISATIONS_TRAP = RECORDED_IN_VIZ_README
+SEAL = UNTOUCHED_6e2c3888
+MANUSCRIPT_INSERTION = PENDING
+NOT_FOR_ARXIV_TOKEN = STILL_PRESENT
+WORK_LIVES_ON_BRANCH_NOT_MAIN = TRUE
+```
