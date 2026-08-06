@@ -105,6 +105,57 @@ directly for a benchmark that scores a *single* causal set instance, not an ense
 **Estado**: `SUPPORTED` for the general claim; `PARTIAL` for single-instance applicability
 (ensemble-average caveat).
 
+### 1.3 Braun (2025): the probabilistic discrete analogue of §1.1 — and it carries the same d≥3 exclusion
+
+**Enunciado exacto**: "Theorem 1.4 (Probabilistic spacetime reconstruction, unweighted case).
+Let (M,g) and (M′,g′) be two causally continuous and future chronocomplete spacetimes of finite
+volume λ>0. Then the two spacetimes (M,g) and (M′,g′) are smoothly isometric if and only if for
+every k ∈ N, the distributions of the random adjacency matrices C_k(X_1,…,X_k) and
+C′_k(X′_1,…,X′_k) under P coincide." The author's own framing: "In a probabilistic way, our
+result makes a key paradigm of causal set theory rigorous: spacetime can be recovered by only
+knowing 'order' and 'number' of its points. It confirms a weak version of Bombelli's conjecture."
+
+**Fuente primaria**: M. Braun, "Spacetime reconstruction by order and number," arXiv:2507.01907v1
+[gr-qc], 2 Jul 2025. Locally archived at
+`biblioteca/emergencia/2507.01907v1_Braun_Spacetime_Reconstruction_Order_Number.pdf`. Read this
+session via alphaXiv (pages 1–5, 7, 9, 11, 13, 15); no `derived-md` conversion exists yet, so
+citations below are to PDF pages, not conversion lines.
+
+**Hipótesis**: (i) both spacetimes causally continuous (= distinguishing + reflecting, Hawking–
+Sachs) and future chronocomplete — global hyperbolicity implies both (Lemma 2.10); (ii) finite
+volume λ>0, the *same* for both; (iii) **d ≥ 3**, stated verbatim on p.2: "we assume all
+spacetimes have the same dimension d ∈ N no less than 3"; (iv) the laws coincide **for every
+k ∈ N** simultaneously — the proof passes to ν_∞ by Kolmogorov extension (§3.3) and then to
+generic sequences, so no single k suffices.
+
+**Dimensión y clase de espacios**: **d ≥ 3 only.** The mechanism is inherited from §1.1: Braun's
+proof routes through Theorem 2.13 (Malament) to get conformal isometry from chronological
+isomorphy (§3.3), then upgrades to isometry by volume-preservation (§3.4). Malament's theorem is
+exactly the d>2 input, so Braun's dimensional restriction is not an artefact of technique but the
+same structural fact recorded in §1.1.
+
+**Qué respalda**: The strongest existing evidence that the *information* is present in the
+order+number channel. Two points bear directly on this project. First, the sampling model is
+**ours**: p.4, "Given k ∈ N, we think of {X_1,…,X_k} as the random support of a PPP conditioned
+on k elements" — that is fixed-cardinality conditioning, the channel used throughout `emergencia/`
+and the pre-registration. Second, it settles identifiability-in-law affirmatively, which means
+this project must **not** be framed as testing whether order+number determines geometry.
+
+**Qué NO demuestra**: (1) **d ≥ 3; the 1+1D work in `emergencia/` is outside the theorem's stated
+scope**, exactly as in §1.1 and for the same reason. Nothing read this session extends Braun to
+d=2, and in d=2 the conformal group is infinite-dimensional, so the "9 of 10 degrees of freedom
+from order" accounting Braun cites on p.3 does not transfer. (2) It is a statement about the
+**full** adjacency matrix at **all** k. It licenses nothing about a scalar summary, a single k, or
+a selected sub-configuration; in particular it does not bound, and is not in tension with, the
+conditional-variance measurements of the σ(M) channel. (3) It is an injectivity/rigidity result:
+**no estimator, no rate, no finite-n guarantee, no risk bound.** "If the laws coincide then the
+spacetimes are isometric" says nothing about how much of the geometry a finite sample recovers.
+(4) arXiv v1 preprint, not peer-reviewed as of this reading. `[UNVERIFIED as to internal
+correctness — read for statement and hypotheses, not audited line by line]`.
+
+**Estado**: `SUPPORTED` as a statement of the reviewed theorem; `PARTIAL` as backing for this
+project, for two independent reasons — the d=2 exclusion and the full-data hypothesis.
+
 ---
 
 ## §2. Manifold-likeness, sprinkling, and what is/isn't proven to be recoverable
@@ -210,6 +261,265 @@ unique/near-unique admissible completion — by sheer combinatorial dominance mo
 KR-like, not manifold-like.
 
 **Estado**: `PARTIAL` (conjectural in general; only case-by-case sub-results proven).
+
+### 2.5bis Müller (2025) and Madsen (2026): the finite-order Hauptvermutung is FALSE; order+volume+chains gives only ε-approximate isometry
+
+**Enunciado exacto** (negative half, Müller via Madsen's restatement): "Müller showed this
+version is false: he constructs examples of finite causal sets admitting causal-order-preserving
+embeddings into geometrically distinct manifolds. The underlying issue is that without volume
+information, finite causal data is too sparse to pin down the manifold; an adversary can rearrange
+the embedded points in different spacetimes while preserving the order." (positive half, Madsen
+Cor. 5.6): a causal set presented as a Poisson sprinkling at common density ρ of two globally
+hyperbolic d-dimensional spacetimes admits, with probability ≥ 1−2(ρV_max)^(−K′_d), a smooth
+diffeomorphism Φ : M°_1 → M°_2 with Φ*g_2 = g_1 + E and
+‖E‖ = O(ρ^(−2/(5d)) λ^(−2/5) log^(3/2)(ρV_max)).
+
+**Fuente primaria**: N. Madsen, "On the Uniqueness of Embeddings of Causal Sets,"
+arXiv:2607.05840v1 [gr-qc], 7 Jul 2026 —
+`biblioteca/emergencia/2607.05840v1_Madsen_Uniqueness_Embeddings_Causal_Sets.pdf`; read this
+session via alphaXiv (pages 1–5, 10, 22–24, 29–31, 38–39). O. Müller, "On the Hauptvermutung of
+causal set theory," arXiv:2503.01719 — present in `biblioteca/2503.01719v2.pdf` but **not read
+this session**; the negative result above is cited here *through Madsen's §6.2 restatement*, not
+from the primary source.
+
+**Hipótesis** (Madsen): a "well-conditioned embedding" — (F1) exact order preservation; (F2)
+scale-dependent uniform density, |f(C)∩D| − ρVol(D)| ≤ δ_D·ρVol(D) with
+δ_D = K_d √(log(ρV_M)/(ρ Vol(D))); (F3) longest-chain/proper-time correspondence, via
+Bollobás–Brightwell (1992) at rate 1/(2d). Plus global hyperbolicity, scale separation
+ρλ^d ≥ c_*^(−2d)(log ρV_M)², and a conclusion restricted to the **deep interior** M°.
+
+**Dimensión y clase de espacios**: stated for general d, but the error optimization in Thm 4.18
+holds the covariance term subdominant **"for d > 2"**; the quoted rate is therefore not
+established in d=2. Together with §1.1 and §1.3, this is the third independent result whose
+stated scope excludes the dimension this project works in.
+
+**Qué respalda**: (1) Müller's negative half is the strongest external support for this repo's
+own framing that finite causal order *remembers* without *defining* — it is now a theorem that
+order alone, finitely, is insufficient, not a suspicion. (2) Madsen's proof architecture is an
+external template for the kind of argument `emergencia/` §13 attempts: a purely deterministic
+geometric part plus **one** probabilistic concentration input, the author stating explicitly that
+the argument "isolates the geometric content of the conjecture from its probabilistic content."
+His (F2) tolerance has the same √(log/count) shape, and the same Chernoff-plus-union-bound
+provenance, as the discrepancy lemma used there.
+
+**Qué NO demuestra**: (1) **Not exact uniqueness** — ε-approximate isometry only, with ε→0 only
+in the high-density limit ρ→∞. (2) Not a fixed-n finite-sample statement in this project's sense:
+the guarantee is asymptotic in density, and Remark 5.4 states no almost-sure statement is
+available for infinite-volume M at all (second Borel–Cantelli). (3) The deep-interior restriction
+does **not** vanish: Remark 5.5(b) concedes that for a fixed manifold with boundary the excluded
+layer of width c_*λ "does not shrink as ρ→∞" — so nothing is claimed near a boundary, which is
+where horizon-adjacent questions live. (4) (F3) is **assumed, not derived**: footnote 1, p.4,
+"its logical relationship to (F1)–(F2) is open … Whether (F2) implies (F3) is left to future
+work." (5) arXiv v1, single author, 39 pages of heavy machinery (Karcher means, Lorentzian
+Procrustes, degree argument), not peer-reviewed.
+
+**Estado**: `PARTIAL`, and `[UNVERIFIED as to internal correctness — statement and hypotheses read,
+argument not audited]`. Reading note, flagged rather than asserted: Corollary 3.7 (p.10) invokes
+Lemma 4.1 from a later section, a forward dependency that a referee would be expected to query;
+this is a structural observation about presentation, not a claim that the result is wrong.
+
+### 2.5ter Bombelli tiene DOS formulaciones, y solo una es la que WP6 ataca
+
+**Leído en primaria esta sesión** (2026-08-05): `biblioteca/Bombelli_1987_PhD.pdf`,
+*Space-time as a causal set*, Syracuse University, diciembre 1987, 171 pp., con capa de
+texto extraíble.
+
+**Formulación A — tesis 1987, versión de EMBEBIDO.** §2.3 («Our main conjecture») y §2.9:
+
+> «Our main conjecture (Hauptvermutung) is that the topology and differentiable structure
+> are unique, and the metric is determined up to "small variations", i.e., if there exist
+> two such faithful embeddings, the two manifolds are approximately isometric.»
+
+y su forma precisa en §2.9:
+
+> «Our "main conjecture" was that any pair of faithful embeddings, `f : P -> (M,g_ab)` and
+> `f' : P -> (M',g'_ab)`, are related by a `P`-preserving diffeomorphism `phi : M -> M'`
+> which is an approximate isometry of `g_ab` to `g'_ab`.»
+
+Es un enunciado sobre **un causal set individual** y sus embebidos, con isometría
+**aproximada**. La tesis aporta un argumento parcial (unicidad de la dimensión vía
+`n`-pixies, cubrimiento por conjuntos de Alexandrov pequeños) y lo llama explícitamente
+«a start in proving such a statement».
+
+**Formulación B — la que cita Brightwell–Luczak, versión ESTADÍSTICA.** Atribuida a
+L. Bombelli, *Statistical Lorentzian geometry and the closeness of Lorentzian manifolds*,
+J. Math. Phys. **41** (2000) 6944–6958: si `U` y `V` son regiones de variedades
+lorentzianas de volumen finito **sin difeomorfismo que preserve la medida** entre ellas,
+entonces existe un poset finito `Q` con `t(Q;U) != t(Q;V)`, donde `t(Q;U)` es la
+probabilidad de que una muestra iid uniforme de `|Q|` elementos de `U` induzca un poset
+isomorfo a `Q`.
+
+**La diferencia es material y hay que respetarla en cualquier texto.** A habla de embebidos
+de un causal set concreto y de isometría **aproximada**; B habla de **leyes** —densidades
+de patrones— y de difeomorfismo que preserva la medida, **exacto**. `research_program/
+work_packages/wp6_d2_null_copula_dichotomy.md` ataca **B**, no A.
+
+**Formulación B, ahora LEÍDA EN PRIMARIA** (2026-08-05). Preprint descargado a
+`biblioteca/gr-qc0002053_Bombelli_Statistical_Lorentzian_Geometry_Closeness.pdf`
+(arXiv:gr-qc/0002053v2, 11 jun 2000 = J. Math. Phys. **41** (2000) 6944–6958). La
+conjetura está en §III, como la tercera de tres «reasonable conjectures» sobre `d_n(G,G')`:
+
+> «(iii) For any two arbitrary (distinguishing, finite-volume) different geometries `G` and
+> `G'` there is a finite `n` such that `d_n(G,G') > 0`, with `d_n(G,G') -> 1` as
+> `n -> infinity`.»
+
+donde «Lorentzian geometry» está definido en la introducción como **una clase de
+equivalencia por difeomorfismo**, y el muestreo es «points randomly scattered in a
+Lorentzian manifold, **with uniform density according to the volume element**» (abstract).
+**La restatement de Brightwell–Luczak es fiel**: «diferentes» significa no relacionadas por
+difeomorfismo que preserve la medida, y `t(Q;U)` es su `P_n(C|G)`.
+
+**Y §VII plantea explícitamente el programa de WP6.** Bombelli escribe que las `P_n(C|G)`
+son interesantes en sí mismas «as a **complete set of invariants** (together with the
+volume) of finite volume, distinguishing Lorentzian geometries», y propone como dirección
+abierta:
+
+> «It would be worth while to study the type of information about the manifold that those
+> different invariants contain; for example, how they encode dimensionality, **how they are
+> affected by conformal transformations as opposed to changes in the conformal structure**,
+> or how one can tell "localized" changes from "global" changes... Possible starting points
+> ... e.g., comparing a two-dimensional and a three-dimensional manifold, or **modifying one
+> by a conformal transformation**; and studying analytically **the effect of small
+> variations `g -> g + delta g`**.»
+
+Las tres cursivas son, respectivamente: el Teorema C de WP6 (qué transformaciones conformes
+son exactamente invisibles), su instanciación en `d=2`, y el análisis de primer orden de R2
+(`O(lambda^2)`). **Que el autor lo proponga como dirección abierta en 2000 no prueba que
+siga abierta en 2026**; eso lo decide la auditoría de novedad. Pero fija el enunciado y la
+paternidad de la pregunta.
+
+**Estado de fuentes.** A: `SUPPORTED`, tesis 1987 leída en primaria. B: `SUPPORTED`,
+preprint 2000 leído en primaria esta sesión. El hueco de fuente primaria de WP6 **queda
+cerrado**.
+
+### 2.5quater Aghili–Bombelli–Pilgrim (2018): 2D, pero el caso uniforme
+
+`biblioteca/emergencia/1805.07312v1_Aghili_Bombelli_Pilgrim_Path_Length_2D_Causal_Sets.pdf`,
+leído en abstract e introducción esta sesión. Distribución de longitudes de cadenas
+maximales en causal sets 2-dimensionales, con relación de recursión para `n_k`, usada como
+medida de embebibilidad y de dimensionalidad.
+
+**Riesgo de novedad para WP6: bajo.** El objeto es «causal sets obtained from **uniformly
+distributed points in Minkowski space**» — el caso plano/uniforme, igual que el modelo
+`P_d(n)` de Winkler. No hay densidad no uniforme, ni cópula, ni identificabilidad de la
+métrica. Refuerza el patrón ya observado: la literatura de causal sets 2D trabaja en el
+caso plano, y la densidad **no uniforme** —de la que habla la conjetura B— no es su objeto.
+
+### 2.5quinquies Artefacto propio del PI: revival del código Bombelli–Meyer 1987
+
+**Artefacto**: J. I. Martín Gandul, *Bombelli & Meyer 1987 Causal Set Simulated Annealing
+Revival*, 2026. DOI `10.5281/zenodo.20307735`;
+`https://nacho09021973.github.io/bombelli/`; repositorio `nacho09021973/bombelli`; MIT.
+Puerto fiel a Python 3.12 del programa Pascal de recocido simulado de la tesis de Bombelli
+(1987), con David Meyer, que embebe causal sets pequeños en Minkowski. **Leído esta sesión
+vía la página y el README, no ejecutado aquí.**
+
+**Qué establece.** Preservando función de energía y conjunto de movimientos originales, sobre
+el caso canónico de 12 elementos: el calendario original (`T_0 = 100`, `alpha = 0.9`) da
+energía final media `22.735` sobre 100 semillas y **ningún embebido logrado**; un calendario
+retocado (`T_0 = 180`, `alpha = 0.8`) da media `0.000` y **95/100** ejecuciones de energía
+cero. Mismo algoritmo, misma energía, mismos movimientos. Cobertura `d ∈ {2,3,4}`,
+`n = 6, 12`, hasta `n = 256` para estudios de dimensión; semillas deterministas.
+
+**Dónde encaja, y dónde NO.** Encaja en la **formulación A** de §2.5ter —embebidos fieles de
+un causal set individual, la Hauptvermutung de la tesis del 87—. **No toca la formulación
+B** (leyes `P_n(C|G)`, JMP 2000), que es la que ataca
+`research_program/work_packages/wp6_d2_null_copula_dichotomy.md`. No aporta nada a (E') ni
+al parámetro `b`, y no debe citarse como si lo hiciera. En `d=2` además el problema de
+embebido es trivial —todo poset de dimensión 2 embebe—, luego las celdas informativas de
+ese trabajo son `d = 3, 4`.
+
+**Para qué sí sirve aquí.** Da respaldo **empírico, reproducible y con DOI** a una tesis que
+este repositorio sostiene por otras vías: que la ruta de **embebido** es frágil —dependiente
+del optimizador hasta el punto de dar 0/100 frente a 95/100 con el mismo algoritmo—,
+mientras que la ruta de **leyes** no requiere encontrar embebido alguno. Es un argumento
+independiente a favor de trabajar con `P_n(C|G)` y no con embebidos.
+
+**Lo que un auditor atacaría, y hay que anticiparlo.** La afirmación «con los parámetros
+originales no se logra ningún embebido» es fuerte respecto de un programa histórico
+publicado, y descansa por completo en la **fidelidad del puerto**. No es una afirmación de
+que los resultados de 1987 fueran erróneos, sino sobre *ese calendario, en ese banco de
+pruebas, tal como está portado*. Cualquier cita debe conservar esa distinción.
+
+**VERIFICACIÓN INDEPENDIENTE, 2026-08-05.** Ejecutado en un segundo entorno desde clon
+limpio (`github.com/nacho09021973/bombelli`, HEAD `d351c7b`, Python 3.12.3, numpy 1.26.4),
+fuera de este repositorio y sin tocar nada suyo:
+
+```text
+python3 experiments.py schedule --data-dir <scratch>     (1m47s)
+diff -u data/schedule_comparison.csv <scratch>/schedule_comparison.csv   -> vacio, exit 0
+sha256 de ambos: 2bbe8632c2b583a58e655076e30d584e5e673e43c86e0457d6d7ff738ebadd72
+python3 -m pytest -q                                     -> 24 passed
+PYTHON=python3 make verify-data                          -> EXIT=0, salida VACIA
+```
+
+El objetivo `verify-data` del propio proyecto regenera **los cuatro** CSV en un directorio
+temporal y hace `diff` contra los comprometidos; salida vacía y código 0 significa que
+`dimension_atlas.csv`, `schedule_comparison.csv`, `warmup_comparison.csv` y
+`correlate_summary.csv` se reproducen **todos** sin deriva.
+
+**Las dos filas se reproducen byte a byte**, incluido el hash del CSV completo:
+`bombelli_defaults` (`T_0=100`, `alpha=0.9`) → media `22.735`, `0/100`; `tuned`
+(`T_0=180`, `alpha=0.8`) → media `0.000`, `95/100`.
+
+**Alcance exacto de lo verificado**, leído del código (`experiments.py:145-230`), porque es
+más estrecho de lo que sugiere la frase de portada:
+
+- La dimensión es **`SCHEDULE_DIM = 3`**, no 2. Es un enunciado sobre embebido en Minkowski
+  **tridimensional**.
+- Semillas `1959..2058` (`SCHEDULE_BASE_SEED = 1959`, 100 consecutivas), fijas en el código.
+- «Energía cero» es `< 1e-6` (`SCHEDULE_ZERO_EPS`); el docstring declara que energía 0
+  significa embebido fiel.
+- Entre las dos filas **solo** cambian `initial_temp` y `cooling_factor`: misma energía,
+  mismos movimientos, mismo annealer.
+- La media `0.000` de la fila `tuned` es **visualización redondeada a tres decimales**, no
+  exactitud: 5 de 100 ejecuciones no alcanzaron el umbral.
+
+**FIDELIDAD AL PASCAL DE 1987: VERIFICADA LÍNEA A LÍNEA.** El original **sí está aquí**: el
+listado mecanografiado es el apéndice A.2 de la tesis, `biblioteca/Bombelli_1987_PhD.pdf`
+páginas 154–159 del PDF (paginación interna 149–154), con capa de texto extraíble. Cotejo
+directo contra `cones.py` del puerto:
+
+| Pascal 1987 (apéndice A.2) | `cones.py` | |
+| --- | --- | --- |
+| `program cones(input,output);` | el módulo se llama `cones.py` | ✓ |
+| `seed: integer:= 1959;` | `seed: int = 1959` (`:510`) | ✓ |
+| `if totalcount=O then T:= 100;` | `initial_temp: float = 100.0` (`:516`) | ✓ |
+| `if continue='y' then T:= T*0.9;` | `cooling_factor: float = 0.9` (`:517`) | ✓ |
+| `if Ndata=35 then continue:= 'n';` | `max_data: int = 35` (`:512`) | ✓ |
+| `while (count<100) and (E[1]>0)` | `warmup_limit`/`anneal_limit = 100` (`:514-515`) | ✓ |
+| `roottwo = sqrt(2)` | `roottwo = math.sqrt(2.0)` (`:586`) | ✓ |
+| `s2:= -(Rij**2)+Xij` | `s2 = -(rij**2) + xij_sq` (`:597`) | ✓ |
+| `Enew[i,j]:=(Xij+Rij)/(roottwo*Rave)` | (`:601`) | ✓ |
+| `sqrt(s2 ? 2*(Rij**2))/Rave` | `math.sqrt(s2 + 2.0*(rij**2))/rave` (`:603`) | ✓ con reserva |
+| `(abs(Rij)-Xij)/(roottwo*Rave)` | (`:610`) | ✓ |
+| `Efraction:= 2*Eold[i,i]/E[1]` | (`:616`) | ✓ |
+| `if ran2(seed)<4*exp(-deltaE/T)` | `acceptance_scale = 4.0` (`:518`, `:681`) | ✓ |
+| `ran2`, `gasdev`, `glir: array[1..97]` | portados (`:73-118`), misma tabla de 97 | ✓ |
+
+**El factor `4` del criterio de aceptación es de Bombelli**, no una invención del puerto:
+`procedure decide` dice literalmente `if ran2(seed)<4*exp(-deltaE/T)`. Y **el `1959` de las
+semillas es el valor por defecto del original**.
+
+**Consecuencia sobre la afirmación fuerte.** «Con los parámetros originales no se logra
+ningún embebido» ya no descansa en la palabra de nadie: `T_0 = 100` y `alpha = 0.9` **están
+en el fuente de 1987**, verbatim, en `procedure statistics` y `procedure anneal`
+respectivamente. La afirmación es sobre las constantes reales del programa histórico.
+
+**Las dos reservas, exactas.** Hay dos caracteres que el OCR no resuelve y donde el puerto
+**interpreta**:
+
+1. `sq~t(s2~2*(Rij**2))` — el puerto lee `sqrt(s2 + 2*(rij**2))`. El `+` es lectura
+   plausible, no legible.
+2. `if s2>0 then Enew[i,11:= n` — el puerto lee `0.0`. Contextualmente forzado (energía nula
+   cuando el par ya está correctamente no relacionado), pero es interpretación.
+
+Ninguna de las dos afecta a las constantes del calendario, que se leen limpias.
+
+**Estado**: `SUPPORTED_AS_ARTEFACT` (existe, DOI, público);
+`REPRODUCED_INDEPENDENTLY_BYTE_EXACT` para los cuatro CSV (`make verify-data`, EXIT=0) y su
+suite de 24 tests; `FIDELITY_VERIFIED_LINE_BY_LINE_VS_1987_APPENDIX_A2`, con dos caracteres
+OCR-ambiguos interpretados y señalados.
 
 ### 2.6 Myrheim–Meyer dimension estimator: what it estimates, and what it is *not*
 
@@ -763,9 +1073,42 @@ dossier — found and closed out by `/auditor` (`docs/auditor/auditor_report_003
 finding #2) on 2026-07-03, not by the original dossier pass. §5.5's earlier claim that only item 2
 was "genuinely missing" is corrected below.
 
-### 5.3 Uniqueness / automorphisms / modular decomposition: still `UNSUPPORTED_GAP`
+### 5.3 Uniqueness / automorphisms / modular decomposition: `RESOLVED_NEGATIVELY` (2026-08-05)
 
-**No source read to date — including the primary 1941 paper (§5.1) and the 1976 Trotter note
+> **Resolución, 2026-08-05.** Este ítem deja de ser una cita pendiente: la afirmación es
+> **falsa**, con testigo explícito y verificable. Enumeración exhaustiva determinista de
+> `S_n` clasificando el poset inducido `P_sigma` (`i < j` y `sigma(i) < sigma(j)`) por
+> isomorfismo — `dev/r3_bridge_e_fibers.py`, sin aleatoriedad ni semillas — da fibras
+> iguales a la órbita por inversión para `n <= 3` y **falla en `n = 4`**: la clase del
+> poset «una 2-cadena más dos puntos aislados» tiene fibra de tamaño **tres**,
+> `{3421, 4231, 4312}`, donde `4231` es auto-inversa y `4312 = 3421^{-1}`. Comprobación:
+> `P_3421` tiene la única relación `1<2`, `P_4231` la única relación `2<3`, `P_4312` la
+> única relación `3<4`; los tres son isomorfos. Luego un poset de dimensión 2 **puede
+> tener realizadores esencialmente distintos**, y no solo el intercambio de los dos
+> órdenes. Coherente con la descomposición modular de Gallai: el grafo de
+> incomparabilidad del testigo es `K_4` menos una arista, descomponible y con varias
+> orientaciones transitivas `[UNVERIFIED: Gallai 1967 no leído en primaria]`.
+>
+> **ESTO NO ES UNA CONTRIBUCIÓN.** El testigo es casi con certeza folclore. La estructura
+> de las orientaciones transitivas de un grafo de comparabilidad está caracterizada por la
+> **descomposición modular de Gallai (1967)**, y `K_4` menos una arista es el caso
+> descomponible de manual; la terminología está en el propio survey local
+> (`biblioteca/ordenes dimension 004.pdf`, l. 127-134, equivalencia de Baker et al. 1970, y
+> problemas abiertos sobre *recognizing permutation graphs and transitively orientable
+> graphs*). El valor de la enumeración fue **interno**: impedir que este repositorio
+> siguiera persiguiendo un lema falso y reformular el puente E. No debe aparecer como
+> resultado en ningún texto sometible. `[UNVERIFIED: Gallai 1967 y Golumbic no leídos en
+> primaria; el enunciado de que esto es clásico es él mismo una conjetura bibliográfica.]`
+>
+> **Consecuencia operativa.** La instrucción de abajo («do not adopt "realizer uniqueness
+> up to swap" as literature-backed») se **refuerza**: no es que falte respaldo, es que el
+> enunciado es falso y no debe usarse en ninguna forma. Kelly–Trotter 1982 y Trotter 1995
+> dejan de ser rutas a perseguir para esta pregunta; el OCR de §5.2 pierde esta
+> motivación. Uso en curso: `research_program/work_packages/wp6_d2_null_copula_dichotomy.md`
+> §5.2bis, donde el testigo obliga a reformular el puente E como injectividad en un único
+> punto (E') en lugar de unicidad del realizador.
+
+**Registro histórico previo a la resolución.** No source read to date — including the primary 1941 paper (§5.1) and the 1976 Trotter note
 (§5.2bis), both now fully read — states or proves, for general dimension-2 posets, that the
 realizer/conjugate is unique up to swapping the two linear orders.** The two most likely
 remaining candidates to contain this (Kelly–Trotter 1982, Trotter 1995) are now physically present
