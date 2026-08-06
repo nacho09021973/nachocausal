@@ -885,3 +885,87 @@ DIMENSIONAL_OBJECTION_SCOPE = IDENTIFIABILITY_ROUTE_NOT_AUTOMATICALLY_HORIZON_LI
 NEXT_FOCUS = HORIZON_LINE_IN_SPHERICALLY_SYMMETRIC_T_R_REDUCTION
 CV4_SINGLE_POINT_AUDIT = STILL_PENDING_NOT_CANCELLED
 ```
+
+## 20. Cierre del tramo `covtree` (2026-08-06)
+
+Se registra aquí para que esta hoja siga siendo el libro mayor único de lo abierto y lo
+cerrado. **`covtree` es una línea deliberadamente disjunta de `nachocausal`**: sin
+embeddings, sin conos, sin horizontes y sin sprinklings. No entra en el perímetro de
+reapertura R1/R2/R3 de §19.3, **no lo consume ni lo amplía**, y no cancela ninguna de las
+deudas de §19.4. La regla §6.1 de la nota de reapertura sigue intacta.
+
+**Problema.** Gutzeit–Shaban–Yeats–Zalel, *Sizes of witnesses in Covtree*,
+arXiv:2605.00622v1. Dado `Gamma_n` de `k` posets no etiquetados de talla `n`, `Q` es
+*testigo* si `Gamma_n` es exactamente el conjunto de tipos de sus `n`-downsets. Para `k=3`
+los autores prueban `|Q| <= (3/2)(n+1)` (enunciado **existencial**) y conjeturan
+`|Q| <= n+3`, sin poder demostrarlo.
+
+### 20.1 Lo que queda establecido
+
+1. **Gate `n=6`, `k=3` — SELLADO en `87c2d49`.** Todo nodo `Gamma_6` con `|Gamma_6| = 3`
+   posee un testigo de talla `<= 9 = n+3`, en todas las alturas; condicionado al Teorema
+   5.1 del artículo. Sello re-verificado el 2026-08-06 y reproduce exacto (fuente
+   `f2264bdf…`, salida `bf314aa2…`, exit 0). **No se avanza ni se toca.**
+2. **`Max(Q) ∩ U != vacío` — DEMOSTRADO**, para todo `n`, todo `m >= 3` y `k = 3`, bajo
+   las hipótesis auténticas de §5 del artículo. Nada usa `n = 6`. Cadena: Lema A (los
+   maximales de cada mitad de la amalgama lo son de `Q`; no necesita §5), Lema B
+   (`dist(A,C) = m` por Prop. 4.4 fuerza `>= m-1` copias interiores distintas de `tau_B`,
+   luego un tipo de multiplicidad 1 nunca es `tau_B`) y el Lema 5.2 importado.
+3. **`|Max(Q)| = 2 <=> Q irreducible` — PROBADO en `n=6`, `m=4`**, con una dirección
+   **vacua**: no existe ninguna instancia §5-admisible con `>= 3` maximales a esa talla.
+4. **Lema de camino corto — PROBADO, todo `n`.** Si `L` es la longitud del camino
+   especial mínimo global en `G_n(Q)`, la unión de sus vértices es un sub-testigo de talla
+   `<= n+3` cuando `L <= 3`. Reproduce `740/748` reducibilidades **sin enumerar downsets**
+   y reformula la conjetura: *todo nodo admite un testigo con `L <= 3`*.
+
+Registro: rama `covtree/regularidad-u` = **`c98ed7d`**, hija de `87c2d49`, empujada a
+`origin`. Documento `covtree/regularidad_de_U.md`; artefactos `covtree/regularity_u.cpp` y
+`covtree/s5_xtab.cpp`, que reutilizan sin modificar la maquinaria de enumeración sellada.
+
+### 20.2 El error de clase, que es la lección
+
+La bandera «§5» usada al principio sólo pedía que **existiera** un camino `A-B-B-B-C` de
+longitud 4. El montaje del artículo (p. 14) exige minimalidad **fuerte global**: ningún
+camino más corto de esa forma **para ninguna terna de tipos distintos**. Con el criterio
+correcto, **8 de las 748** amalgamas del barrido son §5-admisibles, no 284.
+
+- En las 276 restantes el Lema 5.2 es **falso** (5782 violaciones), verificado a mano.
+- Las `740` no estrictas quedan **correctamente fuera** del contraste del Lema 5.2: ni lo
+  confirman ni lo refutan. Su reducibilidad sí queda *demostrada*, por §20.1(4).
+- El sello **no** se ve afectado: el gate sólo exige que lo barrido sea un
+  **superconjunto** de los testigos mínimos de talla 10, y la sobre-enumeración únicamente
+  puede añadir supervivientes, nunca ocultarlos. Lo corregido es el uso *interpretativo*
+  de la submuestra, no el veredicto.
+
+Lección transferible, del mismo tipo que las de §4: *una submuestra etiquetada con el
+nombre de una hipótesis no satisface la hipótesis*. Toda estadística «dentro de §5»
+anterior a `c98ed7d` está medida en la clase equivocada y queda retirada.
+
+### 20.3 Lo que sigue abierto y lo que se congela
+
+- **«Exactamente uno» (`|Max(Q) ∩ U| = 1`): ABIERTO.** La estructura sólo entrega `>= 1`;
+  no hay ningún paso que acote por arriba. Evidencia finita `8/8`, sin respaldo
+  estructural. La refutación anterior (valores 1,2,3,4) queda **retirada** por estar medida
+  fuera de §5. No se afirma en ninguna dirección.
+- **Recíproco `|Max(Q)| >= 3 => Q reducible`:** su único contenido no trivial vive en
+  `n >= 7`. En `n = 6` es cierto por vacuidad, de modo que **no hay nada que ganar
+  buscándole evidencia a `n = 6`**.
+- **Decisión del PI (2026-08-06): tramo CONGELADO.** Sin abrir `n >= 7`, sin más
+  enumeraciones y sin tocar el sello. No queda deuda técnica ni lógica inmediata.
+  Riesgo de scooping real y vigente: grupo activo de Yeats (NSERC/Perimeter), tesis de
+  Shaban 2025. Cualquier reapertura empieza por `n >= 7` y exige decisión nueva.
+
+```text
+COVTREE_TRACK_STATUS = FROZEN_BY_PI_2026-08-06
+N6_K3_GATE = SEALED_AT_87c2d49_REVERIFIED_BYTE_EXACT
+REGULARITY_OF_U = PROVED_ALL_N_ALL_M_GE_3_K_3
+EXACTLY_ONE_MAXIMAL_IN_U = OPEN_NO_STRUCTURAL_SUPPORT
+PRIOR_REFUTATION_OF_EXACTLY_ONE = WITHDRAWN_MEASURED_OUTSIDE_S5
+MAX2_IFF_IRREDUCIBLE = PROVED_AT_N6_CONVERSE_VACUOUS
+SHORT_PATH_LEMMA = PROVED_ALL_N_REPRODUCES_740_OF_748
+N_PLUS_3_CONJECTURE = REFORMULATED_AS_EXISTS_WITNESS_WITH_L_LE_3
+S5_ADMISSIBLE_INSTANCES = 8_OF_748_NOT_284
+NON_STRICT_740 = OUTSIDE_LEMMA_5_2_TEST_BY_CONSTRUCTION
+N_GE_7 = NOT_OPENED_REQUIRES_NEW_DECISION
+COVTREE_PERIMETER_RELATION = DISJOINT_DOES_NOT_CONSUME_R1_R2_R3
+```
