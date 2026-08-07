@@ -662,6 +662,14 @@ rho_obs        = 0.530-0.566
 > `0.532-0.568`, luego `rho_obs` está a `<=0.0007` del óptimo y **la brecha es de la
 > información, no del estimador**.
 
+> **Cualificación posterior (§22.4, auditoría 033).** El `<=0.0007` de este párrafo
+> **no** es la distancia exacta al óptimo `G`-medible sobre la muestra sellada. Ésa es
+> `Delta_A = rho_max - rho_obs = +0.0015 a +0.0026` (Bloque A, identidad exacta). El
+> `0.0007` corresponde a la versión con corrección intrabin,
+> `Delta_B = sqrt(1 - T_corr) - rho_obs`, y su cota sostenible con `T_corr` a cuatro
+> decimales es `|Delta_B| < 0.0008`. El párrafo se conserva como registro histórico;
+> la magnitud vigente está en §22.4.
+
 Resultado operativo: el ítem 2 (apretar `F_relax` con el hueco del lado opuesto)
 pasa de objetivo cualitativo a **objetivo numérico**: un factor `>=1.36` sobre `B_n`
 excluiría el gate en los seis estratos, `>=1.17` solo en `n=128` futuro. Si el
@@ -746,6 +754,14 @@ buscaba. CV-4.1 y CV-4.3 siguen siendo correctos y no quedan contradichos
 (`rho_max_ub_Bn`), y la lectura «la brecha es del estimador» es falsa
 en el sentido opuesto: `COUNT_VOLUME` está a `<=0.0007` en `rho` del óptimo
 `G`-medible. **La obstrucción es de la información, no del estimador.**
+
+> **Cualificación posterior (§22.4, auditoría 033).** El `<=0.0007` de este párrafo
+> **no** es la distancia exacta al óptimo `G`-medible sobre la muestra sellada. Ésa es
+> `Delta_A = rho_max - rho_obs = +0.0015 a +0.0026` (Bloque A, identidad exacta). El
+> `0.0007` corresponde a la versión con corrección intrabin,
+> `Delta_B = sqrt(1 - T_corr) - rho_obs`, y su cota sostenible con `T_corr` a cuatro
+> decimales es `|Delta_B| < 0.0008`. El párrafo se conserva como registro histórico;
+> la magnitud vigente está en §22.4.
 
 ```text
 CV4_AUDIT_ROUND_1 = FAIL_MATERIAL (T_oos presentado como cota; retractacion
@@ -1147,11 +1163,16 @@ por tanto aquí no se afirma, se **deriva y se comprueba**: con `T_corr` del Blo
 —el estimador con corrección intrabin, impreso por el ejecutable auditado—
 
 ```text
-Delta_B = sqrt(1 - T_corr) - rho_obs = -0.000045 a +0.000703,   |Delta_B| < 0.00071
+Delta_B = sqrt(1 - T_corr) - rho_obs = -0.000045 a +0.000703   (evaluacion puntual)
+|Delta_B| < 0.0008                                             (cota sostenible)
 ```
 
 reproduce el intervalo del documento a la precisión con que está impreso, en los seis
-estratos. `Delta_A` es la identidad exacta; `Delta_B` es su versión corregida y
+estratos. Los dos extremos son una evaluación puntual **a la precisión de la
+entrada**, no un intervalo certificado: `T_corr` solo está impreso con cuatro
+decimales y propagar ese redondeo (`±5e-5`) lleva `Delta_B` hasta `+0.000747` en
+`(64, PAST)`. Por eso la cota publicada es `0.0008` y no `0.00071` (auditoría 033,
+hallazgo 1). `Delta_A` es la identidad exacta; `Delta_B` es su versión corregida y
 dependiente de iid. Son dos magnitudes distintas, no una contradicción, y la figura
 dibuja la primera y lo dice.
 
@@ -1173,7 +1194,8 @@ dibuja la primera y lo dice.
   constantes del experimento de representaciones. Corregido, con los tres umbrales
   tabulados por eje para que no vuelva a confundirse.
 - **Aviso 3 — reparado.** El `0.0007` ya no se afirma: se deriva y se comprueba
-  (§22.4), con fórmula, intervalo `-0.000045` a `+0.000703` y cota `|Delta_B| < 0.00071`.
+  (§22.4), con fórmula, evaluación puntual `-0.000045` a `+0.000703` y cota
+  sostenible `|Delta_B| < 0.0008`.
 - **Aviso 4 — reparado.** El título de `fig06` pasa de «seis intentos», que no se
   correspondía con nada, a un recuento que el propio código verifica.
 
@@ -1181,6 +1203,36 @@ Regenerados sólo `fig02`, `fig04` (pie de figura) y `fig06`; `fig01`, `fig03` y
 `fig05` byte a byte intactas. Los 23 avisos mecánicos preexistentes, fuera de este
 alcance, **no se han tocado**. Reauditoría solicitada; hasta que se emita, el estado
 de este material sigue siendo `AUDIT_FAIL`.
+
+### 22.6 Segunda remediación, tras la reauditoría 033 (2026-08-07)
+
+`docs/auditor/auditor_report_033_...md` cerró el error de la 032
+(`AUDIT_PASS_WITH_WARNINGS`) y dejó tres avisos. Aplicados los tres antes de subir
+nada, en commit separado para no romper la cadena de auditoría.
+
+- **Aviso 1 — cota demasiado estrecha.** `|Delta_B| < 0.00071` no es sostenible con
+  `T_corr` impreso a cuatro decimales: propagando `±5e-5`, `Delta_B` llega a
+  `+0.000747` en `(64, PAST)`. Sustituida por `|Delta_B| < 0.0008` en README, §22.4 y
+  el pie de la fig. 4, y el intervalo se rotula ahora como **evaluación puntual a la
+  precisión de la entrada**, no como intervalo certificado.
+- **Aviso 2 — el guardarraíl no era el contrato.** `fig02` comprobaba
+  `max(sup IC95) < 0.50` sobre los seis estratos. Eso **implica** la regla del
+  contrato pero no equivale a ella: su negación podía certificar mal un «no
+  aparcado». Sustituido por `datos.aparcada_fuerte`, que implementa **los dos
+  disyuntos** de `:156-157` con sus cuantificadores («para todo `n`, al menos un
+  lado»). Sobre la muestra sellada ambos coinciden `3/3`, luego ningún terminal
+  cambia; lo que cambia es la validez lógica futura.
+- **Aviso 3 — precisión sin referencia cruzada.** §16 y §18 conservan su texto —son
+  registro histórico— y llevan ahora una nota que remite a la distinción
+  `Delta_A`/`Delta_B` de §22.4 y a la cota `0.0008`.
+
+**Pruebas nuevas: `tests/test_emergencia_viz.py`, 12 casos.** Prueban el predicado en
+las dos direcciones que la auditoría pedía: el caso de **falso negativo del atajo**
+(cada `n` con un lado por debajo de `0.50` pero `max(sup) = 0.70`, donde el atajo
+decía «no aparcada» y el contrato dice «aparcada»), el **segundo disyunto** solo
+(correlación alta aparcada por el error relativo, invisible para el atajo), el
+cuantificador «para todo `n`», el terminal sellado, el guardarraíl SHA-256, el ANOVA
+contra el ejecutable auditado y el recuento de `fig06`.
 
 ```text
 P1A_FAILURE_FIGURES = READY_SIX_FIGURES_SPANISH_COMMITTED
@@ -1197,8 +1249,13 @@ AUDIT_032_VERDICT = AUDIT_FAIL (1 error, 3 avisos manuales)
 AUDIT_032_REMEDIATION = APPLIED_IN_FULL_NO_DATA_TOUCHED
 FIG02_CORRELATION_THRESHOLD = 0.50_STRONG_PARKING_NOT_0.30
 FIG02_SEALED_TERMINALS_RECOMPUTED = HEIGHT_WIDTH_PARKED_COUNT_VOLUME_NOT
-DELTA_B_DERIVED_NOT_ASSERTED = ABS_LT_0.00071
+DELTA_B_DERIVED_NOT_ASSERTED = ABS_LT_0.0008
 FIG06_TITLE_COUNT = SELF_CHECKED_11_STAGES_7_PHASES
 PREEXISTING_23_WARNINGS = UNTOUCHED_OUT_OF_SCOPE
-REAUDIT = REQUESTED_STATUS_REMAINS_AUDIT_FAIL_UNTIL_ISSUED
+AUDIT_033_VERDICT = AUDIT_PASS_WITH_WARNINGS (0 errores, 3 avisos)
+AUDIT_033_REMEDIATION = APPLIED_IN_FULL_SEPARATE_COMMIT
+PARKING_PREDICATE = CONTRACT_LITERAL_BOTH_DISJUNCTS_NOT_MAX_SHORTCUT
+PARKING_PREDICATE_TESTS = 12_CASES_INCLUDING_SHORTCUT_FALSE_NEGATIVE
+DELTA_B_BOUND = ABS_LT_0.0008_INPUT_PRECISION_LIMITED
+SECTIONS_16_18 = HISTORICAL_RECORD_ANNOTATED_NOT_REWRITTEN
 ```

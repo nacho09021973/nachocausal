@@ -32,8 +32,9 @@ RESULTADOS = pathlib.Path(__file__).resolve().parents[1] / "resultados"
 #   mediana del error relativo   -> cualifica si bootstrap95_upper <= 0.30  (§ :145)
 # El `0.30` NO es un umbral de correlación y no debe dibujarse sobre ese eje.
 GATE = 0.80             # correlación exigida para preregistrar un cociente
-APARCADO_FUERTE = 0.50  # correlación por debajo de la cual la representación se aparca
-UMBRAL_ERROR_RELATIVO = 0.30  # eje distinto: mediana del error relativo absoluto
+APARCADO_FUERTE = 0.50  # correlación (IC95 sup) por debajo de la cual se aparca (:156)
+APARCADO_ERROR_RELATIVO = 0.50  # segundo disyunto del aparcamiento: IC95 inf (:157)
+UMBRAL_ERROR_RELATIVO = 0.30  # eje distinto: cualificación, mediana del error (:145)
 
 # Valores impresos por los ejecutables deterministas ya auditados. Se usan SOLO
 # como control: las figuras los recalculan desde el CSV sellado y abortan si no
@@ -135,3 +136,35 @@ def anova_sigma_m(intervalos: pd.DataFrame, n: int, side: str) -> dict:
 
 def estratos() -> list[tuple[int, str]]:
     return [(n, s) for n in (64, 96, 128) for s in ("PAST", "FUTURE")]
+
+
+def aparcada_fuerte(metricas: pd.DataFrame, representacion: str) -> bool:
+    """Regla de aparcamiento fuerte del contrato, **literal**.
+
+    `P1a_contrato_representaciones_alternativas_d2.md` §:152-157:
+
+        Una representación queda fuertemente aparcada si para todo `n` al menos
+        un lado cumple:
+            bootstrap95_upper(correlacion) < 0.50,
+            o bootstrap95_lower(mediana error relativo absoluto) > 0.50.
+
+    Se implementan **los dos disyuntos** y el cuantificador tal cual: *para todo
+    `n`*, *existe un lado*. La versión anterior comprobaba `max(sup) < 0.50` sobre
+    los seis estratos, que es una condición **más fuerte**: implica ésta, luego
+    certificaba bien el aparcamiento, pero su negación no implica la de aquí y
+    podía certificar mal un «no aparcado» (auditoría 033, hallazgo 2).
+    """
+    d = metricas[metricas["representation"] == representacion]
+    if d.empty:
+        raise ValueError(f"representación ausente de las métricas: {representacion}")
+
+    for n in sorted(d["n"].unique()):
+        por_n = d[d["n"] == n]
+        algun_lado = any(
+            (fila["pearson_bootstrap95_high"] < APARCADO_FUERTE)
+            or (fila["median_are_bootstrap95_low"] > APARCADO_ERROR_RELATIVO)
+            for _, fila in por_n.iterrows()
+        )
+        if not algun_lado:
+            return False
+    return True

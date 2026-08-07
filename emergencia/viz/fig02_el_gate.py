@@ -8,12 +8,18 @@ poder preregistrar un cociente entre lados, una correlación de al menos `0.80` 
 el estimador observable y la duración latente. Se probaron tres representaciones en
 seis estratos. La mejor llega a `0.57`.
 
-La segunda línea, en `0.50`, es el umbral de **aparcamiento fuerte**: una
-representación queda aparcada si `bootstrap95_upper(rho) < 0.50`. No es decorativa —
-separa `HEIGHT_WIDTH` (aparcada) de `COUNT_VOLUME` (no aparcada), que es el terminal
-que el registro sellado consigna. La figura recomputa esa separación y aborta si el
-CSV dejara de reproducirla. *(El `0.30` del mismo contrato acota la mediana del error
-relativo absoluto, otro eje; dibujarlo aquí fue el error 1 de la auditoría 032.)*
+La segunda línea, en `0.50`, es el umbral de **aparcamiento fuerte**. No es
+decorativa — separa `HEIGHT_WIDTH` (aparcada) de `COUNT_VOLUME` (no aparcada), que es
+el terminal que el registro sellado consigna. La figura recomputa esa separación con
+el predicado **literal** del contrato —los dos disyuntos y los cuantificadores, en
+`datos.aparcada_fuerte`— y aborta si el CSV dejara de reproducirla. La línea dibujada
+es sólo el primer disyunto, que es el que vive en este eje; el segundo (mediana del
+error relativo con `IC95_inf > 0.50`) no se puede trazar aquí y por eso se evalúa en
+el código y no en el dibujo.
+
+*(El `0.30` del mismo contrato acota la mediana del error relativo para la
+**cualificación**, otro eje; dibujarlo aquí fue el error 1 de la auditoría 032. Usar
+`max(sup) < 0.50` como atajo del predicado fue el aviso 2 de la auditoría 033.)*
 
 Lo que hace la figura no es sólo enseñar que se falló, sino **cuánto** margen había:
 la banda morada es el techo `rho_max` del canal `sigma(m)` — el máximo alcanzable por
@@ -78,13 +84,15 @@ def dibujar():
     # La línea de `0.50` decide un terminal sellado, así que se comprueba que lo
     # decide bien: `HEIGHT_WIDTH_STRONGLY_PARKED = TRUE` y
     # `COUNT_VOLUME_STRONGLY_PARKED = FALSE` en
-    # `P1a_resultados_representaciones_alternativas_d2.md` §5–§6. Si el CSV dejara
-    # de reproducir esos dos terminales, la figura no se dibuja.
-    aparcada = {r: v < datos.APARCADO_FUERTE for r, v in sup_max.items()}
+    # `P1a_resultados_representaciones_alternativas_d2.md` §5–§6. El predicado es
+    # el del contrato, con sus dos disyuntos y sus cuantificadores (`datos.
+    # aparcada_fuerte`), no el atajo `max(sup) < 0.50`. Si el CSV dejara de
+    # reproducir esos dos terminales, la figura no se dibuja.
+    aparcada = {r: datos.aparcada_fuerte(metricas, r) for r in ORDEN}
     if not (aparcada["HEIGHT_WIDTH"] and not aparcada["COUNT_VOLUME"]):
         raise ValueError(
             "los terminales de aparcamiento no reproducen el registro sellado: "
-            f"sup(IC95) = {sup_max}"
+            f"aparcada = {aparcada}, sup(IC95) = {sup_max}"
         )
 
     ax.axhline(datos.GATE, color=estilo.COLOR_GATE, lw=2.4, zorder=6)

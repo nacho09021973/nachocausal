@@ -68,6 +68,10 @@ Cinco controles corren **antes** de dibujar y abortan la figura si fallan:
 5. **`fig06`** cuenta etapas y fases sobre su propia lista y aborta si el recuento
    del título deja de describir el diagrama. *Comprobado que salta.*
 
+`tests/test_emergencia_viz.py` (12 casos, `pytest`) prueba que los controles saltan
+—y prueba el predicado de aparcamiento en las **dos** direcciones, incluido el caso
+que separa la regla del contrato del atajo `max(sup) < 0.50` que se usaba antes.
+
 Las constantes que **no** se recalculan están declaradas como constantes en
 `datos.py` y `fig04`, con el ejecutable que las produjo escrito al lado: `B_n` por
 estrato, el factor `1.000017` del Teorema CV-4.3, los umbrales del contrato congelado
@@ -110,9 +114,21 @@ corrección intrabin, impreso por el ejecutable auditado— y evaluando
 Delta_B = sqrt(1 - T_corr) - rho_obs
 ```
 
-se obtiene `-0.000045` a `+0.000703`, que reproduce el intervalo del documento a la
-precisión con que está impreso, en **los seis estratos**. Cota honesta:
-`|Delta_B| < 0.00071`.
+se obtiene `-0.000045` a `+0.000703` en **los seis estratos**, que reproduce el
+intervalo del documento a la precisión con que está impreso.
+
+Esos dos números son una **evaluación puntual a la precisión de la entrada**, no un
+intervalo certificado: `T_corr` solo está disponible con cuatro decimales en la tabla
+del Bloque B, y propagar ese redondeo (`±5e-5`) lleva `Delta_B` hasta `+0.000747` en
+`(64, PAST)`. La cota que la entrada sí sostiene es por tanto
+
+```text
+|Delta_B| < 0.0008
+```
+
+y es la que se publica. (La cota `< 0.00071` que apareció en la primera versión de
+este README no es sostenible con `T_corr` a cuatro decimales: auditoría 033,
+hallazgo 1.)
 
 Es decir: `Delta_A` es la identidad exacta sobre la muestra sellada y `Delta_B` es su
 versión corregida, dependiente de iid. Son dos magnitudes distintas, no una
