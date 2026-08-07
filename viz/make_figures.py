@@ -40,13 +40,17 @@ def main():
     fig03_teleology.draw(OUTPUT / "fig03_teleology.png")
     print("fig03  teleology                patch verified identical in both continuations")
 
-    _, c_t, c_r, c_band = fig04_box_wall.draw(OUTPUT / "fig04_box_wall.png")
+    _, c_t, c_r, c_band, n_band, ci_band = fig04_box_wall.draw(OUTPUT / "fig04_box_wall.png")
     print(f"fig04  box wall                 corr(|J+|,t) = {c_t:+.3f}   "
-          f"corr(|J+|,r) = {c_r:+.3f}   band corr = {c_band:+.3f}")
+          f"corr(|J+|,r) = {c_r:+.3f}")
+    print(f"       band corr = {c_band:+.3f}  (n = {n_band}, "
+          f"95 % CI [{ci_band[0]:+.3f}, {ci_band[1]:+.3f}])")
 
-    _, gap, sd = fig05_what_is_recoverable.draw(OUTPUT / "fig05_what_is_recoverable.png")
-    print(f"fig05  what is recoverable      |rs=1 - rs=7| max = {gap:.4f}   "
-          f"typical sd = {sd:.4f}   (the gap must stay below the sd)")
+    _, gap, gap_in_se = fig05_what_is_recoverable.draw(OUTPUT / "fig05_what_is_recoverable.png")
+    print(f"fig05  what is recoverable      |rs=1 - rs=7| max = {gap:.4f} = "
+          f"{gap_in_se:.2f} Monte Carlo SE of the difference")
+    print("       (a diagnostic, NOT an acceptance criterion: the equality is proved,")
+    print("        and agreement within MC error would never establish equivalence)")
 
     print("=" * 76)
     print(f"figures in {OUTPUT}")

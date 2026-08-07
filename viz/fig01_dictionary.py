@@ -98,8 +98,9 @@ def draw(out):
     fig.suptitle("What is lost in passing from spacetime to a causal set",
                  fontsize=13.5, y=0.98)
     fig.text(0.5, 0.005,
-             "Vertical height in B is height in the order. Horizontal position only "
-             "avoids crossings: it means nothing.",
+             "Vertical height in B is height in the order and carries all the content. "
+             "Horizontal position carries none: it is chosen only to reduce crossings, "
+             "and the crossings that remain mean nothing either.",
              ha="center", fontsize=9.5, color=GREY)
     fig.tight_layout(rect=(0, 0.03, 1, 0.94))
     fig.savefig(out)

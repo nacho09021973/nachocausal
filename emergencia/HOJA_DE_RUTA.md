@@ -1045,6 +1045,23 @@ Cifras impresas en los propios paneles:
   estrecha. Es el modo de fallo del ledger C1–C5, ahora con cifras propias.
 - `fig05` — `|r_s=1 − r_s=7|` máx = `0.0101` frente a desviación típica `0.0248`.
 
+> **Cualificación (auditoría 035, aplicada el 2026-08-07).** Las tres cifras se
+> reproducen exactamente, pero su presentación tenía tres defectos, ya corregidos; el
+> párrafo de arriba se conserva como registro de lo que se afirmó entonces:
+>
+> - `fig02`: `12×12 = 144` incluye las 12 entradas diagonales, forzadas a `False` en
+>   ambas matrices y que nunca pueden diferir. Lo comprobable son **132 pares
+>   ordenados**, que es lo que la figura dice ahora.
+> - `fig04`: el `91 %` es el `R^2` **lineal** de una relación curva (un ajuste
+>   cuadrático en `t` da `0.93`) y no se afirma ninguna descomposición de varianza. Y
+>   la correlación en banda `+0.465` sale de **`n = 22`** de 900 puntos, con IC 95 %
+>   `[+0.05, +0.74]`: la física reaparece, pero apenas, y la figura lo imprime.
+> - `fig05`: `0.0248` era la desviación típica de **una** realización, ~9× la
+>   incertidumbre de las medias dibujadas. La escala correcta para el hueco es el
+>   error estándar Monte Carlo de la **diferencia**: `0.0101 = 1.9 SE`. Y aun así eso
+>   **no** demuestra equivalencia — sólo que no se detecta diferencia; la igualdad la
+>   da el Teorema 3.1, no la simulación.
+
 ### 21.3 Trampa registrada para que no se reintroduzca
 
 El Teorema 3.1 es `TV = 0` entre **leyes**, no entre realizaciones. Dos sprinklings
@@ -1058,6 +1075,19 @@ que rechazarla**. Va escrito en `viz/README.md` para que sobreviva a esta sesió
 
 Las figuras no tocan el sello (`thresholds.py sha256 = 6e2c3888…` verificado intacto),
 no consumen la banda de semillas reservada y no afirman reconstrucción.
+
+**Estado tras la auditoría 035 (2026-08-07).** Un error y siete avisos, todos de
+presentación y ninguno de fondo: los cinco PNG reproducen byte a byte desde los
+scripts commiteados, cada número se recomputó, las citas formales existen y el sello
+está intacto. El error era `fig05`: barras de error sin rotular que eran la desviación
+típica de una realización, ~9× la incertidumbre de las medias dibujadas, más un
+criterio de aceptación (`"the gap must stay below the sd"`) que ningún código
+comprobaba y cuya escala era ~6× demasiado laxa. Corregido: barras = error estándar
+Monte Carlo de la media, rotuladas; hueco expresado en SE de la diferencia
+(`0.0101 = 1.9 SE`) como **diagnóstico**, no como contraste; y dicho explícitamente que
+la igualdad la demuestra el Teorema 3.1 y que coincidir dentro del error Monte Carlo
+no establece equivalencia. Los siete avisos, cerrados en el mismo commit
+(`docs/auditor/auditor_report_035_...md` §5 para el detalle de cada uno).
 
 Queda pendiente, y es lo único que separa el material de un entregable:
 

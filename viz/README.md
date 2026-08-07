@@ -55,9 +55,23 @@ glance (`causet_core.py` documents them line by line):
 Checks that run **before** drawing, and abort the figure if they fail:
 
 - `fig02` verifies that `Φ_s` preserves the order **element by element** (0
-  discrepancies); otherwise it raises `AssertionError` instead of drawing something
-  false.
-- `fig03` verifies that both continuations leave the observed patch **identical**.
+  discrepancies over the **132 ordered pairs** of 12 elements — the 12 diagonal
+  entries are forced `False` in both matrices and are not relations); otherwise it
+  raises `AssertionError` instead of drawing something false.
+- `fig03` verifies that both continuations leave the observed patch **identical**, and
+  raises `RuntimeError` if it cannot find both.
+
+`fig05` deliberately has **no** acceptance check. Its panel B illustrates an equality
+that Theorem 3.1 proves; agreement within Monte Carlo error is "we did not detect a
+difference", never "the curves are equivalent", and establishing equivalence would
+need a margin fixed in advance — analysis this figure does not do and does not claim.
+An earlier version printed "the gap must stay below the sd", a criterion nothing
+enforced and whose scale was ~6× too lenient; it is gone (audit 035, E1/W4).
+
+Uncertainties are labelled in the figure that shows them: `fig05` draws the **Monte
+Carlo standard error of the mean** (`sd/√80`), not the single-realisation `sd`, and
+`fig04` prints the sample size and the 95 % interval of both correlations — the band
+one comes from `n = 22` and spans `[+0.05, +0.74]` (audit 035, W1).
 
 ## A trap Figure 2 avoids, and that must keep being avoided
 

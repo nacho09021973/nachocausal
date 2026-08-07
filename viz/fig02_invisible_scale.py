@@ -58,11 +58,16 @@ def build():
             f"Phi_s did not preserve the order ({discrepancies} discrepancies): "
             "the figure would assert something false, so it is not drawn."
         )
-    return (t_a, r_a, rel_a), (t_b, r_b, rs_b, rel_b), discrepancies
+    # Denominador honesto: la diagonal se fuerza a False en AMBAS matrices
+    # (`causet_core.py`, `np.fill_diagonal`), luego nunca puede diferir y no cuenta
+    # como relacion comprobada.  Lo comprobable son los pares ordenados (auditoria
+    # 035, W2).
+    pares_ordenados = N * (N - 1)
+    return (t_a, r_a, rel_a), (t_b, r_b, rs_b, rel_b), discrepancies, pares_ordenados
 
 
 def draw(out):
-    (t_a, r_a, rel_a), (t_b, r_b, rs_b, rel_b), discrepancies = build()
+    (t_a, r_a, rel_a), (t_b, r_b, rs_b, rel_b), discrepancies, pares = build()
 
     use_style()
     fig, axes = plt.subplots(2, 2, figsize=(11.0, 8.6))
@@ -121,17 +126,24 @@ def draw(out):
              transform=axD.transAxes, ha="center", va="bottom", fontsize=9, color="#5A5A5A")
     axD.text(0.5, -0.04,
              f"identical element by element: {discrepancies} discrepancies "
-             f"across {N}×{N} relations",
+             f"across the {pares} ordered pairs of {N} elements",
              transform=axD.transAxes, ha="center", va="top", fontsize=9.5, color="#5A5A5A")
 
     fig.suptitle(
         "In 1+1 Schwarzschild, changing the mass is changing the units — and the order cannot read units",
         fontsize=13.0, y=0.985)
-    fig.text(0.5, 0.005,
+    fig.text(0.5, 0.038,
              "Theorem 3.1:  $\\mathrm{TV}\\left(P_n(r_s;P),\\,P_n(s\\,r_s;\\Phi_s(P))\\right) = 0$ "
              "for every $n$ and every $s>0$.",
              ha="center", fontsize=11)
-    fig.tight_layout(rect=(0, 0.022, 1, 0.965))
+    # La trampa que el README prohibe reintroducir, ahora en el propio dibujo
+    # (auditoria 035, W5): sin esto el PNG circula sin la advertencia.
+    fig.text(0.5, 0.004,
+             "B is A transported by $\\Phi_s$, not a second draw. Two INDEPENDENT sprinklings "
+             "at different masses do not come out equal —\nthey come out with the same LAW, "
+             "which is what stops any estimator from telling them apart.",
+             ha="center", fontsize=9.2, color="#B03030")
+    fig.tight_layout(rect=(0, 0.075, 1, 0.965))
     fig.savefig(out)
     plt.close(fig)
     return out, discrepancies

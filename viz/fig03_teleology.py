@@ -72,12 +72,25 @@ def build():
 
 
 def _panel(ax, rel_ext, n_patch, e, title, new_is_future, base_pos=None):
+    """Draw one continuation.
+
+    The contrast between the two panels used to rest on the presence or absence of a
+    single edge to `e`, which a reader can miss (audit 035, W7).  The added element is
+    now pushed to one side when it is spacelike to `e`, and the relation to `e` is
+    named in words underneath.
+    """
     layer = layer_of(rel_ext)
     edges = hasse_edges(rel_ext)
     pos = order_layout(rel_ext, layer, edges)
     if base_pos is not None:
         for i in range(n_patch):
             pos[i] = base_pos[i]
+    # Offset horizontal solo del elemento nuevo: si es del futuro de `e` se alinea
+    # sobre el, y si es espacial se aparta, para que la lectura no dependa de ver
+    # una arista.  El eje x no lleva informacion, luego moverlo no altera el poset.
+    for i in range(n_patch, rel_ext.shape[0]):
+        x, y = pos[i]
+        pos[i] = (base_pos[e][0] if new_is_future else x + 1.15, y)
     for i, j in edges:
         x0, y0 = pos[i]
         x1, y1 = pos[j]
@@ -96,8 +109,12 @@ def _panel(ax, rel_ext, n_patch, e, title, new_is_future, base_pos=None):
     strip_axes(ax)
     ax.set_title(title, loc="left", pad=10)
     verdict = "$e$ is NOT maximal" if new_is_future else "$e$ IS maximal"
+    razon = ("the new element is ABOVE $e$" if new_is_future
+             else "the new element is SPACELIKE to $e$:\nno relation between them")
     ax.text(0.5, -0.02, verdict, transform=ax.transAxes, ha="center", va="top",
             fontsize=12, color=RED if new_is_future else GREEN, weight="bold")
+    ax.text(0.5, -0.10, razon, transform=ax.transAxes, ha="center", va="top",
+            fontsize=9.2, color=GREY)
     return pos
 
 
@@ -147,7 +164,7 @@ def draw(out):
              "Theorem 3.2: the global event horizon is not measurable with respect to the data "
              "of a finite patch.",
              ha="center", fontsize=11)
-    fig.tight_layout(rect=(0, 0.075, 1, 0.94))
+    fig.tight_layout(rect=(0, 0.105, 1, 0.94))
     fig.savefig(out)
     plt.close(fig)
     return out
