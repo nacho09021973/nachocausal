@@ -1068,3 +1068,83 @@ MANUSCRIPT_INSERTION = PENDING
 NOT_FOR_ARXIV_TOKEN = STILL_PRESENT
 WORK_LIVES_ON_BRANCH_NOT_MAIN = TRUE
 ```
+
+## 22. Figuras del fracaso de P1a — LISTAS (2026-08-07)
+
+Contrapartida diagnóstica de §21. Aquéllas explican los teoremas del manuscrito a un
+estudiante; éstas explican **a nosotros** qué salió mal en esta línea y por qué se tardó
+en verlo. Seis figuras en `emergencia/viz/`, en español (como todo el corpus
+`emergencia/`), sobre los artefactos ya sellados de `emergencia/resultados/`.
+
+**Motivo.** Esta hoja de ruta cuenta la línea entera y es correcta, pero no se lee de un
+vistazo. Las tres preguntas que un lector —incluido el futuro yo— hace primero son
+*cuánto se falló*, *por qué es imposible y no sólo difícil*, y *por qué costó meses*.
+Las figuras 2, 3 y 4 las contestan en ese orden y son una cadena.
+
+### 22.1 Lo entregado
+
+| # | Fichero | Qué enseña | Cifra que la cierra |
+|---|---|---|---|
+| 1 | `fig01_disponibilidad.py` | Disponibilidad: de `1/720` a `0.697` | resuelta, y no medía lo que hacía falta |
+| 2 | `fig02_el_gate.py` | Tres representaciones × seis estratos vs gate `0.80` | mejor `rho = 0.566` |
+| 3 | `fig03_canal_sigma_m.py` | El canal es `sigma(m)`; ANOVA de un factor | `SSW/SST = 0.68–0.72` ⟹ `rho_max = 0.531–0.568` |
+| 4 | `fig04_anatomia_del_error.py` | Se navegó con `rho_max_ub(B_n) = 0.83–0.86` como si fuera el máximo | `0.83 > 0.80`: el gate parecía alcanzable |
+| 5 | `fig05_seleccion_y_estabilidad.py` | Target estable / endpoints no; scores que no coinciden; pared de la caja | coincidencia entre selectores `= 0` a `n >= 96` |
+| 6 | `fig06_mapa_del_fracaso.py` | El recorrido entero con el desvío marcado | `0.27 → 0.47 → 0.57`, nunca `0.80` |
+
+Ejecución: `PYTHONDONTWRITEBYTECODE=1 python3 emergencia/viz/hacer_figuras.py`. Dos
+ejecuciones dan ficheros byte a byte idénticos (verificado).
+
+### 22.2 Por qué esto no son ilustraciones
+
+Ningún número es nuevo: todos salen de `emergencia/resultados/*.csv` con su sidecar
+verificado, o se recalculan desde ellos y se contrastan contra un ejecutable ya
+auditado. Tres controles corren **antes** de dibujar y abortan la figura si fallan:
+
+1. `datos._verificar` compara el SHA-256 de cada CSV con su sidecar. **Comprobado que
+   salta**: alterando un byte de una copia, `leer()` lanza `ValueError` en vez de
+   producir figura. Un artefacto regenerado sin resellar no se dibuja.
+2. `datos.anova_sigma_m` recalcula `SST = SSB + SSW` sobre las observaciones —no la
+   impone— y exige que el `rho_max` resultante reproduzca el de
+   `p1a_count_volume_canal_sigma_m_d2.py` dentro de `1e-4`.
+3. `fig01` contrasta enumeración exacta contra Monte Carlo en `n = 6..9` —dos
+   implementaciones independientes del mismo estado, discrepancia máxima `0.0018`— y
+   `fig06` verifica que las tres representaciones siguen ordenadas de peor a mejor
+   antes de contar esa historia.
+
+### 22.3 Lo que las figuras dejan a la vista y el texto no
+
+- **El enriquecimiento en la pared de la caja crece con `n`**: `×1.52` a `n=32`,
+  `×2.47` a `n=128`, en los tres selectores. Subir `n` no lo diluye, lo empeora. Es el
+  mismo modo de fallo que el `91 %` de §21.2 y que el ledger C1–C5, ahora medido dentro
+  de esta línea y con la dependencia en `n` explícita. No estaba escrito en §4.
+- **La serie de representaciones mejoraba monótonamente sin acercarse al gate**
+  (`0.27 → 0.47 → 0.57`). Una serie que mejora y no llega es más peligrosa que una que
+  no mejora: invita a probar la siguiente. La figura 6 lo enseña como forma, no como
+  lista.
+- **La holgura real de `B_n` (`×2.26–2.55`) era mayor que el factor que se buscaba
+  (`×1.17`)**, y estaba entera en el paso `min` sobre `F_relax`. Se buscó apretando
+  cotas superiores, cuyo techo demostrado es `×1.000017`.
+
+### 22.4 Precisión que hay que mantener
+
+`rho_max = sqrt(SSB/SST)` es una **identidad finito-muestral** sobre la muestra sellada:
+sin iid, sin bootstrap, sin modelo. El enunciado poblacional sigue en
+`STRONGLY_SUPPORTED_UNDER_IID_NOT_CLOSED_FORM_THEOREM` y ninguna figura afirma más que
+lo primero. El panel A de la fig. 4 dibuja el hueco exacto `rho_max - rho_obs =
+0.0015–0.0026`; el `<=0.0007` de `P1a_count_volume_canal_sigma_m_d2.md` es la misma
+comparación **con la corrección intrabin del Bloque B**, es decir poblacional. No se
+contradicen, y la figura dice cuál dibuja.
+
+```text
+P1A_FAILURE_FIGURES = READY_SIX_FIGURES_SPANISH_COMMITTED
+FIGURES_SOURCE = SEALED_CSVS_ONLY_NO_NEW_STOCHASTIC_DATA
+FIGURES_SHA256_GUARD = VERIFIED_TO_ACTUALLY_FIRE
+FIGURES_REPRODUCIBLE = BYTE_IDENTICAL_ACROSS_RUNS
+RHO_MAX_RECOMPUTED_IN_FIGURE = MATCHES_AUDITED_EXECUTABLE_WITHIN_1e-4
+BOX_WALL_ENRICHMENT_GROWS_WITH_N = 1.52_AT_32_TO_2.47_AT_128
+FIG02_FIG03_FIG04 = A_CHAIN_READ_IN_THAT_ORDER
+SEAL = UNTOUCHED_6e2c3888
+VALIDATION_SEED_BAND = NOT_CONSUMED
+RECOVERABILITY_CLAIM = NONE
+```
