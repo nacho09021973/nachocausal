@@ -166,8 +166,9 @@ def dibujar():
     estilo.nota_al_pie(
         fig,
         "huecos y holguras recalculados desde p1a_representaciones_intervalos_d2.csv · "
-        "$B_n$ de p1a_count_volume_techo_apriete_d2.py · "
-        "con la corrección intrabin del Bloque B el hueco del panel A baja a $\\leq$0.0007")
+        "$B_n$ de p1a_count_volume_techo_apriete_d2.py · el panel A dibuja el hueco "
+        "exacto del Bloque A; su versión corregida $\\sqrt{1-T_{corr}}-\\rho_{obs}$ "
+        "vale $|\\Delta| < 0.00071$ (ver README)")
     fig.tight_layout(rect=(0, 0.03, 1, 0.985))
 
     return fig, {

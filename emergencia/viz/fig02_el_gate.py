@@ -2,10 +2,18 @@
 
 Ésta es la figura del fracaso, y conviene mirarla antes que ninguna explicación.
 
-El contrato congelado (`P1a_contrato_gate_altura_duracion_lex_d2.md`) exigía, para
+El contrato congelado que gobierna este experimento
+(`P1a_contrato_representaciones_alternativas_d2.md` §:145-146, :156) exigía, para
 poder preregistrar un cociente entre lados, una correlación de al menos `0.80` entre
 el estimador observable y la duración latente. Se probaron tres representaciones en
 seis estratos. La mejor llega a `0.57`.
+
+La segunda línea, en `0.50`, es el umbral de **aparcamiento fuerte**: una
+representación queda aparcada si `bootstrap95_upper(rho) < 0.50`. No es decorativa —
+separa `HEIGHT_WIDTH` (aparcada) de `COUNT_VOLUME` (no aparcada), que es el terminal
+que el registro sellado consigna. La figura recomputa esa separación y aborta si el
+CSV dejara de reproducirla. *(El `0.30` del mismo contrato acota la mediana del error
+relativo absoluto, otro eje; dibujarlo aquí fue el error 1 de la auditoría 032.)*
 
 Lo que hace la figura no es sólo enseñar que se falló, sino **cuánto** margen había:
 la banda morada es el techo `rho_max` del canal `sigma(m)` — el máximo alcanzable por
@@ -52,6 +60,7 @@ def dibujar():
         ax.hlines(techo[e], k - 0.44, k + 0.44, color=estilo.COLOR_TECHO,
                   lw=2.2, zorder=5)
 
+    sup_max = {}
     for j, repr_ in enumerate(ORDEN):
         desplaz = (j - 1) * ancho
         alturas, bajos, altos = [], [], []
@@ -64,17 +73,30 @@ def dibujar():
         ax.bar(xs + desplaz, alturas, ancho * 0.92,
                yerr=[bajos, altos], capsize=2.5, error_kw=dict(lw=1.0, ecolor="#333"),
                color=estilo.COLOR_REPR[repr_], label=ETIQUETA[repr_], zorder=3)
+        sup_max[repr_] = max(a + b for a, b in zip(alturas, altos))
+
+    # La línea de `0.50` decide un terminal sellado, así que se comprueba que lo
+    # decide bien: `HEIGHT_WIDTH_STRONGLY_PARKED = TRUE` y
+    # `COUNT_VOLUME_STRONGLY_PARKED = FALSE` en
+    # `P1a_resultados_representaciones_alternativas_d2.md` §5–§6. Si el CSV dejara
+    # de reproducir esos dos terminales, la figura no se dibuja.
+    aparcada = {r: v < datos.APARCADO_FUERTE for r, v in sup_max.items()}
+    if not (aparcada["HEIGHT_WIDTH"] and not aparcada["COUNT_VOLUME"]):
+        raise ValueError(
+            "los terminales de aparcamiento no reproducen el registro sellado: "
+            f"sup(IC95) = {sup_max}"
+        )
 
     ax.axhline(datos.GATE, color=estilo.COLOR_GATE, lw=2.4, zorder=6)
-    ax.axhline(datos.UMBRAL_FUERTE, color=estilo.COLOR_GATE, lw=1.4, ls=(0, (5, 3)),
+    ax.axhline(datos.APARCADO_FUERTE, color=estilo.COLOR_GATE, lw=1.4, ls=(0, (5, 3)),
                zorder=6)
 
     ax.text(len(estratos) - 0.45, datos.GATE + 0.018,
             "gate preregistrado  $\\rho \\geq 0.80$", ha="right", va="bottom",
             color=estilo.COLOR_GATE, fontsize=10.5, fontweight="bold")
-    ax.text(len(estratos) - 0.45, datos.UMBRAL_FUERTE + 0.014,
-            "umbral fuerte secundario  0.30", ha="right", va="bottom",
-            color=estilo.COLOR_GATE, fontsize=9)
+    ax.text(len(estratos) - 0.45, datos.APARCADO_FUERTE - 0.018,
+            "aparcado fuerte  $\\mathrm{IC}95_{sup}(\\rho) < 0.50$", ha="right",
+            va="top", color=estilo.COLOR_GATE, fontsize=9)
     ax.text(-0.44, hi + 0.016,
             f"techo del canal $\\sigma(m)$:  $\\rho_{{\\max}} = {lo:.3f}$–{hi:.3f}\n"
             "ninguna función de lo observable pasa de aquí",
@@ -96,6 +118,16 @@ def dibujar():
                 color=estilo.BLUE,
                 arrowprops=dict(arrowstyle="->", color=estilo.BLUE, lw=1.2))
 
+    # La distinción que la línea de 0.50 hace y que conviene leer explícita.
+    ax.text(-0.44, 0.055,
+            f"HEIGHT_WIDTH: $\\sup \\mathrm{{IC}}95 = {sup_max['HEIGHT_WIDTH']:.3f} < 0.50$ "
+            "$\\Rightarrow$ APARCADO FUERTE.    "
+            f"COUNT_VOLUME: ${sup_max['COUNT_VOLUME']:.3f} > 0.50$ $\\Rightarrow$ no aparcado, "
+            "y aun así lejos del gate.",
+            ha="left", va="bottom", fontsize=8.8, color="#333", zorder=8,
+            bbox=dict(boxstyle="round,pad=0.35", facecolor="white", alpha=0.92,
+                      edgecolor="none"))
+
     estilo.nota_al_pie(fig, "p1a_representaciones_metricas_d2.csv (IC bootstrap 95 %) · "
                             "techo recalculado desde p1a_representaciones_intervalos_d2.csv")
     fig.tight_layout(rect=(0, 0.025, 1, 1))
@@ -107,6 +139,8 @@ def dibujar():
         "gate": datos.GATE,
         "distancia gate - mejor rho": float(datos.GATE - mejor),
         "distancia gate - techo maximo": float(datos.GATE - hi),
+        "sup IC95 HEIGHT_WIDTH (< 0.50 = aparcado)": float(sup_max["HEIGHT_WIDTH"]),
+        "sup IC95 COUNT_VOLUME (> 0.50 = no aparcado)": float(sup_max["COUNT_VOLUME"]),
     }
 
 

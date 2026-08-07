@@ -27,11 +27,11 @@ ordena el recorrido completo.
 | # | Fichero | Qué enseña | Número que la cierra |
 |---|---|---|---|
 | 1 | `fig01_disponibilidad.py` | El selector pasa de `1/720` a `0.697`: disponibilidad resuelta | y no medía nada de lo que hacía falta |
-| 2 | `fig02_el_gate.py` | Tres representaciones, seis estratos, gate `0.80` | mejor `ρ = 0.566` |
+| 2 | `fig02_el_gate.py` | Tres representaciones, seis estratos, gate `0.80` y aparcamiento `0.50` | mejor `ρ = 0.566`; `HEIGHT_WIDTH` aparcada, `COUNT_VOLUME` no |
 | 3 | `fig03_canal_sigma_m.py` | El canal observable es `σ(m)`; ANOVA de un factor | `SSW/SST = 0.68–0.72` ⟹ `ρ_max = 0.531–0.568` |
 | 4 | `fig04_anatomia_del_error.py` | Se navegó con `ρ_max_ub(B_n) = 0.83–0.86` como si fuera el máximo | `0.83 > 0.80`: el gate parecía alcanzable |
 | 5 | `fig05_seleccion_y_estabilidad.py` | Target estable, endpoints no; los scores no coinciden; pared de la caja | coincidencia entre selectores `= 0` a `n ≥ 96` |
-| 6 | `fig06_mapa_del_fracaso.py` | El recorrido entero, con el desvío marcado | `0.27 → 0.47 → 0.57`, nunca `0.80` |
+| 6 | `fig06_mapa_del_fracaso.py` | El recorrido entero con el desvío marcado — 11 etapas, 7 fases y el ramal CV | `0.27 → 0.47 → 0.57`, nunca `0.80` |
 
 Las figuras 2, 3 y 4 son una cadena y deben leerse en ese orden: **cuánto se falló**,
 **por qué no había margen**, **por qué se creyó que lo había**.
@@ -49,7 +49,7 @@ estar de acuerdo.
 
 ## Por qué esto no son ilustraciones
 
-Tres controles corren **antes** de dibujar y abortan la figura si fallan:
+Cinco controles corren **antes** de dibujar y abortan la figura si fallan:
 
 1. **`datos._verificar`** comprueba el SHA-256 de cada CSV contra su sidecar. Un
    artefacto regenerado sin resellar no se dibuja. *Comprobado que salta*: alterando
@@ -62,11 +62,29 @@ Tres controles corren **antes** de dibujar y abortan la figura si fallan:
    dos implementaciones independientes del mismo estado (discrepancia máxima
    `0.0018`). **`fig06`** verifica que las tres representaciones siguen ordenadas de
    peor a mejor antes de contar esa historia.
+4. **`fig02`** recomputa desde el CSV los terminales de aparcamiento y aborta si
+   dejan de reproducir el registro sellado (`HEIGHT_WIDTH` aparcada, `COUNT_VOLUME`
+   no). *Comprobado que salta.*
+5. **`fig06`** cuenta etapas y fases sobre su propia lista y aborta si el recuento
+   del título deja de describir el diagrama. *Comprobado que salta.*
 
 Las constantes que **no** se recalculan están declaradas como constantes en
 `datos.py` y `fig04`, con el ejecutable que las produjo escrito al lado: `B_n` por
-estrato, el factor `1.000017` del Teorema CV-4.3, los umbrales `0.80` / `0.30` del
-contrato congelado y el retractado `ρ_max_ub(B_n) = 0.83–0.86`.
+estrato, el factor `1.000017` del Teorema CV-4.3, los umbrales del contrato congelado
+de representaciones (`P1a_contrato_representaciones_alternativas_d2.md`) y el
+retractado `ρ_max_ub(B_n) = 0.83–0.86`.
+
+Los umbrales del contrato viven en **ejes distintos** y no son intercambiables — no
+respetarlo fue el error 1 de la auditoría 032:
+
+| Cantidad | Umbral | Sentido | Fuente |
+|---|---|---|---|
+| correlación de Pearson | `≥ 0.80` (IC95 inferior) | cualifica para preregistrar un cociente | `:146` |
+| correlación de Pearson | `< 0.50` (IC95 superior) | aparcamiento fuerte | `:156` |
+| mediana del error relativo | `≤ 0.30` (IC95 superior) | cualifica | `:145` |
+
+La fig. 2 dibuja los dos primeros, que son los del eje que traza. El `0.30` **no** es
+un umbral de correlación y no aparece en ella.
 
 ## Dos precisiones que hay que mantener
 
@@ -76,11 +94,32 @@ está cerrado es el enunciado poblacional
 (`CV4_POPULATION_STATUS = STRONGLY_SUPPORTED_UNDER_IID_NOT_CLOSED_FORM_THEOREM`).
 Ninguna figura afirma más que lo primero.
 
-**El hueco del panel A de la fig. 4.** La figura dibuja el hueco finito-muestral
-exacto `ρ_max − ρ_obs = 0.0015–0.0026`. La cifra `≤ 0.0007` que aparece en
-`P1a_count_volume_canal_sigma_m_d2.md` es la misma comparación **con la corrección
-intrabin del Bloque B**, y por tanto poblacional. No se contradicen; son dos
-magnitudes distintas y la figura dice cuál dibuja.
+**El hueco del panel A de la fig. 4, y de dónde sale el `0.0007`.** La figura dibuja
+el hueco **finito-muestral exacto**
+
+```text
+Delta_A = rho_max - rho_obs = +0.0015 a +0.0026   (Bloque A, los seis estratos)
+```
+
+`P1a_count_volume_canal_sigma_m_d2.md` §6.2 da, para la misma comparación, `-0.0001`
+a `+0.0007`. El documento **no dice** cómo se calculó esa cifra, así que aquí no se
+afirma: se **deriva y se comprueba**. Tomando `T_corr` del Bloque B —el estimador con
+corrección intrabin, impreso por el ejecutable auditado— y evaluando
+
+```text
+Delta_B = sqrt(1 - T_corr) - rho_obs
+```
+
+se obtiene `-0.000045` a `+0.000703`, que reproduce el intervalo del documento a la
+precisión con que está impreso, en **los seis estratos**. Cota honesta:
+`|Delta_B| < 0.00071`.
+
+Es decir: `Delta_A` es la identidad exacta sobre la muestra sellada y `Delta_B` es su
+versión corregida, dependiente de iid. Son dos magnitudes distintas, no una
+contradicción, y la fig. 4 dibuja la primera y lo dice. La comprobación es
+reproducible con `T_corr` de
+`PYTHONDONTWRITEBYTECODE=1 python3 emergencia/p1a_count_volume_canal_sigma_m_d2.py`
+(Bloque B) y `rho_obs` de `datos.anova_sigma_m`.
 
 ## Idioma
 

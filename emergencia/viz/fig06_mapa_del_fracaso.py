@@ -5,8 +5,12 @@ Las cinco figuras anteriores miden. Ésta ordena: es el recorrido completo de la
 
 Sirve para dos cosas concretas:
 
-1. **Ver la forma del fracaso.** No fue un fallo, fueron seis intentos consecutivos
-   contra el mismo obstáculo. La columna de la derecha enseña que cada
+1. **Ver la forma del fracaso.** No fue un fallo aislado: son las once etapas que
+   `HOJA_DE_RUTA.md` §2–§3 y §17–§19 registran — las siete fases `Fase 0`–`Fase 6`
+   más las tres del ramal `COUNT_VOLUME` (`CV-4.1`, `CV-4.3`, `§18`)—, todas contra
+   el mismo obstáculo. El recuento del título se calcula sobre la propia lista de
+   etapas y aborta si deja de describir el diagrama. La columna de la derecha
+   enseña que cada
    representación nueva mejoró la correlación —`0.27 → 0.47 → 0.57`— y que ninguna
    se acercó al gate. Una serie que mejora y no llega es más peligrosa que una que
    no mejora: invita a probar la siguiente.
@@ -153,7 +157,16 @@ def dibujar():
             "y la última resultó estar ya pegada al techo del canal.",
             ha="left", va="top", fontsize=9.6, color="#111")
 
-    fig.suptitle("La línea `emergencia`, entera: seis intentos contra el mismo obstáculo",
+    # El título lleva números, luego los números se cuentan sobre la propia lista
+    # y no se escriben a mano (auditoría 032, hallazgo 4).
+    fases = sorted({f for f, *_ in etapas if f.startswith("Fase")})
+    ramal = [f for f, *_ in etapas if not f.startswith("Fase")]
+    if (len(etapas), len(fases), len(ramal)) != (11, 7, 3):
+        raise ValueError(f"el recuento del título no describe el diagrama: "
+                         f"{len(etapas)} etapas, {len(fases)} fases, {len(ramal)} del ramal")
+
+    fig.suptitle(f"Trayectoria del programa: {len(etapas)} etapas — "
+                 f"{len(fases)} fases y el ramal COUNT_VOLUME",
                  x=0.02, ha="left", fontsize=14, y=0.985)
     estilo.nota_al_pie(fig, "correlaciones de p1a_representaciones_metricas_d2.csv · "
                             "techo recalculado del CSV de intervalos · "

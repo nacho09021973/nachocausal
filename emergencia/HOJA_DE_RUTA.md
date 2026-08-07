@@ -1086,11 +1086,11 @@ Las figuras 2, 3 y 4 las contestan en ese orden y son una cadena.
 | # | Fichero | Qué enseña | Cifra que la cierra |
 |---|---|---|---|
 | 1 | `fig01_disponibilidad.py` | Disponibilidad: de `1/720` a `0.697` | resuelta, y no medía lo que hacía falta |
-| 2 | `fig02_el_gate.py` | Tres representaciones × seis estratos vs gate `0.80` | mejor `rho = 0.566` |
+| 2 | `fig02_el_gate.py` | Tres representaciones × seis estratos; gate `0.80` y aparcamiento `0.50` | mejor `rho = 0.566`; `HEIGHT_WIDTH` aparcada, `COUNT_VOLUME` no |
 | 3 | `fig03_canal_sigma_m.py` | El canal es `sigma(m)`; ANOVA de un factor | `SSW/SST = 0.68–0.72` ⟹ `rho_max = 0.531–0.568` |
 | 4 | `fig04_anatomia_del_error.py` | Se navegó con `rho_max_ub(B_n) = 0.83–0.86` como si fuera el máximo | `0.83 > 0.80`: el gate parecía alcanzable |
 | 5 | `fig05_seleccion_y_estabilidad.py` | Target estable / endpoints no; scores que no coinciden; pared de la caja | coincidencia entre selectores `= 0` a `n >= 96` |
-| 6 | `fig06_mapa_del_fracaso.py` | El recorrido entero con el desvío marcado | `0.27 → 0.47 → 0.57`, nunca `0.80` |
+| 6 | `fig06_mapa_del_fracaso.py` | El recorrido entero con el desvío marcado — 11 etapas, 7 fases y el ramal CV | `0.27 → 0.47 → 0.57`, nunca `0.80` |
 
 Ejecución: `PYTHONDONTWRITEBYTECODE=1 python3 emergencia/viz/hacer_figuras.py`. Dos
 ejecuciones dan ficheros byte a byte idénticos (verificado).
@@ -1111,6 +1111,13 @@ auditado. Tres controles corren **antes** de dibujar y abortan la figura si fall
    implementaciones independientes del mismo estado, discrepancia máxima `0.0018`— y
    `fig06` verifica que las tres representaciones siguen ordenadas de peor a mejor
    antes de contar esa historia.
+4. **(añadido tras la auditoría 032)** `fig02` recomputa los terminales de
+   aparcamiento desde el CSV y aborta si dejan de reproducir el registro sellado
+   (`HEIGHT_WIDTH_STRONGLY_PARKED = TRUE`, `COUNT_VOLUME_STRONGLY_PARKED = FALSE`).
+   **Comprobado que salta.**
+5. **(añadido tras la auditoría 032)** `fig06` cuenta etapas y fases sobre su propia
+   lista y aborta si el recuento del título deja de describir el diagrama.
+   **Comprobado que salta.**
 
 ### 22.3 Lo que las figuras dejan a la vista y el texto no
 
@@ -1131,10 +1138,49 @@ auditado. Tres controles corren **antes** de dibujar y abortan la figura si fall
 `rho_max = sqrt(SSB/SST)` es una **identidad finito-muestral** sobre la muestra sellada:
 sin iid, sin bootstrap, sin modelo. El enunciado poblacional sigue en
 `STRONGLY_SUPPORTED_UNDER_IID_NOT_CLOSED_FORM_THEOREM` y ninguna figura afirma más que
-lo primero. El panel A de la fig. 4 dibuja el hueco exacto `rho_max - rho_obs =
-0.0015–0.0026`; el `<=0.0007` de `P1a_count_volume_canal_sigma_m_d2.md` es la misma
-comparación **con la corrección intrabin del Bloque B**, es decir poblacional. No se
-contradicen, y la figura dice cuál dibuja.
+lo primero.
+
+El panel A de la fig. 4 dibuja el hueco **exacto** del Bloque A,
+`Delta_A = rho_max - rho_obs = +0.0015 a +0.0026`. `P1a_count_volume_canal_sigma_m_d2.md`
+§6.2 da para la misma comparación `-0.0001` a `+0.0007` y **no dice cómo lo calcula**;
+por tanto aquí no se afirma, se **deriva y se comprueba**: con `T_corr` del Bloque B
+—el estimador con corrección intrabin, impreso por el ejecutable auditado—
+
+```text
+Delta_B = sqrt(1 - T_corr) - rho_obs = -0.000045 a +0.000703,   |Delta_B| < 0.00071
+```
+
+reproduce el intervalo del documento a la precisión con que está impreso, en los seis
+estratos. `Delta_A` es la identidad exacta; `Delta_B` es su versión corregida y
+dependiente de iid. Son dos magnitudes distintas, no una contradicción, y la figura
+dibuja la primera y lo dice.
+
+### 22.5 Corrección tras la auditoría 032 (2026-08-07)
+
+`docs/auditor/auditor_report_032_emergencia-viz-figuras-del-fracaso.md` emitió
+`AUDIT_FAIL` con **un** error y tres avisos manuales sobre este material. Aplicado
+íntegro; ni un dato ni un experimento se han tocado.
+
+- **Error 1 — reparado, no eliminado.** `fig02` dibujaba `0.30` sobre el eje de
+  correlación. En el contrato que gobierna
+  (`P1a_contrato_representaciones_alternativas_d2.md`) `0.30` acota la **mediana del
+  error relativo absoluto**; el umbral del eje de correlación es `0.50`, el de
+  **aparcamiento fuerte** (`bootstrap95_upper(rho) < 0.50`, `:156`). Sustituido por
+  `0.50`. La línea correcta **decide un terminal sellado real**: `HEIGHT_WIDTH`
+  (`sup IC95 = 0.4838 < 0.50`) queda aparcada y `COUNT_VOLUME` (`0.5824 > 0.50`) no
+  — la distinción que la versión anterior borraba.
+- **Aviso 2 — reparado.** `datos.py` citaba el contrato del gate de altura para
+  constantes del experimento de representaciones. Corregido, con los tres umbrales
+  tabulados por eje para que no vuelva a confundirse.
+- **Aviso 3 — reparado.** El `0.0007` ya no se afirma: se deriva y se comprueba
+  (§22.4), con fórmula, intervalo `-0.000045` a `+0.000703` y cota `|Delta_B| < 0.00071`.
+- **Aviso 4 — reparado.** El título de `fig06` pasa de «seis intentos», que no se
+  correspondía con nada, a un recuento que el propio código verifica.
+
+Regenerados sólo `fig02`, `fig04` (pie de figura) y `fig06`; `fig01`, `fig03` y
+`fig05` byte a byte intactas. Los 23 avisos mecánicos preexistentes, fuera de este
+alcance, **no se han tocado**. Reauditoría solicitada; hasta que se emita, el estado
+de este material sigue siendo `AUDIT_FAIL`.
 
 ```text
 P1A_FAILURE_FIGURES = READY_SIX_FIGURES_SPANISH_COMMITTED
@@ -1147,4 +1193,12 @@ FIG02_FIG03_FIG04 = A_CHAIN_READ_IN_THAT_ORDER
 SEAL = UNTOUCHED_6e2c3888
 VALIDATION_SEED_BAND = NOT_CONSUMED
 RECOVERABILITY_CLAIM = NONE
+AUDIT_032_VERDICT = AUDIT_FAIL (1 error, 3 avisos manuales)
+AUDIT_032_REMEDIATION = APPLIED_IN_FULL_NO_DATA_TOUCHED
+FIG02_CORRELATION_THRESHOLD = 0.50_STRONG_PARKING_NOT_0.30
+FIG02_SEALED_TERMINALS_RECOMPUTED = HEIGHT_WIDTH_PARKED_COUNT_VOLUME_NOT
+DELTA_B_DERIVED_NOT_ASSERTED = ABS_LT_0.00071
+FIG06_TITLE_COUNT = SELF_CHECKED_11_STAGES_7_PHASES
+PREEXISTING_23_WARNINGS = UNTOUCHED_OUT_OF_SCOPE
+REAUDIT = REQUESTED_STATUS_REMAINS_AUDIT_FAIL_UNTIL_ISSUED
 ```

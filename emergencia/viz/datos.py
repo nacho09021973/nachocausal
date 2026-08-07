@@ -19,10 +19,21 @@ import pandas as pd
 
 RESULTADOS = pathlib.Path(__file__).resolve().parents[1] / "resultados"
 
-# Umbrales del contrato, congelados antes de ver datos. No se recalculan aquí:
-# se citan. Fuente: emergencia/P1a_contrato_gate_altura_duracion_lex_d2.md.
-GATE = 0.80          # correlación exigida para preregistrar un cociente
-UMBRAL_FUERTE = 0.30  # umbral "fuerte" secundario del mismo contrato
+# Umbrales congelados antes de ver datos. No se recalculan aquí: se citan.
+#
+# El contrato que gobierna el experimento de representaciones —que es el que se
+# dibuja en fig02— es `emergencia/P1a_contrato_representaciones_alternativas_d2.md`,
+# NO el del gate de altura. Ambos coinciden en el `0.80`, y por eso la confusión
+# pasó desapercibida (auditoría 032, hallazgos 1 y 2).
+#
+# Los dos umbrales viven en EJES DISTINTOS y no son intercambiables:
+#   correlación de Pearson       -> cualifica si bootstrap95_lower >= 0.80  (§ :146)
+#                                -> aparcada FUERTE si bootstrap95_upper < 0.50 (§ :156)
+#   mediana del error relativo   -> cualifica si bootstrap95_upper <= 0.30  (§ :145)
+# El `0.30` NO es un umbral de correlación y no debe dibujarse sobre ese eje.
+GATE = 0.80             # correlación exigida para preregistrar un cociente
+APARCADO_FUERTE = 0.50  # correlación por debajo de la cual la representación se aparca
+UMBRAL_ERROR_RELATIVO = 0.30  # eje distinto: mediana del error relativo absoluto
 
 # Valores impresos por los ejecutables deterministas ya auditados. Se usan SOLO
 # como control: las figuras los recalculan desde el CSV sellado y abortan si no
