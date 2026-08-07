@@ -1234,6 +1234,25 @@ decía «no aparcada» y el contrato dice «aparcada»), el **segundo disyunto**
 cuantificador «para todo `n`», el terminal sellado, el guardarraíl SHA-256, el ANOVA
 contra el ejecutable auditado y el recuento de `fig06`.
 
+### 22.7 Cierre del residuo, tras la reauditoría 034 (2026-08-07)
+
+`docs/auditor/auditor_report_034_...md` cerró los tres avisos de la 033
+(`AUDIT_PASS_WITH_WARNINGS`, 0 errores) y dejó **uno**, que era el residuo del que
+acababa de repararse: el código había dejado de cometer la inferencia inválida, pero
+el pie dibujado en `fig02` seguía imprimiéndola —«`0.582 > 0.50` ⟹ no aparcado»—, que
+no se sigue de `:152-157`. La conclusión era correcta con estos datos y el
+guardarraíl impedía dibujar una falsa, pero el motivo que daba el rótulo no era el
+del contrato.
+
+Reparado: el pie atribuye ahora los dos terminales **a la regla** y reporta
+`sup IC95` como cantidad, no como criterio; las dos claves devueltas pasan a
+`aparcada (regla :152-157)` —el booleano que decide— más `sup IC95 (cantidad, no
+criterio)`. Regenerado sólo `fig02.png`.
+
+Con esto el material queda sin hallazgos abiertos dentro de su alcance: un error y
+cuatro avisos localizados y cerrados en tres commits, con el rastro completo en
+`docs/auditor/` 032, 033 y 034.
+
 ```text
 P1A_FAILURE_FIGURES = READY_SIX_FIGURES_SPANISH_COMMITTED
 FIGURES_SOURCE = SEALED_CSVS_ONLY_NO_NEW_STOCHASTIC_DATA
@@ -1258,4 +1277,7 @@ PARKING_PREDICATE = CONTRACT_LITERAL_BOTH_DISJUNCTS_NOT_MAX_SHORTCUT
 PARKING_PREDICATE_TESTS = 12_CASES_INCLUDING_SHORTCUT_FALSE_NEGATIVE
 DELTA_B_BOUND = ABS_LT_0.0008_INPUT_PRECISION_LIMITED
 SECTIONS_16_18 = HISTORICAL_RECORD_ANNOTATED_NOT_REWRITTEN
+AUDIT_034_VERDICT = AUDIT_PASS_WITH_WARNINGS (0 errores, 1 aviso)
+AUDIT_034_REMEDIATION = APPLIED_CAPTION_ATTRIBUTES_THE_RULE_NOT_THE_PROXY
+AUDIT_CHAIN = 032_FAIL -> 033_PASS_W -> 034_PASS_W -> residuo cerrado
 ```

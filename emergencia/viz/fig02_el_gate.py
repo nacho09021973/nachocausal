@@ -126,12 +126,14 @@ def dibujar():
                 color=estilo.BLUE,
                 arrowprops=dict(arrowstyle="->", color=estilo.BLUE, lw=1.2))
 
-    # La distinción que la línea de 0.50 hace y que conviene leer explícita.
+    # La distinción que la línea de 0.50 hace, atribuida a la regla que la decide.
+    # El `sup IC95` se reporta como cantidad, no como razón: de `sup < 0.50` sí se
+    # sigue el aparcamiento, pero de `sup > 0.50` NO se sigue lo contrario bajo
+    # `:152-157` (auditoría 034, hallazgo 1). Quien decide es `aparcada_fuerte`.
     ax.text(-0.44, 0.055,
-            f"HEIGHT_WIDTH: $\\sup \\mathrm{{IC}}95 = {sup_max['HEIGHT_WIDTH']:.3f} < 0.50$ "
-            "$\\Rightarrow$ APARCADO FUERTE.    "
-            f"COUNT_VOLUME: ${sup_max['COUNT_VOLUME']:.3f} > 0.50$ $\\Rightarrow$ no aparcado, "
-            "y aun así lejos del gate.",
+            "Por la regla de aparcamiento del contrato (§:152-157 — para todo $n$, algún lado):\n"
+            f"HEIGHT_WIDTH APARCADA ($\\sup \\mathrm{{IC}}95 = {sup_max['HEIGHT_WIDTH']:.3f}$)   ·   "
+            f"COUNT_VOLUME NO aparcada (${sup_max['COUNT_VOLUME']:.3f}$), y aun así lejos del gate.",
             ha="left", va="bottom", fontsize=8.8, color="#333", zorder=8,
             bbox=dict(boxstyle="round,pad=0.35", facecolor="white", alpha=0.92,
                       edgecolor="none"))
@@ -147,8 +149,10 @@ def dibujar():
         "gate": datos.GATE,
         "distancia gate - mejor rho": float(datos.GATE - mejor),
         "distancia gate - techo maximo": float(datos.GATE - hi),
-        "sup IC95 HEIGHT_WIDTH (< 0.50 = aparcado)": float(sup_max["HEIGHT_WIDTH"]),
-        "sup IC95 COUNT_VOLUME (> 0.50 = no aparcado)": float(sup_max["COUNT_VOLUME"]),
+        "HEIGHT_WIDTH aparcada (regla :152-157)": aparcada["HEIGHT_WIDTH"],
+        "COUNT_VOLUME aparcada (regla :152-157)": aparcada["COUNT_VOLUME"],
+        "sup IC95 HEIGHT_WIDTH (cantidad, no criterio)": float(sup_max["HEIGHT_WIDTH"]),
+        "sup IC95 COUNT_VOLUME (cantidad, no criterio)": float(sup_max["COUNT_VOLUME"]),
     }
 
 
