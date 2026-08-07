@@ -83,3 +83,10 @@ Its caption must report `N=60`, 80 repeats, and the fixed seed, and must say tha
 observed variation does not prove recovery or localization. Figure 3's maximal-element
 construction is a toy analogy for completion dependence, not the event horizon itself;
 Figure 4's time-banded residual is a diagnostic, not recovered horizon physics.
+
+Asset `fig04` separates its fixed-seed within-causet Pearson coefficient from two
+deterministic quadrature targets: the window functional `Corr(p(X),t(X))` and the
+finite-`n` tagged-element correlation. The exact attenuation formula applies to the
+tagged marginal law, not identically to the dependent Pearson coefficient computed
+inside one causet. No iid confidence interval is authorized for that internal
+coefficient.
