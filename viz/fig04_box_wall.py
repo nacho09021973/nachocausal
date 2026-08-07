@@ -2,16 +2,17 @@
 
 This is the honest figure of the failure ledger (`docs/comite/comite_decision_042`,
 the C1–C5 line).  The most natural observable the order offers is the future volume
-`|J^+(i)|`.  It looks as if it ought to grow near the horizon.  It does grow, a
-little.  But the dominant effect is not physical: the simulation patch **ends**, and
+`|J^+(i)|`.  It can display a radial trend in the chosen bank.  But the dominant
+effect in this diagnostic is the simulation patch **ending**, and
 an element near the ceiling has a small future for the simple reason that the ceiling
 is there.
 
 The number that sums it up: height in the box explains ~91 % of the variance of
-`|J^+|`; radius explains ~3 %.  The physics is present, but buried under an artefact
-of the apparatus.  Conditioning on a narrow time band brings it back — exactly the
-kind of repair the C1–C5 ledger records as necessary and that none of those lines
-ever closed.
+`|J^+|`; radius explains ~3 %.  Conditioning on a narrow time band exposes a
+residual radial correlation.  That residual is a diagnostic feature of this
+fixed-seed illustration, not a recovered horizon signal or a sealed validation
+result.  It is exactly the kind of conditioning the C1–C5 ledger records as
+necessary and that none of those lines ever closed.
 
 Lesson for the student: in finite causal sets **the boundary of the box is an
 observable**, and it competes with the physics you are trying to measure.
@@ -85,14 +86,14 @@ def draw(out):
                 label=f"band only ($\\rho={c_r_band:+.3f}$)")
     axC.set_xlabel("$r$  (radial position)")
     axC.set_ylabel("$|J^+(i)|$")
-    axC.set_title("C · the physics, buried and recovered", loc="left", pad=22)
+    axC.set_title("C · a residual radial trend after banding", loc="left", pad=22)
     axC.legend(loc="upper left", fontsize=9)
 
     fig.suptitle("The order's most natural observable mostly measures the edge of the patch",
                  fontsize=13.5, y=0.99)
     fig.text(0.5, 0.005,
-             "This is the failure mode that killed the C1–C5 localisers: "
-             "the box wall competes with the signal being sought.",
+             "Fixed-seed diagnostic: the box wall competes with the radial trend; "
+             "banding does not establish horizon recovery.",
              ha="center", fontsize=10.5)
     fig.tight_layout(rect=(0, 0.04, 1, 0.92))
     fig.savefig(out)

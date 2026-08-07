@@ -3,8 +3,9 @@
 > **STATUS: SUPPORTING_FIGURES / DOES_NOT_TOUCH_THE_SEAL / NO_VALIDATION_SEEDS /
 > NO_RECONSTRUCTION_CLAIM.**
 >
-> These figures illustrate theorems already proved in `docs/manuscript_limits_draft.md`.
-> They produce no new results, consume none of the reserved seed band
+> These figures illustrate theorems and diagnostics already documented in
+> `docs/manuscript_limits_draft.md`. They produce no new results, consume none of
+> the reserved seed band
 > `[2,000,000–2,999,999]`, and do not touch `thresholds.py`.
 
 ## Why they exist
@@ -26,10 +27,17 @@ imprecision; a student believes the picture literally.
 | 2 | `fig02_invisible_scale.py` | Absolute scale is invisible to the order | Theorem 3.1 |
 | 3 | `fig03_teleology.py` | What happens outside the patch is not in the patch | Theorem 3.2 |
 | 4 | `fig04_box_wall.py` | Why the C1–C5 localisers died | acta 042 |
-| 5 | `fig05_what_is_recoverable.py` | What the order **does** read: `r/r_s` | partner of Fig. 2 |
+| 5 | `fig05_what_is_recoverable.py` | A scale-free statistic varies across a specified `r/r_s` patch family | partner of Fig. 2 |
 
-Figures 2 and 5 are a pair and must travel together: 2 says `r_s` is invisible, 5 says
-`r/r_s` is not. Together they are the thesis of the manuscript in two images.
+Figures 2 and 5 are a pair and must travel together: Figure 2 visualizes the exact
+co-scaling witness for absolute-scale blindness; Figure 5 shows that the comparable-
+pair fraction varies with dimensionless patch placement in one specified family.
+Figure 5 is illustrative: it does **not** establish identification of `r/r_s`,
+injectivity beyond the plotted sweep, or horizon localization.
+
+In the manuscript the images appear in argumentative order, so asset `fig05` is
+publication Figure 3, asset `fig03` is publication Figure 4, and asset `fig04` is
+publication Figure 5.
 
 ## Usage
 
@@ -69,3 +77,9 @@ that construction generic rather than cherry-picked.
 
 If a future version of the figure suggests "two independent draws came out equal", it
 is asserting something false and must be rejected.
+
+Figure 5 uses independent ensembles only to display agreement of Monte Carlo curves.
+Its caption must report `N=60`, 80 repeats, and the fixed seed, and must say that the
+observed variation does not prove recovery or localization. Figure 3's maximal-element
+construction is a toy analogy for completion dependence, not the event horizon itself;
+Figure 4's time-banded residual is a diagnostic, not recovered horizon physics.

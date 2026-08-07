@@ -37,9 +37,10 @@
 > 2026-07-28; this is not a novelty certificate and absolute priority language remains
 > forbidden.
 >
-> **Not yet done before posting:** the five figures in `viz/` are ready and English but
-> are **not inserted** in this text. The Figure 2 caption must carry the
-> laws-versus-realisations distinction (`viz/README.md`), which is where a referee looks.
+> **Figure integration completed in this working version:** all five assets in `viz/`
+> are inserted below. Their captions preserve the laws-versus-realisations distinction
+> and mark the scale-free, teleology, and box-wall panels as illustrations rather than
+> new recovery claims (`viz/README.md`).
 
 ---
 
@@ -125,6 +126,16 @@ Conditioning on \(N=n\) removes the total-volume leak through cardinality: the \
 points are i.i.d.\ from the normalized volume measure. Absolute scale is then
 precisely what a constant conformal (or co-scaling) orbit can hide; that is the
 content of Theorem 3.1, not an artifact of a bad estimator.
+
+Figure 1 summarizes this loss of embedding information in the observation map.
+
+![**Continuum-to-order observation map.** Left: embedding information
+available to a continuum observer; right: the same finite causal relations after
+coordinates are discarded. Vertical placement on the right encodes order height and
+horizontal placement is diagrammatic only. The panel illustrates the observation
+channel, not continuum reconstruction.](../viz/output/fig01_dictionary.png){width=100%}
+
+\clearpage
 
 ### 1.3 Hidden embeddings score only
 
@@ -268,14 +279,80 @@ for the exact \(\mathrm{TV}=0\) statement (Section 3.1).
 
 ### 2.2 Geometry in \(3{+}1\) dimensions (scoped use only)
 
-We do **not** develop a \(3{+}1\) reconstruction theory. The only \(3{+}1\) result
-used as a theorem is the **co-scaling orbit for absolute mass** at fixed \(n\),
-inside a fixed temporal sector \(\sigma\) and fixed patch shape \(\lambda\)
-(`[PROVED]` scoped class: `op12_tv_zero_3p1.md`). Dimensionless targets such as
-\(r/(2M)-1\) are constant on that orbit; absolute \(M\) is not identifiable from
-the order-only fixed-\(n\) law. Transfer of \(1{+}1\) *localization proxies* to
-\(3{+}1\) horizon region-finding is outside the scope of the theorems and is
-marked abandoned as program north (§1.5).
+We do **not** develop a \(3{+}1\) reconstruction theory. Fix a compact mass interval
+\(I_M=[M_{\min},M_{\max}]\subset(0,\infty)\) and a dimensionless patch-shape vector
+
+\[
+\lambda=(v_0,v_1,u_{\mathrm{out}},u_{\mathrm{in}},\varepsilon_s),
+\quad
+0<v_0<v_1,
+\quad
+u_{\mathrm{out}},u_{\mathrm{in}}>0,
+\quad
+u_{\mathrm{in}}v_1\le 1-\varepsilon_s,
+\quad
+0<\varepsilon_s<1.
+\]
+
+In dimensionless Kruskal coordinates \((U,V,\omega)\), \(\omega\in S^2\), put
+\(\xi=r/(2M)\), so that
+
+\[
+-UV=(\xi-1)e^\xi,
+\qquad
+\mathcal D_{\max}=\{(U,V,\omega):UV<1\}.
+\]
+
+Thus the maximal Schwarzschild domain is represented by the same dimensionless
+manifold for every \(M\). For each temporal sector \(\sigma\in\{+,-\}\), its metric
+and chosen time orientation may be written
+
+\[
+g_M^\sigma=M^2\widehat g^\sigma,
+\qquad T^\sigma,
+\]
+
+where \(\widehat g^\sigma\) is independent of \(M\). This factorization, rather than
+any convention-dependent numerical coefficient in the Kruskal line element, is all
+that the proof below uses. Define
+
+\[
+\begin{aligned}
+K^+_\lambda
+&=
+\{(U,V,\omega):V\in[v_0,v_1],\;
+U\in[-u_{\mathrm{out}},u_{\mathrm{in}}],\;\omega\in S^2\},\\
+d(U,V,\omega)&=(-V,-U,\omega),
+\qquad
+K^-_\lambda=d(K^+_\lambda).
+\end{aligned}
+\]
+
+The inequalities in \(\lambda\) keep these compact patches away from the
+singularity \(UV=1\); hence their positive metric volumes are finite and nonzero.
+For fixed \(\sigma\) and \(\lambda\), the scoped class is
+
+\[
+\mathcal G^\sigma_{3+1}(\lambda,I_M)
+=
+\left\{
+\bigl(K^\sigma_{M,\lambda},g_M^\sigma,T^\sigma,
+\mu_M^\sigma,\prec_M^\sigma\bigr):M\in I_M
+\right\}.
+\]
+
+Here \(K^\sigma_{M,\lambda}\) is the copy of \(K^\sigma_\lambda\) in the
+mass-\(M\) maximal extension, \(\mu_M^\sigma=|d\mathrm{Vol}_{g_M^\sigma}|\), and
+\(\prec_M^\sigma\) is **ambient** maximal-Schwarzschild causality restricted to
+pairs of patch points. A causal curve witnessing \(x\prec_M^\sigma y\) may leave the
+patch. Using intrinsic patch causality would define a different experiment.
+
+The only \(3{+}1\) result used as a theorem is the co-scaling orbit for absolute
+mass at fixed \(n\) inside this fixed sector and shape. Dimensionless targets such
+as \(r/(2M)-1\) are constant on that orbit; transfer of \(1{+}1\) localization
+proxies to \(3{+}1\) region-finding remains outside scope. The construction is
+recorded in `op12_tv_zero_3p1.md` and `op11_spherical_dual_target.md` for
+traceability; the complete argument needed here is given in §3.1.
 
 ### 2.3 Sprinkling and laws
 
@@ -302,6 +379,43 @@ fixed \(n\) depends on \(g\) only through the copula of the normalized volume
 measure.  
 (Anchor: FWP Lemma 1. Used for the diamond family in Theorem 3.8; cited as
 Lemma 2.2 thereafter.)
+
+For a member of the scoped \(3{+}1\) class, let
+
+\[
+\nu_{M,\sigma,\lambda}
+:=
+\frac{\mu_M^\sigma|_{K^\sigma_{M,\lambda}}}
+{\mu_M^\sigma(K^\sigma_{M,\lambda})}.
+\]
+
+Draw \(X_1,\ldots,X_n\) independently from this probability measure and put
+\(i\prec_X j\) exactly when \(X_i\prec_M^\sigma X_j\), using the ambient relation
+just defined. Write \(P^{\mathrm{fixed}\,n}_{M,\sigma,\lambda}\) for the law after
+forgetting the labels. For \(n=0\) this is the point mass at the empty poset.
+
+**Lemma 2.3 (measure--order coupling).** `[PROVED]`
+
+Let \((K,\prec,\nu)\) and \((K',\prec',\nu')\) be causal probability spaces. Suppose
+there are conull representatives and a bimeasurable bijection
+\(\psi:K\to K'\), with inverse measurable modulo null sets, such that
+
+\[
+\psi_\#\nu=\nu',
+\qquad
+x\prec y\ \Longleftrightarrow\ \psi(x)\prec'\psi(y)
+\quad\text{for }(\nu\otimes\nu)\text{-almost every }(x,y).
+\]
+
+Then the labeled and unlabeled fixed-\(n\) poset laws agree for every \(n\ge0\).
+
+*Proof.* Couple \(X_i\sim\nu\) with \(Y_i=\psi(X_i)\). The transported points are
+i.i.d. with law \(\nu'\). For a finite sample, the union over the finitely many
+distinct ordered pairs \((i,j)\), \(i\ne j\), of the exceptional events in the
+displayed equivalence is null. Hence all labeled relations agree almost surely.
+Applying the measurable map
+that forgets labels preserves equality in law. The case \(n=0\) is immediate.
+\(\blacksquare\)
 
 Total variation \(\mathrm{TV}\) and Hellinger distance \(H\) between laws on the
 space of finite unlabeled posets are the standard ones, with the convention fixed
@@ -413,8 +527,9 @@ inferred from the success or failure of the empirical locator classes in §5.
 
 **Setup pointer (no re-definition).** Completions, the order-only fixed-\(n\) channel,
 Lemma 2.1 (i.i.d.\ sampling after conditioning on \(N=n\); FWP Lemma 0), and
-Lemma 2.2 (copula reduction on null boxes; FWP Lemma 1) are as in §2. Proof sketches
-below cite those lemmas by number rather than restating them.
+Lemma 2.2 (copula reduction on null boxes; FWP Lemma 1) are as in §2. The scoped
+\(3{+}1\) proof also uses the measure--order coupling stated as Lemma 2.3. Proof
+sketches below cite those lemmas by number rather than restating them.
 
 ### 3.1 Exact scale blindness at fixed cardinality
 
@@ -457,24 +572,10 @@ geometry, with identical induced relations. Unlabeled poset laws therefore coinc
 and total variation vanishes. The estimation consequence is the two-point bound at
 \(\mathrm{TV}=0\) (`wp4_two_point_theorem.md`, Teorema 2). \(\blacksquare\)
 
-**3+1 dimensions (scoped).** `[PROVED]` in the scoped class of
-`op12_tv_zero_3p1.md`, not as a general Hauptvermutung. Fix a temporal sector
-\(\sigma\in\{+,-\}\) and a patch shape \(\lambda\). For masses \(M,M'\) in a
-prescribed interval and \(a=M'/M\), the identification in dimensionless Kruskal
-coordinates \(\phi_a(U,V,\omega)=(U,V,\omega)\) satisfies
-\(g_{M',\lambda}=a^2 g_{M,\lambda}\) and, after volume normalization,
-
-\[
-\frac{\mu_{M',\lambda}}{\mu_{M',\lambda}(K)}
-=
-\phi_{a\#}
-\Bigl(
-\frac{\mu_{M,\lambda}}{\mu_{M,\lambda}(K)}
-\Bigr).
-\]
-
-A positive conformal rescaling preserves causality. The general coupling lemma
-(`op12_tv_zero_3p1.md` §2) then yields, for every \(n\),
+**3+1 dimensions (scoped).** `[PROVED]` in
+\(\mathcal G^\sigma_{3+1}(\lambda,I_M)\), not as a general Hauptvermutung. Fix
+\(\sigma\in\{+,-\}\), \(\lambda\), and masses \(M,M'\in I_M\). Then, for every
+\(n\ge0\),
 
 \[
 P^{\mathrm{fixed}\,n}_{M,\sigma,\lambda}
@@ -482,9 +583,82 @@ P^{\mathrm{fixed}\,n}_{M,\sigma,\lambda}
 P^{\mathrm{fixed}\,n}_{M',\sigma,\lambda}.
 \]
 
-Thus absolute mass (and absolute \(r_h=2M\)) is non-identifiable in the fixed-\(n\)
-order-only channel inside each fixed sector and shape. Dimensionless targets such as
-\(r/(2M)-1\) are constant along the orbit and are not constrained by this equality.
+Consequently the corresponding total variation distance is zero. Thus absolute mass
+(and absolute \(r_h=2M\)) is non-identifiable in the fixed-\(n\) order-only channel
+inside each fixed sector and shape. Dimensionless targets such as \(r/(2M)-1\) are
+constant along the orbit and are not constrained by this equality.
+
+*Proof of the scoped \(3{+}1\) statement.* Put \(a=M'/M>0\). Between the two copies
+of the maximal dimensionless Kruskal domain define
+
+\[
+\Phi_a:\mathcal D_{\max,M}^{\sigma}\longrightarrow
+\mathcal D_{\max,M'}^{\sigma},
+\qquad
+\Phi_a(U,V,\omega)=(U,V,\omega).
+\]
+
+It is a diffeomorphism with inverse \(\Phi_{1/a}\), preserves the fixed temporal
+sector and its time orientation, and maps
+\(K^\sigma_{M,\lambda}\) onto \(K^\sigma_{M',\lambda}\). Since
+\(g_M^\sigma=M^2\widehat g^\sigma\),
+
+\[
+\Phi_a^*g_{M'}^\sigma
+=
+a^2g_M^\sigma.
+\]
+
+In particular, for every tangent vector \(Z\),
+
+\[
+g_{M'}^\sigma(d\Phi_a Z,d\Phi_a Z)
+=
+a^2g_M^\sigma(Z,Z).
+\]
+
+The positive factor preserves timelike, null, and causal character. Together with
+the preserved time orientation, \(\Phi_a\) sends every future-directed causal curve
+to one of the same type; applying \(\Phi_{1/a}\) gives the converse. Therefore, for
+all patch points,
+
+\[
+x\prec_M^\sigma y
+\quad\Longleftrightarrow\quad
+\Phi_a(x)\prec_{M'}^\sigma\Phi_a(y).
+\]
+
+This step uses causality in the maximal extensions: a witnessing curve may leave the
+patch, and \(\Phi_a\) transports the whole curve. The conformal-causality results of
+Hawking--King--McCarthy and Malament are `[BACKGROUND]`; their difficult converse
+direction is not used here because the conformal map is explicit.
+
+In four dimensions the positive volume measure scales as
+
+\[
+\Phi_a^*\mu_{M'}^\sigma=a^4\mu_M^\sigma,
+\qquad
+\mu_{M'}^\sigma(K^\sigma_{M',\lambda})
+=a^4\mu_M^\sigma(K^\sigma_{M,\lambda}).
+\]
+
+Hence the constant cancels after conditioning on cardinality:
+
+\[
+(\Phi_a)_\#\nu_{M,\sigma,\lambda}
+=
+\nu_{M',\sigma,\lambda}.
+\]
+
+The restriction of \(\Phi_a\) to the patches is a bimeasurable bijection satisfying
+the hypotheses of Lemma 2.3 (indeed, the order equivalence holds everywhere, not
+merely almost everywhere). The fixed-\(n\) unlabeled poset laws are therefore equal
+for every \(n\ge1\); for \(n=0\) both are the point mass at the empty poset.
+\(\blacksquare\)
+
+`op12_tv_zero_3p1.md` §§2--3 and `op11_spherical_dual_target.md` §2 are retained as
+traceability records, not as dependencies needed to fill a missing step in this
+proof.
 
 #### What Theorem 3.1 does not say
 
@@ -515,6 +689,25 @@ order-only channel inside each fixed sector and shape. Dimensionless targets suc
    for causal isomorphisms of Minkowski space. The
    contribution here is the **exact finite-\(n\) TV statement** for the sprinkling
    channel, not a new continuum theorem.
+
+Figures 2 and 3 should be read together: the first is the exact coupling witness;
+the second is a deliberately bounded illustration of scale-free variation that the
+theorem does not rule out.
+
+![**Coupling witness for Theorem 3.1 in 1+1 dimensions.** Panels A and B
+use one point sample and its image under \(\Phi_s\); panel D therefore shows the
+same relations element by element. This visualizes the coupling used to prove
+equality of poset laws. It does **not** assert that two independently generated
+sprinklings are elementwise identical.](../viz/output/fig02_invisible_scale.png){width=100%}
+
+![**A scale-free companion to Figure 2.** The comparable-pair fraction
+is evaluated for \(N=60\) on co-scaled exterior rectangles, with 80 repetitions per
+point and fixed seed 4242. The empirical variation with dimensionless patch placement
+does not establish recovery, injective identification, or horizon localization.
+The overlap of the independent \(r_s=1\) and \(r_s=7\) ensembles is consistent with
+the exact co-scaling law of Theorem 3.1.](../viz/output/fig05_what_is_recoverable.png){width=100%}
+
+\clearpage
 
 ### 3.2 The global event horizon is not a functional of data from a finite causally convex patch
 
@@ -556,6 +749,17 @@ teleology.)
    spacetime, is the wrong target for a finite-patch experiment.
 3. Empirical failure of particular quasi-local constructions (ledger C1–C6) is
    **not** invoked and is **not** a substitute for this argument.
+
+Figure 4 gives a finite order-theoretic analogy for this dependence on a completion;
+its maximal-element property is not a surrogate definition of the event horizon.
+
+![**Toy order-theoretic analogy for teleology.** The blue induced
+subposet is identical in all panels, while continuations outside it change a global
+maximality property. Maximality of the orange element is not the event horizon; the
+diagram only illustrates why common finite-patch data cannot determine a
+completion-dependent target.](../viz/output/fig03_teleology.png){width=100%}
+
+\clearpage
 
 ### 3.3 Localization floor in a regular one-parameter family (1+1)
 
@@ -1608,6 +1812,16 @@ screen** with order-only transport and sign. Committee 043 initially overstated
 abundance/stability; red-team 044 lowered the terminal to the conservative
 `BLOCKED_NO_STABLE_CODIM2`. The self-correction is part of the method: the ledger
 records the lower claim, not the withdrawn higher one.
+
+Figure 5 visualizes the box-wall confound behind several ledger entries, using only
+an illustrative fixed-seed diagnostic rather than a new validation run.
+
+![**Fixed-seed box-wall diagnostic for future volume.** In this
+illustrative \(N=900\) sample, the correlations are
+\(\rho(|J^+|,t)=-0.951\), \(\rho(|J^+|,r)=0.164\), and \(0.465\) after restricting
+to the displayed narrow time band. These values are generated by the visualization
+script and are not a sealed validation result. The time-banded residual is a
+diagnostic trend, not recovery of horizon physics.](../viz/output/fig04_box_wall.png){width=100%}
 
 ### 5.4 Cross-cutting structural reading
 
