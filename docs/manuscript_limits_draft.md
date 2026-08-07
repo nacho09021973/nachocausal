@@ -1,5 +1,10 @@
 # Finite order-only observation of Schwarzschild patches: exact scale blindness and a sharp localization rate
 
+**José Ignacio Martín-Gandul**
+
+Independent researcher, Alcalá de Guadaíra, Seville, Spain
+`adnacho@gmail.com`
+
 ---
 
 ## Abstract
@@ -15,12 +20,13 @@ one-parameter family of fixed-corner \(1{+}1\) diamonds, the comparable-pair
 fraction yields an explicit estimator whose uniform risk is \(O(n^{-1/2})\) for
 fixed sufficiently small null lapse. A Fisher-information two-point bound gives
 the matching \(\Omega(n^{-1/2})\) lower rate, so the minimax rate is
-\(n^{-1/2}\); the constants and their small-lapse scaling remain partly open.
+\(n^{-1/2}\). The constants are not sharp; a deterministic lapse sweep supports,
+but does not prove, the conjectured quadratic small-lapse Fisher scaling.
 For the future-cardinality observable used in a preregistered in-patch experiment, we
 also derive an exact tagged-element binomial law and its finite-\(n\) correlation
-attenuation. The empirical result is reported with its artifact caveat and a
-short record of unsuccessful region-locators is retained as supporting evidence,
-not as a universal no-go. The results show that fixed-\(n\) order can retain
+attenuation. The empirical result is reported with its artifact caveat, and a
+short record of unsuccessful region-locators is retained as experimental context,
+not as evidence for a universal no-go. The results show that fixed-\(n\) order can retain
 dimensionless shape information while supplying neither an external ruler nor a
 global completion.
 
@@ -61,7 +67,7 @@ as formalized in Lemma 2.1:
 | Channel | Observation | Role in this paper |
 |---|---|---|
 | **Order-only, fixed \(n\)** | Isomorphism class of the poset conditioned on \(N=n\) | Primary channel for Theorems 3.1, 3.8, and 3.9 |
-| **Order+number** | Joint law of order and cardinality (e.g.\ \(N\sim\mathrm{Poisson}(\varrho V)\) with \(\varrho\) known) | Contrast only: scale can re-enter through \(N\) (Remark after Thm 3.1) |
+| **Order+number** | Joint law of order and cardinality (e.g.\ \(N\sim\mathrm{Poisson}(\varrho\,\mathrm{Vol}(W))\) with \(\varrho\) known) | Contrast only: scale can re-enter through \(N\) (Remark after Thm 3.1) |
 
 Conditioning on \(N=n\) removes the total-volume leak through cardinality: the \(n\)
 points are i.i.d.\ from the normalized volume measure. Absolute scale is then
@@ -109,7 +115,7 @@ stake; none is silently substituted for another.
 ### 1.5 Scale versus shape
 
 The scale-blindness and localization results concern different statistical
-families. Theorem 3.1 compares \((r_s,P)\) with \((sr_s,\Phi_s(P))\): parameter and
+families. Theorem 3.1 compares \((r_s,W)\) with \((sr_s,\Phi_s(W))\): parameter and
 patch are co-scaled, so every dimensionless feature of the experiment is held
 fixed. Theorems 3.8–3.9 instead keep the Eddington--Finkelstein corners fixed while
 \(\tau\) varies. Ratios such as \(r_p/\tau\), \(r_q/\tau\), and
@@ -170,14 +176,15 @@ and the horizon sits at \(\tilde U=0\); the explicit transformation is derived i
 §3.3.2.
 
 **Diamond family (regular family for Theorems 3.8–3.9).** Fix corners
-\(p=(v_p,r_p)\) (exterior) and \(q=(v_q,r_q)\) (interior) with
+\(z_{\mathrm{out}}=(v_p,r_p)\) (exterior) and
+\(z_{\mathrm{in}}=(v_q,r_q)\) (interior) with
 \(0<r_q<\tau_0\le\tau_1<r_p\) and \(v_p<v_q\). For each
 \(\tau\in[\tau_0,\tau_1]\) the patch is the causal diamond
 
 \[
 D_\tau
 :=
-J^+_\tau(p)\cap J^-_\tau(q).
+J^+_\tau(z_{\mathrm{out}})\cap J^-_\tau(z_{\mathrm{in}}).
 \]
 
 In null coordinates \(D_\tau\) is a coordinate box straddling the horizon, with
@@ -186,7 +193,7 @@ quadratic-mean differentiability and the localization floor are proved (Section 
 
 **Dilation orbit (family for Theorem 3.1 in \(1{+}1\)).** For \(s>0\), the map
 \(\Phi_s(t,r)=(st,sr)\) pulls \(g_{s r_s}\) back to \(s^2 g_{r_s}\). Patches are
-transported covariantly: \(P\mapsto\Phi_s(P)\). No null-box assumption is required
+transported covariantly: \(W\mapsto\Phi_s(W)\). No null-box assumption is required
 for the exact \(\mathrm{TV}=0\) statement (Section 3.1).
 
 ### 2.2 Geometry in \(3{+}1\) dimensions (scoped use only)
@@ -221,7 +228,7 @@ and chosen time orientation may be written
 
 \[
 g_M^\sigma=M^2\widehat g^\sigma,
-\qquad T^\sigma,
+\qquad \mathfrak t^\sigma,
 \]
 
 where \(\widehat g^\sigma\) is independent of \(M\). This factorization, rather than
@@ -248,7 +255,7 @@ For fixed \(\sigma\) and \(\lambda\), the scoped class is
 \mathcal G^\sigma_{3+1}(\lambda,I_M)
 =
 \left\{
-\bigl(K^\sigma_{M,\lambda},g_M^\sigma,T^\sigma,
+\bigl(K^\sigma_{M,\lambda},g_M^\sigma,\mathfrak t^\sigma,
 \mu_M^\sigma,\prec_M^\sigma\bigr):M\in I_M
 \right\}.
 \]
@@ -269,7 +276,7 @@ needed here is given in §3.1.
 
 ### 2.3 Sprinkling and laws
 
-Let \((P,g)\) be a finite-volume patch. A Poisson point process of intensity
+Let \((W,g)\) be a finite-volume patch. A Poisson point process of intensity
 \(\varrho>0\) with respect to \(\mathrm{vol}_g\) induces a random finite causal set.
 This volume-based sprinkling is the standard Lorentz-invariant discretization; in
 Minkowski space, Bombelli, Henson, and Sorkin (2006) show that no measurable
@@ -285,12 +292,12 @@ Write:
 
 **Lemma 2.1 (cardinality conditioning).**
 Conditioned on \(N=n\), the \(n\) points are i.i.d.\ with law
-\(\mathrm{vol}_g/\mathrm{vol}_g(P)\).
+\(\mathrm{vol}_g/\mathrm{vol}_g(W)\).
 
-*Proof.* For disjoint measurable cells \(A_1,\ldots,A_m\) partitioning \(P\),
+*Proof.* For disjoint measurable cells \(A_1,\ldots,A_m\) partitioning \(W\),
 independent Poisson counts conditioned on their sum \(n\) have the multinomial
 law with cell probabilities
-\(\mathrm{vol}_g(A_j)/\mathrm{vol}_g(P)\). Refining the partition gives the joint
+\(\mathrm{vol}_g(A_j)/\mathrm{vol}_g(W)\). Refining the partition gives the joint
 law of \(n\) independent points from normalized volume. \(\blacksquare\)
 
 **Lemma 2.2 (copula reduction on null boxes).**
@@ -299,10 +306,12 @@ If the patch is a coordinate box in global null coordinates with metric
 fixed \(n\) depends on \(g\) only through the copula of the normalized volume
 measure.
 
-*Proof.* Let \(F\) and \(G\) be the continuous marginal distribution functions
-of normalized volume in \(U\) and \(V\). The probability-integral transform
-\((U,V)\mapsto(F(U),G(V))\) sends each sampled point to the unit square with the
-associated copula law. Both coordinates are increasing, so the transformation
+*Proof.* Continuity and strict positivity of \(\Omega\) on the compact box make
+both marginal densities continuous and strictly positive. Hence their distribution
+functions \(\mathsf F\) and \(\mathsf G\) are strictly increasing. The
+probability-integral transform
+\((U,V)\mapsto(\mathsf F(U),\mathsf G(V))\) sends each sampled point to the unit square with the
+associated copula law. Both coordinates are strictly increasing, so the transformation
 preserves the product causal order. Applying it independently to all \(n\) points
 and then forgetting labels proves the claim. \(\blacksquare\)
 
@@ -378,10 +387,11 @@ These distance identities are standard and are included to fix conventions.
 
 ### 2.4 Targets
 
-A *target* is a map \(T\) from completions to a metric space \((\Theta,d_\Theta)\).
+A *target* is a map \(\mathcal T\) from completions to a metric space
+\((\Theta,d_\Theta)\).
 An *order-only estimator* is any (possibly randomized) measurable map from
 isomorphism classes of finite posets into \(\Theta\). Risk is
-\(\mathbb{E}\,d_\Theta(\widehat T, T)\); minimax risk is the infimum over
+\(\mathbb{E}\,d_\Theta(\widehat{\mathcal T},\mathcal T)\); minimax risk is the infimum over
 estimators of the supremum risk over the declared family.
 
 Targets used in this paper:
@@ -390,7 +400,7 @@ Targets used in this paper:
 |---|---|---|
 | Absolute horizon radius / mass | \(r_s\), \(M\) | Non-identifiable at fixed \(n\) (Thm 3.1) |
 | Continuous diamond parameter | \(\tau\in[\tau_0,\tau_1]\) | Minimax rate \(n^{-1/2}\) at fixed small lapse (Thms 3.8–3.9 and Cor. 3.10); not a distinct horizon invariant |
-| Global event horizon | \(T_{\mathrm{EH}}\) | Not a functional of a finite causally convex patch (Thm 3.2) |
+| Global event-horizon incidence | \(\chi_{\mathrm{EH}}(W;\mathcal M,g)\) | Not a functional of a finite causally convex patch (Thm 3.2) |
 | In-patch future-cardinality score | Section 4 | Exact tagged law and bounded empirical recoverability |
 | Region-locators C1–C6 | named combinatorial constructions | Empirical failures summarized in §5 |
 
@@ -398,15 +408,26 @@ Every guarantee below specifies its geometric family, observation channel,
 target, loss, and direction. In particular, empirical failure of a named
 estimator is never used as a proof of non-identifiability.
 
-### 2.5 Data-processing discipline
+### 2.5 Notation
 
-Data processing implies that coarsening the observation cannot increase
-distinguishability. An upper bound on total variation (or Hellinger) between
-laws therefore **proves blindness** when it is small, but a large upper bound does
-**not** prove that a coarse observation is informative. Regions outside a proved
-blind zone are at most *candidate visible*. This is textbook data processing, not
-an independent theorem; we enforce it only as wording discipline in the later map
-of open questions.
+The following symbols keep their displayed meanings across sections; auxiliary
+letters introduced inside one proof are local to that proof.
+
+| Symbol | Meaning |
+|---|---|
+| \(W\) | Generic observed finite patch |
+| \(D_\tau\) | Fixed-corner causal diamond at parameter \(\tau\) |
+| \(z_{\mathrm{out}},z_{\mathrm{in}}\) | Exterior and interior EF corners; their coordinates retain subscripts \(p,q\) |
+| \(\Theta=[\tau_0,\tau_1]\), \(\Theta_{\mathrm{ext}}\) | Compact parameter set and a containing open interval |
+| \(\Delta v=v_q-v_p\) | Null lapse of the fixed-corner diamond |
+| \(P_{g,\varrho},P_{g,n},Q_\tau^n\) | Poset laws; \(P\) is reserved for probability-law notation |
+| \(p(\tau),S_n,\widehat p_n\) | Comparable-pair probability, count, and ordering fraction |
+| \(c_\tau,I(\tau),\bar I\) | Copula density, Fisher information, and its supremum on \(\Theta\) |
+| \(\mathcal R_\tau,\mathcal V(\tau),\mathcal E(\tau,\Delta v)\) | Outgoing-ray flow, diamond volume, and small-lapse remainder |
+| \(J^\pm(x)\) | Causal future/past of \(x\) |
+| \(L,U,Y,F,\alpha_n\) | Pretagged label, continuum future fraction, time score, future count, and attenuation in §4.1 |
+| \(\varrho,\ell=\varrho^{-1/d}\) | Sprinkling intensity and discreteness length |
+| \(H,\mathrm{TV}\) | Hellinger and total-variation distances |
 
 ## §3 Exact obstructions and fixed-\(n\) statistical limits
 
@@ -424,13 +445,13 @@ and measure--order coupling are defined and proved in §2.
 #### Theorem 3.1 (exact witness orbit for absolute scale)
 
 **1+1 dimensions.** Let \(g_{r_s}\) be the 1+1 Schwarzschild metric with horizon
-radius \(r_s>0\), let \(P\) be any finite-volume patch, and let
-\(\Phi_s(t,r)=(st,sr)\) for \(s>0\). Write \(P_n(r_s;P)\) for the law of the
+radius \(r_s>0\), let \(W\) be any finite-volume patch, and let
+\(\Phi_s(t,r)=(st,sr)\) for \(s>0\). Write \(\mathbb P_n(r_s;W)\) for the law of the
 unlabeled \(n\)-element poset obtained by conditioning the sprinkling of
-\((P,g_{r_s})\) on \(N=n\). Then, for every \(n\ge 0\) and every \(s>0\),
+\((W,g_{r_s})\) on \(N=n\). Then, for every \(n\ge 0\) and every \(s>0\),
 
 \[
-\mathrm{TV}\bigl(P_n(r_s;P),\, P_n(s r_s;\Phi_s(P))\bigr)
+\mathrm{TV}\bigl(\mathbb P_n(r_s;W),\,\mathbb P_n(s r_s;\Phi_s(W))\bigr)
 \;=\; 0.
 \]
 
@@ -475,47 +496,47 @@ Consequently the corresponding total variation distance is zero. Thus absolute m
 inside each fixed sector and shape. Dimensionless targets such as \(r/(2M)-1\) are
 constant along the orbit and are not constrained by this equality.
 
-*Proof of the scoped \(3{+}1\) statement.* Put \(a=M'/M>0\). Between the two copies
+*Proof of the scoped \(3{+}1\) statement.* Put \(s=M'/M>0\). Between the two copies
 of the maximal dimensionless Kruskal domain define
 
 \[
-\Phi_a:\mathcal D_{\max,M}^{\sigma}\longrightarrow
+\Phi_s:\mathcal D_{\max,M}^{\sigma}\longrightarrow
 \mathcal D_{\max,M'}^{\sigma},
 \qquad
-\Phi_a(U,V,\omega)=(U,V,\omega).
+\Phi_s(U,V,\omega)=(U,V,\omega).
 \]
 
-It is a diffeomorphism with inverse \(\Phi_{1/a}\), preserves the fixed temporal
+It is a diffeomorphism with inverse \(\Phi_{1/s}\), preserves the fixed temporal
 sector and its time orientation, and maps
 \(K^\sigma_{M,\lambda}\) onto \(K^\sigma_{M',\lambda}\). Since
 \(g_M^\sigma=M^2\widehat g^\sigma\),
 
 \[
-\Phi_a^*g_{M'}^\sigma
+\Phi_s^*g_{M'}^\sigma
 =
-a^2g_M^\sigma.
+s^2g_M^\sigma.
 \]
 
 In particular, for every tangent vector \(Z\),
 
 \[
-g_{M'}^\sigma(d\Phi_a Z,d\Phi_a Z)
+g_{M'}^\sigma(d\Phi_s Z,d\Phi_s Z)
 =
-a^2g_M^\sigma(Z,Z).
+s^2g_M^\sigma(Z,Z).
 \]
 
 The positive factor preserves timelike, null, and causal character. Together with
-the preserved time orientation, \(\Phi_a\) sends every future-directed causal curve
-to one of the same type; applying \(\Phi_{1/a}\) gives the converse. Therefore, for
+the preserved time orientation, \(\Phi_s\) sends every future-directed causal curve
+to one of the same type; applying \(\Phi_{1/s}\) gives the converse. Therefore, for
 all patch points,
 
 \[
 x\prec_M^\sigma y
 \quad\Longleftrightarrow\quad
-\Phi_a(x)\prec_{M'}^\sigma\Phi_a(y).
+\Phi_s(x)\prec_{M'}^\sigma\Phi_s(y).
 \]
 
-For ambient causality, a witnessing curve may leave the patch and \(\Phi_a\)
+For ambient causality, a witnessing curve may leave the patch and \(\Phi_s\)
 transports the whole curve. For intrinsic patch causality, a witnessing curve
 remains in \(K^\sigma_{M,\lambda}\), and its image remains in
 \(K^\sigma_{M',\lambda}\); applying the inverse gives the converse. Thus the same
@@ -525,21 +546,21 @@ conformal-causality theorems is not used because the conformal map is explicit.
 In four dimensions the positive volume measure scales as
 
 \[
-\Phi_a^*\mu_{M'}^\sigma=a^4\mu_M^\sigma,
+\Phi_s^*\mu_{M'}^\sigma=s^4\mu_M^\sigma,
 \qquad
 \mu_{M'}^\sigma(K^\sigma_{M',\lambda})
-=a^4\mu_M^\sigma(K^\sigma_{M,\lambda}).
+=s^4\mu_M^\sigma(K^\sigma_{M,\lambda}).
 \]
 
 Hence the constant cancels after conditioning on cardinality:
 
 \[
-(\Phi_a)_\#\nu_{M,\sigma,\lambda}
+(\Phi_s)_\#\nu_{M,\sigma,\lambda}
 =
 \nu_{M',\sigma,\lambda}.
 \]
 
-The restriction of \(\Phi_a\) to the patches is a bimeasurable bijection satisfying
+The restriction of \(\Phi_s\) to the patches is a bimeasurable bijection satisfying
 the hypotheses of Lemma 2.3 (indeed, the order equivalence holds everywhere, not
 merely almost everywhere). The fixed-\(n\) unlabeled poset laws are therefore equal
 for every \(n\ge1\); for \(n=0\) both are the point mass at the empty poset.
@@ -547,8 +568,8 @@ for every \(n\ge1\); for \(n=0\) both are the point mass at the empty poset.
 
 #### What Theorem 3.1 does not say
 
-1. **The patch is co-scaled.** The theorem compares \((r_s,P)\) with
-   \((sr_s,\Phi_s(P))\); it does not assert equality of laws when one externally
+1. **The patch is co-scaled.** The theorem compares \((r_s,W)\) with
+   \((sr_s,\Phi_s(W))\); it does not assert equality of laws when one externally
    specified absolute patch is held fixed as the mass varies. An external length
    reference breaks this particular witness orbit and can make identification
    possible, but does not by itself prove identifiability. The fixed-corner family
@@ -582,26 +603,34 @@ is evaluated for \(N=60\) on co-scaled exterior rectangles, with 80 repetitions 
 point and fixed seed 4242. The empirical variation with dimensionless patch placement
 does not establish recovery, injective identification, or horizon localization.
 The overlap of the independent \(r_s=1\) and \(r_s=7\) ensembles is consistent with
-the exact co-scaling law of Theorem 3.1.](../viz/output/fig05_what_is_recoverable.png){width=100%}
+the exact co-scaling law of Theorem 3.1.](../viz/output/fig03_what_is_recoverable.png){width=100%}
 
 \clearpage
 
 ### 3.2 The global event horizon is not a functional of data from a finite causally convex patch
 
-#### Theorem 3.2 (teleological non-identifiability)
+#### Theorem 3.2 (teleological two-point obstruction)
 
-Let \(T_{\mathrm{EH}}(M,g)\) denote the event horizon of a time-oriented Lorentzian
-manifold \((M,g)\) (the boundary of the causal past of future null infinity, in the
-standard asymptotically flat setting, or the appropriate analogue in the completion
-under study). Let \(P\subset M\) be a finite-volume **causally convex** region common
-to the admissible completions, and let \(\mathcal{D}(P)\) be any
-\(\sigma\)-algebra of observables determined by the restriction of the geometry and
-of a sprinkling to \(P\) alone (in particular: the unlabeled causal set of the
-sprinkling in \(P\)).
-
-**Claim.** \(T_{\mathrm{EH}}\) is not \(\mathcal{D}(P)\)-measurable in general: there
-exist pairs of completions that induce identical data on \(P\) and distinct global
-event horizons.
+For an asymptotically flat completion \((\mathcal M,g)\) and an observed patch
+\(W\), define
+the binary target
+\[
+\chi_{\mathrm{EH}}(W;\mathcal M,g)
+:=
+\mathbf 1\{W\cap\mathcal H^+(\mathcal M,g)\ne\varnothing\},
+\]
+where \(\mathcal H^+(M,g)\) is the future event horizon. There exist two admissible
+completions, indexed by \(j=0,1\), and a finite-volume patch \(W\) that is causally
+convex in **both** completions, such that their restricted metrics, volume measures,
+and causal relations agree on \(W\), while
+\(\chi_{\mathrm{EH}}(W;\mathcal M_0,g_0)=0\) and
+\(\chi_{\mathrm{EH}}(W;\mathcal M_1,g_1)=1\). Consequently, for every possibly randomized
+estimator \(\widehat\chi\) based only on the finite-patch data,
+\[
+\mathbb P_0(\widehat\chi=1)+\mathbb P_1(\widehat\chi=0)\ge1.
+\]
+In particular, the full global event-horizon set cannot be recovered from those
+data.
 
 *Proof by an explicit completion pair.* Use ingoing spherical null coordinates and
 compare Minkowski spacetime with a standard collapse completion of Vaidya type,
@@ -614,15 +643,25 @@ where \(m(v)=0\) for \(v\le v_0\), increases afterwards, and settles to a positi
 mass. The two metrics agree exactly on the flat region \(v<v_0\). The Minkowski
 completion has no event horizon. In the collapse completion the event horizon is an
 outgoing null hypersurface whose generators extend backwards into that same flat
-region before the infalling matter arrives. Choose a sufficiently small causally
-convex diamond \(P\) around a point of this precursor segment, with closure contained
-in \(v<v_0\). Such diamonds exist because the common flat region is strongly causal.
+region before the infalling matter arrives; this standard teleological behaviour is
+reviewed, including collapse examples found by tracing the horizon backwards, in
+[20, §2.1]. Choose a sufficiently small diamond \(W\) around a point of this precursor
+segment. Strong causality supplies, in each completion, an arbitrarily small
+causally convex neighbourhood of that point. Inside their common flat overlap,
+where the metrics and local cones coincide, choose one still smaller Minkowski
+causal diamond \(W\) whose closure lies in both neighbourhoods and in \(v<v_0\).
+Any causal curve between points of \(W\) is confined to the corresponding larger
+causally convex neighbourhood; there the common diamond is causally convex.
+Thus the same \(W\) is causally convex in both full completions.
 
-The restricted metric, volume measure, and causal relation on \(P\) are identical in
-the two completions, so every sprinkling observable determined by \(P\) has the same
-law. Nevertheless \(T_{\mathrm{EH}}\cap P\) is empty in the Minkowski completion and
-nonempty in the collapse completion. Thus \(T_{\mathrm{EH}}\) is not measurable with
-respect to finite-patch data on the stated class. \(\blacksquare\)
+The restricted metric, volume measure, and causal relation on \(W\) are therefore
+identical, so every sprinkling observable determined by \(W\) has the same law in
+the two models. Yet \(\chi_{\mathrm{EH}}=0\) in Minkowski and
+\(\chi_{\mathrm{EH}}=1\) in the collapse completion. If
+\(a:=\mathbb P_0(\widehat\chi=1)=\mathbb P_1(\widehat\chi=1)\), equality of the data
+laws gives
+\(\mathbb P_0(\widehat\chi=1)+\mathbb P_1(\widehat\chi=0)=a+(1-a)=1\).
+This proves the displayed bound and the claimed obstruction. \(\blacksquare\)
 
 #### What Theorem 3.2 does not say
 
@@ -642,7 +681,7 @@ its maximal-element property is not a surrogate definition of the event horizon.
 subposet is identical in all panels, while continuations outside it change a global
 maximality property. Maximality of the orange element is not the event horizon; the
 diagram only illustrates why common finite-patch data cannot determine a
-completion-dependent target.](../viz/output/fig03_teleology.png){width=100%}
+completion-dependent target.](../viz/output/fig04_teleology.png){width=100%}
 
 \clearpage
 
@@ -670,17 +709,15 @@ by the same factor \(16M^2\). Conditioning on \(N=n\) cancels that factor. The
 normalized point law and hence every induced poset law are therefore constant in
 \(M\). \(\blacksquare\)
 
-**Proposition 3.4 (a fixed EF rectangle does not supply the regular experiment
+**Observation 3.4 (a fixed EF rectangle does not supply the regular experiment
 below).** On a fixed Eddington--Finkelstein rectangle the volume density \(dv\,dr\)
 is parameter-independent, but the causal-order map varies with \(\tau\). After
 passing to parameter-dependent global null coordinates to make the order map common,
 the image of the rectangle has moving support. Thus this design does not meet the
-fixed-domain smooth-density hypotheses used for the Fisher argument below.
-
-*Proof.* Both assertions follow directly from the EF metric and from the
-\(\tau\)-dependent null transformation displayed in §3.3.2. This proposition is a
-design diagnostic, not a claim that no other analysis of the rectangle is possible.
-\(\blacksquare\)
+fixed-domain smooth-density hypotheses used for the Fisher argument below. This
+follows directly from the EF metric and the \(\tau\)-dependent null transformation
+displayed in §3.3.2; it is a design diagnostic, not a claim that no other analysis
+of the rectangle is possible.
 
 #### 3.3.2 The diamond family with fixed EF corners
 
@@ -689,15 +726,17 @@ design diagnostic, not a claim that no other analysis of the rectangle is possib
 \[
 D_\tau
 :=
-J^+_\tau(p)\cap J^-_\tau(q),
+J^+_\tau(z_{\mathrm{out}})\cap J^-_\tau(z_{\mathrm{in}}),
 \qquad
-p=(v_p,r_p),\; q=(v_q,r_q)
+z_{\mathrm{out}}=(v_p,r_p),\quad z_{\mathrm{in}}=(v_q,r_q)
 \]
 in the ingoing EF chart of 1+1 Schwarzschild of horizon radius \(\tau\). Fix once
-and for all an open interval \(J\) with \([\tau_0,\tau_1]\subset J\) and
-\(\overline J\subset(r_q,r_p)\); nothing below uses more than \(r_q<\tau<r_p\), so
-every statement of this subsection holds verbatim for \(\tau\in J\), with all
-constants uniform on compact subsets of \(J\). (The enlargement is free and is what
+and for all an open interval \(\Theta_{\mathrm{ext}}\) with
+\([\tau_0,\tau_1]\subset\Theta_{\mathrm{ext}}\) and
+\(\overline{\Theta_{\mathrm{ext}}}\subset(r_q,r_p)\); nothing below uses more than
+\(r_q<\tau<r_p\), so every statement of this subsection holds verbatim for
+\(\tau\in\Theta_{\mathrm{ext}}\), with all constants uniform on compact subsets of
+\(\Theta_{\mathrm{ext}}\). (The enlargement is free and is what
 lets Proposition 3.6 quote a criterion stated on an open parameter set.)
 
 **Null coordinates and the product order.** Put
@@ -747,11 +786,14 @@ x\preceq y
 v_x\le v_y .
 \]
 
-**The diamond is the corresponding null box.** For \(\tau\in J\) we have
+**The diamond is the corresponding null box.** For
+\(\tau\in\Theta_{\mathrm{ext}}\) we have
 \(r_q<\tau<r_p\), hence \(\omega_\tau(r_q)<0<\omega_\tau(r_p)\) and therefore
-\(\tilde U_p(\tau)<0<\tilde U_q(\tau)\), where \(\tilde U_p(\tau):=\tilde U(p)\) and
-\(\tilde U_q(\tau):=\tilde U(q)\); with \(v_p<v_q\) this gives \(q\in J^+_\tau(p)\)
-for every \(\tau\in J\). By the product order,
+\(\tilde U_p(\tau)<0<\tilde U_q(\tau)\), where
+\(\tilde U_p(\tau):=\tilde U(z_{\mathrm{out}})\) and
+\(\tilde U_q(\tau):=\tilde U(z_{\mathrm{in}})\); with \(v_p<v_q\) this gives
+\(z_{\mathrm{in}}\in J^+_\tau(z_{\mathrm{out}})\) for every
+\(\tau\in\Theta_{\mathrm{ext}}\). By the product order,
 
 \[
 D_\tau=[\tilde U_p(\tau),\,\tilde U_q(\tau)]\times[v_p,v_q],
@@ -764,21 +806,23 @@ r_\tau(\tilde U,v):=\omega_\tau^{-1}\bigl(-e^{v/(2\tau)}\tilde U\bigr)
 \]
 
 for the areal radius in the chart; \(r_\tau\) is strictly decreasing in
-\(\tilde U\). Its minimum over the closed box is attained at the corner \(q\) and
+\(\tilde U\). Its minimum over the closed box is attained at the corner
+\(z_{\mathrm{in}}\) and
 equals \(r_q\); its maximum is attained at \((\tilde U_p(\tau),v_q)\) and equals
 \(r_+(\tau)=\omega_\tau^{-1}\bigl(e^{(v_q-v_p)/(2\tau)}\omega_\tau(r_p)\bigr)\),
-continuous in \(\tau\). Consequently, for every compact \(K'\subset J\), with
-\(R:=\max_{\tau\in K'}r_+(\tau)<\infty\),
+continuous in \(\tau\). Consequently, for every compact
+\(\Theta'\subset\Theta_{\mathrm{ext}}\), with
+\(r_{\max}:=\max_{\tau\in\Theta'}r_+(\tau)<\infty\),
 
 \[
-r_\tau(\tilde U,v)\in[r_q,R]\subset(0,\infty)
-\qquad\text{for all }(\tilde U,v)\in D_\tau,\ \tau\in K' :
+r_\tau(\tilde U,v)\in[r_q,r_{\max}]\subset(0,\infty)
+\qquad\text{for all }(\tilde U,v)\in D_\tau,\ \tau\in\Theta' :
 \]
 
 the radial parameter is confined to a **compact interval that does not depend on
 \(\tau\)** and is bounded away from \(0\) and \(\infty\). The singularity is avoided
 automatically, and \(\omega_\tau'(r)=r\,e^{r/\tau}/\tau^2\) is bounded above and
-below by positive constants on that range, uniformly in \(\tau\in K'\).
+below by positive constants on that range, uniformly in \(\tau\in\Theta'\).
 
 **Sampling density, normalization and marginals.** Since \(\det g_\tau=-1\), the
 volume measure is \(dv\,dr\) and, by Lemma 2.1, the fixed-\(n\) sample is i.i.d.\
@@ -791,15 +835,15 @@ and the normalized sampling density on the null box is
 \[
 \pi_\tau(\tilde U,v)
 =
-\frac{e^{v/(2\tau)}}{V(\tau)\,\omega_\tau'\bigl(r_\tau(\tilde U,v)\bigr)}
+\frac{e^{v/(2\tau)}}{\mathcal V(\tau)\,\omega_\tau'\bigl(r_\tau(\tilde U,v)\bigr)}
 =
-\frac{\tau^{2}\,e^{v/(2\tau)}}{V(\tau)\;r\,e^{r/\tau}}\bigg|_{\,r=r_\tau(\tilde U,v)},
+\frac{\tau^{2}\,e^{v/(2\tau)}}{\mathcal V(\tau)\;r\,e^{r/\tau}}\bigg|_{\,r=r_\tau(\tilde U,v)},
 \]
 
 normalized by the \(g_\tau\)-area of the diamond,
 
 \[
-V(\tau)
+\mathcal V(\tau)
 :=
 \operatorname{vol}_{g_\tau}(D_\tau)
 =
@@ -808,7 +852,7 @@ V(\tau)
 \;\in(0,\infty),
 \]
 
-which is the same \(V(\tau)\) used in Theorem 3.9. The two marginals of
+which is the same \(\mathcal V(\tau)\) used in Theorem 3.9. The two marginals of
 \(\pi_\tau\) on the box are
 
 \[
@@ -820,17 +864,18 @@ which is the same \(V(\tau)\) used in Theorem 3.9. The two marginals of
 **Distribution functions and quantiles.** Define
 
 \[
-F_\tau(\tilde U):=\int_{\tilde U_p(\tau)}^{\tilde U}\pi_1(s;\tau)\,ds,
+\mathsf F_\tau(\tilde U):=\int_{\tilde U_p(\tau)}^{\tilde U}\pi_1(s;\tau)\,ds,
 \qquad
-G_\tau(v):=\int_{v_p}^{v}\pi_2(s;\tau)\,ds,
+\mathsf G_\tau(v):=\int_{v_p}^{v}\pi_2(s;\tau)\,ds,
 \]
 
 the marginal distribution functions of \(\pi_\tau\) on the box, and let
-\(F_\tau^{-1},G_\tau^{-1}:[0,1]\to\) (the respective edges of the box) be the
+\(\mathsf F_\tau^{-1},\mathsf G_\tau^{-1}:[0,1]\to\) (the respective edges of the box) be the
 marginal quantile maps. Their regularity is item (iv) of the next lemma.
 
 **Lemma 3.5 (regularity).**
-Let \(K'\subset J\) be compact. Uniformly in \(\tau\in K'\):
+Let \(\Theta'\subset\Theta_{\mathrm{ext}}\) be compact. Uniformly in
+\(\tau\in\Theta'\):
 
 (i) \(r_\tau(\tilde U,v)\) is jointly smooth in \((\tilde U,v,\tau)\) on the closed
 box, and \(|\partial r/\partial\tilde U|\) is bounded above and below by positive
@@ -842,9 +887,10 @@ below by positive constants;
 (iii) the marginals \(\pi_1(\cdot\,;\tau)\) and \(\pi_2(\cdot\,;\tau)\) are smooth
 in all arguments and bounded above and below by positive constants;
 
-(iv) \(F_\tau\) and \(G_\tau\) are \(C^1\) strictly increasing bijections onto
+(iv) \(\mathsf F_\tau\) and \(\mathsf G_\tau\) are \(C^1\) strictly increasing bijections onto
 \([0,1]\) with derivatives bounded away from \(0\), and the quantile maps
-\((x,\tau)\mapsto F_\tau^{-1}(x)\) and \((y,\tau)\mapsto G_\tau^{-1}(y)\) are
+\((x,\tau)\mapsto \mathsf F_\tau^{-1}(x)\) and
+\((y,\tau)\mapsto \mathsf G_\tau^{-1}(y)\) are
 \(C^1\);
 
 (v) consequently the copula density
@@ -852,18 +898,21 @@ in all arguments and bounded above and below by positive constants;
 \[
 c_\tau(x,y)
 =
-\frac{\pi_\tau\bigl(F_\tau^{-1}(x),\,G_\tau^{-1}(y)\bigr)}
-     {\pi_1\bigl(F_\tau^{-1}(x);\tau\bigr)\,\pi_2\bigl(G_\tau^{-1}(y);\tau\bigr)},
+\frac{\pi_\tau\bigl(\mathsf F_\tau^{-1}(x),\,\mathsf G_\tau^{-1}(y)\bigr)}
+     {\pi_1\bigl(\mathsf F_\tau^{-1}(x);\tau\bigr)\,
+      \pi_2\bigl(\mathsf G_\tau^{-1}(y);\tau\bigr)},
 \qquad (x,y)\in[0,1]^2,
 \]
 
 is jointly continuous, \(C^1\) in \(\tau\) with \(\partial_\tau c_\tau\) jointly
 continuous, bounded above and below by positive constants, and
 \(|\partial_\tau c_\tau|\) is bounded; in particular the score
-\(\partial_\tau\log c_\tau\) is bounded uniformly on \([0,1]^2\times K'\).
+\(\partial_\tau\log c_\tau\) is bounded uniformly on
+\([0,1]^2\times\Theta'\).
 
 *Proof.* Write \(\sigma_\tau(\tilde U,v):=e^{v/(2\tau)}/\omega_\tau'\bigl(r_\tau(\tilde
-U,v)\bigr)\) for the unnormalized density, so \(\pi_\tau=\sigma_\tau/V(\tau)\).
+U,v)\bigr)\) for the unnormalized density, so
+\(\pi_\tau=\sigma_\tau/\mathcal V(\tau)\).
 
 *Preliminary: a fixed open domain.* The defining relation
 \(\omega_\tau(r)=-e^{v/(2\tau)}\tilde U\) has a (unique) solution \(r>0\) exactly
@@ -876,41 +925,44 @@ defined and smooth on the **open** set
 \]
 
 which contains the compact set
-\(\mathcal K:=\{(\tilde U,v,\tau):\tau\in K',\,(\tilde U,v)\in D_\tau\}\) (on the box
+\(\mathcal C_{\Theta'}:=\{(\tilde U,v,\tau):\tau\in\Theta',\,
+(\tilde U,v)\in D_\tau\}\) (on the box
 the corresponding radius satisfies \(r\ge r_q>0\), so the inequality is strict).
 Every differentiation below is performed on \(\mathcal O\); in particular
 \(\tau\mapsto\sigma_\tau(\tilde U,v)\) may be differentiated **at fixed
 \((\tilde U,v)\)**, including at points that leave the moving box \(D_\tau\). Since
-\(\mathcal K\subset\mathcal O\) is compact, it has a compact neighbourhood
-\(\mathcal K^+\subset\mathcal O\), and each two-sided bound below is the statement
-that a continuous non-vanishing function is pinched on \(\mathcal K^+\).
+\(\mathcal C_{\Theta'}\subset\mathcal O\) is compact, it has a compact neighbourhood
+\(\mathcal C_{\Theta'}^+\subset\mathcal O\), and each two-sided bound below is the
+statement that a continuous non-vanishing function is pinched on
+\(\mathcal C_{\Theta'}^+\).
 
 (i) On \(\mathcal O\) the relation \(\omega_\tau(r)+e^{v/(2\tau)}\tilde U=0\) has
 \(r\)-derivative \(\omega_\tau'(r)\), pinched between positive constants on the
-uniform compact radial range \([r_q,R]\) established above; the implicit function
+uniform compact radial range \([r_q,r_{\max}]\) established above; the implicit function
 theorem with smooth data gives joint smoothness of \(r_\tau\) and
 \(\partial r/\partial\tilde U=-e^{v/(2\tau)}/\omega_\tau'(r)\), whose modulus is
 pinched because \(v\) runs over the compact \([v_p,v_q]\).
 
 (ii) By (i), \(\sigma_\tau\) is smooth on \(\mathcal O\) and pinched between positive
-constants on \(\mathcal K^+\). The normalizer has **fixed** limits in \(v\) and
+constants on \(\mathcal C_{\Theta'}^+\). The normalizer has **fixed** limits in \(v\) and
 **moving** limits in \(\tilde U\); the Leibniz rule for variable limits (smooth
 integrand on \(\mathcal O\), edges \(\tilde U_p(\tau),\tilde U_q(\tau)\) explicit
-smooth functions of \(\tau\)) gives that \(V\) is smooth with
+smooth functions of \(\tau\)) gives that \(\mathcal V\) is smooth with
 
 \[
-V'(\tau)=\int_{v_p}^{v_q}\Bigl[
+\mathcal V'(\tau)=\int_{v_p}^{v_q}\Bigl[
 \tilde U_q'(\tau)\,\sigma_\tau\bigl(\tilde U_q(\tau),v\bigr)
 -\tilde U_p'(\tau)\,\sigma_\tau\bigl(\tilde U_p(\tau),v\bigr)
 +\int_{\tilde U_p(\tau)}^{\tilde U_q(\tau)}\partial_\tau\sigma_\tau\,d\tilde U
 \Bigr]dv .
 \]
 
-Moreover \(0<V(\tau)<\infty\) with both bounds uniform on \(K'\), since
+Moreover \(0<\mathcal V(\tau)<\infty\) with both bounds uniform on \(\Theta'\), since
 \(\sigma_\tau\) is pinched and the box has edge lengths \(v_q-v_p>0\) (fixed) and
 \(\tilde U_q(\tau)-\tilde U_p(\tau)\), continuous and strictly positive on the
-compact \(K'\), hence pinched. Therefore \(\pi_\tau=\sigma_\tau/V(\tau)\) is smooth
-on \(\mathcal O\) and pinched on \(\mathcal K^+\).
+compact \(\Theta'\), hence pinched. Therefore
+\(\pi_\tau=\sigma_\tau/\mathcal V(\tau)\) is smooth on \(\mathcal O\) and pinched
+on \(\mathcal C_{\Theta'}^+\).
 
 (iii) The two marginals are of different types and must be treated separately.
 \(\pi_1(\tilde U;\tau)=\int_{v_p}^{v_q}\pi_\tau\,dv\) has **fixed** limits: ordinary
@@ -923,21 +975,24 @@ gives joint smoothness in \((\tilde U,\tau)\), with no boundary terms.
 U_p(\tau),v)\). In both cases the two-sided bounds are the pinching of \(\pi_\tau\)
 multiplied by the corresponding interval length, itself pinched by (ii).
 
-(iv) \(G_\tau(v)=\int_{v_p}^{v}\pi_2\,ds\) has a fixed lower limit; \(F_\tau(\tilde
-U)=\int_{\tilde U_p(\tau)}^{\tilde U}\pi_1\,ds\) has a **moving** lower limit and
+(iv) \(\mathsf G_\tau(v)=\int_{v_p}^{v}\pi_2\,ds\) has a fixed lower limit;
+\(\mathsf F_\tau(\tilde U)=\int_{\tilde U_p(\tau)}^{\tilde U}\pi_1\,ds\) has a
+**moving** lower limit and
 therefore acquires the boundary term \(-\tilde U_p'(\tau)\,\pi_1(\tilde
 U_p(\tau);\tau)\) on differentiating in \(\tau\); both are jointly \(C^1\), and
-\(F_\tau(\tilde U_q(\tau))=G_\tau(v_q)=1\) by normalization, so each is a strictly
-increasing bijection onto \([0,1]\) with \(F_\tau'=\pi_1>0\) and \(G_\tau'=\pi_2>0\)
+\(\mathsf F_\tau(\tilde U_q(\tau))=\mathsf G_\tau(v_q)=1\) by normalization, so
+each is a strictly increasing bijection onto \([0,1]\) with
+\(\mathsf F_\tau'=\pi_1>0\) and \(\mathsf G_\tau'=\pi_2>0\)
 bounded away from \(0\) by (iii). The implicit function theorem applied to
-\(F_\tau(\tilde U)-x=0\) and \(G_\tau(v)-y=0\) then gives joint \(C^1\) dependence of
+\(\mathsf F_\tau(\tilde U)-x=0\) and \(\mathsf G_\tau(v)-y=0\) then gives joint
+\(C^1\) dependence of
 the inverses on \((x,\tau)\) and \((y,\tau)\), one-sided in \(x,y\) at the endpoints
 \(0,1\) (where the inverses return the box edges).
 
 (v) Compose (ii)–(iv): the quotient has smooth numerator and denominator bounded
 away from \(0\); each factor is \(C^1\) in \(\tau\) with jointly continuous
 \(\tau\)-derivative, so \(\partial_\tau c_\tau\) is jointly continuous on the
-compact \([0,1]^2\times K'\) and hence bounded there; all bounds are uniform because
+compact \([0,1]^2\times\Theta'\) and hence bounded there; all bounds are uniform because
 every ingredient is pinched on compact domains. Boundedness of the score follows
 from \(|\partial_\tau\log c_\tau|\le|\partial_\tau c_\tau|/c_{\min}\).
 \(\blacksquare\)
@@ -946,13 +1001,13 @@ from \(|\partial_\tau\log c_\tau|\le|\partial_\tau c_\tau|/c_{\min}\).
 The Fisher information
 \(I(\tau)=\int_{[0,1]^2}(\partial_\tau\log c_\tau)^2\,c_\tau\) is finite and
 continuous on \([\tau_0,\tau_1]\); set \(\bar I:=\sup I(\tau)<\infty\). The family
-is differentiable in quadratic mean, and, writing \(J_\delta\) for the closed
+is differentiable in quadratic mean, and, writing \(\Theta_\delta\) for the closed
 interval with endpoints \(\tau\) and \(\tau+\delta\),
 
 \[
 H^2(c_\tau,c_{\tau+\delta})
 \;\le\;
-|\delta|\int_{J_\delta}\frac{I(s)}{4}\,ds
+|\delta|\int_{\Theta_\delta}\frac{I(s)}{4}\,ds
 \;\le\;
 \frac{\delta^2}{4}\,\bar I.
 \]
@@ -995,7 +1050,9 @@ used, so the bound holds for **every** admissible \(\delta\), not only
 asymptotically; \(\bar I<\infty\) is exactly what makes it uniform over the
 parameter interval.
 
-**QMD.** In copula coordinates the family lives on a **fixed** domain: every
+**QMD.** Choose a compact
+\(\Theta'\subset\Theta_{\mathrm{ext}}\) whose interior contains \(\Theta\). In
+copula coordinates the family lives on a **fixed** domain: every
 \(c_\tau\) is a probability density on the same unit square with respect to
 Lebesgue measure, the \(\tau\)-dependent box edges having been absorbed by the
 quantile transforms of Lemma 3.5(iv). In this compact, smooth, fixed-domain
@@ -1009,8 +1066,9 @@ jointly continuous, so
 =\tfrac12\bigl(\partial_\tau\log c_\tau(z)\bigr)\sqrt{c_\tau(z)}
 \]
 
-is continuous on the compact \([0,1]^2\times K'\), hence bounded and **uniformly**
-continuous there. Fix \(\tau\in[\tau_0,\tau_1]\), which is interior to \(J\), and put
+is continuous on the compact \([0,1]^2\times\Theta'\), hence bounded and
+**uniformly** continuous there. Fix \(\tau\in[\tau_0,\tau_1]\), which is interior
+to \(\Theta_{\mathrm{ext}}\), and put
 
 \[
 G_\delta(z)
@@ -1075,7 +1133,8 @@ measure on \(D_\tau\). By §3.3.2, \(D_\tau\) is a coordinate box in the global
 double-null chart \((\tilde U,v)\), in which the causal order is exactly the product
 order, so Lemma 2.2 applies: the fixed-\(n\) unlabeled poset law depends on
 \(g_\tau\) only through the copula \(c_\tau\). Concretely, the coordinatewise
-quantile transform \((\tilde U,v)\mapsto(F_\tau(\tilde U),G_\tau(v))\) is increasing
+quantile transform
+\((\tilde U,v)\mapsto(\mathsf F_\tau(\tilde U),\mathsf G_\tau(v))\) is increasing
 in each coordinate, hence order-preserving, and carries the sample to \(n\)
 i.i.d.\ points of \([0,1]^2\) with density \(c_\tau\); the induced map \(\Phi\)
 from \(n\) unit-square points to the unlabeled poset is *the same* measurable map
@@ -1094,17 +1153,17 @@ H\bigl(c_\tau^{\otimes n},c_{\tau+\delta}^{\otimes n}\bigr)
 \frac{|\delta|}{2}\sqrt{n\bar I}.
 \]
 
-**(2).** Put \(A:=\{|\widehat\tau-\tau|<|\delta|/2\}\). On \(A\) the triangle
+**(2).** Put \(E:=\{|\widehat\tau-\tau|<|\delta|/2\}\). On \(E\) the triangle
 inequality gives \(|\widehat\tau-(\tau+\delta)|\ge|\delta|-|\widehat\tau-\tau|>
-|\delta|/2\), so \(A\subseteq\{|\widehat\tau-(\tau+\delta)|\ge|\delta|/2\}\), while
-\(A^c=\{|\widehat\tau-\tau|\ge|\delta|/2\}\). Hence
+|\delta|/2\), so \(E\subseteq\{|\widehat\tau-(\tau+\delta)|\ge|\delta|/2\}\), while
+\(E^c=\{|\widehat\tau-\tau|\ge|\delta|/2\}\). Hence
 
 \[
 \mathbb{P}_\tau\bigl(|\widehat\tau-\tau|\ge|\delta|/2\bigr)
 +
 \mathbb{P}_{\tau+\delta}\bigl(|\widehat\tau-(\tau+\delta)|\ge|\delta|/2\bigr)
 \;\ge\;
-1-\bigl[\mathbb{P}_\tau(A)-\mathbb{P}_{\tau+\delta}(A)\bigr]
+1-\bigl[\mathbb{P}_\tau(E)-\mathbb{P}_{\tau+\delta}(E)\bigr]
 \;\ge\;
 1-\mathrm{TV}\bigl(Q^n_\tau,Q^n_{\tau+\delta}\bigr),
 \]
@@ -1168,7 +1227,13 @@ There exists
    on sets satisfying \(|\tau'-\tau|\ge\eta>0\). More generally, for any sequences
    \(\tau_n,\tau_n'\in\Theta\) with
    \(\sqrt n\,|\tau_n'-\tau_n|\to\infty\), the same \(S_n\)-test has total error
-   tending to zero.
+   tending to zero. The displayed Chebyshev bound and item (1) make the dependence
+   explicit: its threshold cardinality is of order
+   \[
+   n_0\asymp
+   \frac{1}{\kappa(r_p,r_q)^2(\Delta v)^2|\tau'-\tau|^2},
+   \]
+   so it diverges as either the lapse or the pair separation tends to zero.
 4. **Uniform plug-in estimation.** Let \(\Pi_{p(\Theta)}\) be projection onto the
    interval \(p(\Theta)\) and define
    \[
@@ -1191,7 +1256,8 @@ There exists
    \frac{2n-3}{2n(n-1)}.
    \]
 
-*Proof.* Write \(a:=r_p\), \(b:=r_q\), and \(h:=\Delta v\). Put
+*Proof.* Write \(r_{\mathrm{out}}:=r_p\), \(r_{\mathrm{in}}:=r_q\), and
+\(h:=\Delta v\). Put
 \(\omega_\tau(r):=e^{r/\tau}(r/\tau-1)\), a strictly increasing bijection
 \((0,\infty)\to(-1,\infty)\) with \(\omega_\tau(\tau)=0\) and
 \(\omega_\tau'(r)=r\,e^{r/\tau}/\tau^2>0\). Then
@@ -1229,8 +1295,15 @@ a.s. clean. Both sides of
 \]
 vanish at \(D=0\) and have the same \(D\)-derivative by the ray flow, so they
 agree. At fixed \(v\in[v_x,v_q]\), \(\tilde U\) is decreasing in \(r\), so the
-slice of \(J^+(x)\cap J^-(q)\) is \(\{r:R_q(v)\le r\le R_x(v)\}\) between the
-outgoing rays through \(q\) and through \(x\), non-empty precisely because
+slice of \(J^+(x)\cap J^-(z_{\mathrm{in}})\) is
+\[
+\left\{r:
+\mathcal R_\tau(r_q,v-v_q)\le r\le
+\mathcal R_\tau(r_x,v-v_x)
+\right\},
+\]
+between the outgoing rays through \(z_{\mathrm{in}}\) and through \(x\), non-empty
+precisely because
 \(\tilde U_x\le\tilde U_q\); integrating and cancelling the two \(\tau D\) terms
 gives, for \(x=(v_x,r_x)\in D_\tau\) and \(D:=v_q-v_x\),
 \[
@@ -1238,70 +1311,89 @@ gives, for \(x=(v_x,r_x)\in D_\tau\) and \(D:=v_q-v_x\),
 =\mathcal R_\tau(r_x,D)^2+\mathcal R_\tau(r_q,-D)^2-r_x^2-r_q^2 ,
 \]
 and in particular
-\(V(\tau)=\mathcal R_\tau(r_p,\Delta v)^2+
+\(\mathcal V(\tau)=\mathcal R_\tau(r_p,\Delta v)^2+
 \mathcal R_\tau(r_q,-\Delta v)^2-r_p^2-r_q^2\). Points are
 exchangeable and a.s. untied, and comparability in a product order means exactly
 \(x\prec y\) or \(y\prec x\), so \(p=2\,\mathbb P(X\prec Y)\); Fubini then gives,
 with \(\alpha(D):=\mathcal R_\tau(r_p,\Delta v-D)\) and
 \(\beta(D):=\mathcal R_\tau(r_q,-D)\),
 \[
-p(\tau)=\frac{2}{V(\tau)^2}\int_0^{\Delta v}\!\!\int_{\beta(D)}^{\alpha(D)}
+p(\tau)=\frac{2}{\mathcal V(\tau)^2}\int_0^{\Delta v}\!\!\int_{\beta(D)}^{\alpha(D)}
 \bigl[\mathcal R_\tau(r,D)^2+\beta(D)^2-r^2-r_q^2\bigr]\,dr\,dD .
 \]
 
 **Step 1 (one uniform analytic neighbourhood).** The flow is defined implicitly by
-\(F(\tau,r,D,y):=\omega_\tau(y)-e^{D/(2\tau)}\omega_\tau(r)=0\), with
-\(\partial_yF=\omega_\tau'(y)>0\) and \(y=r\) at \(D=0\). The real-analytic
+\(\mathfrak F(\tau,r,D,y):=\omega_\tau(y)-e^{D/(2\tau)}\omega_\tau(r)=0\), with
+\(\partial_y\mathfrak F=\omega_\tau'(y)>0\) and \(y=r\) at \(D=0\). The real-analytic
 implicit-function theorem makes \(\mathcal R_\tau\) jointly real-analytic in
 \((\tau,r,D)\) near every \((\tau,r,0)\) with \(\tau,r>0\). A finite subcover of
 the product of a compact \(\tau\)-interval slightly larger than \(\Theta\) (still
-inside \((b,a)\)) with a compact positive \(r\)-interval containing \([b,a]\)
+inside \((r_{\mathrm{in}},r_{\mathrm{out}})\)) with a compact positive
+\(r\)-interval containing \([r_{\mathrm{in}},r_{\mathrm{out}}]\)
 yields one \(\eta>0\) on which \(\mathcal R_\tau\) is jointly analytic for \(|D|<\eta\);
 the local branches agree because \(\omega_\tau\) is strictly increasing.
 
 **Step 2 (fixed square and analytic division).** For \(s,u\in[0,1]\) put
-\(A:=\mathcal R_\tau(a,(1-s)h)\), \(B:=\mathcal R_\tau(b,-sh)\),
-\(x:=B+u(A-B)\) and
-\(H:=\mathcal R_\tau(x,sh)^2+B^2-x^2-b^2\). Since \(A-B=a-b>0\) at \(h=0\), one uniform
-shrink of \(\eta\) keeps \(A>B\). The substitutions \(D=sh\) and \(r=B+u(A-B)\)
+\[
+r_+(s):=\mathcal R_\tau(r_{\mathrm{out}},(1-s)h),\qquad
+r_-(s):=\mathcal R_\tau(r_{\mathrm{in}},-sh),\qquad
+\xi:=r_-+u(r_+-r_-),
+\]
+and
+\[
+\mathcal H:=\mathcal R_\tau(\xi,sh)^2+r_-^2-\xi^2-r_{\mathrm{in}}^2.
+\]
+Since \(r_+-r_-=r_{\mathrm{out}}-r_{\mathrm{in}}>0\) at \(h=0\), one
+uniform shrink of \(\eta\) keeps \(r_+>r_-\). The substitutions \(D=sh\) and
+\(r=r_-+u(r_+-r_-)\)
 turn the numerator of the display above into
-\(N(\tau,h)=h\int_0^1\!\!\int_0^1(A-B)H\,du\,ds\). At \(h=0\) one has \(H=0\), so
-analytic division \(H=h\widehat H\), with
-\(\widehat H=\int_0^1\partial_hH(\tau,s,u,\lambda h)\,d\lambda\), gives
-\(N=h^2\widehat N\) with \(\widehat N\) jointly analytic — compactness of the unit
+\(\mathcal N(\tau,h)=h\int_0^1\!\!\int_0^1(r_+-r_-)\mathcal H\,du\,ds\).
+At \(h=0\) one has \(\mathcal H=0\), so analytic division
+\(\mathcal H=h\widehat{\mathcal H}\), with
+\(\widehat{\mathcal H}=\int_0^1\partial_h\mathcal H(\tau,s,u,\lambda h)\,d\lambda\),
+gives \(\mathcal N=h^2\widehat{\mathcal N}\) with
+\(\widehat{\mathcal N}\) jointly analytic — compactness of the unit
 square supplies one common analytic neighbourhood, so the local power series may
-be integrated term by term. Likewise \(V(\tau,h)=h\widehat V\) with
-\(\widehat V(\tau,0)=a-b>0\) uniformly in \(\tau\), since \(V(\tau,0)=0\) and
-\(\partial_hV(\tau,0)=a-b\) by the ray flow. After one further uniform shrink of
-\(\eta\), \(\widehat V\) has no zero near \(\Theta\times\{0\}\), so
-\(P(\tau,h):=2\widehat N(\tau,h)/\widehat V(\tau,h)^2\)
+be integrated term by term. Likewise
+\(\mathcal V(\tau,h)=h\widehat{\mathcal V}(\tau,h)\), with
+\(\widehat{\mathcal V}(\tau,0)=r_{\mathrm{out}}-r_{\mathrm{in}}>0\) uniformly
+in \(\tau\), since \(\mathcal V(\tau,0)=0\) and
+\(\partial_h\mathcal V(\tau,0)=r_{\mathrm{out}}-r_{\mathrm{in}}\) by the ray flow.
+After one further uniform shrink of \(\eta\), \(\widehat{\mathcal V}\) has no zero
+near \(\Theta\times\{0\}\), so
+\(\mathfrak p(\tau,h):=
+2\widehat{\mathcal N}(\tau,h)/\widehat{\mathcal V}(\tau,h)^2\)
 is a jointly real-analytic extension through \(h=0\) of \(p(\tau)\) for \(h>0\).
 
 **Step 3 (first two coefficients).** Expanding the flow from its ODE,
 \(\mathcal R_\tau(r,D)=r+D\,(r-\tau)/(2r)+D^2\tau(r-\tau)/(8r^3)+O(D^3)\), substituting
 and integrating the retained coefficients (antiderivatives \(r(r-2\tau)/2\) and
-\(r/4-\tau\log r/4\)) gives \(\widehat N(\tau,0)=(a-b)^2/4\),
-\(\widehat V(\tau,0)=a-b\), hence \(P(\tau,0)=1/2\) and
-\(\partial_hP(\tau,0)=\kappa(r_p,r_q)\,\tau\). Writing
+\(r/4-\tau\log r/4\)) gives
+\(\widehat{\mathcal N}(\tau,0)=(r_{\mathrm{out}}-r_{\mathrm{in}})^2/4\),
+\(\widehat{\mathcal V}(\tau,0)=r_{\mathrm{out}}-r_{\mathrm{in}}\), hence
+\(\mathfrak p(\tau,0)=1/2\) and
+\(\partial_h\mathfrak p(\tau,0)=\kappa(r_p,r_q)\,\tau\). Writing
 \[
 p(\tau)
 =
-\frac12+\kappa(r_p,r_q)\tau\,\Delta v+R(\tau,\Delta v)
+\frac12+\kappa(r_p,r_q)\tau\,\Delta v+\mathcal E(\tau,\Delta v)
 \]
-defines \(R\).
+defines the remainder \(\mathcal E\).
 
 **Step 4 (uniform remainder).** Choose \(0<\varepsilon<\eta\) with
-\(\Theta\times[-\varepsilon,\varepsilon]\) inside the analytic domain of \(P\) and set
+\(\Theta\times[-\varepsilon,\varepsilon]\) inside the analytic domain of
+\(\mathfrak p\) and set
 \(C_1:=\tfrac12\max_{\Theta\times[-\varepsilon,\varepsilon]}
-|\partial_\tau\partial_h^2P|\), finite by compactness and depending only on
+|\partial_\tau\partial_h^2\mathfrak p|\), finite by compactness and depending only on
 \((r_p,r_q,\tau_0,\tau_1)\). Taylor's formula with integral remainder gives, for
 \(0\le\Delta v\le\varepsilon\),
 \[
-\partial_\tau R(\tau,\Delta v)
+\partial_\tau \mathcal E(\tau,\Delta v)
 =
-(\Delta v)^2\int_0^1(1-z)\,\partial_\tau\partial_h^2P(\tau,z\Delta v)\,dz ,
+(\Delta v)^2\int_0^1(1-z)\,
+\partial_\tau\partial_h^2\mathfrak p(\tau,z\Delta v)\,dz ,
 \qquad
-|\partial_\tau R(\tau,\Delta v)|\le C_1(\Delta v)^2
+|\partial_\tau \mathcal E(\tau,\Delta v)|\le C_1(\Delta v)^2
 \]
 uniformly for \(\tau\in\Theta\).
 
@@ -1319,7 +1411,7 @@ and \(\kappa>0\). Step 4 then gives
 \end{cases}
 \]
 then \(\partial_\tau p\ge\kappa\Delta v/2>0\) throughout \(\Theta\) for every
-\(0<\Delta v<\Delta v_0\), which is (1). The bound on \(R\) alone would give
+\(0<\Delta v<\Delta v_0\), which is (1). The bound on \(\mathcal E\) alone would give
 separation only for each pre-fixed pair; the derivative bound is what makes one
 \(\Delta v_0\) serve the whole interval.
 
@@ -1440,21 +1532,60 @@ Theorems 3.8 and 3.9. \(\blacksquare\)
 Figure 5 evaluates the concrete family
 \((r_p,r_q,v_p,v_q)=(3,0.5,0,0.02)\), \(\Theta=[1,1.2]\), without sprinkling.
 Gauss--Legendre quadrature gives
-\(p(1)=0.500591097337\) and \(p(1.2)=0.500705392490\). A separate direct-score
-quadrature on 41 parameter nodes gives the diagnostic mesh range
-\(4.56\times10^{-6}\le I(\tau)\le4.70\times10^{-6}\) at 961 nodes per axis;
-at \(\tau=1,1.1,1.2\), refinement from 961 to 1921 nodes changes the values by
-0.71%, 0.55%, and 0.44%, respectively. The full sweep and score-identity residuals
-are printed by the committed generator.
+\(p(1)=0.500591097337\) and \(p(1.2)=0.500705392490\). At \(\tau=1\), the
+relative remainder of \(1/2+\kappa\tau\Delta v\), measured against
+\(p(\tau)-1/2\), falls from \(1.50\%\) at \(\Delta v=0.02\) to \(0.38\%\) at
+\(\Delta v=0.005\); the maxima over the 41-node \(\tau\)-mesh are \(2.06\%\) and
+\(0.52\%\). This is the expected first-order decrease for an \(O((\Delta v)^2)\)
+absolute remainder.
 
-![**Fixed-corner shape information and the minimax exponent.** Panel A shows the
-deterministic comparable-pair probability and its small-lapse leading term. Panel B
-evaluates the plug-in theorem expression at the declared lapse and, only to visualize
-scale, the Le Cam expression after inserting the maximum of the finite direct-score
-mesh for the unknown \(\bar I\). The orange curve does not certify
-\(0.02<\Delta v_0\), and the blue curve is **not** a certified minimax lower bound:
-a mesh maximum is not a supremum enclosure. Both display the proved \(n^{-1/2}\)
-exponent; their constants are not claimed sharp.](../viz/output/fig06_minimax_rate.png){width=100%}
+A separate direct-score quadrature on the same 41 parameter nodes and 1921 spatial
+nodes per axis gives
+\[
+4.5407456\times10^{-6}\le I(\tau)\le4.6629799\times10^{-6}.
+\]
+The profile is numerically monotone decreasing, so the mesh maximum occurs at the
+endpoint \(\tau=1\), on each of the 481-, 961-, and 1921-node grids. At
+\(\tau=1,1.1,1.2\), refinement from 961 to 1921 nodes changes the values by
+\(0.71\%\), \(0.55\%\), and \(0.44\%\), respectively. On the finest mesh,
+\(\min_\tau I(\tau)/(2p'(\tau)^2)=7.028\), displaying the slack in the Fisher
+inequality of Corollary 3.10.
+
+The deterministic small-lapse sweep at \(\tau_0=1\) is
+
+| \(\Delta v\) | \(I(\tau_0)\) at 961 nodes/axis | \(I(\tau_0)/(\Delta v)^2\) |
+|---:|---:|---:|
+| \(0.080\) | \(5.6491702\times10^{-5}\) | \(0.008827\) |
+| \(0.040\) | \(1.7025283\times10^{-5}\) | \(0.010641\) |
+| \(0.020\) | \(4.6960692\times10^{-6}\) | \(0.011740\) |
+| \(0.010\) | \(1.2348400\times10^{-6}\) | \(0.012348\) |
+| \(0.005\) | \(3.1671853\times10^{-7}\) | \(0.012669\) |
+
+A first-order Richardson extrapolation from the two smallest lapses gives
+\(I(\tau_0)/(\Delta v)^2\to0.01299\). This is evidence—not a proof—of quadratic
+small-lapse scaling. If the corresponding uniform limit were \(0.0130\), the two
+Corollary 3.10 coefficients would scale as approximately
+\(1.10/(\Delta v\sqrt n)\) and \(66.7/(\Delta v\sqrt n)\), a constant gap of about
+61.
+
+For the plotted \(\Delta v=0.02\), the uncapped plug-in expression is
+\(3333/\sqrt n\), and it does not fall below the parameter diameter \(0.2\) until
+\(n=2.78\times10^8\). The diagnostic Le Cam expression obtained by inserting the
+finite mesh maximum is \(57.9/\sqrt n\) and crosses \(0.2\) at
+\(n=8.38\times10^4\). Thus the matched-rate theorem is genuinely asymptotic for
+this weak-signal example; the finite-\(n\) constants are not practically sharp.
+
+![**Fixed-corner shape information, Fisher scale, and the asymptotic minimax
+rate.** Panel A compares deterministic \(p(\tau)\) with its small-lapse leading
+term. Panel B compares the 1921-node direct-score profile with the proved quantity
+\(2p'(\tau)^2\). Panel C shows the approach of
+\(I(\tau_0)/(\Delta v)^2\) toward the Richardson diagnostic \(0.01299\). Panel D
+shows the two uncapped \(n^{-1/2}\) expressions and shades the region above the
+parameter diameter; the vertical lines mark their crossings. The orange expression
+does not certify \(0.02<\Delta v_0\), and the blue expression is **not** a certified
+minimax lower bound because a mesh maximum is not a supremum enclosure. All four
+panels are deterministic and use no sprinkling or validation
+seed.](../viz/output/fig05_minimax_rate.png){width=100%}
 
 #### What Theorems 3.8–3.9 do and do not claim
 
@@ -1462,7 +1593,7 @@ exponent; their constants are not claimed sharp.](../viz/output/fig06_minimax_ra
 |---|---|
 | Matching \(n^{-1/2}\) minimax upper and lower rates for fixed admissible \(\Delta v\) | Equality or optimality of the two constants |
 | An explicit ordering-fraction estimator and consistent fixed-pair tests | A numerically certified value of \(\Delta v_0\), or monotonicity at arbitrary lapse |
-| Pointwise \(I(\tau)\ge\kappa^2(\Delta v)^2/2\) | The still-unproved uniform upper scaling \(\bar I=O((\Delta v)^2)\) as \(\Delta v\downarrow0\) |
+| Pointwise \(I(\tau)\ge\kappa^2(\Delta v)^2/2\), plus numerical evidence for quadratic small-lapse scaling | A proof of the uniform upper scaling \(\bar I=O((\Delta v)^2)\) as \(\Delta v\downarrow0\) |
 | A convergent direct-score mesh diagnostic for the declared family | A certified enclosure of \(\bar I\); Figure 5 does not replace one |
 | One \(\Delta v_0\) uniform over \(\tau\in\Theta\) | One testing cardinality uniform over all distinct pairs; the bound requires \(n(\Delta v)^2|\tau-\tau'|^2\to\infty\) |
 | QMD, Hellinger, Hoeffding moments, Chebyshev, and two-point testing | Novelty of this standard statistical machinery |
@@ -1504,20 +1635,20 @@ used in the evaluation.
 
 **Proposition 4.1 (future-cardinality attenuation).** Let \((W,\prec,\nu)\) be a
 non-atomic causal probability patch and let \(X_1,\ldots,X_n\) be i.i.d. from
-\(\nu\), with \(n\ge2\). Fix a label \(J\) independently of the sample and define
+\(\nu\), with \(n\ge2\). Fix a label \(L\) independently of the sample and define
 
 \[
-p(x):=\nu\{y\in W:x\prec y\},
+\upsilon(x):=\nu\{y\in W:x\prec y\},
 \qquad
-P=p(X_J),
+U=\upsilon(X_L),
 \qquad
-F=\sum_{i\ne J}\mathbf 1\{X_J\prec X_i\}.
+F=\sum_{i\ne L}\mathbf 1\{X_L\prec X_i\}.
 \]
 
-For any declared \(T=t(X_J)\in L^2(\nu)\), and for \(\nu\)-almost every \(x\),
+For any declared \(Y=t(X_L)\in L^2(\nu)\), and for \(\nu\)-almost every \(x\),
 
 \[
-F\mid(X_J=x)\sim\operatorname{Binomial}(n-1,p(x)).
+F\mid(X_L=x)\sim\operatorname{Binomial}(n-1,\upsilon(x)).
 \]
 
 Consequently,
@@ -1525,56 +1656,59 @@ Consequently,
 \[
 \begin{aligned}
 \operatorname{Var}(F)
-&=(n-1)^2\operatorname{Var}(P)
- +(n-1)\mathbb E[P(1-P)],\\
-\operatorname{Cov}(F,P)&=(n-1)\operatorname{Var}(P),\\
-\operatorname{Cov}(F,T)&=(n-1)\operatorname{Cov}(P,T).
+&=(n-1)^2\operatorname{Var}(U)
+ +(n-1)\mathbb E[U(1-U)],\\
+\operatorname{Cov}(F,U)&=(n-1)\operatorname{Var}(U),\\
+\operatorname{Cov}(F,Y)&=(n-1)\operatorname{Cov}(U,Y).
 \end{aligned}
 \]
 
-If \(\operatorname{Var}(P),\operatorname{Var}(T)>0\), put
+If \(\operatorname{Var}(U),\operatorname{Var}(Y)>0\), put
 
 \[
-A_n
+\alpha_n
 :=
 \left(
-1+\frac{\mathbb E[P(1-P)]}
-{(n-1)\operatorname{Var}(P)}
+1+\frac{\mathbb E[U(1-U)]}
+{(n-1)\operatorname{Var}(U)}
 \right)^{-1/2}.
 \]
 
 Then
 
 \[
-\operatorname{Corr}(F,P)=A_n,
+\operatorname{Corr}(F,U)=\alpha_n,
 \qquad
-\operatorname{Corr}(F,T)=\operatorname{Corr}(P,T)A_n.
+\operatorname{Corr}(F,Y)=\operatorname{Corr}(U,Y)\alpha_n.
 \]
 
-Writing \(c=\mathbb E[P(1-P)]/\operatorname{Var}(P)\),
+Writing \(\gamma=\mathbb E[U(1-U)]/\operatorname{Var}(U)\),
 
 \[
-A_n=1-\frac{c}{2(n-1)}+O(n^{-2}),
+\alpha_n=1-\frac{\gamma}{2(n-1)}+O(n^{-2}),
 \]
 
 so both correlation gaps are \(O(n^{-1})\).
 
-*Proof.* Conditional on \(X_J=x\), the remaining \(n-1\) points are independent
-and each lies in \(J^+(x)\cap W\) with probability \(p(x)\). This gives the
+*Proof.* Conditional on \(X_L=x\), the remaining \(n-1\) points are independent
+and each lies in \(J^+(x)\cap W\) with probability \(\upsilon(x)\). This gives the
 binomial law. Total variance gives the displayed variance, while
-\(\mathbb E[F\mid X_J]=(n-1)P\) gives the two covariance identities. Substitution
+\(\mathbb E[F\mid X_L]=(n-1)U\) gives the two covariance identities. Substitution
 into the definition of correlation and Taylor expansion of
-\((1+c/(n-1))^{-1/2}\) finish the proof. \(\blacksquare\)
+\((1+\gamma/(n-1))^{-1/2}\) finish the proof. \(\blacksquare\)
 
 The proposition concerns a label fixed before seeing the causet. The preregistered
 procedure below computes the same combinatorial quantity \(F_i=|J^+(i)|\), but
 then restricts to minimal elements and partitions their values using the full
 causet. Conditioning on minimality already changes the law of the other points,
 and the subsequent selector adds further dependence. Proposition 4.1 therefore
-explains the unselected future-cardinality signal; it is not an unbiasedness theorem
-for the final bracket and is not used to validate the empirical outcome.
+justifies the choice of observable before selection: future cardinality is a
+binomial thinning of continuum future-volume fraction and its correlation
+attenuation is \(O(n^{-1})\). It is not an unbiasedness theorem for the final bracket;
+§4.2 separately evaluates the selected rule built from that observable.
 
-**Population illustration.** For the exterior window used in Figure 6,
+**Population illustration.** Figure 6 uses a deliberately separate, fully exterior
+window to expose finite-box confounding:
 
 \[
 W=[0,6]\times[1.1,4],
@@ -1585,7 +1719,7 @@ W=[0,6]\times[1.1,4],
 the tortoise coordinate \(r_*(r)=r+\log(r-1)\) gives
 
 \[
-p(t,r)
+\upsilon(t,r)
 =
 \frac{1}{\operatorname{Vol}(W)}
 \int_{1.1}^{4}
@@ -1596,23 +1730,25 @@ Deterministic quadrature, without sprinkling, gives
 
 | Quantity | Value |
 |---|---:|
-| Window-and-chart target \(\rho_\infty=\operatorname{Corr}(P,T)\) | \(-0.951388\) |
-| Tagged attenuation \(A_{900}=\operatorname{Corr}(F,P)\) | \(0.998400\) |
-| Tagged finite-\(n\) correlation \(\rho_{900}=\operatorname{Corr}(F,T)\) | \(-0.949866\) |
+| Window-and-chart target \(\rho_\infty=\operatorname{Corr}(U,Y)\) | \(-0.951388\) |
+| Tagged attenuation \(\alpha_{900}=\operatorname{Corr}(F,U)\) | \(0.998400\) |
+| Tagged finite-\(n\) correlation \(\rho_{900}=\operatorname{Corr}(F,Y)\) | \(-0.949866\) |
 | One-causet coefficient in Figure 6, \(\widehat\rho_{\mathrm{cloud}}\) | \(-0.951\) (rounded) |
 
 The target depends on the window, normalized measure, and declared time coordinate;
-it is not an intrinsic Schwarzschild scalar. The cloud pairs \((F_i,T_i)\) in one
+it is not an intrinsic Schwarzschild scalar. This is **not** the crossing-window
+experiment of §4.2: it has \(r_s=1\), remains at \(r>1\), and uses Schwarzschild
+time, whose chart is singular at the horizon. The cloud pairs \((F_i,Y_i)\) in one
 causet are dependent, so ordinary i.i.d. correlation intervals do not apply. For
-fixed \(p>0\), the conditional coefficient of variation is
+fixed \(u>0\), the conditional coefficient of variation is
 
 \[
-\operatorname{CV}(F\mid P=p)
+\operatorname{CV}(F\mid U=u)
 =
-\sqrt{\frac{1-p}{(n-1)p}},
+\sqrt{\frac{1-u}{(n-1)u}},
 \]
 
-which is pointwise \(O(n^{-1/2})\), not uniform as \(p\downarrow0\).
+which is pointwise \(O(n^{-1/2})\), not uniform as \(u\downarrow0\).
 
 ![**Future cardinality in a finite Schwarzschild window.** In the fixed-seed
 \(N=900\) causet, the dependent internal coefficients are
@@ -1621,13 +1757,19 @@ which is pointwise \(O(n^{-1/2})\), not uniform as \(p\downarrow0\).
 band. Panel B separately reports the deterministic window target
 \(\rho_\infty=-0.951388\) and the tagged-element value
 \(\rho_{900}=-0.949866\). None of these correlations establishes horizon
-recovery.](../viz/output/fig04_box_wall.png){width=100%}
+recovery.](../viz/output/fig06_box_wall.png){width=100%}
 
 ### 4.2 Evaluation contract
 
 The pre-registration, estimator specification, thresholds, seeds, and executable
-instrument are archived with the repository. The sealed threshold file has SHA256
-`6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4`.
+instrument are archived with the repository. The sealed threshold file has the
+following SHA256 (concatenate the two displayed lines):
+\[
+\begin{gathered}
+\texttt{6e2c38881234cef48e859096b46f261c}\\
+\texttt{fa83ea8a2f6c955cc1dbc42537bfefd4}.
+\end{gathered}
+\]
 All choices below were fixed before evaluation on the held-out seeds.
 
 **Geometry and ensemble.** The Schwarzschild radius is \(r_s=2M=0.5\), and the
@@ -1667,13 +1809,34 @@ The scored target is the declared transition radius \(r_s=0.5\): coverage means
 reported point location is its midpoint. Thus coordinates score an order-only
 partition; they do not choose the observable, threshold, or selected classes.
 
+**Principled threshold scale.** The primary endpoint has
+\[
+\varrho=\frac{\bar n}{\operatorname{Vol}(W)}
+=\frac{12000}{7.2}=1666.67,
+\qquad
+\ell=\varrho^{-1/2}=0.0244949.
+\]
+The frozen localization constant was \(K_{\mathrm{loc}}=2\). Hence the two
+reported tolerances were fixed *a priori* at two discreteness lengths,
+\[
+\theta_{\mathrm{loc}}
+=\frac{K_{\mathrm{loc}}\ell}{2M}
+=0.09798\approx0.098,
+\qquad
+\theta_{\mathrm{stab}}
+=K_{\mathrm{loc}}\ell
+=0.04899\approx0.049.
+\]
+They are therefore resolution-anchored criteria, not numbers tuned to the held-out
+outcome.
+
 At the primary endpoint the frozen contract required simultaneously:
 paired sign-flip \(p\le10^{-4}\); median bracket width
 \(|dr|/(2M)\le0.098\); coverage at least \(0.5\); radial midpoint standard
 deviation at most \(0.049\); leave-one-out false-positive fraction at most
 \(0.05\); convergence slack across the four levels; and an order-isomorphism
-guard. Fewer than 18 valid seeds would be inconclusive, and \(t_{\rm edge}<6\)
-was outside the declared domain.
+guard. Fewer than 18 valid seeds would be inconclusive. The frozen experiment used
+upper time boundary \(t=6\); any shorter window was outside its declared domain.
 
 ### 4.3 Outcome
 
@@ -1682,8 +1845,8 @@ raw result file was subsequently lost; all transcribed fields were reproduced by
 supervised deterministic replay, so the result is retained with that caveat rather
 than described as a preserved blind artifact.
 
-At the primary endpoint, all six frozen checks evaluated true
-(`docs/preregistration_002_result.md`). Headline primary numbers (transcribed from
+At the primary endpoint, all six frozen checks evaluated true in the archived result
+record. Headline primary numbers (transcribed from
 the original validation table; same values MATCH under supervised re-verification):
 
 | Check | Primary (target mean \(\bar n=12000\)) |
@@ -1695,7 +1858,7 @@ the original validation table; same values MATCH under supervised re-verificatio
 | LOO false-positive fraction | \(0.00\le 0.05\) |
 | Order-only guard | no raise |
 
-The abstention threshold \(a_n\) (called `tau(n)` in the archived code) behaves as
+The abstention threshold \(g_n\) (called `tau(n)` in the archived code) behaves as
 designed: Schwarzschild abstention \(0.00\)
 at every intensity level; Minkowski control abstention \(0.90\)–\(1.00\) (suppresses
 structureless false structure). A transparent non-primary caveat is recorded: at
@@ -1763,15 +1926,19 @@ constructions actually investigated in the finite \(1{+}1\) benchmark. Failure h
 is evidence about these constructions, not a minimax theorem and not a universal
 no-go for quasi-local observables.
 
-| Channel | Construction | Outcome | Main lesson |
-|---|---|---|---|
-| C3-early | Future-width or funnel collapse | Rejected | The funnel followed singularity truncation rather than a regular trapping structure |
-| C1 | Bottleneck or ideal flow through maximal elements | Not closed | Finite maximal elements trivialized the proposed definition |
-| C2 | Common-future overlap on a wavefront | Blocked | The statistic was confounded by the computational ceiling |
-| C3-third | Truncated-future selectors on minimal elements | Inconclusive | The signal remained edge-dominated and marginal |
-| C4 | Common-future convergence conditioned on neighbors | Blocked | No permutation-invariant, non-circular neighbor graph was available |
-| C5 | Spectral partition of the common-future matrix | Exhausted | Wall, bridge, and twin ambiguities prevented a stable region interpretation |
-| C6 | Antichain waist of an Alexandrov interval | Blocked | An antichain exists order-theoretically, but no stable codimension-two screen with transport and sign was obtained |
+| Channel | Construction | Outcome | Main lesson | Archived record |
+|---|---|---|---|---|
+| C3-early | Future-width or funnel collapse | Rejected | The funnel followed singularity truncation rather than a regular trapping structure | X0-Qn §11.3 |
+| C1 | Bottleneck or ideal flow through maximal elements | Not closed | Finite maximal elements trivialized the proposed definition | COM-008/010 |
+| C2 | Common-future overlap on a wavefront | Blocked | The statistic was confounded by the computational ceiling | COM-006 |
+| C3-third | Truncated-future selectors on minimal elements | Inconclusive | The signal remained edge-dominated and marginal | TF-20260719 |
+| C4 | Common-future convergence conditioned on neighbors | Blocked | No permutation-invariant, non-circular neighbor graph was available | COM-039 |
+| C5 | Spectral partition of the common-future matrix | Exhausted | Wall, bridge, and twin ambiguities prevented a stable region interpretation | COM-042 |
+| C6 | Antichain waist of an Alexandrov interval | Blocked | An antichain exists order-theoretically, but no stable codimension-two screen with transport and sign was obtained | COM-043/044 |
+
+The final column gives stable, repository-searchable archive identifiers: `COM-nnn`
+denotes the corresponding committee decision, `TF-20260719` the frozen
+truncated-futures evidence bundle, and `X0-Qn` the dated well-posedness notebook.
 
 The recurring problems were finite-window truncation mistaken for physical
 structure, absence of a lateral neighbor relation, scale--depth confounding, and
@@ -1909,9 +2076,11 @@ fixed-\(n\) order-only blindness for absolute mass.
 
 ### 7.2 Open questions
 
-1. Prove or refute the uniform small-lapse upper bound
-   \(\bar I=O((\Delta v)^2)\). Together with Corollary 3.10 this would close the
-   \(\Delta v\)-dependence of the minimax constants.
+1. Prove the numerically supported uniform small-lapse law
+   \(\bar I\sim C(\Delta v)^2\), or find a counterexample away from
+   \(\tau_0\). The endpoint sweep gives
+   \(I(\tau_0)/(\Delta v)^2\to0.01299\) by first-order Richardson extrapolation,
+   but it is neither uniform in \(\tau\) nor a certified asymptotic enclosure.
 2. Compute certified numerical values of \(\bar I\), \(\Delta v_0\), and the
    critical-scale efficiency of the ordering-fraction estimator.
 3. Derive the law induced by conditioning on minimality and by the data-dependent
@@ -1939,15 +2108,17 @@ changes dimensionless patch shape. On the regular diamond family, a Fisher
 two-point argument bounds every order-only estimator from below, while inversion
 of the ordering fraction gives an explicit uniform upper bound. For every fixed
 \(0<\Delta v<\Delta v_0\), the minimax absolute-error rate is therefore
-\(n^{-1/2}\). The exact constants, especially their joint small-lapse behavior,
-remain open.
+\(n^{-1/2}\). The plotted family also makes the limitation concrete: the available
+upper constant is nontrivial relative to the parameter diameter only at very large
+\(n\). Deterministic quadrature supports matching \(1/\Delta v\) scaling of the
+two constants, but a uniform proof and sharp constants remain open.
 
 Future cardinality provides a complementary positive result. For a pretagged
 element it is exactly a binomial thinning of continuum future volume, with an
 explicit \(O(n^{-1})\) correlation attenuation. The preregistered minimal-element
 procedure uses the same observable but adds selection dependence; its primary
-empirical outcome is therefore reported separately, together with the loss and
-deterministic reproduction of its original raw artifact. The unsuccessful
+empirical outcome is therefore reported separately, together with the loss of the
+original raw artifact and the matching replay of its transcribed fields. The unsuccessful
 region-locators in §5 provide design lessons, not impossibility theorems.
 
 The resulting picture is narrower and more useful than either “order reconstructs
@@ -1955,13 +2126,31 @@ the black hole” or “order sees nothing”: fixed-\(n\) order can encode
 dimensionless shape, while absolute scale and completion-dependent targets require
 additional information or a different question.
 
+## Acknowledgments
+
+The author used AI assistants — Anthropic's Claude and OpenAI's ChatGPT — for code
+writing, literature search, and manuscript preparation. All code, mathematical
+statements, proofs, and numerical results were verified by the author, who takes
+full responsibility for the content.
+
+## Funding
+
+No external funding was received for this work.
+
+## Competing interests
+
+The author declares no competing interests.
+
 ## Data and code availability
 
 Code, deterministic figure generators, the pre-registration, sealed thresholds,
 and the supervised re-verification record are available in the `nachocausal`
-repository. The seal can be checked with `make verify-seal`. No new validation
-ensemble was generated for this manuscript revision. The missing primary artifact
-and the scope of its deterministic replay are described in §4.4.
+repository. The figure runner emits the complete numerical sweep quoted in the text;
+those values reproduce in the pinned environment. Cross-machine PNG byte identity
+is not claimed because font and FreeType rasterization can alter pixels without
+altering the underlying numbers. The seal can be checked with `make verify-seal`.
+No new validation ensemble was generated for this manuscript revision. The missing
+primary artifact and the scope of its deterministic replay are described in §4.4.
 
 ## References
 
@@ -1969,7 +2158,8 @@ and the scope of its deterministic replay are described in §4.4.
 (1987).
 
 [2] M. Boguñá and D. Krioukov, “Measuring spatial distances in causal sets via
-causal overlaps,” *Phys. Rev. D* **110**, 024008 (2024), arXiv:2401.17376.
+causal overlaps,” *Phys. Rev. D* **110**, 024008 (2024),
+doi:10.1103/PhysRevD.110.024008, arXiv:2401.17376.
 
 [3] M. Braun, “Spacetime reconstruction by order and number,” arXiv:2507.01907
 (2025).
@@ -2019,3 +2209,5 @@ arXiv:gr-qc/0302009 (2003).
 
 [19] D. M. T. Benincasa and F. Dowker, “The scalar curvature of a causal set,”
 *Phys. Rev. Lett.* **104**, 181301 (2010), arXiv:1001.2725.
+
+[20] I. Booth, “Black hole boundaries,” arXiv:gr-qc/0508107 (2005).

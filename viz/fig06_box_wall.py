@@ -1,4 +1,4 @@
-"""Figure 4 — Why the localisers died: the box wall eats the signal.
+"""Figure 6 — Why the localisers died: the box wall eats the signal.
 
 This is the honest figure of the failure ledger (`docs/comite/comite_decision_042`,
 the C1–C5 line).  The most natural observable the order offers is the future volume
@@ -18,7 +18,7 @@ Lesson for the student: in finite causal sets **the boundary of the box is an
 observable**, and it competes with the physics you are trying to measure.
 
 Panel B distinguishes three objects.  Its plotted coefficient is the Pearson
-coefficient inside one fixed-seed causet.  The window target `Corr(p(X), t(X))` and
+coefficient inside one fixed-seed causet.  The window target `Corr(upsilon(X), t(X))` and
 the finite-`n` correlation for a tagged element are computed separately by
 deterministic Gauss--Legendre quadrature; no additional sprinkling or seed is used.
 """
@@ -59,13 +59,13 @@ def population_diagnostics(n_points=N):
 
     For `X=(t,r)` uniform on the declared rectangle, define
 
-        p(X) = Vol(J^+(X) intersect W) / Vol(W).
+        upsilon(X) = Vol(J^+(X) intersect W) / Vol(W).
 
     At fixed `r_prime`, the allowed future-time length is
 
         [t_max - t - |r_star(r_prime)-r_star(r)|]_+.
 
-    The resulting one-dimensional integral gives `p(t,r)`.  Tensor-product
+    The resulting one-dimensional integral gives `upsilon(t,r)`.  Tensor-product
     Gauss--Legendre quadrature then evaluates its moments over `X`.  This is a
     deterministic quadrature of the continuum window, not a sprinkling estimate.
     """
@@ -177,12 +177,12 @@ def draw(out):
 
 
 if __name__ == "__main__":
-    target = pathlib.Path(__file__).parent / "output" / "fig04_box_wall.png"
+    target = pathlib.Path(__file__).parent / "output" / "fig06_box_wall.png"
     target.parent.mkdir(exist_ok=True)
     path, a, b, c, pop = draw(target)
     print(f"written {path}")
     print(f"  sample corr(|J+|, t) = {a:+.3f}   corr(|J+|, r) = {b:+.3f}"
           f"   band corr = {c:+.3f}")
-    print(f"  window corr(p(X),t(X)) = {pop['corr_p_t']:+.8f}"
-          f"   tagged corr(F,T) = {pop['corr_k_t']:+.8f}"
+    print(f"  window corr(upsilon(X),t(X)) = {pop['corr_p_t']:+.8f}"
+          f"   tagged corr(F,Y) = {pop['corr_k_t']:+.8f}"
           f"   attenuation = {pop['attenuation']:.8f}")

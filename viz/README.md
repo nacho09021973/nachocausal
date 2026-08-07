@@ -24,31 +24,30 @@ imprecision; a student believes the picture literally.
 |---|---|---|---|
 | 1 | `fig01_dictionary.py` | What is discarded in passing from spacetime to a causet | — |
 | 2 | `fig02_invisible_scale.py` | Absolute scale is invisible to the order | Theorem 3.1 |
-| 3 | `fig03_teleology.py` | What happens outside the patch is not in the patch | Theorem 3.2 |
-| 4 | `fig04_box_wall.py` | Tagged future cardinality, its population target, and the residual radial diagnostic | Proposition 4.1 |
-| 5 | `fig05_what_is_recoverable.py` | A scale-free statistic varies across a specified `r/r_s` patch family | partner of Fig. 2 |
-| 6 | `fig06_minimax_rate.py` | Comparable-pair separation and the matched minimax exponent | Theorems 3.8–3.9 |
+| 3 | `fig03_what_is_recoverable.py` | A scale-free statistic varies across a specified `r/r_s` patch family | partner of Fig. 2 |
+| 4 | `fig04_teleology.py` | What happens outside the patch is not in the patch | Theorem 3.2 |
+| 5 | `fig05_minimax_rate.py` | Comparable-pair signal, Fisher scale, small-lapse scaling, and the asymptotic rate | Theorems 3.8–3.9 |
+| 6 | `fig06_box_wall.py` | Tagged future cardinality, its population target, and the residual radial diagnostic | Proposition 4.1 |
 
-Assets `fig02` and `fig05` are a pair and must travel together: `fig02` visualizes the exact
-co-scaling witness for absolute-scale blindness; `fig05` shows that the comparable-
+Assets `fig02` and `fig03` are a pair and must travel together: `fig02` visualizes the exact
+co-scaling witness for absolute-scale blindness; `fig03` shows that the comparable-
 pair fraction varies with dimensionless patch placement in one specified family.
-Asset `fig05` is illustrative: it does **not** establish identification of `r/r_s`,
+Asset `fig03` is illustrative: it does **not** establish identification of `r/r_s`,
 injectivity beyond the plotted sweep, or horizon localization.
-
-In the manuscript the images appear in argumentative order, so asset `fig05` is
-publication Figure 3, asset `fig03` is publication Figure 4, asset `fig06` is
-publication Figure 5, and asset `fig04` is publication Figure 6.
 
 ## Usage
 
 ```bash
+python3 -m pip install -r viz/requirements.txt
 python3 viz/make_figures.py     # writes all six to viz/output/ and prints their numbers
 ```
 
 Every stochastic figure fixes its seed, and the remaining figures use deterministic
-quadrature: two runs give byte-identical files. The numbers the runner prints are the
-ones printed inside the panels; if they change, the manuscript caption has stopped
-agreeing with the figure.
+quadrature. The numerical values printed by the runner reproduce exactly in the
+pinned environment and are the values quoted in the manuscript. PNG byte identity
+is **not** a cross-machine contract: Matplotlib font and FreeType rasterization may
+change pixels even when every scientific number is unchanged. Repeated runs within
+one fixed rendering environment should remain deterministic.
 
 ## Accuracy: why this is not decoration
 
@@ -86,14 +85,14 @@ construction is a toy analogy for completion dependence, not the event horizon i
 Figure 5's direct-score mesh maximum is not a certified supremum, and Figure 6's
 time-banded residual is a diagnostic, not recovered horizon physics.
 
-Asset `fig04` separates its fixed-seed within-causet Pearson coefficient from two
+Asset `fig06` separates its fixed-seed within-causet Pearson coefficient from two
 deterministic quadrature targets: the window functional `Corr(p(X),t(X))` and the
 finite-`n` tagged-element correlation. The exact attenuation formula applies to the
 tagged marginal law, not identically to the dependent Pearson coefficient computed
 inside one causet. No iid confidence interval is authorized for that internal
 coefficient.
 
-Asset `fig06` is entirely deterministic. Its standalone entry point prints the
+Asset `fig05` is entirely deterministic. Its standalone entry point prints the
 481/961/1921-node refinement sweep at \(\tau=1,1.1,1.2\), the global and slice-wise
 score residuals, the CDF endpoint residuals, and the corner checks before drawing.
 The manuscript may quote the finite mesh maximum only as

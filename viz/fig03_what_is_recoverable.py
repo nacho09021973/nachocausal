@@ -1,9 +1,9 @@
-"""Figure 5 — A scale-free order statistic in a co-scaled patch family.
+"""Figure 3 — A scale-free order statistic in a co-scaled patch family.
 
 This is the obligatory partner of Figure 2.  The pair illustrates a distinction:
 
     Figure 2:  absolute scale is invisible along the exact co-scaling orbit;
-    Figure 5:  a simple statistic can vary with dimensionless patch placement
+    Figure 3:  a simple statistic can vary with dimensionless patch placement
                in this specified family.
 
 The plotted statistic is the **fraction of comparable pairs**: count how many pairs
@@ -108,7 +108,7 @@ def draw(out):
 
 
 if __name__ == "__main__":
-    target = pathlib.Path(__file__).parent / "output" / "fig05_what_is_recoverable.png"
+    target = pathlib.Path(__file__).parent / "output" / "fig03_what_is_recoverable.png"
     target.parent.mkdir(exist_ok=True)
     path, gap, sd = draw(target)
     print(f"written {path}")

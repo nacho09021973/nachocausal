@@ -1,4 +1,4 @@
-"""Figure 3 — A finite order-theoretic analogy for Theorem 3.2.
+"""Figure 4 — A finite order-theoretic analogy for Theorem 3.2.
 
 An element `e` is maximal in the observed patch.  Is it *really* maximal, or is there
 something above it that we simply have not seen?  **The patch does not know and
@@ -154,6 +154,6 @@ def draw(out):
 
 
 if __name__ == "__main__":
-    target = pathlib.Path(__file__).parent / "output" / "fig03_teleology.png"
+    target = pathlib.Path(__file__).parent / "output" / "fig04_teleology.png"
     target.parent.mkdir(exist_ok=True)
     print("written", draw(target))
