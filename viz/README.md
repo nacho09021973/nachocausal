@@ -78,11 +78,11 @@ that construction generic rather than cherry-picked.
 If a future version of the figure suggests "two independent draws came out equal", it
 is asserting something false and must be rejected.
 
-Figure 5 uses independent ensembles only to display agreement of Monte Carlo curves.
+Figure 3 uses independent ensembles only to display agreement of Monte Carlo curves.
 Its caption must report `N=60`, 80 repeats, and the fixed seed, and must say that the
-observed variation does not prove recovery or localization. Figure 3's maximal-element
+observed variation does not prove recovery or localization. Figure 4's maximal-element
 construction is a toy analogy for completion dependence, not the event horizon itself;
-Figure 4's time-banded residual is a diagnostic, not recovered horizon physics.
+Figure 5's time-banded residual is a diagnostic, not recovered horizon physics.
 
 Asset `fig04` separates its fixed-seed within-causet Pearson coefficient from two
 deterministic quadrature targets: the window functional `Corr(p(X),t(X))` and the

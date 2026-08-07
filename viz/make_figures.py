@@ -44,7 +44,7 @@ def main():
     print(f"fig04  box wall sample          corr(|J+|,t) = {c_t:+.3f}   "
           f"corr(|J+|,r) = {c_r:+.3f}   band corr = {c_band:+.3f}")
     print(f"       population quadrature    corr(p(X),t(X)) = {pop['corr_p_t']:+.8f}   "
-          f"tagged corr(K,T) = {pop['corr_k_t']:+.8f}")
+          f"tagged corr(F,T) = {pop['corr_k_t']:+.8f}")
 
     _, gap, sd = fig05_what_is_recoverable.draw(OUTPUT / "fig05_what_is_recoverable.png")
     print(f"fig05  what is recoverable      |rs=1 - rs=7| max = {gap:.4f}   "

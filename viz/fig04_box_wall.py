@@ -135,8 +135,8 @@ def draw(out):
              fontsize=9, color=RED, weight="bold")
     axA.set_xlabel("$r$")
     axA.set_ylabel("$t$")
-    axA.set_title("A · future volume $|J^+|$", loc="left", pad=22)
-    fig.colorbar(sc, ax=axA, shrink=0.85, label="$|J^+(i)|$")
+    axA.set_title("A · future cardinality $F=|J^+|$", loc="left", pad=22)
+    fig.colorbar(sc, ax=axA, shrink=0.85, label="$F_i=|J^+(i)|$")
     axA.text(0.5, 1.0, "the gradient is VERTICAL, not radial",
              transform=axA.transAxes, ha="center", va="baseline",
              fontsize=9.5, color=GREY)
@@ -144,7 +144,7 @@ def draw(out):
     # --- B: against height ---------------------------------------------------
     axB.scatter(t, fv, s=12, c=BLUE, alpha=0.5, linewidth=0)
     axB.set_xlabel("$t$  (height in the box)")
-    axB.set_ylabel("$|J^+(i)|$")
+    axB.set_ylabel("$F_i=|J^+(i)|$")
     axB.set_title(f"B · one causet:  $\\hat{{\\rho}}_{{\\rm cloud}} = {c_t:+.3f}$",
                   loc="left", pad=22)
     axB.text(0.5, 1.0,
@@ -160,11 +160,11 @@ def draw(out):
                 linewidth=0.6, zorder=3,
                 label=f"band only (sample $\\hat{{\\rho}}={c_r_band:+.3f}$)")
     axC.set_xlabel("$r$  (radial position)")
-    axC.set_ylabel("$|J^+(i)|$")
+    axC.set_ylabel("$F_i=|J^+(i)|$")
     axC.set_title("C · a residual radial trend after banding", loc="left", pad=22)
     axC.legend(loc="upper left", fontsize=9)
 
-    fig.suptitle("Future volume in a finite Schwarzschild window",
+    fig.suptitle("Future cardinality in a finite Schwarzschild window",
                  fontsize=13.5, y=0.99)
     fig.text(0.5, 0.005,
              "Sample coefficients: one fixed-seed causet.  Population targets in B: "
@@ -184,5 +184,5 @@ if __name__ == "__main__":
     print(f"  sample corr(|J+|, t) = {a:+.3f}   corr(|J+|, r) = {b:+.3f}"
           f"   band corr = {c:+.3f}")
     print(f"  window corr(p(X),t(X)) = {pop['corr_p_t']:+.8f}"
-          f"   tagged corr(K,T) = {pop['corr_k_t']:+.8f}"
+          f"   tagged corr(F,T) = {pop['corr_k_t']:+.8f}"
           f"   attenuation = {pop['attenuation']:.8f}")
