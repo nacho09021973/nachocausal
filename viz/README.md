@@ -3,9 +3,8 @@
 > **STATUS: SUPPORTING_FIGURES / DOES_NOT_TOUCH_THE_SEAL / NO_VALIDATION_SEEDS /
 > NO_RECONSTRUCTION_CLAIM.**
 >
-> These figures illustrate theorems and diagnostics already documented in
-> `docs/manuscript_limits_draft.md`. They produce no new results, consume none of
-> the reserved seed band
+> These figures illustrate theorems and deterministic diagnostics documented in
+> `docs/manuscript_limits_draft.md`. They consume none of the reserved seed band
 > `[2,000,000–2,999,999]`, and do not touch `thresholds.py`.
 
 ## Why they exist
@@ -15,7 +14,7 @@ always drawn one of two ways — abstract Hasse diagrams, or points in Minkowski
 light cones on top — and **neither shows what the order fails to see**, which is
 precisely what this manuscript is about.
 
-These five figures are aimed at a student, not a specialist. That choice **raises**
+These six figures are aimed at a student, not a specialist. That choice **raises**
 the accuracy bar rather than lowering it: an expert reads the caption and forgives an
 imprecision; a student believes the picture literally.
 
@@ -26,28 +25,30 @@ imprecision; a student believes the picture literally.
 | 1 | `fig01_dictionary.py` | What is discarded in passing from spacetime to a causet | — |
 | 2 | `fig02_invisible_scale.py` | Absolute scale is invisible to the order | Theorem 3.1 |
 | 3 | `fig03_teleology.py` | What happens outside the patch is not in the patch | Theorem 3.2 |
-| 4 | `fig04_box_wall.py` | Why the C1–C5 localisers died | acta 042 |
+| 4 | `fig04_box_wall.py` | Tagged future cardinality, its population target, and the residual radial diagnostic | Proposition 4.1 |
 | 5 | `fig05_what_is_recoverable.py` | A scale-free statistic varies across a specified `r/r_s` patch family | partner of Fig. 2 |
+| 6 | `fig06_minimax_rate.py` | Comparable-pair separation and the matched minimax exponent | Theorems 3.8–3.9 |
 
-Figures 2 and 5 are a pair and must travel together: Figure 2 visualizes the exact
-co-scaling witness for absolute-scale blindness; Figure 5 shows that the comparable-
+Assets `fig02` and `fig05` are a pair and must travel together: `fig02` visualizes the exact
+co-scaling witness for absolute-scale blindness; `fig05` shows that the comparable-
 pair fraction varies with dimensionless patch placement in one specified family.
-Figure 5 is illustrative: it does **not** establish identification of `r/r_s`,
+Asset `fig05` is illustrative: it does **not** establish identification of `r/r_s`,
 injectivity beyond the plotted sweep, or horizon localization.
 
 In the manuscript the images appear in argumentative order, so asset `fig05` is
-publication Figure 3, asset `fig03` is publication Figure 4, and asset `fig04` is
-publication Figure 5.
+publication Figure 3, asset `fig03` is publication Figure 4, asset `fig06` is
+publication Figure 5, and asset `fig04` is publication Figure 6.
 
 ## Usage
 
 ```bash
-python3 viz/make_figures.py     # writes all five to viz/output/ and prints their numbers
+python3 viz/make_figures.py     # writes all six to viz/output/ and prints their numbers
 ```
 
-Every figure fixes its seed: two runs give byte-identical files. The numbers the
-runner prints are the ones printed inside the panels; if they change, the manuscript
-caption has stopped agreeing with the figure.
+Every stochastic figure fixes its seed, and the remaining figures use deterministic
+quadrature: two runs give byte-identical files. The numbers the runner prints are the
+ones printed inside the panels; if they change, the manuscript caption has stopped
+agreeing with the figure.
 
 ## Accuracy: why this is not decoration
 
@@ -82,7 +83,8 @@ Figure 3 uses independent ensembles only to display agreement of Monte Carlo cur
 Its caption must report `N=60`, 80 repeats, and the fixed seed, and must say that the
 observed variation does not prove recovery or localization. Figure 4's maximal-element
 construction is a toy analogy for completion dependence, not the event horizon itself;
-Figure 5's time-banded residual is a diagnostic, not recovered horizon physics.
+Figure 5's direct-score mesh maximum is not a certified supremum, and Figure 6's
+time-banded residual is a diagnostic, not recovered horizon physics.
 
 Asset `fig04` separates its fixed-seed within-causet Pearson coefficient from two
 deterministic quadrature targets: the window functional `Corr(p(X),t(X))` and the
@@ -90,3 +92,9 @@ finite-`n` tagged-element correlation. The exact attenuation formula applies to 
 tagged marginal law, not identically to the dependent Pearson coefficient computed
 inside one causet. No iid confidence interval is authorized for that internal
 coefficient.
+
+Asset `fig06` is entirely deterministic. Its standalone entry point prints the
+481/961/1921-node refinement sweep at \(\tau=1,1.1,1.2\), the global and slice-wise
+score residuals, the CDF endpoint residuals, and the corner checks before drawing.
+The manuscript may quote the finite mesh maximum only as
+`Ibar_mesh`/diagnostic; it must never relabel it as a certified `Ibar` enclosure.

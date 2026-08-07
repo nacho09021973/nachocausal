@@ -22,6 +22,7 @@ import fig02_invisible_scale       # noqa: E402
 import fig03_teleology             # noqa: E402
 import fig04_box_wall              # noqa: E402
 import fig05_what_is_recoverable   # noqa: E402
+import fig06_minimax_rate          # noqa: E402
 
 OUTPUT = HERE / "output"
 
@@ -49,6 +50,16 @@ def main():
     _, gap, sd = fig05_what_is_recoverable.draw(OUTPUT / "fig05_what_is_recoverable.png")
     print(f"fig05  what is recoverable      |rs=1 - rs=7| max = {gap:.4f}   "
           f"typical sd = {sd:.4f}   (the gap must stay below the sd)")
+
+    _, p_values, fisher_values, fisher_mesh_max, fisher_argmax, cauchy_ratio_min = fig06_minimax_rate.draw(
+        OUTPUT / "fig06_minimax_rate.png"
+    )
+    print(f"fig06  minimax-rate diagnostic  p endpoints = "
+          f"({p_values[0]:.12f}, {p_values[-1]:.12f})")
+    print(f"       direct-score mesh        I range = "
+          f"[{fisher_values.min():.8e}, {fisher_values.max():.8e}]   "
+          f"mesh max at tau={fisher_argmax:.3f}   value={fisher_mesh_max:.8e}")
+    print(f"       Fisher inequality        min I/(2 p_prime^2) = {cauchy_ratio_min:.6f}")
 
     print("=" * 76)
     print(f"figures in {OUTPUT}")

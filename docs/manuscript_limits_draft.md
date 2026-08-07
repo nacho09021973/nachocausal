@@ -61,7 +61,7 @@ as formalized in Lemma 2.1:
 | Channel | Observation | Role in this paper |
 |---|---|---|
 | **Order-only, fixed \(n\)** | Isomorphism class of the poset conditioned on \(N=n\) | Primary channel for Theorems 3.1, 3.8, and 3.9 |
-| **Order+number** | Joint law of order and cardinality (e.g.\ \(N\sim\mathrm{Poisson}(\rho V)\) with \(\rho\) known) | Contrast only: scale can re-enter through \(N\) (Remark after Thm 3.1) |
+| **Order+number** | Joint law of order and cardinality (e.g.\ \(N\sim\mathrm{Poisson}(\varrho V)\) with \(\varrho\) known) | Contrast only: scale can re-enter through \(N\) (Remark after Thm 3.1) |
 
 Conditioning on \(N=n\) removes the total-volume leak through cardinality: the \(n\)
 points are i.i.d.\ from the normalized volume measure. Absolute scale is then
@@ -104,8 +104,7 @@ Three targets must be kept distinct:
    (see §6.4).
 
 Every positive or negative statement in this paper names which of (1)–(3) is at
-stake. Silent substitution among them is a terminal failure of wording
-(`TELEOLOGY_CLAIM_FAIL` in the project grammar).
+stake; none is silently substituted for another.
 
 ### 1.5 Scale versus shape
 
@@ -141,6 +140,12 @@ The paper has three components:
 We do not claim to reconstruct a Schwarzschild event horizon from a finite causal
 set. We identify what this observation channel can and cannot determine, and at
 what statistical rate, under explicit geometric families.
+
+**Organizing thesis.** In the experiments studied here, fixed-\(n\) order retains
+aspects of dimensionless patch shape, but supplies neither an absolute scale nor
+completion-dependent global information. Theorem 3.1 removes the ruler, Theorem
+3.2 removes the completion, Theorems 3.8–3.9 quantify estimation within shape, and
+§4 gives a recoverable shape functional.
 
 ---
 
@@ -1432,6 +1437,25 @@ by \(\delta_n/2\) and taking the larger endpoint risk yields
 \(\mathcal R_{n,1}\ge\delta_n/8\). The \(o/\omega\) statements follow from
 Theorems 3.8 and 3.9. \(\blacksquare\)
 
+Figure 5 evaluates the concrete family
+\((r_p,r_q,v_p,v_q)=(3,0.5,0,0.02)\), \(\Theta=[1,1.2]\), without sprinkling.
+Gauss--Legendre quadrature gives
+\(p(1)=0.500591097337\) and \(p(1.2)=0.500705392490\). A separate direct-score
+quadrature on 41 parameter nodes gives the diagnostic mesh range
+\(4.56\times10^{-6}\le I(\tau)\le4.70\times10^{-6}\) at 961 nodes per axis;
+at \(\tau=1,1.1,1.2\), refinement from 961 to 1921 nodes changes the values by
+0.71%, 0.55%, and 0.44%, respectively. The full sweep and score-identity residuals
+are printed by the committed generator.
+
+![**Fixed-corner shape information and the minimax exponent.** Panel A shows the
+deterministic comparable-pair probability and its small-lapse leading term. Panel B
+evaluates the plug-in theorem expression at the declared lapse and, only to visualize
+scale, the Le Cam expression after inserting the maximum of the finite direct-score
+mesh for the unknown \(\bar I\). The orange curve does not certify
+\(0.02<\Delta v_0\), and the blue curve is **not** a certified minimax lower bound:
+a mesh maximum is not a supremum enclosure. Both display the proved \(n^{-1/2}\)
+exponent; their constants are not claimed sharp.](../viz/output/fig06_minimax_rate.png){width=100%}
+
 #### What Theorems 3.8–3.9 do and do not claim
 
 | Claims | Does **not** claim |
@@ -1439,6 +1463,7 @@ Theorems 3.8 and 3.9. \(\blacksquare\)
 | Matching \(n^{-1/2}\) minimax upper and lower rates for fixed admissible \(\Delta v\) | Equality or optimality of the two constants |
 | An explicit ordering-fraction estimator and consistent fixed-pair tests | A numerically certified value of \(\Delta v_0\), or monotonicity at arbitrary lapse |
 | Pointwise \(I(\tau)\ge\kappa^2(\Delta v)^2/2\) | The still-unproved uniform upper scaling \(\bar I=O((\Delta v)^2)\) as \(\Delta v\downarrow0\) |
+| A convergent direct-score mesh diagnostic for the declared family | A certified enclosure of \(\bar I\); Figure 5 does not replace one |
 | One \(\Delta v_0\) uniform over \(\tau\in\Theta\) | One testing cardinality uniform over all distinct pairs; the bound requires \(n(\Delta v)^2|\tau-\tau'|^2\to\infty\) |
 | QMD, Hellinger, Hoeffding moments, Chebyshev, and two-point testing | Novelty of this standard statistical machinery |
 | | Any result in 3+1 dimensions |
@@ -1549,7 +1574,7 @@ and the subsequent selector adds further dependence. Proposition 4.1 therefore
 explains the unselected future-cardinality signal; it is not an unbiasedness theorem
 for the final bracket and is not used to validate the empirical outcome.
 
-**Population illustration.** For the exterior window used in Figure 5,
+**Population illustration.** For the exterior window used in Figure 6,
 
 \[
 W=[0,6]\times[1.1,4],
@@ -1574,7 +1599,7 @@ Deterministic quadrature, without sprinkling, gives
 | Window-and-chart target \(\rho_\infty=\operatorname{Corr}(P,T)\) | \(-0.951388\) |
 | Tagged attenuation \(A_{900}=\operatorname{Corr}(F,P)\) | \(0.998400\) |
 | Tagged finite-\(n\) correlation \(\rho_{900}=\operatorname{Corr}(F,T)\) | \(-0.949866\) |
-| One-causet coefficient in Figure 5, \(\widehat\rho_{\mathrm{cloud}}\) | \(-0.951\) (rounded) |
+| One-causet coefficient in Figure 6, \(\widehat\rho_{\mathrm{cloud}}\) | \(-0.951\) (rounded) |
 
 The target depends on the window, normalized measure, and declared time coordinate;
 it is not an intrinsic Schwarzschild scalar. The cloud pairs \((F_i,T_i)\) in one
