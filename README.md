@@ -11,6 +11,12 @@ For any AI or agent connecting to this repo, read [INSTRUCCIONES.md](INSTRUCCION
 the available machinery and the correct workflow between committee, auditor, external consultors,
 and Alloy.
 
+**Manuscript under review:**
+[Finite order-only observation of Schwarzschild patches](docs/manuscript_limits_draft.md)
+separates exact fixed-\(n\) blindness to absolute scale, completion dependence of the global
+event horizon, and a matching \(n^{-1/2}\) minimax localization rate on one declared
+fixed-corner \(1{+}1\) family. Its claims are narrower than the historical program roadmap below.
+
 **Current program roadmap:** [post-N1–N5 limits-paper route](tarea_grok_2.md).
 The earlier [15 July operational plan](docs/plan_operativo_15_julio_2026.md) remains historical
 input where not superseded by the current roadmap.

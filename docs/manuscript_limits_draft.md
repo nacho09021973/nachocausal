@@ -1,4 +1,4 @@
-# Finite order-only observation of Schwarzschild patches: exact scale blindness and a sharp localization rate
+# Finite order-only observation of Schwarzschild patches: exact scale blindness and a matching minimax localization rate
 
 **José Ignacio Martín-Gandul**
 
@@ -619,7 +619,7 @@ the binary target
 :=
 \mathbf 1\{W\cap\mathcal H^+(\mathcal M,g)\ne\varnothing\},
 \]
-where \(\mathcal H^+(M,g)\) is the future event horizon. There exist two admissible
+where \(\mathcal H^+(\mathcal M,g)\) is the future event horizon. There exist two admissible
 completions, indexed by \(j=0,1\), and a finite-volume patch \(W\) that is causally
 convex in **both** completions, such that their restricted metrics, volume measures,
 and causal relations agree on \(W\), while
@@ -1772,8 +1772,11 @@ following SHA256 (concatenate the two displayed lines):
 \]
 All choices below were fixed before evaluation on the held-out seeds.
 
-**Geometry and ensemble.** The Schwarzschild radius is \(r_s=2M=0.5\), and the
-sprinkling window is
+**Geometry and ensemble.** The Schwarzschild radius is \(r_s=2M=0.5\). In this
+subsection the repository coordinate named \(t\) is the ingoing
+Eddington--Finkelstein time coordinate used by the sealed generator; it is not
+the exterior Schwarzschild time used only in the separate Figure 6 illustration.
+The sprinkling window is
 \[
 (t,r)\in[0,6]\times[0.1,1.3],
 \qquad \operatorname{Vol}(W)=7.2.
