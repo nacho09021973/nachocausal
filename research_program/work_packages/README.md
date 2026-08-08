@@ -48,6 +48,14 @@ dedicated committee decision plus PI authorization.
 Cross-package roadmap (not a duplicate proof): `../synthesis/geometric_indeterminacy_decision.md`.
 Authoritative two-point theorem: `wp4_two_point_theorem.md`.
 
+## WP7 — F2 frente a F3 en orden producto
+
+`wp7_f2_f3_product_order_contract.md` fija la pregunta determinista de si la
+discrepancia rectangular mesoscópica de F2 controla la altura/LIS de F3 en `d=2`, o si
+una cadena plantada de tamaño `Theta(sqrt(n))` produce un contraejemplo. El primer ataque
+es deductivo y tiene cinco obligaciones P1--P5; no autoriza simulación, semillas, dimensión
+mayor ni afirmaciones de novedad.
+
 ## Phase 3 B2 pre-opening front
 
 The next program-level branch is prepared, but not scientifically opened, in
