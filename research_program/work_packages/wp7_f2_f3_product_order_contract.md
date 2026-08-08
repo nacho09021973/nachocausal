@@ -1,7 +1,7 @@
 # WP7 — Contrato `F2 => F3` o contraejemplo en `d=2`
 
 ```text
-ESTADO: CONTRATO FORMAL v1.1 / PRODUCT_ORDER_COUNTEREXAMPLE PROBADO / P1--P4 PROBADAS / P5 OPEN
+ESTADO: CONTRATO FORMAL v1.2 / P1--P4 PROBADAS / P5.1 CONDICIONAL / P5 OPEN
 FECHA: 2026-08-08
 RAMA: research/f2-f3-chain-distance
 NATURALEZA: combinatoria + bibliografía; cero simulación, cero semillas, sello intacto
@@ -264,19 +264,200 @@ Por la definición `delta_a=(a-2)/4`, para `m` suficientemente grande
 | P2 | `PROVED` | reducción exacta a \(I\cap J\), (3.3), sin restricción de aspecto |
 | P3 | `PROVED` | posición general, cardinalidad exacta y cota uniforme (3.4)--(3.5) |
 | P4 | `PROVED` | par de centinelas y límite inferior `a/2` |
-| P5 | `OPEN` | falta casar borde, densidad, volumen, rango mesoscópico y normalización con Madsen |
+| P5 | `OPEN` | P5.1 prueba estabilidad condicional; el cilindro plano falla en la escala \(\lambda\) literal |
 
 Por tanto, el terminal actual es `PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN`. Todavía
 no se declara `COUNTEREXAMPLE_F1_F2_NOT_F3_D2` en el sentido geométrico de Madsen.
 
-## 4. Ruta positiva aparcada
+## 4. P5.1 — Estabilidad de F2 bajo una cadena mesoscópica plantada
+
+**Estado: PROVED_CONDITIONAL / CYLINDER_SCALE_MISMATCH / P5 permanece OPEN.**
+
+Esta sección audita únicamente el mecanismo de perturbación contra la Def. 2.6 y el
+Lema 5.2 de Madsen. No prueba todavía que exista una geometría que satisfaga simultáneamente
+todos sus cuantificadores.
+
+### 4.1 Lectura regional y margen del fondo
+
+La Def. 2.6 usa \(V_M<\infty\). Para un espaciotiempo no compacto, la Remark 5.4 fija una
+región precompacta \(K\subset M\), restringe el causal set a \(C_K\) y reemplaza \(V_M\)
+por \(V_K\). Adoptamos provisionalmente esa lectura regional y ponemos
+
+\[
+\mathcal N_\rho:=\rho V_K,\qquad
+\tau_{\min}=c_*^{-1}\rho^{-1/2}\log\mathcal N_\rho
+\quad(d=2).
+\]
+
+El Lema 5.2 permite elegir una realización Poisson \(\Pi_\rho\) que satisface F1--F2 con
+una constante fija \(K_{\rm bg}\), para \(\rho\) suficientemente grande. La perturbación
+necesita margen: se fija desde el principio otra constante
+
+\[
+K_2>K_{\rm bg}.
+\]
+
+No basta partir de una realización que solo se sabe situada exactamente en el borde
+\(K_2\).
+
+### 4.2 Lema condicional de estabilidad
+
+Suponga que la región contiene un diamante interior \(D_0\) de altura propia fija
+\(\tau_0\in(0,c_*\lambda)\) y una geodésica timelike \(\gamma\) entre sus puntas. Suponga
+además que todo diamante F2-admisible \(D\) satisface la cota de traza plana
+
+\[
+\tag{P5.1-G}
+\operatorname{len}_g(\gamma\cap D)
+\le \sqrt{2\,\operatorname{Vol}_g(D)}.
+\]
+
+En Minkowski \(1+1\), antes de cualquier envolvimiento espacial, esto es exacto:
+\(\operatorname{Vol}(D)=\tau(D)^2/2\) y la intersección con una recta timelike es un
+intervalo de longitud a lo sumo \(\tau(D)\).
+
+Fije \(A>1\), ahora como amplitud de la cadena y sin relación con el parámetro \(A\)
+de §1, y plante sobre \(\gamma\), incluidos sus extremos,
+
+\[
+k_\rho=\left\lceil A\sqrt{m_2\rho}\,\tau_0\right\rceil
+\]
+
+puntos equiespaciados, y llame \(\Gamma_\rho\) a ese conjunto. Para cualquier diamante
+admisible \(D\), la discrepancia de una rejilla unidimensional da
+
+\[
+\begin{aligned}
+\#(\Gamma_\rho\cap D)
+&\le A\sqrt{m_2\rho}\,
+       \operatorname{len}_g(\gamma\cap D)+2\\
+&\le A\sqrt{2m_2}\,
+       \sqrt{\rho\,\operatorname{Vol}_g(D)}+2.
+\end{aligned}
+\tag{P5.1-1}
+\]
+
+Sea \(P_\rho=\Pi_\rho\cup\Gamma_\rho\), con el orden causal inducido. F1 sigue siendo
+exacta. Sumando la cota F2 del fondo y (P5.1-1),
+
+\[
+\frac{\bigl|\#(P_\rho\cap D)-\rho\operatorname{Vol}_g(D)\bigr|}
+{\sqrt{\rho\operatorname{Vol}_g(D)\log\mathcal N_\rho}}
+\le K_{\rm bg}
++\frac{A\sqrt{2m_2}}{\sqrt{\log\mathcal N_\rho}}
++\frac{2}{\sqrt{\rho\operatorname{Vol}_g(D)\log\mathcal N_\rho}}.
+\tag{P5.1-2}
+\]
+
+En la escala mínima, usando
+\(\operatorname{Vol}_g(D)=\tau(D)^2/2\) en la región plana,
+
+\[
+\rho\operatorname{Vol}_g(D)
+\ge \frac{\log^2\mathcal N_\rho}{2c_*^2}.
+\]
+
+Por tanto el último término de (P5.1-2) es a lo sumo
+\(2\sqrt2\,c_*/\log^{3/2}\mathcal N_\rho\), y
+
+\[
+\Xi_A(\rho):=
+\frac{A\sqrt{2m_2}}{\sqrt{\log\mathcal N_\rho}}
++\frac{2\sqrt2\,c_*}{\log^{3/2}\mathcal N_\rho}
+\longrightarrow0.
+\tag{P5.1-3}
+\]
+
+Elegir \(\rho_0\) con
+\(\Xi_A(\rho)\le K_2-K_{\rm bg}\) para \(\rho\ge\rho_0\) prueba, bajo
+(P5.1-G) y la lectura regional anterior, que \(P_\rho\) satisface F2 con la misma
+constante final \(K_2\). El factor decisivo vuelve a ser
+\(1/\sqrt{\log\mathcal N_\rho}\), uniformemente hasta \(\tau_{\min}\).
+
+### 4.3 Testigo F3 y convenciones de \(m_2\)
+
+Tome como \(x_\rho,y_\rho\) los extremos plantados. Tanto si la longitud de cadena cuenta
+vértices como si cuenta enlaces, la diferencia es a lo sumo uno y
+
+\[
+\frac{\ell_{P_\rho}(x_\rho,y_\rho)}{\sqrt{m_2\rho}}
+\ge A\tau_0-o(1).
+\tag{P5.1-4}
+\]
+
+En la normalización estándar de Minkowski \(1+1\),
+\(\operatorname{Vol}(D_\tau)=\tau^2/2\) y la altura asintótica es
+\(2\sqrt{\rho\operatorname{Vol}(D_\tau)}=\sqrt{2\rho}\,\tau\). Comparando con la
+ecuación (45) de Madsen se obtiene \(m_2=2\). La convención vértices/enlaces solo altera
+(P5.1-4) en \(O(\rho^{-1/2})\).
+
+Si \(\tau_0=\varepsilon\lambda\), \(0<\varepsilon<c_*\), el lado derecho de F3 para
+este par es
+
+\[
+C_2\left(
+\varepsilon^2+
+\frac{\log^{3/2}\mathcal N_\rho}{\mathcal N_\rho^{1/4}}
+\right)\tau_0.
+\]
+
+Así, siempre que
+
+\[
+\tag{P5.1-5}
+A-1>C_2\varepsilon^2,
+\]
+
+la desigualdad F3 completa falla para \(\rho\) suficientemente grande. El término
+estadístico tiende a cero y el margen estricto absorbe la ambigüedad \(O(1)\) en la
+longitud de cadena.
+
+### 4.4 Auditoría binaria de la realización cilíndrica
+
+| Condición | Veredicto | Razón |
+|---|---|---|
+| región precompacta | PASS_WITH_SCOPE | la Remark 5.4 autoriza \(K\) y \(V_K\), pero no reescribe literalmente todos los cuantificadores de la Def. 2.6; P5 debe fijar que solo se exigen diamantes completos en el interior regional |
+| \(\lambda=L/2\) en \(\mathbb R\times S^1_L\) | FAIL_AS_STATED | \(L/2\) es la inyectividad del auxiliar estándar, no el supremo de la ecuación (1) |
+| \(m_2\) y longitud de cadena | PASS_ASYMPTOTIC | \(m_2=2\) con \(\operatorname{Vol}(D_\tau)=\tau^2/2\); contar vértices o enlaces cambia \(O(1)\) |
+
+El fallo de la segunda fila es literal. Para
+\(g=-dt^2+dx^2\) y el campo constante
+\(T_\eta=(\cosh\eta,\sinh\eta)\), la métrica auxiliar satisface
+
+\[
+h_{T_\eta}(\partial_x,\partial_x)
+=1+2\sinh^2\eta=\cosh(2\eta).
+\]
+
+Si \(L\) denota la circunferencia espacial, entonces
+
+\[
+\operatorname{inj}(M,h_{T_\eta})
+=\frac L2\sqrt{\cosh(2\eta)}\longrightarrow\infty.
+\]
+
+Como la curvatura del cilindro plano es nula y la Def. 2.6 toma el supremo sobre todos
+los campos timelike unitarios, su \(\lambda\) literal es infinito, no \(L/2\). Esto vuelve
+inservible la elección \(\tau_0=\varepsilon\lambda\) y no permite identificar el rango
+local no envuelto con \([\tau_{\min},c_*\lambda]\).
+
+**Estado de P5.1.** La estabilidad F2 y el mecanismo de violación F3 están probados
+condicionalmente por (P5.1-1)--(P5.1-5). La realización propuesta en el cilindro plano no
+cierra P5 bajo la definición literal. El siguiente subproblema queda reducido a una elección
+geométrica con \(0<\lambda<\infty\), región plana o uniformemente controlada que satisfaga
+una versión de (P5.1-G), y un diamante testigo profundo. Hasta entonces continúa el terminal
+PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN; no se rebaja todavía a
+PRODUCT_ORDER_COUNTEREXAMPLE_ONLY, porque ha fallado esta realización, no la existencia
+de todo puente geométrico posible.
+
+## 5. Ruta positiva aparcada
 
 El contraejemplo anterior cierra negativamente la implicación en el modelo producto con
 F2-2D tal como fue congelada. No se intenta ahora una desigualdad positiva. Esta ruta solo
 podría reabrirse si P5 demuestra que la F2 geométrica exacta impone una restricción adicional
 que invalida (3.4); tal restricción deberá escribirse, no suponerse.
 
-## 5. Literatura mínima y función de cada fuente
+## 6. Literatura mínima y función de cada fuente
 
 | Fuente | Aporte permitido | Lo que no licencia |
 |---|---|---|
@@ -298,12 +479,13 @@ la discrepancia respecto de `n|R|` es `Theta(n)` casi seguramente, frente al tec
 `O(sqrt(n log n))` de F2 para ese rectángulo fijo. Nuestro mecanismo es distinto: la masa
 plantada es `k/n=Theta(n^{-1/2})` y desaparece con `n`.
 
-## 6. Entregables y criterios de parada
+## 7. Entregables y criterios de parada
 
 Orden obligatorio, sin código ni datos:
 
 1. ~~nota de prueba P1--P4, con cada constante y término de borde~~ — cerrada en §3;
-2. nota de transferencia P5 contra la Def. 2.6 exacta de Madsen;
+2. nota de transferencia P5 contra la Def. 2.6 exacta de Madsen — P5.1 cerrada
+   condicionalmente; falta sustituir la geometría cilíndrica fallida;
 3. ledger bibliográfico de discrepancia local, permutaciones cuasialeatorias y LIS.
 
 Terminales, en orden de precedencia:
@@ -323,7 +505,7 @@ Parada dura: no se pasa a simulación, búsqueda masiva de permutaciones, dimens
 curvatura de Weyl ni diseño de estimadores. Un bloqueo debe nombrar la primera obligación
 P1--P5 que falla y el enunciado residual que aún sería correcto.
 
-## 7. Techo de afirmación
+## 8. Techo de afirmación
 
 Desde el cierre de P1--P4 solo se permite afirmar:
 
