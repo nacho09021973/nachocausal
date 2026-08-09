@@ -1,7 +1,7 @@
 # WP7 — Contrato `F2 => F3` o contraejemplo en `d=2`
 
 ```text
-ESTADO: CONTRATO FORMAL v1.3 / P1--P4 PROBADAS / P5.2-O1 PROBADA / P5 OPEN
+ESTADO: CONTRATO FORMAL v1.4 / P1--P4 PROBADAS / P5.2-O1 PROBADA / O2 PASS_WITH_NORM_SCOPE / P5 OPEN
 FECHA: 2026-08-09
 RAMA: research/f2-f3-chain-distance
 NATURALEZA: combinatoria + bibliografía; cero simulación, cero semillas, sello intacto
@@ -264,7 +264,7 @@ Por la definición `delta_a=(a-2)/4`, para `m` suficientemente grande
 | P2 | `PROVED` | reducción exacta a \(I\cap J\), (3.3), sin restricción de aspecto |
 | P3 | `PROVED` | posición general, cardinalidad exacta y cota uniforme (3.4)--(3.5) |
 | P4 | `PROVED` | par de centinelas y límite inferior `a/2` |
-| P5 | `OPEN` | P5.1 prueba estabilidad condicional; P5.2-O1 prueba la admisibilidad causal de de Sitter planar; O2--O5 no auditadas |
+| P5 | `OPEN` | P5.1 prueba estabilidad condicional; P5.2-O1 prueba la admisibilidad causal y O2 fija \(0<\lambda<\infty\) con alcance de norma; O3--O5 no auditadas |
 
 Por tanto, el terminal actual es `PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN`. Todavía
 no se declara `COUNTEREXAMPLE_F1_F2_NOT_F3_D2` en el sentido geométrico de Madsen.
@@ -452,7 +452,8 @@ de todo puente geométrico posible.
 
 ## 5. P5.2 — Auditoría de de Sitter planar
 
-**Estado: IN_PROGRESS / O1_PROVED / O2--O5_NOT_AUDITED / P5 permanece OPEN.**
+**Estado: IN_PROGRESS / O1_PROVED / O2_PASS_WITH_NORM_SCOPE /
+O3--O5_NOT_AUDITED / P5 permanece OPEN.**
 
 La ampliación firmada en
 `docs/program_reopening_note_2026-08-09_P5_2.md` autoriza como candidato único
@@ -464,9 +465,9 @@ g=\frac{\ell^2}{\eta^2}(-d\eta^2+dx^2),
 \qquad \ell>0.
 \]
 
-Se elige la orientación temporal en la que \(\eta\) crece hacia el futuro. Esta sección
-resuelve solo la primera obligación autorizada; en particular, todavía no evalúa el
-supremo que define \(\lambda\).
+Se elige la orientación temporal en la que \(\eta\) crece hacia el futuro. Las
+subsecciones siguientes resuelven O1 y la parte cualitativa de O2. El valor numérico
+exacto de \(\lambda\) queda condicionado por una convención de norma ausente en Madsen.
 
 ### 5.1 O1 — Hiperbolicidad global y campo auxiliar admisible
 
@@ -549,10 +550,111 @@ tipo exigido por la Construction 2.3. \(\square\)
 | campo timelike unitario admisible | `PROVED` | \(T=-\nabla t\), con \(g(T,T)=-1\) |
 | métrica auxiliar global | `PROVED` | \(h_T=\ell^2\eta^{-2}(d\eta^2+dx^2)\) |
 
-**Corte de alcance.** P5.2-O1 queda probada. No se infiere de ello que
-\(0<\lambda<\infty\): la inyectividad de \(h_T\), la norma de curvatura que entra en
-(1) y el supremo sobre todos los campos unitarios pertenecen a O2. En consecuencia, el
-terminal sigue siendo `PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN`.
+**Corte de O1.** P5.2-O1 queda probada. La inyectividad de \(h_T\), la norma de
+curvatura que entra en (1) y el supremo sobre todos los campos unitarios se auditan
+separadamente en O2.
+
+### 5.2 O2 — Escala de curvatura y máximo sobre campos timelike
+
+**Veredicto: `PASS_WITH_NORM_SCOPE`.** La v1 de Madsen define
+
+\[
+\tag{P5.2-3}
+\lambda=\sup_S\min\!\left(
+\operatorname{inj}(M_\ell,h_S),
+|\operatorname{Rm}[g]|^{-1/2}
+\right),
+\]
+
+con \(S\) recorriendo los campos timelike unitarios suaves. No define, ni en la Def. 2.6
+ni en su glosario, la norma tensorial o el supremo espacial implícitos en
+\(|\operatorname{Rm}[g]|\). La Remark 4.7 distingue expresamente
+\(\operatorname{Rm}[g]\) de \(\operatorname{Rm}[h_S]\), pero tampoco fija esa
+convención. Por ello no se asigna a \(\lambda\) una constante numérica única.
+
+> **Lema P5.2-O2.** Bajo cualquiera de las dos lecturas estándar siguientes,
+>
+> 1. norma Hilbert--Schmidt positiva de \(\operatorname{Rm}[g]\) inducida por \(h_S\), o
+> 2. norma de operador, equivalentemente la cota de curvatura seccional en este caso,
+>
+> la magnitud \(|\operatorname{Rm}[g]|\) es positiva, finita y no depende de \(S\).
+> El campo \(T\) de O1 realiza el supremo de (P5.2-3), que es por tanto un máximo, y
+>
+> \[
+> \lambda=|\operatorname{Rm}[g]|^{-1/2}
+> =c_{\rm norm}\ell,
+> \qquad 0<c_{\rm norm}<\infty.
+> \]
+>
+> En concreto, \(c_{\rm norm}=1/\sqrt2\) para Hilbert--Schmidt y
+> \(c_{\rm norm}=1\) para la norma de operador.
+
+**Prueba.** Escribiendo \(y=-\eta>0\), el auxiliar construido en O1 es
+
+\[
+h_T=\frac{\ell^2}{y^2}(dy^2+dx^2),
+\tag{P5.2-4}
+\]
+
+la métrica completa y simplemente conexa del semiplano hiperbólico, con curvatura
+seccional \(-1/\ell^2\). Por Cartan--Hadamard su aplicación exponencial es un
+difeomorfismo en cada punto, no hay cut locus y
+
+\[
+\operatorname{inj}(M_\ell,h_T)=\infty.
+\tag{P5.2-5}
+\]
+
+La métrica lorentziana de de Sitter tiene curvatura seccional constante
+\(+1/\ell^2\), luego
+
+\[
+R_{abcd}=\frac1{\ell^2}
+\left(g_{ac}g_{bd}-g_{ad}g_{bc}\right).
+\tag{P5.2-6}
+\]
+
+Para cualquier campo timelike unitario \(S\), complete \(e_0=S\) a una base
+\(g\)-ortonormal \((e_0,e_1)\). Esa misma base es \(h_S\)-ortonormal. La forma
+(P5.2-6) tiene en toda base adaptada los mismos cuatro componentes no nulos, de módulo
+\(1/\ell^2\). Por tanto
+
+\[
+|\operatorname{Rm}[g]|_{h_S}^2
+=\frac4{\ell^4},
+\qquad
+|\operatorname{Rm}[g]|_{h_S}=\frac2{\ell^2},
+\tag{P5.2-7}
+\]
+
+independientemente de \(S\). En la lectura de operador, la magnitud es en cambio
+\(1/\ell^2\), también independiente de \(S\).
+
+Llame \(q_\ell\) a cualquiera de esas dos magnitudes. Para todo \(S\),
+
+\[
+\min\!\left(\operatorname{inj}(M_\ell,h_S),q_\ell^{-1/2}\right)
+\le q_\ell^{-1/2}.
+\tag{P5.2-8}
+\]
+
+Por (P5.2-5), el campo \(T\) de O1 alcanza la igualdad. Así se elimina el supremo sin
+necesidad de controlar ningún otro campo: es un máximo y vale \(q_\ell^{-1/2}\).
+Las dos convenciones dan respectivamente \(\ell/\sqrt2\) y \(\ell\). \(\square\)
+
+| Subobligación de O2 | Estado | Evidencia |
+|---|---|---|
+| completitud e inyectividad del auxiliar de O1 | `PROVED` | (P5.2-4)--(P5.2-5), Cartan--Hadamard |
+| curvatura lorentziana positiva y finita | `PROVED` | forma de espacio constante (P5.2-6) |
+| independencia respecto de \(S\) en las dos normas estándar | `PROVED` | base adaptada y (P5.2-7) |
+| el supremo es un máximo | `PROVED` | cota (P5.2-8), alcanzada por \(T\) |
+| constante numérica única | `UNDEFINED_IN_SOURCE` | Madsen v1 no especifica la norma de \(\operatorname{Rm}[g]\) |
+
+**Corte de O2.** La obligación autorizada \(0<\lambda<\infty\) queda satisfecha y la
+optimización sobre campos queda cerrada. El alcance `WITH_NORM_SCOPE` conserva la única
+ambigüedad real: \(\lambda=\ell/\sqrt2\) o \(\ell\) bajo las dos convenciones auditadas.
+O3--O5 permanecen sin auditar y el terminal continúa siendo
+`PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN`.
 
 ## 6. Ruta positiva aparcada
 
@@ -565,7 +667,7 @@ que invalida (3.4); tal restricción deberá escribirse, no suponerse.
 
 | Fuente | Aporte permitido | Lo que no licencia |
 |---|---|---|
-| [N. Madsen, *On the Uniqueness of Embeddings of Causal Sets*](https://arxiv.org/abs/2607.05840), arXiv:2607.05840v1 (2026), Defs. 2.2 y 2.6, Construction 2.3 y nota 1 | fija la clase globalmente hiperbólica, el auxiliar \(h_T\), F1--F3 y declara abierta su dependencia lógica | no prueba F2=>F3 ni evalúa \(\lambda\) para de Sitter planar |
+| [N. Madsen, *On the Uniqueness of Embeddings of Causal Sets*](https://arxiv.org/abs/2607.05840), arXiv:2607.05840v1 (2026), Defs. 2.2 y 2.6, Construction 2.3, Remark 4.7 y nota 1 | fija la clase globalmente hiperbólica, el auxiliar \(h_T\), la forma de \(\lambda\), F1--F3 y declara abierta su dependencia lógica | no prueba F2=>F3, no evalúa \(\lambda\) para de Sitter planar y no define la norma exacta de \(\operatorname{Rm}[g]\) |
 | [A. N. Bernal y M. Sánchez, *Smoothness of time functions and the metric splitting of globally hyperbolic spacetimes*](https://arxiv.org/abs/gr-qc/0401112), *Commun. Math. Phys.* 257 (2005), 43--50 | garantiza tiempos de Cauchy suaves en el caso general y es la fuente primaria invocada por Madsen | no sustituye la verificación explícita de \(t\), \(T\) y \(h_T\) en P5.2-O1 |
 | [B. Bollobás y G. Brightwell, *The height of a random partial order: concentration of measure*](https://doi.org/10.1214/aoap/1177005586), AAP 2 (1992), 1009--1018 | concentración de altura en el modelo aleatorio de orden coordenado | no es una desigualdad determinista desde discrepancia |
 | [J. Baik, P. Deift y K. Johansson, *On the Distribution of the Length of the Longest Increasing Subsequence of Random Permutations*](https://arxiv.org/abs/math/9810105), JAMS 12 (1999), 1119--1178 | normalización `2 sqrt(n)` y fluctuaciones de LIS uniforme | no controla permutaciones adversariales con F2 |
@@ -593,7 +695,7 @@ Orden obligatorio, sin código ni datos:
 
 1. ~~nota de prueba P1--P4, con cada constante y término de borde~~ — cerrada en §3;
 2. nota de transferencia P5 contra la Def. 2.6 exacta de Madsen — P5.1 cerrada
-   condicionalmente; P5.2-O1 probada para de Sitter planar; O2--O5 no auditadas;
+   condicionalmente; P5.2-O1 probada y O2 `PASS_WITH_NORM_SCOPE`; O3--O5 no auditadas;
 3. ledger bibliográfico de discrepancia local, permutaciones cuasialeatorias y LIS.
 
 Terminales, en orden de precedencia:
