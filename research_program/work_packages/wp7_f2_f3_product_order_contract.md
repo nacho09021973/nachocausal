@@ -1,8 +1,8 @@
 # WP7 — Contrato `F2 => F3` o contraejemplo en `d=2`
 
 ```text
-ESTADO: CONTRATO FORMAL v1.2 / P1--P4 PROBADAS / P5.1 CONDICIONAL / P5 OPEN
-FECHA: 2026-08-08
+ESTADO: CONTRATO FORMAL v1.3 / P1--P4 PROBADAS / P5.2-O1 PROBADA / P5 OPEN
+FECHA: 2026-08-09
 RAMA: research/f2-f3-chain-distance
 NATURALEZA: combinatoria + bibliografía; cero simulación, cero semillas, sello intacto
 NO ABRE: order-number-scale-limits, localizadores de horizonte ni una línea Weyl
@@ -264,7 +264,7 @@ Por la definición `delta_a=(a-2)/4`, para `m` suficientemente grande
 | P2 | `PROVED` | reducción exacta a \(I\cap J\), (3.3), sin restricción de aspecto |
 | P3 | `PROVED` | posición general, cardinalidad exacta y cota uniforme (3.4)--(3.5) |
 | P4 | `PROVED` | par de centinelas y límite inferior `a/2` |
-| P5 | `OPEN` | P5.1 prueba estabilidad condicional; el cilindro plano falla en la escala \(\lambda\) literal |
+| P5 | `OPEN` | P5.1 prueba estabilidad condicional; P5.2-O1 prueba la admisibilidad causal de de Sitter planar; O2--O5 no auditadas |
 
 Por tanto, el terminal actual es `PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN`. Todavía
 no se declara `COUNTEREXAMPLE_F1_F2_NOT_F3_D2` en el sentido geométrico de Madsen.
@@ -450,27 +450,135 @@ PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN; no se rebaja todavía a
 PRODUCT_ORDER_COUNTEREXAMPLE_ONLY, porque ha fallado esta realización, no la existencia
 de todo puente geométrico posible.
 
-## 5. Ruta positiva aparcada
+## 5. P5.2 — Auditoría de de Sitter planar
+
+**Estado: IN_PROGRESS / O1_PROVED / O2--O5_NOT_AUDITED / P5 permanece OPEN.**
+
+La ampliación firmada en
+`docs/program_reopening_note_2026-08-09_P5_2.md` autoriza como candidato único
+
+\[
+M_\ell=(-\infty,0)_\eta\times\mathbb R_x,
+\qquad
+g=\frac{\ell^2}{\eta^2}(-d\eta^2+dx^2),
+\qquad \ell>0.
+\]
+
+Se elige la orientación temporal en la que \(\eta\) crece hacia el futuro. Esta sección
+resuelve solo la primera obligación autorizada; en particular, todavía no evalúa el
+supremo que define \(\lambda\).
+
+### 5.1 O1 — Hiperbolicidad global y campo auxiliar admisible
+
+> **Lema P5.2-O1.** El parche \((M_\ell,g)\) es globalmente hiperbólico. La función
+>
+> \[
+> t(\eta,x)=-\ell\log(-\eta/\ell)
+> \]
+>
+> es un tiempo de Cauchy suave y el campo
+>
+> \[
+> T=-\nabla t=-\frac{\eta}{\ell}\,\partial_\eta
+> \]
+>
+> es suave, futuro, timelike y unitario. Por tanto es una elección admisible en la
+> Construction 2.3 y en la ecuación (1) de la Def. 2.6 de Madsen. Su métrica auxiliar es
+>
+> \[
+> h_T=g+2T^\flat\otimes T^\flat
+> =\frac{\ell^2}{\eta^2}(d\eta^2+dx^2)
+> =dt^2+e^{2t/\ell}dx^2.
+> \]
+
+**Prueba.** El factor conforme \(\ell^2/\eta^2\) es suave y positivo, de modo que
+\((M_\ell,g)\) tiene los mismos conos y las mismas curvas causales que el semiplano
+\(\eta<0\) de Minkowski. Para una curva causal futura, parametrizada por \(\eta\) donde
+sea regular,
+
+\[
+\left|\frac{dx}{d\eta}\right|\le1.
+\tag{P5.2-1}
+\]
+
+Si una curva causal inextendible tuviera un extremo de su rango de \(\eta\) en un valor
+finito interior \(\eta_*<0\), (P5.2-1) haría que \(x\) tuviera un límite finito al
+aproximarse a \(\eta_*\). La curva podría entonces prolongarse hasta
+\((\eta_*,x_*)\in M_\ell\), contradicción. Por tanto el rango de \(\eta\) de toda curva
+causal inextendible es \((-\infty,0)\). Como \(\eta\) es estrictamente creciente en toda
+curva causal futura no constante, cada hipersuperficie
+\(\Sigma_{\eta_0}=\{\eta=\eta_0\}\) la corta exactamente una vez. Estas
+\(\Sigma_{\eta_0}\) son superficies de Cauchy.
+
+Además, para \(p=(\eta_p,x_p)\preceq q=(\eta_q,x_q)\), el diamante causal es
+
+\[
+\begin{split}
+J^+(p)\cap J^-(q)=\{(\eta,x):\;&\eta_p\le\eta\le\eta_q,\\
+&|x-x_p|\le\eta-\eta_p,\quad
+|x-x_q|\le\eta_q-\eta\}.
+\end{split}
+\tag{P5.2-2}
+\]
+
+Es cerrado y acotado en \(\mathbb R^2\), y queda separado de \(\eta=0\) porque
+\(\eta\le\eta_q<0\); luego es compacto y está contenido en \(M_\ell\). Esto verifica
+literalmente los dos requisitos de hiperbolicidad global usados en la Def. 2.2 de
+Madsen.
+
+Finalmente,
+
+\[
+\frac{dt}{d\eta}=-\frac\ell\eta,
+\qquad
+g^{-1}(dt,dt)=-1,
+\qquad
+\nabla t=\frac\eta\ell\partial_\eta.
+\]
+
+Así, \(T=-\nabla t=-(\eta/\ell)\partial_\eta\) es unitario y futuro, y
+\(T^\flat=(\ell/\eta)d\eta\). La expresión anunciada para \(h_T\) se obtiene por
+sustitución directa; es suave y definida positiva en todo el parche. Como sus niveles
+de \(t\) son precisamente las superficies de Cauchy anteriores, esta elección es del
+tipo exigido por la Construction 2.3. \(\square\)
+
+| Subobligación de O1 | Estado | Evidencia |
+|---|---|---|
+| superficie de Cauchy global | `PROVED` | argumento de extensión mediante (P5.2-1) |
+| diamantes causales compactos | `PROVED` | descripción cerrada y acotada (P5.2-2) |
+| campo timelike unitario admisible | `PROVED` | \(T=-\nabla t\), con \(g(T,T)=-1\) |
+| métrica auxiliar global | `PROVED` | \(h_T=\ell^2\eta^{-2}(d\eta^2+dx^2)\) |
+
+**Corte de alcance.** P5.2-O1 queda probada. No se infiere de ello que
+\(0<\lambda<\infty\): la inyectividad de \(h_T\), la norma de curvatura que entra en
+(1) y el supremo sobre todos los campos unitarios pertenecen a O2. En consecuencia, el
+terminal sigue siendo `PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN`.
+
+## 6. Ruta positiva aparcada
 
 El contraejemplo anterior cierra negativamente la implicación en el modelo producto con
 F2-2D tal como fue congelada. No se intenta ahora una desigualdad positiva. Esta ruta solo
 podría reabrirse si P5 demuestra que la F2 geométrica exacta impone una restricción adicional
 que invalida (3.4); tal restricción deberá escribirse, no suponerse.
 
-## 6. Literatura mínima y función de cada fuente
+## 7. Literatura mínima y función de cada fuente
 
 | Fuente | Aporte permitido | Lo que no licencia |
 |---|---|---|
-| [N. Madsen, *On the Uniqueness of Embeddings of Causal Sets*](https://arxiv.org/abs/2607.05840), arXiv:2607.05840v1 (2026), Def. 2.6 y nota 1 | fija F1, F2, F3 y declara abierta su dependencia lógica | no prueba F2=>F3; su resultado usa F3 por separado |
+| [N. Madsen, *On the Uniqueness of Embeddings of Causal Sets*](https://arxiv.org/abs/2607.05840), arXiv:2607.05840v1 (2026), Defs. 2.2 y 2.6, Construction 2.3 y nota 1 | fija la clase globalmente hiperbólica, el auxiliar \(h_T\), F1--F3 y declara abierta su dependencia lógica | no prueba F2=>F3 ni evalúa \(\lambda\) para de Sitter planar |
+| [A. N. Bernal y M. Sánchez, *Smoothness of time functions and the metric splitting of globally hyperbolic spacetimes*](https://arxiv.org/abs/gr-qc/0401112), *Commun. Math. Phys.* 257 (2005), 43--50 | garantiza tiempos de Cauchy suaves en el caso general y es la fuente primaria invocada por Madsen | no sustituye la verificación explícita de \(t\), \(T\) y \(h_T\) en P5.2-O1 |
 | [B. Bollobás y G. Brightwell, *The height of a random partial order: concentration of measure*](https://doi.org/10.1214/aoap/1177005586), AAP 2 (1992), 1009--1018 | concentración de altura en el modelo aleatorio de orden coordenado | no es una desigualdad determinista desde discrepancia |
 | [J. Baik, P. Deift y K. Johansson, *On the Distribution of the Length of the Longest Increasing Subsequence of Random Permutations*](https://arxiv.org/abs/math/9810105), JAMS 12 (1999), 1119--1178 | normalización `2 sqrt(n)` y fluctuaciones de LIS uniforme | no controla permutaciones adversariales con F2 |
 | [J. N. Cooper, *Quasirandom Permutations*](https://arxiv.org/abs/math/0211001), JCTA 106 (2004), 123--143 | vocabulario de discrepancia de intervalos/rectángulos y cuasialeatoriedad | `o(n)` y patrones fijos no controlan por sí solos la constante de LIS |
 | [J. Dick y F. Pillichshammer, *Digital Nets and Sequences*](https://web.maths.unsw.edu.au/~josefdick/preprints/DP_book_preprint.pdf), CUP (2010), Thm. 3.46 | fondo determinista con `N D_N^*<=log_2 N+4` en `d=2` | no dice nada por sí solo sobre LIS |
 | [V. Dubach, *Locally uniform random permutations with large increasing subsequences*](https://arxiv.org/abs/2301.07658), *Combinatorial Theory* 3(3) (2023), arXiv v2 (2024) | densidades divergentes en un punto o a lo largo de la diagonal pueden producir LIS de orden `N^beta`, `beta>1/2`, salvo factores logarítmicos | una densidad fija no uniforme tiene sesgo rectangular `Theta(n)` y no satisface nuestra F2 respecto de Lebesgue |
 
-Anclas locales: `docs/bibliography_claims.md` §2.5bis; `biblioteca/2607.05840v1.pdf`;
-`emergencia/P1a_contrato_gate_altura_duracion_lex_d2.md` §§2, 5--6. Toda afirmación de
-prioridad queda prohibida hasta una auditoría independiente de literatura.
+Anclas locales versionadas: `docs/bibliography_claims.md` §2.5bis y
+`emergencia/P1a_contrato_gate_altura_duracion_lex_d2.md` §§2, 5--6. El PDF
+`biblioteca/2607.05840v1.pdf`, citado en el historial del WP, no está versionado en este
+checkout; P5.2-O1 se contrastó por ello contra la versión primaria enlazada de arXiv.
+Toda afirmación de prioridad queda prohibida hasta una auditoría independiente de
+literatura.
 
 **Adjudicación de Dubach.** `DIRECT_PRECURSOR_OF_MECHANISM / DOES_NOT_SUBSUME`. Su objeto
 es una muestra iid de una densidad fija, absolutamente continua pero divergente. Si esa ley
@@ -479,13 +587,13 @@ la discrepancia respecto de `n|R|` es `Theta(n)` casi seguramente, frente al tec
 `O(sqrt(n log n))` de F2 para ese rectángulo fijo. Nuestro mecanismo es distinto: la masa
 plantada es `k/n=Theta(n^{-1/2})` y desaparece con `n`.
 
-## 7. Entregables y criterios de parada
+## 8. Entregables y criterios de parada
 
 Orden obligatorio, sin código ni datos:
 
 1. ~~nota de prueba P1--P4, con cada constante y término de borde~~ — cerrada en §3;
 2. nota de transferencia P5 contra la Def. 2.6 exacta de Madsen — P5.1 cerrada
-   condicionalmente; falta sustituir la geometría cilíndrica fallida;
+   condicionalmente; P5.2-O1 probada para de Sitter planar; O2--O5 no auditadas;
 3. ledger bibliográfico de discrepancia local, permutaciones cuasialeatorias y LIS.
 
 Terminales, en orden de precedencia:
@@ -505,7 +613,7 @@ Parada dura: no se pasa a simulación, búsqueda masiva de permutaciones, dimens
 curvatura de Weyl ni diseño de estimadores. Un bloqueo debe nombrar la primera obligación
 P1--P5 que falla y el enunciado residual que aún sería correcto.
 
-## 8. Techo de afirmación
+## 9. Techo de afirmación
 
 Desde el cierre de P1--P4 solo se permite afirmar:
 
