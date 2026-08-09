@@ -1,7 +1,8 @@
 # WP7 — Contrato `F2 => F3` o contraejemplo en `d=2`
 
 ```text
-ESTADO: CONTRATO FORMAL v1.4 / P1--P4 PROBADAS / P5.2-O1 PROBADA / O2 PASS_WITH_NORM_SCOPE / P5 OPEN
+ESTADO: CONTRATO FORMAL v1.5 / P1--P4 PROBADAS / P5.2-O1--O5 CERRADAS / P5.2 PASS_WITH_SCOPE
+PENDIENTE LITERAL: CURVATURE_NORM_UNDEFINED + REGIONAL_SCOPE_NOT_LITERAL; O4--O5 cerradas
 FECHA: 2026-08-09
 RAMA: research/f2-f3-chain-distance
 NATURALEZA: combinatoria + bibliografía; cero simulación, cero semillas, sello intacto
@@ -106,7 +107,7 @@ el puente `P5`; no se dan por automáticos.
 
 ## 3. Lema de cadena plantada bajo la tolerancia exacta de F2-2D
 
-`[PROVED — P1--P4; P5 permanece OPEN]`
+`[PROVED — P1--P4; P5 probado bajo lectura regional / alcance literal abierto]`
 
 > **Lema.** Para todo `A>0`, `K>0` y `a>2` existen una subsucesión
 > `n_m -> infinity` y configuraciones `P_{n_m}` en posición general que satisfacen
@@ -264,14 +265,18 @@ Por la definición `delta_a=(a-2)/4`, para `m` suficientemente grande
 | P2 | `PROVED` | reducción exacta a \(I\cap J\), (3.3), sin restricción de aspecto |
 | P3 | `PROVED` | posición general, cardinalidad exacta y cota uniforme (3.4)--(3.5) |
 | P4 | `PROVED` | par de centinelas y límite inferior `a/2` |
-| P5 | `OPEN` | P5.1 prueba estabilidad condicional; P5.2-O1 prueba la admisibilidad causal y O2 fija \(0<\lambda<\infty\) con alcance de norma; O3--O5 no auditadas |
+| P5 | `PROVED_UNDER_SCOPED_READINGS / LITERAL_SCOPE_OPEN` | P5.1 da la estabilidad; P5.2-O1--O5 realizan todas sus hipótesis en de Sitter planar. Las reservas literales son la norma de curvatura no especificada y la versión regional incompleta de la Def. 2.6 |
 
-Por tanto, el terminal actual es `PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN`. Todavía
-no se declara `COUNTEREXAMPLE_F1_F2_NOT_F3_D2` en el sentido geométrico de Madsen.
+Tras la auditoría P5.2, el terminal literal continúa siendo
+`PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN`, pero solo por dos cuestiones de alcance
+de la fuente: la norma de curvatura no está especificada y la versión regional completa de
+la Def. 2.6 no está formulada literalmente en Madsen. Bajo cualquiera de las dos normas
+estándar auditadas y la lectura regional explícita de §5, P5 queda matemáticamente probado.
+No se declara `COUNTEREXAMPLE_F1_F2_NOT_F3_D2` sin esos sufijos de alcance.
 
 ## 4. P5.1 — Estabilidad de F2 bajo una cadena mesoscópica plantada
 
-**Estado: PROVED_CONDITIONAL / CYLINDER_SCALE_MISMATCH / P5 permanece OPEN.**
+**Estado histórico de esta etapa: PROVED_CONDITIONAL / CYLINDER_SCALE_MISMATCH.**
 
 Esta sección audita únicamente el mecanismo de perturbación contra la Def. 2.6 y el
 Lema 5.2 de Madsen. No prueba todavía que exista una geometría que satisfaga simultáneamente
@@ -445,15 +450,13 @@ local no envuelto con \([\tau_{\min},c_*\lambda]\).
 condicionalmente por (P5.1-1)--(P5.1-5). La realización propuesta en el cilindro plano no
 cierra P5 bajo la definición literal. El siguiente subproblema queda reducido a una elección
 geométrica con \(0<\lambda<\infty\), región plana o uniformemente controlada que satisfaga
-una versión de (P5.1-G), y un diamante testigo profundo. Hasta entonces continúa el terminal
-PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN; no se rebaja todavía a
-PRODUCT_ORDER_COUNTEREXAMPLE_ONLY, porque ha fallado esta realización, no la existencia
-de todo puente geométrico posible.
+una versión de (P5.1-G), y un diamante testigo profundo. Ese era el bloqueo antes de P5.2;
+§5 lo resuelve con de Sitter planar, sujeto al alcance regional allí tipado.
 
 ## 5. P5.2 — Auditoría de de Sitter planar
 
-**Estado: IN_PROGRESS / O1_PROVED / O2_PASS_WITH_NORM_SCOPE /
-O3--O5_NOT_AUDITED / P5 permanece OPEN.**
+**Estado: P5_2_PASS_WITH_SCOPE / O1_PROVED / O2_PASS_WITH_NORM_SCOPE /
+O3_PASS_WITH_REGIONAL_SCOPE / O4_PROVED / O5_PROVED.**
 
 La ampliación firmada en
 `docs/program_reopening_note_2026-08-09_P5_2.md` autoriza como candidato único
@@ -466,8 +469,9 @@ g=\frac{\ell^2}{\eta^2}(-d\eta^2+dx^2),
 \]
 
 Se elige la orientación temporal en la que \(\eta\) crece hacia el futuro. Las
-subsecciones siguientes resuelven O1 y la parte cualitativa de O2. El valor numérico
-exacto de \(\lambda\) queda condicionado por una convención de norma ausente en Madsen.
+subsecciones siguientes resuelven O1--O5. El valor numérico exacto de \(\lambda\) queda
+condicionado por una convención de norma ausente en Madsen, y O3 conserva por separado
+el alcance regional que la Remark 5.4 no formula con todos los cuantificadores.
 
 ### 5.1 O1 — Hiperbolicidad global y campo auxiliar admisible
 
@@ -650,11 +654,477 @@ Las dos convenciones dan respectivamente \(\ell/\sqrt2\) y \(\ell\). \(\square\)
 | el supremo es un máximo | `PROVED` | cota (P5.2-8), alcanzada por \(T\) |
 | constante numérica única | `UNDEFINED_IN_SOURCE` | Madsen v1 no especifica la norma de \(\operatorname{Rm}[g]\) |
 
-**Corte de O2.** La obligación autorizada \(0<\lambda<\infty\) queda satisfecha y la
+**Corte tras O2.** La obligación autorizada \(0<\lambda<\infty\) queda satisfecha y la
 optimización sobre campos queda cerrada. El alcance `WITH_NORM_SCOPE` conserva la única
 ambigüedad real: \(\lambda=\ell/\sqrt2\) o \(\ell\) bajo las dos convenciones auditadas.
-O3--O5 permanecen sin auditar y el terminal continúa siendo
-`PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN`.
+O3--O5 se auditan en las subsecciones siguientes.
+
+### 5.3 O3 — Región precompacta y diamante testigo profundo
+
+**Veredicto: `O3_PASS_WITH_REGIONAL_SCOPE`.** La existencia geométrica, la profundidad
+y el rango mesoscópico se prueban con todos sus cuantificadores. El sufijo de alcance es
+necesario porque la Remark 5.4 de Madsen sustituye explícitamente \(V_M\) por \(V_K\) y
+restringe el causal set a \(C_K\), pero no reescribe literalmente el dominio universal
+de diamantes de la Def. 2.6 ni su referencia a \(M\) y \(\partial M\).
+
+> **Lema P5.2-O3.** Fije \(\ell>0\), una constante de norma
+> \(c_{\rm norm}\in(0,\infty)\),
+> \(\lambda=c_{\rm norm}\ell\), \(c_*\in(0,1)\) y
+> \(\varepsilon\in(0,c_*)\). En coordenadas cósmicas considere
+>
+> \[
+> g=-dt^2+e^{2t/\ell}dx^2,
+> \qquad
+> h_T=dt^2+e^{2t/\ell}dx^2,
+> \qquad z_0=(0,0).
+> \]
+>
+> Ponga
+>
+> \[
+> \tau_0=\varepsilon\lambda,
+> \qquad p=(-\tau_0/2,0),
+> \qquad q=(\tau_0/2,0),
+> \qquad D_0=J^+(p)\cap J^-(q).
+> \]
+>
+> Entonces \(\gamma(s)=(s,0)\),
+> \(s\in[-\tau_0/2,\tau_0/2]\), es una geodésica timelike unitaria
+> maximizante, \(\tau_g(p,q)=\tau_0\), \(D_0\) es compacto y
+>
+> \[
+> r_0:=\max_{z\in D_0}d_{h_T}(z,z_0)<\infty.
+> \]
+>
+> Para todo \(R>r_0+c_*\lambda\), la región
+> \(K=B_R^{h_T}(z_0)\) cumple
+>
+> \[
+> \overline K\ \text{compacta},\qquad
+> 0<V_K:=\operatorname{Vol}_g(K)<\infty,\qquad
+> D_0\subset K,
+> \qquad
+> d_{h_T}(D_0,\partial K)>c_*\lambda.
+> \]
+>
+> Fijados tal \(R\) y \(K\), existe \(\rho_0<\infty\) tal que, para
+> todo \(\rho\ge\rho_0\),
+>
+> \[
+> 0<\tau_{\min}(\rho)
+> :=c_*^{-1}\rho^{-1/2}\log(\rho V_K)
+> \le\tau_0<c_*\lambda.
+> \]
+>
+> Por tanto \([\tau_{\min}(\rho),c_*\lambda]\) es no vacío y \(D_0\)
+> es un diamante testigo profundo y admisible bajo la lectura regional que reemplaza
+> \((M,V_M,\partial M)\) por \((K,V_K,\partial K)\).
+
+**Prueba.** En las coordenadas dadas, \(g_{tt}=-1\),
+\(g_{xx}=e^{2t/\ell}\) y todos los símbolos de Christoffel
+\(\Gamma^\mu_{tt}\) se anulan. Por ello
+\(\nabla_{\dot\gamma}\dot\gamma=0\) y
+\(g(\dot\gamma,\dot\gamma)=-1\): la curva vertical es una geodésica timelike
+unitaria y su longitud propia entre \(p\) y \(q\) es \(\tau_0\).
+
+Falta justificar que esa longitud es la distancia propia máxima. Para toda curva causal
+futura, localmente Lipschitz, \(\sigma(u)=(t(u),x(u))\) de \(p\) a \(q\), la
+causalidad y la orientación temporal dan, casi en todo punto,
+
+\[
+\dot t\ge e^{t/\ell}|\dot x|,
+\qquad
+\sqrt{\dot t^{\,2}-e^{2t/\ell}\dot x^{\,2}}\le\dot t.
+\tag{P5.2-9}
+\]
+
+Integrando (P5.2-9),
+
+\[
+L_g(\sigma)
+\le\int\dot t\,du
+=t(q)-t(p)=\tau_0.
+\tag{P5.2-10}
+\]
+
+La curva \(\gamma\) alcanza la cota, luego el supremo que define la separación
+lorentziana se alcanza y \(\tau_g(p,q)=\tau_0\). En particular, no se ha identificado
+la longitud de una curva cualquiera con la distancia sin probar maximalidad.
+
+Por O1 el parche es globalmente hiperbólico. Como \(p\preceq q\), la definición de
+hiperbolicidad global aplicada al diamante completo da que \(D_0\) es compacto. La
+función \(z\mapsto d_{h_T}(z,z_0)\) es continua, de modo que alcanza en \(D_0\) un
+máximo finito; este es \(r_0\) (y coincide con el supremo solicitado).
+
+Por O2, \((M_\ell,h_T)\) es el plano hiperbólico completo de curvatura
+\(-1/\ell^2\). Hopf--Rinow implica que la bola cerrada
+\(\overline B_R^{h_T}(z_0)\) es compacta; además es la clausura de \(K\). Los elementos
+de volumen lorentziano y riemanniano coinciden:
+
+\[
+d\operatorname{Vol}_g=e^{t/\ell}\,dt\,dx
+=d\operatorname{Vol}_{h_T}.
+\tag{P5.2-11}
+\]
+
+En particular, usando el área de una bola hiperbólica,
+
+\[
+V_K=2\pi\ell^2\bigl(\cosh(R/\ell)-1\bigr),
+\tag{P5.2-12}
+\]
+
+que es estrictamente positiva y finita. Para todo \(z\in D_0\),
+\(d_{h_T}(z,z_0)\le r_0<R\), así que \(D_0\subset K\). Si
+\(w\in\partial K\), entonces \(d_{h_T}(z_0,w)=R\), y la desigualdad triangular da
+
+\[
+d_{h_T}(z,w)
+\ge R-d_{h_T}(z,z_0)
+\ge R-r_0>c_*\lambda.
+\tag{P5.2-13}
+\]
+
+Tomando el ínfimo en \(z\in D_0\), \(w\in\partial K\), se obtiene el margen estricto
+anunciado, que en particular implica la desigualdad no estricta exigida por la Def. 2.6.
+
+Finalmente, para el \(V_K\) fijo y positivo de (P5.2-12),
+
+\[
+c_*^{-1}\rho^{-1/2}\log(\rho V_K)
+=c_*^{-1}\frac{\log\rho+\log V_K}{\sqrt\rho}
+\longrightarrow0.
+\tag{P5.2-14}
+\]
+
+Elija primero \(\rho_1>V_K^{-1}\), para que \(\tau_{\min}(\rho)>0\) cuando
+\(\rho\ge\rho_1\). Por (P5.2-14) existe \(\rho_2<\infty\) tal que
+\(\tau_{\min}(\rho)\le\tau_0\) para todo \(\rho\ge\rho_2\). Con
+\(\rho_0=\max(\rho_1,\rho_2)\), y usando
+\(\tau_0=\varepsilon\lambda<c_*\lambda\), quedan probados simultáneamente todos los
+cuantificadores sobre \(\rho\) y la no vacuidad del rango mesoscópico. \(\square\)
+
+#### Auditoría literal del alcance regional
+
+La Def. 2.6 de Madsen cuantifica F2 sobre **todo** diamante causal
+\(D=J_g^+(p)\cap J_g^-(q)\subset M\) en el rango admisible, usa \(V_M\) en
+\(\tau_{\min}\) y en la tolerancia, y mide la profundidad respecto de
+\(\partial M\). La Remark 5.4, para un \(M\) no compacto, dice explícitamente que se
+fije una región precompacta \(K\subset M\) de volumen \(V_K\), se restrinja el causal
+set a \(C_K=f^{-1}(K)\) y se aplique el Theorem 4.18 con \(V_M\) reemplazado por
+\(V_K\). También formula una conclusión sobre \(K^\circ\).
+
+La Remark 5.4 **no** dice literalmente que se reemplace \(M\) por \(K\) en la
+Def. 2.6, que \(\partial M\) pase a ser \(\partial K\), ni que el cuantificador
+universal de F2 se restrinja a diamantes completos contenidos en \(K\); tampoco indica
+que \(\lambda\) deba recalcularse para \(K\) en vez de conservar la escala ambiente de
+\(M_\ell\). Mantener ese cuantificador sobre todo \(M_\ell\) mientras se cuenta solo
+\(C_K\) produciría, de hecho, diamantes exteriores sin puntos de \(C_K\); por tanto la
+lectura regional exige alguna restricción de dominio, pero el texto citado no especifica
+literalmente cuál. No se completa esa omisión por inferencia silenciosa.
+
+| Subobligación de O3 | Estado | Evidencia |
+|---|---|---|
+| geodésica vertical timelike y unitaria | `PROVED` | \(\Gamma^\mu_{tt}=0\) y normalización de \(\dot\gamma\) |
+| maximalidad y \(\tau_g(p,q)=\tau_0\) | `PROVED` | cota para toda curva causal (P5.2-9)--(P5.2-10) |
+| compacidad de \(D_0\) y finitud de \(r_0\) | `PROVED` | hiperbolicidad global de O1 y continuidad de \(d_{h_T}\) |
+| precompacidad de \(K\) | `PROVED` | completitud de \(h_T\) y Hopf--Rinow |
+| \(0<V_K<\infty\) | `PROVED` | (P5.2-11)--(P5.2-12) |
+| \(D_0\subset K\) y margen de frontera | `PROVED` | elección de \(R\) y (P5.2-13) |
+| \(\exists\rho_0<\infty\;\forall\rho\ge\rho_0\): rango no vacío | `PROVED` | límite (P5.2-14) y \(\varepsilon<c_*\) |
+| sustitución \(V_M\mapsto V_K\) y restricción \(C\mapsto C_K\) | `LITERAL_IN_REMARK_5.4` | texto expreso de la Remark 5.4 |
+| sustitución \((M,\partial M)\mapsto(K,\partial K)\), escala \(\lambda\) y dominio de todos los diamantes | `REGIONAL_SCOPE_NOT_LITERAL` | esos cuantificadores no se reescriben en la Remark 5.4 |
+
+**Corte tras O3.**
+
+```text
+O3_PASS_WITH_REGIONAL_SCOPE
+P5_AT_THIS_CUT: OPEN
+O4--O5_AT_THIS_CUT: NOT_AUDITED
+```
+
+La construcción geométrica de O3 no falla: lo único condicionado es llamarla
+literalmente una instancia de todos los cuantificadores regionales de la Def. 2.6. En este
+corte intermedio aún no se promovía P5; O4--O5 se resuelven a continuación.
+
+### 5.4 O4 — Volumen de diamantes y traza sobre la geodésica plantada
+
+**Veredicto: `O4_PROVED`.** La cota necesaria no requiere aproximar la métrica por
+Minkowski: en de Sitter planar el volumen de un diamante admite una fórmula exacta, y la
+cota de intersección se sigue de la desigualdad triangular inversa para la distancia
+lorentziana.
+
+> **Lema P5.2-O4.** Sea
+>
+> \[
+> \beta:=\frac{c_*\lambda}{2\ell}>0,
+> \qquad
+> \kappa_\beta:=\frac{\log\cosh \beta}{\beta^2}\in(0,1/2).
+> \]
+>
+> Para todo diamante causal timelike completo
+> \(D=J^+(a)\cap J^-(b')\subset M_\ell\), de altura
+> \(\tau=\tau_g(a,b')\in(0,c_*\lambda]\), se tiene
+>
+> \[
+> \operatorname{Vol}_g(D)
+> =4\ell^2\log\cosh\!\left(\frac{\tau}{2\ell}\right),
+> \tag{P5.2-15}
+> \]
+>
+> y, uniformemente en la posición y la inclinación de \(D\),
+>
+> \[
+> \boxed{
+> \kappa_\beta\tau^2
+> \le \operatorname{Vol}_g(D)
+> \le \frac{\tau^2}{2}.}
+> \tag{P5.2-16}
+> \]
+>
+> Si \(\gamma_0=\gamma|_{[-\tau_0/2,\tau_0/2]}\) es el segmento plantado de O3,
+> entonces
+>
+> \[
+> \boxed{
+> \operatorname{len}_g(\gamma_0\cap D)
+> \le \tau
+> \le \kappa_\beta^{-1/2}\sqrt{\operatorname{Vol}_g(D)}.}
+> \tag{P5.2-17}
+> \]
+
+**Prueba de la fórmula de volumen.** Use las coordenadas nulas
+\(u=\eta+x\), \(v=\eta-x\). Para \(a=(u_a,v_a)\ll
+b'=(u_{b'},v_{b'})\), el diamante es el rectángulo
+
+\[
+D=[u_a,u_{b'}]\times[v_a,v_{b'}],
+\qquad
+d\operatorname{Vol}_g=\frac{2\ell^2}{(u+v)^2}\,du\,dv.
+\]
+
+Todo el rectángulo satisface \(u+v=2\eta<0\), de modo que la integral es regular. Si
+\(a=(\eta_a,x_a)\), \(b'=(\eta_{b'},x_{b'})\) y
+\(\Delta x=x_{b'}-x_a\), la integración directa da
+
+\[
+\operatorname{Vol}_g(D)
+=2\ell^2\log\!\left(
+\frac{\bigl((\eta_a+\eta_{b'})^2-(\Delta x)^2\bigr)}
+{4\eta_a\eta_{b'}}
+\right).
+\tag{P5.2-18}
+\]
+
+Para fijar también la relación con la distancia propia, embeba el parche en
+\(\mathbb R^{1,2}\), con producto de signo \((-++)\), mediante
+
+\[
+X^0=\frac{\eta^2-x^2-\ell^2}{2\eta},
+\qquad
+X^1=-\frac{\ell x}{\eta},
+\qquad
+X^2=\frac{\eta^2-x^2+\ell^2}{2\eta}.
+\]
+
+Entonces \(-\left(X^0\right)^2+\left(X^1\right)^2+
+\left(X^2\right)^2=\ell^2\), la métrica inducida es \(g\), y el producto
+ambiente normalizado de los dos extremos es
+
+\[
+Z(a,b')
+=1+\frac{(\eta_{b'}-\eta_a)^2-(\Delta x)^2}
+{2\eta_a\eta_{b'}}
+=\cosh(\tau/\ell).
+\]
+
+La última igualdad es la parametrización por longitud propia de la geodésica timelike
+obtenida al cortar el hiperboloide con el plano de los dos extremos y el origen. El arco
+entre ellos es una combinación lineal de \(X(a)\) y \(X(b')\) con coeficientes positivos;
+como el parche se caracteriza por \(X^0-X^2=-\ell^2/\eta>0\), el arco completo queda en
+\(M_\ell\). Es el maximizante del modelo de hiperboloide y, al estar contenido en el
+parche, realiza también su distancia intrínseca. Esto prueba la igualdad con
+\(\cosh(\tau/\ell)\).
+
+El argumento del logaritmo en (P5.2-18) es
+\((1+Z)/2=\cosh^2(\tau/(2\ell))\), lo que prueba (P5.2-15) sin una
+hipótesis de centrado ni de razón de aspecto.
+
+**Comparación uniforme.** Para \(x\ge0\),
+\(\log\cosh x\le x^2/2\), pues \(\tanh x\le x\). Además,
+\(x\mapsto\log\cosh(x)/x^2\) es decreciente en \((0,\infty)\). En efecto,
+
+\[
+2\log\cosh x-x\tanh x\ge0,
+\]
+
+porque su derivada es \(\tanh x-x\operatorname{sech}^2x\), una función que parte de
+cero y cuya derivada es \(2x\operatorname{sech}^2x\tanh x\ge0\). Aplicando estas dos
+propiedades a \(x=\tau/(2\ell)\in(0,\beta]\) se obtiene (P5.2-16).
+
+**Cota de traza.** La intersección de una curva causal con el conjunto causalmente
+convexo \(D\) es un intervalo, posiblemente vacío o degenerado. Sean \(r\preceq s\)
+sus extremos no degenerados sobre \(\gamma_0\). Entonces
+\(a\preceq r\preceq s\preceq b'\), y la desigualdad triangular inversa da
+
+\[
+\tau_g(a,b')
+\ge \tau_g(a,r)+\tau_g(r,s)+\tau_g(s,b')
+\ge \tau_g(r,s).
+\]
+
+Por (P5.2-9)--(P5.2-10), cada subsegmento vertical de \(\gamma_0\) es maximizante, así
+que \(\operatorname{len}_g(\gamma_0\cap D)=\tau_g(r,s)\le\tau\). La segunda
+desigualdad de (P5.2-17) es (P5.2-16). Los casos vacío y degenerado son inmediatos.
+\(\square\)
+
+La constante \(\kappa_\beta\) es fija e independiente de \(\rho\), de \(D\) y de su
+posición. Bajo las dos normas de O2,
+\(\beta=c_*c_{\rm norm}/2\) vale respectivamente
+\(c_*/(2\sqrt2)\) o \(c_*/2\); la ambigüedad de norma cambia la constante, no la
+validez ni la uniformidad de O4.
+
+### 5.5 O5 — Sustitución en F2 y violación de la desigualdad F3
+
+**Veredicto matemático: `O5_PROVED`. Terminal de P5.2:
+`P5_2_PASS_WITH_SCOPE`.** La sustitución cierra para cualquiera de las dos constantes de
+norma de O2. El sufijo no procede de O4--O5: conserva la convención de norma no definida
+en la fuente, tipada en O2, y la falta de una Def. 2.6 regional literal identificada en O3.
+
+Fije \(\varepsilon\in(0,c_*)\), \(\tau_0=\varepsilon\lambda\), y denote por
+\(C_2\) la constante dimensional de F3. Elija una amplitud fija
+
+\[
+A>1+C_2\varepsilon^2.
+\tag{P5.2-19}
+\]
+
+Fije la región \(K\) de O3, escriba
+\(\mathcal N_\rho=\rho V_K\), y adopte la lectura regional explícita allí declarada:
+F2 se exige para los diamantes completos contenidos en el interior regional y con margen
+respecto de \(\partial K\). Por la aplicación regional del Lema 5.2 de Madsen, para todo
+\(\rho\) suficientemente grande se puede elegir una realización de fondo
+\(\Pi_\rho\subset K\) que satisface F1--F2 con una constante fija
+\(K_{\rm bg}\). Fije también \(K_2>K_{\rm bg}\).
+
+Sobre \(\gamma_0\), incluidos \(p\) y \(q\), coloque
+
+\[
+k_\rho=\left\lceil A\sqrt{m_2\rho}\,\tau_0\right\rceil
+\]
+
+puntos equiespaciados y llame \(\Gamma_\rho\) al conjunto resultante. La realización
+Poisson puede escogerse sin puntos sobre \(\gamma_0\), evento de probabilidad uno, así que
+la unión \(P_\rho=\Pi_\rho\cup\Gamma_\rho\) no tiene colisiones. Se dota a
+\(P_\rho\) del orden causal inducido; F1 es entonces exacta.
+
+Para cualquier diamante F2-admisible \(D\), la discrepancia de una rejilla en un intervalo
+y (P5.2-17) dan
+
+\[
+\begin{aligned}
+\#(\Gamma_\rho\cap D)
+&\le A\sqrt{m_2\rho}\,
+       \operatorname{len}_g(\gamma_0\cap D)+2\\
+&\le A\sqrt{\frac{m_2}{\kappa_\beta}}
+       \sqrt{\rho\operatorname{Vol}_g(D)}+2.
+\end{aligned}
+\tag{P5.2-20}
+\]
+
+Sumando esta cota a F2 para el fondo,
+
+\[
+\frac{\left|\#(P_\rho\cap D)-\rho\operatorname{Vol}_g(D)\right|}
+{\sqrt{\rho\operatorname{Vol}_g(D)\log\mathcal N_\rho}}
+\le K_{\rm bg}
++\frac{A\sqrt{m_2/\kappa_\beta}}{\sqrt{\log\mathcal N_\rho}}
++\frac{2}{\sqrt{\rho\operatorname{Vol}_g(D)
+                 \log\mathcal N_\rho}}.
+\tag{P5.2-21}
+\]
+
+En la escala mínima, (P5.2-16) y la fórmula de \(\tau_{\min}\) implican
+
+\[
+\rho\operatorname{Vol}_g(D)
+\ge \kappa_\beta\rho\tau_{\min}^2
+=\frac{\kappa_\beta}{c_*^2}\log^2\mathcal N_\rho.
+\]
+
+Por tanto el exceso uniforme sobre \(K_{\rm bg}\) queda acotado por
+
+\[
+\Xi_A^{\rm dS}(\rho):=
+\frac{A\sqrt{m_2/\kappa_\beta}}{\sqrt{\log\mathcal N_\rho}}
++\frac{2c_*}{\sqrt{\kappa_\beta}\,\log^{3/2}\mathcal N_\rho}
+\longrightarrow0.
+\tag{P5.2-22}
+\]
+
+Existe, pues, \(\rho_1<\infty\) tal que
+\(\Xi_A^{\rm dS}(\rho)\le K_2-K_{\rm bg}\) para todo
+\(\rho\ge\rho_1\). Esto prueba F2 con la misma constante final fija \(K_2\),
+uniformemente hasta la escala mínima exacta de Madsen.
+
+Resta F3. Sean \(x_\rho,y_\rho\) los elementos plantados en \(p,q\). El diamante
+\(D_0\) es admisible y profundo por O3. Como \(\Gamma_\rho\) es una cadena,
+y recordando \(m_2=2\), cualquier convención vértices/enlaces solo introduce un
+término \(O(1)\), de modo que
+
+\[
+\frac{\ell_{P_\rho}(x_\rho,y_\rho)}{\sqrt{m_2\rho}}-\tau_0
+\ge (A-1)\tau_0-o(1).
+\tag{P5.2-23}
+\]
+
+En cambio, el lado derecho permitido por (5) de Madsen para este par es
+
+\[
+C_2\left(
+\varepsilon^2+
+\frac{\log^{3/2}\mathcal N_\rho}{\mathcal N_\rho^{1/4}}
+\right)\tau_0.
+\tag{P5.2-24}
+\]
+
+Ponga \(\mu=A-1-C_2\varepsilon^2>0\). El segundo término de (P5.2-24) tiende a
+cero, y el \(o(1)\) de (P5.2-23), dividido por el \(\tau_0>0\) fijo, también. Para
+\(\rho\) suficientemente grande, (P5.2-23) supera (P5.2-24) por un margen, por ejemplo,
+de al menos \(\mu\tau_0/3\). Por consiguiente \(P_\rho\) viola la desigualdad F3
+completa, no solo su tasa, mientras satisface F1--F2 con \(K_2\) fijo. \(\square\)
+
+Todos los umbrales usados son simultáneos y finitos: se toma \(\rho\) por encima del
+umbral de O3, de la separación de escalas
+\(\rho\lambda^2\ge c_*^{-4}\log^2\mathcal N_\rho\), de la existencia del fondo F2,
+de (P5.2-22) y del margen F3 anterior. Por tanto la conclusión vale a lo largo de una
+sucesión no acotada de densidades, con \(A,K_2,K_{\rm bg},K,\ell,c_*\) y
+\(\varepsilon\) fijados de antemano.
+
+#### Terminal exacto de P5.2
+
+| Obligación | Estado final | Evidencia |
+|---|---|---|
+| O1 — geometría causal y auxiliar | `PROVED` | §5.1 |
+| O2 — \(0<\lambda<\infty\) | `PASS_WITH_NORM_SCOPE` | §5.2; las dos normas dan constantes finitas |
+| O3 — región y testigo | `PASS_WITH_REGIONAL_SCOPE` | §5.3 |
+| O4 — volumen y traza uniforme | `PROVED` | (P5.2-15)--(P5.2-17) |
+| O5 — F2 final y fallo F3 | `PROVED` | (P5.2-19)--(P5.2-24) |
+
+```text
+P5_2_PASS_WITH_SCOPE
+MATHEMATICAL_O1_O5: CLOSED
+CURVATURE_NORM: UNDEFINED_IN_SOURCE / BOTH_STANDARD_READINGS_PASS
+REGIONAL_DEFINITION_2_6: NOT_LITERAL_IN_MADSEN_REMARK_5_4
+WP7_LITERAL_TERMINAL: PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN
+```
+
+Así, bajo la lectura regional natural y explícita, de Sitter planar realiza un
+contraejemplo F1--F2-no-F3 con todas las constantes uniformes. Conforme al criterio de
+parada de la nota de ampliación, no se promueve el terminal literal a
+`COUNTEREXAMPLE_F1_F2_NOT_F3_D2`: esa promoción estaba reservada a `P5_2_PASS`, y la
+ambigüedad de norma de O2 junto con la omisión regional de la Remark 5.4 obligan al
+terminal `PASS_WITH_SCOPE`.
 
 ## 6. Ruta positiva aparcada
 
@@ -667,7 +1137,7 @@ que invalida (3.4); tal restricción deberá escribirse, no suponerse.
 
 | Fuente | Aporte permitido | Lo que no licencia |
 |---|---|---|
-| [N. Madsen, *On the Uniqueness of Embeddings of Causal Sets*](https://arxiv.org/abs/2607.05840), arXiv:2607.05840v1 (2026), Defs. 2.2 y 2.6, Construction 2.3, Remark 4.7 y nota 1 | fija la clase globalmente hiperbólica, el auxiliar \(h_T\), la forma de \(\lambda\), F1--F3 y declara abierta su dependencia lógica | no prueba F2=>F3, no evalúa \(\lambda\) para de Sitter planar y no define la norma exacta de \(\operatorname{Rm}[g]\) |
+| [N. Madsen, *On the Uniqueness of Embeddings of Causal Sets*](https://arxiv.org/html/2607.05840v1), arXiv:2607.05840v1 (2026), Defs. 2.2 y 2.6, Construction 2.3, Remark 4.7, Remark 5.4 y nota 1 | fija la clase globalmente hiperbólica, el auxiliar \(h_T\), la forma de \(\lambda\), F1--F3; para \(M\) no compacto restringe a \(C_K\) y reemplaza \(V_M\) por \(V_K\); declara abierta la dependencia lógica F1--F3 | no prueba F2=>F3, no evalúa \(\lambda\) para de Sitter planar, no define la norma exacta de \(\operatorname{Rm}[g]\) y no reescribe literalmente \((M,\partial M)\), la escala \(\lambda\) ni el dominio universal de diamantes como objetos regionales de \(K\) |
 | [A. N. Bernal y M. Sánchez, *Smoothness of time functions and the metric splitting of globally hyperbolic spacetimes*](https://arxiv.org/abs/gr-qc/0401112), *Commun. Math. Phys.* 257 (2005), 43--50 | garantiza tiempos de Cauchy suaves en el caso general y es la fuente primaria invocada por Madsen | no sustituye la verificación explícita de \(t\), \(T\) y \(h_T\) en P5.2-O1 |
 | [B. Bollobás y G. Brightwell, *The height of a random partial order: concentration of measure*](https://doi.org/10.1214/aoap/1177005586), AAP 2 (1992), 1009--1018 | concentración de altura en el modelo aleatorio de orden coordenado | no es una desigualdad determinista desde discrepancia |
 | [J. Baik, P. Deift y K. Johansson, *On the Distribution of the Length of the Longest Increasing Subsequence of Random Permutations*](https://arxiv.org/abs/math/9810105), JAMS 12 (1999), 1119--1178 | normalización `2 sqrt(n)` y fluctuaciones de LIS uniforme | no controla permutaciones adversariales con F2 |
@@ -694,8 +1164,9 @@ plantada es `k/n=Theta(n^{-1/2})` y desaparece con `n`.
 Orden obligatorio, sin código ni datos:
 
 1. ~~nota de prueba P1--P4, con cada constante y término de borde~~ — cerrada en §3;
-2. nota de transferencia P5 contra la Def. 2.6 exacta de Madsen — P5.1 cerrada
-   condicionalmente; P5.2-O1 probada y O2 `PASS_WITH_NORM_SCOPE`; O3--O5 no auditadas;
+2. ~~nota de transferencia P5 contra la Def. 2.6 exacta de Madsen~~ — P5.1 cerrada
+   condicionalmente; P5.2-O1--O5 cerradas; terminal
+   `P5_2_PASS_WITH_SCOPE` por las reservas de fuente tipadas en O2--O3;
 3. ledger bibliográfico de discrepancia local, permutaciones cuasialeatorias y LIS.
 
 Terminales, en orden de precedencia:
@@ -703,7 +1174,7 @@ Terminales, en orden de precedencia:
 ```text
 COUNTEREXAMPLE_F1_F2_NOT_F3_D2        P1--P5 probadas
 PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN
-                                       P1--P4 probadas; P5 no adjudicada
+                                       P1--P4 probadas; P5 literal no cerrado
 PRODUCT_ORDER_COUNTEREXAMPLE_ONLY     P1--P4 probadas; P5 falla
 COUNTEREXAMPLE_TO_MADSEN_RATE_ONLY    F3 cualitativa vale; la tasa no
 IMPLICATION_F2_TO_F3_D2               desigualdad determinista probada
@@ -717,14 +1188,16 @@ P1--P5 que falla y el enunciado residual que aún sería correcto.
 
 ## 9. Techo de afirmación
 
-Desde el cierre de P1--P4 solo se permite afirmar:
+Tras P5.2 se permite afirmar:
 
-> En el modelo determinista `fixed_n` de orden producto, F2-2D no implica F3-2D. Un fondo
-> de Hammersley más una cadena diagonal de tamaño `Theta(sqrt(n))` satisface la tolerancia
-> rectangular con cociente que tiende uniformemente a cero, mientras la altura normalizada
-> falla por una constante. La transferencia a la F2 geométrica exacta de Madsen sigue abierta
-> como P5.
+> En el modelo determinista `fixed_n` de orden producto, F2-2D no implica F3-2D. Además,
+> bajo la lectura regional explícita de la Remark 5.4 adoptada en §5, el parche planar de
+> de Sitter admite configuraciones finitas con F1--F2 y constante de tolerancia fija que
+> violan por una constante la desigualdad F3 completa. O1--O5 están cerradas; la única
+> reserva es de formulación: Madsen no fija la norma de curvatura de \(\lambda\) ni
+> reescribe literalmente todos los cuantificadores de su Def. 2.6 para una región
+> precompacta; las dos normas estándar auditadas producen constantes finitas y la misma
+> conclusión.
 
-No se afirma todavía un contraejemplo al enunciado geométrico de Madsen, novedad,
-extensión a `d>=3`, unicidad de embedding ni conclusión física sobre reconstrucción
-métrica general.
+No se afirma un contraejemplo sin esos calificadores de alcance, prioridad o novedad, extensión a
+`d>=3`, unicidad de embedding ni conclusión física sobre reconstrucción métrica general.
