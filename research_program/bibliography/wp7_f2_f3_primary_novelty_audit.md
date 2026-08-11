@@ -1,17 +1,21 @@
 # WP7 — Auditoría primaria de novedad para `F1+F2 \not\Rightarrow F3` en `1+1`
 
-> **STATUS: PRIMARY_SEARCH_PERFORMED / NOVELTY_NOT_REFUTED /
-> NOT_A_NOVELTY_CERTIFICATE.**
+> **STATUS: PRIMARY_SEARCH_PERFORMED / LITERAL_FOLLOWUP_CLOSED /
+> NOVELTY_NOT_REFUTED / NOT_A_NOVELTY_CERTIFICATE /
+> NO_ABSOLUTE_PRIORITY_CLAIM.**
 >
 > Documento bibliográfico separado. No modifica ni reabre la prueba de WP7, no amplía la
 > geometría y no autoriza por sí solo un claim público de prioridad.
 
-FECHA DE CORTE: 2026-08-09
+FECHA DE CORTE DE BÚSQUEDA: 2026-08-09
+VERIFICACIÓN LITERAL DE SEGUIMIENTO: 2026-08-11
 RAMA: `research/f2-f3-chain-distance`
 COMMIT CONGELADO: `68c9f29`
 WP7 auditado: `research_program/work_packages/wp7_f2_f3_product_order_contract.md`
 SHA-256 de WP7 al iniciar esta auditoría:
 `0466fd19f4fb1e077588945ed5456eb7d25cc5c3bb87a0c8b9c85e541851f815`
+SHA-256 de WP7 tras la enmienda literal de 2026-08-11:
+`3c24e11a5342eb24f4e12a0b32b181ed7831c709da051fe01d15ad17f8cf3538`
 
 ## 1. Claim exacto sometido a auditoría
 
@@ -79,11 +83,15 @@ Se revisaron además:
 - los resultados recientes sobre aproximación rectangular de permutones, para no confundir
   novedad causal con novedad de discrepancia.
 
-Se leyó texto completo primario de Madsen, Müller, Braun, Saravani–Aslanbeigi, Cooper, Dubach
+Se leyó texto completo primario de Madsen, Müller, Henson, Braun, Saravani–Aslanbeigi, Cooper, Dubach
 `2301.07658`, Maga y Surya. Para Sjöstrand, Dubach `2307.05768` y Aghili–Bombelli–Pilgrim se
 contrastaron el abstract primario y las declaraciones de resultado; no se usan para sostener el
 veredicto negativo central. También se leyó el contexto de la única cita de Madsen registrada por
 INSPIRE en la fecha de corte.
+
+La verificación literal de seguimiento se conserva además en
+`biblioteca/auditoria_4.pdf`. Sus reservas iniciales sobre Dick--Pillichshammer quedaron resueltas
+contra el preprint primario completo: Teorema 3.46, p. impresa 100 (p. 99 del PDF).
 
 ## 3. Matriz de precedentes primarios
 
@@ -91,6 +99,7 @@ INSPIRE en la fecha de corte.
 |---|---|---|---|
 | [Madsen, arXiv:2607.05840v1](https://arxiv.org/html/2607.05840v1), Def. 2.6, nota 1 y Remark 5.4 | Define F1–F3 y declara abierta la relación entre F1–F2 y F3; dice no conocer contraejemplo | Es la fuente de la pregunta, no una solución. La Remark 5.4 tampoco reescribe literalmente todos los cuantificadores regionales | `EXACT_OPEN_QUESTION_SOURCE` |
 | [Müller, arXiv:2503.01719v2](https://arxiv.org/abs/2503.01719), Thms. 2–4 | La Hauptvermutung finita falla para una distancia lorentziana `d^-`; el mecanismo de Thm. 2 persiste bajo “Planck-scale uniformness” por sí sola. Para otra distancia `d^×`, una versión uniforme sí funciona | Compara leyes de órdenes de tamaño fijo y pares de espaciotiempos; su uniformidad no es la F2 cuantitativa de Madsen en una sucesión de alta densidad y no prueba una violación de F3 por una cadena | `CLOSEST_CAUSAL_NEGATIVE_PRECURSOR / DOES_NOT_SUBSUME` |
+| [Henson, arXiv:gr-qc/0601121](https://arxiv.org/abs/gr-qc/0601121), §1.3, p. 3 | Observa que cambiar un pequeño número de **relaciones causales** puede convertir un causet fielmente embebible en uno no embebible | No habla de añadir elementos, plantar una cadena, satisfacer F2 ni producir una violación cuantitativa de F3. Es una observación informal, no el mecanismo de WP7; gr-qc/0601069 es otro artículo | `ORDER_PERTURBATION_FOLKLORE / DOES_NOT_SUBSUME` |
 | [Saravani–Aslanbeigi, arXiv:1403.6429](https://arxiv.org/abs/1403.6429), §3 | En `1+1` ciertos retículos lorentzianos muestran por simulación una correspondencia número–volumen mucho menos ruidosa que Poisson para volúmenes grandes | Usa 1000 diamantes de centro y forma aleatorios. No demuestra un supremo determinista sobre todos los diamantes admisibles, no alcanza la escala exacta de Madsen y no analiza longest chains/F3 | `DIRECT_PRECURSOR_OF_F2_SIDE / DOES_NOT_SUBSUME` |
 | [Cooper, arXiv:math/0211001](https://arxiv.org/abs/math/0211001) | Introduce discrepancia de intervalos/rectángulos para permutaciones y equivalencias de cuasialeatoriedad con densidades de patrones fijos | `o(n)` y patrones de tamaño fijo no controlan la constante de una LIS de tamaño creciente; no contiene cadena plantada ni transferencia causal | `DIRECT_DISCREPANCY_PRECURSOR / DOES_NOT_SUBSUME` |
 | [Maga, arXiv:2605.02298](https://arxiv.org/abs/2605.02298), Thm. 1.1 | Estudia la mejor aproximación de permutones por permutaciones finitas en discrepancia rectangular; obtiene `O(log^(3/2)n/n)` universal y cotas específicas | Es un resultado más fuerte en el eje de aproximación/discrepancia, pero no impone ni estudia una LIS anómala y no contiene geometría lorentziana | `CURRENT_DISCREPANCY_STATE_OF_ART / ORTHOGONAL_TO_F3` |
@@ -98,7 +107,7 @@ INSPIRE en la fecha de corte.
 | [Dubach, arXiv:2307.05768v2](https://arxiv.org/abs/2307.05768) | Define tableaux de Robinson–Schensted para permutones y obtiene LIS lineal cuando el tableau del permutón es no trivial | El fenómeno lineal procede de masa no nula sobre conjuntos crecientes del permutón límite, no de una perturbación de masa evanescente compatible con F2 respecto de Lebesgue | `LIS_PERMUTON_PRECURSOR / DOES_NOT_SUBSUME` |
 | [Sjöstrand, arXiv:2207.11505v2](https://arxiv.org/abs/2207.11505) | Obtiene formas límite para subsecuencias monótonas de muestras iid de una densidad absolutamente continua fija | Modelo iid de densidad fija; no discrepancia determinista uniforme, no sucesión triangular F2 y no transferencia causal | `FIXED_DENSITY_LIS_BACKGROUND` |
 | [Aghili–Bombelli–Pilgrim, arXiv:1805.07312](https://arxiv.org/abs/1805.07312) | Usa distribuciones de longitudes de cadenas maximales como diagnóstico de embebibilidad en `1+1` | Confirma que la información de cadenas es un observable separado, pero parte de sprinklings uniformes y no construye F2 sin F3 | `CHAIN_DIAGNOSTIC_PRECURSOR / DOES_NOT_SUBSUME` |
-| [Braun, arXiv:2507.01907](https://arxiv.org/abs/2507.01907), Thm. 1.4 | Las leyes de las matrices de adyacencia para todo tamaño `k` reconstruyen suavemente el espaciotiempo: “order + number = geometry” en sentido probabilístico | Resultado de identificación exacta de leyes para **todo** `k`, no una garantía finita cuantitativa desde F2 ni una implicación hacia F3 | `ENSEMBLE_RECONSTRUCTION / DIFFERENT_QUANTIFIERS` |
+| [Braun, *Class. Quantum Grav.* **43** (2026), 045015](https://doi.org/10.1088/1361-6382/ae456c); [arXiv:2507.01907](https://arxiv.org/abs/2507.01907), Thm. 1.4 | Las leyes de las matrices de adyacencia para todo tamaño `k` reconstruyen suavemente el espaciotiempo: “order + number = geometry” en sentido probabilístico | Resultado de identificación exacta de leyes para **todo** `k` y dimensión `d>=3`, no una garantía finita cuantitativa desde F2, una implicación hacia F3 ni una extensión demostrada al caso `1+1` | `ENSEMBLE_RECONSTRUCTION / DIFFERENT_QUANTIFIERS` |
 | [Surya, arXiv:2510.19403](https://arxiv.org/abs/2510.19403) | Define funciones de cercanía por abundancias de intervalos y una convergencia débil de geometrías lorentzianas coarse-grained | Usa espectros de intervalos/valores esperados y declara que es más débil que una distancia lorentziana; no relaciona F2 con longest-chain distance | `COARSE_CLOSENESS_BACKGROUND` |
 
 ### 3.1 El antecedente causal negativo que no debe omitirse
@@ -106,6 +115,17 @@ INSPIRE en la fecha de corte.
 Müller es bibliográficamente más cercano al mensaje físico que Dubach: demuestra que “orden +
 uniformidad de cuentas” finitos no bastan, en general, para controlar una noción fuerte de distancia
 lorentziana. Por ello debe citarse en cualquier nota.
+
+La separación respecto de WP7 debe conservar los cuantificadores, no reducirse a una diferencia de
+terminología:
+
+| Müller | WP7 |
+|---|---|
+| `K` fijo | sucesión de densidades `rho -> infinity` |
+| dos geometrías y leyes de órdenes próximas | una configuración y un embedding concreto |
+| distancia global `d^-` entre espaciotiempos | violación explícita de F3 por una cadena |
+| error absoluto `K s` sobre conjuntos causalmente convexos | tolerancia `sqrt(rho V(D) log(rho V_K))` |
+| “Planck-scale uniformness” sin tasa comparable | cuantificadores y escala mínima exactos de Madsen |
 
 No anticipa, sin embargo, el teorema congelado. Sus cuantificadores son `K` fijo y proximidad de
 distribuciones de órdenes, su objeto de salida es una distancia entre espaciotiempos y su
@@ -168,25 +188,26 @@ un resultado conocido privadamente.
 ```text
 WP7_PRIMARY_NOVELTY_AUDIT =
     PRIMARY_SEARCH_PERFORMED
+    / LITERAL_FOLLOWUP_CLOSED
     / NOVELTY_NOT_REFUTED
     / NO_EQUIVALENT_PRIMARY_RESULT_FOUND
     / NOT_A_NOVELTY_CERTIFICATE
+    / NO_ABSOLUTE_PRIORITY_CLAIM
 ```
 
 No se encontró una fuente primaria que pruebe, con cuantificadores equivalentes, la no-implicación
 `F1+F2 not=> F3` de Madsen en `1+1` mediante una violación constante de su desigualdad completa.
 
-El resultado sobrevive la auditoría con este techo de claim:
-
-> **A nuestro leal saber y entender, tras revisar los precedentes causales, de discrepancia y de
-> longest increasing subsequences indicados arriba, esta construcción da el primer contraejemplo
-> publicado/propuesto a la implicación F1–F2⇒F3 bajo la lectura regional declarada de Madsen en
-> dimensión `1+1`.**
-
-Para una primera versión pública es más seguro evitar incluso “primero” y escribir:
+La auditoría no licencia “primero”, “sin precedentes” ni otra prioridad absoluta. La formulación
+pública segura es:
 
 > **We answer negatively the question left open in Madsen's Remark/footnote: under the stated
 > regional interpretation in `1+1` dimensions, F1 and F2 do not imply F3.**
+
+La comparación causal debe añadirse de forma prominente:
+
+> **Müller is the closest causal negative precursor. WP7 isolates a distinct, more specific
+> separation formulated in terms of F1--F3 and Madsen's exact quantitative tolerance.**
 
 Debe añadirse inmediatamente que:
 
@@ -194,8 +215,8 @@ Debe añadirse inmediatamente que:
 - no demuestra que F3 sea necesaria para toda posible prueba de unicidad;
 - no refuta el teorema de Madsen, sino que muestra que F3 no es redundante respecto de F1–F2 en
   este régimen;
-- Müller, Saravani–Aslanbeigi, Cooper, Maga y Dubach son antecedentes obligatorios y delimitan qué
-  parte de la combinación puede aspirar a novedad.
+- Müller, Henson, Braun, Saravani–Aslanbeigi, Cooper, Maga y Dubach son antecedentes obligatorios
+  y delimitan qué parte de la combinación puede aspirar a novedad.
 
 ## 6. Limitaciones y siguiente gate
 
@@ -212,3 +233,30 @@ externa breve por dos perfiles independientes:
    bajo otra terminología.
 
 Hasta ese gate, la formulación defendible es el resultado matemático directo sin claim de prioridad.
+
+## 7. Seguimiento dimensional de 2026-08-11
+
+La construcción fue elevada después de esta auditoría principal a toda dimensión fija
+\(d\ge2\). La prueba y la auditoría bibliográfica dirigida están separadas en
+[wp7_f2_f3_higher_dimensional_extension.md](../work_packages/wp7_f2_f3_higher_dimensional_extension.md).
+
+```text
+SHA-256 contrato v1.7: 4ce79fd7951331bfc328b0546a4425fc85c16704a13d4f68f87a28fce67a6967
+SHA-256 extensión v0.2: 69534b68bf4b9ad3dadcf1f0b604db08817924efa429818d2a609229dd91dcef
+```
+
+El paso nuevo es geométrico: en de Sitter planar \(d\)-dimensional,
+\(\operatorname{Vol}(D)\ge\kappa_d\tau(D)^d\) y
+\(\operatorname{len}(\gamma\cap D)\le\tau(D)\). De ahí, una cadena de
+\(\Theta(\rho^{1/d})\) puntos cuesta en F2 sólo
+\[
+O((\log\mathcal N_\rho)^{2/d-3/2}),
+\]
+pero conserva un sesgo F3 de orden uno. Esto prueba `2+1` y `3+1`, y de hecho todo
+\(d\ge2\), bajo las mismas reservas de norma y alcance regional.
+
+La búsqueda dirigida añadió Braun, Aghili--Bombelli--Pilgrim en varias dimensiones y
+Johnston en \(d=2,3,4\). No se encontró un resultado primario con los mismos cuantificadores.
+El estatus es
+`TARGETED_AUDIT_NO_SUBSUMING_PRECEDENT / NO_ABSOLUTE_PRIORITY_CLAIM`, no un certificado
+de prioridad.
