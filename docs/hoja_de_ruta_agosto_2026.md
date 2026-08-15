@@ -831,6 +831,36 @@ y la agregación exacta `Omega -> C` pasaron para toda fila no nula. Todos los p
 observados respetaron el sobre (EF1.11). Estos soportes son resultados finitos para
 `n<=9`; no se extrapolan como patrón asintótico.
 
+El número de formas `(k,l)` con multiplicidad positiva, por lado y por estrato, es:
+
+| `n` | formas positivas por `m` |
+|---:|---|
+| 6 | `m=3: 1` |
+| 7 | `m=3: 3`; `m=4: 1` |
+| 8 | `m=3: 6`; `m=4: 3`; `m=5: 1` |
+| 9 | `m=3: 10`; `m=4: 6`; `m=5: 3`; `m=6: 1` |
+
+La comparación del sobre entero (EF1.11) con el soporte positivo produce exactamente
+los siguientes ceros de fibra. La tabla vale por separado para `PAST` y `FUTURE`,
+después de verificar exhaustivamente su igualdad:
+
+| `n` | `m` | pares necesarios `(k,l)` con `Omega=0` |
+|---:|---:|---|
+| 6 | 3 | ninguno |
+| 7 | 3 | `(3,3)` |
+| 7 | 4 | ninguno |
+| 8 | 3 | `(3,4),(4,3),(4,4)` |
+| 8 | 4 | `(4,4)` |
+| 8 | 5 | ninguno |
+| 9 | 3 | `(3,5),(4,4),(4,5),(5,3),(5,4),(5,5)` |
+| 9 | 4 | `(4,5),(5,4),(5,5)` |
+| 9 | 5 | `(5,5)` |
+| 9 | 6 | ninguno |
+
+Estos `0,1,4,10` ceros para `n=6,7,8,9` son hechos finito-muestrales del ganador
+global. No convierten el sobre necesario en una caracterización asintótica ni sugieren
+por sí solos una regla para tamaños posteriores.
+
 #### EF-2.3 Implementación independiente y controles
 
 El evaluador optimizado se comparó, permutación por permutación, con una segunda
@@ -840,14 +870,32 @@ implementación directa que construye todas las cuádruplas y maximiza literalme
 (\min\{m_-,m_+\},m_-+m_+).
 \]
 
-La igualdad de estado, número de maximizadores, score y cuádrupla única pasó en las
-`720+5 040=5 760` permutaciones de `n=6,7`. También pasaron:
+La ejecución persistida original comparó estado, número de maximizadores, score y
+cuádrupla única en las `720+5 040=5 760` permutaciones de `n=6,7`. La reauditoría
+exhaustiva de 2026-08-15 reutilizó esa misma implementación directa, sin crear otro
+script ni sobrescribir artefactos, y extendió la comparación a
+
+\[
+720+5\,040+40\,320+362\,880=408\,960
+\]
+
+permutaciones. Para cada una exigió igualdad exacta de estado, número de
+maximizadores, ambos componentes del score y cuádrupla única. La ruta directa calculó
+además sus propios `M,K,L`, distribución por `m`, tablas `Omega`, agregación `C` y
+soporte positivo. Todo coincidió exactamente con la ruta optimizada y con los CSV
+congelados; la regeneración temporal reprodujo byte a byte los cuatro artefactos y sus
+SHA-256. El campo `independent_crosscheck_n=[6,7]` del resumen histórico describe la
+primera ejecución y no se reescribió para simular que aquel artefacto contenía la
+reauditoría posterior. Pasaron:
 
 ```text
 FACTORIAL_TOTALS = PASS
 STATE_PARTITIONS = PASS
 LEGACY_COVERAGE_REPRODUCTION = PASS
-INDEPENDENT_IMPLEMENTATION_n6_n7 = PASS
+INDEPENDENT_IMPLEMENTATION_PERSISTED_n6_n7 = PASS
+INDEPENDENT_REAUDIT_n6_TO_n9 = PASS
+INDEPENDENT_PERMUTATION_SIGNATURES_408960 = PASS
+INDEPENDENT_M_K_L_OMEGA_C_n6_TO_n9 = PASS
 OMEGA_U_V_SYMMETRY = PASS
 OMEGA_PAST_FUTURE_SYMMETRY = PASS
 EF1_SUPPORT_ENVELOPE = PASS
@@ -871,7 +919,10 @@ emergencia/resultados/p1a_entropia_fibras_resumen.json
 ```
 
 Cada archivo tiene un sidecar `.sha256` separado. La prueba de regresión fija esos
-cuatro hashes y verifica LF, sidecars, terminal y techo de afirmación.
+cuatro hashes y verifica LF, sidecars, terminal y techo de afirmación. EF-2 no
+prescribe una entropía de Shannon de los pesos normalizados `C/sum C`; no se calculó
+ni se introdujo una normalización adicional. Las multiplicidades exactas ya fijan
+`log Omega` en toda fibra positiva conforme a la definición de §3.
 
 ```text
 EF2_STATUS = COMPLETE_EXACT_N_6_TO_9
