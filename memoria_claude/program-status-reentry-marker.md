@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: ba8e0f66-5e67-49f8-a0fa-d7165b974d41
-  modified: 2026-08-16T08:52:42.389Z
+  modified: 2026-08-16T08:57:22.644Z
 ---
 
 Sustituye al marcador de pausa del 2026-07-19 (pausa → cierre → reapertura acotada).
@@ -59,8 +59,14 @@ exponente derivado y cross-checked, **prefactor `OPEN / [UNVERIFIED]`**; caja ve
 `R-1` vs `R1`). Ejecutado (`7b5deec`): **la tricotomía de EF-4.3 queda REFUTADA en `n=24`** —
 560 de 112.911.876 tuplas falsifican los tres disyuntos; `C1` del foro-001 pasa de `INCONCLUSIVE`
 a `REFUTED`. El test sellado `tests/test_p1a_entropia_fibras_ef4.py` no se tocó y sigue pasando
-(su `n=12` es vacuo, 245025/245025). **Pendiente de firma del PI:** `C-1` (degradar tokens
-`EF4_CORRECTED_PRESCRIBED_FAMILY` / `EF4_Q2_ASYMPTOTIC`) y delimitar qué parte de EF-4 sobrevive.
+(su `n=12` es vacuo, 245025/245025). **`C-1` adjudicado** el mismo día
+(`docs/c1_adjudication_2026-08-16_ef4_token_degradation.md`, commits `4c22025`+`c9a891d`):
+`EF4_CORRECTED_PRESCRIBED_FAMILY = SKETCH_GEOMETRIC_CORE_REFUTED_AS_STATED`,
+`EF4_Q2_ASYMPTOTIC = PROVED_DEDUCTIVE_NO_EXECUTABLE_BACKING_CONDITIONAL_ON_REFUTED_TRICHOTOMY`,
+`MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED` restituido, `GEOMETRIC_TRICHOTOMY_EF4_3 =
+REFUTED_AT_N24`. Ningún token sube. **Sigue abierto:** si `EF4_UNIQUE_SELECTION_ENTROPY` /
+`EF4_TERMINAL` / `Gate EF-4: PASS` heredan la rotura (marcados afectados-no-adjudicados); qué
+parte de EF-4 sobrevive con casos reparados; si los contraejemplos persisten para `n>24`.
 `C-5` sigue en pie: PR #4 no sale de draft.
 
 **C6 cambió de estado — la nota vieja decía BLOCKED y ya no es cierto.** Entre 2026-07-21 y el
