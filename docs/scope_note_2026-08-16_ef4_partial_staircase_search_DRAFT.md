@@ -1,5 +1,11 @@
 # Nota de alcance firmada — EF-4, búsqueda de escalera parcial realizable
 
+> **CORRECCIÓN DE DOMINIO POSTERIOR A LA EJECUCIÓN — 2026-08-16.**
+> La notación `F_n` usada para el barrido finito se corrige en §12 a
+> `F^{test}_{n,\rho}`. El perímetro y la salida originales se conservan sin reescritura
+> como registro del precompromiso; §12 prevalece para toda interpretación científica.
+
+
 ```text
 ESTADO: AUTHORISED / EXECUTED / OPEN_AT_COMPUTE_CAP
 FECHA: 2026-08-16
@@ -270,3 +276,89 @@ RESULT_SHA256: 212f9093225b62784ce27cb0d4ac3955d2f20d4b0c1db1d9d77980fd1d801d34
 REPEAT_EXECUTION_BYTE_IDENTICAL: YES
 SEEDS: NONE
 ```
+
+## 12. Corrección de dominio tras la auditoría estática — 2026-08-16
+
+~~~text
+POST_EXECUTION_DOMAIN_CORRECTION: YES
+STATIC_ENUMERATOR_COVERAGE: PROVED_FOR_CODE_DEFINED_TEST_FAMILY
+FORMAL_EF4_TARGET: NOT_TESTED
+RUN_TERMINAL: OPEN_AT_COMPUTE_CAP — INTACTO
+C1_FORMAL: INCONCLUSIVE — INTACTO
+~~~
+
+Esta corrección no modifica el código, la salida, el cap ni el terminal de §11. Corrige
+exclusivamente el objeto matemático sobre el que puede interpretarse el barrido.
+
+### 12.1 Familia finita realmente enumerada
+
+El evento formal `F_n` de EF-4.1--EF-4.2 no tiene dos parámetros: fija
+
+\[
+\rho_n=\left\lceil(n^2\log n)^{1/3}\right\rceil
+\]
+
+como función de `n`. El barrido de §3 usa, en cambio, `rho in {3,4}` para
+`34 <= n <= 56`; esas parejas no satisfacen `rho=\rho_n`. Por tanto, no pertenecen
+literalmente a la sucesión formal `F_n`.
+
+Para identificar sin ambigüedad el dominio que sí recorre el código, defínase
+`F^{test}_{n,\rho}`, para `n=2s` y los pares autorizados en §3, como el evento que
+prescribe
+
+\[
+\begin{aligned}
+&\pi(1)=1,\quad \pi(s)=s,\quad \pi(s+1)=s+1,\quad \pi(n)=n,\\
+&\pi(s-\rho+j)=\lfloor n/4\rfloor+j,
+&&j=1,\ldots,\rho-1,\\
+&\pi(s+1+j)=\lfloor 3n/4\rfloor+j,
+&&j=1,\ldots,\rho-1.
+\end{aligned}
+\]
+
+Ésta es la plantilla combinatoria de EF-4.2 con `rho` libre, no la sucesión
+asintótica `F_n`. Las expresiones «compatible con `F_n`» de §§2--4 y §11 deben
+leerse, para este falsificador finito, como «compatible con
+`F^{test}_{n,\rho}`». No se afirma una reducción por simetría ni una equivalencia
+con el régimen `rho=\rho_n`.
+
+La auditoría estática establece que el enumerador cubre todas las 4-cadenas estrictas
+realizables bajo `F^{test}_{n,\rho}` que satisfacen `small_product=False`, hasta el
+cap y con la marca de agotamiento por par registrada en §11. Ese resultado de
+cobertura no transfiere por sí solo nada a la sucesión formal `F_n`.
+
+### 12.2 Semántica corregida de los terminales
+
+`REFUTED_BY_COMPATIBLE_WITNESS`, si hubiera aparecido, habría refutado únicamente la
+extensión de la tricotomía a la pareja finita
+`F^{test}_{n,\rho}` correspondiente. No habría refutado automáticamente C1 para el
+`F_n` formal. Para esa transferencia haría falta, por separado:
+
+1. un lema que lleve un testigo de `F^{test}_{n,\rho}` al régimen
+   `rho=\rho_n`; o
+2. ejecutar un par que satisfaga realmente `rho=\rho_n`.
+
+Ninguna de esas dos piezas está en esta nota. En consecuencia, la frase de §8
+«C1 queda refutada en ese punto finito» queda corregida por esta sección a:
+
+~~~text
+TEST_FAMILY_TRICHOTOMY_REFUTED_AT_FINITE_PAIR
+FORMAL_C1_REMAINS_INCONCLUSIVE
+~~~
+
+El terminal observado fue `OPEN_AT_COMPUTE_CAP`, no una refutación. Permanece
+válido exactamente como se registró: el millón de cadenas no produjo veredicto
+científico ni sobre la familia de prueba más allá del prefijo recorrido ni sobre
+el `F_n` formal.
+
+### 12.3 Firma de la corrección
+
+~~~text
+AUTHORISED_BY_PI: Ignacio
+DATE: 2026-08-16
+AUTHORISED_SCOPE: corregir en este único fichero el dominio del falsificador y limitar
+  la semántica del terminal de refutación
+NOT_AUTHORISED: modificar código o resultados; reejecutar; instrumentar histogramas;
+  tocar otros ficheros; promover o degradar tokens científicos
+ORIGINAL_PRECOMMIT_AND_EXECUTION_RECORD: PRESERVED
+~~~
