@@ -399,12 +399,16 @@ numbers, and no PR004 diagnostic's actual probed shape has been checked against 
 
 **What is still NOT done.** (i) *[now available, see above]*. (ii) Comparing any of these numbers
 to `prereg-003`'s measured `K_LOC` constant — a different quantity (bounds the *sealed estimator's*
-output, §1-2 there), not something this floor claims to explain or reproduce. (iii) *[partially
-examined, see above]* — an analytic derivation of the `lambda^6` exponent (a near-horizon/Rindler
-expansion of `I(tau)` is a plausible route, not attempted). (iv) Whether PR004's actual diagnostic
-patches correspond to any specific `(r_p, r_q, v_p, v_q)` in this family at all — the diamond
-family is a mathematical construction for proving a floor, not a description of what PR004's
-ladder/peel-off procedure geometrically probes; this connection has not been made.
+output, §1-2 there), not something this floor claims to explain or reproduce. (iii) R2
+(`dev/R2_lambda6_derivation_NOTES.md`) derived and numerically cross-checked the exponent within
+the scope stated there:
+`EXPONENTE_LAMBDA6 = DERIVED_IN_THIS_PROJECT / NUMERICALLY_CROSS_CHECKED`; the prefactor remains
+`OPEN / [UNVERIFIED]`. Its two-week box expired on 2026-08-14, so R2 is marked open and passes to
+R1 under `docs/program_reopening_note_2026-07-31.md` §§4--5. Expiry neither refutes the prefactor
+nor promotes R2 to `FAILED` or `PROVED`. (iv) Whether PR004's actual diagnostic patches correspond
+to any specific `(r_p, r_q, v_p, v_q)` in this family at all — the diamond family is a mathematical
+construction for proving a floor, not a description of what PR004's ladder/peel-off procedure
+geometrically probes; this connection has not been made.
 
 ## 6. What remains open
 
@@ -418,10 +422,12 @@ ladder/peel-off procedure geometrically probes; this connection has not been mad
    `wp4_kappa_numeric_reference.py`, NUMERICAL not proved): `kappa_bar ~ 8e-4` for one moderate
    reference shape (`delta_tau ~ 35 ell`), and empirically `kappa_bar ~ lambda^6` under reshaping
    toward thin near-horizon diamonds (`delta_tau ~ ell/lambda^3`) — it does **not** stay bounded
-   as the shape narrows. Still open: an analytic derivation of the `lambda^6` exponent; any
-   comparison to `prereg-003`'s measured `K_LOC` (a different, estimator-bound quantity); whether
-   PR004's diagnostics actually probe shapes in this degrading regime (not checked against any
-   PR004 output).
+   as the shape narrows. Under R2 the exponent is derived and numerically cross-checked only in
+   the scope documented in `dev/R2_lambda6_derivation_NOTES.md`; the prefactor remains
+   `OPEN / [UNVERIFIED]` and the obligation has passed to R1. Also open: any comparison to
+   `prereg-003`'s measured `K_LOC` (a different, estimator-bound quantity), and whether PR004's
+   diagnostics actually probe shapes in this degrading regime (not checked against any PR004
+   output).
 3. **Poset-level tightness**: all distance control is inherited from the point level; a technique
    for bounding poset-law distances *below* the point-level bound (or matching upper bounds via
    an explicit order-only estimator) is still missing — same open item as Attempt C.
