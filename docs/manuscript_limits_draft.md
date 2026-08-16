@@ -2079,6 +2079,8 @@ fixed-\(n\) order-only blindness for absolute mass.
 
 ### 7.2 Open questions
 
+**R2 status (2026-08-16).** Within the documented shrinking-family scope, the empirical `lambda^6` exponent has been derived and numerically cross-checked. The multiplicative prefactor remains **OPEN / [UNVERIFIED]**. Expiry of the R2 time box is an administrative handoff to R1, not a scientific verdict: it neither refutes the prefactor nor promotes R2 to `FAILED` or `PROVED`.
+
 1. Prove the numerically supported uniform small-lapse law
    \(\bar I\sim C(\Delta v)^2\), or find a counterexample away from
    \(\tau_0\). The endpoint sweep gives
