@@ -93,9 +93,33 @@ falso, no un requisito de auditoría.
 ## 4. El estado real de C1
 
 `C1` (¿es la tricotomía una partición exhaustiva de los casos realizables?) vuelve a
-**`INCONCLUSIVE`**, que es donde el foro-001 la dejó. Pero con más evidencia que antes: en `n=24`
-las 40 configuraciones realizables donde `small_product` no basta caen todas en `loss_case`. Eso
-es evidencia positiva acotada a un tamaño, no una prueba.
+**`INCONCLUSIVE`**, que es donde el foro-001 la dejó.
+
+En `n=24` las 40 configuraciones realizables donde `small_product` no basta caen todas en
+`loss_case`. **Pero esa evidencia positiva es mucho más débil de lo que parece**, y conviene decir
+por qué antes de que alguien la cite:
+
+Las escaleras que define el test tienen **`rho-1` puntos**. Con `rho=2` son de **un punto**, luego
+una caja las contiene enteras o no las contiene: la **contención parcial es imposible**, no
+infrecuente. Y la contención parcial es justamente la configuración que el análisis de casos tiene
+que adjudicar —la que ejercita los topes `past_prescribed <= 3` / `<= rho+2` de `loss_case`—.
+
+```text
+[stairs] lower_stair = [(11, 7)]  (|lower| = 1)
+[stairs] upper_stair = [(14, 19)]  (|upper| = 1)
+[stairs] staircase size is rho-1 = 1
+PARTIAL_STAIRCASE_CASES=0
+[stairs] STRUCTURALLY_IMPOSSIBLE: with one-point staircases a box holds 0 or all of a
+         staircase, never a strict non-empty subset, so no sweep at rho=2 can exercise
+         partial containment at any n
+```
+
+De modo que el `PASS` de `n=24` **no ejercita el núcleo del análisis de casos**, y ningún barrido
+a `rho=2` puede ejercitarlo, a ningún `n`. Lo que se ha comprobado es que en el régimen accesible
+no hay contraejemplos; el régimen donde el argumento podría romperse sigue sin visitarse.
+
+Entre `n=12` (vacuo), `n=24` (`rho=2`, contención parcial imposible) y lo que se sepa de otros
+tamaños, la lógica de escaleras de la tricotomía **no ha sido puesta a prueba ni una vez**.
 
 ## 5. Hallazgo colateral sobre el test sellado
 

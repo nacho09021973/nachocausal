@@ -64,6 +64,41 @@ def is_compatible(
     return True
 
 
+def staircases(n: int, rho: int) -> tuple[list[tuple[int, int]], list[tuple[int, int]]]:
+    """The two staircases, as the sealed test defines them. Each has rho-1 points."""
+    forward, _ = prescription(n, rho)
+    half = n // 2
+    points = sorted(forward.items())
+    lower = [p for p in points if half - rho + 1 <= p[0] <= half - 1]
+    upper = [p for p in points if half + 2 <= p[0] <= half + rho]
+    return lower, upper
+
+
+def has_partial_staircase(
+    rows: tuple[int, ...], columns: tuple[int, ...], n: int, rho: int
+) -> bool:
+    """Does either box contain a strict, non-empty subset of either staircase?
+
+    This is the configuration the trichotomy's case analysis actually has to
+    adjudicate: a box that swallows part of a staircase but not all of it. With
+    one-point staircases it cannot occur -- containment is 0 or all.
+    """
+    lower, upper = staircases(n, rho)
+    past_lower, past_upper, future_lower, future_upper = tuple(zip(rows, columns))
+    boxes = ((past_lower, past_upper), (future_lower, future_upper))
+    for low, high in boxes:
+        for stair in (lower, upper):
+            if not stair:
+                continue
+            held = sum(
+                low[0] <= point[0] <= high[0] and low[1] <= point[1] <= high[1]
+                for point in stair
+            )
+            if 0 < held < len(stair):
+                return True
+    return False
+
+
 def float_safety(n: int, rho: int) -> tuple[Fraction, Fraction, bool]:
     """Is any product/threshold comparison an exact tie at this (n, rho)?"""
     forward, _ = prescription(n, rho)
@@ -143,17 +178,34 @@ def main() -> int:
     ]
 
     loss_case_pass = 0
+    partial_staircase_cases = 0
     for rows, columns in compatible_biting:
         verdict = scalar_disjuncts(N, RHO, rows, columns)
         assert not verdict["small_product"], (rows, columns)
         if verdict["loss_case"] or verdict["fixed_inner"]:
             loss_case_pass += 1
+        if has_partial_staircase(rows, columns, N, RHO):
+            partial_staircase_cases += 1
 
     print(f"[n=24] abstract biting     = {len(biting)}")
     print(f"[n=24] abstract failures   = {len(failing)}")
     print(f"REQUIRES_LOSS_CASE={len(compatible_biting)}")
     print(f"LOSS_CASE_PASS={loss_case_pass}")
     print(f"COMPATIBLE_FAILURES={len(compatible_failing)}")
+    print()
+
+    lower, upper = staircases(N, RHO)
+    print(f"[stairs] lower_stair = {lower}  (|lower| = {len(lower)})")
+    print(f"[stairs] upper_stair = {upper}  (|upper| = {len(upper)})")
+    print(f"[stairs] staircase size is rho-1 = {RHO - 1}")
+    print(f"PARTIAL_STAIRCASE_CASES={partial_staircase_cases}")
+    if len(lower) <= 1 and len(upper) <= 1:
+        print(
+            "[stairs] STRUCTURALLY_IMPOSSIBLE: with one-point staircases a box holds "
+            "0 or all of a staircase, never a strict non-empty subset, so no sweep at "
+            f"rho={RHO} can exercise partial containment at any n"
+        )
+        assert partial_staircase_cases == 0
     print()
 
     witness = failing[0]

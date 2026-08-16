@@ -40,6 +40,46 @@ Se conserva arriba tal como se escribió. Lo que ha cambiado desde entonces, por
 
 La línea EF-0..EF-8 sigue fuera de perímetro. Nada de lo anterior la reabre.
 
+## 2026-08-16 — La lógica de escaleras de la tricotomía sigue sin ejercitarse
+
+```text
+BACKLOG_STATUS: OUT_OF_SCOPE / REQUIERE_NOTA_FIRMADA
+ORIGEN: retractación del veredicto n=24 (docs/c1_correction_2026-08-16_realizability.md)
+```
+
+**Lo respaldado por script commiteado** (`dev/ef4_trichotomy_prescription_compatibility_n24.py`):
+las escaleras del test tienen `rho-1` puntos, así que con `rho=2` son de un punto y una caja las
+contiene enteras o nada. **La contención parcial —la configuración que ejercita los topes
+`past_prescribed <= 3` / `<= rho+2` de `loss_case`— es imposible a `rho=2`, para todo `n`.** En
+`n=24`: `REQUIRES_LOSS_CASE=40`, `LOSS_CASE_PASS=40`, `COMPATIBLE_FAILURES=0`,
+`PARTIAL_STAIRCASE_CASES=0` por construcción.
+
+**Reportado fuera de script commiteado — `[UNVERIFIED]` en el sentido del repositorio:**
+
+- `(n=30, rho=2)`: `751.034.025` tuplas abstractas; `15.947` fallos en coma flotante, de los que
+  `6.003` sobreviven en aritmética racional (`43.858` comparaciones fronterizas — coherente con
+  que el umbral escalado ahí sea entero, `120`); `126.461.791` cadenas compatibles;
+  `REQUIRES_LOSS_CASE=1157`, `LOSS_CASE_PASS=1157`, `COMPATIBLE_FAILURES=0`.
+- `(n=34, rho=3)`: `threshold = 25/104`; `2.150.733.376` tuplas abstractas; `1.424` fallos
+  abstractos; `COMPATIBLE_REQUIRES_LOSS=36`, `COMPATIBLE_LOSS_PASS=36`,
+  `COMPATIBLE_FAILURES=0`; y **`PARTIAL_STAIRCASE_CASES=0`** pese a que ahí las escaleras ya
+  tienen dos puntos.
+
+Nótese que `n=30` es `rho=2`, luego su `PARTIAL_STAIRCASE_CASES` es `0` **por la razón
+estructural de arriba**, no por hallazgo empírico.
+
+**Estado agregado.** Entre `n=12` (vacuo), `n=24` y `n=30` (`rho=2`, contención parcial
+imposible) y `n=34` (`rho=3`, posible pero no ocurrida), la lógica de escaleras del análisis de
+casos **no ha sido ejercitada ni una vez**. Los tres `COMPATIBLE_FAILURES=0` son evidencia
+positiva sobre un régimen que no incluye el ataque estructural.
+
+**Siguiente paso propuesto, NO autorizado.** No elegir otro tamaño a ciegas, sino localizar
+primero el menor `(n, rho)` no vacuo que produzca al menos un caso compatible con contención
+parcial, y ejecutar allí el barrido exhaustivo. Requiere ampliar `n` más allá de `24` y `rho` más
+allá de `2`, que `docs/scope_note_2026-08-16_foro001_falsification_test.md` §4 prohíbe sin nota
+firmada. Ninguno de estos números entra en el registro vigente hasta que salga de script
+commiteado.
+
 ---
 
 # Documento trasladado: Hoja de ruta — agosto de 2026
