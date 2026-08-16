@@ -635,3 +635,23 @@ AUTORISED_SCOPE: resolver exclusivamente C-2 mediante el traslado íntegro de EF
 NOT_AUTORISED: C-1, C-3, C-4; ampliación de n; test n=24; commit; push
 OVERRIDING_NOTES: ninguna
 ```
+
+## 13. Addendum 2026-08-16 — qué se hizo después de esta firma
+
+El bloque §12 se conserva íntegro. Sus `NOT_AUTORISED` fueron levantados uno a uno, por notas
+firmadas posteriores, no por interpretación:
+
+| Ítem | Estado | Respaldo |
+|---|---|---|
+| C-4 | `CLOSED_BY_REVERT` | commit `a7b6623` |
+| C-3 | `CLOSED` — R2 abierto, prefactor `OPEN / [UNVERIFIED]`, pasa a R1 | commit `44b0d75` |
+| `ampliación de n` / `test n=24` | autorizados **sólo** para R-1, renombrado `FORO001-F1` | `docs/scope_note_2026-08-16_foro001_falsification_test.md` |
+| R-1 (`FORO001-F1`) | **EJECUTADO — la tricotomía de EF-4.3 queda REFUTADA en `n=24`** | `dev/EF4_TRICHOTOMY_N24_RESULT.md`, commit `7b5deec` |
+| C-1 | `ADJUDICATED` — tokens degradados | `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md` |
+| C-5 | **sigue en pie** — PR #4 no sale de draft | — |
+
+Sobre el ledger de §9: la fila **C1** (`INCONCLUSIVE`) pasa a **`REFUTED`**. La fila **C3**
+(`n=24` es el primer tamaño donde el test podría morder, `VERIFIED`) se confirma por ejecución:
+`n=12` da `245025/245025` vacuas y `n=24` da `1504` tuplas no vacuas, de las cuales `560` fallan.
+
+El falsificador tenía razón, y la tenía por la razón que dio.

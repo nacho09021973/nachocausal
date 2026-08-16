@@ -21,6 +21,23 @@ ni como certificado matemático vigente. En particular, sus tokens internos no p
 sobre `FORO_VERDICT=REVISE_AND_RECONVENE`; C-1, C-3 y C-4 permanecen sin adjudicar, y
 este traslado no autoriza ampliar la enumeración ni ejecutar el test no vacuo en `n=24`.
 
+### Addendum 2026-08-16 — el párrafo anterior está superado en tres puntos
+
+Se conserva arriba tal como se escribió. Lo que ha cambiado desde entonces, por orden:
+
+- **C-4 adjudicado** por reversión de las brechas de perímetro (`a7b6623`).
+- **C-3 adjudicado**: R2 marcado abierto y pasado a R1 (`44b0d75`).
+- **El test `n=24` se ejecutó**, bajo nota firmada
+  `docs/scope_note_2026-08-16_foro001_falsification_test.md`, que levanta la prohibición de
+  ampliar `n` **sólo** para ese test. Resultado: **la tricotomía de EF-4.3 queda refutada en
+  `n=24`** — ver `dev/EF4_TRICHOTOMY_N24_RESULT.md`.
+- **C-1 adjudicado** en consecuencia:
+  `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md`. **Los tokens del documento
+  trasladado que aparecen más abajo están degradados por esa nota**; siguen aquí como registro
+  histórico, no como valores vigentes.
+
+La línea EF-0..EF-8 sigue fuera de perímetro. Nada de lo anterior la reabre.
+
 ---
 
 # Documento trasladado: Hoja de ruta — agosto de 2026
@@ -1537,6 +1554,23 @@ EF4_NORMALIZED_INFORMATION_RATIO = NOT_DECIDED
 EF4_MONTE_CARLO = NOT_RUN
 EF4_GAUSS_KUZMIN = NOT_USED
 ```
+
+> **TOKENS SUPERADOS — 2026-08-16.** El bloque de arriba es registro histórico. Valores vigentes
+> por `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md` §2:
+>
+> ```text
+> EF4_CORRECTED_PRESCRIBED_FAMILY = SKETCH_GEOMETRIC_CORE_REFUTED_AS_STATED
+> EF4_Q2_ASYMPTOTIC = PROVED_DEDUCTIVE_NO_EXECUTABLE_BACKING_CONDITIONAL_ON_REFUTED_TRICHOTOMY
+> MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED = NO_TWO_BREAKS_CONFIRMED_BY_COMITE_050
+> GEOMETRIC_TRICHOTOMY_EF4_3 = REFUTED_AT_N24
+> ```
+>
+> Motivo sustantivo: la tricotomía de EF-4.3 está refutada en `n=24` (560 de 112.911.876 tuplas
+> falsifican los tres disyuntos) — `dev/EF4_TRICHOTOMY_N24_RESULT.md`. Motivo procedimental: la
+> orden vigente del comité 050 (`comite_decision_050:485,496-497`).
+>
+> `EF4_UNIQUE_SELECTION_ENTROPY`, `EF4_TERMINAL` y el `Gate EF-4: PASS` de la línea siguiente
+> quedan **afectados y no adjudicados**: su dependencia del núcleo refutado no se ha leído.
 
 **Gate EF-4: `PASS`. Terminal científico: `FIBER_CONCENTRATION`.**
 

@@ -58,9 +58,9 @@ dentro de la futura, luego `past_loses = future_loses = False` y `loss_case` es 
 - No toca el sello, ni `prereg-001/002/003`, ni el suelo de localización del manuscrito de
   límites (`R1`). EF-4 es la línea de entropía de fibras, que está en
   `docs/backlog_hallazgos.md` como hallazgo fuera de perímetro.
-- No adjudica `C-1` del foro-001 (degradación de tokens `EF4_CORRECTED_PRESCRIBED_FAMILY` /
-  `EF4_Q2_ASYMPTOTIC`): eso sigue `NOT_AUTORISED` y requiere firma del PI. Este fichero registra
-  el hecho, no promueve ni degrada ningún token.
+- Este fichero no degrada ni promueve ningún token: sólo registra el hecho. La adjudicación de
+  `C-1` (degradación de `EF4_CORRECTED_PRESCRIBED_FAMILY` / `EF4_Q2_ASYMPTOTIC`) se firmó
+  después, el mismo día, en `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md`.
 - No dice qué parte de EF-4 sobrevive. El fallo es de la **tricotomía como partición exhaustiva
   de casos**; delimitar el alcance restante es trabajo pendiente y necesita autorización.
 
