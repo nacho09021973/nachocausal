@@ -22,6 +22,10 @@ la adjudicación de `docs/backlog_hallazgos.md` §12 establecen que el barrido r
 `F_test(n,rho)` con `rho in {3,4}`, no la sucesión formal
 `rho_n=ceil((n^2 log n)^(1/3))`.
 
+Esta actualización prevalece operativamente sobre los handoffs históricos que
+aparecen más abajo y todavía describen la nota como no firmada o el falsificador
+como siguiente gate. Se conservan únicamente como cronología de decisiones.
+
 En consecuencia, no hay un siguiente gate computacional de escaleras. C1 formal
 sigue `INCONCLUSIVE`; aumentar el cap, instrumentar histogramas o buscar un puente
 desde `rho` fijo no está autorizado ni científicamente motivado por ese run.
