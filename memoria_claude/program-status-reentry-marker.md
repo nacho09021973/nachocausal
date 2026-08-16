@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: ba8e0f66-5e67-49f8-a0fa-d7165b974d41
-  modified: 2026-08-16T08:57:22.644Z
+  modified: 2026-08-16T09:17:58.623Z
 ---
 
 Sustituye al marcador de pausa del 2026-07-19 (pausa → cierre → reapertura acotada).
@@ -56,17 +56,27 @@ exponente derivado y cross-checked, **prefactor `OPEN / [UNVERIFIED]`**; caja ve
 2026-08-14, pasa a R1 (commit `44b0d75`, ítem C-3 del foro-001). Nueva nota firmada
 `docs/scope_note_2026-08-16_foro001_falsification_test.md` que levanta la prohibición de ampliar
 `n` **sólo** para el test `FORO001-F1` (el `R-1` del foro-001; ojo con la colisión de nombres
-`R-1` vs `R1`). Ejecutado (`7b5deec`): **la tricotomía de EF-4.3 queda REFUTADA en `n=24`** —
-560 de 112.911.876 tuplas falsifican los tres disyuntos; `C1` del foro-001 pasa de `INCONCLUSIVE`
-a `REFUTED`. El test sellado `tests/test_p1a_entropia_fibras_ef4.py` no se tocó y sigue pasando
-(su `n=12` es vacuo, 245025/245025). **`C-1` adjudicado** el mismo día
+`R-1` vs `R1`). Ejecutado (`7b5deec`): 560 de 112.911.876 tuplas falsifican los tres disyuntos → se emitió
+`REFUTED` y **se retractó el mismo día** (`0afc16c`,
+`docs/c1_correction_2026-08-16_realizability.md`): los 560 emparejan filas/columnas prohibidas por
+la prescripción `F_n` (el testigo usa `(11,11)` cuando `F_n` fija `11→7`). Restringido a las
+11.639.124 cadenas realizables, sólo 40 de las 1504 no vacuas sobreviven y las 40 caen en
+`loss_case` → `COMPATIBLE_FAILURES=0`. **`C1` sigue `INCONCLUSIVE`**, con evidencia positiva
+acotada. **Lección:** el test sellado (y el predicado que firmamos a partir de él) cuantifica
+sobre cuádruplas **abstractas**, que es el dominio equivocado — precomprometer un predicado no lo
+hace correcto. El test sellado no se tocó y sigue pasando (su `n=12` es vacuo, 245025/245025). **`C-1` adjudicado** el mismo día
 (`docs/c1_adjudication_2026-08-16_ef4_token_degradation.md`, commits `4c22025`+`c9a891d`):
 `EF4_CORRECTED_PRESCRIBED_FAMILY = SKETCH_GEOMETRIC_CORE_REFUTED_AS_STATED`,
 `EF4_Q2_ASYMPTOTIC = PROVED_DEDUCTIVE_NO_EXECUTABLE_BACKING_CONDITIONAL_ON_REFUTED_TRICHOTOMY`,
-`MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED` restituido, `GEOMETRIC_TRICHOTOMY_EF4_3 =
-REFUTED_AT_N24`. Ningún token sube. **Sigue abierto:** si `EF4_UNIQUE_SELECTION_ENTROPY` /
-`EF4_TERMINAL` / `Gate EF-4: PASS` heredan la rotura (marcados afectados-no-adjudicados); qué
-parte de EF-4 sobrevive con casos reparados; si los contraejemplos persisten para `n>24`.
+`MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED` restituido — **corregidos** por la retractación:
+vigentes son `EF4_CORRECTED_PRESCRIBED_FAMILY = SKETCH_PENDING_INDEPENDENT_AUDIT_COMITE_050`,
+`EF4_Q2_ASYMPTOTIC = PROVED_DEDUCTIVE_NO_EXECUTABLE_BACKING`,
+`GEOMETRIC_TRICHOTOMY_EF4_3_ABSTRACT_DOMAIN = REFUTED_AT_N24`,
+`GEOMETRIC_TRICHOTOMY_EF4_3_ON_F_N = NOT_REFUTED_AT_N24`. La degradación **sobrevive por el motivo
+procedimental** (orden vigente del comité 050, nunca levantada), no por el sustantivo. Ningún
+token sube. **Sigue abierto:** qué parte de EF-4 se prueba con casos reparados; si el patrón
+persiste para `n>24` (hay un cálculo en `n=30` con `COMPATIBLE_FAILURES=0` pero **`[UNVERIFIED]`**:
+no salió de script commiteado, y reproducirlo exige nota firmada por §4 de la nota de alcance).
 `C-5` sigue en pie: PR #4 no sale de draft.
 
 **C6 cambió de estado — la nota vieja decía BLOCKED y ya no es cierto.** Entre 2026-07-21 y el
