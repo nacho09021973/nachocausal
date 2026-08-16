@@ -57,20 +57,37 @@ and does not promote any R2 result.
   - The small-patch log-log fits reproduce exponents `5.91684` (all points) and
     `5.98794` (smallest four). These are deterministic quadrature/discretization
     outputs, not exact values or certified error enclosures.
-- [ ] **Make R2's unresolved part explicit in the manuscript itself.**
-  - Current scientific state to state, without promotion:
-    exponent `lambda^6` derived and numerically cross-checked within its documented
-    shrinking-family scope; prefactor `OPEN / [UNVERIFIED]`.
-  - R2's expired time box is not a scientific verdict and must not be presented as
-    `FAILED` or `PROVED`.
-- [ ] **Compile the exact current R1 manuscript to a self-contained PDF and inspect
+- [x] **Make R2's unresolved part explicit in the manuscript itself.**
+  - Verified manuscript commit:
+    `265a9538d16171b0403fdd63a7e6f3a530d3878e`.
+  - §7.2 now states, without promotion, that the `lambda^6` exponent is derived and
+    numerically cross-checked within its documented shrinking-family scope, while
+    the multiplicative prefactor remains `OPEN / [UNVERIFIED]`.
+  - The text also states explicitly that expiry of the R2 time box is an
+    administrative handoff to R1, not a scientific verdict and not `FAILED` or
+    `PROVED`.
+- [x] **Compile the exact current R1 manuscript to a self-contained PDF and inspect
   it.**
-  - The compilation must use the current R1 commit, embed all six figures, and
-    leave no repository-internal reference that an external reader must resolve in
-    order to understand a claim.
+  - Source commit compiled:
+    `265a9538d16171b0403fdd63a7e6f3a530d3878e`.
+  - GitHub Actions run: `31950827078`; inspection artifact: `9264605989`.
+  - PDF SHA256:
+    `0c5038b36f5f9735032978e3cd34f3a8a20f800419ebc4aafafdc5ba24a2ba14`.
+  - Output: 30 A4 pages, PDF 1.5, unencrypted; Poppler reports six embedded RGB
+    figure images (plus their transparency masks).
+  - Visual render inspection covered the complete 30-page contact sheet and the
+    six figure pages plus §7.2. No clipped text, overlaps, broken glyphs, or missing
+    figures were found.
+  - Text extraction confirms the R2 `OPEN / [UNVERIFIED]` statement in the PDF.
+  - The repository-token scan finds only the optional historical archive labels
+    `COM-*`, `X0-Qn`, and `TF-*` in §5. Their outcomes and lessons are stated in the
+    manuscript itself, so an external reader does not need to resolve those labels
+    to understand any scientific claim.
 
-Until the last two boxes are closed, R1 remains open. Neither box authorizes new
-scientific calculations, new estimators, EF-4 work, or a change to the frozen seal.
+**R1 completion status:** `CLOSED / COMPLETION_TEST_PASSED_2026-08-16`.
+The two final reopening-gate obligations are satisfied. This closure does not
+promote R2, reopen EF-0--EF-8, authorize EF-4 work, alter the frozen seal, or
+change the scientific scope of the manuscript.
 
 ## PR state
 
