@@ -1,0 +1,129 @@
+name: R1 close verification
+
+on:
+  push:
+    branches:
+      - reopen/r1-r2-limits-writeup
+    paths:
+      - .github/workflows/r1_close_verify.yml
+
+permissions:
+  contents: write
+
+jobs:
+  r1-close:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout authorized R1 branch
+        uses: actions/checkout@v4
+        with:
+          ref: reopen/r1-r2-limits-writeup
+          fetch-depth: 2
+
+      - name: Guard authorized starting point
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "3521913d4d3dd97287cfc3fe7db3625620063f97"
+
+      - name: Insert explicit R2 open status in manuscript
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('docs/manuscript_limits_draft.md')
+          s = p.read_text(encoding='utf-8')
+          anchor = "### 7.2 Open questions\n\n"
+          marker = "**R2 status (2026-08-16).**"
+          assert s.count(anchor) == 1, f"anchor count={s.count(anchor)}"
+          assert marker not in s, "R2 marker already present"
+          note = (
+              "**R2 status (2026-08-16).** Within the documented shrinking-family scope, "
+              "the empirical `lambda^6` exponent has been derived and numerically cross-checked. "
+              "The multiplicative prefactor remains **OPEN / [UNVERIFIED]**. Expiry of the R2 "
+              "time box is an administrative handoff to R1, not a scientific verdict: it neither "
+              "refutes the prefactor nor promotes R2 to `FAILED` or `PROVED`.\n\n"
+          )
+          p.write_text(s.replace(anchor, anchor + note, 1), encoding='utf-8')
+          PY
+          git diff --check
+          grep -F "The multiplicative prefactor remains **OPEN / [UNVERIFIED]**" docs/manuscript_limits_draft.md
+
+      - name: Commit candidate manuscript locally
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "R1 verification bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/manuscript_limits_draft.md
+          test "$(git diff --cached --name-only)" = "docs/manuscript_limits_draft.md"
+          git commit -m "docs: mark R2 prefactor open in R1 manuscript"
+          echo "R1_SOURCE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Install document toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
+            pandoc texlive-xetex texlive-latex-extra texlive-fonts-recommended \
+            lmodern poppler-utils
+
+      - name: Compile exact candidate commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$R1_SOURCE_COMMIT"
+          mkdir -p build/r1
+          cp docs/manuscript_limits_draft.md build/r1/manuscript_snapshot.md
+          pandoc docs/manuscript_limits_draft.md \
+            --from=markdown+raw_tex \
+            --standalone \
+            --pdf-engine=xelatex \
+            --resource-path=docs:viz/output:. \
+            -V geometry:margin=22mm \
+            -V papersize:a4 \
+            -o build/r1/manuscript_limits_r1.pdf
+          pdfinfo build/r1/manuscript_limits_r1.pdf > build/r1/pdfinfo.txt
+          pdfimages -list build/r1/manuscript_limits_r1.pdf > build/r1/pdfimages.txt
+          pdftotext build/r1/manuscript_limits_r1.pdf build/r1/manuscript_limits_r1.txt
+          grep -F "OPEN / [UNVERIFIED]" build/r1/manuscript_limits_r1.txt
+          grep -F "R2 status (2026-08-16)" build/r1/manuscript_limits_r1.txt
+          for n in 1 2 3 4 5 6; do
+            grep -F "Figure $n" build/r1/manuscript_limits_r1.txt >/dev/null
+          done
+          {
+            echo "R1_SOURCE_COMMIT=$R1_SOURCE_COMMIT"
+            sha256sum build/r1/manuscript_limits_r1.pdf
+            echo
+            cat build/r1/pdfinfo.txt
+            echo
+            echo "--- pdfimages ---"
+            cat build/r1/pdfimages.txt
+            echo
+            echo "--- repository-internal-token scan ---"
+            grep -En 'docs/|research_program/|dev/|viz/|\.py\b|COM-[0-9]+|X0-Qn|TF-[0-9]+' build/r1/manuscript_limits_r1.txt || true
+          } > build/r1/r1_build_info.txt
+
+      - name: Push verified manuscript commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$R1_SOURCE_COMMIT"
+          git push origin HEAD:reopen/r1-r2-limits-writeup
+
+      - name: Upload exact R1 PDF and inspection bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: r1-close-verification-${{ env.R1_SOURCE_COMMIT }}
+          path: |
+            build/r1/manuscript_limits_r1.pdf
+            build/r1/manuscript_snapshot.md
+            build/r1/manuscript_limits_r1.txt
+            build/r1/pdfinfo.txt
+            build/r1/pdfimages.txt
+            build/r1/r1_build_info.txt
+          if-no-files-found: error
+          retention-days: 7
