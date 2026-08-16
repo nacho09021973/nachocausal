@@ -1,14 +1,14 @@
-# Borrador de nota de alcance — EF-4, búsqueda de escalera parcial realizable
+# Nota de alcance firmada — EF-4, búsqueda de escalera parcial realizable
 
 ```text
-ESTADO: DRAFT / AWAITING_PI_SIGNATURE
+ESTADO: AUTHORISED / BOUNDED_EF4_PARTIAL_STAIRCASE_FALSIFIER
 FECHA: 2026-08-16
 NO_SUSTITUYE: docs/program_closure_note_2026-07-30.md
 NO_SUSTITUYE: docs/program_reopening_note_2026-07-31.md
-NO_REABRE: EF-0--EF-8 salvo el test acotado que una firma posterior autorice
-EF4/C1: OUT_OF_SCOPE / INCONCLUSIVE
-AUTORIZACIÓN_DE_EJECUCIÓN: NO
-PI_SIGNATURE: PENDING
+NO_REABRE: EF-0--EF-8 salvo el falsificador finito acotado por esta nota
+EF4/C1: OUT_OF_SCOPE / INCONCLUSIVE ANTES DE LA EJECUCIÓN
+AUTORIZACIÓN_DE_EJECUCIÓN: SÍ — exclusivamente §§3–9 de esta nota
+PI_SIGNATURE: Ignacio
 ```
 
 ## 1. Motivo y dependencia previa
@@ -18,15 +18,16 @@ El estado remoto final de esa rama es `591cf536653d9502cb591f4e31d24200dbca1963`
 manuscrito exacto compilado e inspeccionado fue
 `265a9538d16171b0403fdd63a7e6f3a530d3878e`.
 
-Este borrador implementa únicamente el siguiente gate documental de
-`docs/hoja_de_ruta_agosto_2026.md`. No autoriza todavía código ni ejecución.
+Esta nota implementa únicamente el siguiente gate documental de
+`docs/hoja_de_ruta_agosto_2026.md`. La autorización del PI recibida el 2026-08-16 cruza ese gate
+sólo para el falsificador finito descrito aquí.
 
-La razón científica del test propuesto es estrecha: con `rho=2` cada escalera tiene un solo
+La razón científica del test autorizado es estrecha: con `rho=2` cada escalera tiene un solo
 punto y la contención parcial es estructuralmente imposible para todo `n`. Por tanto, aumentar
-`n` manteniendo `rho=2` no puede ejercitar la rama delicada de EF-4.3. C1 sigue
+`n` manteniendo `rho=2` no puede ejercitar la rama delicada de EF-4.3. C1 parte de
 `INCONCLUSIVE`.
 
-## 2. Pregunta que podría autorizarse
+## 2. Pregunta autorizada
 
 Falsar, o dejar no refutada dentro de un primer par informativo finito, la tricotomía de EF-4.3
 **sobre cadenas realizables bajo `F_n`** cuando existe al menos un caso compatible que muerde y
@@ -40,9 +41,9 @@ Este test no intenta:
 - promover ningún token científico de EF-4;
 - reabrir EF-0--EF-8 fuera de este falsificador finito.
 
-## 3. Perímetro propuesto — lista cerrada
+## 3. Perímetro autorizado — lista cerrada
 
-Si el PI firma una versión de esta nota, el perímetro será exclusivamente:
+El perímetro es exclusivamente:
 
 1. `rho in {3,4}`;
 2. para cada `rho`, sólo `n` par con
@@ -108,9 +109,9 @@ Si falla, terminal inmediato:
 POSITIVE_CONTROL_FAILED
 ```
 
-## 5. Artefactos propuestos
+## 5. Artefactos autorizados
 
-Una eventual firma autorizaría únicamente:
+La firma autoriza únicamente:
 
 - `dev/ef4_partial_staircase_search.py` — script determinista nuevo;
 - `dev/ef4_partial_staircase_search_result.txt` — salida verbatim y resumen de contadores;
@@ -119,7 +120,7 @@ Una eventual firma autorizaría únicamente:
 
 No se modifica ningún test sellado ni ningún fichero de manuscrito.
 
-## 6. Tope de cómputo propuesto
+## 6. Tope de cómputo firmado
 
 ```text
 COMPUTE_CAP_COMPATIBLE_BITING_CHAINS = 1000000
@@ -133,8 +134,7 @@ negativa ni positiva; produce únicamente:
 OPEN_AT_COMPUTE_CAP
 ```
 
-El PI puede cambiar este número **antes de firmar**. Una vez firmada la nota, no se cambia durante
-la ejecución.
+El número queda congelado por esta firma y no se cambia durante la ejecución.
 
 ## 7. Contadores mínimos por par
 
@@ -183,7 +183,7 @@ Lectura:
 
 ## 9. Prohibiciones expresas
 
-Incluso si una versión posterior recibe firma, quedan fuera salvo nueva nota:
+Aunque esta nota está firmada, quedan fuera salvo nueva nota:
 
 - modificar `tests/test_p1a_entropia_fibras_ef4.py` o cualquier test sellado;
 - usar semillas o aleatoriedad;
@@ -194,16 +194,13 @@ Incluso si una versión posterior recibe firma, quedan fuera salvo nueva nota:
 - sacar PR #4 de draft por efecto de este test;
 - interpretar el resultado como decisión de recuperabilidad normalizada.
 
-## 10. Firma — pendiente
-
-Este bloque está deliberadamente **sin firmar**. La existencia y el commit de este fichero no
-constituyen autorización de ejecución.
+## 10. Firma
 
 ```text
-AUTHORISED_BY_PI: PENDING
-DATE: PENDING
-AUTHORISED_SCOPE: PENDING
-COMPUTE_CAP_COMPATIBLE_BITING_CHAINS: 1000000 [PROPOSED]
-NOT_AUTHORISED: ejecución hasta que este bloque sea sustituido por firma explícita del PI
-OVERRIDING_NOTES: ninguna mientras permanezca DRAFT
+AUTHORISED_BY_PI: Ignacio
+DATE: 2026-08-16
+AUTHORISED_SCOPE: falsificador EF-4 de escalera parcial realizable definido en §§3–8; sólo artefactos de §5
+COMPUTE_CAP_COMPATIBLE_BITING_CHAINS: 1000000
+NOT_AUTHORISED: todo lo listado en §9; ninguna promoción científica automática
+OVERRIDING_NOTES: levanta NO_EXECUTION_AUTHORISED de docs/hoja_de_ruta_agosto_2026.md únicamente para este falsificador
 ```
