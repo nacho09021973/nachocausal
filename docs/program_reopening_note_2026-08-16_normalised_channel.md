@@ -1,14 +1,14 @@
-# Borrador de nota de reapertura acotada — `NC-0`, canal normalizado `sigma(M)`
+# Nota de reapertura acotada — `NC-0`, canal normalizado `sigma(M)`
 
 ```text
-ESTADO: DRAFT_READY_FOR_PI_DECISION / NOT_AUTHORISED
+ESTADO: FIRMADA — NC-0 AUTORIZADO / NOT_YET_EXECUTED
 FECHA: 2026-08-16
-AMPLIARIA: docs/program_reopening_note_2026-07-31.md
+AMPLIA: docs/program_reopening_note_2026-07-31.md
 NO_REVOCA: docs/program_closure_note_2026-07-30.md
 NO_REABRE: EF-0--EF-8, EF-4/C1 ni reconstruccion de horizonte
 SELLO: intacto — no se toca
 SEMILLAS: ninguna
-EJECUCION: NO AUTORIZADA MIENTRAS FALTE LA FIRMA DE §8
+EJECUCION: AUTORIZADA SOLO DENTRO DE LA LISTA CERRADA DE §4
 ```
 
 ## 1. Por qué hace falta una nota nueva
@@ -19,7 +19,7 @@ establece que el barrido a `rho` pequeño no informa sobre la sucesión formal y
 `Q_{2,n}->0`, aun si quedase demostrado, es un error absoluto que puede colapsar a
 la vez que la varianza total.
 
-El candidato `NC-0` no intenta reconstruir ni localizar un horizonte. Estudia un
+La línea acotada `NC-0` no intenta reconstruir ni localizar un horizonte. Estudia un
 límite de información del canal ya congelado `sigma(M)` en `fixed-n`, `d=2`, con
 el estimando lateral relativo existente. No introduce un selector, observable o
 target nuevo. La duración `ell` se usa únicamente para puntuar el canal, nunca para
@@ -41,7 +41,7 @@ T_n^h=
 \]
 
 La igualdad es el Lema 3 de
-`emergencia/P1a_count_volume_canal_sigma_m_d2.md`. La pregunta candidata es:
+`emergencia/P1a_count_volume_canal_sigma_m_d2.md`. La pregunta autorizada es:
 
 \[
 \text{¿vale }\liminf_{n\to\infty}T_n^h>0
@@ -78,7 +78,7 @@ El falsificador EF-4, sus familias prescritas y su cap no son evidencia para est
 pregunta. Los runs existentes deben revisarse antes de proponer datos, scripts o
 dependencias nuevas.
 
-## 4. Único trabajo que se autorizaría con la firma
+## 4. Único trabajo autorizado
 
 `NC-0` es un preflight documental y matemático, no un run científico. Orden
 obligatorio:
@@ -97,7 +97,7 @@ obligatorio:
    condición se cumple;
 6. emitir exactamente uno de los terminales de §5.
 
-**Superficie científica autorizable:** únicamente
+**Superficie científica autorizada:** únicamente
 `emergencia/P1a_count_volume_canal_sigma_m_d2.md`. La nota de reapertura solo puede
 actualizarse para registrar firma y terminal. No se crea código, tabla, figura ni
 artefacto nuevo.
@@ -149,16 +149,16 @@ denominador; bloqueo por selección; resultado ya existente; preparación para a
 4. una obligación analítica explícita o un bloqueo tipado;
 5. exactamente un terminal de §5 y ningún lenguaje más fuerte.
 
-## 8. Firma pendiente
+## 8. Firma
 
 ```text
-FIRMADA_POR: PENDIENTE
-FECHA: PENDIENTE
-DECISION_NC0: PENDIENTE
-AUTORISED_SCOPE_IF_SIGNED: lista cerrada de §4; un solo fichero científico
+FIRMADA_POR: Ignacio (PI)
+FECHA: 2026-08-16
+DECISION_NC0: AUTORIZADO
+AUTORISED_SCOPE: lista cerrada de §4; un solo fichero científico
 NOT_AUTHORISED: todo lo listado en §6; cualquier ataque posterior al preflight
 BRANCH: agent/close-ef4-open-normalised-channel
 ```
 
-Mientras este bloque siga pendiente, el documento es solo un contrato propuesto y
-`NC-0` permanece cerrado.
+La autorización queda activa en esta rama. `NC-0` está abierto exclusivamente para
+el preflight de §4; no se ha ejecutado todavía ninguna de sus obligaciones.
