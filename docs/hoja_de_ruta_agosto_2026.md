@@ -28,6 +28,28 @@ acción de la próxima sesión será revisar el estado y las obligaciones restan
 trabajo nuevo sobre escaleras exige una nota firmada separada; este handoff sólo deja preparado el
 contrato que esa nota podría autorizar.
 
+### Actualización 2026-08-16 — R1 cerrado; siguiente gate EF-4 sólo documental
+
+El handoff anterior queda resuelto antes de la fecha prevista. R1 superó su completion test en la
+rama autorizada `reopen/r1-r2-limits-writeup`.
+
+```text
+R1_STATUS: CLOSED / COMPLETION_TEST_PASSED_2026-08-16
+R1_REMOTE_HEAD: 591cf536653d9502cb591f4e31d24200dbca1963
+R1_COMPILED_SOURCE: 265a9538d16171b0403fdd63a7e6f3a530d3878e
+R2_PREFACTOR: OPEN / [UNVERIFIED]
+EF4/C1: OUT_OF_SCOPE / INCONCLUSIVE
+AUTORIZACIÓN_DE_EJECUCIÓN_EF4: NO
+NEXT_GATE: nota de alcance EF-4; firma del PI antes de cualquier código o ejecución
+```
+
+El siguiente acto previsto por esta hoja se ha materializado únicamente como **borrador no
+firmado** en
+[`docs/scope_note_2026-08-16_ef4_partial_staircase_search_DRAFT.md`](scope_note_2026-08-16_ef4_partial_staircase_search_DRAFT.md).
+Su existencia no reabre EF-0--EF-8 y no autoriza ejecutar la búsqueda. Hasta que el bloque de firma
+del borrador sea sustituido por autorización explícita del PI, el terminal operativo sigue siendo
+`NO_EXECUTION_AUTHORISED`.
+
 ### Estado endurecido de la evidencia finita
 
 Las escaleras tienen `rho-1` puntos. Por tanto, con `rho=2` la contención parcial es
