@@ -13,7 +13,7 @@ con el alcance y las reservas fijados por
 
 Esta remisión no autoriza ni valida ninguna afirmación matemática de la línea retirada.
 
-## Actualización 2026-08-16 — cierre del barrido EF-4 y candidato `NC-0`
+## Actualización 2026-08-16 — cierre del barrido EF-4 y apertura de `NC-0`
 
 La nota `docs/scope_note_2026-08-16_ef4_partial_staircase_search_DRAFT.md` fue
 firmada y ejecutada pese a conservar `_DRAFT` en el nombre histórico. Su terminal
@@ -30,19 +30,19 @@ En consecuencia, no hay un siguiente gate computacional de escaleras. C1 formal
 sigue `INCONCLUSIVE`; aumentar el cap, instrumentar histogramas o buscar un puente
 desde `rho` fijo no está autorizado ni científicamente motivado por ese run.
 
-La única continuación relacionada que puede someterse a decisión es `NC-0`, una
-auditoría documental y matemática del canal normalizado
-`T_n=1-rho_max^2`. Su contrato está preparado en
-`docs/program_reopening_note_2026-08-16_normalised_channel.md`, pero permanece sin
-firma y no autoriza todavía trabajo ni ejecución.
+La continuación relacionada `NC-0` queda autorizada por la firma del PI en
+`docs/program_reopening_note_2026-08-16_normalised_channel.md`. Su alcance es
+exclusivamente la auditoría documental y matemática del canal normalizado
+`T_n=1-rho_max^2` descrita en la lista cerrada de esa nota. Ninguna obligación de
+`NC-0` ha sido ejecutada todavía.
 
 ```text
 EF4_PARTIAL_STAIRCASE_RUN = CLOSED_NONPROBATIVE_FOR_FORMAL_SEQUENCE
 EF4_C1 = OUT_OF_SCOPE / INCONCLUSIVE
 EF4_NEXT_COMPUTE_GATE = NONE
-NORMALISED_CHANNEL_NC0 = DRAFT_READY_FOR_PI_DECISION
-NORMALISED_CHANNEL_EXECUTION_AUTHORISED = NO
-NEXT_GATE = PI_SIGNATURE_ON_NC0_OR_STOP
+NORMALISED_CHANNEL_NC0 = AUTHORISED / NOT_YET_EXECUTED
+NORMALISED_CHANNEL_EXECUTION_AUTHORISED = YES_WITHIN_SIGNED_SCOPE
+NEXT_GATE = NC0_ROUND4_AUDIT
 ```
 
 ## Handoff para 2026-08-17 — R1 primero; EF-4 sólo con nota nueva
