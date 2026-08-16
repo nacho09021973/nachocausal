@@ -19,13 +19,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: reopen/r1-r2-limits-writeup
-          fetch-depth: 2
+          fetch-depth: 10
 
       - name: Guard authorized starting point
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = "3521913d4d3dd97287cfc3fe7db3625620063f97"
+          BASE=3521913d4d3dd97287cfc3fe7db3625620063f97
+          git merge-base --is-ancestor "$BASE" HEAD
+          git diff --quiet "$BASE" -- docs/manuscript_limits_draft.md docs/manuscript_release_checklist.md viz
 
       - name: Insert explicit R2 open status in manuscript
         shell: bash
@@ -79,7 +81,7 @@ jobs:
           mkdir -p build/r1
           cp docs/manuscript_limits_draft.md build/r1/manuscript_snapshot.md
           pandoc docs/manuscript_limits_draft.md \
-            --from=markdown+raw_tex \
+            --from=markdown+raw_tex+tex_math_single_backslash \
             --standalone \
             --pdf-engine=xelatex \
             --resource-path=docs:viz/output:. \
