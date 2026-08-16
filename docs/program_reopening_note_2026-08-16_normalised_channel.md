@@ -103,7 +103,38 @@ obligatorio:
 4. inventariar los runs y artefactos existentes y declarar qué información falta;
 5. formular una condición matemática correcta de masa y separación, o una cota
    equivalente, que sería suficiente para `liminf T_n^h>0`, sin afirmar que dicha
-   condición se cumple;
+   condición se cumple. Si esa vía queda bloqueada, es admisible tipar en su lugar
+   una condición suficiente para el **objetivo de repliegue** `limsup T_n^h>0`.
+   El repliegue es legítimo porque `T_n^h>=0` y, por tanto, la negación de
+   `T_n^h->0` es exactamente `limsup T_n^h>0`: basta para la conclusión escrita en
+   §2 —ninguna función de `M` recupera `ell` con riesgo relativo tendente a cero—
+   aunque no acota la cola completa. Condiciones:
+   (a) el repliegue se registra explícitamente como tal, con su enunciado;
+   (b) `liminf T_n^h>0` sigue siendo el objetivo primario y el repliegue no lo
+       sustituye por defecto;
+   (c) ningún texto posterior podrá citar un resultado de `limsup` como si fuera de
+       `liminf`, ni como acotación uniforme de la cola.
+   **Criterio operativo de «no vacua».** Una condición suficiente `C` —para el
+   objetivo primario o para el repliegue— cuenta como obligación analítica no vacua
+   si y solo si cumple las cuatro cláusulas siguientes, y así se hace constar:
+   (i) *vocabulario independiente*: `C` se enuncia usando solo la ley conjunta de
+       `(ell, m)` en el estrato `(n,h,S)`, y no menciona `T_n^h`, `rho_max,n^h`,
+       `eta` ni ningún funcional definido a partir de ellos. Esta cláusula recae
+       sobre `C`, no sobre la implicación `C => liminf T_n^h>0`, que por fuerza los
+       menciona;
+   (ii) *satisfacibilidad*: existe al menos una ley admisible del modelo condicionado
+       que satisface `C`. Excluye `C` inalcanzable, que es suficiente por vacuidad
+       lógica;
+   (iii) *refutabilidad*: existe al menos una ley admisible que viola `C`. Si no
+       existe ninguna, `C` es un teorema del modelo y lo obtenido no es una
+       obligación sino una demostración: se declara como tal, se cita, y no se emite
+       este terminal;
+   (iv) *ancla finita*: `C` admite un análogo a `n` finito, aunque sea debilitado,
+       que es un funcional computable de los artefactos ya sellados. NC-0 no lo
+       evalúa —§6 lo prohíbe—; basta con exhibirlo. Que el análogo sea computable no
+       demuestra la versión asintótica y ningún texto podrá sugerirlo.
+   Si no se alcanza una `C` que cumpla las cuatro, el terminal correcto no es
+   `NC0_READY_FOR_ANALYTIC_ATTACK` sino el bloqueo tipado que corresponda en §5;
 6. emitir exactamente uno de los terminales de §5.
 
 **Superficie científica autorizada:** únicamente
@@ -116,8 +147,9 @@ artefacto nuevo.
 ```text
 NC0_READY_FOR_ANALYTIC_ATTACK
   La auditoría pasa; T_n^h y su denominador quedan bien definidos; se aísla una
-  obligación analítica no vacua. No demuestra el liminf y cualquier ataque posterior
-  requiere otra nota.
+  obligación analítica no vacua, sobre el objetivo primario liminf T_n^h>0 o sobre el
+  repliegue limsup T_n^h>0 de §4.5, indicando expresamente cuál de los dos. No
+  demuestra ninguno de ellos y cualquier ataque posterior requiere otra nota.
 
 NC0_BLOCKED_BY_AUDIT
   Aparece una incidencia material en la identidad, los datos sellados o su lectura.
@@ -164,7 +196,7 @@ denominador; bloqueo por selección; resultado ya existente; preparación para a
 FIRMADA_POR: Ignacio (PI)
 FECHA: 2026-08-16
 DECISION_NC0: AUTORIZADO
-AUTORISED_SCOPE: lista cerrada de §4; un solo fichero científico
+AUTHORISED_SCOPE: lista cerrada de §4; un solo fichero científico
 NOT_AUTHORISED: todo lo listado en §6; cualquier ataque posterior al preflight
 BRANCH: agent/close-ef4-open-normalised-channel
 ```
