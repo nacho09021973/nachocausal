@@ -1969,10 +1969,9 @@ isometry). Madsen [7] states explicitly that order alone is
 finite-order results.
 
 Three qualifications keep those results from being read as more than background
-here. First, **dimension**: Braun assumes \(d\ge 3\). Madsen states Theorem 4.18
-for general \(d\), although its proof explicitly calls the covariance term
-subdominant only for \(d>2\); the \(d=2\) bookkeeping therefore requires separate
-qualification. Second, **what Braun’s hypothesis consumes**: his Theorem 1.4
+here. First, **dimension**: Braun assumes \(d\ge 3\) (p.\ 2) and Madsen’s rate is
+optimised for \(d>2\) (Thm.\ 4.18), so neither covers the \(1{+}1\) setting of
+Theorem 3.1. Second, **what Braun’s hypothesis consumes**: his Theorem 1.4
 requires the laws of the adjacency matrices to agree *for every* \(k\in\mathbb{N}\),
 and the proof passes to the projective limit \(\nu_\infty\); it is a statement about
 the full order data at all cardinalities, not about any scalar summary or any single
@@ -1983,19 +1982,6 @@ finite-\(n\) risk statements such as Theorem 3.1; the two occupy different layer
 Braun’s sampling model does, however, coincide with the channel used here: he models
 \(\{X_1,\dots,X_k\}\) as “the random support of a PPP conditioned on \(k\) elements”
 (p.\ 4), i.e.\ fixed-cardinality conditioning.
-
-The comparison is most transparent as a ladder of information regimes. Conditioning on
-\(N=n\) removes the global volume--density calibration and leaves the exact dilation-null
-direction of Theorem 3.1. Holding the EF corners fixed supplies an external geometric ruler:
-alternatives at separation \(n^{-1/2}\) remain locally difficult in the sense of Theorem 3.8,
-whereas fixed alternatives separate and the ordering fraction estimates \(\tau\) at the matching
-rate by Theorem 3.9. Madsen occupies a richer regime in which two embeddings share a density
-calibration and satisfy F1--F3; there, high-density well-conditioned presentations are forced
-toward approximate isometry on their deep interiors. The common-density calibration prevents
-the global-dilation degeneracy present in the fixed-cardinality experiment. It is not the only
-substantive hypothesis: F2’s continuum-diamond volume control and F3’s longest-chain/proper-time
-correspondence are additional geometric inputs, and Madsen proves conditional uniqueness of
-admissible embeddings rather than an order-only estimator or a finite-\(n\) risk bound.
 
 Theorem 3.1 does not invent this slogan. It supplies an **exact finite-\(n\)**
 total-variation statement for Poisson sprinklings of Schwarzschild patches under

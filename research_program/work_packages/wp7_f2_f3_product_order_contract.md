@@ -1,9 +1,9 @@
 # WP7 — Contrato `F2 => F3` o contraejemplo en `d=2`
 
 ```text
-ESTADO: CONTRATO FORMAL v1.7 / P1--P4 PROBADAS / P5.2 PASS_WITH_SCOPE / EXTENSIÓN PROBADA PARA TODO d>=2 MÓDULO EL MISMO ALCANCE
-PENDIENTE LITERAL: CURVATURE_NORM_UNDEFINED + REGIONAL_SCOPE_NOT_LITERAL; O4 probado / O5 probado módulo el alcance de O3
-FECHA: 2026-08-11
+ESTADO: CONTRATO FORMAL v1.5 / P1--P4 PROBADAS / P5.2-O1--O5 CERRADAS / P5.2 PASS_WITH_SCOPE
+PENDIENTE LITERAL: CURVATURE_NORM_UNDEFINED + REGIONAL_SCOPE_NOT_LITERAL; O4--O5 cerradas
+FECHA: 2026-08-09
 RAMA: research/f2-f3-chain-distance
 NATURALEZA: combinatoria + bibliografía; cero simulación, cero semillas, sello intacto
 NO ABRE: order-number-scale-limits, localizadores de horizonte ni una línea Weyl
@@ -131,8 +131,7 @@ Sea `N_m=4^m`. Tome el conjunto de Hammersley en base dos
 \]
 
 donde `phi_2` es la inversa radical binaria. El Teorema 3.46 de
-Dick--Pillichshammer (p. impresa 100; p. 99 del PDF), especializado a `s=2`,
-`b_1=2`, da
+Dick--Pillichshammer, especializado a `s=2`, `b_1=2`, da
 
 \[
 N D_N^*(\mathsf H_N)\le \log_2N+4.
@@ -457,7 +456,7 @@ una versión de (P5.1-G), y un diamante testigo profundo. Ese era el bloqueo ant
 ## 5. P5.2 — Auditoría de de Sitter planar
 
 **Estado: P5_2_PASS_WITH_SCOPE / O1_PROVED / O2_PASS_WITH_NORM_SCOPE /
-O3_PASS_WITH_REGIONAL_SCOPE / O4_PROVED / O5_PROVED_MODULO_O3_SCOPE.**
+O3_PASS_WITH_REGIONAL_SCOPE / O4_PROVED / O5_PROVED.**
 
 La ampliación firmada en
 `docs/program_reopening_note_2026-08-09_P5_2.md` autoriza como candidato único
@@ -987,12 +986,10 @@ validez ni la uniformidad de O4.
 
 ### 5.5 O5 — Sustitución en F2 y violación de la desigualdad F3
 
-**Veredicto matemático: `O5_PROVED_MODULO_O3_SCOPE`. Terminal de P5.2:
+**Veredicto matemático: `O5_PROVED`. Terminal de P5.2:
 `P5_2_PASS_WITH_SCOPE`.** La sustitución cierra para cualquiera de las dos constantes de
 norma de O2. El sufijo no procede de O4--O5: conserva la convención de norma no definida
 en la fuente, tipada en O2, y la falta de una Def. 2.6 regional literal identificada en O3.
-En particular, O5 es una deducción completa una vez adoptado el alcance regional de O3,
-pero no debe etiquetarse `PROVED` sin ese módulo de alcance.
 
 Fije \(\varepsilon\in(0,c_*)\), \(\tau_0=\varepsilon\lambda\), y denote por
 \(C_2\) la constante dimensional de F3. Elija una amplitud fija
@@ -1112,14 +1109,13 @@ sucesión no acotada de densidades, con \(A,K_2,K_{\rm bg},K,\ell,c_*\) y
 | O2 — \(0<\lambda<\infty\) | `PASS_WITH_NORM_SCOPE` | §5.2; las dos normas dan constantes finitas |
 | O3 — región y testigo | `PASS_WITH_REGIONAL_SCOPE` | §5.3 |
 | O4 — volumen y traza uniforme | `PROVED` | (P5.2-15)--(P5.2-17) |
-| O5 — F2 final y fallo F3 | `PROVED_MODULO_O3_SCOPE` | (P5.2-19)--(P5.2-24), bajo la lectura regional de §5.3 |
+| O5 — F2 final y fallo F3 | `PROVED` | (P5.2-19)--(P5.2-24) |
 
 ```text
 P5_2_PASS_WITH_SCOPE
 MATHEMATICAL_O1_O5: CLOSED
 CURVATURE_NORM: UNDEFINED_IN_SOURCE / BOTH_STANDARD_READINGS_PASS
 REGIONAL_DEFINITION_2_6: NOT_LITERAL_IN_MADSEN_REMARK_5_4
-O5: PROVED_MODULO_O3_SCOPE
 WP7_LITERAL_TERMINAL: PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN
 ```
 
@@ -1129,47 +1125,6 @@ parada de la nota de ampliación, no se promueve el terminal literal a
 `COUNTEREXAMPLE_F1_F2_NOT_F3_D2`: esa promoción estaba reservada a `P5_2_PASS`, y la
 ambigüedad de norma de O2 junto con la omisión regional de la Remark 5.4 obligan al
 terminal `PASS_WITH_SCOPE`.
-
-### 5.6 Extensión a \(d=3,4\) y a toda dimensión fija \(d\ge2\)
-
-**Veredicto: `PROVED_FOR_EACH_FIXED_D_GE_2_MODULO_SOURCE_SCOPE`.** A petición expresa
-se levantó la parada dimensional de la versión anterior. La prueba completa, las fórmulas
-de volumen \(d=3,4\), la auditoría dirigida de precedentes y el comprobador simbólico
-están en
-[wp7_f2_f3_higher_dimensional_extension.md](wp7_f2_f3_higher_dimensional_extension.md).
-
-El mecanismo no usa el orden producto fuera de \(1+1\). En el parche planar de de Sitter
-de dimensión \(d\), para todo diamante del rango mesoscópico existe una constante fija
-\(\kappa_{d,\beta}>0\) tal que
-
-\[
-\operatorname{len}_g(\gamma_0\cap D)\le\tau(D)
-\le\kappa_{d,\beta}^{-1/d}\operatorname{Vol}_g(D)^{1/d}.
-\]
-
-Plantando
-
-\[
-k_\rho=\left\lceil A(m_d\rho)^{1/d}\tau_0\right\rceil
-\]
-
-puntos sobre \(\gamma_0\), el coste adicional normalizado de F2 es
-
-\[
-O\!\left((\log\mathcal N_\rho)^{2/d-3/2}\right)
-+O\!\left((\log\mathcal N_\rho)^{-3/2}\right)\longrightarrow0,
-\]
-
-mientras que la distancia de cadena normalizada adquiere el sesgo macroscópico
-\((A-1)\tau_0-o(1)\). Las tasas principales son
-\((\log\mathcal N_\rho)^{-5/6}\) en `2+1` y
-\((\log\mathcal N_\rho)^{-1}\) en `3+1`: la cadena plantada es más invisible para
-F2 que en `1+1`.
-
-No surge una reserva dimensional nueva. Se conservan exactamente
-`CURVATURE_NORM_UNDEFINED` y `REGIONAL_SCOPE_NOT_LITERAL`. La búsqueda bibliográfica
-dirigida no encontró un precedente que subsuma el certificado, pero continúa prohibida
-la prioridad absoluta.
 
 ## 6. Ruta positiva aparcada
 
@@ -1183,28 +1138,19 @@ que invalida (3.4); tal restricción deberá escribirse, no suponerse.
 | Fuente | Aporte permitido | Lo que no licencia |
 |---|---|---|
 | [N. Madsen, *On the Uniqueness of Embeddings of Causal Sets*](https://arxiv.org/html/2607.05840v1), arXiv:2607.05840v1 (2026), Defs. 2.2 y 2.6, Construction 2.3, Remark 4.7, Remark 5.4 y nota 1 | fija la clase globalmente hiperbólica, el auxiliar \(h_T\), la forma de \(\lambda\), F1--F3; para \(M\) no compacto restringe a \(C_K\) y reemplaza \(V_M\) por \(V_K\); declara abierta la dependencia lógica F1--F3 | no prueba F2=>F3, no evalúa \(\lambda\) para de Sitter planar, no define la norma exacta de \(\operatorname{Rm}[g]\) y no reescribe literalmente \((M,\partial M)\), la escala \(\lambda\) ni el dominio universal de diamantes como objetos regionales de \(K\) |
-| [O. Müller, *On the Hauptvermutung of Causal Set Theory*](https://arxiv.org/pdf/2503.01719), arXiv:2503.01719v2 (2025), Thm. 2 y discusión posterior, pp. 3--4 | **precursor causal negativo más cercano**: para todo \(K\) fijo, \(\varepsilon>0\) y \(D>0\), construye dos slabs de Cauchy de volumen uno y fronteras iguales, separados por \(d^->D\), cuyas leyes de órdenes sobre \(K\) muestras difieren en \(L^1\) menos que \(\varepsilon\); el mecanismo persiste bajo su “Planck-scale uniformness” por sí sola | no usa una sucesión \(\rho\to\infty\), una configuración y embedding concretos, la tolerancia F2 de Madsen ni una cadena que viole F3; sin una relación entre su \(s\), \(K\) y el volumen del diamante, ambas uniformidades son incomparables. Adjudicación: `CLOSEST_CAUSAL_NEGATIVE_PRECURSOR / DOES_NOT_SUBSUME` |
-| [J. Henson, *The causal set approach to quantum gravity*](https://arxiv.org/pdf/gr-qc/0601121), arXiv:gr-qc/0601121, §1.3, p. 3 (2006) | observa que cambiar un pequeño número de **relaciones causales** puede destruir la embebibilidad fiel; es un antecedente conceptual sobre la fragilidad del orden finito | no habla de añadir elementos, plantar una cadena, preservar F2 ni inflar explícitamente el tiempo propio; no es el mecanismo de WP7. No confundir con gr-qc/0601069 |
-| [M. Braun, *Spacetime reconstruction by order and number*](https://doi.org/10.1088/1361-6382/ae456c), *Class. Quantum Grav.* **43** (2026), 045015; arXiv:2507.01907, Thm. 1.4 | reconstrucción probabilística exacta desde las leyes de matrices de adyacencia para todo tamaño \(k\): “order + number = geometry”, bajo sus hipótesis y en dimensión \(d\ge3\) | no cubre \(d=2\), una garantía finita cuantitativa desde F2 ni una implicación hacia F3; sus cuantificadores y objeto de reconstrucción son distintos |
 | [A. N. Bernal y M. Sánchez, *Smoothness of time functions and the metric splitting of globally hyperbolic spacetimes*](https://arxiv.org/abs/gr-qc/0401112), *Commun. Math. Phys.* 257 (2005), 43--50 | garantiza tiempos de Cauchy suaves en el caso general y es la fuente primaria invocada por Madsen | no sustituye la verificación explícita de \(t\), \(T\) y \(h_T\) en P5.2-O1 |
 | [B. Bollobás y G. Brightwell, *The height of a random partial order: concentration of measure*](https://doi.org/10.1214/aoap/1177005586), AAP 2 (1992), 1009--1018 | concentración de altura en el modelo aleatorio de orden coordenado | no es una desigualdad determinista desde discrepancia |
 | [J. Baik, P. Deift y K. Johansson, *On the Distribution of the Length of the Longest Increasing Subsequence of Random Permutations*](https://arxiv.org/abs/math/9810105), JAMS 12 (1999), 1119--1178 | normalización `2 sqrt(n)` y fluctuaciones de LIS uniforme | no controla permutaciones adversariales con F2 |
 | [J. N. Cooper, *Quasirandom Permutations*](https://arxiv.org/abs/math/0211001), JCTA 106 (2004), 123--143 | vocabulario de discrepancia de intervalos/rectángulos y cuasialeatoriedad | `o(n)` y patrones fijos no controlan por sí solos la constante de LIS |
-| [J. Dick y F. Pillichshammer, *Digital Nets and Sequences*](https://web.maths.unsw.edu.au/~josefdick/preprints/DP_book_preprint.pdf), CUP (2010), Thm. 3.46, p. impresa 100 (p. 99 del PDF) | fondo determinista con `N D_N^*<=log_2 N+4` en `d=2` | no dice nada por sí solo sobre LIS |
+| [J. Dick y F. Pillichshammer, *Digital Nets and Sequences*](https://web.maths.unsw.edu.au/~josefdick/preprints/DP_book_preprint.pdf), CUP (2010), Thm. 3.46 | fondo determinista con `N D_N^*<=log_2 N+4` en `d=2` | no dice nada por sí solo sobre LIS |
 | [V. Dubach, *Locally uniform random permutations with large increasing subsequences*](https://arxiv.org/abs/2301.07658), *Combinatorial Theory* 3(3) (2023), arXiv v2 (2024) | densidades divergentes en un punto o a lo largo de la diagonal pueden producir LIS de orden `N^beta`, `beta>1/2`, salvo factores logarítmicos | una densidad fija no uniforme tiene sesgo rectangular `Theta(n)` y no satisface nuestra F2 respecto de Lebesgue |
 
 Anclas locales versionadas: `docs/bibliography_claims.md` §2.5bis y
 `emergencia/P1a_contrato_gate_altura_duracion_lex_d2.md` §§2, 5--6. El PDF
 `biblioteca/2607.05840v1.pdf`, citado en el historial del WP, no está versionado en este
 checkout; P5.2-O1 se contrastó por ello contra la versión primaria enlazada de arXiv.
-Müller debe aparecer prominentemente en cualquier presentación de WP7: ya publica el mensaje
-general de que orden finito más uniformidad de cuentas no controla necesariamente una distancia
-lorentziana fuerte. La formulación segura es que WP7 aísla una separación distinta y más específica,
-con F1--F3 y la tolerancia cuantitativa exacta de Madsen.
-
-Toda afirmación de prioridad **absoluta** queda prohibida. La auditoría independiente puede sostener
-la delimitación comparativa de `research_program/bibliography/wp7_f2_f3_primary_novelty_audit.md`,
-no expresiones como “el primer resultado” o “sin precedentes”.
+Toda afirmación de prioridad queda prohibida hasta una auditoría independiente de
+literatura.
 
 **Adjudicación de Dubach.** `DIRECT_PRECURSOR_OF_MECHANISM / DOES_NOT_SUBSUME`. Su objeto
 es una muestra iid de una densidad fija, absolutamente continua pero divergente. Si esa ley
@@ -1219,7 +1165,7 @@ Orden obligatorio, sin código ni datos:
 
 1. ~~nota de prueba P1--P4, con cada constante y término de borde~~ — cerrada en §3;
 2. ~~nota de transferencia P5 contra la Def. 2.6 exacta de Madsen~~ — P5.1 cerrada
-   condicionalmente; P5.2-O1--O4 cerradas y O5 `PROVED_MODULO_O3_SCOPE`; terminal
+   condicionalmente; P5.2-O1--O5 cerradas; terminal
    `P5_2_PASS_WITH_SCOPE` por las reservas de fuente tipadas en O2--O3;
 3. ledger bibliográfico de discrepancia local, permutaciones cuasialeatorias y LIS.
 
@@ -1227,8 +1173,6 @@ Terminales, en orden de precedencia:
 
 ```text
 COUNTEREXAMPLE_F1_F2_NOT_F3_D2        P1--P5 probadas
-COUNTEREXAMPLE_F1_F2_NOT_F3_ALL_D_GE_2_MODULO_SOURCE_SCOPE
-                                       §5.6 probada bajo el mismo alcance de O2--O3
 PRODUCT_ORDER_COUNTEREXAMPLE_PROVED_P5_OPEN
                                        P1--P4 probadas; P5 literal no cerrado
 PRODUCT_ORDER_COUNTEREXAMPLE_ONLY     P1--P4 probadas; P5 falla
@@ -1238,9 +1182,8 @@ REDUCTION_SCOPE_MISMATCH              la traducción 1+1 no representa F2/F3
 OPEN_AFTER_TWO_PROOF_ROUTES           ninguna rama cierra con obligaciones explícitas
 ```
 
-La parada dimensional de v1.6 fue levantada por instrucción expresa y se cerró en §5.6.
-Se mantiene la parada sobre simulación, búsqueda masiva de permutaciones,
-curvatura de Weyl y diseño de estimadores. Un bloqueo debe nombrar la primera obligación
+Parada dura: no se pasa a simulación, búsqueda masiva de permutaciones, dimensión mayor,
+curvatura de Weyl ni diseño de estimadores. Un bloqueo debe nombrar la primera obligación
 P1--P5 que falla y el enunciado residual que aún sería correcto.
 
 ## 9. Techo de afirmación
@@ -1256,21 +1199,5 @@ Tras P5.2 se permite afirmar:
 > precompacta; las dos normas estándar auditadas producen constantes finitas y la misma
 > conclusión.
 
-Además, §5.6 permite sustituir “\(1+1\)” por “cada dimensión fija \(d\ge2\)” bajo los
-mismos dos calificadores de fuente. En particular, `2+1` y `3+1` están demostradas, no
-presentadas como conjetura.
-
-Para el póster o cualquier resumen público, los dos calificadores deben figurar literalmente junto
-a “de Sitter planar”:
-
-```text
-CURVATURE_NORM_UNDEFINED / BOTH_STANDARD_READINGS_PASS
-REGIONAL_SCOPE_NOT_LITERAL / EXPLICIT_REGIONAL_READING_ADOPTED
-```
-
-En el mismo bloque debe citarse a Müller como
-`CLOSEST_CAUSAL_NEGATIVE_PRECURSOR / DOES_NOT_SUBSUME`; no se autoriza ningún claim de prioridad
-absoluta.
-
-No se afirma un contraejemplo sin esos calificadores de alcance, prioridad o novedad; tampoco se
-deduce unicidad de embedding ni una conclusión física general sobre reconstrucción métrica.
+No se afirma un contraejemplo sin esos calificadores de alcance, prioridad o novedad, extensión a
+`d>=3`, unicidad de embedding ni conclusión física sobre reconstrucción métrica general.
