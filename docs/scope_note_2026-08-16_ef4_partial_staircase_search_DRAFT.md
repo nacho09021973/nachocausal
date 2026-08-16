@@ -1,13 +1,13 @@
 # Nota de alcance firmada — EF-4, búsqueda de escalera parcial realizable
 
 ```text
-ESTADO: AUTHORISED / BOUNDED_EF4_PARTIAL_STAIRCASE_FALSIFIER
+ESTADO: AUTHORISED / EXECUTED / OPEN_AT_COMPUTE_CAP
 FECHA: 2026-08-16
 NO_SUSTITUYE: docs/program_closure_note_2026-07-30.md
 NO_SUSTITUYE: docs/program_reopening_note_2026-07-31.md
 NO_REABRE: EF-0--EF-8 salvo el falsificador finito acotado por esta nota
-EF4/C1: OUT_OF_SCOPE / INCONCLUSIVE ANTES DE LA EJECUCIÓN
-AUTORIZACIÓN_DE_EJECUCIÓN: SÍ — exclusivamente §§3–9 de esta nota
+EF4/C1: OUT_OF_SCOPE / INCONCLUSIVE
+AUTORIZACIÓN_DE_EJECUCIÓN: CONSUMIDA — ejecución registrada en §11
 PI_SIGNATURE: Ignacio
 ```
 
@@ -203,4 +203,70 @@ AUTHORISED_SCOPE: falsificador EF-4 de escalera parcial realizable definido en �
 COMPUTE_CAP_COMPATIBLE_BITING_CHAINS: 1000000
 NOT_AUTHORISED: todo lo listado en §9; ninguna promoción científica automática
 OVERRIDING_NOTES: levanta NO_EXECUTION_AUTHORISED de docs/hoja_de_ruta_agosto_2026.md únicamente para este falsificador
+```
+
+## 11. Registro de ejecución — 2026-08-16
+
+La ejecución autorizada terminó exactamente en el terminal precomprometido:
+
+```text
+TERMINAL: OPEN_AT_COMPUTE_CAP
+POSITIVE_CONTROL: PASS
+CONTROL_REGRESSION_24_2: PASS
+CUMULATIVE_COMPATIBLE_BITING_CHAINS: 1000000
+COMPATIBLE_FAILURES_OBSERVED: 0
+PARTIAL_STAIRCASE_CASES_OBSERVED: 0
+LAST_PAIR: (56,3)
+LAST_PAIR_EXHAUSTED: NO
+C1_AFTER_EXECUTION: INCONCLUSIVE
+```
+
+El control realizable reprodujo exactamente `40/40/0/0`. El control positivo reconoció una
+intersección estricta no vacía de una escalera sintética de dos puntos y rechazó los casos vacío y
+total. Ambos controles pasaron antes de la búsqueda científica.
+
+Pares agotados, en orden, y número de cadenas compatibles que muerden:
+
+```text
+(34,3) 40
+(36,3) 48
+(38,3) 658
+(40,3) 1358
+(42,3) 5008
+(44,3) 10394
+(44,4) 40
+(46,3) 20730
+(46,4) 56
+(48,3) 49189
+(48,4) 666
+(50,3) 81509
+(50,4) 1366
+(52,3) 176161
+(52,4) 5184
+(54,3) 261983
+(54,4) 10570
+```
+
+En todos esos pares: `PARTIAL_STAIRCASE_CASES=0` y `COMPATIBLE_FAILURES=0`, y todas las cadenas
+que requirieron los otros disyuntos fueron cubiertas por `fixed_inner` o `loss_case`.
+
+En `(56,3)` se procesaron `375040` cadenas compatibles que muerden, con
+`PARTIAL_STAIRCASE_CASES=0` y `COMPATIBLE_FAILURES=0`, antes de alcanzar exactamente el cap
+acumulado de `1000000`. El par **no fue agotado**. Por ello no se inspeccionó `(56,4)` y no se
+continúa a ningún parámetro posterior.
+
+Esto no demuestra C1, no descarta que exista una contención parcial o un contraejemplo después del
+punto de corte y no aporta un resultado sobre recuperabilidad normalizada. El único terminal
+válido es `OPEN_AT_COMPUTE_CAP`; C1 permanece `INCONCLUSIVE`.
+
+Artefactos y sellos de reproducción:
+
+```text
+SIGNED_SCOPE_COMMIT: 1f449a4bd94735bfc0a85c3bfed2acafd1a0caae
+SCRIPT_COMMIT: 83ea6664ecbe60706233ed512538ee8e6c7d3c38
+RESULT_COMMIT: e75e763c8fd27813f6eed94cdbe2ff24bab5d952
+SCRIPT_SHA256: 5d2e1764aedce2b5967982846180c725edac77b93598387538120591055eb4ff
+RESULT_SHA256: 212f9093225b62784ce27cb0d4ac3955d2f20d4b0c1db1d9d77980fd1d801d34
+REPEAT_EXECUTION_BYTE_IDENTICAL: YES
+SEEDS: NONE
 ```
