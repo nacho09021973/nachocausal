@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: ba8e0f66-5e67-49f8-a0fa-d7165b974d41
-  modified: 2026-08-16T09:17:58.623Z
+  modified: 2026-08-16T09:21:13.337Z
 ---
 
 Sustituye al marcador de pausa del 2026-07-19 (pausa → cierre → reapertura acotada).
@@ -74,9 +74,14 @@ vigentes son `EF4_CORRECTED_PRESCRIBED_FAMILY = SKETCH_PENDING_INDEPENDENT_AUDIT
 `GEOMETRIC_TRICHOTOMY_EF4_3_ABSTRACT_DOMAIN = REFUTED_AT_N24`,
 `GEOMETRIC_TRICHOTOMY_EF4_3_ON_F_N = NOT_REFUTED_AT_N24`. La degradación **sobrevive por el motivo
 procedimental** (orden vigente del comité 050, nunca levantada), no por el sustantivo. Ningún
-token sube. **Sigue abierto:** qué parte de EF-4 se prueba con casos reparados; si el patrón
-persiste para `n>24` (hay un cálculo en `n=30` con `COMPATIBLE_FAILURES=0` pero **`[UNVERIFIED]`**:
-no salió de script commiteado, y reproducirlo exige nota firmada por §4 de la nota de alcance).
+token sube. **Reserva clave (backed, `0f1db5e`):** las escaleras del test tienen `rho-1` puntos, así
+que a `rho=2` la **contención parcial es imposible para todo `n`** — y la contención parcial es lo
+que ejercita los topes de `loss_case`. Luego el `COMPATIBLE_FAILURES=0` de `n=24` no toca el núcleo
+del análisis de casos. Sumado a `n=12` vacuo, `n=30` (`rho=2`) y `n=34` (`rho=3`, 0 casos
+parciales), **la lógica de escaleras nunca se ha ejercitado**. Los datos de `n=30`/`n=34` están en
+`docs/backlog_hallazgos.md` como **`[UNVERIFIED]`** (no salieron de script commiteado). Siguiente
+paso propuesto y **no autorizado**: localizar el menor `(n,rho)` no vacuo con un caso compatible de
+contención parcial y barrer allí; exige nota firmada por §4 de la nota de alcance.
 `C-5` sigue en pie: PR #4 no sale de draft.
 
 **C6 cambió de estado — la nota vieja decía BLOCKED y ya no es cierto.** Entre 2026-07-21 y el
