@@ -13,6 +13,34 @@ con el alcance y las reservas fijados por
 
 Esta remisión no autoriza ni valida ninguna afirmación matemática de la línea retirada.
 
+## Actualización 2026-08-16 — cierre del barrido EF-4 y candidato `NC-0`
+
+La nota `docs/scope_note_2026-08-16_ef4_partial_staircase_search_DRAFT.md` fue
+firmada y ejecutada pese a conservar `_DRAFT` en el nombre histórico. Su terminal
+`OPEN_AT_COMPUTE_CAP` permanece intacto, pero la corrección de dominio de su §12 y
+la adjudicación de `docs/backlog_hallazgos.md` §12 establecen que el barrido recorrió
+`F_test(n,rho)` con `rho in {3,4}`, no la sucesión formal
+`rho_n=ceil((n^2 log n)^(1/3))`.
+
+En consecuencia, no hay un siguiente gate computacional de escaleras. C1 formal
+sigue `INCONCLUSIVE`; aumentar el cap, instrumentar histogramas o buscar un puente
+desde `rho` fijo no está autorizado ni científicamente motivado por ese run.
+
+La única continuación relacionada que puede someterse a decisión es `NC-0`, una
+auditoría documental y matemática del canal normalizado
+`T_n=1-rho_max^2`. Su contrato está preparado en
+`docs/program_reopening_note_2026-08-16_normalised_channel.md`, pero permanece sin
+firma y no autoriza todavía trabajo ni ejecución.
+
+```text
+EF4_PARTIAL_STAIRCASE_RUN = CLOSED_NONPROBATIVE_FOR_FORMAL_SEQUENCE
+EF4_C1 = OUT_OF_SCOPE / INCONCLUSIVE
+EF4_NEXT_COMPUTE_GATE = NONE
+NORMALISED_CHANNEL_NC0 = DRAFT_READY_FOR_PI_DECISION
+NORMALISED_CHANNEL_EXECUTION_AUTHORISED = NO
+NEXT_GATE = PI_SIGNATURE_ON_NC0_OR_STOP
+```
+
 ## Handoff para 2026-08-17 — R1 primero; EF-4 sólo con nota nueva
 
 ```text
