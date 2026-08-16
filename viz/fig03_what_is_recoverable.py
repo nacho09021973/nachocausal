@@ -1,20 +1,20 @@
-"""Figure 5 — What the order DOES recover: position relative to the horizon.
+"""Figure 3 — A scale-free order statistic in a co-scaled patch family.
 
-This is the obligatory partner of Figure 2, and together they state the whole paper:
+This is the obligatory partner of Figure 2.  The pair illustrates a distinction:
 
-    Figure 2:  the order does NOT see  r_s        (absolute scale)
-    Figure 5:  the order DOES see      r / r_s    (relative position)
+    Figure 2:  absolute scale is invisible along the exact co-scaling orbit;
+    Figure 3:  a simple statistic can vary with dimensionless patch placement
+               in this specified family.
 
-The statistic is the simplest one there is: the **fraction of comparable pairs**.
-Count how many pairs of elements are related and divide by the total.  No thresholds,
-no fitting, no coordinates.
+The plotted statistic is the **fraction of comparable pairs**: count how many pairs
+of elements are related and divide by the total.  The simulation uses coordinates to
+define and sweep the patch family, but the statistic itself uses only the order.
 
-Panel A: the fraction drops sharply as the patch is moved towards the horizon — the
-cones narrow, and the order notices.
-Panel B: the same curve computed at `r_s = 1` and at `r_s = 7`, with **independent**
-sprinklings, falls on top of itself.  Multiplying the mass by seven does not move the
-curve at all: the statistic depends on `r/r_s` and on nothing else.  That is
-Theorem 3.1 seen from the other side.
+Panel A shows an empirical change as the dimensionless patch position varies.  Panel
+B repeats the sweep at `r_s = 1` and `r_s = 7`, using **independent** sprinklings;
+the overlap is consistent with the exact co-scaling law.  The figure does not prove
+that the statistic identifies `r/r_s`, that the response is injective outside the
+plotted family, or that a horizon has been localized.
 """
 
 from __future__ import annotations
@@ -63,15 +63,16 @@ def draw(out):
     axA.fill_between(XS, m1 - s1, m1 + s1, color=BLUE, alpha=0.18)
     axA.plot(XS, m1, "o-", color=BLUE, lw=2.0, ms=6)
     axA.axvline(1.0, color="#111111", lw=2.0)
-    axA.text(1.0, axA.get_ylim()[0], "  horizon", ha="left", va="bottom",
+    axA.text(1.0, axA.get_ylim()[0], "  inner reference  $r/r_s=1$", ha="left", va="bottom",
              fontsize=9, color="#111111", rotation=90)
     axA.set_xscale("log")
     axA.set_xticks([1, 2, 3, 5, 9])
     axA.set_xticklabels(["1", "2", "3", "5", "9"])
     axA.set_xlabel("patch position  $r/r_s$   (dimensionless)")
     axA.set_ylabel("fraction of comparable pairs")
-    axA.set_title("A · the order notices the horizon", loc="left", pad=10)
-    axA.annotate("near the horizon the cones narrow:\nfewer causal pairs",
+    axA.set_title("A · comparable fraction varies with dimensionless patch placement",
+                  loc="left", pad=10)
+    axA.annotate("towards the inner edge the causal cones narrow:\nfewer comparable pairs",
                  xy=(1.15, m1[1]), xytext=(2.1, m1[0] + 0.02), fontsize=9.5, color=GREY,
                  ha="left", va="bottom",
                  arrowprops=dict(arrowstyle="->", color=GREY, lw=1.2,
@@ -87,17 +88,18 @@ def draw(out):
     axB.set_xticklabels(["1", "2", "3", "5", "9"])
     axB.set_xlabel("patch position  $r/r_s$")
     axB.set_ylabel("fraction of comparable pairs")
-    axB.set_title("B · multiplying the mass by seven does not move the curve",
+    axB.set_title("B · co-scaling leaves the ensemble curve unchanged",
                   loc="left", pad=10)
     axB.legend(loc="lower right", fontsize=9.5)
     axB.text(0.03, 0.95,
              f"largest discrepancy: {gap:.3f}\n(typical sd ≈ {s1.mean():.3f})",
              transform=axB.transAxes, ha="left", va="top", fontsize=9.5, color=GREY)
 
-    fig.suptitle("The order reads distance to the horizon in units of the horizon — never in metres",
+    fig.suptitle("A scale-free order statistic responds to dimensionless patch placement",
                  fontsize=13.0, y=0.99)
     fig.text(0.5, 0.005,
-             "Partner of Figure 2: there, $r_s$ was invisible; here, $r/r_s$ is not.",
+             "Partner of Figure 2: absolute scale is invisible; this specified family "
+             "retains scale-free shape dependence.",
              ha="center", fontsize=10.5)
     fig.tight_layout(rect=(0, 0.04, 1, 0.93))
     fig.savefig(out)
@@ -106,7 +108,7 @@ def draw(out):
 
 
 if __name__ == "__main__":
-    target = pathlib.Path(__file__).parent / "output" / "fig05_what_is_recoverable.png"
+    target = pathlib.Path(__file__).parent / "output" / "fig03_what_is_recoverable.png"
     target.parent.mkdir(exist_ok=True)
     path, gap, sd = draw(target)
     print(f"written {path}")

@@ -1,12 +1,12 @@
-"""Figure 3 — What happens outside the patch is not in the patch (Theorem 3.2).
+"""Figure 4 — A finite order-theoretic analogy for Theorem 3.2.
 
 An element `e` is maximal in the observed patch.  Is it *really* maximal, or is there
 something above it that we simply have not seen?  **The patch does not know and
-cannot know**, and that is why the global event horizon — a teleological notion,
-depending on the entire future — is not a functional of a finite patch.
+cannot know.**  This is a toy analogy for the completion dependence in Theorem 3.2,
+not a literal representation of an event horizon.
 
-The construction is exact and physically realisable, not a cartoon: both added
-elements are legitimate sprinkled points of the same model in a later time band.  One
+Within the plotted model the construction is exact: both added elements are
+legitimate sprinkled points in a later time band.  One
 falls in the causal future of `e`, the other is spacelike to `e`.  The induced
 subposet on the patch is **identical** in both cases, and the script verifies this
 before drawing.
@@ -144,8 +144,8 @@ def draw(out):
              "Only the purple point changes, and it lies outside what was observed.",
              ha="center", fontsize=10, color=GREY)
     fig.text(0.5, 0.005,
-             "Theorem 3.2: the global event horizon is not measurable with respect to the data "
-             "of a finite patch.",
+             "Toy analogy for Theorem 3.2: identical patch data do not determine a "
+             "global property of the completion.",
              ha="center", fontsize=11)
     fig.tight_layout(rect=(0, 0.075, 1, 0.94))
     fig.savefig(out)
@@ -154,6 +154,6 @@ def draw(out):
 
 
 if __name__ == "__main__":
-    target = pathlib.Path(__file__).parent / "output" / "fig03_teleology.png"
+    target = pathlib.Path(__file__).parent / "output" / "fig04_teleology.png"
     target.parent.mkdir(exist_ok=True)
     print("written", draw(target))

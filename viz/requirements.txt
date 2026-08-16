@@ -1,0 +1,5 @@
+# Numerical environment used to regenerate the manuscript figures.
+# PNG bytes can still vary across operating-system font/FreeType builds.
+numpy==1.26.4
+scipy==1.17.1
+matplotlib==3.11.1
