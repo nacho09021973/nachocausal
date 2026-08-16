@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: ba8e0f66-5e67-49f8-a0fa-d7165b974d41
-  modified: 2026-08-01T08:35:43.275Z
+  modified: 2026-08-16T08:52:42.389Z
 ---
 
 Sustituye al marcador de pausa del 2026-07-19 (pausa → cierre → reapertura acotada).
@@ -50,6 +50,18 @@ numérica ya existe. El PI declaró esa tensión en la propia nota en vez de dis
 - Cifras publicadas (`V ≈ 1.4717`, `I ≈ 5.415e-4`, `κ ≈ 7.97e-4`, `δ_τ/ℓ ≈ 35.4`) deben ser salida
   literal de `wp4_kappa_numeric_reference.py` re-ejecutado, con error de cuadratura declarado y no
   presentado como exacto — ver [[numbers-must-come-from-committed-script]].
+
+**Actualización 2026-08-16 (rama `research/f2-f3-chain-distance`).** R2 cerrado como **abierto**:
+exponente derivado y cross-checked, **prefactor `OPEN / [UNVERIFIED]`**; caja vencida el
+2026-08-14, pasa a R1 (commit `44b0d75`, ítem C-3 del foro-001). Nueva nota firmada
+`docs/scope_note_2026-08-16_foro001_falsification_test.md` que levanta la prohibición de ampliar
+`n` **sólo** para el test `FORO001-F1` (el `R-1` del foro-001; ojo con la colisión de nombres
+`R-1` vs `R1`). Ejecutado (`7b5deec`): **la tricotomía de EF-4.3 queda REFUTADA en `n=24`** —
+560 de 112.911.876 tuplas falsifican los tres disyuntos; `C1` del foro-001 pasa de `INCONCLUSIVE`
+a `REFUTED`. El test sellado `tests/test_p1a_entropia_fibras_ef4.py` no se tocó y sigue pasando
+(su `n=12` es vacuo, 245025/245025). **Pendiente de firma del PI:** `C-1` (degradar tokens
+`EF4_CORRECTED_PRESCRIBED_FAMILY` / `EF4_Q2_ASYMPTOTIC`) y delimitar qué parte de EF-4 sobrevive.
+`C-5` sigue en pie: PR #4 no sale de draft.
 
 **C6 cambió de estado — la nota vieja decía BLOCKED y ya no es cierto.** Entre 2026-07-21 y el
 cierre, C6 se cerró y se promovió a **teorema de manuscrito** (`141cccc` cierra el resto uniforme,
