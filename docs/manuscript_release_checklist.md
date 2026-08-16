@@ -1,8 +1,8 @@
 # Manuscript release checklist
 
-Status date: 2026-08-07
+Status date: 2026-08-16
 
-Code-and-manuscript commit tested: `ab038a88836083276f17406e2537463189e79967`
+Code-and-manuscript commit tested by the 2026-08-07 release gate: `ab038a88836083276f17406e2537463189e79967`
 
 This checklist separates the scientific gate for taking the manuscript PR out of
 draft from the administrative work needed for an eventual arXiv submission.
@@ -25,16 +25,59 @@ draft from the administrative work needed for an eventual arXiv submission.
   - Result:
     `6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4`.
 
-The only scientific/technical blocker among the three exit items is therefore
-closed. This checklist is documentation-only and does not modify the tested
-code, fixture, estimator, or seal.
+The scientific/technical blocker tracked by the 2026-08-07 gate is closed. This
+checklist is documentation-only and does not modify the tested code, fixture,
+estimator, or seal.
+
+## R1 reopening gate — 2026-08-16
+
+This section implements the completion test in
+`docs/program_reopening_note_2026-07-31.md` for R1. It does not reopen EF-0--EF-8
+and does not promote any R2 result.
+
+- [x] **Return the reviewed manuscript to the authorized R1 branch without importing
+  the later research history wholesale.**
+  - R1 branch: `reopen/r1-r2-limits-writeup`.
+  - Integration commit: `f26b8d75c69826b95173452515e9474079b4d14b`.
+  - The commit contains only `docs/manuscript_limits_draft.md`, this checklist, and
+    the manuscript `viz/` suite. No EF, C1, forum, August-roadmap, or new-test path
+    is imported by that commit.
+- [x] **Priority wording remains bounded.**
+  - The reviewed manuscript explicitly disclaims novelty for textbook statistical
+    machinery and avoids absolute priority language.
+- [x] **Recheck the deterministic WP4 numerical reference used by the R1 contract.**
+  - Committed reference implementation:
+    `research_program/work_packages/wp4_kappa_numeric_reference.py`.
+  - Re-execution of the committed calculation for the moderate reference diamond
+    gives
+    `V = 1.4717204319`,
+    `I = 5.4152614727e-4`,
+    `V*I = 7.9697509534e-4`, and
+    `delta_tau/ell = 35.42237079`.
+  - The small-patch log-log fits reproduce exponents `5.91684` (all points) and
+    `5.98794` (smallest four). These are deterministic quadrature/discretization
+    outputs, not exact values or certified error enclosures.
+- [ ] **Make R2's unresolved part explicit in the manuscript itself.**
+  - Current scientific state to state, without promotion:
+    exponent `lambda^6` derived and numerically cross-checked within its documented
+    shrinking-family scope; prefactor `OPEN / [UNVERIFIED]`.
+  - R2's expired time box is not a scientific verdict and must not be presented as
+    `FAILED` or `PROVED`.
+- [ ] **Compile the exact current R1 manuscript to a self-contained PDF and inspect
+  it.**
+  - The compilation must use the current R1 commit, embed all six figures, and
+    leave no repository-internal reference that an external reader must resolve in
+    order to understand a claim.
+
+Until the last two boxes are closed, R1 remains open. Neither box authorizes new
+scientific calculations, new estimators, EF-4 work, or a change to the frozen seal.
 
 ## PR state
 
 - [x] Scientific gate required before changing the manuscript PR from draft to
-  ready: satisfied.
+  ready: satisfied under the 2026-08-07 gate.
 - [ ] Change the PR state only as an explicit maintainer action after the final
-  diff and remote commit are checked.
+  R1 diff and remote commit are checked.
 
 ## arXiv preparation (editorial, non-blocking for the PR)
 
