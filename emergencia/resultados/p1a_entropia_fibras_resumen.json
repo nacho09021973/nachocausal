@@ -1,0 +1,180 @@
+{
+  "artifacts": {
+    "p1a_entropia_fibras_c_exacta_d2.csv": {
+      "sha256": "1f3c55582690d6bbb32f6a4e0849c51d1599c99033ab9ab9ea7d30ea9e927dd1"
+    },
+    "p1a_entropia_fibras_estados_exactos_d2.csv": {
+      "sha256": "ce589a5eeaa6fa1606df6064c53255efc8c3c80f52cb166dee6b71aaee175293"
+    },
+    "p1a_entropia_fibras_omega_exacta_d2.csv": {
+      "sha256": "03624db88f582c2180b6064deda199fd6735651c8a21d9a8a79c2b3c5b988858"
+    }
+  },
+  "by_n": [
+    {
+      "c_rows": 2,
+      "independent_crosschecks": 720,
+      "legacy_coverage_counts": {
+        "EMPTY": 719,
+        "TIE": 0,
+        "UNIQUE": 1
+      },
+      "n": 6,
+      "omega_rows": 2,
+      "permutations": 720,
+      "reachable_m": [
+        3
+      ],
+      "reachable_r": [
+        4
+      ],
+      "state_counts": {
+        "EMPTY": 719,
+        "TIE": 0,
+        "UNIQUE": 1
+      },
+      "unique_side_records": 2
+    },
+    {
+      "c_rows": 6,
+      "independent_crosschecks": 5040,
+      "legacy_coverage_counts": {
+        "EMPTY": 5003,
+        "TIE": 5,
+        "UNIQUE": 32
+      },
+      "n": 7,
+      "omega_rows": 8,
+      "permutations": 5040,
+      "reachable_m": [
+        3,
+        4
+      ],
+      "reachable_r": [
+        4,
+        6,
+        9
+      ],
+      "state_counts": {
+        "EMPTY": 5003,
+        "TIE": 5,
+        "UNIQUE": 32
+      },
+      "unique_side_records": 64
+    },
+    {
+      "c_rows": 14,
+      "independent_crosschecks": 0,
+      "legacy_coverage_counts": {
+        "EMPTY": 39429,
+        "TIE": 217,
+        "UNIQUE": 674
+      },
+      "n": 8,
+      "omega_rows": 20,
+      "permutations": 40320,
+      "reachable_m": [
+        3,
+        4,
+        5
+      ],
+      "reachable_r": [
+        4,
+        6,
+        8,
+        9,
+        12,
+        16
+      ],
+      "state_counts": {
+        "EMPTY": 39429,
+        "TIE": 214,
+        "UNIQUE": 677
+      },
+      "unique_side_records": 1354
+    },
+    {
+      "c_rows": 26,
+      "independent_crosschecks": 0,
+      "legacy_coverage_counts": {
+        "EMPTY": 344837,
+        "TIE": 5967,
+        "UNIQUE": 12076
+      },
+      "n": 9,
+      "omega_rows": 40,
+      "permutations": 362880,
+      "reachable_m": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "reachable_r": [
+        4,
+        6,
+        8,
+        9,
+        10,
+        12,
+        15,
+        16,
+        20,
+        25
+      ],
+      "state_counts": {
+        "EMPTY": 344837,
+        "TIE": 5823,
+        "UNIQUE": 12220
+      },
+      "unique_side_records": 24440
+    }
+  ],
+  "claim_ceiling": "EXACT_N_6_TO_9_ONLY_NO_ASYMPTOTIC_INFERENCE",
+  "contract_status": "EF0_EF1_FIXED_BEFORE_ENUMERATION",
+  "environment": {
+    "generator_sha256": "e1e87c9ef2d15bb885b3b25383186243f53f529ec4571b93bf70714d27a7a2b1",
+    "numpy": "1.26.4",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "exact_n": [
+    6,
+    7,
+    8,
+    9
+  ],
+  "gauss_kuzmin": "NOT_USED",
+  "independent_crosscheck_n": [
+    6,
+    7
+  ],
+  "legacy_control": {
+    "artifact": "emergencia/resultados/p1a_enumeracion_exacta_d2.csv",
+    "comparison": "EMPTY_UNIQUE_TIE_AFTER_COLLAPSING_FROZEN_TIE_SUBTYPES",
+    "pass": true,
+    "selector": "COVERAGE",
+    "sha256": "650ce526e1e88626ce41d8e9925d5b19fbb94c143c63714c0e51ebd9fcafd224"
+  },
+  "monte_carlo": "NOT_RUN",
+  "recorded_fields": [
+    "M",
+    "K",
+    "L",
+    "r=KL"
+  ],
+  "sample_space": "uniform_permutations_conditioned_on_N_equals_n",
+  "schema_version": "p1a_entropia_fibras_ef2_v1",
+  "selector": "MIN_COVERAGE_LEX",
+  "terminal": "EXACT_SMALL_N_FIBER_TABLES_VALIDATED",
+  "validations": {
+    "ef1_support_envelope": true,
+    "factorial_totals": true,
+    "independent_implementation": true,
+    "legacy_state_reproduction": true,
+    "omega_past_future_symmetry": true,
+    "omega_to_c_aggregation": true,
+    "omega_uv_symmetry": true,
+    "state_partitions": true
+  }
+}
