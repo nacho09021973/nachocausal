@@ -1857,3 +1857,92 @@ PROGRAM_CLOSURE: no revocado
 P5_2_AND_WP7: preservados; no modificados
 SEAL_AND_RESERVED_SEEDS: intactos
 ```
+
+## 12. Adjudicación genealógica de EF-4 y cierre del barrido finito — 2026-08-16
+
+Esta sección prevalece sobre cualquier lectura de EF-4 que trate el barrido de
+`rho in {2,3,4}` como aproximación finita a la sucesión formal. No reescribe el
+registro de ejecución ni cuestiona sus contadores; adjudica únicamente la relación
+entre el objeto calculado y el objeto asintótico.
+
+### 12.1 Una misma plantilla, tres curvas distintas
+
+Sea `F(n,rho)` la familia de permutaciones pares definida por la prescripción
+
+\[
+\begin{aligned}
+&\pi(1)=1,\quad \pi(s)=s,\quad \pi(s+1)=s+1,\quad \pi(n)=n,\\
+&\pi(s-\rho+j)=\lfloor n/4\rfloor+j,&&j=1,\ldots,\rho-1,\\
+&\pi(s+1+j)=\lfloor3n/4\rfloor+j,&&j=1,\ldots,\rho-1,
+\end{aligned}
+\]
+
+con `n=2s`. La Def. 13.1 de
+`emergencia/P1a_puerta_teorica_en_Minkowski.md` y EF4.2 usan exactamente esta
+misma plantilla. Difieren en la curva elegida en el plano `(n,rho)`:
+
+- ruta B de §13: `F_B(n)=F(n,rho_B(n))`, con
+  `rho_B(n)=floor(C*(L*log(n)/n)^(1/3)*(n-1))`;
+- EF-4: `F_n=F(n,rho_n)`, con
+  `rho_n=ceil((n^2*log(n))^(1/3))`;
+- falsificador finito: `F_test(n,rho)=F(n,rho)` con `rho` fijado manualmente en
+  `{2,3,4}`.
+
+Por tanto, `F_n` desciende documental y algebraicamente del mecanismo plantado
+`F_B`: es la misma prescripción discreta reparametrizada, con las reparaciones de
+banda, margen y paridad escritas en EF-4. No es, sin embargo, la misma sucesión
+literal término a término, y las reparaciones impiden transferir mecánicamente
+todos los flags de §13 sin una auditoría de dependencias.
+
+### 12.2 El barrido no toca la sucesión formal
+
+Los valores formales relevantes son:
+
+| `n` | `rho_n` formal | `rho` ensayado |
+|---:|---:|---:|
+| 24 | 13 | 2 |
+| 34 | 16 | 3 |
+| 44 | 20 | 3/4 |
+| 54 | 23 | 3/4 |
+| 56 | 24 | 3 |
+
+La condición de buena formación implementada por
+`emergencia/p1a_entropia_fibras_ef4.py` es `rho<n//4`. La primera pareja par que
+la satisface es `(396,98)`; `(398,99)` vuelve a fallar y la condición queda
+estable desde `n=400`. Ninguna pareja agotada o parcialmente recorrida por el
+falsificador pertenece a `rho=rho_n`.
+
+Subir `n` manteniendo `rho` en `{3,4}` no aproxima la sucesión formal: mantiene el
+cálculo en una familia bidimensional auxiliar mientras `rho_n` crece como
+`n^(2/3)(log n)^(1/3)`. La cobertura estática declarada en
+`docs/scope_note_2026-08-16_ef4_partial_staircase_search_DRAFT.md` §12 se refiere
+solo a `F_test(n,rho)` y al prefijo recorrido hasta el cap. Esta adjudicación no
+re-audita de forma independiente el enumerador.
+
+### 12.3 Consecuencia para C1 y para el puente
+
+El millón de cadenas no aporta evidencia positiva ni negativa sobre la C1 formal.
+Un lema que transfiriese ausencia de contraejemplo desde pares finitos fuera de la
+curva hasta `rho=rho_n` tendría que controlar uniformemente el cambio en `rho` y el
+límite en `n`; esa pieza no está en el repositorio y no es una consecuencia del
+cómputo. No se abre como próximo paso.
+
+La relación con §13 no convierte todo EF-0--EF-8 en duplicado: EF-3, la transferencia
+par-impar y otros resultados conservan contenido propio. Sí impide presentar el
+certificado plantado de EF-4 como un linaje independiente de la ruta B. Permanecen
+vigentes la degradación ordenada por el comité 050 y la ausencia de auditoría
+matemática independiente.
+
+```text
+EF4_FAMILY_GENEALOGY = SECTION13_F_B_SCHEMA_REPARAMETERIZED_AND_REPAIRED
+SMALL_RHO_SWEEP_FORMAL_RELEVANCE = NONE
+PARTIAL_STAIRCASE_SEARCH = CLOSED_NONPROBATIVE_FOR_FORMAL_SEQUENCE
+C1_FORMAL = INCONCLUSIVE
+ENUMERATOR_COVERAGE_IN_THIS_ADJUDICATION = NOT_REAUDITED
+NO_FURTHER_EF4_COMPUTE_AUTHORISED = YES
+MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED = NO_TWO_BREAKS_CONFIRMED_BY_COMITE_050
+```
+
+El único objeto relacionado que conserva contenido físico es el canal normalizado
+`T_n=1-rho_max^2`, ya identificado en §13.16. Su eventual apertura requiere una
+nota separada: no hereda autorización de EF-4 ni de este cierre.
