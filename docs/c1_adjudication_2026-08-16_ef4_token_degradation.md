@@ -1,5 +1,12 @@
 # Adjudicación de C-1 (foro-001) — degradación de los tokens de EF-4
 
+> **CORREGIDA EN PARTE — 2026-08-16, mismo día**, por
+> `docs/c1_correction_2026-08-16_realizability.md`. El **motivo sustantivo** de §1.2 —la
+> refutación de la tricotomía en `n=24`— **se retira**: los contraejemplos no son realizables bajo
+> `F_n`. El **motivo procedimental** de §1.1 (la orden vigente del comité 050) **se mantiene
+> intacto**, y con él la degradación de `EF4_CORRECTED_PRESCRIBED_FAMILY` fuera de `PROVED`.
+> Los valores de token vigentes son los de la corrección §3, no los de §2 de este documento.
+
 ```text
 ESTADO: C1_ADJUDICATED / TOKENS_DEGRADED
 FECHA: 2026-08-16

@@ -49,6 +49,12 @@ Dos objetos distintos han venido compartiendo etiqueta. En este repositorio, a p
 
 ## 5. Predicado de decisión, precomprometido antes de ejecutar
 
+> **El predicado de esta sección resultó estar sobre el dominio equivocado.** Se conserva
+> verbatim como registro de lo que se firmó. Cuantifica sobre cuádruplas **abstractas**, cuando el
+> certificado sólo debe cubrir cadenas realizables bajo `F_n`. Ver
+> `docs/c1_correction_2026-08-16_realizability.md` §6. Precomprometer un predicado no lo hace
+> correcto.
+
 Sobre las `C(24,4)^2 = 112.911.876` tuplas:
 
 - Si **alguna** tupla falla los tres disyuntos (`fixed_inner`, `small_product`, `loss_case`)

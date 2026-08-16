@@ -29,11 +29,13 @@ Se conserva arriba tal como se escribió. Lo que ha cambiado desde entonces, por
 - **C-3 adjudicado**: R2 marcado abierto y pasado a R1 (`44b0d75`).
 - **El test `n=24` se ejecutó**, bajo nota firmada
   `docs/scope_note_2026-08-16_foro001_falsification_test.md`, que levanta la prohibición de
-  ampliar `n` **sólo** para ese test. Resultado: **la tricotomía de EF-4.3 queda refutada en
-  `n=24`** — ver `dev/EF4_TRICHOTOMY_N24_RESULT.md`.
-- **C-1 adjudicado** en consecuencia:
-  `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md`. **Los tokens del documento
-  trasladado que aparecen más abajo están degradados por esa nota**; siguen aquí como registro
+  ampliar `n` **sólo** para ese test. Resultado: la tricotomía de EF-4.3 es falsa **en el dominio
+  abstracto** en `n=24`, pero **ninguno de los 560 contraejemplos es realizable bajo `F_n`** — ver
+  `dev/EF4_TRICHOTOMY_N24_RESULT.md` y su corrección
+  `docs/c1_correction_2026-08-16_realizability.md`. C1 sigue `INCONCLUSIVE`.
+- **C-1 adjudicado**: `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md`, **corregido en
+  parte el mismo día** por `docs/c1_correction_2026-08-16_realizability.md`. **Los tokens del
+  documento trasladado que aparecen más abajo están degradados**; siguen aquí como registro
   histórico, no como valores vigentes.
 
 La línea EF-0..EF-8 sigue fuera de perímetro. Nada de lo anterior la reabre.
@@ -1545,10 +1547,10 @@ umbral numérico. No se enumeran permutaciones, no se escriben artefactos y no s
 generan semillas.
 
 ```text
-EF4_CORRECTED_PRESCRIBED_FAMILY = PROVED   # SUPERADO 2026-08-16 -> SKETCH_GEOMETRIC_CORE_REFUTED_AS_STATED (c1_adjudication_2026-08-16)
-EF4_UNIQUE_SELECTION_ENTROPY = SUBEXPONENTIAL_PROVED_FULL_SEQUENCE   # AFECTADO, NO ADJUDICADO (c1_adjudication_2026-08-16 §3)
-EF4_Q2_ASYMPTOTIC = Q2_TO_ZERO_PROVED   # SUPERADO 2026-08-16 -> PROVED_DEDUCTIVE_NO_EXECUTABLE_BACKING_CONDITIONAL_ON_REFUTED_TRICHOTOMY
-EF4_TERMINAL = FIBER_CONCENTRATION   # AFECTADO, NO ADJUDICADO (c1_adjudication_2026-08-16 §3)
+EF4_CORRECTED_PRESCRIBED_FAMILY = PROVED   # SUPERADO 2026-08-16 -> SKETCH_PENDING_INDEPENDENT_AUDIT_COMITE_050 (c1_correction_2026-08-16 §3)
+EF4_UNIQUE_SELECTION_ENTROPY = SUBEXPONENTIAL_PROVED_FULL_SEQUENCE   # marca de AFECTADO retirada por c1_correction_2026-08-16 §3
+EF4_Q2_ASYMPTOTIC = Q2_TO_ZERO_PROVED   # SUPERADO 2026-08-16 -> PROVED_DEDUCTIVE_NO_EXECUTABLE_BACKING (c1_correction_2026-08-16 §3)
+EF4_TERMINAL = FIBER_CONCENTRATION   # marca de AFECTADO retirada por c1_correction_2026-08-16 §3
 EF4_CLAIM_CEILING = ABSOLUTE_MSE_FOR_DECLARED_RELATIVE_LATERAL_ESTIMAND
 EF4_NORMALIZED_INFORMATION_RATIO = NOT_DECIDED
 EF4_MONTE_CARLO = NOT_RUN
@@ -1556,25 +1558,28 @@ EF4_GAUSS_KUZMIN = NOT_USED
 ```
 
 > **TOKENS SUPERADOS — 2026-08-16.** El bloque de arriba es registro histórico. Valores vigentes
-> por `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md` §2:
+> por `docs/c1_correction_2026-08-16_realizability.md` §3, que corrige a
+> `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md` §2 del mismo día:
 >
 > ```text
-> EF4_CORRECTED_PRESCRIBED_FAMILY = SKETCH_GEOMETRIC_CORE_REFUTED_AS_STATED
-> EF4_Q2_ASYMPTOTIC = PROVED_DEDUCTIVE_NO_EXECUTABLE_BACKING_CONDITIONAL_ON_REFUTED_TRICHOTOMY
+> GEOMETRIC_TRICHOTOMY_EF4_3_ABSTRACT_DOMAIN = REFUTED_AT_N24
+> GEOMETRIC_TRICHOTOMY_EF4_3_ON_F_N = NOT_REFUTED_AT_N24 / INCONCLUSIVE
+> EF4_CORRECTED_PRESCRIBED_FAMILY = SKETCH_PENDING_INDEPENDENT_AUDIT_COMITE_050
+> EF4_Q2_ASYMPTOTIC = PROVED_DEDUCTIVE_NO_EXECUTABLE_BACKING
 > MATHEMATICAL_CORRECTNESS_INDEPENDENTLY_AUDITED = NO_TWO_BREAKS_CONFIRMED_BY_COMITE_050
-> GEOMETRIC_TRICHOTOMY_EF4_3 = REFUTED_AT_N24
 > ```
 >
-> Motivo sustantivo: la tricotomía de EF-4.3 está refutada en `n=24` (560 de 112.911.876 tuplas
-> falsifican los tres disyuntos) — `dev/EF4_TRICHOTOMY_N24_RESULT.md`. Motivo procedimental: la
-> orden vigente del comité 050 (`comite_decision_050:485,496-497`).
->
-> `EF4_UNIQUE_SELECTION_ENTROPY`, `EF4_TERMINAL` y el `Gate EF-4: PASS` de la línea siguiente
-> quedan **afectados y no adjudicados**: su dependencia del núcleo refutado no se ha leído.
+> Motivo: la orden vigente del comité 050 (`comite_decision_050:485,496-497`), que ningún comité
+> posterior levanta. **El motivo sustantivo se retiró:** los 560 fallos de `FORO001-F1` en `n=24`
+> son todos irrealizables bajo la prescripción `F_n`; de las 40 configuraciones realizables donde
+> `small_product` no basta, las 40 caen en `loss_case`
+> (`dev/ef4_trichotomy_prescription_compatibility_n24.py`, `COMPATIBLE_FAILURES=0`).
 
 **Gate EF-4: `PASS`. Terminal científico: `FIBER_CONCENTRATION`.**
-*(AFECTADO, NO ADJUDICADO — `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md` §3: el
-núcleo geométrico de EF-4.3 sobre el que descansa este `PASS` está refutado en `n=24`.)*
+*(La marca de "afectado" puesta el 2026-08-16 queda retirada el mismo día por
+`docs/c1_correction_2026-08-16_realizability.md` §3: la refutación que la motivaba no era
+realizable bajo `F_n`. Este `PASS` sigue descansando en una tricotomía `INCONCLUSIVE`, como ya
+estableció `foro_decision_001`.)*
 
 El argumento distingue explícitamente:
 

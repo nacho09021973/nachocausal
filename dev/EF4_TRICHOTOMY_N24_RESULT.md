@@ -1,4 +1,17 @@
-# FORO001-F1 — resultado: la tricotomía de EF-4.3 es refutada en `n=24`
+# FORO001-F1 — resultado en `n=24`
+
+> **RETRACTACIÓN PARCIAL — 2026-08-16, mismo día.** El veredicto
+> `TRICHOTOMY_REFUTED_AT_N24` de este fichero **vale sólo para el dominio abstracto** y **no**
+> para el certificado. Los 560 fallos emparejan filas y columnas prohibidas por la prescripción
+> `F_n` — el testigo usa `(11,11)` cuando `F_n` fija `11 -> 7` — así que ninguno es una permutación
+> de `F_n`. De las 40 configuraciones realizables donde `small_product` no basta, las 40 caen en
+> `loss_case`: `COMPATIBLE_FAILURES=0`. Ver
+> `docs/c1_correction_2026-08-16_realizability.md` y
+> `dev/ef4_trichotomy_prescription_compatibility_n24.py`. **C1 sigue `INCONCLUSIVE`.**
+>
+> Todo lo que sigue es correcto **como enunciado sobre el dominio abstracto** y se conserva sin
+> tocar: los conteos, los controles y el cross-check escalar no están en cuestión. Lo que estaba
+> mal era el dominio sobre el que se cuantificaba.
 
 ```text
 TEST: FORO001-F1 (foro_decision_001:581-587, allí `R-1`)

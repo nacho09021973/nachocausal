@@ -646,12 +646,22 @@ firmadas posteriores, no por interpretación:
 | C-4 | `CLOSED_BY_REVERT` | commit `a7b6623` |
 | C-3 | `CLOSED` — R2 abierto, prefactor `OPEN / [UNVERIFIED]`, pasa a R1 | commit `44b0d75` |
 | `ampliación de n` / `test n=24` | autorizados **sólo** para R-1, renombrado `FORO001-F1` | `docs/scope_note_2026-08-16_foro001_falsification_test.md` |
-| R-1 (`FORO001-F1`) | **EJECUTADO — la tricotomía de EF-4.3 queda REFUTADA en `n=24`** | `dev/EF4_TRICHOTOMY_N24_RESULT.md`, commit `7b5deec` |
-| C-1 | `ADJUDICATED` — tokens degradados | `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md` |
+| R-1 (`FORO001-F1`) | EJECUTADO — tricotomía falsa en el dominio **abstracto**, **no refutada sobre `F_n`** | `dev/EF4_TRICHOTOMY_N24_RESULT.md`, commits `7b5deec` + corrección |
+| C-1 | `ADJUDICATED`, corregido en parte el mismo día | `docs/c1_adjudication_2026-08-16_ef4_token_degradation.md` + `docs/c1_correction_2026-08-16_realizability.md` |
 | C-5 | **sigue en pie** — PR #4 no sale de draft | — |
 
-Sobre el ledger de §9: la fila **C1** (`INCONCLUSIVE`) pasa a **`REFUTED`**. La fila **C3**
-(`n=24` es el primer tamaño donde el test podría morder, `VERIFIED`) se confirma por ejecución:
-`n=12` da `245025/245025` vacuas y `n=24` da `1504` tuplas no vacuas, de las cuales `560` fallan.
+Sobre el ledger de §9: la fila **C1** se mantiene en **`INCONCLUSIVE`**. Se emitió `REFUTED` el
+2026-08-16 y **se retractó el mismo día**: los 560 fallos de `n=24` emparejan filas y columnas que
+la prescripción `F_n` prohíbe (el testigo usa `(11,11)` cuando `F_n` fija `11 -> 7`), de modo que
+no son permutaciones de `F_n` y no refutan la familia. De las `40` configuraciones realizables
+donde `small_product` no basta, las `40` caen en `loss_case`:
+`dev/ef4_trichotomy_prescription_compatibility_n24.py` → `COMPATIBLE_FAILURES=0`.
 
-El falsificador tenía razón, y la tenía por la razón que dio.
+La fila **C3** (`n=24` es el primer tamaño donde el test podría morder, `VERIFIED`) se confirma
+por ejecución: `n=12` da `245025/245025` vacuas y `n=24` da `1504` tuplas no vacuas.
+
+**Lección para el próximo falsificador.** El test mínimo especificado en §10 —y el predicado que
+esta casa firmó a partir de él— cuantificaba sobre `C(24,4)^2` cuádruplas **abstractas**. Ese es
+el dominio equivocado: el certificado sólo tiene que cubrir cadenas realizables bajo `F_n`
+(`11.639.124` en `n=24`, no `112.911.876`). Un predicado precomprometido sobre el dominio
+equivocado produce un veredicto limpio, reproducible y falso.
