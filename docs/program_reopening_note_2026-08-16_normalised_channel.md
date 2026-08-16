@@ -52,8 +52,17 @@ Antes de atacar el límite debe demostrarse o tiparse la positividad eventual de
 `Var(ell|n,h,S)`. Si el denominador se anula o su control asintótico no está
 disponible, no se sustituye el cociente por el error absoluto.
 
-El alcance es exclusivamente `sigma(M)`. Un resultado negativo no sería un no-go
-para la cuádrupla ganadora, un canal enriquecido ni el poset completo.
+El alcance es exclusivamente `sigma(M)`. Demostrar ese `liminf` positivo probaría
+que, para cada lado, el mínimo del error cuadrático normalizado sobre todos los
+predictores medibles respecto de `sigma(M)` queda acotado lejos de cero a lo largo
+de la cola: ninguna función de `M` recupera `ell` con riesgo relativo tendente a
+cero. Esto establece una obstrucción asintótica del canal `COUNT_VOLUME`/`M` solo
+—pérdida de información, no defecto del estimador—, pero no demuestra recuperación
+por ningún canal ni se transfiere a una cuádrupla enriquecida, al poset completo o
+a reconstrucción de horizonte.
+
+Un resultado negativo no sería un no-go para la cuádrupla ganadora, un canal
+enriquecido ni el poset completo.
 
 ## 3. Estado previo que debe preservarse
 
