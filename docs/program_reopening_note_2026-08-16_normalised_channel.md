@@ -1,14 +1,14 @@
 # Nota de reapertura acotada — `NC-0`, canal normalizado `sigma(M)`
 
 ```text
-ESTADO: FIRMADA — NC-0 AUTORIZADO / NOT_YET_EXECUTED
+ESTADO: FIRMADA — NC-0 EJECUTADO / CERRADO EN RONDA 5
 FECHA: 2026-08-16
 AMPLIA: docs/program_reopening_note_2026-07-31.md
 NO_REVOCA: docs/program_closure_note_2026-07-30.md
 NO_REABRE: EF-0--EF-8, EF-4/C1 ni reconstruccion de horizonte
 SELLO: intacto — no se toca
 SEMILLAS: ninguna
-EJECUCION: AUTORIZADA SOLO DENTRO DE LA LISTA CERRADA DE §4
+EJECUCION: COMPLETADA DENTRO DE §4 Y DEL ADDENDUM FIRMADO DE 2026-08-17
 ```
 
 ## 1. Por qué hace falta una nota nueva
@@ -75,7 +75,7 @@ T_EMP_RANGE = 0.6773_TO_0.7175
 POPULATION_STATUS = STRONGLY_SUPPORTED_UNDER_IID_NOT_CLOSED_FORM_THEOREM
 POPULATION_INTERVAL = NONE
 ASYMPTOTIC_STATUS = OPEN
-AUDIT_STATUS = PENDING_INDEPENDENT_RE_AUDIT_ROUND_4
+AUDIT_STATUS_AT_AUTHORISATION = PENDING_INDEPENDENT_RE_AUDIT_ROUND_4
 ```
 
 Los seis valores de `T_emp` son identidades sobre la muestra sellada, no estimaciones
@@ -201,5 +201,36 @@ NOT_AUTHORISED: todo lo listado en §6; cualquier ataque posterior al preflight
 BRANCH: agent/close-ef4-open-normalised-channel
 ```
 
-La autorización queda activa en esta rama. `NC-0` está abierto exclusivamente para
-el preflight de §4; no se ha ejecutado todavía ninguna de sus obligaciones.
+Esta fue la autorización inicial de `NC-0`. Su ejecución y cierre se registran en el
+addendum siguiente.
+
+## 9. Addendum de ejecución y cierre (2026-08-17)
+
+La ronda 4, commit `6a282c5`, pasó la identidad, los artefactos y el código, pero
+terminó `NC0_BLOCKED_BY_AUDIT` al encontrar una atribución documental de `T_emp`
+hasta `n=16000` sin artefactos más allá de `n=128`.
+
+El PI autorizó expresamente la remediación, el cierre de la reauditoría y un
+preflight separado mediante
+`docs/program_reopening_note_2026-08-17_nc1_asymptotic_conditions.md`. La ronda 5:
+
+1. corrigió las cuatro expresiones afectadas en las tres superficies inventariadas;
+2. preservó intactas las referencias legítimas a `n=16000` del falsificador de la
+   familia prescrita;
+3. verificó de nuevo hashes, sidecars y el script determinista con resultado
+   `PASS`;
+4. aisló en el preflight `NC-1` una condición suficiente para el objetivo primario,
+   sin afirmar sus hipótesis.
+
+El terminal vigente de `NC-0` es:
+
+```text
+NC0_TERMINAL = NC0_READY_FOR_ANALYTIC_ATTACK
+NC0_AUDIT_ROUND_4 = FAIL_MATERIAL_REMEDIATED
+NC0_AUDIT_ROUND_5 = PASS_AFTER_DOCUMENTARY_REMEDIATION
+NC0_PRIMARY_TARGET = LIMINF_T_N_POSITIVE
+NC0_ASYMPTOTIC_RESULT = NOT_PROVED
+```
+
+`NC0_READY_FOR_ANALYTIC_ATTACK` no autoriza el ataque posterior. El preflight
+separado `NC-1` se limita al alcance firmado en su propia nota.

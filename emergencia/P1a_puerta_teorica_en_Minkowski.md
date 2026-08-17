@@ -1718,8 +1718,9 @@ y la necesidad de la colocación diagonal. Se conserva como registro; no se cons
 como certificado.
 
 **Lo que queda abierto y sigue importando.** Solo `liminf T_n > 0`, con
-`T_n = 1 - rho_max^2` (§13.8 punto 1). El `T_emp ∈ [0.6773, 0.7175]` medido hasta
-`n = 16000` es evidencia numérica sólida y **no** un teorema; el enunciado buscado es
+`T_n = 1 - rho_max^2` (§13.8 punto 1). El `T_emp ∈ [0.6773, 0.7175]` está medido
+exclusivamente en `n ∈ {64,96,128}` y es evidencia numérica finita, **no** un
+teorema ni evidencia hasta `n=16000`; el enunciado buscado es
 ese liminf, o alguna variante cuantitativa más fina. §13 no aporta herramientas para
 atacarlo: un certificado de rareza da cotas superiores, no cotas inferiores de
 varianza.
