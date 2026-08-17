@@ -1,10 +1,11 @@
 # P1a — El canal `G` es `sigma(m)`: exclusión exacta del gate `0.80` en la muestra sellada
 
-> **ESTADO: `NC-0` EJECUTADO · RE-AUDITORÍA DE RONDA 4 = `FAIL_MATERIAL` ·
-> IDENTIDAD, ARTEFACTOS SELLADOS Y CÓDIGO AUDITADO = `PASS` · TERMINAL DE BLOQUEO
-> POR AUDITORÍA, DEBIDO A SOBREEXTENSIÓN DOCUMENTAL DE LA EVIDENCIA HASTA
-> `n=16000` SIN ARTEFACTO DE `T_emp` MÁS ALLÁ DE `n=128` · SIN DATOS, SEMILLAS,
-> SCRIPTS NI ARTEFACTOS NUEVOS.**
+> **ESTADO: `NC-0` CERRADO · RONDA 4 = `FAIL_MATERIAL` POR SOBREEXTENSIÓN
+> DOCUMENTAL DE `T_emp` HASTA `n=16000` · INCIDENCIA SUBSANADA POR AUTORIZACIÓN
+> DEL PI · RE-AUDITORÍA DE CIERRE, RONDA 5 = `PASS` · IDENTIDAD, ARTEFACTOS
+> SELLADOS Y CÓDIGO AUDITADO = `PASS` · TERMINAL VIGENTE =
+> `NC0_READY_FOR_ANALYTIC_ATTACK` · SIN DATOS, SEMILLAS, SCRIPTS NI ARTEFACTOS
+> NUMÉRICOS NUEVOS.**
 >
 > Sustituye a `emergencia/P1a_count_volume_cota_correlacion_d2.md` §3 en la lectura
 > de `rho_max` (ver §6, retractación). No sustituye a
@@ -239,7 +240,8 @@ CV4_AUDIT_ROUND_1 = FAIL_MATERIAL (3 incidencias, todas corregidas)
 CV4_AUDIT_ROUND_2 = FAIL_MATERIAL (2 residuos de denominacion, ambos corregidos)
 CV4_AUDIT_ROUND_3 = FAIL_MATERIAL (CV-4.1 Seccion 8 reactivaba una lectura refutada)
 CV4_AUDIT_ROUND_4 = FAIL_MATERIAL (n_max empirico 128 fue extendido a 16000 en tres superficies)
-CV4_AUDIT_STATUS = ROUND_4_FAIL_MATERIAL
+CV4_AUDIT_ROUND_5 = PASS_AFTER_DOCUMENTARY_REMEDIATION
+CV4_AUDIT_STATUS = CLOSED_PASS
 ```
 
 ## 9. Punto único de auditoría
@@ -415,14 +417,14 @@ una cola completa, control asintótico de la ley conjunta `(ell,M)|n,h,S`, y cot
 masa/separación a la escala de `B_n^h`. Los artefactos existentes no contienen esa
 información.
 
-### 10.5 Parada contractual y terminal único
+### 10.5 Parada contractual y terminal histórico de ronda 4
 
 La precedencia de la nota firmada ordena parar ante una incidencia material de la
 lectura de los datos sellados. No se ejecuta el punto 5 de `NC-0`, no se formula una
 condición suficiente y no se abre un ataque analítico. El terminal único es:
 
 ```text
-NC0_TERMINAL = NC0_BLOCKED_BY_AUDIT
+NC0_ROUND4_TERMINAL = NC0_BLOCKED_BY_AUDIT
 NC0_AUDIT_ROUND_4 = FAIL_MATERIAL
 NC0_CORE_IDENTITY_AUDIT = PASS
 NC0_MATERIAL_FINDING = T_EMP_SUPPORT_IS_64_96_128_NOT_UP_TO_16000
@@ -431,4 +433,83 @@ NC0_NEW_SEEDS = NO
 NC0_NEW_SCRIPTS = NO
 NC0_NEW_ARTIFACTS = NO
 NC0_ANALYTIC_ATTACK_OPENED = NO
+```
+
+Ese terminal describe correctamente el final de la ejecución de ronda 4. No es el
+terminal vigente después de la remediación firmada de 2026-08-17.
+
+## 11. Remediación y re-auditoría de cierre — ronda 5 (2026-08-17)
+
+### 11.1 Autorización y alcance
+
+La nota firmada
+`docs/program_reopening_note_2026-08-17_nc1_asymptotic_conditions.md` autorizó
+corregir las cuatro expresiones localizadas en las tres superficies de §10.4,
+reejecutar el verificador determinista y cerrar la auditoría. No autorizó tocar
+artefactos sellados ni generar datos.
+
+Las correcciones sustituyen exclusivamente la atribución falsa «`T_emp` hasta
+`n=16000`» por su soporte real `n in {64,96,128}`. Las apariciones de `n=16000`
+referidas al falsificador del paisaje medio de la familia prescrita —un objeto
+distinto del canal normalizado— permanecen intactas.
+
+### 11.2 Comandos de cierre y resultados
+
+Se verificaron de nuevo los tres hashes:
+
+```text
+SHA256(script) = c6a844a07a5939d37c82f34a480463dc77bda848cdb9ecd3682700c43ae60a97
+SHA256(CSV)    = 5110688b89142bf06e738a6f66bb41fa7c248e29352392b8bc763480ebd3ab08
+SHA256(JSON)   = 7176a3a6e55cf309911a636592780880c55574773d398a9a620a1536ea7899dc
+```
+
+Los sidecars devolvieron `OK`. El comando
+
+```text
+PYTHONDONTWRITEBYTECODE=1 \
+  python3 emergencia/p1a_count_volume_canal_sigma_m_d2.py
+```
+
+terminó con código `0`, reprodujo las doce filas de los bloques A y B y devolvió
+los seis controles del Bloque A como `True` en los seis estratos. El censo literal
+del CSV volvió a devolver solo:
+
+```text
+64
+96
+128
+```
+
+Una búsqueda dirigida en las tres superficies remediadas devolvió cero coincidencias
+para atribuciones de `T_emp` o `T_n` observado/medido hasta `n=16000` y para la
+clave retirada `EMPIRICAL_UP_TO_N_16000`. La nueva clave es
+`EMPIRICAL_ONLY_N_64_96_128_NOT_A_THEOREM`.
+
+### 11.3 Obligación analítica aislada
+
+El preflight separado autorizado en la misma nota se ejecutó en
+`emergencia/P1a_count_volume_preflight_asintotico_d2.md`. A partir de la cota Beta
+puntual ya demostrada, aísla una condición suficiente de cola completa, masa de
+`M` en una ventana donde `b_n(m)` conserva escala y una cota superior de la
+varianza total a esa misma escala. La implicación hacia el objetivo primario
+`liminf T_n^h>0` queda probada; ninguna de sus hipótesis asintóticas queda afirmada.
+
+### 11.4 Terminal vigente de `NC-0`
+
+La incidencia material está subsanada, las piezas centrales de la auditoría pasan,
+el cociente está bien definido en su dominio y existe una obligación analítica
+explícita, no circular y con ancla finita. El terminal único vigente es:
+
+```text
+NC0_TERMINAL = NC0_READY_FOR_ANALYTIC_ATTACK
+NC0_AUDIT_ROUND_5 = PASS_AFTER_DOCUMENTARY_REMEDIATION
+NC0_CORE_IDENTITY_AUDIT = PASS
+NC0_T_EMP_SUPPORT = N_64_96_128_ONLY
+NC0_PRIMARY_TARGET = LIMINF_T_N_POSITIVE
+NC0_SUFFICIENT_CONDITION = ISOLATED_IN_NC1
+NC0_ASYMPTOTIC_RESULT = NOT_PROVED
+NC0_NEW_DATA = NO
+NC0_NEW_SEEDS = NO
+NC0_NEW_SCRIPTS = NO
+NC0_ANALYTIC_ATTACK_AUTHORISED = NO
 ```

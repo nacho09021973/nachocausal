@@ -540,7 +540,9 @@ esta rama`) se **acepta**; la forma `REVISE_AND_RECONVENE` se **agota aquí**: n
 - **Objetivo absoluto `P_{2,n} -> 0`: descartado por vacuidad**, no por dificultad — el colapso
   conjunto de numerador y denominador (Adv. 13.16) lo liquida como demostración de recuperación.
 - **Única pregunta con sustancia: `liminf T_n > 0`** (punto 1 de la lista `OPEN`). El `~0.70`
-  observado hasta `n = 16000` es evidencia numérica sólida, **no** un teorema.
+  está observado exclusivamente en `n ∈ {64,96,128}`: es evidencia numérica finita,
+  **no** un teorema ni evidencia hasta `n=16000`. Esta corrección documental queda
+  autorizada por la firma del PI de 2026-08-17.
 - **Redirección.** El esfuerzo no continúa aquí ni en más fuerza bruta computacional. Ver
   `emergencia/HOJA_DE_RUTA.md` §19 y `emergencia/P1a_puerta_teorica_en_Minkowski.md` §13.9.
 

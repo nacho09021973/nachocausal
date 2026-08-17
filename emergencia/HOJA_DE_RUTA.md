@@ -764,7 +764,12 @@ CV4_AUDIT_ROUND_3 = FAIL_MATERIAL (CV-4.1 §8 reactivaba como vigente la lectura
 CV4_AUDIT_ROUND_3_FIXES = APPLIED (retirada la accion obsoleta de CV-4.1 §8;
                    estados NOT_DONE y acciones pendientes sustituidos por remision
                    al resultado canonico DONE_AND_CLOSED de §17)
-CV4_AUDIT_STATUS = PENDING_INDEPENDENT_RE_AUDIT_ROUND_4
+CV4_AUDIT_ROUND_4 = FAIL_MATERIAL (T_emp atribuido hasta n=16000 sin artefactos
+                   mas alla de n=128; identidad, hashes y codigo = PASS)
+CV4_AUDIT_ROUND_4_FIXES = APPLIED_BY_PI_AUTHORISATION_2026_08_17 (las cuatro
+                   expresiones de tres superficies dicen ahora n=64,96,128)
+CV4_AUDIT_ROUND_5 = PASS_AFTER_DOCUMENTARY_REMEDIATION
+CV4_AUDIT_STATUS = CLOSED_PASS
 AUDIT_POINT = emergencia/p1a_count_volume_canal_sigma_m_d2.py
 AUDIT_ITEMS = (1) definicion literal de S, (2) ANOVA empirico exacto,
               (3) funcion de influencia + etiqueta "correccion intrabin"
@@ -811,8 +816,9 @@ detalle técnico en §13.9 de la puerta teórica.
    de numerador y denominador (Advertencia 13.16) lo liquida como demostración de
    recuperación. No es que sea difícil: es que sería verdadero y no diría nada.
 4. **Problema normalizado: abierto.** Solo el cociente `T_n = 1 - rho_max^2` conserva
-   sustancia. El `~0.70` observado hasta `n = 16000` (`T_emp ∈ [0.6773, 0.7175]`,
-   seis estratos) es **evidencia numérica sólida, no un teorema**. La pregunta es
+   sustancia. El `~0.70` observado exclusivamente en `n ∈ {64,96,128}`
+   (`T_emp ∈ [0.6773, 0.7175]`, seis estratos) es **evidencia numérica finita,
+   no un teorema ni evidencia hasta `n=16000`**. La pregunta es
    `liminf T_n > 0`, o una variante cuantitativa más fina.
 
 Esto evita cerrar un teorema correcto pero científicamente vacío, y señala el lugar
@@ -878,7 +884,7 @@ PLANTED_MECHANISM = VALID_IDEA_RETAINED
 PRESCRIBED_FAMILY_CERTIFICATE = INCOMPLETE_AND_UNNECESSARY
 ABSOLUTE_TARGET_P2_TO_ZERO = DISCARDED_AS_VACUOUS
 NORMALISED_CHANNEL_LIMINF_T_N = OPEN_ONLY_LIVE_QUESTION
-T_N_EVIDENCE = EMPIRICAL_UP_TO_N_16000_NOT_A_THEOREM
+T_N_EVIDENCE = EMPIRICAL_ONLY_N_64_96_128_NOT_A_THEOREM
 CERTIFICATE_REPAIR = NOT_PRIORITISED
 BRUTE_FORCE_VERIFICATION = NOT_AUTHORISED
 DIMENSIONAL_OBJECTION_SCOPE = IDENTIFIABILITY_ROUTE_NOT_AUTOMATICALLY_HORIZON_LINE

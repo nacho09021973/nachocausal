@@ -30,19 +30,25 @@ En consecuencia, no hay un siguiente gate computacional de escaleras. C1 formal
 sigue `INCONCLUSIVE`; aumentar el cap, instrumentar histogramas o buscar un puente
 desde `rho` fijo no está autorizado ni científicamente motivado por ese run.
 
-La continuación relacionada `NC-0` queda autorizada por la firma del PI en
-`docs/program_reopening_note_2026-08-16_normalised_channel.md`. Su alcance es
-exclusivamente la auditoría documental y matemática del canal normalizado
-`T_n=1-rho_max^2` descrita en la lista cerrada de esa nota. Ninguna obligación de
-`NC-0` ha sido ejecutada todavía.
+La continuación relacionada `NC-0` fue autorizada por la firma del PI en
+`docs/program_reopening_note_2026-08-16_normalised_channel.md`. La ronda 4 pasó
+identidad, hashes y código, pero se detuvo por una sobreextensión documental de la
+evidencia de `T_emp` hasta `n=16000`. El PI autorizó su remediación y el preflight
+separado `NC-1` en
+`docs/program_reopening_note_2026-08-17_nc1_asymptotic_conditions.md`. La ronda 5
+cerró la reauditoría en `PASS`: el soporte empírico correcto es exclusivamente
+`n in {64,96,128}`. `NC-1` aisló condiciones suficientes de existencia eventual,
+masa de `M` y escala de la varianza total; no demostró que se cumplan.
 
 ```text
 EF4_PARTIAL_STAIRCASE_RUN = CLOSED_NONPROBATIVE_FOR_FORMAL_SEQUENCE
 EF4_C1 = OUT_OF_SCOPE / INCONCLUSIVE
 EF4_NEXT_COMPUTE_GATE = NONE
-NORMALISED_CHANNEL_NC0 = AUTHORISED / NOT_YET_EXECUTED
-NORMALISED_CHANNEL_EXECUTION_AUTHORISED = YES_WITHIN_SIGNED_SCOPE
-NEXT_GATE = NC0_ROUND4_AUDIT
+NORMALISED_CHANNEL_NC0 = CLOSED / READY_FOR_ANALYTIC_ATTACK
+NORMALISED_CHANNEL_NC0_AUDIT = ROUND_5_PASS_AFTER_REMEDIATION
+NORMALISED_CHANNEL_NC1 = PREFLIGHT_COMPLETE / CONDITIONS_OPEN
+NORMALISED_CHANNEL_ASYMPTOTIC_RESULT = NOT_PROVED
+NEXT_GATE = NONE_ANALYTIC_ATTACK_REQUIRES_NEW_SIGNED_NOTE
 ```
 
 ## Handoff para 2026-08-17 — R1 primero; EF-4 sólo con nota nueva
