@@ -1,11 +1,18 @@
 # Nota de alcance `NC-2F` — reducción del exponente de varianza por vía técnica
 
 ```text
-ESTADO: AUTORIZADA POR INSTRUCCION GENERAL DEL PI / EN EJECUCION
+ESTADO: REFRENDADA / EJECUTADA / NC2F_A_PROVED_SQRT_SELECTION_MASS
+        + NC2F_B_PROVED_L2_DISCREPANCY
 FECHA: 2026-08-18
+FECHA_REFRENDO: 2026-08-18
 PREDECESOR: NC-2E / NC2E_PARTIAL_RELATIVE_VARIANCE_REDUCTION
 AUTORIZACION_LITERAL: "vamos con 1, te autorizo a realizar las acciones que consideres"
                       Ignacio Martín (PI), 18/08/2026
+REFRENDO_LITERAL: "refrenda la NC-2F con firma explícita y commitea"
+                  Ignacio Martín (PI), 18/08/2026
+ORDEN_DE_LOS_ACTOS: autorizacion general -> ejecucion -> refrendo explicito
+                    (el refrendo es POSTERIOR a la ejecucion; no convierte esta
+                     nota en una firma previa conforme a borrador)
 ALCANCE_AUTORIZADO: opción 1 presentada al PI (piezas (a) y (b) de abajo)
 USA: emergencia/P1a_count_volume_selected_interior_mass_d2.md
 USA: emergencia/P1a_count_volume_selected_variance_clt_scale_d2.md
@@ -23,7 +30,17 @@ SEMILLAS: ninguna
 El PI eligió la opción 1 y autorizó ejecutarla sin exigir firma conforme a un
 borrador previo. Esta nota **no es** una firma conforme a borrador: es el registro
 del perímetro que la instrucción general cubre. Los terminales de §4 se
-precomprometen antes de ejecutar; el PI puede refrendarla o acotarla después.
+precomprometen antes de ejecutar; el PI la refrendó después (§9).
+
+La diferencia con el resto de la cadena `NC` se declara aquí y no se disimula: en
+`NC-2A`–`NC-2E` la firma precede a la ejecución y los terminales quedan
+precomprometidos en una sesión anterior; en `NC-2F` la autorización fue general, y
+los terminales de §4 se escribieron y la ejecución se realizó en la **misma**
+sesión, con refrendo explícito posterior. El refrendo valida el trabajo y su
+perímetro; **no** retrocede la fecha de la firma ni convierte el precompromiso en
+uno anterior a la ejecución. Cualquier auditoría debe tratar `NC-2F` con ese
+descuento procedimental, que no afecta a la corrección matemática de sus dos
+documentos, verificable de forma independiente.
 
 ## 2. Motivo
 
@@ -170,4 +187,25 @@ NC2F_NEW_CODE = NO
 NC2F_SEAL_TOUCHED = NO
 NC2F_PR7_MODIFIED = NO
 NC2F_PRIOR_TOKENS_MODIFIED = NO
+NC2F_RATIFIED_BY_PI = YES_AFTER_EXECUTION
+NC2F_SIGNATURE_PRECEDES_EXECUTION = NO
 ```
+
+## 9. Refrendo del PI
+
+```text
+REFRENDADO_POR: Ignacio Martín (PI)
+FECHA_REFRENDO: 2026-08-18
+DECISION_NC2F: REFRENDADA_A_POSTERIORI_CONFORME_A_LO_EJECUTADO
+AUTHORISED_SCOPE: opción 1 (piezas (a) y (b) de §3), lista cerrada
+LITERAL_SIGNOFF: "refrenda la NC-2F con firma explícita y commitea"
+                 Ignacio Martín (PI), 18/08/2026
+```
+
+El refrendo cubre: los dos terminales emitidos, los dos documentos científicos de
+§7 y el commit de todo ello. No amplía el perímetro de §3, no levanta ninguna
+prohibición de §5, no toca el sello ni la PR #7, y no altera ningún token publicado
+de `NC-2C`, `NC-2D` o `NC-2E`. La cadena vuelve al procedimiento normal —firma
+previa conforme a borrador— en la siguiente autorización.
+
+La autorización `NC-2F` queda consumida y cerrada.
