@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: ba8e0f66-5e67-49f8-a0fa-d7165b974d41
-  modified: 2026-08-18T19:43:07.469Z
+  modified: 2026-08-18T20:38:50.484Z
 ---
 
 Sustituye al marcador de pausa del 2026-07-19 (pausa → cierre → reapertura acotada).
@@ -103,9 +103,16 @@ existe, PROVED) → NC-2C (masa interior uniforme + `Pr(S)>=½n^(-(2n^(4/5)+4))`
 `sum_{pi in S_n}(R+Delta_n)^2 <= (C/n)|S_n|` (discrepancia rectangular media cuadrática bajo la
 medida seleccionada). Techo calculado: la familia «cola incondicional ÷ Pr(S)» no baja de
 `n log n` ni con `Pr(S)=1`, así que **mejorar `Pr(S)` no cierra O3 por sí solo**. `NC2E_O3 = OPEN`.
-**Nada de la cadena NC está commiteado a partir de NC-2E**: las notas prohíben commit/push sin
-orden expresa del PI. `NC-2E` deja además pendiente (no ejecutado, requiere firma nueva) el
-re-optimizado del parámetro `rho` de NC-2C §4.1.
+**`NC-2F`** (2026-08-18, autorizado por instrucción general del PI «vamos con 1», no por firma
+conforme a borrador — **conviene refrendo**): (a) `rho=ceil(20 sqrt(n log n))` en la familia
+prescrita de NC-2C §4.1 pasa las cinco desigualdades de margen ⇒
+`Pr(S) >= ½ n^(-(40 sqrt(n log n)+5))` ⇒ **exponente de varianza 9/5 → 3/2**
+(`Var(q|S) <= 4.2e7 n^(3/2)(log n)^(3/2)`, `Var(ell|S) <= 4.3e7 (log n)^(3/2)/sqrt(n)`);
+(b) cota **incondicional** autocontenida `E[Delta_n^2] <= 4.2e4/n` (reducción a esquinas +
+proceso empírico iid + encadenamiento diádico + Doob), que cierra el objeto (B) de NC-2E.
+Consecuencia: si `Pr(S) >= c > 0` entonces `NC2E.1` con `C_q = 3.4e9/c`. **La única obligación
+que queda para cerrar O3 es selectiva**: `sum_{pi in S_n} Delta_n^2 <= (C/n)|S_n|`.
+NC-2C/2D/2E no se modifican (append-only).
 
 Relacionado: [[prereg002-pass-artifact-gap]] (el PASS sellado de 1+1D sigue siendo el activo
 positivo), [[pr003-fase3-lecam]], [[estimator-v2-exploration]], [[memoria-claude-sync]].
