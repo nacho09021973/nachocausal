@@ -7,3 +7,5 @@ import HorizonFormal.Ends
 import HorizonFormal.ChainEnds
 import HorizonFormal.Accessibility
 import HorizonFormal.Horizon
+import HorizonFormal.RectangularDiscrepancy
+import HorizonFormal.RectangularDiscrepancyFidelity
