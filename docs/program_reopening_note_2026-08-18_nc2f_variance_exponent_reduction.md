@@ -209,3 +209,48 @@ de `NC-2C`, `NC-2D` o `NC-2E`. La cadena vuelve al procedimiento normal —firma
 previa conforme a borrador— en la siguiente autorización.
 
 La autorización `NC-2F` queda consumida y cerrada.
+
+## 10. Corrección posterior por auditoría adversarial (foro-002, 2026-08-19)
+
+El brief `docs/foro/foro_decision_002_nc2fb-auditoria-adversarial.md`
+(`FORO_VERDICT=REVISE_AND_RECONVENE`) confirmó el Teorema 1.1 de `NC-2F(B)` con
+recómputo independiente y localizó defectos que se han corregido en el documento
+científico. Esta sección se añade en modo append-only: **no reescribe** el bloque de
+tokens de §8, que queda como registro histórico de lo que se afirmó el 2026-08-18.
+
+Token de §8 que resultó **mal nombrado** y su valor correcto:
+
+```text
+NC2F_REMAINING_OBLIGATION = LOWER_BOUND_ON_SELECTION_MASS        [SUPERSEDED]
+NC2F_REMAINING_OBLIGATION = RELATIVE_SUM_OF_(R+Delta_n)^2_OVER_S_n   [VIGENTE]
+```
+
+El nombre antiguo describía una **ruta suficiente** (mejorar `Pr(S)`), no la
+obligación. La obligación vigente es la del Teorema 8.1 de `NC-2E`, con sus dos
+términos, y `NC-2F(B)` aporta sólo la mitad correspondiente a `\Delta_n`, y sólo
+incondicionalmente.
+
+Se corrigió además el marcador de reentrada, que propagaba la versión sin `R`. La
+corrección se hizo primero sobre el fichero de memoria vivo, que está **fuera del
+repositorio**, y la copia commiteada
+`memoria_claude/program-status-reentry-marker.md` se sincroniza en el mismo commit
+que esta nota. Se deja constancia del matiz porque una verificación independiente
+del parche detectó que la redacción anterior de este párrafo describía como hecho un
+cambio que en ese momento aún no existía como diff en el repositorio — exactamente
+el patrón «corrección que existe como texto pero no como diff» que el propio foro
+había señalado (claim `C21` del brief).
+
+El foro emitió **BLOCK** contra la acción de declarar «cerrada de forma definitiva
+toda la parte incondicional del programa»: ese objeto no está definido en ninguna
+parte del repositorio, ningún criterio de cierre se fijó por escrito antes de
+evaluarlo, la nota `NC-2F` §9 excluye ampliaciones de perímetro, y la práctica
+registrada del repositorio son once reaperturas acotadas posteriores a un cierre
+declarado. Cualquier cierre de esa parte exige nota nueva firmada, con enumeración
+literal de su contenido y cláusula de reapertura acotada.
+
+```text
+NC2F_ADVERSARIAL_AUDIT = FORO_002
+NC2F_AUDIT_VERDICT = REVISE_AND_RECONVENE
+NC2F_THEOREM_B_STATUS = CONFIRMED_WITH_CORRECTIONS_APPLIED
+NC2F_DEFINITIVE_CLOSURE = BLOCKED_BY_COMMITMENT_WARDEN
+```

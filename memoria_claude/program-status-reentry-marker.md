@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: ba8e0f66-5e67-49f8-a0fa-d7165b974d41
-  modified: 2026-08-18T20:38:50.484Z
+  modified: 2026-08-19T08:02:47.601Z
 ---
 
 Sustituye al marcador de pausa del 2026-07-19 (pausa → cierre → reapertura acotada).
@@ -110,9 +110,23 @@ prescrita de NC-2C §4.1 pasa las cinco desigualdades de margen ⇒
 (`Var(q|S) <= 4.2e7 n^(3/2)(log n)^(3/2)`, `Var(ell|S) <= 4.3e7 (log n)^(3/2)/sqrt(n)`);
 (b) cota **incondicional** autocontenida `E[Delta_n^2] <= 4.2e4/n` (reducción a esquinas +
 proceso empírico iid + encadenamiento diádico + Doob), que cierra el objeto (B) de NC-2E.
-Consecuencia: si `Pr(S) >= c > 0` entonces `NC2E.1` con `C_q = 3.4e9/c`. **La única obligación
-que queda para cerrar O3 es selectiva**: `sum_{pi in S_n} Delta_n^2 <= (C/n)|S_n|`.
+Consecuencia **condicional** (hipótesis NO demostrada): si `Pr(S) >= c > 0` entonces `NC2E.1` con
+`C_q = 3.4e9/c`, para `n>=10^40`. Ojo: `Pr(S)>=c` está **abierta en ambos sentidos** — sólo hay
+cota inferior que decae, ninguna cota superior incondicional en el repo. **La obligación que queda
+para cerrar O3 por la ruta del Thm 8.1 de NC-2E es selectiva y afecta a LOS DOS términos**:
+`sum_{pi in S_n} (R + Delta_n)^2 <= (C/n)|S_n|`. NC-2F(b) aporta **una mitad** (el término
+`Delta_n`, sólo incondicionalmente); `R` está igual desde NC-2E Lema 6.1, y su única cota
+*relativa* (Lema 6.3) da `O((log n)^1.5/sqrt n)`, insuficiente. **No contabilizar lo que falta
+usando sólo `Delta_n`** — ese error se commiteó el 2026-08-18 y lo cazó el foro-002.
 NC-2C/2D/2E no se modifican (append-only).
+
+**Auditoría adversarial foro-002** (`docs/foro/foro_decision_002_nc2fb-auditoria-adversarial.md`,
+`REVISE_AND_RECONVENE`): el Teorema 1.1 de NC-2F(b) PASA con recómputo independiente; se
+corrigieron una desigualdad publicada falsa (razón de la cola `0.7270292`, no `<0.72`), la omisión
+de `R`, y la falta de etiqueta CONDICIONAL en el Cor 8.1. **BLOCK del guardián** contra declarar
+«cerrada de forma definitiva la parte incondicional»: ese objeto no está definido en el repo
+(`grep -rl "parte incondicional"` → 0 ficheros), ningún criterio se fijó antes, y la práctica
+del repo son 11 reaperturas acotadas tras un cierre. Si se cierra, con cláusula de reapertura.
 
 Relacionado: [[prereg002-pass-artifact-gap]] (el PASS sellado de 1+1D sigue siendo el activo
 positivo), [[pr003-fase3-lecam]], [[estimator-v2-exploration]], [[memoria-claude-sync]].
