@@ -1,0 +1,43 @@
+name: Lean strict-rank coupling clean build
+
+on:
+  push:
+    branches:
+      - ci/nc2fb-strict-rank-clean-build
+
+permissions:
+  contents: read
+
+jobs:
+  lake-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Checkout the exact certified commit
+        uses: actions/checkout@v4
+        with:
+          ref: a2d2f2617aa01879b79f875598daf36439c3f1d5
+          fetch-depth: 1
+
+      - name: Guard the exact source commit and clean Lake state
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "a2d2f2617aa01879b79f875598daf36439c3f1d5"
+          test ! -e formal/HorizonFormal/.lake
+
+      - name: Install the Lean toolchain manager
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Build from the fresh checkout
+        working-directory: formal/HorizonFormal
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build
