@@ -1,4 +1,5 @@
 import HorizonFormal.RectangularDiscrepancyFidelity
+import Mathlib.Data.Fin.Tuple.Sort
 
 /-!
 # Deterministic rank bridge
@@ -48,6 +49,20 @@ structure StrictRankCoupling {n : ℕ} (u v : Fin n → ℝ)
   uOrder_monotone : Monotone (u ∘ uOrder)
   vOrder_monotone : Monotone (v ∘ vOrder)
   rankPermutation_eq : π = uOrder.trans vOrder.symm
+
+/-- Injective coordinate families canonically produce the deterministic rank
+coupling, using Mathlib's sorting permutations.  The orientation is literal:
+the induced permutation sends a `u`-rank to the corresponding `v`-rank. -/
+noncomputable def strictRankCoupling_from_injective {n : ℕ} (u v : Fin n → ℝ)
+    (hu : Function.Injective u) (hv : Function.Injective v) :
+    StrictRankCoupling u v ((Tuple.sort u).trans (Tuple.sort v).symm) :=
+  { uOrder := Tuple.sort u
+    vOrder := Tuple.sort v
+    u_noTies := hu
+    v_noTies := hv
+    uOrder_monotone := Tuple.monotone_sort u
+    vOrder_monotone := Tuple.monotone_sort v
+    rankPermutation_eq := rfl }
 
 namespace StrictRankCoupling
 
@@ -294,5 +309,6 @@ theorem Fidelity.note_deltaOne_le_twelve_mul_W
 
 #print axioms HorizonFormal.Fidelity.note_lemma_3_1_deterministic
 #print axioms HorizonFormal.Fidelity.note_deltaOne_le_twelve_mul_W
+#print axioms HorizonFormal.strictRankCoupling_from_injective
 
 end HorizonFormal
