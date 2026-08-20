@@ -10,3 +10,4 @@ import HorizonFormal.Horizon
 import HorizonFormal.RectangularDiscrepancy
 import HorizonFormal.RectangularDiscrepancyFidelity
 import HorizonFormal.DeterministicRankBridge
+import HorizonFormal.AtomlessIndependent
