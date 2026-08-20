@@ -11,3 +11,4 @@ import HorizonFormal.RectangularDiscrepancy
 import HorizonFormal.RectangularDiscrepancyFidelity
 import HorizonFormal.DeterministicRankBridge
 import HorizonFormal.AtomlessIndependent
+import HorizonFormal.NoTiesFiniteSample
