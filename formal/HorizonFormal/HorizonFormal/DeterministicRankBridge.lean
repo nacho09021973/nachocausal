@@ -269,6 +269,30 @@ theorem Fidelity.note_lemma_3_1_deterministic
     Fidelity.DStarOne π ≤ 3 * (n : ℝ) * W :=
   Fidelity.DStarOne_le_three_mul_n_mul_W hn u v π C hu_bounds hv_bounds hW
 
+/-- Deterministic endpoint consumed by the rest of NC-2F(B): combining Lemmas
+2.1 and 3.1 gives the note's literal one-based `Δₙ ≤ 12 W`.  Constructing the
+rank coupling from random variables remains outside this theorem. -/
+theorem Fidelity.note_deltaOne_le_twelve_mul_W
+    {n : ℕ} (hn : 1 ≤ n) (u v : Fin n → ℝ) (π : Equiv.Perm (Fin n))
+    (C : StrictRankCoupling u v π)
+    (hu_bounds : ∀ i, u i ∈ Set.Icc (0 : ℝ) 1)
+    (hv_bounds : ∀ i, v i ∈ Set.Icc (0 : ℝ) 1)
+    {W : ℝ} (hW : EmpiricalProcessDominatedBy u v W) :
+    Fidelity.DeltaOne π ≤ 12 * W := by
+  have hnposNat : 0 < n := by omega
+  have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hnposNat
+  have hDelta := Fidelity.note_lemma_2_1 hn π
+  have hStar := Fidelity.note_lemma_3_1_deterministic
+    hn u v π C hu_bounds hv_bounds hW
+  have hscaled :
+      (n : ℝ) * Fidelity.DeltaOne π ≤ (n : ℝ) * (12 * W) := by
+    calc
+      (n : ℝ) * Fidelity.DeltaOne π ≤ 4 * Fidelity.DStarOne π := hDelta
+      _ ≤ 4 * (3 * (n : ℝ) * W) := mul_le_mul_of_nonneg_left hStar (by norm_num)
+      _ = (n : ℝ) * (12 * W) := by ring
+  exact (mul_le_mul_iff_right₀ hnpos).mp hscaled
+
 #print axioms HorizonFormal.Fidelity.note_lemma_3_1_deterministic
+#print axioms HorizonFormal.Fidelity.note_deltaOne_le_twelve_mul_W
 
 end HorizonFormal
