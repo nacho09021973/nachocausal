@@ -1,0 +1,77 @@
+name: Lean mathlib cache benchmark
+
+on:
+  push:
+    branches:
+      - ci/nc2fb-mathlib-cache-benchmark
+
+permissions:
+  contents: read
+
+jobs:
+  cache-benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      MATHLIB_NO_CACHE_ON_UPDATE: "1"
+    steps:
+      - name: Checkout the exact scientific commit
+        uses: actions/checkout@v4
+        with:
+          ref: 0356d774b344e5fdbed1cd326cad521279500b67
+          fetch-depth: 1
+
+      - name: Guard the exact source commit and empty Lake state
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "0356d774b344e5fdbed1cd326cad521279500b67"
+          test ! -e formal/HorizonFormal/.lake
+
+      - name: Install the Lean toolchain manager
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Fetch the precompiled Mathlib cache
+        id: cache_get
+        working-directory: formal/HorizonFormal
+        shell: bash
+        run: |
+          set -euo pipefail
+          cache_started=$SECONDS
+          lake exe cache get
+          cache_elapsed=$((SECONDS - cache_started))
+          echo "seconds=$cache_elapsed" >> "$GITHUB_OUTPUT"
+          echo "CACHE_GET_SECONDS=$cache_elapsed"
+          printf -- '- `lake exe cache get`: %s seconds\n' "$cache_elapsed" \
+            >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build after restoring the cache
+        id: cached_build
+        working-directory: formal/HorizonFormal
+        shell: bash
+        run: |
+          set -euo pipefail
+          build_started=$SECONDS
+          lake build
+          build_elapsed=$((SECONDS - build_started))
+          echo "seconds=$build_elapsed" >> "$GITHUB_OUTPUT"
+          echo "CACHED_BUILD_SECONDS=$build_elapsed"
+          printf -- '- `lake build`: %s seconds\n' "$build_elapsed" \
+            >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Record benchmark identity and totals
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "SOURCE_SHA=0356d774b344e5fdbed1cd326cad521279500b67"
+          echo "CACHE_GET_SECONDS=${{ steps.cache_get.outputs.seconds }}"
+          echo "CACHED_BUILD_SECONDS=${{ steps.cached_build.outputs.seconds }}"
+          printf -- '- source SHA: `%s`\n' \
+            '0356d774b344e5fdbed1cd326cad521279500b67' \
+            >> "$GITHUB_STEP_SUMMARY"
