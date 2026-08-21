@@ -1,0 +1,46 @@
+name: Lean iid Tuple.sort uniform clean build
+
+on:
+  push:
+    branches:
+      - ci/nc2fb-iid-tuple-sort-uniform-clean-build
+
+permissions:
+  contents: read
+
+jobs:
+  lake-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Checkout the exact certified commit
+        uses: actions/checkout@v4
+        with:
+          ref: e7cac71aa23a2f62d4199145055fd74a4ad0681d
+          fetch-depth: 1
+
+      - name: Guard the exact source commit and clean Lake state
+        shell: bash
+        run: |
+          set -euo pipefail
+          scientific_sha="$(git rev-parse HEAD)"
+          test "$scientific_sha" = "e7cac71aa23a2f62d4199145055fd74a4ad0681d"
+          echo "CHECKOUT_EXACT_SHA=$scientific_sha"
+          test ! -e formal/HorizonFormal/.lake
+          echo "INITIAL_DOT_LAKE_ABSENT=true"
+
+      - name: Install the Lean toolchain manager
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Build from the fresh checkout
+        working-directory: formal/HorizonFormal
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build
