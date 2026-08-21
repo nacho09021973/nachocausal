@@ -128,5 +128,43 @@ de `R`, y la falta de etiqueta CONDICIONAL en el Cor 8.1. **BLOCK del guardián*
 (`grep -rl "parte incondicional"` → 0 ficheros), ningún criterio se fijó antes, y la práctica
 del repo son 11 reaperturas acotadas tras un cierre. Si se cierra, con cláusula de reapertura.
 
+**Actualización 2026-08-21 — ledger del teorema normalizado (`cc6f216`, rama
+`agent/nc2fb-lemma-2-1-lean`).** Nota **firmada** por el PI:
+`docs/status_note_2026-08-21_normalized_theorem_ledger.md`. Corrige una atribución errónea que
+circulaba en deliberación: **`V_n^h>0` NO es resultado de NC-2B**. Lo que NC-2B Thm 3.1 prueba
+para todo `n>=6` es `Pr_n(S)>=1/n!>0`, es decir la **existencia del condicionamiento**
+(`D_h ⊇ {n>=6}`). La positividad del denominador es de **NC-0 ronda 4 §10.3**
+(`emergencia/P1a_count_volume_canal_sigma_m_d2.md:368`), donde el objeto se llama `B_n^h` y es
+**literalmente** `Var(ell|n,h,S)` = el `V_n^h` de NC-1 = el `Var(ell_h|n,h,S)` de NC-2B/2D: un
+único objeto con tres nombres. La conjunción de ambos cierra `V_n^h>0` para toda la cola, luego
+`T_n^h` está bien definido para todo `n>=6` y ambos lados. `DENOMINATOR_POSITIVITY =
+PROVED_ALL_N_GE_6_BOTH_SIDES`: **deja de ser deuda, no volver a abrirla por parecido de
+notación.** Hereda la dependencia del lema de soporte `2<=K,L<=n-4`
+(`emergencia/P1a_count_volume_lema_kl_d2.md:84`) — **cambiar el selector la invalida sin aviso**.
+
+**Frente vivo reducido a tres, todas de escala y ninguna de no-degeneración:**
+- `DENOMINATOR_SCALE_COUNTS_PROXY` — `NC2E-O3`, `Var_{nu_n}(q_{n,h})<=C_q n`;
+- `DENOMINATOR_SCALE_REAL_OBJECT` — `Var(ell_h|n,h,S)=O(1/n)`. **NC-2E los lista por separado**
+  (`emergencia/P1a_count_volume_selected_variance_clt_scale_d2.md:794-795`): no colapsarlos en un
+  solo token, porque el puente entre ellos es justo lo que falta;
+- `SELECTION_MASS_UNIFORM` — `Pr_n(S)>=c>0`, `OPEN_NOT_REFUTED`. `1/n!` **no** sirve aquí: basta
+  para definir el condicionamiento y no para la hipótesis del Cor 8.1 de NC-2F(b).
+
+Puente entre las dos primeras: `sum_{pi in S_n}(R+Delta_n)^2 <= (C/n)|S_n|`, con **sólo la mitad
+`Delta_n` suministrada y sólo incondicionalmente**. **Advertencia metodológica congelada en §4 de
+la nota:** el objetivo no puede degenerar en una cota absoluta de `E[Delta_n^2]`; hay que
+demostrar que el control **sobrevive al condicionamiento** y tiene la escala correcta respecto de
+`Var(ell|n,h,S)`.
+
+Objeto principal, sin ambigüedad (§2 de la nota):
+`T_n^h = inf_f E[(ell-f(M))^2|n,h,S] / Var(ell|n,h,S)`, ínfimo alcanzado en
+`f*(M)=E[ell|M,n,h,S]` por proyección ortogonal en `L^2`. `liminf T_n^h>0` significa
+exactamente: **todo predictor basado sólo en `M` conserva asintóticamente una fracción `c_h>0`
+del riesgo de Bayes normalizado**. No es reconstrucción, no es insuficiencia para toda pérdida,
+no es información mutua. Enunciado objetivo registrado (NO probado): *uniform asymptotic
+`L^2`-insufficiency of the count-volume channel for `ell`*. `NOVELTY_CERTIFIED = NO`;
+`BRAUN_OVERLAP = COMPLEMENTARY_NOT_EQUIVALENT` (Braun asume `d>=3`, matrices etiquetadas, sin
+estimador ni tasa).
+
 Relacionado: [[prereg002-pass-artifact-gap]] (el PASS sellado de 1+1D sigue siendo el activo
 positivo), [[pr003-fase3-lecam]], [[estimator-v2-exploration]], [[memoria-claude-sync]].
