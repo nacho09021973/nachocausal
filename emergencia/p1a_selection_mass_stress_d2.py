@@ -1,7 +1,7 @@
 """Pieza B — stress test preinscrito sobre la masa de seleccion Pr_n(S).
 
 Autorizado por la Firma 2 de
-`docs/scope_note_2026-08-21_selection_mass_stress_test_DRAFT.md` Seccion 9.4.
+`docs/scope_note_2026-08-21_selection_mass_stress_test_DRAFT.md` Seccion 9.5.
 
 Objetivo primario:   Pr_n(S) en tamanos nuevos.
 Diagnostico secundario: n * Var_hat(ell | n, side, S).
@@ -281,13 +281,31 @@ def recommendation(terminal: str, floor_verdict: str, trend: str, signal: str) -
     return "UNDECIDED"
 
 
+def print_blocked_terminal(started: float, reason: Exception) -> None:
+    print("  PREFLIGHTS = FAIL")
+    print()
+    print(f"STRESS_B_TERMINAL              = STRESS_B_BLOCKED")
+    print(f"STRESS_B_SIZES_COMPLETED       = []")
+    print(f"STRESS_B_ELAPSED_SECONDS       = {time.monotonic() - started:.1f}")
+    print(f"STRESS_B_BLOCKED_REASON        = {type(reason).__name__}: {reason}")
+    print("ANALYTIC_ATTACK_RECOMMENDED    = UNDECIDED")
+    print("ANALYTIC_ATTACK_AUTHORISED     = NO")
+    print("LEAN_STATUS                    = FROZEN_VALID_NOT_RETRACTED")
+    print("LEAN_NEW_FORMALIZATION         = NOT_AUTHORIZED")
+    print("NOVELTY_CERTIFIED              = NO")
+
+
 def main() -> int:
     started = time.monotonic()
     print("PIEZA B - PROSPECTIVE_PREREGISTERED")
     print()
 
     print("PREFLIGHTS (cualquier fallo termina en STRESS_B_BLOCKED)")
-    seed_report = preflight_seeds()
+    try:
+        seed_report = preflight_seeds()
+    except Exception as exc:
+        print_blocked_terminal(started, exc)
+        return 1
     print(
         f"  semillas emitidas={seed_report['emitted']} "
         f"historicas={seed_report['historical']} "
@@ -295,7 +313,11 @@ def main() -> int:
         f"min(emitidas)={seed_report['min_emitted']} "
         f"guarda={seed_report['guard']}"
     )
-    threshold_report = preflight_thresholds()
+    try:
+        threshold_report = preflight_thresholds()
+    except Exception as exc:
+        print_blocked_terminal(started, exc)
+        return 1
     print(
         f"  umbrales reproducidos: FLOOR={FLOOR} BAND=[{BAND_LOW}, {BAND_HIGH}] "
         f"(p_dev={threshold_report['p_dev']:.4f} v_dev={threshold_report['v_dev']:.4f})"
