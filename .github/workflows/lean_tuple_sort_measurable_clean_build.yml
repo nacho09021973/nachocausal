@@ -1,0 +1,46 @@
+name: Lean Tuple.sort measurability clean build
+
+on:
+  push:
+    branches:
+      - ci/nc2fb-tuple-sort-measurable-clean-build
+
+permissions:
+  contents: read
+
+jobs:
+  lake-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Checkout the exact certified commit
+        uses: actions/checkout@v4
+        with:
+          ref: cbcd836b679f7ba5e79205489f3b6691f2f68aec
+          fetch-depth: 1
+
+      - name: Guard the exact source commit and clean Lake state
+        shell: bash
+        run: |
+          set -euo pipefail
+          scientific_sha="$(git rev-parse HEAD)"
+          test "$scientific_sha" = "cbcd836b679f7ba5e79205489f3b6691f2f68aec"
+          echo "CHECKOUT_EXACT_SHA=$scientific_sha"
+          test ! -e formal/HorizonFormal/.lake
+          echo "INITIAL_DOT_LAKE_ABSENT=true"
+
+      - name: Install the Lean toolchain manager
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Build from the fresh checkout
+        working-directory: formal/HorizonFormal
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build
