@@ -1,7 +1,7 @@
 # Nota de alcance acotada — `Pr_n(S)` como objetivo primario y `n·Var(ell|S)` como diagnóstico
 
 ```text
-ESTADO: PIEZA A FIRMADA / PIEZA B BLOQUEADA HASTA FIRMA 2
+ESTADO: PIEZA A FIRMADA Y EJECUTADA / PIEZA B BLOQUEADA HASTA FIRMA 2
 FECHA_BORRADOR: 2026-08-21
 REVISION: v2 — cinco bloqueos materiales corregidos (§0)
 NATURALEZA: EXPLORATORIA — NINGÚN TERMINAL PUEDE SER `PROVED` NI `REFUTED`
@@ -115,6 +115,27 @@ cociente `selected_count/12000`— es **`[UNVERIFIED]`**, por la regla de
 **Consecuencia operativa, y ésta es la barrera del bloqueo 1:** ninguna de esas cifras puede fijar
 un umbral de la Pieza B. Los umbrales de §5 se derivan de la **salida commiteada** de la Pieza A,
 en la Firma 2, y por la regla escrita en §5.1 — no por elección libre.
+
+### 3.4 Ejecución (2026-08-21)
+
+Ejecutada bajo la Firma 1. Salida verbatim en
+`emergencia/P1a_count_volume_cota_correlacion_d2.md` §8. Los dos `assert` pasan: sha256 de los dos
+artefactos sellados y reproducción verbatim de las seis filas preexistentes.
+
+```text
+PIECE_A_TERMINAL = STRESS_A_DESCRIPTIVE_EMITTED
+PIECE_A_SEALED_HASHES_VERIFIED = YES
+PIECE_A_VERBATIM_ROWS_REPRODUCED = 6
+PIECE_A_SELECTION_MASS_RANGE = [0.5845, 0.6945]
+PIECE_A_N_VAR_RANGE = [0.2477, 0.2657]
+```
+
+**Una cifra ad hoc no sobrevivió al script.** El valor de `n·Var_hat` para `(128, PAST)` que venía
+circulando era `0.2580`, calculado multiplicando la columna publicada **ya redondeada**
+(`128 × 0.002016`). El script, que multiplica la varianza sin redondear, emite **`0.2581`**. Las
+otras cinco coinciden. Es un dígito y no cambia ninguna conclusión, pero es exactamente el modo de
+fallo que la regla de procedencia existe para atrapar, y queda registrado en vez de corregido en
+silencio.
 
 ### 3.3 Qué no es la Pieza A
 
@@ -246,10 +267,17 @@ BAND_LOW   = round_2dec( 0.6 * v_dev )
 BAND_HIGH  = round_2dec( 1.6 * v_dev )
 ```
 
-Los valores **candidatos** con las cifras hoy `[UNVERIFIED]` serían `FLOOR = 0.40` y
-`[BAND_LOW, BAND_HIGH] = [0.15, 0.40]`. La Firma 2 los recalcula por esta regla y **no puede
-elegirlos libremente**. Son **umbrales operativos candidatos**, no cantidades con significado
-asintótico.
+Tras la ejecución de §3.4, los insumos `p_dev` y el rango de `n·Var_hat` **ya están verificados** y
+emitidos por el script (`PIECE_A_SELECTION_MASS_RANGE`, `PIECE_A_N_VAR_RANGE`). La regla aplicada a
+ellos **no** reproduce los valores candidatos que se eyeballearon en la v1: da aproximadamente
+`FLOOR ≈ 0.38` en vez de `0.40`, y `BAND_HIGH ≈ 0.41` en vez de `0.40`. Que la regla y el ojo
+discrepen es la razón de tener una regla.
+
+**Hueco de diseño detectado al ejecutar, y no resuelto aquí.** Esos dos valores derivados son
+todavía `[UNVERIFIED]`: la lista cerrada de §3.1 autoriza emitir los insumos, no los umbrales, y
+esta nota no amplía su propio perímetro. La **Firma 2 debe autorizar** que el script emita también
+`FLOOR`, `BAND_LOW` y `BAND_HIGH` por esta regla, y sólo entonces congelarlos. Son **umbrales
+operativos candidatos**, no cantidades con significado asintótico.
 
 ### 5.2 Objetivo primario — `Pr_n(S)`
 
@@ -415,5 +443,6 @@ FECHA_FIRMA: PENDIENTE
 DECISION: PENDIENTE
 FLOOR_DERIVADO: PENDIENTE — por la regla de §5.1 sobre la salida commiteada de la Pieza A
 BAND_DERIVADA: PENDIENTE — idem
+DEBE_AUTORIZAR_ADEMAS: emisión por script de FLOOR/BAND_LOW/BAND_HIGH (hueco de §5.1)
 AUTHORISED_SCOPE: PENDIENTE — §4 y §5
 ```

@@ -226,3 +226,64 @@ Determinista, solo lectura. Reutiliza `bound_for_m` del script ya auditado
 `emergencia/p1a_count_volume_cota_resolucion_evaluacion_d2.py` (no redefine la
 fórmula demostrada). No escribe en `resultados/`, no genera aleatoriedad, no
 requiere sidecar `sha256`.
+
+## 8. Pieza A — magnitudes derivadas para la nota de alcance del 2026-08-21
+
+Autorizada por la **Firma 1** de
+`docs/scope_note_2026-08-21_selection_mass_stress_test_DRAFT.md` §9.2, lista cerrada de su §3.1.
+Estatuto: **`DESCRIPTIVE_ALREADY_SEEN`**, sobre datos ya vistos. **No es preinscripción** y no
+decide nada; su única función legítima es anclar los umbrales de la Pieza B por la regla de §5.1
+de esa nota.
+
+El script ahora verifica, antes de emitir, los sha256 sellados de los dos artefactos y que las
+nueve columnas de la tabla de §2 se reproducen **verbatim** a los mismos decimales.
+
+Barrido verbatim de la salida del script:
+
+```text
+PYTHONDONTWRITEBYTECODE=1 python3 emergencia/p1a_count_volume_cota_correlacion_d2.py
+```
+
+```text
+PIEZA A - DESCRIPTIVE_ALREADY_SEEN (no es preinscripcion)
+
+Objetivo primario: masa de seleccion empirica Pr_n(S) = selected_count/replicas
+   n  selected  replicas   Pr_n(S)
+  64      7014     12000    0.5845
+  96      7918     12000    0.6598
+ 128      8334     12000    0.6945
+
+Diagnostico secundario: n * Var_hat(ell) por estrato
+   n   side    Var(Y)  n*Var(Y)
+  64 FUTURE  0.004152    0.2657
+  64   PAST  0.004042    0.2587
+  96 FUTURE  0.002671    0.2564
+  96   PAST  0.002590    0.2486
+ 128 FUTURE  0.001935    0.2477
+ 128   PAST  0.002016    0.2581
+
+CONTROLES PIEZA A (deben ser todos True):
+  sha256 sellados verificados = True
+  filas reproducidas verbatim = True
+
+PIECE_A_SEALED_HASHES_VERIFIED = YES
+PIECE_A_VERBATIM_ROWS_REPRODUCED = 6
+PIECE_A_SELECTION_MASS_RANGE = [0.5845, 0.6945]
+PIECE_A_N_VAR_RANGE = [0.2477, 0.2657]
+PIECE_A_TERMINAL = STRESS_A_DESCRIPTIVE_EMITTED
+```
+
+### 8.1 Qué no dicen estas cifras
+
+- `Pr_n(S)` crece en los tres tamaños. Eso **no** demuestra `inf_{n>=6}Pr_n(S)>0`, y es compatible
+  con un máximo posterior. Tres tamaños no deciden una cola.
+- `n·Var_hat` es una varianza **muestral** (`ddof=1`), estimador de `Var(ell|n,h,S)`, no el objeto
+  poblacional — la misma separación que `NC-0` §10.3 hace para `T_emp`.
+- El lado `FUTURE` decrece monótonamente (`0.2657 -> 0.2564 -> 0.2477`) y el `PAST` no. La
+  asimetría queda registrada aquí porque el predicado de la Pieza B debe tratarla de antemano.
+- Ninguna de estas cifras mueve un token de la cadena `NC`.
+
+```text
+PIECE_A_STATUS = EMITTED_AND_VERIFIED
+PIECE_A_IS_PREREGISTRATION = NO
+```
