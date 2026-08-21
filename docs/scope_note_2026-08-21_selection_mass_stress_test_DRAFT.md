@@ -3,7 +3,7 @@
 ```text
 ESTADO: PIEZA A FIRMADA Y EJECUTADA / PIEZA B BLOQUEADA HASTA FIRMA 2
 FECHA_BORRADOR: 2026-08-21
-REVISION: v2 — cinco bloqueos materiales corregidos (§0)
+REVISION: v3 — dos correcciones finales del PI (§0.1) y regla de salida (§6.4)
 NATURALEZA: EXPLORATORIA — NINGÚN TERMINAL PUEDE SER `PROVED` NI `REFUTED`
 NO_SUSTITUYE: docs/program_closure_note_2026-07-30.md
 NO_SUSTITUYE: docs/program_reopening_note_2026-07-31.md
@@ -31,6 +31,21 @@ Un error real que salió al especificar (4): la v1 fijaba **bases** (`2_608_046_
 línea, `base + 100*n + batch`, la escalera de coordenadas invade la base de bootstrap en cuanto
 `n>=192` (`2_608_046_000 + 100·192 = 2_608_065_200 > 2_608_047_000`). Comprobar bases no basta:
 hay que comprobar conjuntos emitidos. El bloqueo 4 estaba bien puesto.
+
+### 0.1 Qué corrige la v3
+
+Tras ejecutar la Pieza A, el PI ordenó dos correcciones y una autorización:
+
+1. **`RISING` añadido al predicado de tendencia** (§5.2). Sin él, una masa que sube con fuerza caía
+   en `INDETERMINATE` por dejar de solaparse los intervalos — castigaba justo el escenario
+   favorable. `YES` admite ahora `STABILISING | RISING` (§6.2).
+2. **Bootstrap de `1000` a `10000` remuestreos** (§4.3). A `99.375 %`, `1000` dejan `3.1`
+   observaciones por cola; `10000` dejan `31.2`.
+3. **Umbrales congelados y su emisión autorizada** (§5.1). La regla produce `FLOOR = 0.38`,
+   `BAND_LOW = 0.15`, `BAND_HIGH = 0.41`, y el script los verifica con aborto.
+
+Además se añade la **regla de salida** (§6.4): esta nota autoriza **una etapa más y una parada
+obligatoria**, no una continuación abierta.
 
 ## 1. Por qué existe esta nota y qué invierte
 
@@ -116,6 +131,12 @@ cociente `selected_count/12000`— es **`[UNVERIFIED]`**, por la regla de
 un umbral de la Pieza B. Los umbrales de §5 se derivan de la **salida commiteada** de la Pieza A,
 en la Firma 2, y por la regla escrita en §5.1 — no por elección libre.
 
+### 3.3 Qué no es la Pieza A
+
+No es preinscripción y no puede etiquetarse como tal: sus estadísticos ya se vieron y discutieron
+antes de escribir esta nota. Su función legítima es **anclar** los umbrales de §5, y su único
+terminal admisible es descriptivo.
+
 ### 3.4 Ejecución (2026-08-21)
 
 Ejecutada bajo la Firma 1. Salida verbatim en
@@ -136,12 +157,6 @@ circulando era `0.2580`, calculado multiplicando la columna publicada **ya redon
 otras cinco coinciden. Es un dígito y no cambia ninguna conclusión, pero es exactamente el modo de
 fallo que la regla de procedencia existe para atrapar, y queda registrado en vez de corregido en
 silencio.
-
-### 3.3 Qué no es la Pieza A
-
-No es preinscripción y no puede etiquetarse como tal: sus estadísticos ya se vieron y discutieron
-antes de escribir esta nota. Su función legítima es **anclar** los umbrales de §5, y su único
-terminal admisible es descriptivo.
 
 ## 4. Pieza B — especificación de ejecución
 
@@ -185,12 +200,21 @@ contrato congelado.
 ### 4.3 Bootstrap
 
 ```text
-STRESS_BOOTSTRAP_REPLICATES = 1000
+STRESS_BOOTSTRAP_REPLICATES = 10000
 MÉTODO = percentil, remuestreo con reemplazo de las filas del estrato (n, side)
 ```
 
-Mismo tamaño y método que el contrato existente
-(`emergencia/P1a_contrato_representaciones_alternativas_d2.md:112`).
+**El tamaño sube de `1000` a `10000` respecto del contrato existente**
+(`emergencia/P1a_contrato_representaciones_alternativas_d2.md:112`), y la razón es aritmética: los
+intervalos de §4.5 son al `99.375 %`, luego cada cola vale `0.3125 %`. Con `1000` remuestreos eso
+deja `3.1` observaciones por cola — insuficiente para sostener esa precisión. Con `10000` quedan
+`31.2`.
+
+`31` por cola sigue siendo modesto: la regla de pulgar habitual para percentiles estables pide
+`~100`, que exigiría `32000` remuestreos. El bootstrap es sobre filas ya generadas y su coste es
+despreciable frente a la generación de réplicas, así que subir a `32000` es viable si la Firma 2
+lo prefiere. Se deja en `10000` por instrucción explícita del PI y se declara la resolución
+resultante en vez de disimularla.
 
 ### 4.4 Semillas — especificación completa
 
@@ -255,7 +279,7 @@ parciales queda prohibido** y exige firma nueva.
 Ninguno de estos predicados decide `\inf_{n\ge n_0}\Pr_n(S)>0` ni `Var(ell|n,h,S)=O(1/n)`. Un
 barrido finito es compatible con cualquier constante y cualquier `n_0` posterior.
 
-### 5.1 Regla de derivación de los umbrales (se aplica en la Firma 2)
+### 5.1 Regla de derivación de los umbrales — aplicada, valores congelados
 
 Sea `p_dev` el **mínimo verificado** de `selected_count/base_replicates_per_n` sobre los tres
 tamaños de desarrollo, y `v_dev` el **centro del rango verificado** de `n·Var_hat` sobre los seis
@@ -267,17 +291,27 @@ BAND_LOW   = round_2dec( 0.6 * v_dev )
 BAND_HIGH  = round_2dec( 1.6 * v_dev )
 ```
 
-Tras la ejecución de §3.4, los insumos `p_dev` y el rango de `n·Var_hat` **ya están verificados** y
-emitidos por el script (`PIECE_A_SELECTION_MASS_RANGE`, `PIECE_A_N_VAR_RANGE`). La regla aplicada a
-ellos **no** reproduce los valores candidatos que se eyeballearon en la v1: da aproximadamente
-`FLOOR ≈ 0.38` en vez de `0.40`, y `BAND_HIGH ≈ 0.41` en vez de `0.40`. Que la regla y el ojo
-discrepen es la razón de tener una regla.
+Tras la ejecución de §3.4 los insumos están verificados y emitidos por el script
+(`PIECE_A_SELECTION_MASS_RANGE = [0.5845, 0.6945]`, `PIECE_A_N_VAR_RANGE = [0.2477, 0.2657]`). La
+regla aplicada a ellos **no** reproduce los valores que se eyeballearon en la v1. Los umbrales
+quedan congelados en:
 
-**Hueco de diseño detectado al ejecutar, y no resuelto aquí.** Esos dos valores derivados son
-todavía `[UNVERIFIED]`: la lista cerrada de §3.1 autoriza emitir los insumos, no los umbrales, y
-esta nota no amplía su propio perímetro. La **Firma 2 debe autorizar** que el script emita también
-`FLOOR`, `BAND_LOW` y `BAND_HIGH` por esta regla, y sólo entonces congelarlos. Son **umbrales
-operativos candidatos**, no cantidades con significado asintótico.
+```text
+FLOOR     = 0.38        (v1 eyeballeaba 0.40)
+BAND_LOW  = 0.15
+BAND_HIGH = 0.41        (v1 eyeballeaba 0.40)
+```
+
+Que la regla y el ojo discrepen en dos de los tres es exactamente la razón de tener una regla, y
+la razón de que los umbrales no puedan fijarse a mano.
+
+**Los tres valores son una afirmación comprobable, no una transcripción.** La Firma 2 autoriza a
+`emergencia/p1a_count_volume_cota_correlacion_d2.py` a **emitirlos y verificarlos**: el script los
+recalcula por esta regla desde la precisión completa y **aborta** si no coinciden con los tres
+números de arriba. Si alguna vez dejaran de coincidir, la ejecución falla en vez de degradarse en
+silencio.
+
+Son **umbrales operativos**, no cantidades con significado asintótico.
 
 ### 5.2 Objetivo primario — `Pr_n(S)`
 
@@ -288,16 +322,24 @@ SELECTION_MASS_CANDIDATE_FLOOR =
     MET      <=>  W_lo(n) >= FLOOR  para los cuatro n de STRESS_N
     NOT_MET  <=>  en caso contrario
 
-SELECTION_MASS_TREND =
+SELECTION_MASS_TREND =   (cascada ordenada, exhaustiva y excluyente)
     DECAYING       <=>  W_hi(512) < W_lo(192)
-    STABILISING    <=>  NO(W_hi(512) < W_lo(192))
+    RISING         <=>  NO(DECAYING)  Y  W_lo(512) > W_hi(192)
+    STABILISING    <=>  NO(DECAYING)  Y  NO(RISING)
                         Y  [W_lo(384),W_hi(384)] ∩ [W_lo(512),W_hi(512)] != {}
     INDETERMINATE  <=>  en caso contrario
 ```
 
+`RISING` se añade porque sin él una masa que **sube con fuerza** cae en `INDETERMINATE`: los
+intervalos de `384` y `512` dejan de solaparse precisamente por subir, y el solapamiento era la
+única vía a `STABILISING`. Una masa creciente favorece `Pr_n(S)>=c>0` tanto como una estable, y el
+predicado tiene que decirlo. La cascada está ordenada para que el veredicto sea determinista
+cuando dos condiciones podrían valer a la vez.
+
 **Lectura obligatoria, precomprometida.** `NOT_MET` **no** desfavorece `Pr_n(S)>=c>0`. Una masa
-estable en `0.30` incumple `FLOOR = 0.40` y **sigue favoreciendo** masa positiva: `FLOOR` mide una
-escala candidata, no la hipótesis. Sólo `DECAYING` es una señal contraria, y tampoco refuta nada.
+estable en `0.30` incumple `FLOOR = 0.38` y **sigue favoreciendo** masa positiva: `FLOOR` mide una
+escala candidata, no la hipótesis. `STABILISING` y `RISING` son ambas favorables. Sólo `DECAYING`
+es una señal contraria, y tampoco refuta nada.
 
 ### 5.3 Diagnóstico secundario — `n·Var(ell|n,h,S)`
 
@@ -349,7 +391,7 @@ si STRESS_B_TERMINAL != STRESS_B_COMPLETED:
 en otro caso:
     NO         <=  SELECTION_MASS_TREND = DECAYING
                    O VARIANCE_ORDER_SIGNAL = GROWTH_SIGNAL
-    YES        <=  SELECTION_MASS_TREND = STABILISING
+    YES        <=  SELECTION_MASS_TREND in {STABILISING, RISING}
                    Y SELECTION_MASS_CANDIDATE_FLOOR = MET
                    Y VARIANCE_ORDER_SIGNAL != GROWTH_SIGNAL
     UNDECIDED  <=  en cualquier otro caso
@@ -365,7 +407,7 @@ exige nota y firma nuevas.
 STRESS_A_TERMINAL              = ...
 STRESS_B_TERMINAL              = ...
 SELECTION_MASS_CANDIDATE_FLOOR = MET | NOT_MET
-SELECTION_MASS_TREND           = STABILISING | DECAYING | INDETERMINATE
+SELECTION_MASS_TREND           = STABILISING | RISING | DECAYING | INDETERMINATE
 VARIANCE_CANDIDATE_BAND        = IN | OUT
 VARIANCE_ORDER_SIGNAL          = BOUNDED_CONSISTENT | GROWTH_SIGNAL | INDETERMINATE
 ANALYTIC_ATTACK_RECOMMENDED    = YES | NO | UNDECIDED
@@ -374,6 +416,36 @@ LEAN_STATUS                    = FROZEN_VALID_NOT_RETRACTED
 LEAN_NEW_FORMALIZATION         = NOT_AUTHORIZED
 NOVELTY_CERTIFIED              = NO
 ```
+
+### 6.4 Regla de salida — parada obligatoria
+
+Esta nota autoriza **exactamente una etapa más**. No existe continuación automática por ninguna
+rama. Precomprometido antes de ejecutar:
+
+```text
+ANALYTIC_ATTACK_RECOMMENDED = NO
+    -> APARCAR la línea. No se amplía la escalera, no se repite el barrido,
+       no se busca otra ruta a la hipótesis 4.
+
+ANALYTIC_ATTACK_RECOMMENDED = UNDECIDED        (incluye BUDGET_EXHAUSTED)
+    -> APARCAR igualmente. Un inconcluso NO autoriza ampliar tamaños,
+       réplicas ni presupuesto: eso sería convertir el agotamiento en
+       una prórroga, que §4.5 prohíbe.
+
+ANALYTIC_ATTACK_RECOMMENDED = YES
+    -> abrir ÚNICAMENTE un preflight analítico corto sobre masa uniforme,
+       sin Lean, bajo nota y firma nuevas. Si ese preflight no produce un
+       lema concreto y plausible para la unicidad del selector, APARCAR
+       también.
+```
+
+Las tres ramas terminan en aparcar salvo una, y esa una termina en aparcar si no entrega un lema.
+**Ninguna rama autoriza formalización.** `LEAN_NEW_FORMALIZATION = NOT_AUTHORIZED` sobrevive a
+cualquier veredicto de esta nota.
+
+Justificación registrada: la línea ha aislado una condición precisa y una puerta condicional real
+—no está en «ningún sitio»—, pero lo que sigue sin saberse es si esa puerta puede demostrarse
+abierta asintóticamente. Un ensayo acotado más está justificado; una continuación abierta no.
 
 ## 7. Qué sigue prohibido
 
@@ -384,7 +456,9 @@ NOVELTY_CERTIFIED              = NO
   token publicado de `NC-0`..`NC-2F`.
 - Tocar `RESERVED_002`.
 - Emitir `PROVED`, `REFUTED` o `NC2E_O3 = CLOSED`, o mover cualquier token de la cadena NC.
-- Elegir umbrales fuera de la regla de §5.1, o recalcularlos después de ver datos nuevos.
+- Elegir umbrales fuera de la regla de §5.1, o recalcularlos después de ver datos nuevos. Los tres
+  valores de §5.1 están congelados y el script aborta si no los reproduce.
+- Continuar la línea por cualquier rama que §6.4 mande aparcar.
 - Ampliar presupuesto, escalera o réplicas tras ver datos parciales.
 - Abrir el ataque analítico a la masa uniforme.
 - Reabrir `DENOMINATOR_POSITIVITY` (cerrado en `docs/status_note_2026-08-21_normalized_theorem_ledger.md` §3.3).
@@ -441,8 +515,9 @@ escrita, y no por elección.
 FIRMADO_POR: PENDIENTE
 FECHA_FIRMA: PENDIENTE
 DECISION: PENDIENTE
-FLOOR_DERIVADO: PENDIENTE — por la regla de §5.1 sobre la salida commiteada de la Pieza A
-BAND_DERIVADA: PENDIENTE — idem
-DEBE_AUTORIZAR_ADEMAS: emisión por script de FLOOR/BAND_LOW/BAND_HIGH (hueco de §5.1)
-AUTHORISED_SCOPE: PENDIENTE — §4 y §5
+FLOOR_CONGELADO: 0.38          (regla de §5.1 sobre la salida commiteada de la Pieza A)
+BAND_CONGELADA: [0.15, 0.41]   (idem)
+AUTORIZA_ADEMAS: emisión y verificación por script de FLOOR/BAND_LOW/BAND_HIGH,
+  con aborto si no reproducen los tres valores congelados
+AUTHORISED_SCOPE: PENDIENTE — §4, §5 y la regla de salida de §6.4
 ```
