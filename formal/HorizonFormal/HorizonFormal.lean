@@ -13,3 +13,4 @@ import HorizonFormal.DeterministicRankBridge
 import HorizonFormal.AtomlessIndependent
 import HorizonFormal.NoTiesFiniteSample
 import HorizonFormal.StrictRankCouplingAE
+import HorizonFormal.TupleSortMeasurable
