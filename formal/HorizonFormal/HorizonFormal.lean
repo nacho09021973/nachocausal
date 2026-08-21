@@ -14,3 +14,4 @@ import HorizonFormal.AtomlessIndependent
 import HorizonFormal.NoTiesFiniteSample
 import HorizonFormal.StrictRankCouplingAE
 import HorizonFormal.TupleSortMeasurable
+import HorizonFormal.IIDTupleSortUniform
