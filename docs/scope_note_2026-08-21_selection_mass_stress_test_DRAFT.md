@@ -1,7 +1,7 @@
 # Nota de alcance acotada — `Pr_n(S)` como objetivo primario y `n·Var(ell|S)` como diagnóstico
 
 ```text
-ESTADO: PIEZA A FIRMADA Y EJECUTADA / PIEZA B BLOQUEADA HASTA FIRMA 2
+ESTADO: PIEZA A EJECUTADA / PIEZA B FIRMADA Y AUTORIZADA
 FECHA_BORRADOR: 2026-08-21
 REVISION: v3 — dos correcciones finales del PI (§0.1) y regla de salida (§6.4)
 NATURALEZA: EXPLORATORIA — NINGÚN TERMINAL PUEDE SER `PROVED` NI `REFUTED`
@@ -503,21 +503,43 @@ NOT_AUTHORISED: todo §4, todo §5, todo lo listado en §7; ninguna semilla
 LITERAL_SIGNOFF: "firmo por P.I Ignacio Martín a 21 de agosto de 2.026"
 ```
 
-### 9.3 Bloqueo duro
+### 9.3 Bloqueo duro — levantado
 
-La Pieza B **no puede ejecutarse ni firmarse** hasta que la Pieza A esté ejecutada y commiteada y
-sus cifras dejen de ser `[UNVERIFIED]`. Los umbrales de §5.1 se derivan de esa salida, por la regla
-escrita, y no por elección.
+La Pieza B no podía ejecutarse ni firmarse hasta que la Pieza A estuviera ejecutada y commiteada y
+sus cifras dejaran de ser `[UNVERIFIED]`. **Se cumplió** en `ecbc168` (§3.4), y los umbrales de
+§5.1 se derivaron de esa salida por la regla escrita. El bloqueo queda levantado por §9.5.
 
-### 9.4 Firma 2 — autorizaría la Pieza B
+### 9.4 Revisión de la v3
 
 ```text
-FIRMADO_POR: PENDIENTE
-FECHA_FIRMA: PENDIENTE
-DECISION: PENDIENTE
-FLOOR_CONGELADO: 0.38          (regla de §5.1 sobre la salida commiteada de la Pieza A)
-BAND_CONGELADA: [0.15, 0.41]   (idem)
-AUTORIZA_ADEMAS: emisión y verificación por script de FLOOR/BAND_LOW/BAND_HIGH,
-  con aborto si no reproducen los tres valores congelados
-AUTHORISED_SCOPE: PENDIENTE — §4, §5 y la regla de salida de §6.4
+REVIEW_VERDICT_V3: PASS_FOR_PI_SIGNATURE_2
+BOOTSTRAP_DECISION: KEEP_10000
+REVIEW_DATE: 2026-08-21
 ```
+
+Razón registrada para mantener `10000` y no subir a `32000`: `31` observaciones por cola son
+modestas pero suficientes para un **diagnóstico exploratorio secundario** con semilla fija; subir
+añadiría coste no medido dentro del límite duro de seis horas y **no mejora el objetivo primario**,
+cuyos intervalos Wilson son analíticos y no dependen del bootstrap.
+
+### 9.5 Firma 2 — autoriza la Pieza B
+
+```text
+FIRMADO_POR: Ignacio Martín (PI)
+FECHA_FIRMA: 2026-08-21
+DECISION: PIEZA_B_AUTORIZADA
+FLOOR_CONGELADO: 0.38
+BAND_CONGELADA: [0.15, 0.41]
+STRESS_BOOTSTRAP_REPLICATES: 10000
+AUTORIZA_ADEMAS: emisión y verificación por script de FLOOR/BAND_LOW/BAND_HIGH,
+  con aborto si no reproduce los tres valores congelados
+AUTHORISED_SCOPE: §4, §5 y regla de salida de §6.4
+NOT_AUTHORISED: todo lo listado en §7
+LITERAL_SIGNOFF: "Firmo P.I Ignacio Martin a 21 de agosto de 2.026"
+```
+
+**Condición de ejecución.** La ejecución sólo procede si pasan **todos** los preflights. Cualquier
+fallo —colisión de semillas, umbral que no reproduce, integridad— termina en
+`STRESS_B_BLOCKED` y no se genera nada.
+
+No se mueven escalera, réplicas ni umbrales.
