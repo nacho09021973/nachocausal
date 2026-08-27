@@ -20,8 +20,10 @@
 >   The physical `Omega(ell)` reading is **structurally resolved** (§5a, Proposition 6):
 >   `V(tau)*Ibar` is exactly dilation-invariant, giving the floor `prereg-003`'s `O(ell)` *form*
 >   intrinsically. **Numerically illustrated** (NUMERICAL, not proved): `~35 ell` for one moderate
->   reference shape, degrading as `~ell/lambda^3` (empirical `kappa ~ lambda^6`) toward thin
->   near-horizon diamonds — the floor does not stay `O(ell)` under reshaping.
+>   reference shape. Under the named thin near-horizon reshaping of §5a, R2 now proves
+>   `kappa ~ lambda^6` with prefactor `a^6/32` for the scanned symmetric shape, hence degradation
+>   as `~ell/lambda^3`. A more general aspect family has prefactor
+>   `a b^3(4a-b)^2/288`; the tuned shape `b=4a` cancels this leading term.
 >
 > Taxonomy labels (taxonomy §10): object = continuous geometric position/curvature parameter of a
 > 1+1D Schwarzschild family; task =
@@ -378,15 +380,62 @@ For a moderate reference diamond (`tau=1`, `r_p=2, r_q=0.5, v_p=0, v_q=1`):
 — i.e. **the two-point floor for this shape is `~35 ell`, not `~1 ell`**: a genuine, large `O(1)`
 constant, not `O(ell)` in the naive sense of "order unity in `ell`-units".
 
-**Item (iii) — reshaping, now numerically examined (partial answer: it does NOT stay bounded).**
-Shrinking a near-horizon diamond (`r_p = 1+0.3*lambda, r_q = 1-0.3*lambda, v_q = 0.3*lambda`,
-`tau=1` fixed, corners *not* dilated together with `tau` — this is reshaping, the case
-Proposition 6 does not cover) from `lambda=1` to `lambda=0.05` gives `kappa` falling from
-`1.68e-5` to `3.53e-13` — an **empirical power law `kappa ~ lambda^6`** (exponent stable at
-`5.9`–`6.0` across the fitted range, not derived analytically here), i.e.
-`delta_tau/ell ~ lambda^{-3}`: the floor degrades as the **cube of the inverse linear patch
-size** as the diamond narrows toward the horizon. Concretely: halving the linear size of a
-near-horizon patch (at fixed `tau`) multiplies the order-only localization floor by `~8`.
+**Item (iii) — reshaping toward a thin near-horizon diamond (R2, analytically resolved for the
+named family).** Fix `a,b>0` and, at `tau=1`, take
+
+`r_p=1+a lambda`, `r_q=1-a lambda`, `v_p=0`, `v_q=b lambda`.
+
+The corners are *not* dilated together with `tau`: this is a change of dimensionless shape, the
+case Proposition 6 does not cover.
+
+**Proposition 7 (thin-shape asymptotic and prefactor).** As `lambda -> 0`, with the physical
+corners held fixed when differentiating in `tau`,
+
+`I_lambda(1) = [b^2(4a-b)^2/576] lambda^4 + O(lambda^5)`,
+
+`V_lambda(1) = 2ab lambda^2 + O(lambda^3)`, and hence
+
+`kappa_lambda(1) = [a b^3(4a-b)^2/288] lambda^6 + O(lambda^7)`.
+
+For the scanned symmetric shape `a=b=0.3`,
+
+`kappa_lambda(1) = (a^6/32) lambda^6 + O(lambda^7)
+                  = 2.278125e-5 lambda^6 + O(lambda^7)`,
+
+so `delta_tau/ell ~ sqrt(32) a^{-3} lambda^{-3}`. Thus halving the linear shape parameter
+multiplies the asymptotic floor by `8`. If `b=4a`, however, the displayed prefactor vanishes:
+this proposition does **not** claim a `lambda^6` leading law for that tuned aspect ratio; its
+next nonzero order remains open.
+
+*Proof.* Introduce the matched variable `sigma=(tau-1)/lambda` and unit-square coordinates
+`y=v/(b lambda)`, `z=(Utilde-Utilde_p)/(Utilde_q-Utilde_p)`. The exact inverse null-coordinate
+map is
+
+`r_tau(Utilde,v) = tau {1 + W_0[-Utilde exp(v/(2tau)-1)]}`.
+
+Expanding its normalized Jacobian at fixed `sigma`, and writing `Z=z-1/2`, `Y=y-1/2`, gives a
+fixed-square density `p=1+lambda p_1+lambda^2 p_2+lambda^3 p_3+O(lambda^4)` with
+`p_1=4aZ+(b/2)Y` and
+`partial_sigma p_2|_0=-(2a+b)Z+(b/2)Y`. Both are additive marginal deformations. Since
+`partial_tau=lambda^{-1} partial_sigma`, the first non-additive copula score is the two-way
+zero-marginal projection of
+`B:=partial_sigma p_3|_0-p_1 partial_sigma p_2|_0`, namely
+
+`partial_tau log c_tau|_{tau=1}
+ = lambda^2 [b(4a-b)/2] ZY + O(lambda^3)`.
+
+Marginal-quantile motion enters only at `O(lambda^3)` because `p_1` is additive. Integrating the
+square against the limiting uniform copula and using
+`int_0^1 (z-1/2)^2 dz=1/12` yields the coefficient of `I`. Finally `det g_tau=-1`, while the
+leading radial and temporal widths are `2a lambda` and `b lambda`, giving the coefficient of `V`
+and therefore of `kappa`. The algebraic projection and integrals are checked exactly by
+`dev/r2_lambda6_06_prefactor.py`; no sampling or random seed is used. ∎
+
+The pre-existing deterministic scan is consistent with Proposition 7. For `a=b=0.3`, shrinking
+from `lambda=1` to `lambda=0.05` gave `kappa` falling from `1.68e-5` to `3.53e-13`; its fitted
+exponents `5.917` (all six points) and `5.988` (smallest four) were numerical precursors, not
+inputs to the derivation. At `lambda=0.20,0.10,0.05`, the numerical `I` divided by the analytic
+leading term is respectively `0.98265, 0.98982, 0.99161`.
 
 **What this suggests, stated carefully.** This is consistent with — and gives one candidate
 quantitative account of — a pattern noted informally in this project's PR004 attempts (parked
@@ -400,11 +449,12 @@ numbers, and no PR004 diagnostic's actual probed shape has been checked against 
 **What is still NOT done.** (i) *[now available, see above]*. (ii) Comparing any of these numbers
 to `prereg-003`'s measured `K_LOC` constant — a different quantity (bounds the *sealed estimator's*
 output, §1-2 there), not something this floor claims to explain or reproduce. (iii) *[partially
-examined, see above]* — an analytic derivation of the `lambda^6` exponent (a near-horizon/Rindler
-expansion of `I(tau)` is a plausible route, not attempted). (iv) Whether PR004's actual diagnostic
-patches correspond to any specific `(r_p, r_q, v_p, v_q)` in this family at all — the diamond
-family is a mathematical construction for proving a floor, not a description of what PR004's
-ladder/peel-off procedure geometrically probes; this connection has not been made.
+examined and analytically resolved for the named aspect family, see Proposition 7]* — the next
+nonzero order at the tuned cancellation `b=4a`, and any classification over more general
+reshaping paths, remain open. (iv) Whether PR004's actual diagnostic patches correspond to any
+specific `(r_p, r_q, v_p, v_q)` in this family at all — the diamond family is a mathematical
+construction for proving a floor, not a description of what PR004's ladder/peel-off procedure
+geometrically probes; this connection has not been made.
 
 ## 6. What remains open
 
@@ -415,13 +465,14 @@ ladder/peel-off procedure geometrically probes; this connection has not been mad
 2. **The physical `Omega(ell)` reading**: **structurally resolved** (§5a, Proposition 6,
    **PROVED**) — `V(tau) * Ibar` is exactly dilation-invariant, so `delta_n ~ ell / sqrt(kappa_bar)`
    with `kappa_bar` a pure, size-independent number. **Numerically illustrated** (§5a,
-   `wp4_kappa_numeric_reference.py`, NUMERICAL not proved): `kappa_bar ~ 8e-4` for one moderate
-   reference shape (`delta_tau ~ 35 ell`), and empirically `kappa_bar ~ lambda^6` under reshaping
-   toward thin near-horizon diamonds (`delta_tau ~ ell/lambda^3`) — it does **not** stay bounded
-   as the shape narrows. Still open: an analytic derivation of the `lambda^6` exponent; any
-   comparison to `prereg-003`'s measured `K_LOC` (a different, estimator-bound quantity); whether
-   PR004's diagnostics actually probe shapes in this degrading regime (not checked against any
-   PR004 output).
+   `wp4_kappa_numeric_reference.py`, NUMERICAL): `kappa_bar ~ 8e-4` for one moderate reference
+   shape (`delta_tau ~ 35 ell`). **Analytically resolved for the named thin-shape family**
+   (Proposition 7): `kappa_lambda(1) = [a b^3(4a-b)^2/288] lambda^6+O(lambda^7)`, reducing to
+   `(a^6/32)lambda^6+O(lambda^7)` for the scanned `a=b=0.3`, so
+   `delta_tau/ell ~ lambda^-3`. Still open: the next order at the tuned cancellation `b=4a`;
+   any comparison to `prereg-003`'s measured `K_LOC` (a different, estimator-bound quantity);
+   whether PR004's diagnostics actually probe shapes in this degrading regime (not checked
+   against any PR004 output).
 3. **Poset-level tightness**: all distance control is inherited from the point level; a technique
    for bounding poset-law distances *below* the point-level bound (or matching upper bounds via
    an explicit order-only estimator) is still missing — same open item as Attempt C.
@@ -449,13 +500,14 @@ ladder/peel-off procedure geometrically probes; this connection has not been mad
   size-independent pure number. This is the first order-only, information-theoretic statement
   sharing `prereg-003`'s operational-floor *form*; it does not reproduce or bound `prereg-003`'s
   measured constant.
-- **The floor degrades sharply under reshaping toward thin near-horizon diamonds (NUMERICAL, not
-  proved)**: `wp4_kappa_numeric_reference.py` gives `kappa_bar ~ 8e-4` (`delta_tau ~ 35 ell`) for
-  one moderate reference shape, falling as an empirical `kappa_bar ~ lambda^6` (`delta_tau ~
-  ell/lambda^3`) as the diamond narrows toward the horizon at fixed `tau`. A plausibility argument
-  — not a proof, not checked against any PR004 output or shape — for why fine order-only
-  localization from small local patches may be fighting an information-theoretic wall rather than
-  only an implementation defect.
+- **The floor degrades sharply under the named thin near-horizon reshaping (PROVED for that
+  family)**: Proposition 7 gives
+  `kappa_lambda(1)=[a b^3(4a-b)^2/288]lambda^6+O(lambda^7)` and therefore
+  `delta_tau/ell ~ lambda^-3` whenever `b!=4a`. The scanned `a=b=0.3` prefactor is `a^6/32`;
+  its deterministic numerical fit was the precursor and agrees with the asymptotic coefficient.
+  The tuned shape `b=4a` is explicitly excluded from the leading-law claim. Connecting this
+  mathematical family to any PR004 diagnostic remains a plausibility argument only: no PR004
+  output or shape was used.
 - **No physical horizon-limit claim is made.** The floor is a property of one named 1+1D family
   in one named channel at fixed `n`; it is not a statement about generic horizons, higher
   dimensions, or the sealed estimator.

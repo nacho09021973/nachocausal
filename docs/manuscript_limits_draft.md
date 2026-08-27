@@ -1,7 +1,8 @@
 # Manuscript draft — Recoverability limits for finite order-only Schwarzschild patches
 
-> **STATUS: INTERNAL_MANUSCRIPT_DRAFT / PI_REVIEW_OK / POLISH_1_6B_DONE /
-> NUMBER_AUDIT_1_7_PASS_WITH_CAVEATS / NOT_FROZEN / NOT_FOR_ARXIV /
+> **STATUS: MANUSCRIPT_DRAFT / PI_REVIEW_OK / POLISH_1_6B_DONE /
+> NUMBER_AUDIT_1_7_PASS_WITH_CAVEATS / NOT_FROZEN /
+> CLEARED_FOR_ARXIV_BY_PI_2026-08-06 / SEAL_VERIFIED_AT_CLEARANCE /
 > DOES_NOT_TOUCH_SEAL / ITEM_5_DISCHARGED_BY_PHASE_2_2026-07-28.**
 >
 > Assembled from Phase 1 section drafts (pasos 1.2–1.5). Re-merged after 1.6b
@@ -18,9 +19,27 @@
 > - `phase1_section4_5_positive_ledger_draft.md` — §4–§5
 > - `phase1_section6_7_8_draft.md` — §6–§8
 >
-> Before any external circulation: seal verify; optional auditor re-check of Class C
-> numbers. Paso D item 5 was discharged with both tiers on 2026-07-28; this is not a
-> novelty certificate and absolute priority language remains forbidden.
+> **arXiv clearance (PI, 2026-08-06).** The `NOT_FOR_ARXIV` token is withdrawn. The
+> seal-verify precondition below was discharged at clearance:
+> `nachocausal/thresholds.py sha256 = 6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4`,
+> matching `docs/preregistration_002.md`.
+>
+> **What this clearance does and does not override.** The closure note
+> (`docs/program_closure_note_2026-07-30.md`) carries two separate constraints, and only
+> one of them is affected. Clause 3 — manuscripts kept "as a record … not as an
+> announcement" — is **superseded** by this decision. `NO_PUBLIC_NOVELTY_CLAIM` is **not**
+> superseded and remains fully in force: this is a limits paper, it asserts no priority,
+> and posting it is not a novelty claim. The two are compatible precisely because the
+> content already complies.
+>
+> Standing constraints, unchanged: seal verify before any external circulation; optional
+> auditor re-check of Class C numbers. Paso D item 5 was discharged with both tiers on
+> 2026-07-28; this is not a novelty certificate and absolute priority language remains
+> forbidden.
+>
+> **Figure integration (2026-08-26):** the five audited figures in `viz/` are inserted
+> below. The Figure 2 caption carries the laws-versus-realisations distinction required
+> by `viz/README.md`.
 
 ---
 
@@ -114,6 +133,8 @@ labels are used **only to score** an estimator’s output. They do not enter the
 definition of the observable, the selection rule, or the frozen thresholds
 (`[BACKGROUND]` program rule: `CLAUDE.md`, pre-registration discipline). An
 estimator that requires the embedding is outside the order-only channel.
+
+![Figure 1. What the observation channel keeps and discards. Panel A uses the embedding to show coordinates, the horizon label, and the causal past and future of one element. Panel B redraws exactly the same order relations as a Hasse diagram. The colours preserve the correspondence only for explanation; they are not labels available to the estimator. Vertical placement records order height, while horizontal placement and edge crossings carry no information. The order retains causal relations and cardinality, but not coordinates, metric distances, or the drawn horizon label.](../viz/output/fig01_dictionary.png)
 
 ### 1.4 Three objects that must not be conflated
 
@@ -460,6 +481,10 @@ order-only channel inside each fixed sector and shape. Dimensionless targets suc
    contribution here is the **exact finite-\(n\) TV statement** for the sprinkling
    channel, not a new continuum theorem.
 
+![Figure 2. Exact scale blindness at fixed cardinality in the 1+1-dimensional dilation orbit of Theorem 3.1. Panel B is not a second random draw: it is the point set in panel A transported by the order-preserving map \(\Phi_s\). The induced relations agree element by element, with zero discrepancies over the 132 off-diagonal ordered pairs of 12 elements. This coupling illustrates equality of the two poset laws. Two independent sprinklings at different masses do not generally produce the same realised poset; they are independent draws from the same law, which is the statement relevant to every estimator.](../viz/output/fig02_invisible_scale.png)
+
+![Figure 3. Dimensionless information is not removed by Theorem 3.1. Panel A illustrates, in this 1+1-dimensional family, that the comparable-pair fraction varies with relative patch position \(r/r_s\), even though absolute \(r_s\) is invisible at fixed \(n\). Panel B shows independent Monte Carlo estimates at \(r_s=1\) and \(r_s=7\); the bars are one Monte Carlo standard error of the mean over 80 repetitions, and the largest observed gap, 0.0101, is 1.9 standard errors of the difference. Agreement within Monte Carlo error does not establish equivalence: equality of the laws follows from Theorem 3.1.](../viz/output/fig05_what_is_recoverable.png)
+
 ### 3.2 The global event horizon is not a functional of data from a finite causally convex patch
 
 #### Theorem 3.2 (teleological non-identifiability)
@@ -489,6 +514,8 @@ normalized sprinkling measure and the induced order law on \(P\) agree, while
 equal \(T_{\mathrm{EH}}\) on all admissible completions.
 (`[BACKGROUND]` claim grammar: `docs/claim_grammar.md` §3; program synthesis on
 teleology.)
+
+![Figure 4. Schematic continuation dependence behind Theorem 3.2. The blue induced subposet is identical in all three panels, while one element outside the observed patch is added in two different ways. The same internal element \(e\) ceases to be maximal in one continuation and remains maximal in the other. This order diagram illustrates the information pattern; the event-horizon theorem itself is the spacetime-completion argument above. Maximal poset elements are not being identified with horizon points.](../viz/output/fig03_teleology.png)
 
 #### What Theorem 3.2 does not say
 
@@ -1024,6 +1051,84 @@ These are lessons about *this construction class in this bank*, not a theorem th
 the order contains no geometric information (contradicted by §4) and not a theorem
 that every quasi-local continuum proxy is non-identifiable (that would require
 witness pairs or Fisher analysis for each named \(T\), i.e.\ Section 3 methodology).
+
+![Figure 5. The finite-window obstruction for future cardinality at a generic element. In this window, \(\lvert J^+(i)\rvert\) has a predominantly vertical gradient: its correlation with box height is \(-0.951\), corresponding to a linear \(R^2=0.91\), while its whole-window radial correlation is \(+0.164\). Restricting to the displayed radial band leaves only \(n=22\) points and gives \(+0.465\) with a wide 95% interval \([+0.05,+0.74]\). These are diagnostics of this observation window, not a variance decomposition or a universal causal-set constant. The figure concerns a generic element; it does not describe the post-argmax selector regime. Proposition 5.1 below identifies the corresponding window functional exactly.](../viz/output/fig04_box_wall.png)
+
+### 5.4.1 The window-truncation obstruction, exactly
+
+Item 1 of §5.4 — the finite patch's ceiling mistaken for physical structure — admits an
+exact statement, and it is worth making because it separates two effects that a first
+reading of the diagnostic figures fused into one.
+
+Let \(W\) be the observation window in \((t,r)\). Since \(\det g = -1\) in
+\(1{+}1\) Schwarzschild (§2.1), the volume form is \(dt\,dr\) and a sprinkling
+conditioned on \(N=n\) is \(n\) i.i.d. uniform points of \(W\). Fix one of them, \(x\),
+and let
+
+\[
+P \;=\; p(x) \;=\; \frac{\operatorname{Vol}\!\left(J^{+}(x)\cap W\right)}{\operatorname{Vol}(W)},
+\]
+
+a purely geometric quantity independent of \(n\). Each of the remaining \(n-1\) points
+lands in \(J^{+}(x)\cap W\) independently with probability \(P\), so with
+\(K=\lvert J^{+}(x)\rvert\),
+
+\[
+K \mid x, N=n \;\sim\; \operatorname{Binomial}(n-1,\,P).
+\]
+
+**Proposition 5.1 (finite-window attenuation).** Let \(X\) be uniform on \(W\),
+\(P=p(X)\), \(T=t(X)\), and \(K\) as above. Then, exactly,
+
+\[
+\operatorname{Var}(K)=(n-1)^{2}\operatorname{Var}(P)+(n-1)\,\mathbb E[P(1-P)],
+\]
+
+and, writing
+\(A(n)=\bigl(1+\mathbb E[P(1-P)]/((n-1)\operatorname{Var}(P))\bigr)^{-1/2}\),
+
+\[
+\operatorname{Corr}(K,P)=A(n),
+\qquad
+\operatorname{Corr}(K,T)=\operatorname{Corr}(P,T)\cdot A(n).
+\]
+
+*Proof.* \(\operatorname{Var}(K)=\operatorname{Var}(\mathbb E[K\mid X])+\mathbb
+E[\operatorname{Var}(K\mid X)]\). Given \(X\), both \(P\) and \(T\) are constants, so
+\(\operatorname{Cov}(K,P)=(n-1)\operatorname{Var}(P)\) and
+\(\operatorname{Cov}(K,T)=(n-1)\operatorname{Cov}(P,T)\). Substituting gives \(A(n)\).
+\(\square\)
+
+Three consequences matter for the ledger.
+
+1. Both correlations carry the **same** attenuation factor; \(A(n)\) does not depend on
+   what \(K\) is correlated against.
+2. \(\operatorname{Corr}(K,T)\to\operatorname{Corr}(P,T)\): the limit is a **geometric
+   constant of the window**, not a statistical one. It is computable by quadrature with
+   no sprinkling at all.
+3. \(1-A(n)=O(1/n)\), even though the conditional relative fluctuation of \(K\) at fixed
+   \(p\) is \(O(n^{-1/2})\): a correlation is a ratio of second moments, so the sampling
+   noise enters through the variance rather than the standard deviation.
+
+For the window used in the diagnostic figure (\(t\in[0,6]\), \(r\in[1.1,4.0]\),
+\(r_s=1\)), quadrature gives \(\operatorname{Corr}(P,T)=-0.951387\), with
+\(1-A(900)=1.6\times10^{-3}\). The target is a **functional of the window**, not a
+universal constant: over reasonable aspect ratios it ranges from \(-0.907\) to
+\(-0.986\). That is what makes the statement falsifiable at negligible cost — change the
+box and the number must move as the quadrature predicts. Derivation, quadrature and a
+falsifiable control on the binomial premise:
+`emergencia/P1a_ventana_finita_atenuacion.md`, executable
+`emergencia/p1a_ventana_finita_atenuacion_d2.py`.
+
+**What Proposition 5.1 does not cover.** It describes the observable evaluated at a
+*generic* element. It says nothing about an element **selected** by an argmax over the
+whole causet, where the binomial law no longer applies and the relevant phenomenon is
+one of extremes. Empirically the two behave differently in \(n\): the generic-element
+correlation is flat (its limit is the geometric constant above), whereas the boundary
+concentration of selected endpoints *grows* with \(n\) in the P1a selector bank. Both
+are consequences of a finite window; they are **not** the same obstruction, and the
+difference in \(n\)-dependence is what distinguishes them. Conflating them would erase
+the only cheap criterion available for classifying a future candidate.
 
 ### 5.5 What §5 does not authorize
 

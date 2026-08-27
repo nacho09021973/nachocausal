@@ -1311,3 +1311,87 @@ AUDIT_034_VERDICT = AUDIT_PASS_WITH_WARNINGS (0 errores, 1 aviso)
 AUDIT_034_REMEDIATION = APPLIED_CAPTION_ATTRIBUTES_THE_RULE_NOT_THE_PROXY
 AUDIT_CHAIN = 032_FAIL -> 033_PASS_W -> 034_PASS_W -> residuo cerrado
 ```
+
+## 23. Resultado analítico: atenuación de ventana finita (2026-08-07)
+
+Sale de dibujar, no de simular, y es el primer resultado **positivo** que produce el
+tramo de figuras. Documento `emergencia/P1a_ventana_finita_atenuacion.md`, ejecutable
+`emergencia/p1a_ventana_finita_atenuacion_d2.py`, y sección propia en el manuscrito
+(`docs/manuscript_limits_draft.md` §5.4.1), donde convierte el punto 1 de §5.4 —«el
+techo del parche confundido con frontera física»— de lección cualitativa en
+proposición exacta.
+
+**Proposición.** Con `W` la ventana, `P = Vol(J^+(x)∩W)/Vol(W)` y `T = t(X)`:
+condicionado a la posición de `x` y a `N=n`, `K = |J^+(x)| ~ Binomial(n-1, P)`
+exactamente, y de ahí
+
+```text
+Var(K)    = (n-1)^2 Var(P) + (n-1) E[P(1-P)]
+Corr(K,P) = A(n)          Corr(K,T) = Corr(P,T) * A(n)
+A(n)      = (1 + E[P(1-P)]/((n-1) Var(P)))^(-1/2)
+```
+
+Ambas correlaciones llevan **el mismo** factor; `1 - A(n) = O(1/n)` aunque la
+fluctuación relativa condicional de `K` sea `O(n^{-1/2})`, porque una correlación es un
+cociente de momentos segundos.
+
+**Consecuencia para el manuscrito.** El `-0.951` de `fig04` es una correlación muestral
+que estima un objetivo geométrico calculable **por cuadratura sin sortear un punto**:
+`Corr(p(X),t(X)) = -0.951387` para esa ventana. Y ese objetivo es un **funcional de la
+ventana**, de `-0.907` a `-0.986` sobre razones de aspecto razonables: es un enunciado
+sobre el diseño del experimento, no una constante de los conjuntos causales, y por eso
+es falsable barato.
+
+### 23.1 Lo que corrige de la lectura inicial
+
+La primera lectura de las figuras fundió dos cosas en una: la pared de la caja de
+`fig04` y el enriquecimiento fronterizo de los endpoints del selector. **No son el
+mismo obstáculo.** Medido:
+
+- `fig04`, elemento genérico: `corr(|J^+|,t)` es **plana** en `n` (−0.948 a −0.951 sobre
+  un rango de 64× en `n`); su límite es la constante geométrica de arriba;
+- selector, elemento elegido por argmax: enriquecimiento **creciente**, ×1.52 (`n=32`) a
+  ×2.47 (`n=128`).
+
+Dependencia en `n` distinta, luego mecanismos distintos: truncamiento de un observable
+no local en un caso, estadística de extremos en el otro. Tras el argmax la ley binomial
+deja de aplicar. Esa diferencia es el criterio barato para clasificar cualquier
+candidato futuro, y fundir los dos fenómenos lo borra.
+
+### 23.2 Techo de afirmación y control
+
+`BINOMIAL_PREMISE_CONTROL = PASS` (falsable: compara `p(x)` de cuadratura con
+`E[K]/(n-1)` simulado; peor discrepancia `1.9e-03` frente a `3 SE = 4.3e-03`).
+Convergencia de malla `1.9e-06`.
+
+La tabla de correlaciones muestrales frente a `n` que motivó todo esto es **una sola
+realización por `n`**: no separa fluctuación de la dependencia intra-realización (los
+`K_i` de un mismo causet no son independientes) y queda como control cualitativo, no
+como contraste. No se asignan errores estándar iid a la correlación interna de un
+causet; la cuadratura evita el problema calculando el objetivo en vez de estimarlo.
+
+No se afirma nada sobre el régimen del selector, ni que su enriquecimiento crezca sin
+límite (cinco valores de `n`, evidencia monótona en el régimen medido, no ley
+asintótica), ni nada sobre `d >= 3`.
+
+### 23.3 Nota de rama
+
+`docs/manuscript_limits_draft.md` estaba en esta rama **desatrasado** respecto de
+`origin/main`: le faltaba la cabecera de aprobación arXiv de `69bf65c` (2026-08-06).
+Se sincronizó con la versión de `main` **antes** de insertar §5.4.1, para no escribir
+sobre una copia vieja ni perder esa decisión en un merge posterior.
+
+```text
+FINITE_WINDOW_PROPOSITION = PROVED_EXACT_NO_IID_BETWEEN_ELEMENTS_NEEDED
+FINITE_WINDOW_TARGET_fig04 = -0.951387 (cuadratura)
+TARGET_IS_WINDOW_FUNCTIONAL = YES (-0.907 a -0.986)
+ATTENUATION_ORDER = O(1/n)
+GENERIC_ELEMENT_VS_SELECTOR = DISTINCT_MECHANISMS_DISTINCT_N_DEPENDENCE
+SELECTOR_REGIME = OUT_OF_SCOPE_ARGMAX_BREAKS_THE_BINOMIAL_LAW
+MANUSCRIPT_SECTION = 5.4.1_INSERTED
+MANUSCRIPT_SYNCED_WITH_MAIN_BEFORE_EDIT = YES
+HKM_MALAMENT_BOMBELLI_NOLDUS_TAFOYA = UNVERIFIED_NOT_IN_BIBLIOTECA
+NEW_STOCHASTIC_DATA_WRITTEN = NO
+SEED_BAND_CONSUMED = NO
+SEAL_TOUCHED = NO
+```
