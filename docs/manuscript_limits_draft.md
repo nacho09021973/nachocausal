@@ -549,13 +549,15 @@ trivial** (\(I\equiv 0\)).
 *Reading.* Fixing a Kruskal box pins the horizon at \(U=0\) for every mass; the
 construction is Theorem 3.1 in disguise (annex Prop.\ 1).
 
-**Proposition 3.4 (fixed EF coordinate box: non-regularity).** `[PROVED]` (sketch in annex)  
+**Proposition 3.4 (fixed EF coordinate box: non-regularity).** `[PROVED]`
 On a fixed Eddington–Finkelstein coordinate rectangle, the volume measure is Lebesgue
 for every mass, but the support of the law in global null coordinates moves with the
 parameter at nonzero speed. Hellinger distance is first order in the shift: quadratic
 mean differentiability fails and a finite Fisher information is not defined. A weaker
 total-variation bound still yields an order-\(1/n\) two-point floor at the point
 level; whether the poset channel attains it is open (annex Props.\ 2–3).
+The complete boundary-motion and Hellinger proof is
+`research_program/work_packages/wp6_domain_bridge_fixed_ef_box.md` §§2–4.
 
 #### 3.3.2 The diamond family with fixed EF corners
 

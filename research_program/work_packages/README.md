@@ -17,10 +17,12 @@ Cada paquete debería fijar:
 - `wp6_d2_geometric_fisher_retention.md`:
   `S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY`, with
   `STOP_AFTER_S2 = SI`.
-- `../../docs/physical_reentry_audit_001_2026-08-28.md`:
-  `PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_EXACT_FIRST_OBLIGATION`,
-  `FIRST_PHYSICAL_OBSTACLE = DOMAIN_BRIDGE`, and
-  `MOVING_SUPPORT_QMD_STATUS = OPEN`.
+- `wp6_domain_bridge_fixed_ef_box.md`:
+  `PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_POINT_QMD_OBSTRUCTION_PROVED`,
+  `COMMON_POINT_ISOMORPHISM = REFUTED`, and
+  `MOVING_SUPPORT_QMD_STATUS = PROVED_NON_QMD_FOR_POINT_EXPERIMENT`.
+  `DOMAIN_BRIDGE = OPEN_AT_FINITE_CHANNEL`: regularity after the finite
+  permutation/poset channel remains open and is not authorized.
 
 The Fisher branch is a frozen structural tool. No next run, S3, dimensional
 extension, new observable, or benchmark bridge is authorized by this index.

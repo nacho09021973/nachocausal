@@ -80,7 +80,7 @@ only through the causal order. Global null coordinates exist (see §4): `Ṽ = v
 `Ũ = -e^{-v/(2tau)} W_tau(r)` with `W_tau(r) := e^{r/tau} (r/tau - 1)`, which is smooth and
 strictly increasing (`W' = r e^{r/tau} / tau^2 > 0`).
 
-**Proposition 2 (non-regularity; sketch).** The image of the uniform law on `B` in `(Ũ, v)`
+**Proposition 2 (non-regularity).** The image of the uniform law on `B` in `(Ũ, v)`
 coordinates has support `S_tau = { (Ũ, v) : v in [0,T], Ũ in -e^{-v/(2tau)} [W_tau(r_b), W_tau(r_a)] }`,
 whose boundary curves move at nonzero speed in `tau` (for generic `r_a, r_b`), while the density
 is bounded below by a positive constant up to the boundary. Consequently, for small `delta`,
@@ -89,7 +89,10 @@ is bounded below by a positive constant up to the boundary. Consequently, for sm
 
 (one law assigns zero and the other at least a fixed positive density on a region of area
 `asymp |delta|`). Hellinger is **first order** in the shift: QMD fails, the Fisher information of
-the family is not defined as a finite quadratic form, and the expansion of §1 is false. ∎ (sketch)
+the family is not defined as a finite quadratic form, and the expansion of §1 is false. ∎
+
+The boundary-speed, symmetric-difference-area, density-lower-bound, and
+Hellinger steps are proved in `wp6_domain_bridge_fixed_ef_box.md` §§2--4.
 
 This is the classical support-parameter phenomenon (cf. `Uniform[0, theta]`): the family is
 non-regular, and `1/sqrt(n)` is not the natural two-point scale.

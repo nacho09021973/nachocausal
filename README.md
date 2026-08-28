@@ -93,9 +93,11 @@ Fisher retention for the same channel. S1/S2 are now frozen as a
 **structural tool**: they make no horizon claim and do not automatically
 transport to the sealed Schwarzschild benchmark. The physical re-entry audit
 finds exact transport only for the product-order/rank-permutation skeleton at
-fixed cardinality; the first missing statistical object is `DOMAIN_BRIDGE`.
-The stronger claim that moving support makes the sealed family non-QMD remains
-open because the repository contains only a proof sketch. See
+fixed cardinality. The point experiment is now proved non-QMD, which rules out
+a common parameter-independent statistical isomorphism to the regular S1/S2
+experiment. The remaining `DOMAIN_BRIDGE` question is regularity after the
+finite rank/permutation or unlabeled-poset channel; it is open and not
+authorized. See
 [`wp6_d2_geometric_tangent_classification.md`](research_program/work_packages/wp6_d2_geometric_tangent_classification.md),
 [`wp6_d2_geometric_fisher_retention.md`](research_program/work_packages/wp6_d2_geometric_fisher_retention.md),
 and the [physical re-entry audit](docs/physical_reentry_audit_001_2026-08-28.md).
@@ -112,9 +114,11 @@ GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
 S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY
 STOP_AFTER_S2 = SI
 FISHER_BRANCH_ROLE = STRUCTURAL_TOOL
-PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_EXACT_FIRST_OBLIGATION
-FIRST_PHYSICAL_OBSTACLE = DOMAIN_BRIDGE
-MOVING_SUPPORT_QMD_STATUS = OPEN
+PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_POINT_QMD_OBSTRUCTION_PROVED
+COMMON_POINT_ISOMORPHISM = REFUTED
+MOVING_SUPPORT_QMD_STATUS = PROVED_NON_QMD_FOR_POINT_EXPERIMENT
+FINITE_CHANNEL_REGULARITY = OPEN
+DOMAIN_BRIDGE = OPEN_AT_FINITE_CHANNEL
 NEXT_RUN_AUTHORIZED = NO
 TARGET_SUBCLASS = SYMMETRIC_RANK_ONE_COPULA_TANGENTS
 GENERIC_BILINEAR_SEPARABLE_EXTENSION = OPEN_NOT_ASSUMED

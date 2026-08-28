@@ -24,18 +24,23 @@ NO_HORIZON_CLAIM
 NO_PRIORITY_CLAIM
 FISHER_BRANCH_ROLE = STRUCTURAL_TOOL
 
-PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_EXACT_FIRST_OBLIGATION
-FIRST_PHYSICAL_OBSTACLE = DOMAIN_BRIDGE
-MOVING_SUPPORT_QMD_STATUS = OPEN
+PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_POINT_QMD_OBSTRUCTION_PROVED
+COMMON_POINT_ISOMORPHISM = REFUTED
+MOVING_SUPPORT_QMD_STATUS = PROVED_NON_QMD_FOR_POINT_EXPERIMENT
+FINITE_CHANNEL_REGULARITY = OPEN
+DOMAIN_BRIDGE = OPEN_AT_FINITE_CHANNEL
 NEXT_RUN_AUTHORIZED = NO
 ```
 
 La auditoría autoritativa de reingreso es
-`docs/physical_reentry_audit_001_2026-08-28.md`. Su resultado no autoriza un
-ataque al puente: primero exige una decisión nueva del PI. Tampoco permite
-inferir que soporte móvil implique automáticamente no-QMD; para el patch
-sellado faltan la velocidad normal, la cota de área de la diferencia simétrica
-y la cota inferior de densidad que cerrarían el argumento Hellinger.
+`docs/physical_reentry_audit_001_2026-08-28.md`. La decisión acotada del PI y
+la obstrucción negativa del puente puntual están registrados respectivamente en
+`docs/program_domain_bridge_authorization_2026-08-28.md` y
+`research_program/work_packages/wp6_domain_bridge_fixed_ef_box.md`. La prueba
+completa la velocidad normal, la cota de área de la diferencia simétrica y la
+cota inferior de densidad. No permite inferir no-QMD para la ley después del
+canal finito; `FINITE_CHANNEL_REGULARITY` y el residuo de `DOMAIN_BRIDGE`
+siguen abiertos y no autorizados.
 
 ```text
 GOBERNANZA: docs/program_reopening_note_2026-08-28_R4.md (firmada 2026-08-28)

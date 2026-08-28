@@ -410,3 +410,27 @@ dominio (teorema nuevo, autorización nueva); (b) volver al observable
 de horizonte como otro gate, sin Fisher como programa.
 
 Este run no autoriza el siguiente cálculo.
+
+## 16. POST-AUDIT DOMAIN-BRIDGE RESOLUTION — 2026-08-28
+
+Tras la instrucción explícita del PI registrada en
+`docs/program_domain_bridge_authorization_2026-08-28.md`, la primera
+obligación exacta se resolvió analíticamente en
+`research_program/work_packages/wp6_domain_bridge_fixed_ef_box.md`.
+
+Las velocidades de los extremos son no nulas casi en todo `v`, la diferencia
+simétrica de soportes tiene área `Theta(|delta|)` y la densidad transportada
+tiene una cota inferior positiva localmente uniforme en `tau`. Por tanto:
+
+```text
+H^2(p_tau,p_{tau+delta}) >= c_tau |delta|
+MOVING_SUPPORT_QMD_STATUS = PROVED_NON_QMD_FOR_POINT_EXPERIMENT
+COMMON_POINT_ISOMORPHISM = REFUTED
+FINITE_CHANNEL_REGULARITY = OPEN
+DOMAIN_BRIDGE = OPEN_AT_FINITE_CHANNEL
+NEXT_RUN_AUTHORIZED = NO
+```
+
+El resultado negativo es invariante bajo cualquier isomorfismo estadístico
+común e independiente del parámetro. No afirma no-QMD después del canal de
+permutaciones o posets no etiquetados, ni abre el puente Fisher→localización.
