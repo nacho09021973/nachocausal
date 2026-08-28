@@ -15,6 +15,90 @@ and Alloy.
 The earlier [15 July operational plan](docs/plan_operativo_15_julio_2026.md) remains historical
 input where not superseded by the current roadmap.
 
+## Current theory result — Fisher efficiency of unlabeled 2D posets
+
+The rank-to-poset branch now contains a finite-\(N\) theorem for the exact
+channel
+
+\[
+\Pi_N\longmapsto[P_{\Pi_N}],
+\]
+
+where `Pi_N` is uniform on `S_N` and `[P_Pi_N]` is the isomorphism class of the
+induced oriented two-dimensional poset. For symmetric separable scores
+
+\[
+S_N(\pi)=2\sum_{i=1}^N a_{i,N}a_{\pi(i)},
+\]
+
+assume
+
+\[
+\sup_N\max_i|a_{i,N}|<\infty,
+\qquad
+\sum_i a_{i,N}=0,
+\qquad
+\frac1N\sum_i a_{i,N}^2\longrightarrow c>0.
+\]
+
+Writing
+
+\[
+I_N^\Pi=\mathbb E[S_N(\Pi_N)^2],
+\qquad
+I_N^{[P]}=
+\mathbb E\!\left[\mathbb E[S_N(\Pi_N)\mid[P_{\Pi_N}]]^2\right],
+\]
+
+the proved result is
+
+\[
+\boxed{
+1-\frac{I_N^{[P]}}{I_N^\Pi}=O(N^{-1/2}),
+\qquad
+\frac{I_N^{[P]}}{I_N^\Pi}\longrightarrow1.
+}
+\]
+
+The argument does not require asymptotic uniqueness of the permutation
+representation. It combines exact zero conditional variance on the typical
+prime-root/leaf-or-twin sector, an `O(N^{-1})` exceptional-event probability,
+and the explicit uniform fourth-moment bound
+
+\[
+\mathbb E[S_N(\Pi_N)^4]\le240N^2M^8.
+\]
+
+For the frozen sinusoidal tangent
+\(a_{i,N}=\mathbb E[\sin(2\pi U_{(i)})]\), one has \(c=1/2\), hence
+
+\[
+I_N^\Pi=N+o(N),
+\qquad
+I_N^{[P]}=N-o(N).
+\]
+
+The complete definitions, finite falsifiers, source transport and proofs are in
+[`research_program/work_packages/wp6_d2_modular_fiber_score.md`](research_program/work_packages/wp6_d2_modular_fiber_score.md).
+The priority audit has passed only provisionally: the narrow theorem is
+potentially new, while the general framework of asymptotically sufficient
+quantizations is not claimed as new. No universality claim is made.
+
+```text
+FAMILY_FROZEN
+FINITE_N_POSET_LOSS_PROVED
+TYPICAL_FIBER_ZERO_LOSS = PROVED
+ASYMPTOTIC_POSET_FISHER_EFFICIENCY_FOR_BOUNDED_SEPARABLE_SCORES = PROVED
+THEOREM_PROVED_PRIORITY_AUDIT_PASSED_PROVISIONALLY
+POTENTIALLY_NOVEL_THEOREM_NOT_NOVEL_FRAMEWORK
+NO_UNIVERSALITY_CLAIM
+NEXT_TARGET = GEOMETRIC_TANGENT_CLASSIFICATION
+TARGET_SUBCLASS = SYMMETRIC_RANK_ONE_COPULA_TANGENTS
+GENERIC_BILINEAR_SEPARABLE_EXTENSION = OPEN_NOT_ASSUMED
+RATE_IMPROVEMENT = DEFERRED
+PRIORITY = PROVISIONAL_NOT_SEALED
+```
+
 The project starts deliberately narrow and disciplined: reproduce, blind to coordinates and
 under a success/failure criterion frozen in advance, the known-truth detection of a
 Schwarzschild event horizon in a 1+1D causal set, using the order-only observable validated
