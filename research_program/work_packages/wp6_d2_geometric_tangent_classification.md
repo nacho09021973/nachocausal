@@ -1,7 +1,7 @@
 # WP6 — Primer puente de tangente geométrico a score de rangos
 
 ```text
-ESTADO: GEOMETRIC_TANGENT_CLASSIFICATION = OPEN_WITH_EXACT_OBLIGATION
+ESTADO: GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
 ALCANCE: d=2, diamante plano de Minkowski en coordenadas nulas,
          sector rank-one simétrico. No es reconstrucción. No es horizonte.
 NATURALEZA: deductivo. Cero semillas, cero simulación, cero ejecución, sello intacto.
@@ -9,9 +9,8 @@ GOBERNANZA: docs/program_reopening_note_2026-08-28_R4.md (firmada 2026-08-28)
 FECHA: 2026-08-28
 SELLO: 6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4 intacto
 SEMILLAS: banda virgen [2,000,000–2,999,999] sin quemar
-GATE_AUDIT: comite 051 — T1-T19 aplicadas en este texto; G1 firmada;
-            G2 pendiente (hoja de ruta §2.2, commit propio)
-OBLIGACION_EXACTA: G2
+GATE_AUDIT: comite 051 — T1-T19 en 0e3a997; G1 en b0694dc; G2 en 0290d99
+OBLIGACION_EXACTA: SATISFIED_IN_HISTORY
 NO_HORIZON_CLAIM
 MINKOWSKI_DIAMOND_PERTURBATIVE
 S2_NOT_OPENED
@@ -50,26 +49,20 @@ Se reutilizan sin redemostrarlos:
    `wp6_d2_modular_fiber_score.md`, §7.
 
 ```text
-GEOMETRIC_TANGENT_CLASSIFICATION = OPEN_WITH_EXACT_OBLIGATION
-OBLIGACION_EXACTA = G2
+GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
+S2_NOT_OPENED
 S1_GEOMETRIC_TO_COPULA_BRIDGE = PROVED
 ROADMAP_NORMALIZATION_MISMATCH = CONFIRMED
 SYMMETRIC_RANK_ONE_SECTOR_ONLY
-S2_NOT_OPENED
 NO_HORIZON_CLAIM
 MINKOWSKI_DIAMOND_PERTURBATIVE
 NO_UNIVERSALITY_CLAIM
 ```
 
 Los teoremas internos (Teorema 6, Teorema 7, Lema 9.2, Proposición 9.4) se
-afirman probados en su propio enunciado. El marcador de fase permanece en
-`OPEN_WITH_EXACT_OBLIGATION` porque, según la hoja de ruta §3 y R4 §8, el
-token de fase no es una mejora documental sino la **puerta lógica** que
-autoriza S2. `OPEN` aquí **no** significa que la demostración tenga un hueco
-(R4 §8). G1 está firmada. T1–T3 están aplicadas en este texto. La obligación
-exacta que queda es G2: enmendar la hoja de ruta §2.2 a Convención B en
-commit propio, fechado antes de cualquier reafirmación del token de fase.
-S2 no se abre.
+afirman probados en su propio enunciado. El marcador de fase es `PROVED`
+porque G1, la prueba S1 y G2 ya están en historia (`b0694dc`, `0e3a997`,
+`0290d99`). S2 no se abre.
 
 ## 1. Experimento exacto y cuatro objetos distintos
 
@@ -1264,8 +1257,8 @@ commit propio. (11.6) es un corolario condicional; no es el entregable
 modular de S2.
 
 ```text
-GEOMETRIC_TANGENT_CLASSIFICATION = OPEN_WITH_EXACT_OBLIGATION
-OBLIGACION_EXACTA = G2
+GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
+S2_NOT_OPENED
 S1_GEOMETRIC_TO_COPULA_BRIDGE = PROVED
 FACTOR_TWO_INDEPENDENT_CHECK = PASS
 RANK_PROFILE_HYPOTHESES = PROVED
@@ -1273,7 +1266,6 @@ ROADMAP_NORMALIZATION_MISMATCH = CONFIRMED
 ASYMMETRIC_RANK_ONE_SECTOR = CLASSIFIED_BUT_NOT_PROMOTED
 SYMMETRIC_RANK_ONE_SECTOR_ONLY
 GENERIC_BILINEAR_SEPARABLE_EXTENSION = OPEN_NOT_ASSUMED
-S2_NOT_OPENED
 NO_HORIZON_CLAIM
 MINKOWSKI_DIAMOND_PERTURBATIVE
 NO_UNIVERSALITY_CLAIM
