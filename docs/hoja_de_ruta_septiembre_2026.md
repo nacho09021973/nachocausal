@@ -7,11 +7,41 @@
 > antes de cerrar el puente geométrico. Mantener `FAMILY_FROZEN`,
 > `NO_UNIVERSALITY_CLAIM` y `PRIORITY = PROVISIONAL_NOT_SEALED`.
 
+## Checkpoint vigente — 2026-08-28
+
+Las fases S1 y S2 que el plan inferior describía como futuras ya están
+cerradas. La secuencia de §§0–14 se conserva como registro de planificación,
+pero no constituye autorización para reabrir S3–S7. El estado operativo que
+manda al reanudar desde otro clon es:
+
+```text
+GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
+S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY
+STOP_AFTER_S2 = SI
+S3_NOT_OPENED
+S4_NOT_OPENED
+NO_HORIZON_CLAIM
+NO_PRIORITY_CLAIM
+FISHER_BRANCH_ROLE = STRUCTURAL_TOOL
+
+PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_EXACT_FIRST_OBLIGATION
+FIRST_PHYSICAL_OBSTACLE = DOMAIN_BRIDGE
+MOVING_SUPPORT_QMD_STATUS = OPEN
+NEXT_RUN_AUTHORIZED = NO
+```
+
+La auditoría autoritativa de reingreso es
+`docs/physical_reentry_audit_001_2026-08-28.md`. Su resultado no autoriza un
+ataque al puente: primero exige una decisión nueva del PI. Tampoco permite
+inferir que soporte móvil implique automáticamente no-QMD; para el patch
+sellado faltan la velocidad normal, la cota de área de la diferencia simétrica
+y la cota inferior de densidad que cerrarían el argumento Hellinger.
+
 ```text
 GOBERNANZA: docs/program_reopening_note_2026-08-28_R4.md (firmada 2026-08-28)
 G2: §2.2 enmendada a Convención B el 2026-08-28
     (lambda parametriza P psi, no el tangente de copula)
-S2_NOT_OPENED
+PLAN_INFERIOR: REGISTRO_HISTORICO_DE_SECUENCIACION
 ```
 
 ## 0. Punto de partida preservado
@@ -586,7 +616,7 @@ resultado antes de demostrar sus gates.
 3. Verificar que no existe otro objetivo `in_progress`.
 4. Copiar literalmente las definiciones de canal y score ya probadas; no
    reconstruirlas de memoria.
-5. Abrir sólo S1.
+5. No abrir ninguna fase nueva: aplicar el checkpoint vigente de cabecera.
 6. Antes de cada cambio de fase, emitir el veredicto permitido y preservar el
    diff correspondiente.
 7. Si aparece una contradicción con el teorema combinatorio, detener la hoja y

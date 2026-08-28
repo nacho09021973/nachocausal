@@ -4,6 +4,29 @@
 > autoriza cambios en el camino sellado, y no convierte ninguna conjetura conceptual en resultado.
 > Su función es separar el objetivo científico general del estado actual de un estimador concreto.
 
+## Checkpoint vigente — 2026-08-28
+
+La rama Fisher cerró S1 y S2 y queda congelada como herramienta estructural.
+La auditoría de reingreso al benchmark Schwarzschild transporta exactamente el
+orden producto en nulas y, a `N=n`, el esqueleto
+`Pi_n -> [P_{Pi_n}]`; no transporta todavía el experimento paramétrico regular
+de S1/S2. El primer obstáculo es `DOMAIN_BRIDGE`. La no-QMD por soporte móvil
+no está demostrada para el patch sellado: sólo existe el bosquejo de WP4
+Prop. 2, por lo que su estado es `OPEN`.
+
+```text
+GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
+S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY
+FISHER_BRANCH_ROLE = STRUCTURAL_TOOL
+PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_EXACT_FIRST_OBLIGATION
+FIRST_PHYSICAL_OBSTACLE = DOMAIN_BRIDGE
+MOVING_SUPPORT_QMD_STATUS = OPEN
+NEXT_RUN_AUTHORIZED = NO
+```
+
+Fuentes de reanudación: `docs/hoja_de_ruta_septiembre_2026.md` y
+`docs/physical_reentry_audit_001_2026-08-28.md`.
+
 ## Estructura de carpeta
 
 Esta carpeta existe para desacoplar el **programa de investigación** de:
@@ -363,13 +386,11 @@ Hasta nuevo aviso, el lenguaje recomendado es:
 - **no admisible todavía como resultado:** "reconstruction", "universal information limit",
   "gravitational uncertainty principle", "no-go theorem" salvo prueba explícita.
 
-## 10. Siguiente paso concreto
+## 10. Siguiente gate concreto
 
-El siguiente paso útil no es código nuevo. Es cerrar **WP1 + WP2**:
-
-1. redactar `research_program/taxonomy/identifiability_taxonomy.md`;
-2. extraer de `biblioteca/` la primera matriz bibliográfica centrada en identificabilidad;
-3. decidir, con esa base, cuál es la primera familia `P_n(theta)` que merece un ataque analítico.
-
-Esa secuencia mantiene el foco en el objetivo final: el límite de la indeterminación geométrica en
-general, no el rendimiento aislado del algoritmo actual.
+No hay siguiente run autorizado. Una continuación requiere una decisión nueva
+del PI sobre `DOMAIN_BRIDGE`. Si se autoriza más adelante, la primera
+bifurcación ya delimitada será demostrar o refutar, para el patch sellado, las
+premisas geométricas y de densidad necesarias para la cota Hellinger lineal.
+No se abre desde este README ningún cálculo, observable, semilla, S3, 2+1 ni
+3+1.

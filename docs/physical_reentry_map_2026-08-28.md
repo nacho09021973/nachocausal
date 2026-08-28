@@ -34,8 +34,9 @@ Resultado: **PASS** acotado en parche finito
 (`docs/preregistration_002_result.md:18-75`). No es el horizonte global.
 La señal es sensible a truncación de singularidad: C3-early
 `REJECTED_HAYWARD` (`docs/comite/comite_decision_042_c1-c5-localizer-line-closure.md:48-53`).
-Prop. 3.4: este diseño es **no regular** para Fisher
-(`docs/manuscript_limits_draft.md:552-558`).
+Prop. 3.4 afirma no regularidad para Fisher, pero remite al bosquejo de WP4
+Prop. 2; la auditoría 1 no considera cerrada esa prueba
+(`docs/physical_reentry_audit_001_2026-08-28.md` §6).
 
 **Parche B — diamantes de límites (Teoremas 3.8–3.9).**
 `D_τ = J⁺_τ(p) ∩ J⁻_τ(q)` con esquinas EF fijas, `r_q>0` (singularidad
@@ -57,27 +58,30 @@ SEALED_EF_BOX     !=  LIMITS_NULL_DIAMOND  !=  S2_MINKOWSKI_NULL_BOX
 
 | Estructura que S2 usa | ¿Sobrevive en el parche A (sellado)? | Fuente |
 |---|---|---|
-| Orden = orden producto de dos nulas | **No.** En `(t*,r)` el orden no es el producto de las coordenadas. | WP6 dicotomía §1; prereg 001 :61 |
+| Orden = orden producto de dos nulas | **Sí, tras pasar a las nulas globales `(Ũ,v)`.** No es producto en las coordenadas EF originales. | WP4 floor :115-124; auditoría 1 §§5-6 |
 | Densidad = factor conforme `Omega` | **No en esas coordenadas.** `det g=-1` ⇒ volumen de Lebesgue en EF; la geometría está en los conos, no en la densidad de sprinkling. | manuscript_limits :235-245, :553 |
-| PIT / cópula como isomorfismo de orden | **No.** El PIT exige caja nula con marginales estrictamente crecientes. | WP6 dicotomía Lema A; R4 §7bis |
+| PIT / cópula como isomorfismo de orden | **No transportado literalmente.** Los rangos existen, pero uniformar marginales no convierte el soporte restringido en el cuadrado completo de S1. | WP6 dicotomía Lema A; auditoría 1 §8 |
 | Dominio = rectángulo nulo fijo | **No.** El rectángulo EF, en nulas, **mueve el soporte** con el parámetro. | Prop. 3.4 :552-558 |
-| Fisher de un tangente conforme en `ε=0` | **No definido** sobre el parche A (QMD falla). | Prop. 3.4 |
-| Canal `Pi_N → [P]` sobre permutación de rangos | Solo tiene sentido nativo en parche B o C. | S1 §5.2; Teorema 8 |
+| Fisher de un tangente conforme en `ε=0` | **No habilitado para el parche A.** No hay puente paramétrico regular; la afirmación adicional de fallo QMD permanece `OPEN`. | auditoría 1 §§6, 9 |
+| Canal `Pi_N → [P]` sobre permutación de rangos | **Sí como esqueleto latente a `N=n` fijo.** No identifica por sí mismo la ley paramétrica con S1/S2. | WP4 floor :115-124; auditoría 1 §5 |
 | Observable de truncación `O` / futuros | Es el del PASS sellado; **no** es el score Fisher de S2. | prereg 001; prereg 002 result |
 | Señal de incompletitud geodésica | Presente en A (PASS vs MINK); falla Hayward. Ausente por construcción en C. | C3-early; EGS |
 
 **Falsificador: se activa para la identificación ingenua S2 = benchmark.**
-El cambio de dominio destruye la estructura (producto nulo + PIT + QMD)
-que permitía el análisis S1/S2. No se fuerza el puente.
+El orden producto y el cociente por permutación sobreviven, pero el cambio de
+dominio no preserva ya demostrado el experimento de soporte fijo, PIT sobre el
+cuadrado completo y QMD que S1/S2 necesita. No se fuerza el puente.
 
 ```text
-BENCHMARK_COORDINATE_BRIDGE = OPEN
+DOMAIN_BRIDGE = OPEN
 NAIVE_S2_EQUALS_SEALED_BENCHMARK = REFUTED_BY_EXISTING_RECORD
 NO_NEW_RUNS_REQUIRED_FOR_THIS_NEGATIVE
+MOVING_SUPPORT_QMD_STATUS = OPEN
 ```
 
-Este negativo **ya estaba** en R4 §7bis, Prop. 3.4 y el comité 049.
-Esta auditoría no lo descubre: lo **nombra como obstáculo de reentrada**.
+La no rectangularidad ya estaba en R4 §7bis, WP4 Prop. 2 y el comité 049.
+La afirmación más fuerte de no-QMD no se promociona: WP4 la presenta como
+`sketch` y Prop. 3.4 la repite sin completar la cota Hellinger.
 
 ## 3. Qué sí puede ponerse en lenguaje de canal, sin runs nuevos
 
@@ -99,20 +103,22 @@ Sin matemática nueva y sin ejecución:
 
 Invariancia marginal / Teorema C (separable ⇔ plano ⇔ invisible a
 rangos) vive en **cajas nulas**. Aplicarla al rectángulo EF requiere
-antes el cambio de dominio que Prop. 3.4 dice que no es regular.
+antes un puente de dominio y de experimento estadístico que no está en el
+registro.
 
 ## 4. Obstáculo físico siguiente, ya documentado
 
 No es «correr otro estimador». Es este, y ya está escrito:
 
-> El instrumento sellado vive en un rectángulo EF **no regular para
-> Fisher** (Prop. 3.4), y su señal `O` es de **truncación / funnel de
+> El instrumento sellado vive en un rectángulo EF cuya imagen nula no es
+> la caja fija de S1/S2 y cuya regularidad QMD no está cerrada; su señal `O`
+> es de **truncación / funnel de
 > singularidad** (Hayward), no el tangente de cópula de S2. El único
 > parche Schwarzschild que *sí* es caja nula es la familia de diamantes
 > de límites, que no es el experimento del PASS y cuya lección es un
 > suelo, no una retención.
 
-Eso es el obstáculo de reentrada. No hace falta un run para saberlo.
+El primer obstáculo es `DOMAIN_BRIDGE`. No hace falta un run para identificarlo.
 
 ## 5. Lo que esta auditoría no decide
 
@@ -133,7 +139,11 @@ T20 sigue fuera.
 ```text
 S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY   (cerrado)
 STOP_AFTER_S2 = SI
-PHYSICAL_REENTRY_AUDIT = COMPLETE_NEGATIVE_ON_NAIVE_BRIDGE
+FISHER_BRANCH_ROLE = STRUCTURAL_TOOL
+PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_EXACT_FIRST_OBLIGATION
+FIRST_PHYSICAL_OBSTACLE = DOMAIN_BRIDGE
+MOVING_SUPPORT_QMD_STATUS = OPEN
 NO_FORCED_BRIDGE
 NO_NEW_EXECUTION
+NEXT_RUN_AUTHORIZED = NO
 ```

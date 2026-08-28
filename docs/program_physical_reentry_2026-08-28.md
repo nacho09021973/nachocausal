@@ -76,3 +76,22 @@ DECISION_S3: NOT_AUTHORIZED
 DECISION_PHYSICAL_REENTRY = OPTION_1
 NO_NEW_EXECUTION = SI
 ```
+
+## 4. Resultado de la auditoría 1
+
+La auditoría documental posterior está en
+`docs/physical_reentry_audit_001_2026-08-28.md` y sustituye cualquier lectura
+negativa automática basada sólo en soporte móvil.
+
+```text
+PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_EXACT_FIRST_OBLIGATION
+FIRST_PHYSICAL_OBSTACLE = DOMAIN_BRIDGE
+MOVING_SUPPORT_QMD_STATUS = OPEN
+NEXT_RUN_AUTHORIZED = NO
+```
+
+Transporte exacto ya disponible: orden producto en coordenadas nulas y, en
+cada estrato `N=n`, representación latente `Pi_n -> [P_{Pi_n}]`. No está
+demostrado el transporte de la familia física a un experimento paramétrico
+regular de S1/S2. WP4 Prop. 2 sólo bosqueja la cota Hellinger lineal; no cierra
+la no-QMD para los extremos sellados.

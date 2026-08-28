@@ -11,9 +11,11 @@ For any AI or agent connecting to this repo, read [INSTRUCCIONES.md](INSTRUCCION
 the available machinery and the correct workflow between committee, auditor, external consultors,
 and Alloy.
 
-**Current program roadmap:** [post-N1–N5 limits-paper route](tarea_grok_2.md).
-The earlier [15 July operational plan](docs/plan_operativo_15_julio_2026.md) remains historical
-input where not superseded by the current roadmap.
+**Current program roadmap:** [September 2026 checkpoint](docs/hoja_de_ruta_septiembre_2026.md).
+The [post-N1–N5 limits-paper route](tarea_grok_2.md), the
+[15 July operational plan](docs/plan_operativo_15_julio_2026.md), and the
+[original horizon roadmap](docs/roadmap.md) remain historical input where not superseded by that
+checkpoint.
 
 ## Current theory result — Fisher efficiency of unlabeled 2D posets
 
@@ -84,6 +86,20 @@ The priority audit has passed only provisionally: the narrow theorem is
 potentially new, while the general framework of asymptotically sufficient
 quantizations is not claimed as new. No universality claim is made.
 
+The geometric branch is also closed through S2. S1 classifies exactly the
+symmetric rank-one conformal tangents on a fixed Minkowski null diamond, and
+S2 assembles that classification with the theorem above to prove relative
+Fisher retention for the same channel. S1/S2 are now frozen as a
+**structural tool**: they make no horizon claim and do not automatically
+transport to the sealed Schwarzschild benchmark. The physical re-entry audit
+finds exact transport only for the product-order/rank-permutation skeleton at
+fixed cardinality; the first missing statistical object is `DOMAIN_BRIDGE`.
+The stronger claim that moving support makes the sealed family non-QMD remains
+open because the repository contains only a proof sketch. See
+[`wp6_d2_geometric_tangent_classification.md`](research_program/work_packages/wp6_d2_geometric_tangent_classification.md),
+[`wp6_d2_geometric_fisher_retention.md`](research_program/work_packages/wp6_d2_geometric_fisher_retention.md),
+and the [physical re-entry audit](docs/physical_reentry_audit_001_2026-08-28.md).
+
 ```text
 FAMILY_FROZEN
 FINITE_N_POSET_LOSS_PROVED
@@ -92,7 +108,14 @@ ASYMPTOTIC_POSET_FISHER_EFFICIENCY_FOR_BOUNDED_SEPARABLE_SCORES = PROVED
 THEOREM_PROVED_PRIORITY_AUDIT_PASSED_PROVISIONALLY
 POTENTIALLY_NOVEL_THEOREM_NOT_NOVEL_FRAMEWORK
 NO_UNIVERSALITY_CLAIM
-NEXT_TARGET = GEOMETRIC_TANGENT_CLASSIFICATION
+GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
+S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY
+STOP_AFTER_S2 = SI
+FISHER_BRANCH_ROLE = STRUCTURAL_TOOL
+PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_EXACT_FIRST_OBLIGATION
+FIRST_PHYSICAL_OBSTACLE = DOMAIN_BRIDGE
+MOVING_SUPPORT_QMD_STATUS = OPEN
+NEXT_RUN_AUTHORIZED = NO
 TARGET_SUBCLASS = SYMMETRIC_RANK_ONE_COPULA_TANGENTS
 GENERIC_BILINEAR_SEPARABLE_EXTENSION = OPEN_NOT_ASSUMED
 RATE_IMPROVEMENT = DEFERRED

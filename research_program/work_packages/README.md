@@ -10,6 +10,21 @@ Cada paquete debería fijar:
 - artefactos esperados;
 - criterio de cierre o de abandono.
 
+## Current S1/S2 and physical re-entry checkpoint
+
+- `wp6_d2_geometric_tangent_classification.md`:
+  `GEOMETRIC_TANGENT_CLASSIFICATION = PROVED`.
+- `wp6_d2_geometric_fisher_retention.md`:
+  `S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY`, with
+  `STOP_AFTER_S2 = SI`.
+- `../../docs/physical_reentry_audit_001_2026-08-28.md`:
+  `PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_EXACT_FIRST_OBLIGATION`,
+  `FIRST_PHYSICAL_OBSTACLE = DOMAIN_BRIDGE`, and
+  `MOVING_SUPPORT_QMD_STATUS = OPEN`.
+
+The Fisher branch is a frozen structural tool. No next run, S3, dimensional
+extension, new observable, or benchmark bridge is authorized by this index.
+
 ## Historical observable-design front (closed as program north)
 
 The paragraphs in this section preserve the pre-Phase-0 sequencing record. They
