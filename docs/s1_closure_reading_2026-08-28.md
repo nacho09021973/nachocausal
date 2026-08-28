@@ -7,8 +7,8 @@ GOBERNANZA: docs/program_reopening_note_2026-08-28_R4.md (firmada)
 FECHA: 2026-08-28
 NATURALEZA: lectura de gobernanza y de lenguaje. Cero matemática nueva,
             cero semillas, cero simulación, sello intacto.
-S2: NOT_OPEN
-DECISION_S2: PENDING_FUTURE_PI_DECISION
+S2: ver docs/program_s2_authorization_2026-08-28.md
+DECISION_S2: no se fija aqui
 NO_HORIZON_CLAIM
 NO_BENCHMARK_TRANSFER_CLAIM
 NO_T20
@@ -71,5 +71,11 @@ científicamente coherente.
 ```text
 FIRMADA_POR: Ignacio Martin (PI)
 FECHA_FIRMA: 2026-08-28
-DECISION_S2: PENDING_FUTURE_PI_DECISION
+DECISION_S2: no se fija aqui
 ```
+
+## Addendum — 2026-08-28
+
+La pregunta del §3 queda respondida en
+`docs/program_s2_authorization_2026-08-28.md`. Esta lectura no autoriza
+S2; no se edita su sustancia.
