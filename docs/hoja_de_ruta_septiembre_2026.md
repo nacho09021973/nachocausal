@@ -7,6 +7,13 @@
 > antes de cerrar el puente geométrico. Mantener `FAMILY_FROZEN`,
 > `NO_UNIVERSALITY_CLAIM` y `PRIORITY = PROVISIONAL_NOT_SEALED`.
 
+```text
+GOBERNANZA: docs/program_reopening_note_2026-08-28_R4.md (firmada 2026-08-28)
+G2: §2.2 enmendada a Convención B el 2026-08-28
+    (lambda parametriza P psi, no el tangente de copula)
+S2_NOT_OPENED
+```
+
 ## 0. Punto de partida preservado
 
 Rama de trabajo:
@@ -138,7 +145,10 @@ normalización dentro de una proporcionalidad informal.
 Caracterizar exactamente cuándo
 
 \[
-h_\psi(u,v)=\lambda f(u)f(v),
+\psi(u,v)-\psi_U(u)-\psi_V(v)+\bar\psi
+=\lambda f(u)f(v),
+\qquad\text{equivalentemente}\qquad
+h_\psi(u,v)=2\lambda f(u)f(v),
 \]
 
 con
@@ -153,6 +163,12 @@ f\ \text{suave},
 
 y con las condiciones de acotación necesarias para aplicar el teorema de
 scores separables.
+
+**Convención B (G2, 2026-08-28).** El símbolo `lambda` parametriza la
+proyección geométrica `P psi`, no el tangente de cópula. El factor `2` de
+`h_psi=2 P psi` queda explícito, y el score de §2.3 usa el mismo `lambda`
+en todas las etapas. (La Convención A, `h_psi=lambda f f`, queda
+retirada de este §2.2.)
 
 El objetivo no es clasificar todas las perturbaciones conformes. Es identificar
 una subclase geométrica explícita, no vacía y estable bajo las equivalencias
