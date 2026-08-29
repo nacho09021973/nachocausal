@@ -813,3 +813,275 @@ soporte total y es QMD, y que el push-forward a la imagen del canal de posets
 también es QMD. Permanecen abiertas la mezcla Poisson y cualquier regularidad
 uniforme al crecer \(n\). Ninguno de estos resultados abre el puente entre
 Fisher y localización.
+
+## 15. `UNIFORM_IN_N_PREFLIGHT`
+
+```text
+NATURALEZA = EXPLORATORY_ANALYTIC_PREFLIGHT
+UNIFORM_IN_N_PREFLIGHT = PASS_ANALYTIC_ROUTE_IDENTIFIED
+BEST_ROUTE = U3_CELL_BOUNDARY_DIFFERENTIATION
+NO_UNIFORM_IN_N_THEOREM
+NO_POISSON_MIXTURE_PROOF
+NO_FISHER_TO_LOCALISATION
+NEXT_RUN_AUTHORIZED = NO
+```
+
+### 15.1. Pregunta y punto de partida
+
+Las identidades disponibles son (11.5), para las probabilidades,
+
+\[
+\pi_\sigma(\tau)
+=c_B^n\sum_{\alpha\in\mathfrak S_n}
+\operatorname{Leb}C_{\alpha,\sigma}(\tau),
+\qquad
+c_B=[T(r_b-r_a)]^{-1},
+\tag{15.1}
+\]
+
+y (12.1), para el Fisher fixed-\(n\),
+
+\[
+I_n^\Pi(\tau)=\sum_\sigma
+\frac{\pi_\sigma'(\tau)^2}{\pi_\sigma(\tau)}.
+\tag{15.2}
+\]
+
+El preflight pregunta qué control cuantitativo adicional permitiría comparar
+estas cantidades entre distintos \(n\), sin afirmar todavía uniformidad QMD
+ni una escala asintótica.
+
+### 15.2. Ruta U2: por qué el complete-data Fisher no da la cota
+
+En la caja EF fija, la variable latente
+
+\[
+X_n=((V_i,R_i))_{i=1}^n\in B^n
+\]
+
+tiene densidad uniforme \(c_B^n\), independiente de \(\tau\). Su score
+ordinario sería cero. Sin embargo, el mapa
+
+\[
+X_n\longmapsto\Pi_n
+\]
+
+ordena las coordenadas \(u_\tau(V_i,R_i)\) y, por tanto, depende de
+\(\tau\). No es un kernel de Markov común e independiente del parámetro.
+La desigualdad de procesamiento de Fisher no es aplicable a esta
+factorización: aplicarla formalmente produciría la contradicción
+\(I_n^\Pi\le0\).
+
+En coordenadas nulas \((u,v)\), el mapa de rangos sí es fijo, pero la ley
+complete-data es precisamente la familia \(p_\tau^{\otimes n}\) de soporte
+móvil que no es QMD (§4). No posee un score \(L^2\) ordinario cuyo Fisher
+finito pueda dominar al del canal. Por tanto U2 no suministra una cota
+complete-data regular.
+
+La segunda flecha
+
+\[
+\Pi_n\longmapsto[P_{\Pi_n}]
+\]
+
+sí es un canal fijo. En este tramo data processing es legítimo y da
+
+\[
+\boxed{I_n^{[P]}(\tau)\le I_n^\Pi(\tau).}
+\tag{15.3}
+\]
+
+En efecto, si \(F_y=\{\sigma:[P_\sigma]=y\}\), entonces
+\(q_y'=\sum_{\sigma\in F_y}\pi_\sigma'\), y Cauchy--Schwarz da
+
+\[
+\frac{q_y'^2}{q_y}
+\le\sum_{\sigma\in F_y}\frac{\pi_\sigma'^2}{\pi_\sigma};
+\]
+
+sumando sobre las fibras se obtiene (15.3).
+
+### 15.3. Rutas U1/U3: representación exacta por flujo de caras
+
+Fijemos un compacto \(K\Subset(0,\infty)\), escribamos
+\(d_r=r_b-r_a\), y definamos las constantes finitas y positivas
+
+\[
+A_K:=\sup_{\tau\in K,(v,r)\in B}|\partial_\tau u_\tau(v,r)|,
+\qquad
+c_K:=\inf_{\tau\in K,(v,r)\in B}|\partial_r u_\tau(v,r)|,
+\qquad
+\kappa_K:=\frac{2A_K}{c_Kd_r}.
+\tag{15.4}
+\]
+
+Para la cámara (11.4), sea
+
+\[
+g_{\alpha,k}(\tau,x)
+=u_{\alpha(k+1)}(\tau)-u_{\alpha(k)}(\tau).
+\]
+
+La prueba de §§10--11, escrita en forma de coárea, proporciona la
+representación exacta
+
+\[
+\begin{aligned}
+\pi_\sigma'(\tau)
+=c_B^n\sum_{\alpha\in\mathfrak S_n}\sum_{k=1}^{n-1}
+\int_{B^n}&
+\mathbf 1_{\{v_{\beta(1)}<\cdots<v_{\beta(n)}\}}
+\prod_{\ell\ne k}\mathbf 1_{\{g_{\alpha,\ell}>0\}}\\
+&\times\delta_0(g_{\alpha,k})
+\,\partial_\tau g_{\alpha,k}\,dx .
+\end{aligned}
+\tag{15.5}
+\]
+
+Aquí \(\delta_0(g)\,dx\) significa la medida de coárea
+\(d\mathcal H^{2n-1}/|\nabla_xg|\) sobre \(g=0\); los cruces de caras
+tienen codimensión al menos dos y no añaden términos. Esta fórmula no
+supone simetría de las \(\pi_\sigma\).
+
+Para acotar una integral de (15.5), integramos la delta en la variable
+\(r_{\alpha(k+1)}\). Por (15.4), el cociente jacobiano satisface
+
+\[
+\frac{|\partial_\tau g_{\alpha,k}|}
+{|\partial_{r_{\alpha(k+1)}}g_{\alpha,k}|}
+\le\frac{2A_K}{c_K}.
+\tag{15.6}
+\]
+
+Para \(\alpha\) fijo, la cámara de orden en \(v\) tiene volumen
+\(T^n/n!\); al sumar sobre \(\alpha\), esas cámaras particionan el conjunto
+sin empates. Las restantes \(n-1\) variables radiales tienen volumen
+\(d_r^{n-1}\). Después de multiplicar por \(c_B^n\), (15.5)--(15.6) dan
+la cota uniforme en \(\sigma\)
+
+\[
+\boxed{
+\sup_{\tau\in K}|\pi_\sigma'(\tau)|
+\le(n-1)\kappa_K.
+}
+\tag{15.7}
+\]
+
+También puede evitarse sumar esta cota sobre las \(n!\) celdas. Toda
+variación de una celda se produce a través de una igualdad \(u_i=u_j\).
+Hay \(\binom n2\) pares; cada interfaz se cuenta a lo sumo dos veces al
+sumar variaciones absolutas de las celdas. Aplicando (15.6) sin restringir
+el orden de \(v\),
+
+\[
+\boxed{
+\sup_{\tau\in K}
+\sum_{\sigma\in\mathfrak S_n}|\pi_\sigma'(\tau)|
+\le n(n-1)\kappa_K.
+}
+\tag{15.8}
+\]
+
+Las cotas (15.7)--(15.8) son polinómicas para la masa de flujo, pero Fisher
+pondera cada derivada por \(1/\pi_\sigma\). Cubramos \(K\) por los finitos
+entornos del corolario de §7, con constantes \((m_i,R_i)\), y pongamos
+
+\[
+a_K:=\min_i m_i|R_i|>0.
+\]
+
+No se usa un rectángulo global: para cada \(\tau\in K\) se aplica uno de
+los rectángulos locales de la subcubierta. Entonces
+
+\[
+\inf_{\tau\in K}\min_\sigma\pi_\sigma(\tau)
+\ge\frac{a_K^n}{n!}.
+\tag{15.9}
+\]
+
+Usando
+\(\sum\pi_\sigma'^2\le
+(\max|\pi_\sigma'|)\sum|\pi_\sigma'|\), obtenemos la cota explícita
+
+\[
+\boxed{
+I_n^{[P]}(\tau)\le I_n^\Pi(\tau)
+\le
+\frac{n!}{a_K^n}\,n(n-1)^2\kappa_K^2.
+}
+\tag{15.10}
+\]
+
+Esto satisface `U-PASS-1`: existe una cota rigurosa con dependencia
+explícita en \(n\). No es una cota polinómica de Fisher; el factor
+\(n!/a_K^n\) procede exclusivamente de usar la probabilidad mínima global de
+celda y puede ser extremadamente grosero. No se afirma que describa el
+crecimiento real de \(I_n^\Pi\).
+
+### 15.4. Ruta U4: lugar exacto donde se pierde uniformidad QMD
+
+Definamos el vector de raíces
+
+\[
+s_n(\tau):=(\sqrt{\pi_\sigma(\tau)})_{\sigma\in\mathfrak S_n}
+\in\ell^2(\mathfrak S_n).
+\]
+
+La prueba fixed-\(n\) de (12.3) usa que, para un alfabeto finito,
+el máximo de \(n!\) restos escalares es \(o(\delta)\). Ese paso no da
+control al variar \(n\). Por el teorema fundamental del cálculo,
+
+\[
+\|s_n(\tau+\delta)-s_n(\tau)-\delta\dot s_n(\tau)\|_2
+\le |\delta|\sup_{|h|\le|\delta|}
+\|\dot s_n(\tau+h)-\dot s_n(\tau)\|_2.
+\tag{15.11}
+\]
+
+Así, el primer lema suficiente para ventanas \(\delta_n\) es un control del
+módulo
+
+\[
+\Omega_{n,K}(\eta):=
+\sup_{\substack{\tau,\tau+h\in K\\|h|\le\eta}}
+\|\dot s_n(\tau+h)-\dot s_n(\tau)\|_2.
+\tag{15.12}
+\]
+
+En concreto, \(\Omega_{n,K}(|\delta_n|)\to0\) implicaría un resto QMD
+uniforme a lo largo de esa ventana. La cota de Fisher
+\(4\|\dot s_n(\tau)\|_2^2=I_n^\Pi(\tau)\) controla el tamaño de la derivada,
+pero no su módulo de continuidad; (15.10) no implica (15.12).
+
+```text
+FIRST_MISSING_LEMMA = UNIFORM_SQRT_SCORE_MODULUS_LEMMA
+TARGET = find delta_n and prove Omega_{n,K}(|delta_n|) -> 0
+```
+
+Para mejorar primero la escala de Fisher, el sublema cuantitativo natural
+es una desigualdad de flujo ponderado que controle directamente
+\(\sum_\sigma\pi_\sigma'^2/\pi_\sigma\), sin sustituir todos los
+denominadores por \(\min_\sigma\pi_\sigma\).
+
+### 15.5. Evaluación de rutas, falsificador y recomendación
+
+- **U1:** usable a través de (15.5), pero el log-score introduce los
+  denominadores de celdas raras; no cierra por sí solo una escala útil.
+- **U2:** no aplicable entre complete data y permutaciones por las razones de
+  §15.2; sí da la contracción finita (15.3) entre permutaciones y posets.
+- **U3:** mejor ruta del preflight; produce (15.7)--(15.10) sin enumerar
+  permutaciones.
+- **U4:** identifica mediante (15.11)--(15.12) el término exacto ausente para
+  ventanas dependientes de \(n\).
+
+El falsificador temprano es la concentración del flujo de frontera en
+celdas cuya probabilidad sea factorial o exponencialmente pequeña. Si una
+familia de tales celdas hace que el Fisher ponderado o
+\(\Omega_{n,K}(h)\) sature necesariamente factores del orden de
+\(n!/a_K^n\) en toda ventana candidata, no habrá una ventana cuantitativa útil
+por esta ruta. Las cotas actuales detectan ese riesgo, pero no demuestran que
+la saturación ocurra.
+
+El siguiente run mínimo, si se autorizara, debería atacar únicamente el
+`UNIFORM_SQRT_SCORE_MODULUS_LEMMA`, precedido por una cota de flujo ponderado
+que evite el mínimo global de celda. No se autoriza aquí ese run.
