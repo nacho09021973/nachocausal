@@ -155,7 +155,279 @@ Un mapa dependiente de \(\tau\) puede fijar el soporte, pero entonces el
 canal de orden también depende de \(\tau\); no es el transporte común exigido
 por `DOMAIN_BRIDGE`.
 
-## 6. Veredicto y siguiente frontera
+## 6. Lema de soporte cuantitativo completo para el canal de rangos
+
+Para \(n\ge1\), sean \(X_i=(U_i,V_i)\), \(1\le i\le n\), puntos iid con
+densidad \(p_\tau\). Fuera del conjunto nulo de empates, definimos \(\Pi_n\) con la
+convención ya usada en el programa: se ordenan los puntos por `U`, y
+`Pi_n(i)=j` si el punto de rango `i` en `U` tiene rango `j` en `V`. Para
+\(\sigma\in\mathfrak S_n\), escribimos
+
+\[
+\pi_\sigma(\tau):=\mathbb P_\tau(\Pi_n=\sigma).
+\]
+
+**Lema (`QUANTITATIVE_FULL_SUPPORT_LEMMA`).** Para todo \(\tau_0>0\) existen
+\(\varepsilon>0\), un rectángulo abierto no vacío
+\(R=I_u\times I_v\) y \(m>0\), dependientes de \(\tau_0\) pero no de
+\(n\), tales que, para todo \(\tau>0\) con
+\(|\tau-\tau_0|<\varepsilon\), se cumple
+
+\[
+R\Subset\operatorname{int}S_\tau,
+\qquad
+p_\tau(u,v)\ge m\quad ((u,v)\in R).
+\tag{6.1}
+\]
+
+En consecuencia, para todo \(n\ge1\), simultáneamente para todo
+\(\sigma\in\mathfrak S_n\) y todo \(\tau\) del mismo entorno,
+
+\[
+\boxed{
+\pi_\sigma(\tau)\ge \frac{(m|R|)^n}{n!}>0.
+}
+\tag{6.2}
+\]
+
+En particular,
+
+\[
+\boxed{
+\operatorname{supp}\mathcal L_\tau(\Pi_n)=\mathfrak S_n.
+}
+\tag{6.3}
+\]
+
+### 6.1. Prueba geométrica
+
+Las fórmulas demostradas en §2 son
+
+\[
+b_{j,\tau}(v)
+=-e^{(r_j-v/2)/\tau}(r_j/\tau-1),\qquad j\in\{a,b\},
+\tag{6.4}
+\]
+
+y
+
+\[
+S_\tau=\{(u,v):0\le v\le T,\quad
+b_{b,\tau}(v)\le u\le b_{a,\tau}(v)\}.
+\tag{6.5}
+\]
+
+En efecto, `b_{j,tau}(v)=u_tau(v,r_j)`. Como
+
+\[
+\partial_r u_\tau(v,r)
+=-e^{-v/(2\tau)}\frac{r}{\tau^2}e^{r/\tau}<0
+\qquad (r>0),
+\tag{6.6}
+\]
+
+para cada `v` se tiene
+
+\[
+b_{b,\tau}(v)<b_{a,\tau}(v).
+\tag{6.7}
+\]
+
+Fijemos cualquier \(v_0\in(0,T)\) y pongamos
+
+\[
+u_0=\frac{b_{a,\tau_0}(v_0)+b_{b,\tau_0}(v_0)}2.
+\]
+
+La desigualdad (6.7) muestra que \((u_0,v_0)\) es interior a
+\(S_{\tau_0}\). Las funciones de borde (6.4) son suaves en \((\tau,v)\)
+sobre \((0,\infty)\times[0,T]\). Por continuidad conjunta, existen
+intervalos abiertos no vacíos \(I_u\) alrededor de \(u_0\) e \(I_v\)
+alrededor de \(v_0\), con \(\overline I_v\subset(0,T)\), y
+\(\varepsilon>0\), que podemos reducir para que
+\(\tau_0-\varepsilon>0\), tales que
+
+\[
+b_{b,\tau}(v)<\inf I_u\le \sup I_u<b_{a,\tau}(v)
+\tag{6.8}
+\]
+
+para \(|\tau-\tau_0|\le\varepsilon\) y \(v\in\overline I_v\). Los intervalos se
+escogen con cierre compacto y con margen estricto; reduciendo de nuevo
+`epsilon` si es preciso, ese margen persiste en todo el producto compacto.
+Así, para el rectángulo **fijo** \(R=I_u\times I_v\), (6.8) da
+
+\[
+\overline R\subset\operatorname{int}S_\tau
+\]
+
+para todos esos \(\tau\), y la inclusión es compacta. El argumento no cambia
+si \(\tau_0=r_a\) o \(\tau_0=r_b\): en esos valores uno de los bordes puede
+pasar por \(u=0\), pero (6.6)--(6.7) conservan la anchura estrictamente positiva.
+
+En el abierto interior de los soportes, la inversa `r=r_tau(u,v)` es suave
+por (6.6). Por tanto la fórmula de §2,
+
+\[
+p_\tau(u,v)=
+\frac{\tau^2 e^{v/(2\tau)-r_\tau(u,v)/\tau}}
+     {T(r_b-r_a)r_\tau(u,v)},
+\tag{6.9}
+\]
+
+es continua y estrictamente positiva en
+
+\[
+[\tau_0-\varepsilon,\tau_0+\varepsilon]\times\overline R.
+\]
+
+Este conjunto es compacto. El mínimo de (6.9) sobre él es, pues, una
+constante \(m>0\). Tras restringir a
+\(|\tau-\tau_0|<\varepsilon\), queda probada (6.1). La construcción de
+\(\varepsilon\), \(R\) y \(m\) precede a la elección de \(n\); las tres
+cantidades son independientes del tamaño de muestra.
+
+El rectángulo obtenido es fijo sólo localmente en `tau`. No se afirma que
+un único rectángulo esté contenido en todos los soportes al recorrer un
+compacto de parámetros: la intersección global de esos soportes puede ser
+vacía.
+
+### 6.2. Prueba del volumen de las cámaras de rangos
+
+Sea \(A_\sigma\subset R^n\) el conjunto de configuraciones etiquetadas cuyos
+\(n\) puntos están **todos** en \(R\) y cuya permutación **global** de rangos
+es \(\sigma\). La palabra global es esencial: estos son todos los puntos de la
+muestra completa, de modo que los rangos calculados entre los puntos de
+`R` son los rangos de la muestra, sin puntos exteriores que los alteren.
+
+Los conjuntos donde `u_i=u_j` o `v_i=v_j` para algún `i!=j` son uniones
+finitas de hiperplanos y tienen medida de Lebesgue cero. En su complemento,
+cada configuración tiene un único orden absoluto de las etiquetas por `u`
+y un único orden absoluto por `v`. Hay `(n!)^2` pares de órdenes absolutos.
+Cada celda correspondiente tiene volumen
+
+\[
+\frac{|I_u|^n}{n!}\frac{|I_v|^n}{n!}
+=\frac{|R|^n}{(n!)^2}.
+\tag{6.10}
+\]
+
+la igualdad se obtiene permutando las etiquetas en cada factor
+`I_u^n` e `I_v^n`; las `n!` celdas de cada factor son congruentes y lo
+particionan módulo empates.
+
+Fijado un orden absoluto de las etiquetas por `u`, la convención de
+`Pi_n` determina de manera única el orden absoluto por `v` que produce
+`sigma`. Por tanto exactamente `n!` de las `(n!)^2` celdas producen cada
+`sigma`: una por cada orden absoluto en `u`. En consecuencia,
+
+\[
+|A_\sigma|=n!\frac{|R|^n}{(n!)^2}
+=\frac{|R|^n}{n!}.
+\tag{6.11}
+\]
+
+Por independencia y por (6.1), para todo `tau` del entorno local,
+
+\[
+\begin{aligned}
+\pi_\sigma(\tau)
+&\ge \int_{A_\sigma}\prod_{i=1}^n
+ p_\tau(u_i,v_i)\,du_1\,dv_1\cdots du_n\,dv_n\\
+&\ge m^n|A_\sigma|
+=\frac{(m|R|)^n}{n!}.
+\end{aligned}
+\tag{6.12}
+\]
+
+Esto prueba (6.2). Puesto que `S_n` es finito y cada uno de sus elementos
+tiene probabilidad positiva, (6.3) es inmediato.
+
+## 7. Corolario uniforme sobre compactos a tamaño fijo
+
+Sea \(K\Subset(0,\infty)\) compacto y admisible. Los entornos locales
+del lema cubren \(K\); extraigamos una subcubierta finita
+\(U_1,\ldots,U_k\). Para cada \(i\), la construcción da \(R_i\), \(m_i\)
+y, a \(n\) fijo,
+
+\[
+c_i(n):=\frac{(m_i|R_i|)^n}{n!}>0.
+\]
+
+Si `tau in K`, pertenece a algún `U_i`, y la cota local correspondiente
+vale simultáneamente para todo `sigma in S_n`. Por ello
+
+\[
+\boxed{
+\inf_{\tau\in K}\min_{\sigma\in\mathfrak S_n}
+\pi_\sigma(\tau)
+\ge \min_{1\le i\le k}c_i(n)>0.
+}
+\tag{7.1}
+\]
+
+Este corolario es para cada `n` fijo. Las constantes pueden degenerar
+rápidamente con `n`; no se afirma control asintótico alguno:
+
+```text
+NO_UNIFORM_IN_N_CLAIM
+```
+
+## 8. Corolario para el canal de posets
+
+El push-forward de una medida de soporte total en `S_n` por
+
+\[
+\sigma\longmapsto[P_\sigma]
+\]
+
+tiene soporte exactamente igual a la imagen de ese mapa: cada fibra no
+vacía es finita y contiene al menos una permutación de probabilidad positiva.
+Esto no afirma que la imagen contenga todos los posets de `n` elementos,
+sino sólo los realizables por el canal correspondiente.
+
+Para la interpretación geométrica directa, un rectángulo doble-nulo es
+causalmente convexo. Si `p prec q` y ambos pertenecen a `R`, entonces
+
+\[
+J^+(p)\cap J^-(q)
+\subseteq [u_p,u_q]\times[v_p,v_q]
+\subseteq R.
+\tag{8.1}
+\]
+
+Por tanto el orden causal inducido sobre las configuraciones de `R` coincide
+con la restricción del orden causal ambiente. Esta observación sólo hace
+hermética la interpretación del mismo corolario; no abre un segundo gate.
+
+## 9. Techo de la afirmación
+
+La cota (6.2) elimina ceros en los denominadores del Fisher formal
+
+\[
+I_n(\tau)=\sum_\sigma
+\frac{\pi_\sigma'(\tau)^2}{\pi_\sigma(\tau)},
+\]
+
+pero no demuestra que las derivadas existan ni controla sus numeradores o
+su comportamiento al crecer `n`. En particular, no se concluye que el canal
+causal regularice la familia puntual.
+
+```text
+QUANTITATIVE_FULL_SUPPORT_LEMMA = PROVED
+FINITE_CHANNEL_SUPPORT = FULL_FOR_PERMUTATION_CHANNEL
+FINITE_CHANNEL_DIFFERENTIABILITY = OPEN
+FINITE_CHANNEL_QMD = OPEN
+UNIFORM_IN_N_REGULARITY = OPEN
+DOMAIN_BRIDGE = OPEN_AT_FINITE_CHANNEL
+FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
+NEXT_RUN_AUTHORIZED = NO
+NEXT_MATHEMATICAL_GATE = DIFFERENTIABILITY_OF_TAU_TO_PI_SIGMA
+```
+
+El último gate queda solamente registrado y no se aborda aquí.
+
+## 10. Veredicto y siguiente frontera
 
 ```text
 COMMON_POINT_ISOMORPHISM = REFUTED
@@ -166,7 +438,9 @@ FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
 NEXT_RUN_AUTHORIZED = NO
 ```
 
-El esqueleto finito `Pi_n -> [P_{Pi_n}]` continúa siendo exacto. El siguiente
-objeto matemático posible sería la regularidad de la ley inducida después del
-canal. Esa cuestión es justamente el residuo de `DOMAIN_BRIDGE`, requiere una
-decisión separada y no queda autorizada por este resultado.
+El esqueleto finito `Pi_n -> [P_{Pi_n}]` continúa siendo exacto y ahora se ha
+probado que su canal de permutaciones tiene soporte total a cada cardinalidad
+finita. El siguiente objeto matemático posible sería la diferenciabilidad de
+la ley inducida después del canal. Esa cuestión es justamente el residuo de
+`DOMAIN_BRIDGE`, requiere una decisión separada y no queda autorizada por
+este resultado.
