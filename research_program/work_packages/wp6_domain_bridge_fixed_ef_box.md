@@ -1767,3 +1767,250 @@ I_n^{[P]}(\tau)\le I_n^\Pi(\tau)
 
 No se abre el sublema (18.5), ni uniformidad QMD, mezcla Poisson,
 Fisher--localización o Kerr.
+
+## 19. `ACTIVE_ENDPOINT_TO_MEAN_THICKNESS_LEMMA`
+
+```text
+ACTIVE_ENDPOINT_TO_MEAN_THICKNESS_LEMMA = OPEN_REDUCED
+BEST_ROUTE = ACTIVE_ENDPOINT_SMALL_THICKNESS_TAIL
+NO_SUBFACTORIAL_DSTAR_BOUND_PROVED
+NO_THIN_SLICE_OBSTRUCTION_PROVED
+UNIFORM_SQRT_SCORE_MODULUS = DEFERRED_NOT_OPENED
+POISSON_MIXTURE_REGULARITY = OPEN_NOT_STARTED
+FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
+KERR_SPIN_SIGN_CONJECTURE = ARCHIVED_NOT_OPENED
+NEXT_RUN_AUTHORIZED = NO
+```
+
+### 19.1. Objetos exactos y conteo de endpoints
+
+Con la notación íntegra de §18, la cantidad bajo estudio es
+
+\[
+D^*_{n,K}
+=\sup_{\substack{\tau\in K,\ \sigma,\alpha\in\mathfrak S_n\\
+                  1\le k<n}}
+\frac{N_{\alpha,k}^{\tau,\sigma}}
+     {M_{\alpha,k}^{\tau,\sigma}},
+\tag{19.1}
+\]
+
+donde
+
+\[
+N_{\alpha,k}^{\tau,\sigma}
+:=\nu_{\alpha,k}^{\tau,\sigma}
+  (E_{\alpha,k}(\tau)),
+\qquad
+M_{\alpha,k}^{\tau,\sigma}
+:=\int\ell_{\alpha,k}(\tau,y)
+  \,d\nu_{\alpha,k}^{\tau,\sigma}(y).
+\tag{19.2}
+\]
+
+El dominio de integración, la medida, la factibilidad y todos los
+supremos son exactamente los de §18.1. Un **endpoint activo** es la raíz
+de \(g_{\alpha,k}=0\) en la variable transversal
+\(r_{\alpha(k+1)}\) que pertenece a la frontera del intervalo factible
+\(I_{\alpha,k}(\tau,y)\). El **espesor total** es \(M\), esto es, la
+integral de la longitud radial factible sobre todos los slices de la
+cámara.
+
+No existía aún en el WP un objeto matemático independiente llamado
+\(D_{n,K}\): en (18.7) era sólo el nombre reservado para una futura cota
+superior explícita de \(D^*_{n,K}\). La cantidad media exacta pertinente
+puede definirse ahora, sin afirmar ninguna estimación, por
+
+\[
+\bar\ell_{\alpha,k}^{\tau,\sigma}
+:=\frac{M_{\alpha,k}^{\tau,\sigma}}
+        {N_{\alpha,k}^{\tau,\sigma}}
+\quad(N_{\alpha,k}^{\tau,\sigma}>0),
+\tag{19.3}
+\]
+
+con la convención \(\bar\ell=+\infty\) si \(N=0\). Es el espesor radial
+total de la cámara por unidad de medida de endpoints activos; no es una
+media condicionada iid ni el mínimo de los gaps. Entonces
+
+\[
+\boxed{
+D^*_{n,K}
+=\frac{1}{\displaystyle
+  \inf_{\tau,\sigma,\alpha,k}
+  \bar\ell_{\alpha,k}^{\tau,\sigma}}.
+}
+\tag{19.4}
+\]
+
+Para \(y\) fijo, la monotonía estricta en \(r_{\alpha(k+1)}\) hace que
+\(I_{\alpha,k}(\tau,y)\) sea un intervalo y que
+\(g_{\alpha,k}=0\) tenga a lo sumo una raíz. Por tanto:
+
+```text
+ACTIVE_ENDPOINT_COUNT_FOR_FIXED_(alpha,k,y) = AT_MOST_1
+ENDPOINT_COUNT_OF_FEASIBLE_INTERVAL = AT_MOST_2
+INCIDENT_ADJACENT_FACES_OF_ONE_CHAMBER = n-1
+```
+
+Este conteo prueba que ninguna multiplicidad factorial procede de los
+endpoints de un slice. No acota (19.1), porque una sola cara puede estar
+soportada por slices de espesor medio arbitrariamente pequeño.
+
+### 19.2. Ausencia de una identidad telescópica disponible
+
+Si todos los intervalos factibles fueran gaps de un único orden radial en
+un intervalo común, la suma de sus longitudes telescoparía. Esa hipótesis
+no se satisface aquí: los umbrales radiales son inversas de
+\(r\mapsto u_\tau(v_i,r)\) con valores distintos de \(v_i\), y el orden en
+\(v\) está enlazado a \(\sigma\). Por ello los intervalos asociados a
+distintos \(k\) no forman, con lo demostrado hasta ahora, una partición de
+\([r_a,r_b]\). No hay una identidad justificada
+\(\sum_k\ell_{\alpha,k}=r_b-r_a\), ni una variante uniforme que permita
+promediar primero sobre \(k\).
+
+La simetría de etiquetas elimina \(\alpha\), pero no elimina
+\(\sigma,k\) ni la dependencia de los umbrales en los \(v_i\). En
+particular, T1 da multiplicidad local \(1\), mientras que T2 no proporciona
+una normalización adicional.
+
+### 19.3. Reducción exacta a una cola de small thickness
+
+Para \(s>0\), definamos la función de distribución no normalizada de
+slices activos delgados
+
+\[
+\Phi_{\alpha,k}^{\tau,\sigma}(s)
+:=\nu_{\alpha,k}^{\tau,\sigma}
+\bigl(E_{\alpha,k}(\tau)
+      \cap\{0<\ell_{\alpha,k}\le s\}\bigr).
+\tag{19.5}
+\]
+
+Esta definición conserva la medida real del WP y pesa cada endpoint una
+sola vez. Los puntos de \(E_{\alpha,k}\) con \(\ell_{\alpha,k}=0\)
+requieren que la cara \(g_{\alpha,k}=0\) coincida además con otro endpoint
+del intervalo. Son intersecciones de dos caras de cámara; por la
+transversalidad y codimensión dos demostradas en §11.2, su proyección sobre
+el espacio de slices tiene medida
+\(\nu_{\alpha,k}^{\tau,\sigma}\) cero. Por ello (19.5) puede usar
+\(0<\ell\) sin perder masa de endpoints. El sublema cuantitativo
+estrictamente más concreto es:
+
+```text
+ACTIVE_ENDPOINT_SMALL_THICKNESS_TAIL_LEMMA
+
+Encontrar B_{n,K}>0 explícita y subfactorial tal que, uniformemente en
+tau, sigma, alpha y k,
+
+  Phi_{alpha,k}^{tau,sigma}(s)
+    <= B_{n,K} s N_{alpha,k}^{tau,sigma}
+
+para 0 < s <= 1/B_{n,K}.
+```
+
+Esta es una cota anti-concentración lineal cerca de espesor cero, no una
+cota por el gap mínimo. Si vale, tomando
+\(s_0=(2B_{n,K})^{-1}\) se obtiene
+
+\[
+\Phi_{\alpha,k}^{\tau,\sigma}(s_0)
+\le\frac12N_{\alpha,k}^{\tau,\sigma}.
+\tag{19.6}
+\]
+
+Por tanto al menos la mitad de la medida de endpoints activos tiene
+\(\ell>s_0\). Como la integral que define \(M\) incluye, en particular,
+esos slices,
+
+\[
+M_{\alpha,k}^{\tau,\sigma}
+\ge\int_{E_{\alpha,k}}\ell_{\alpha,k}\,d\nu
+\ge s_0\bigl[N_{\alpha,k}^{\tau,\sigma}
+              -\Phi_{\alpha,k}^{\tau,\sigma}(s_0)\bigr]
+\ge\frac{N_{\alpha,k}^{\tau,\sigma}}{4B_{n,K}}.
+\tag{19.7}
+\]
+
+Así queda demostrada la implicación exacta
+
+\[
+\boxed{
+\text{tail lemma con }B_{n,K}
+\quad\Longrightarrow\quad
+D^*_{n,K}\le4B_{n,K}.
+}
+\tag{19.8}
+
+No se ha probado la premisa de (19.8). La ventaja de la reducción es que
+localiza toda la dificultad en una probabilidad geométrica de
+anti-concentración explícita, sin cocientes de integrales ni velocidades de
+frontera.
+
+### 19.4. Test adversarial de slices delgados
+
+La existencia de \(y\) con \(\ell_{\alpha,k}(\tau,y)\downarrow0\) confirma
+`THIN_GEOMETRY_ONLY`. Para obtener
+`THIN_GEOMETRY_WITH_LARGE_INTEGRATED_ENDPOINT_WEIGHT` habría que construir
+\(\sigma_n,\alpha_n,k_n,\tau_n\) y una sucesión \(s_n\downarrow0\) con una
+cota inferior cuantitativa para
+
+\[
+\frac{\Phi_{\alpha_n,k_n}^{\tau_n,\sigma_n}(s_n)}
+     {s_nN_{\alpha_n,k_n}^{\tau_n,\sigma_n}}
+\tag{19.9}
+\]
+
+que fuerce crecimiento no subfactorial. Las fórmulas actuales sólo
+garantizan que los intervalos pueden adelgazar; no controlan desde abajo la
+medida del conjunto correspondiente. No se ha construido esa familia ni
+una cota inferior del tipo (19.9).
+
+```text
+THIN_SLICE_ADVERSARIAL_STATUS = THIN_GEOMETRY_ONLY
+LARGE_INTEGRATED_ENDPOINT_WEIGHT = NOT_PROVED
+OBSTRUCTION_STATUS = OPEN
+```
+
+### 19.5. Veredicto y consecuencias condicionales
+
+El conteo de endpoints es constante por slice, pero no controla el espesor
+medio. La identidad exacta (19.4) y la implicación (19.8) reducen el lema a
+una sola estimación de cola thin-slice. No se ha demostrado ninguna cota
+subfactorial para \(B_{n,K}\), \(D^*_{n,K}\), \(H^*_{n,K}\) o
+\(C_{n,K}\).
+
+Por tanto el único veredicto justificado es
+
+```text
+ACTIVE_ENDPOINT_TO_MEAN_THICKNESS_LEMMA = OPEN_REDUCED
+EXACT_MEAN_THICKNESS_OBJECT = bar ell IN (19.3)
+PROVED_DSTAR_BOUND = D^*_{n,K} <= 4 B_{n,K} CONDITIONAL_ON_TAIL_LEMMA
+ASYMPTOTIC_CLASS_DSTAR = NOT_PROVED
+MIN_GAP_OR_MIN_CELL_MASS_USED = NO
+FIRST_MISSING_SUBLEMMA = ACTIVE_ENDPOINT_SMALL_THICKNESS_TAIL_LEMMA
+```
+
+Condicionalmente a una \(B_{n,K}\) explícita y subfactorial, (18.6),
+(18.10) y (18.11) darían
+
+\[
+H^*_{n,K}\le\frac{8A_K}{c_K}B_{n,K},
+\tag{19.10}
+\]
+
+\[
+C_{n,K}\le(n-1)\frac{8A_K}{c_K}B_{n,K},
+\tag{19.11}
+\]
+
+\[
+\boxed{
+I_n^{[P]}(\tau)\le I_n^\Pi(\tau)
+\le n(n-1)^2\kappa_K\frac{8A_K}{c_K}B_{n,K}.
+}
+\tag{19.12}
+\]
+
+No se abre el tail lemma, el trace lemma completo, uniformidad QMD, mezcla
+Poisson, Fisher--localización o Kerr.
