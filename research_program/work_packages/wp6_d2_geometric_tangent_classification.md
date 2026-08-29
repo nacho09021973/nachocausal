@@ -1488,3 +1488,200 @@ El cociente \(2/9\) compara el poset con dos observaciones continuas de la
 cópula S1. No mide una fracción de la geometría total, no usa el embedding
 continuo completo y no es una afirmación sobre EF, Schwarzschild, Kerr,
 \(N>2\), Poisson, localización o ningún límite asintótico.
+
+## 14. Salto exacto de visibilidad y espectro Fisher para \(N=3\)
+
+```text
+N3_S1_VISIBLE_SUBSPACE = PROVED_RANK_THREE
+N3_FISHER_SPECTRUM_ON_THE_THREE_DIMENSIONAL_VISIBLE_SPAN = PROVED
+STRICT_KERNEL_CONTRACTION_FROM_N2_TO_N3 = PROVED
+FIXED_N_ONLY = 3
+NO_RANK_MONOTONICITY_CLAIM
+NO_ASYMPTOTIC_CLAIM
+REFERENCE_EXPERIMENT = THREE_IID_COPULA_OBSERVATIONS
+```
+
+Conservamos la convención \(f=\mathcal P\psi\) de §13 y definimos los
+polinomios univariados centrados
+
+\[
+x(t):=t-\frac12,
+\qquad
+q(t):=\left(t-\frac12\right)^2-\frac1{12}.
+\tag{14.1}
+\]
+
+### 14.1. Derivadas exactas de las cinco clases de poset
+
+Sea
+
+\[
+d_i(t):=3\binom{2}{i-1}t^{i-1}(1-t)^{3-i},
+\qquad i=1,2,3,
+\tag{14.2}
+\]
+
+la densidad del estadístico de orden \(i\) de tres uniformes. Para una
+permutación \(\sigma\in\mathfrak S_3\), la identidad de score condicional
+da directamente
+
+\[
+p'_{\sigma}(0)
+=\frac13\sum_{i=1}^3
+  \int_D f(u,v)d_i(u)d_{\sigma(i)}(v)\,du\,dv.
+\tag{14.3}
+\]
+
+El push-forward a posets no etiquetados identifica exactamente las
+permutaciones \(231\) y \(312\); las otras cuatro forman clases singleton.
+En el orden de clases
+
+\[
+[123],\ [132],\ [213],\ [231]=[312],\ [321],
+\tag{14.4}
+\]
+
+sus probabilidades nulas son
+
+\[
+\left(\frac16,\frac16,\frac16,\frac13,\frac16\right).
+\tag{14.5}
+\]
+
+Integrando (14.3), las derivadas sobre la base
+
+\[
+e_1=x\otimes x,
+\qquad e_2=q\otimes q,
+\qquad e_3=x\otimes q+q\otimes x
+\tag{14.6}
+\]
+
+son las columnas de la tabla siguiente:
+
+\[
+\begin{array}{c|ccc}
+\text{clase}&p'(e_1)&p'(e_2)&p'(e_3)\\ \hline
+[123]       & 1/24&  1/1800&0\\
+[132]       & 1/48& -1/3600&-1/120\\
+[213]       & 1/48& -1/3600& 1/120\\
+[231]=[312]&-1/24& -1/1800&0\\
+[321]       &-1/24&  1/1800&0
+\end{array}
+\tag{14.7}
+\]
+
+Los cinco representantes de score obtenidos de (14.3), tras centrar sus
+marginales, pertenecen al span de (14.6). La tabla (14.7) tiene rango tres.
+Por tanto no sólo da una restricción de la forma: determina todo su rango
+sobre \(\operatorname{Ran}\mathcal P\), y
+
+\[
+\boxed{
+V_3=\operatorname{span}\{e_1,e_2,e_3\},
+\qquad \operatorname{rank}G_{[P]}^{(3)}=3.
+}
+\tag{14.8}
+\]
+
+### 14.2. Contracción estricta del kernel
+
+Como \(V_2=\operatorname{span}\{e_1\}\) por §13, se tiene
+
+\[
+\operatorname{rank}G_{[P]}^{(2)}=1
+\quad\longrightarrow\quad
+\operatorname{rank}G_{[P]}^{(3)}=3.
+\tag{14.9}
+\]
+
+Un witness especialmente simple es \(f_2=x\otimes q\). Es ortogonal a
+\(e_1\), luego (13.9) implica \(I_2^{[P]}(f_2)=0\). Su parte simétrica es
+\(e_3/2\), mientras que su parte antisimétrica no contribuye a (14.3)
+después del cociente por isomorfismo. Usando (14.7),
+
+\[
+\boxed{
+I_2^{[P]}(x\otimes q)=0,
+\qquad
+I_3^{[P]}(x\otimes q)=\frac1{4800}>0.
+}
+\tag{14.10}
+\]
+
+En consecuencia,
+
+\[
+\boxed{
+\ker G_{[P]}^{(3)}\subsetneq\ker G_{[P]}^{(2)}.
+}
+\tag{14.11}
+\]
+
+Esto prueba para el escalón fijo \(2\to3\), sin asintótica, que añadir un
+tercer elemento hace visible una dirección geométrica física exactamente
+invisible con dos elementos. No prueba monotonía del rango para todo \(N\).
+
+La ausencia de
+\(x\otimes q-q\otimes x\) en (14.8) es asimismo exacta: el modo mixto
+visible es el simétrico. Esto es compatible con el intercambio de las dos
+coordenadas nulas, pero aquí se registra sólo como estructura algebraica,
+no como interpretación física general.
+
+### 14.3. Espectro generalizado en el span visible
+
+Al sustituir (14.7) en la definición de Fisher de las cinco clases, la
+matriz de \(G_{[P]}^{(3)}\) en la base (14.6) es diagonal:
+
+\[
+\left[G_{[P]}^{(3)}\right]_{(e_1,e_2,e_3)}
+=\operatorname{diag}\left(\frac1{32},\frac1{180000},\frac1{1200}\right).
+\tag{14.12}
+\]
+
+La referencia de tres observaciones iid de la cópula tiene
+\(G_{\mathrm{full}}^{(3)}(f,g)=12\langle f,g\rangle\). Como
+\(x\perp q\), la misma base es ortogonal y
+
+\[
+\left[G_{\mathrm{full}}^{(3)}\right]_{(e_1,e_2,e_3)}
+=\operatorname{diag}\left(\frac1{12},\frac1{2700},\frac1{90}\right).
+\tag{14.13}
+\]
+
+El problema generalizado
+
+\[
+G_{[P]}^{(3)}(v,g)
+=\lambda G_{\mathrm{full}}^{(3)}(v,g),
+\qquad g\in V_3,
+\tag{14.14}
+\]
+
+queda por tanto resuelto exactamente:
+
+\[
+\boxed{
+\begin{array}{c|c}
+\text{dirección}&\lambda\\ \hline
+x\otimes x&3/8\\
+x\otimes q+q\otimes x&3/40\\
+q\otimes q&3/200
+\end{array}}
+\tag{14.15}
+\]
+
+En particular,
+
+\[
+\boxed{\lambda_1=\frac38>\lambda_2=\frac3{40}>
+\lambda_3=\frac3{200}>0.}
+\tag{14.16}
+\]
+
+El poset de tres elementos no se limita a abrir tres canales: los selecciona
+jerárquicamente, con retenciones relativas \(37.5\%\), \(7.5\%\) y
+\(1.5\%\) respecto del experimento iid continuo de referencia. Estas cifras
+son exclusivamente locales, Fisher y fixed-\(N=3\); no son fracciones de la
+geometría total ni implican reconstrucción, localización o comportamiento
+monótono al crecer \(N\).
