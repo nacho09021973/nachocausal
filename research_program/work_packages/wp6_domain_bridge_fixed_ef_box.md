@@ -614,38 +614,202 @@ Se verifican así las tres hipótesis del lema de cámaras para cada
 \(\tau_0\). Como \(\tau_0\) era arbitrario y (11.5) es una suma finita,
 \(\pi_\sigma\in C^1((0,\infty))\). \(\square\)
 
-### 11.3. Techo de este gate
+### 11.3. Techo del gate de diferenciabilidad por sí solo
 
 La prueba es para cada \(n\) fijo. No proporciona cotas uniformes en \(n\)
 para \(\pi_\sigma'\), no intercambia derivación con \(n\to\infty\) y no
-calcula todavía información Fisher. En particular, en este gate no se
-promueve QMD ni se abre el puente hacia localización.
+calcula por sí sola información Fisher. En particular, el teorema \(C^1\)
+aislado no es todavía la verificación escrita de QMD ni abre el puente hacia
+localización. El ensamblaje separado se lleva a cabo en §§12--13.
 
 ```text
 QUANTITATIVE_FULL_SUPPORT_LEMMA = PROVED
 FINITE_CHANNEL_SUPPORT = FULL_FOR_PERMUTATION_CHANNEL
 FINITE_CHANNEL_DIFFERENTIABILITY = PROVED_C1_LOCAL
-FINITE_CHANNEL_QMD = OPEN
+C1_GATE_ALONE_DOES_NOT_CONSTITUTE_QMD_PROOF
+NO_UNIFORM_IN_N_CLAIM
+```
+
+## 12. Ensamblaje QMD en el alfabeto finito
+
+**Teorema (`FINITE_CHANNEL_QMD`).** Para cada \(n\ge1\) fijo, la familia
+de leyes
+
+\[
+\mathcal E_n^\Pi
+=\{\mathcal L_\tau(\Pi_n):\tau>0\}
+\]
+
+sobre \(\mathfrak S_n\) es QMD en cada \(\tau>0\). Su score y su
+información Fisher son
+
+\[
+\dot\ell_{\tau,n}(\sigma)
+=\frac{\pi_\sigma'(\tau)}{\pi_\sigma(\tau)},
+\qquad
+I_n^\Pi(\tau)
+=\sum_{\sigma\in\mathfrak S_n}
+\frac{\pi_\sigma'(\tau)^2}{\pi_\sigma(\tau)}<\infty.
+\tag{12.1}
+\]
+
+**Prueba.** Fijemos \(n\) y \(\tau\). Por el lema de soporte cuantitativo,
+\(\pi_\sigma(\tau)>0\) para toda \(\sigma\), y por el teorema de §11 cada
+\(\pi_\sigma\) es \(C^1\). La regla de la cadena da, para cada \(\sigma\),
+
+\[
+\sqrt{\pi_\sigma(\tau+\delta)}
+=\sqrt{\pi_\sigma(\tau)}
++\frac{\pi_\sigma'(\tau)}{2\sqrt{\pi_\sigma(\tau)}}\,\delta
++o_\sigma(\delta).
+\tag{12.2}
+\]
+
+Como \(\mathfrak S_n\) es finito, el máximo de los restos
+\(|o_\sigma(\delta)|/|\delta|\) tiende a cero. Por tanto
+
+\[
+\sum_{\sigma\in\mathfrak S_n}
+\left[
+\sqrt{\pi_\sigma(\tau+\delta)}-
+\sqrt{\pi_\sigma(\tau)}-
+\frac12\dot\ell_{\tau,n}(\sigma)
+\sqrt{\pi_\sigma(\tau)}\,\delta
+\right]^2
+=o(\delta^2).
+\tag{12.3}
+\]
+
+Esta es exactamente la definición de QMD respecto de la medida de conteo
+en el alfabeto finito. Además, derivando
+\(\sum_\sigma\pi_\sigma(\tau)=1\),
+
+\[
+\sum_\sigma\pi_\sigma(\tau)\dot\ell_{\tau,n}(\sigma)
+=\sum_\sigma\pi_\sigma'(\tau)=0,
+\tag{12.4}
+\]
+
+y (12.1) es la norma cuadrática del score. Es finita porque la suma es
+finita y todos sus denominadores son positivos. \(\square\)
+
+### 12.1. Expansiones locales Hellinger y KL
+
+Con la convención de §4, (12.2) implica directamente
+
+\[
+\boxed{
+H^2\!\left(\pi_\tau^{(n)},\pi_{\tau+\delta}^{(n)}\right)
+=\frac14 I_n^\Pi(\tau)\delta^2+o(\delta^2).
+}
+\tag{12.5}
+\]
+
+Para KL no hace falta suponer \(C^2\). Escribamos
+
+\[
+\Delta_\sigma(\delta)
+:=\pi_\sigma(\tau+\delta)-\pi_\sigma(\tau)
+=\pi_\sigma'(\tau)\delta+o_\sigma(\delta).
+\tag{12.6}
+\]
+
+La positividad sobre el alfabeto finito permite usar uniformemente
+\(-\log(1+x)=-x+x^2/2+o(x^2)\), con
+\(x=\Delta_\sigma/\pi_\sigma(\tau)\). Como
+\(\sum_\sigma\Delta_\sigma(\delta)=0\) exactamente, el término lineal se
+cancela y resulta
+
+\[
+\boxed{
+D_{\mathrm{KL}}\!\left(
+\pi_\tau^{(n)}\middle\|\pi_{\tau+\delta}^{(n)}
+\right)
+=\frac12 I_n^\Pi(\tau)\delta^2+o(\delta^2).
+}
+\tag{12.7}
+\]
+
+Así, a cardinalidad fija, la ley puntual no-QMD de §§3--4 y su imagen
+finita tienen comportamientos locales distintos:
+
+\[
+H^2(p_\tau,p_{\tau+\delta})\gtrsim|\delta|,
+\qquad
+H^2(\pi_\tau^{(n)},\pi_{\tau+\delta}^{(n)})
+=\frac14I_n^\Pi(\tau)\delta^2+o(\delta^2).
+\tag{12.8}
+\]
+
+La comparación (12.8) es exclusivamente para cada \(n<\infty\). No se le
+atribuye contenido uniforme o asintótico.
+
+## 13. Push-forward al canal de posets y techo
+
+Sea \(\mathcal Y_n\) la imagen finita del mapa
+\(\sigma\mapsto[P_\sigma]\), y sea
+
+\[
+q_y(\tau):=\mathbb P_\tau([P_{\Pi_n}]=y)
+=\sum_{\sigma:[P_\sigma]=y}\pi_\sigma(\tau).
+\tag{13.1}
+\]
+
+Cada \(q_y\) es \(C^1\), por ser una suma finita, y es estrictamente
+positiva para \(y\in\mathcal Y_n\), por el corolario de §8. Aplicando el
+mismo argumento de §12 sobre \(\mathcal Y_n\), la familia de clases de
+posets también es QMD para cada \(n\) fijo, con
+
+\[
+\dot\ell_{\tau,n}^{[P]}(y)=\frac{q_y'(\tau)}{q_y(\tau)},
+\qquad
+I_n^{[P]}(\tau)=\sum_{y\in\mathcal Y_n}
+\frac{q_y'(\tau)^2}{q_y(\tau)}<\infty.
+\tag{13.2}
+\]
+
+Esto no afirma que \(\mathcal Y_n\) contenga todos los posets de \(n\)
+elementos.
+
+Nada de lo anterior controla \(I_n^\Pi(\tau)\) o \(I_n^{[P]}(\tau)\) al
+crecer \(n\). En particular, no se afirma que sean acotadas, sublineales o
+lineales, ni se excluye que diverjan. Tampoco se ensambla aquí la mezcla
+Poisson no condicionada. No se adopta ninguna formulación global según la
+cual el canal causal regularice la familia.
+
+```text
+QUANTITATIVE_FULL_SUPPORT_LEMMA = PROVED
+FINITE_CHANNEL_SUPPORT = FULL_FOR_PERMUTATION_CHANNEL
+FINITE_CHANNEL_DIFFERENTIABILITY = PROVED_C1_LOCAL
+FINITE_CHANNEL_QMD = PROVED_FOR_EACH_FIXED_N
+FINITE_POSET_CHANNEL_QMD = PROVED_ON_CHANNEL_IMAGE_FOR_EACH_FIXED_N
 UNIFORM_IN_N_REGULARITY = OPEN
-DOMAIN_BRIDGE = OPEN_AT_FINITE_CHANNEL
+POISSON_MIXTURE_REGULARITY = OPEN
+DOMAIN_BRIDGE = CLOSED_FOR_EACH_FIXED_N_CHANNEL
+DOMAIN_BRIDGE_BEYOND_FIXED_N = OPEN
 FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
 NEXT_RUN_AUTHORIZED = NO
 ```
 
-## 12. Veredicto y siguiente frontera
+## 14. Veredicto y siguiente frontera
 
 ```text
 COMMON_POINT_ISOMORPHISM = REFUTED
 MOVING_SUPPORT_QMD_STATUS = PROVED_NON_QMD_FOR_POINT_EXPERIMENT
 FINITE_CHANNEL_DIFFERENTIABILITY = PROVED_C1_LOCAL
-FINITE_CHANNEL_QMD = OPEN
-DOMAIN_BRIDGE = OPEN_AT_FINITE_CHANNEL
+FINITE_CHANNEL_QMD = PROVED_FOR_EACH_FIXED_N
+FINITE_POSET_CHANNEL_QMD = PROVED_ON_CHANNEL_IMAGE_FOR_EACH_FIXED_N
+UNIFORM_IN_N_REGULARITY = OPEN
+POISSON_MIXTURE_REGULARITY = OPEN
+DOMAIN_BRIDGE = CLOSED_FOR_EACH_FIXED_N_CHANNEL
+DOMAIN_BRIDGE_BEYOND_FIXED_N = OPEN
 FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
 NEXT_RUN_AUTHORIZED = NO
 ```
 
 El esqueleto finito `Pi_n -> [P_{Pi_n}]` continúa siendo exacto y ahora se ha
-probado que su canal de permutaciones tiene soporte total y probabilidades
-\(C^1\) a cada cardinalidad finita. La promoción posterior a QMD no forma
-parte de este gate: requiere una decisión separada y no queda autorizada por
-este resultado.
+probado que, a cada cardinalidad finita, su canal de permutaciones tiene
+soporte total y es QMD, y que el push-forward a la imagen del canal de posets
+también es QMD. Permanecen abiertas la mezcla Poisson y cualquier regularidad
+uniforme al crecer \(n\). Ninguno de estos resultados abre el puente entre
+Fisher y localización.
