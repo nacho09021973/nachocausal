@@ -1279,3 +1279,252 @@ sí elimina la necesidad lógica de usar la probabilidad mínima global y
 reduce una mejora agregada a `AGGREGATE_FLUX_MASS_TRACE_LEMMA`. No se abre
 el `UNIFORM_SQRT_SCORE_MODULUS_LEMMA`, no se estudia la mezcla Poisson y no
 se extrae ninguna consecuencia de localización.
+
+## 17. `AGGREGATE_FLUX_MASS_TRACE_LEMMA`
+
+```text
+AGGREGATE_FLUX_MASS_TRACE_LEMMA = OPEN_REDUCED
+BEST_POSITIVE_ROUTE = INTEGRATED_ADJACENT_GAP_HAZARD
+NO_SUBFACTORIAL_CONSTANT_PROVED
+NO_RARE_CELL_OBSTRUCTION_PROVED
+UNIFORM_SQRT_SCORE_MODULUS = DEFERRED_NOT_OPENED
+POISSON_MIXTURE_REGULARITY = OPEN_NOT_STARTED
+FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
+KERR_SPIN_SIGN_CONJECTURE = ARCHIVED_NOT_OPENED
+NEXT_RUN_AUTHORIZED = NO
+```
+
+### 17.1. Definición exacta del cociente
+
+Para \(\alpha\in\mathfrak S_n\), \(1\le k<n\) y
+\(\beta(j)=\alpha(\sigma^{-1}(j))\), definamos la masa de la cámara
+etiquetada
+
+\[
+p_{\alpha,\sigma}(\tau)
+:=c_B^n\int_{B^n}
+\mathbf 1_{\{v_{\beta(1)}<\cdots<v_{\beta(n)}\}}
+\prod_{\ell=1}^{n-1}
+\mathbf 1_{\{g_{\alpha,\ell}>0\}}\,dx
+\tag{17.1}
+\]
+
+y la traza absoluta de su cara \(k\),
+
+\[
+q_{\alpha,k,\sigma}(\tau)
+:=c_B^n\int_{B^n}
+\mathbf 1_{\{v_{\beta(1)}<\cdots<v_{\beta(n)}\}}
+\prod_{\ell\ne k}
+\mathbf 1_{\{g_{\alpha,\ell}>0\}}
+\delta_0(g_{\alpha,k})
+|\partial_\tau g_{\alpha,k}|\,dx.
+\tag{17.2}
+\]
+
+Estas son exactamente las integrales ya presentes en (15.5), con valor
+absoluto antes de agregar las orientaciones. Las definiciones de §§11 y 16
+dan
+
+\[
+\pi_\sigma=\sum_\alpha p_{\alpha,\sigma},
+\qquad
+Q_\sigma=\sum_\alpha\sum_{k=1}^{n-1}q_{\alpha,k,\sigma}.
+\tag{17.3}
+\]
+
+Por tanto, si
+
+\[
+h_{\alpha,\sigma}(\tau)
+:=\frac{\sum_{k=1}^{n-1}q_{\alpha,k,\sigma}(\tau)}
+        {p_{\alpha,\sigma}(\tau)},
+\tag{17.4}
+\]
+
+entonces el cociente buscado es exactamente
+
+\[
+\boxed{
+R_{\sigma,n}(\tau)
+:=\frac{Q_\sigma(\tau)}{\pi_\sigma(\tau)}
+=\sum_\alpha
+\frac{p_{\alpha,\sigma}(\tau)}{\pi_\sigma(\tau)}
+h_{\alpha,\sigma}(\tau).
+}
+\tag{17.5}
+\]
+
+Es una media convexa de trazas por unidad de masa, no una razón entre el
+área total del arreglo de \(n!\) celdas y la masa de una sola celda. Además,
+la permutación simultánea de las etiquetas preserva \(B^n\), la medida
+uniforme, (17.1) y la suma sobre \(k\) en (17.2), y lleva cualquier
+\(\alpha\) a cualquier otra. En consecuencia,
+
+\[
+p_{\alpha,\sigma}=\frac{\pi_\sigma}{n!},
+\qquad
+h_{\alpha,\sigma}=R_{\sigma,n}
+\quad\text{para toda }\alpha.
+\tag{17.6}
+\]
+
+La cancelación de \(n!\) en (17.5)--(17.6) es exacta. No prueba una cota
+subfactorial, pero descarta que el **número de cámaras etiquetadas** fuerce
+por sí mismo un factor factorial en \(R_{\sigma,n}\).
+
+Geométricamente, \(R_{\sigma,n}\) es la suma, sobre las \(n-1\) caras de
+colisión adyacente de una cámara etiquetada, de la velocidad normal absoluta
+integrada en la cara, dividida por el volumen de esa misma cámara. Es una
+razón de traza móvil/masa celular, o equivalentemente un hazard agregado de
+gaps adyacentes en cero.
+
+### 17.2. Slicing radial exacto y fallo de la traza punto a punto
+
+Fijemos \((\alpha,k)\) y tomemos
+\(r_j=r_{\alpha(k+1)}\) como coordenada transversal. Denotemos por \(y\)
+las restantes \(2n-1\) coordenadas. Como
+\(|\partial_{r_j}g_{\alpha,k}|\ge c_K\), para cada \(y\) hay a lo sumo una
+raíz \(r_j=\rho_{\alpha,k}(\tau,y)\) de \(g_{\alpha,k}=0\).
+
+Las desigualdades de la cámara restringen \(r_j\) a un intervalo abierto
+posiblemente vacío
+
+\[
+I_{\alpha,k}(\tau,y)
+=(L_{\alpha,k}(\tau,y),U_{\alpha,k}(\tau,y))
+\subseteq(r_a,r_b),
+\tag{17.7}
+\]
+
+porque \(r_j\mapsto u_\tau(v_j,r_j)\) es estrictamente decreciente y las
+únicas restricciones móviles sobre esa variable son comparaciones con sus
+vecinos en el orden por \(u\). Escribamos
+\(\ell_{\alpha,k}=|I_{\alpha,k}|\).
+
+Fubini y coárea expresan la masa y la traza, suprimiendo sólo indicadores
+fijos comunes, en la forma
+
+\[
+p_{\alpha,\sigma}
+=c_B^n\int \ell_{\alpha,k}(\tau,y)\,d\nu_{\alpha,k}(y),
+\tag{17.8}
+\]
+
+\[
+q_{\alpha,k,\sigma}
+=c_B^n\int
+\mathbf 1_{\{\rho_{\alpha,k}(\tau,y)
+\text{ es el extremo activo de }I_{\alpha,k}(\tau,y)\}}
+w_{\alpha,k}(\tau,y)\,d\nu_{\alpha,k}(y),
+\tag{17.9}
+\]
+
+donde
+
+\[
+0\le w_{\alpha,k}(\tau,y)
+=\frac{|\partial_\tau g_{\alpha,k}|}
+       {|\partial_{r_j}g_{\alpha,k}|}
+\le\frac{2A_K}{c_K}.
+\tag{17.10}
+\]
+
+Las fórmulas (17.8)--(17.10) muestran por qué las cotas disponibles no
+bastan para una traza por slices: no proporcionan una cota inferior positiva
+para \(\ell_{\alpha,k}\), ni relacionan su posible pequeñez con la de
+\(w_{\alpha,k}\) en el extremo activo. En particular, no permiten deducir
+una cota punto a punto
+
+\[
+w_{\alpha,k}\mathbf 1_{\{\text{extremo activo}\}}
+\le C\,\ell_{\alpha,k}
+\tag{17.11}
+\]
+
+con \(C\) uniforme basada sólo en (15.4). Esto bloquea la derivación ingenua
+del trace lemma, pero no prueba que la desigualdad punto a punto sea falsa
+para la geometría EF completa. Tampoco decide la desigualdad integrada: los
+slices delgados podrían ocupar una medida
+\(d\nu_{\alpha,k}\) proporcionalmente pequeña.
+
+### 17.3. Reducción a un sublema de hazard integrado
+
+La condición suficiente estrictamente más concreta es:
+
+```text
+INTEGRATED_ADJACENT_GAP_HAZARD_LEMMA
+
+Existen H_{n,K} explícitas y subfactoriales tales que, uniformemente en
+tau in K, sigma, alpha y k,
+
+  integral 1_{active endpoint} w_{alpha,k} dnu_{alpha,k}
+    <= H_{n,K}
+       integral ell_{alpha,k} dnu_{alpha,k}.
+```
+
+Si este lema vale, (17.8)--(17.10) dan
+
+\[
+q_{\alpha,k,\sigma}\le H_{n,K}p_{\alpha,\sigma},
+\]
+
+y al sumar las \(n-1\) caras y usar (17.5),
+
+\[
+\boxed{
+Q_\sigma(\tau)
+\le C_{n,K}\pi_\sigma(\tau),
+\qquad
+C_{n,K}:=(n-1)H_{n,K}.
+}
+\tag{17.12}
+
+El factor \(n-1\) es el grado local de la cámara de orden, no el número
+\(n!\) de permutaciones. Si \(H_{n,K}\) es subfactorial, también lo es
+\(C_{n,K}\). Este run no prueba ninguna cota para \(H_{n,K}\): hacerlo
+requiere controlar la medida agregada de slices con intervalo factible
+pequeño, usando la geometría conjunta de los gaps vecinos.
+
+### 17.4. Ataque adversarial
+
+El mecanismo adversarial concreto sugerido por (17.8)--(17.10) son slices
+con
+
+\[
+\ell_{\alpha,k}(\tau,y)\ll1,
+\qquad
+w_{\alpha,k}(\tau,y)\ge w_0>0.
+\tag{17.13}
+
+Esto demuestra solamente una razón slice-wise grande. Para convertirlo en
+una obstrucción hace falta además una familia explícita \(\sigma_n\) y un
+conjunto de \(y\) de medida suficientemente grande que produzca una cota
+inferior factorial para el cociente de las integrales (17.9)/(17.8). No se
+ha obtenido tal familia ni tal cota de medida.
+
+```text
+ADVERSARIAL_CANDIDATE = THIN_FEASIBLE_RADIAL_SLICES
+CLASSIFICATION = RARE_MASS_ONLY_AT_PRESENT
+RARE_MASS_WITH_LARGE_TRACE = NOT_PROVED
+OBSTRUCTION_STATUS = OPEN
+```
+
+### 17.5. Veredicto y techo
+
+La ruta positiva logra dos avances exactos: cancela el \(n!\) de cámaras
+etiquetadas en el cociente (17.5)--(17.6), y reduce la constante buscada a
+\((n-1)H_{n,K}\), donde \(H_{n,K}\) es un único hazard integrado de gap
+adyacente. No demuestra que \(H_{n,K}\) sea subfactorial. El ataque
+adversarial identifica slices delgados, pero no prueba que tengan masa
+suficiente para obstruir una cota subfactorial.
+
+Por tanto el único veredicto justificado es
+
+```text
+AGGREGATE_FLUX_MASS_TRACE_LEMMA = OPEN_REDUCED
+EXACT_C_NK = (n-1) H_{n,K} CONDITIONAL_ON_MISSING_LEMMA
+ASYMPTOTIC_CLASS_C_NK = NOT_PROVED
+HIDDEN_MIN_CELL_MASS_USED = NO
+FIRST_MISSING_LEMMA = INTEGRATED_ADJACENT_GAP_HAZARD_LEMMA
+```
