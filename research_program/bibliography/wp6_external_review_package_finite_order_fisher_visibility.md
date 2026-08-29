@@ -4,6 +4,13 @@
 > EXACTLY_THREE_ADVERSARIAL_QUESTIONS / NO_NOVELTY_CERTIFICATE /
 > N4_ON_HOLD.**
 
+> **SUPERSEDED AS CURRENT MATHEMATICAL GATE.** Después de preparar este paquete
+> se demostró internamente `FULL_CLASS_SUM_RANK_THEOREM` para todo `n >= 2`.
+> El gate vigente es
+> `wp6_external_rederivation_package_full_class_sum_rank_theorem.md`. Este
+> documento se conserva como registro histórico de los ataques a `N=2,3` y no
+> debe enviarse como si describiera el estado actual.
+
 Fecha: 2026-08-29. Este paquete no solicita una revisión general del proyecto.
 No abre `N=4`, no propone una teoría general en `N` y no pide confirmar una
 conclusión. Pide intentar refutar tres puntos concretos.
