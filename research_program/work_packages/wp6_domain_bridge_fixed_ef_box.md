@@ -400,7 +400,7 @@ Por tanto el orden causal inducido sobre las configuraciones de `R` coincide
 con la restricción del orden causal ambiente. Esta observación sólo hace
 hermética la interpretación del mismo corolario; no abre un segundo gate.
 
-## 9. Techo de la afirmación
+## 9. Techo del lema de soporte por sí solo
 
 La cota (6.2) elimina ceros en los denominadores del Fisher formal
 
@@ -409,38 +409,243 @@ I_n(\tau)=\sum_\sigma
 \frac{\pi_\sigma'(\tau)^2}{\pi_\sigma(\tau)},
 \]
 
-pero no demuestra que las derivadas existan ni controla sus numeradores o
-su comportamiento al crecer `n`. En particular, no se concluye que el canal
-causal regularice la familia puntual.
+pero, por sí sola, no demuestra que las derivadas existan ni controla sus
+numeradores o su comportamiento al crecer `n`. En particular, el lema de
+soporte no permite concluir que el canal causal regularice la familia
+puntual. La diferenciabilidad se trata separadamente en §§10--11.
 
 ```text
 QUANTITATIVE_FULL_SUPPORT_LEMMA = PROVED
 FINITE_CHANNEL_SUPPORT = FULL_FOR_PERMUTATION_CHANNEL
-FINITE_CHANNEL_DIFFERENTIABILITY = OPEN
+SUPPORT_LEMMA_ALONE_DOES_NOT_PROVE_DIFFERENTIABILITY
+SUPPORT_LEMMA_ALONE_DOES_NOT_PROVE_QMD
+NO_UNIFORM_IN_N_CLAIM
+```
+
+Estas son limitaciones lógicas del lema de soporte, no el estado final del
+documento después de §§10--11.
+
+## 10. Lema de volumen para cámaras paramétricas
+
+Usaremos la siguiente forma elemental del cálculo de dominios móviles. Se
+incluye la prueba para no ocultar en una cita las esquinas de la caja.
+
+**Lema de cámaras.** Sea \(D\subset\mathbb R^d\) una caja compacta, sea
+\(J\) un intervalo abierto y sean \(g_1,\ldots,g_q\) funciones \(C^2\) en
+un entorno de \(J\times D\). Sea \(C\subset D\) una cámara fija definida
+por un número finito de desigualdades lineales estrictas. Supongamos,
+localmente uniformemente en \(t\in J\), que:
+
+1. \(d_xg_j(t,x)\ne0\) cuando \(g_j(t,x)=0\);
+2. la intersección de dos caras móviles distintas, la parte no transversal
+   de la intersección de una cara móvil con una cara fija de codimensión uno,
+   y la intersección con una arista fija de codimensión al menos dos están
+   contenidas en una unión finita de subvariedades \(C^1\) de codimensión al
+   menos dos, con cartas tubulares localmente uniformes en \(t\);
+3. fuera de ese conjunto excepcional, cada cara móvil corta
+   transversalmente las caras fijas de codimensión uno.
+
+Entonces
+
+\[
+V(t):=\operatorname{Leb}\{x\in C:g_1(t,x)>0,\ldots,g_q(t,x)>0\}
+\tag{10.1}
+\]
+
+es \(C^1\) en \(J\).
+
+**Prueba.** Fijemos un compacto \(J_0\Subset J\). En la parte de
+\(\{g_j=0\}\) que queda fuera de las intersecciones de codimensión dos, el
+teorema de la función implícita proporciona un número finito de cartas,
+uniformes para \(t\in J_0\), en las que la última coordenada es
+\(z=g_j(t,x)\). Una partición de la unidad reduce allí (10.1) a integrales
+con un extremo \(z=0\) y con integrando y jacobiano \(C^1\). El teorema
+fundamental del cálculo y la derivación bajo la integral dan una derivada
+continua; las caras fijas no producen velocidad normal.
+
+Queda justificar que los cruces excluidos de esas cartas no esconden un
+término de primer orden. Por las hipótesis 2--3 y la compacidad, admiten
+finitas cartas tubulares con al menos dos coordenadas normales. En un tubo
+de radio \(\rho\), la parte barrida al cambiar \(t\) en \(h\) tiene volumen
+
+\[
+O(|h|\rho+h^2),
+\tag{10.2}
+\]
+
+uniformemente en \(t\in J_0\): una coordenada normal recorre
+\(O(|h|)\), mientras la segunda tiene longitud \(O(\rho+|h|)\). Dividiendo
+por \(|h|\), haciendo primero \(h\to0\) y después \(\rho\to0\), la
+contribución de esos tubos desaparece. Las expresiones locales de las caras
+regulares convergen además uniformemente al variar \(t\), de modo que la
+derivada obtenida es continua. Esto prueba el lema. \(\square\)
+
+La misma prueba permite reemplazar las desigualdades lineales que definen
+\(C\) por caras fijas \(C^2\) que satisfagan las mismas condiciones de
+intersección. Aquí sólo necesitaremos órdenes estrictos de coordenadas y las
+caras de la caja.
+
+## 11. Diferenciabilidad de las probabilidades de permutación
+
+**Teorema (`FINITE_CHANNEL_DIFFERENTIABILITY`).** Fijados \(n\ge1\) y
+\(\sigma\in\mathfrak S_n\), la función
+
+\[
+\tau\longmapsto\pi_\sigma(\tau)
+\]
+
+es \(C^1\) en \((0,\infty)\). La afirmación es local en \(\tau\), no
+uniforme en \(n\).
+
+Para \(n=1\), \(\pi_{\mathrm{id}}\equiv1\), así que el resultado es
+inmediato. En lo que sigue suponemos \(n\ge2\).
+
+### 11.1. Retorno a la caja EF fija
+
+Trabajamos en
+
+\[
+B^n=([0,T]\times[r_a,r_b])^n,
+\]
+
+donde la densidad conjunta es la constante
+
+\[
+c_B^n:=\frac1{[T(r_b-r_a)]^n}
+\tag{11.1}
+\]
+
+para todo \(\tau\). Así no se deriva una densidad de soporte móvil: toda la
+dependencia paramétrica está en
+
+\[
+u_i(\tau):=u_\tau(v_i,r_i)
+=-e^{-v_i/(2\tau)}W_\tau(r_i).
+\tag{11.2}
+\]
+
+Los empates en \(u\) o \(v\) tienen medida cero para cada \(\tau\), por el
+mismo argumento de difeomorfismo fibroso usado en §§2 y 6.
+
+Para cada orden absoluto \(\alpha\in\mathfrak S_n\) de las etiquetas por
+\(u\), escrito de modo que \(\alpha(i)\) es la etiqueta de rango \(i\) en
+\(u\), la convención de \(\Pi_n\) determina un único orden absoluto
+\(\beta=\beta(\alpha,\sigma)\) por \(v\). Explícitamente, si \(\beta(j)\) es
+la etiqueta de rango \(j\) en \(v\), entonces
+
+\[
+\beta(j)=\alpha(\sigma^{-1}(j)).
+\tag{11.3}
+\]
+
+Por tanto, módulo empates, \(\{\Pi_n=\sigma\}\) es la unión disjunta de las
+\(n!\) cámaras
+
+\[
+\begin{split}
+C_{\alpha,\sigma}(\tau)=\{(v_i,r_i)_{i=1}^n\in B^n:\;&
+u_{\alpha(1)}(\tau)<\cdots<u_{\alpha(n)}(\tau),\\
+&v_{\beta(1)}<\cdots<v_{\beta(n)}\}.
+\end{split}
+\tag{11.4}
+\]
+
+En consecuencia,
+
+\[
+\pi_\sigma(\tau)
+=c_B^n\sum_{\alpha\in\mathfrak S_n}
+\operatorname{Leb}C_{\alpha,\sigma}(\tau).
+\tag{11.5}
+\]
+
+La suma es finita. Basta probar que cada sumando es \(C^1\).
+
+### 11.2. Verificación de las hipótesis del lema de cámaras
+
+Fijemos \(\tau_0>0\) y un intervalo compacto
+\(J_0\Subset(0,\infty)\) que lo contenga en su interior. Las caras móviles
+de (11.4) están dadas por las \(n-1\) funciones
+
+\[
+g_k(\tau,x)
+:=u_{\alpha(k+1)}(\tau)-u_{\alpha(k)}(\tau),
+\qquad 1\le k<n.
+\tag{11.6}
+\]
+
+Son suaves en un entorno de \(J_0\times B^n\). Además, por (6.6), existen
+constantes \(0<c<C<\infty\), dependientes de \(J_0\) y de la caja pero no
+de \(x\), tales que
+
+\[
+c\le |\partial_r u_\tau(v,r)|\le C
+\qquad
+((\tau,v,r)\in J_0\times B).
+\tag{11.7}
+\]
+
+En particular, sobre \(g_k=0\), las componentes de \(d_xg_k\) en
+\(r_{\alpha(k)}\) y \(r_{\alpha(k+1)}\) son no nulas. Cada cara móvil es,
+por tanto, un nivel regular, uniformemente en \(J_0\).
+
+Si se anulan dos \(g_k\) distintos, aparecen dos igualdades independientes
+entre coordenadas \(u_i\). Si las parejas de índices son disjuntas, la
+independencia de sus diferenciales es inmediata. Si comparten un índice,
+las filas correspondientes son dos filas independientes de la matriz de
+incidencia de un camino, multiplicadas por los factores no nulos
+\(\partial_{r_i}u_i\). La intersección tiene codimensión dos. El mismo
+argumento da codimensión \(s-1\) para un empate de \(s\) coordenadas.
+
+Las caras fijas \(v_i=v_j\) son transversales a una cara \(g_k=0\), porque
+el diferencial de esta última tiene componentes radiales no nulas. En una
+cara radial de \(B^n\), una igualdad \(g_k=0\) sigue siendo regular en la
+dirección radial del otro punto. La única excepción posible exige que las
+dos coordenadas radiales involucradas estén simultáneamente en caras de la
+caja; eso ya es una esquina de codimensión dos. Lo mismo ocurre en particular
+cuando \(\tau_0=r_a\) o \(\tau_0=r_b\): aunque \(u=0\) para todo \(v\) en
+esa esquina radial, se han fijado dos coordenadas radiales, de modo que el
+estrato excepcional sigue teniendo codimensión dos y queda cubierto por
+(10.2). Las caras \(v_i=0,T\) tampoco contienen una cara móvil, nuevamente
+por las derivadas radiales no nulas.
+
+Se verifican así las tres hipótesis del lema de cámaras para cada
+\(C_{\alpha,\sigma}(\tau)\). Su volumen es \(C^1\) en un entorno de
+\(\tau_0\). Como \(\tau_0\) era arbitrario y (11.5) es una suma finita,
+\(\pi_\sigma\in C^1((0,\infty))\). \(\square\)
+
+### 11.3. Techo de este gate
+
+La prueba es para cada \(n\) fijo. No proporciona cotas uniformes en \(n\)
+para \(\pi_\sigma'\), no intercambia derivación con \(n\to\infty\) y no
+calcula todavía información Fisher. En particular, en este gate no se
+promueve QMD ni se abre el puente hacia localización.
+
+```text
+QUANTITATIVE_FULL_SUPPORT_LEMMA = PROVED
+FINITE_CHANNEL_SUPPORT = FULL_FOR_PERMUTATION_CHANNEL
+FINITE_CHANNEL_DIFFERENTIABILITY = PROVED_C1_LOCAL
 FINITE_CHANNEL_QMD = OPEN
 UNIFORM_IN_N_REGULARITY = OPEN
 DOMAIN_BRIDGE = OPEN_AT_FINITE_CHANNEL
 FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
 NEXT_RUN_AUTHORIZED = NO
-NEXT_MATHEMATICAL_GATE = DIFFERENTIABILITY_OF_TAU_TO_PI_SIGMA
 ```
 
-El último gate queda solamente registrado y no se aborda aquí.
-
-## 10. Veredicto y siguiente frontera
+## 12. Veredicto y siguiente frontera
 
 ```text
 COMMON_POINT_ISOMORPHISM = REFUTED
 MOVING_SUPPORT_QMD_STATUS = PROVED_NON_QMD_FOR_POINT_EXPERIMENT
-FINITE_CHANNEL_REGULARITY = OPEN
+FINITE_CHANNEL_DIFFERENTIABILITY = PROVED_C1_LOCAL
+FINITE_CHANNEL_QMD = OPEN
 DOMAIN_BRIDGE = OPEN_AT_FINITE_CHANNEL
 FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
 NEXT_RUN_AUTHORIZED = NO
 ```
 
 El esqueleto finito `Pi_n -> [P_{Pi_n}]` continúa siendo exacto y ahora se ha
-probado que su canal de permutaciones tiene soporte total a cada cardinalidad
-finita. El siguiente objeto matemático posible sería la diferenciabilidad de
-la ley inducida después del canal. Esa cuestión es justamente el residuo de
-`DOMAIN_BRIDGE`, requiere una decisión separada y no queda autorizada por
+probado que su canal de permutaciones tiene soporte total y probabilidades
+\(C^1\) a cada cardinalidad finita. La promoción posterior a QMD no forma
+parte de este gate: requiere una decisión separada y no queda autorizada por
 este resultado.
