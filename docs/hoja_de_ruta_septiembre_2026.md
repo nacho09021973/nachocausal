@@ -386,7 +386,230 @@ promoverla habrá que cerrar de nuevo:
 4. clase geométrica que produce esos kernels simétricos.
 
 ```text
-FINITE_RANK_SYMMETRIC_SCORE_EXTENSION = DEFERRED_NOT_PROVED
+FINITE_RANK_BOUNDED_CONTINUOUS_SYMMETRIC_RETENTION = PROVED_BY_ASSEMBLY
+FINITE_RANK_SYMMETRIC_RETENTION = OPEN_IN_FULL_L2
+```
+
+### 5.1 Preflight autorizado — rango finito simétrico (2026-08-29)
+
+Este preflight no depende del `PASS` externo de Bombelli ni modifica el estado
+bibliográfico. Tampoco abre kernels de rango infinito. Reconstruye literalmente
+S2 desde el Teorema 5 de `wp6_d2_modular_fiber_score.md`, los Teoremas 6--7 y
+los Lemas 11.1--11.2 de
+`wp6_d2_geometric_tangent_classification.md`, y el Teorema 8 de
+`wp6_d2_geometric_fisher_retention.md`.
+
+#### Datos de S2 reconstruidos
+
+Para un perfil `a in C[0,1]`, centrado y no nulo, escribiendo
+
+\[
+a_{i,N}:=\mathbb E[a(U_{(i)})],
+\qquad
+X_N(a):=\sum_i a_{i,N}a_{\Pi_N(i),N},
+\tag{5.1}
+\]
+
+el score geométrico rank-one, con la Convención B, es
+
+\[
+S_N(a)=2\lambda X_N(a).
+\tag{5.2}
+\]
+
+S2 prueba, para `lambda != 0`,
+
+\[
+0\le 1-\frac{I_N^{[P]}(a)}{I_N^\Pi(a)}
+\le
+\left(
+\frac{\sqrt{240C_A}\,\|a\|_\infty^4}
+{4\left(\int_0^1a^2\right)^2}+o(1)
+\right)N^{-1/2}.
+\tag{5.3}
+\]
+
+Aquí `C_A,N_A` proceden de `Pr(B_N)<=C_A/N`; la constante no depende de
+`lambda`. Las hipótesis reales sobre el perfil son continuidad, centrado
+exacto, norma `L2` positiva y, por compacidad, acotación uniforme. La
+normalización es `P psi=lambda a tensor a`, tangente de cópula
+`h_psi=2 lambda a tensor a` y score (5.2).
+
+#### Forma de pérdida
+
+Para scores producidos por tangentes admisibles definimos
+
+\[
+\Delta_N(f,g):=G_N^\Pi(f,g)-G_N^{[P]}(f,g).
+\tag{5.4}
+\]
+
+La identidad de score condicionado y polarización dan exactamente
+
+\[
+\Delta_N(f,g)
+=\mathbb E\!\left[
+\operatorname{Cov}(S_N(f),S_N(g)\mid[P])
+\right].
+\tag{5.5}
+\]
+
+Por tanto `Delta_N` es una forma bilineal semidefinida positiva,
+
+\[
+\Delta_N(f,f)
+=\mathbb E[\operatorname{Var}(S_N(f)\mid[P])]\ge0,
+\tag{5.6}
+\]
+
+y Cauchy--Schwarz para formas semidefinidas positivas implica
+
+\[
+|\Delta_N(f,g)|
+\le\sqrt{\Delta_N(f,f)\Delta_N(g,g)}.
+\tag{5.7}
+\]
+
+#### Ensamblaje finito dentro de la clase acotada de S2
+
+Sea
+
+\[
+f=\sum_{r=1}^R\lambda_r a_r\otimes a_r,
+\qquad R<\infty,
+\tag{5.8}
+\]
+
+con cada `a_r in C[0,1]` centrado. El score es la suma de los scores
+rank-one. De (5.7), o equivalentemente de la desigualdad triangular para la
+seminorma inducida por `Delta_N`, se obtiene
+
+\[
+\Delta_N(f,f)
+\le
+\left(\sum_{r=1}^R|\lambda_r|
+\sqrt{\Delta_N(a_r\otimes a_r,a_r\otimes a_r)}\right)^2.
+\tag{5.9}
+\]
+
+La cota absoluta (7.6) del WP6 modular, antes de dividir por el Fisher, da la
+versión explícita
+
+\[
+\boxed{
+\Delta_N(f,f)
+\le
+\sqrt{240C_A}\,\sqrt N
+\left(\sum_{r=1}^R|\lambda_r|\|a_r\|_\infty^2\right)^2
+}
+\qquad(N\ge N_A).
+\tag{5.10}
+\]
+
+No se ha absorbido en `O(.)` ninguna dependencia en `R`, los eigenvalores o
+las normas de los perfiles.
+
+Para arrays centrados `x,y` y permutación uniforme, el mismo cálculo de pares
+usado en §7.1 del WP6 modular, ahora polarizado, da
+
+\[
+\mathbb E[(x^TP_{\Pi_N}x)(y^TP_{\Pi_N}y)]
+=\frac{(x^Ty)^2}{N-1}.
+\tag{5.11}
+\]
+
+En consecuencia el denominador de (5.8) es exactamente
+
+\[
+\boxed{
+I_N^\Pi(f)
+=\frac4{N-1}\sum_{r,s=1}^R
+\lambda_r\lambda_s
+\left(\sum_{i=1}^Na_{r,i,N}a_{s,i,N}\right)^2.
+}
+\tag{5.12}
+\]
+
+La demostración de H3 del Teorema 7 se polariza, de modo que
+
+\[
+\frac1N\sum_i a_{r,i,N}a_{s,i,N}
+\longrightarrow\langle a_r,a_s\rangle_{L^2}.
+\tag{5.13}
+\]
+
+Por tanto, para `f != 0`,
+
+\[
+I_N^\Pi(f)=4N\|f\|_{HS}^2+o(N).
+\tag{5.14}
+\]
+
+Combinando (5.10) y (5.14), queda probado por ensamblaje, sin uniformidad en
+`R`, que para todo kernel simétrico de rango finito que admita una
+descomposición (5.8) con perfiles continuos centrados,
+
+\[
+0\le1-\eta_N(f)
+\le
+\left[
+\frac{\sqrt{240C_A}
+(\sum_r|\lambda_r|\|a_r\|_\infty^2)^2}
+{4\|f\|_{HS}^2}+o(1)
+\right]N^{-1/2},
+\qquad
+\eta_N(f)\to1.
+\tag{5.15}
+\]
+
+En una descomposición espectral ortonormal, la dependencia del numerador es
+de tipo norma de traza ponderada por `\|a_r\|_infty^2`; no es una cota de tipo
+Hilbert--Schmidt ni uniforme en `R`.
+
+#### Único lema ausente para el enunciado literal en (L^2)
+
+Un operador simétrico de rango finito en
+`L_0^2 widehat tensor_sym L_0^2` puede tener eigenfunciones no acotadas. S2 y
+(5.10) no se le aplican, porque dependen de `\|a_r\|_infty`. El denominador
+no es el obstáculo: (5.12)--(5.14) siguen siendo la estructura requerida una
+vez justificada la aproximación de perfiles.
+
+El único lema nuevo suficiente es un control de cuarto momento para cada
+perfil fijo `a in L_0^2`, o directamente para cada suma finita fija, que
+implique
+
+\[
+\mathbb E[S_N(f)^4]=o(N^3).
+\tag{5.16}
+\]
+
+Como `Pr(B_N)=O(N^{-1})`, (5.16) daría por Cauchy--Schwarz
+`Delta_N(f,f)=o(N)` y, junto con (5.14), retención relativa. Una formulación
+elemental candidata para probar (5.16) a partir de la expansión exacta (7.1)
+es
+
+\[
+\max_i|\mathbb E[a(U_{(i)})]|=o(\sqrt N)
+\qquad(a\in L^2[0,1]),
+\tag{5.17}
+\]
+
+combinada con `N^{-1}\sum_i a_{i,N}^2 -> \|a\|_2^2`. Este lema no está
+demostrado en los artefactos existentes y no se prueba durante este run.
+
+Para el sector mixto, el cociente no etiquetado mata exactamente la componente
+antisimétrica, pero no se promueve aquí ninguna fórmula para el cociente con
+denominador de referencia. Permanece:
+
+```text
+FINITE_RANK_BOUNDED_CONTINUOUS_SYMMETRIC_RETENTION = PROVED_BY_ASSEMBLY
+FINITE_RANK_SYMMETRIC_RETENTION = OPEN_IN_FULL_L2
+R_CONTROL = TRACE_NORM_TYPE_WEIGHTED_BY_PROFILE_SUP_NORMS
+FULL_SYMMETRIC_S1_FISHER_RETENTION_PREFLIGHT = PASS_FINITE_RANK_NEW_LEMMA_IDENTIFIED
+FIRST_MISSING_LEMMA = L2_PROFILE_FOURTH_MOMENT_OR_EQUIVALENT_MAX_ORDER_STATISTIC_CONTROL
+INFINITE_RANK_EXTENSION_STATUS = NOT_OPENED
+MIXED_SECTOR_LIMIT = CONJECTURE
+NEXT_RUN_AUTHORIZED = NO
 ```
 
 ## 6. Fase S5 — clasificar la información que sí se pierde
