@@ -1685,3 +1685,242 @@ jerárquicamente, con retenciones relativas \(37.5\%\), \(7.5\%\) y
 son exclusivamente locales, Fisher y fixed-\(N=3\); no son fracciones de la
 geometría total ni implican reconstrucción, localización o comportamiento
 monótono al crecer \(N\).
+
+## 15. Segundo salto exacto y espectro Fisher para \(N=4\)
+
+```text
+N4_HOLD = LIFTED_BY_PI_ON_2026_08_29
+N4_S1_VISIBLE_SUBSPACE = PROVED_RANK_SIX
+STRICT_KERNEL_CONTRACTION_FROM_N3_TO_N4 = PROVED
+N4_GENERALIZED_FISHER_SPECTRUM = PROVED
+FIXED_N_ONLY = 4
+NO_RANK_MONOTONICITY_CLAIM
+NO_ASYMPTOTIC_CLAIM
+NOVELTY_CERTIFICATE = NO
+REFERENCE_EXPERIMENT = FOUR_IID_COPULA_OBSERVATIONS
+```
+
+La apertura de \(N=4\) amplía el cálculo matemático después de las auditorías
+bibliográficas. No revierte sus deflaciones: el marco sigue atribuido a
+Bombelli, la narrativa genérica de resolución creciente tiene como vecino
+directo a Surya y la prioridad estrecha continúa sin certificar.
+
+Definimos el tercer polinomio mónico centrado y ortogonal a \(1,x,q\),
+
+\[
+r(t):=\left(t-\frac12\right)^3
+-\frac3{20}\left(t-\frac12\right).
+\tag{15.1}
+\]
+
+### 15.1. Las dieciséis clases y el espacio visible
+
+Para \(i=1,\ldots,4\), sea
+
+\[
+d_i^{(4)}(t):=4\binom3{i-1}t^{i-1}(1-t)^{4-i}.
+\tag{15.2}
+\]
+
+La derivada de la probabilidad de una permutación es
+
+\[
+p'_{\sigma}(0)
+=\frac1{12}\sum_{i=1}^4
+\int_D f(u,v)d_i^{(4)}(u)d_{\sigma(i)}^{(4)}(v)\,du\,dv.
+\tag{15.3}
+\]
+
+Las \(24\) permutaciones producen las \(16\) clases de isomorfismo de posets
+de cuatro elementos, con multiplicidades
+
+\[
+1^{\times9},\qquad 2^{\times6},\qquad 3^{\times1}.
+\tag{15.4}
+\]
+
+Por tanto sus probabilidades nulas son, respectivamente, \(1/24\), \(1/12\)
+y \(1/8\). Los representantes centrados de los dieciséis scores pertenecen al
+span de
+
+\[
+\begin{aligned}
+e_{11}&=x\otimes x,&
+e_{12}&=x\otimes q+q\otimes x,&
+e_{13}&=x\otimes r+r\otimes x,\\
+e_{22}&=q\otimes q,&
+e_{23}&=q\otimes r+r\otimes q,&
+e_{33}&=r\otimes r.
+\end{aligned}
+\tag{15.5}
+\]
+
+La matriz de las dieciséis derivadas sobre esta base tiene rango seis. Como
+las densidades (15.2) son cúbicas, no puede aparecer ningún modo univariado de
+grado superior; además el cociente por isomorfismo anula el sector
+antisimétrico bajo \(u\leftrightarrow v\). Así, la cota superior seis también
+se alcanza y
+
+\[
+\boxed{
+V_4=\operatorname{Sym}^2\operatorname{span}\{x,q,r\}
+=\operatorname{span}\{e_{11},e_{12},e_{13},e_{22},e_{23},e_{33}\},
+\qquad
+\operatorname{rank}G_{[P]}^{(4)}=6.
+}
+\tag{15.6}
+\]
+
+En particular,
+
+\[
+\boxed{
+1=\dim V_2<\dim V_3=3<\dim V_4=6.
+}
+\tag{15.7}
+\]
+
+Esto son dos escalones exactos; no establece por sí solo monotonía para todo
+\(N\).
+
+### 15.2. Nuevo witness y contracción estricta
+
+El modo \(r\) es ortogonal a todo polinomio de grado a lo sumo dos. Por ello
+las densidades de estadísticos de orden para \(N=3\) no detectan
+\(f_3=x\otimes r\), mientras que (15.3) sí lo hace. Exactamente,
+
+\[
+\boxed{
+I_3^{[P]}(x\otimes r)=0,
+\qquad
+I_4^{[P]}(x\otimes r)=\frac1{220500}>0.
+}
+\tag{15.8}
+\]
+
+La segunda identidad usa que la parte simétrica de \(x\otimes r\) es
+\(e_{13}/2\) y que el sector antisimétrico está en el kernel. En consecuencia,
+
+\[
+\boxed{
+\ker G_{[P]}^{(4)}\subsetneq\ker G_{[P]}^{(3)}.
+}
+\tag{15.9}
+\]
+
+### 15.3. Forma Fisher exacta
+
+En el orden de base
+
+\[
+(e_{11},e_{12},e_{13},e_{22},e_{23},e_{33}),
+\tag{15.10}
+\]
+
+la forma del poset es
+
+\[
+\left[G_{[P]}^{(4)}\right]=
+\begin{pmatrix}
+4/75&0&0&0&0&0\\
+0&8/3375&0&0&0&0\\
+0&0&1/55125&1/354375&0&1/38587500\\
+0&0&1/354375&11/455625&0&-1/49612500\\
+0&0&0&0&2/4134375&0\\
+0&0&1/38587500&-1/49612500&0&11/5402250000
+\end{pmatrix}.
+\tag{15.11}
+\]
+
+La referencia de cuatro observaciones iid tiene
+\(G_{\mathrm{full}}^{(4)}(f,g)=16\langle f,g\rangle\). La ortogonalidad de
+\(x,q,r\) da
+
+\[
+\left[G_{\mathrm{full}}^{(4)}\right]
+=\operatorname{diag}\left(
+\frac19,\frac2{135},\frac1{1050},
+\frac1{2025},\frac1{15750},\frac1{490000}
+\right).
+\tag{15.12}
+\]
+
+Tres direcciones propias permanecen puras:
+
+\[
+\boxed{
+\lambda(e_{11})=\frac{12}{25},
+\qquad
+\lambda(e_{12})=\frac4{25},
+\qquad
+\lambda(e_{23})=\frac4{525}.
+}
+\tag{15.13}
+\]
+
+Las tres restantes viven en
+\(\operatorname{span}\{e_{13},e_{22},e_{33}\}\). Sus autovalores son las tres
+raíces reales positivas de
+
+\[
+\boxed{
+144703125\lambda^3-9975000\lambda^2+142000\lambda-128=0.
+}
+\tag{15.14}
+\]
+
+Numéricamente,
+
+\[
+\lambda_{\mathrm{mix},1}\simeq0.0494521212879,
+\qquad
+\lambda_{\mathrm{mix},2}\simeq0.0185160720400,
+\qquad
+\lambda_{\mathrm{mix},3}\simeq0.000966047034941.
+\tag{15.15}
+\]
+
+El discriminante del polinomio (15.14) es
+\(303830148132000000000000>0\), lo que certifica que las tres raíces son
+distintas y reales; su positividad también sigue de la definitud positiva de
+la restricción de (15.11).
+
+El espectro generalizado completo, en orden decreciente, es por tanto
+
+\[
+\boxed{
+\frac{12}{25}>
+\frac4{25}>
+0.0494521212879>
+0.0185160720400>
+\frac4{525}>
+0.000966047034941>0.
+}
+\tag{15.16}
+\]
+
+La estructura ya no es totalmente diagonal en la base natural de grados: a
+\(N=4\), los sectores \(x\otimes r+r\otimes x\), \(q\otimes q\) y
+\(r\otimes r\) se mezclan. En cambio, \(x\otimes x\), el mixto
+\(x\otimes q+q\otimes x\) y \(q\otimes r+r\otimes q\) siguen siendo canales
+propios exactos.
+
+### 15.4. Techo de interpretación
+
+El resultado prueba en S1 la escalera finita
+
+\[
+\boxed{\dim V_2=1,\qquad\dim V_3=3,\qquad\dim V_4=6}
+\tag{15.17}
+\]
+
+y dos contracciones estrictas consecutivas del kernel con witnesses
+explícitos. No prueba una fórmula general para \(V_N\), aunque
+\(1,3,6\) coincide con las dimensiones triangulares de los tensores
+simétricos construidos con los primeros \(N-1\) modos polinomiales. Esa
+coincidencia se registra como conjetura estructural, no como teorema.
+
+Las eficiencias de (15.16) comparan exclusivamente el poset no etiquetado con
+cuatro observaciones continuas de la cópula S1. No son porcentajes de la
+geometría total, no implican localización ni reconstrucción y no modifican
+`NOVELTY_CERTIFICATE = NO`.
