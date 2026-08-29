@@ -1271,3 +1271,220 @@ MINKOWSKI_DIAMOND_PERTURBATIVE
 NO_UNIVERSALITY_CLAIM
 PRIORITY = PROVISIONAL_NOT_SEALED
 ```
+
+## 13. Visibilidad exacta y dirección preferente para \(N=2\)
+
+```text
+N2_S1_VISIBLE_SUBSPACE_AND_PREFERRED_DIRECTION = PROVED_RANK_ONE
+FIXED_N_ONLY = 2
+NO_N_GREATER_THAN_2_CLAIM
+NO_ASYMPTOTIC_CLAIM
+REFERENCE_EXPERIMENT = TWO_IID_COPULA_OBSERVATIONS
+```
+
+Esta sección usa una convención local para evitar confundir objetos: aquí
+
+\[
+f:=\mathcal P\psi\in\operatorname{Ran}\mathcal P
+\tag{13.1}
+\]
+
+es el tangente de interacción **bivariado**. No es el perfil univariado
+denotado por \(f\) en el sector simétrico rank-one de §§5--11. Definimos
+
+\[
+\chi(u,v):=\left(u-\frac12\right)\left(v-\frac12\right).
+\tag{13.2}
+\]
+
+Por (3.5), el score de una observación de la cópula en el nulo es
+
+\[
+h_\psi=2\mathcal P\psi=2f.
+\tag{13.3}
+\]
+
+### 13.1. Derivadas de las dos probabilidades
+
+En \(N=2\), \(p_{12}(0)=p_{21}(0)=1/2\). Condicionado a
+\(\Pi_2=12\), los dos puntos emparejan mínimo con mínimo y máximo con
+máximo. Las densidades de los estadísticos de orden de dos uniformes son
+\(2(1-u)\) y \(2u\). La identidad de score condicional (5.2) da
+
+\[
+\begin{aligned}
+S_{2,\psi}(12)
+&=2\int_D f(u,v)
+  \left[4(1-u)(1-v)+4uv\right] \,du\,dv\\
+&=8\int_D f(u,v)[1-u-v+2uv] \,du\,dv.
+\end{aligned}
+\tag{13.4}
+\]
+
+Como \(f\in\operatorname{Ran}\mathcal P\), sus dos marginales se anulan.
+Por tanto los términos \(1,u,v\) de (13.4) no contribuyen y
+
+\[
+S_{2,\psi}(12)
+=16\int_D f(u,v)uv \,du\,dv
+=16\langle f,\chi\rangle_{L^2(D)}.
+\tag{13.5}
+\]
+
+La última igualdad vuelve a usar las marginales nulas de \(f\). Como
+\(p'_\sigma(0)=p_\sigma(0)S_{2,\psi}(\sigma)\), resulta
+
+\[
+\boxed{p'_{12}(0)=8\langle f,\chi\rangle.}
+\tag{13.6}
+\]
+
+Las dos probabilidades suman uno para todo \(\varepsilon\). Derivando esa
+identidad,
+
+\[
+\boxed{p'_{21}(0)=-8\langle f,\chi\rangle.}
+\tag{13.7}
+\]
+
+### 13.2. Forma Fisher del poset y kernel físico
+
+Con las dos probabilidades nulas iguales a \(1/2\), (13.6)--(13.7) dan
+
+\[
+\boxed{
+I_2^\Pi(f)
+=\sum_{\sigma\in\mathfrak S_2}
+  \frac{p'_\sigma(0)^2}{p_\sigma(0)}
+=256\langle f,\chi\rangle^2.
+}
+\tag{13.8}
+\]
+
+La convención de \(\Pi_2\) de §5 envía \(12\) al poset cadena de dos
+elementos y \(21\) a la anticadena de dos elementos. Son las dos clases de
+isomorfismo posibles y el mapa es biyectivo. Por tanto no hay pérdida
+adicional en este push-forward concreto:
+
+\[
+\boxed{I_2^{[P]}(f)=I_2^\Pi(f)=256\langle f,\chi\rangle^2.}
+\tag{13.9}
+\]
+
+Por polarización, la forma bilineal es
+
+\[
+G_{[P]}^{(2)}(f,g)
+=256\langle f,\chi\rangle\langle g,\chi\rangle.
+\tag{13.10}
+\]
+
+Tiene rango uno sobre \(\operatorname{Ran}\mathcal P\), y su kernel físico
+es exactamente
+
+\[
+\boxed{
+\ker G_{[P]}^{(2)}
+=\operatorname{Ran}\mathcal P\cap\chi^\perp.
+}
+\tag{13.11}
+\]
+
+Esto no es el gauge original. En el espacio de generadores geométricos,
+\(\ker\mathcal P\) ni siquiera alcanza el sector \(f\): produce \(f=0\).
+En cambio, (13.11) contiene direcciones no-gauge \(f\ne0\). Por ejemplo,
+
+\[
+f_0(u,v)
+=\left(u-\frac12\right)
+ \left[\left(v-\frac12\right)^2-\frac1{12}\right]
+\tag{13.12}
+\]
+
+tiene ambas marginales nulas, no es cero y satisface
+\(\langle f_0,\chi\rangle=0\). Es, por tanto, una dirección física de forma
+volumétrica exactamente invisible para el poset de dos elementos.
+
+### 13.3. Problema generalizado y eficiencia máxima
+
+La referencia estadística es exclusivamente el experimento de **dos
+observaciones iid de la cópula S1**. No es el embedding geométrico completo
+ni el experimento de coordenadas anterior al PIT. Por (13.3), el Fisher de
+una observación es \(4\lVert f\rVert_2^2\); la aditividad iid da
+
+\[
+I_2^{\mathrm{full}}(f)=8\lVert f\rVert_2^2,
+\qquad
+G_{\mathrm{full}}^{(2)}(f,g)=8\langle f,g\rangle.
+\tag{13.13}
+\]
+
+Para \(f\ne0\), la retención relativa es
+
+\[
+\eta_2(f)
+:=\frac{I_2^{[P]}(f)}{I_2^{\mathrm{full}}(f)}
+=32\frac{\langle f,\chi\rangle^2}{\lVert f\rVert_2^2}.
+\tag{13.14}
+\]
+
+Además,
+
+\[
+\lVert\chi\rVert_2^2
+=\left[\int_0^1\left(u-\frac12\right)^2du\right]^2
+=\frac1{144}.
+\tag{13.15}
+\]
+
+Cauchy--Schwarz en (13.14) implica
+
+\[
+\boxed{
+\eta_2(f)\le32\lVert\chi\rVert_2^2=\frac29,
+}
+\tag{13.16}
+\]
+
+con igualdad si y sólo si \(f=c\chi\) casi en todo punto para algún
+\(c\ne0\). Como los tangentes considerados son continuos, la igualdad casi
+en todo punto equivale a igualdad puntual. La dirección preferente es única
+módulo escala y signo.
+
+Equivalentemente, el problema generalizado
+
+\[
+G_{[P]}^{(2)}(v,g)
+=\lambda G_{\mathrm{full}}^{(2)}(v,g)
+\qquad\text{para todo }g\in\operatorname{Ran}\mathcal P
+\tag{13.17}
+\]
+
+tiene un único autovalor no nulo y el resto del espacio es su kernel:
+
+\[
+\boxed{
+\lambda_1=\frac29,
+\qquad v_1\in\operatorname{span}\{\chi\}\setminus\{0\},
+\qquad
+\lambda=0\text{ sobre }\chi^\perp\cap\operatorname{Ran}\mathcal P.
+}
+\tag{13.18}
+\]
+
+### 13.4. Techo de interpretación
+
+Para \(N=2\), el poset abstracto ve exactamente la componente del tangente
+de interacción S1 sobre \(\chi\). En particular,
+
+```text
+GAUGE_KERNEL = ker P
+NON_GAUGE_N2_INVISIBLE_DIRECTIONS = ran P intersect chi^perp
+N2_VISIBLE_SUBSPACE = span{chi}
+N2_MAX_COPULA_FISHER_RETENTION = 2/9
+```
+
+El cociente \(2/9\) compara el poset con dos observaciones continuas de la
+cópula S1. No mide una fracción de la geometría total, no usa el embedding
+continuo completo y no es una afirmación sobre EF, Schwarzschild, Kerr,
+\(N>2\), Poisson, localización o ningún límite asintótico.
