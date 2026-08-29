@@ -387,7 +387,7 @@ promoverla habrá que cerrar de nuevo:
 
 ```text
 FINITE_RANK_BOUNDED_CONTINUOUS_SYMMETRIC_RETENTION = PROVED_BY_ASSEMBLY
-FINITE_RANK_SYMMETRIC_RETENTION = OPEN_IN_FULL_L2
+FINITE_RANK_SYMMETRIC_RETENTION = PROVED
 ```
 
 ### 5.1 Preflight autorizado — rango finito simétrico (2026-08-29)
@@ -595,7 +595,154 @@ es
 \]
 
 combinada con `N^{-1}\sum_i a_{i,N}^2 -> \|a\|_2^2`. Este lema no está
-demostrado en los artefactos existentes y no se prueba durante este run.
+demostrado en los artefactos anteriores al preflight.
+
+### 5.2 `L2_ORDER_STATISTIC_FOURTH_MOMENT_LEMMA` (2026-08-29)
+
+El lema se cierra sin hipótesis `L-infinity`. Sea
+
+\[
+\rho_{i,N}(t)
+:=N\binom{N-1}{i-1}t^{i-1}(1-t)^{N-i}
+\tag{5.18}
+\]
+
+la densidad de `U_(i)` y defínase
+
+\[
+(T_Na)_i:=\int_0^1a(t)\rho_{i,N}(t)\,dt.
+\tag{5.19}
+\]
+
+Como `sum_i rho_(i,N)(t)=N`, Jensen y Tonelli dan, para todo `a in L2`,
+
+\[
+\frac1N\sum_{i=1}^N|(T_Na)_i|^2
+\le\frac1N\sum_i\int|a|^2\rho_{i,N}
+=\|a\|_2^2.
+\tag{5.20}
+\]
+
+Por tanto `T_N:L2 -> ell_N^2`, con la norma normalizada del lado discreto, es
+una contracción uniforme. Para `b in C[0,1]` centrada, el Teorema 7 ya prueba
+`N^(-1)||T_Nb||_2^2 -> ||b||_2^2`. Dado `a in L2`, elija `b` continuo con
+`||a-b||_2<epsilon`. De (5.20),
+
+\[
+\left|N^{-1/2}\|T_Na\|_2-N^{-1/2}\|T_Nb\|_2\right|
+\le\|a-b\|_2.
+\tag{5.21}
+\]
+
+Pasando primero `N -> infinity` y después `epsilon -> 0`, se obtiene
+
+\[
+\boxed{
+\frac1N\sum_i|\mathbb E[a(U_{(i)})]|^2\longrightarrow\|a\|_2^2.
+}
+\tag{5.22}
+\]
+
+Para el máximo, la expresión binomial en (5.18) implica puntualmente
+`0<=rho_(i,N)<=N`; como su integral es uno,
+
+\[
+\|\rho_{i,N}\|_2^2\le\|\rho_{i,N}\|_\infty\le N.
+\tag{5.23}
+\]
+
+Fijados `a in L2` y `epsilon>0`, tome una función acotada `b` con
+`||a-b||_2<epsilon`. Entonces, uniformemente en `i`,
+
+\[
+\frac{|(T_Na)_i|}{\sqrt N}
+\le\frac{\|b\|_\infty}{\sqrt N}
++\|a-b\|_2\frac{\|\rho_{i,N}\|_2}{\sqrt N}
+\le\frac{\|b\|_\infty}{\sqrt N}+\epsilon.
+\tag{5.24}
+\]
+
+Tomando `limsup_N` y luego `epsilon -> 0`, queda
+
+\[
+\boxed{
+\max_i|\mathbb E[a(U_{(i)})]|=o(\sqrt N).
+}
+\tag{5.25}
+\]
+
+Además `sum_i(T_Na)_i=N int a=0` exactamente. Si `x_i=(T_Na)_i`, escribamos
+`S_2=sum_i x_i^2`, `S_4=sum_i x_i^4` y
+`M_N=max_i|x_i|`. Por (5.22), `S_2=O(N)`, mientras (5.25) da
+
+\[
+S_4\le M_N^2S_2=o(N^2).
+\tag{5.26}
+\]
+
+Al sustituir estas dos estimaciones en la expansión combinatoria exacta (7.1)
+del WP6 modular, sus cinco términos son respectivamente
+
+\[
+o(N^3),\qquad o(N^2),\qquad O(N^2),\qquad O(N),\qquad O(1).
+\tag{5.27}
+\]
+
+En particular,
+
+\[
+\boxed{\mathbb E[X_N(a)^4]=o(N^3).}
+\tag{5.28}
+\]
+
+Para una suma fija de `R` scores, Minkowski en `L4` y (5.28) implican
+
+\[
+\mathbb E[S_N(f)^4]=o(N^3),
+\qquad
+f=\sum_{r=1}^R\lambda_ra_r\otimes a_r,
+\quad a_r\in L_0^2.
+\tag{5.29}
+\]
+
+En el evento típico `A_N`, la fibra es exactamente `{Pi_N,Pi_N^(-1)}` y cada
+forma cuadrática simétrica, y por tanto su suma, es invariante. Usando
+`Pr(B_N)<=C_A/N`, Cauchy--Schwarz y (5.29),
+
+\[
+0\le\Delta_N(f,f)
+\le\mathbb E[S_N(f)^2\mathbf1_{B_N}]
+\le\Pr(B_N)^{1/2}\mathbb E[S_N(f)^4]^{1/2}
+=o(N).
+\tag{5.30}
+\]
+
+La polarización de (5.22) extiende (5.13) a perfiles `L2`. Por ello la fórmula
+exacta (5.12) sigue dando, para todo `f != 0` simétrico de rango finito,
+
+\[
+I_N^\Pi(f)=4N\|f\|_{HS}^2+o(N).
+\tag{5.31}
+\]
+
+Dividiendo (5.30) por (5.31), queda probado el teorema de rango finito en el
+espacio natural:
+
+\[
+\boxed{
+f\in L_0^2\widehat\otimes_{\rm sym}L_0^2,
+\quad 0<\operatorname{rank}f<\infty
+\quad\Longrightarrow\quad
+\eta_N(f)\longrightarrow1.
+}
+\tag{5.32}
+\]
+
+La tasa disponible para perfiles `L2` generales es sólo `o_f(1)`: (5.25) no
+proporciona una velocidad universal. La tasa `O_f(N^(-1/2))` permanece para
+la subclase continua/acotada de §5.1. Este cierre es tangente/Fisher en el
+espacio de Hilbert; no afirma que todo vector `L2` sea realizado por una senda
+positiva continua de densidades con la regularidad geométrica original.
 
 Para el sector mixto, el cociente no etiquetado mata exactamente la componente
 antisimétrica, pero no se promueve aquí ninguna fórmula para el cociente con
@@ -603,10 +750,12 @@ denominador de referencia. Permanece:
 
 ```text
 FINITE_RANK_BOUNDED_CONTINUOUS_SYMMETRIC_RETENTION = PROVED_BY_ASSEMBLY
-FINITE_RANK_SYMMETRIC_RETENTION = OPEN_IN_FULL_L2
+L2_ORDER_STATISTIC_FOURTH_MOMENT_LEMMA = PROVED
+FINITE_RANK_SYMMETRIC_RETENTION = PROVED
 R_CONTROL = TRACE_NORM_TYPE_WEIGHTED_BY_PROFILE_SUP_NORMS
+L2_FINITE_RANK_RATE = o_f(1)_WITHOUT_UNIVERSAL_RATE
 FULL_SYMMETRIC_S1_FISHER_RETENTION_PREFLIGHT = PASS_FINITE_RANK_NEW_LEMMA_IDENTIFIED
-FIRST_MISSING_LEMMA = L2_PROFILE_FOURTH_MOMENT_OR_EQUIVALENT_MAX_ORDER_STATISTIC_CONTROL
+FIRST_MISSING_LEMMA = NONE_AT_FINITE_RANK
 INFINITE_RANK_EXTENSION_STATUS = NOT_OPENED
 MIXED_SECTOR_LIMIT = CONJECTURE
 NEXT_RUN_AUTHORIZED = NO
