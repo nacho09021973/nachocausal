@@ -1528,3 +1528,242 @@ ASYMPTOTIC_CLASS_C_NK = NOT_PROVED
 HIDDEN_MIN_CELL_MASS_USED = NO
 FIRST_MISSING_LEMMA = INTEGRATED_ADJACENT_GAP_HAZARD_LEMMA
 ```
+
+## 18. `INTEGRATED_ADJACENT_GAP_HAZARD_LEMMA`
+
+```text
+INTEGRATED_ADJACENT_GAP_HAZARD_LEMMA = OPEN_REDUCED
+BEST_ROUTE = ACTIVE_ENDPOINT_TO_MEAN_THICKNESS
+NO_SUBFACTORIAL_H_NK_PROVED
+NO_INTEGRATED_THIN_SLICE_OBSTRUCTION_PROVED
+UNIFORM_SQRT_SCORE_MODULUS = DEFERRED_NOT_OPENED
+POISSON_MIXTURE_REGULARITY = OPEN_NOT_STARTED
+FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
+KERR_SPIN_SIGN_CONJECTURE = ARCHIVED_NOT_OPENED
+NEXT_RUN_AUTHORIZED = NO
+```
+
+### 18.1. Definición óptima y completamente cuantificada de \(H_{n,K}\)
+
+Fijemos \(n\ge2\), un compacto \(K\Subset(0,\infty)\),
+\(\tau\in K\), \(\sigma,\alpha\in\mathfrak S_n\) y
+\(1\le k<n\). Conservamos literalmente el slicing de §17.2:
+
+- el gap adyacente es
+  \(g_{\alpha,k}=u_{\alpha(k+1)}-u_{\alpha(k)}\);
+- la variable transversal es \(r_j=r_{\alpha(k+1)}\);
+- \(y\) reúne las otras \(2n-1\) coordenadas;
+- \(d\nu_{\alpha,k}^{\tau,\sigma}(y)\) es Lebesgue en esas
+  coordenadas, restringida por el orden fijo en \(v\), por la caja y por
+  los indicadores de cámara independientes de \(r_j\) que fueron
+  suprimidos en (17.8)--(17.9);
+- \(I_{\alpha,k}(\tau,y)\) es el intervalo factible de \(r_j\) después
+  de imponer las restricciones restantes, y
+  \(\ell_{\alpha,k}=|I_{\alpha,k}|\);
+- \(E_{\alpha,k}(\tau)\) es el conjunto de \(y\) para los que la raíz
+  \(\rho_{\alpha,k}(\tau,y)\) de \(g_{\alpha,k}=0\) existe y es el
+  endpoint activo de ese intervalo;
+- la densidad de velocidad de la traza es
+
+\[
+w_{\alpha,k}(\tau,y)
+=\frac{|\partial_\tau g_{\alpha,k}|}
+       {|\partial_{r_j}g_{\alpha,k}|}
+\,\mathbf 1_{E_{\alpha,k}(\tau)}(y).
+\tag{18.1}
+\]
+
+La condición de factibilidad aparece exactamente en
+\(\ell_{\alpha,k}>0\) para la masa y en
+\(E_{\alpha,k}(\tau)\) para la traza. Con esta notación, (17.8)--(17.9)
+son
+
+\[
+p_{\alpha,\sigma}
+=c_B^n\int\ell_{\alpha,k}\,d\nu_{\alpha,k}^{\tau,\sigma},
+\qquad
+q_{\alpha,k,\sigma}
+=c_B^n\int w_{\alpha,k}\,d\nu_{\alpha,k}^{\tau,\sigma}.
+\tag{18.2}
+\]
+
+Como \(p_{\alpha,\sigma}>0\) por el lema de soporte completo, la constante
+óptima requerida por §17.3 queda definida sin ninguna constante oculta:
+
+\[
+\boxed{
+H^*_{n,K}:=
+\sup_{\substack{\tau\in K,\ \sigma,\alpha\in\mathfrak S_n\\
+                  1\le k<n}}
+\frac{\displaystyle
+      \int w_{\alpha,k}(\tau,y)
+      \,d\nu_{\alpha,k}^{\tau,\sigma}(y)}
+     {\displaystyle
+      \int\ell_{\alpha,k}(\tau,y)
+      \,d\nu_{\alpha,k}^{\tau,\sigma}(y)}
+=
+\sup_{\tau,\sigma,\alpha,k}
+\frac{q_{\alpha,k,\sigma}(\tau)}
+     {p_{\alpha,\sigma}(\tau)}.
+}
+\tag{18.3}
+\]
+
+Esta es la forma más explícita disponible en el WP. La uniformidad exigida
+es simultánea en \(\tau\in K\), en las dos permutaciones etiquetadas y en
+la cara adyacente. La medida depende de esos datos y no se sustituye por
+una ley iid de gaps ni por una distribución estándar de estadísticos de
+orden.
+
+La simetría simultánea de etiquetas de (17.6) elimina el supremo en
+\(\alpha\), pero no los de \(\sigma\), \(k\) o \(\tau\). En particular,
+no convierte los gaps condicionados por el orden en \(v\) en gaps de
+estadísticos iid. Por ello la ruta H1 no autoriza ninguna identidad estándar
+de order statistics con las hipótesis actualmente demostradas.
+
+### 18.2. Separación exacta entre velocidad y geometría thin-slice
+
+De (17.10), uniformemente en todos los índices,
+
+\[
+0\le w_{\alpha,k}
+\le W_K\mathbf 1_{E_{\alpha,k}(\tau)},
+\qquad
+W_K:=\frac{2A_K}{c_K}.
+\tag{18.4}
+\]
+
+Definamos la constante geométrica óptima
+
+\[
+\boxed{
+D^*_{n,K}:=
+\sup_{\tau,\sigma,\alpha,k}
+\frac{\nu_{\alpha,k}^{\tau,\sigma}
+      (E_{\alpha,k}(\tau))}
+     {\displaystyle
+      \int\ell_{\alpha,k}(\tau,y)
+      \,d\nu_{\alpha,k}^{\tau,\sigma}(y)}.
+}
+\tag{18.5}
+\]
+
+Tonelli y (18.4) dan la desigualdad demostrada
+
+\[
+\boxed{H^*_{n,K}\le W_KD^*_{n,K}.}
+\tag{18.6}
+\]
+
+Así, toda posible dependencia factorial ha quedado confinada a
+\(D^*_{n,K}\). Ni \(W_K\), ni el paso (18.6), ni la simetría de etiquetas
+contienen \(n!\), \(1/\min_\sigma\pi_\sigma\) o un gap mínimo global.
+El cociente (18.5) tiene una interpretación exacta: medida de los slices
+que alcanzan la cara adyacente, dividida por el espesor radial total de la
+propia cámara. Es una comparación endpoint/mean-thickness puramente
+geométrica.
+
+Por consiguiente, el sublema único estrictamente menor que queda es:
+
+```text
+ACTIVE_ENDPOINT_TO_MEAN_THICKNESS_LEMMA
+
+Probar una cota explícita subfactorial D_{n,K} para D^*_{n,K},
+uniformemente en tau in K, sigma, alpha y k, usando la geometría conjunta
+de los dos gaps vecinos que determinan I_{alpha,k}(tau,y).
+```
+
+Si se prueba, puede tomarse
+
+\[
+H_{n,K}=W_KD_{n,K}=\frac{2A_K}{c_K}D_{n,K}.
+\tag{18.7}
+\]
+
+La reducción es estricta respecto de (18.3): la velocidad normal móvil ya
+está eliminada mediante una constante \(K\)-local explícita e independiente
+de \(n\); sólo permanece la ocupación geométrica de slices finos.
+
+### 18.3. H1/H2 y test adversarial H3
+
+La suma de gaps radiales de una configuración telescopa sólo después de
+fijar un mismo orden radial. Aquí los endpoints de
+\(I_{\alpha,k}(\tau,y)\) se obtienen de comparaciones en \(u_\tau\), cuyos
+umbrales dependen también de los distintos \(v_i\). El orden fijo en \(v\)
+está además enlazado con \(\sigma\) por (11.3). Por tanto, con los resultados
+actuales no hay una normalización telescópica demostrada que acote (18.5).
+Usarla sería importar precisamente la hipótesis iid que debe probarse.
+
+La integración antes del supremo puntual sí está preservada en (18.3) y
+(18.5): no aparece \(\sup 1/\ell\). Sin embargo, la mera descomposición
+
+\[
+E_{\alpha,k}
+=\bigl(E_{\alpha,k}\cap\{\ell<s\}\bigr)
+ \cup
+ \bigl(E_{\alpha,k}\cap\{\ell\ge s\}\bigr)
+\tag{18.8}
+\]
+
+sólo controla la segunda parte por
+\(s^{-1}\int\ell\,d\nu\). Para la primera hace falta una cota cuantitativa
+de
+
+\[
+\nu_{\alpha,k}^{\tau,\sigma}
+\bigl(E_{\alpha,k}\cap\{0<\ell<s\}\bigr)
+\tag{18.9}
+\]
+
+en términos de la masa de espesor de la misma cámara. Ninguna estimación
+del WP controla actualmente (18.9), uniformemente en \(\sigma\) y \(n\).
+Esta es la forma distributiva concreta del sublema (18.5).
+
+El candidato adversarial sigue siendo una familia que concentre una
+fracción apreciable de la medida de endpoints en \(\ell\downarrow0\). Pero
+(17.13) sólo exhibe la geometría posible de un slice fino: no proporciona
+una familia explícita \(\sigma_n\), ni una cota inferior para (18.9), ni
+crecimiento no subfactorial de (18.5). La clasificación rigurosa permanece
+
+```text
+THIN_SLICE_GEOMETRY = PRESENT
+INTEGRATED_HAZARD_DIVERGENCE = NOT_PROVED
+ADVERSARIAL_CLASSIFICATION = RARE_MASS_ONLY_AT_PRESENT
+```
+
+### 18.4. Veredicto y consecuencias condicionales
+
+No se ha demostrado ninguna clase asintótica para \(D^*_{n,K}\) y, por
+tanto, tampoco para \(H^*_{n,K}\). Sí se ha reemplazado la constante
+existencial de §17.3 por el supremo exacto (18.3) y se ha reducido éste a
+una sola razón geométrica endpoint/mean-thickness, sin extremos por celda.
+
+El único veredicto justificado es
+
+```text
+INTEGRATED_ADJACENT_GAP_HAZARD_LEMMA = OPEN_REDUCED
+EXACT_H_NK_DEFINITION = H^*_{n,K} IN (18.3)
+PROVED_H_NK_BOUND = H^*_{n,K} <= (2 A_K/c_K) D^*_{n,K}
+ASYMPTOTIC_CLASS_H_NK = NOT_PROVED
+MIN_GAP_OR_MIN_CELL_MASS_USED = NO
+FIRST_MISSING_SUBLEMMA = ACTIVE_ENDPOINT_TO_MEAN_THICKNESS_LEMMA
+```
+
+Condicionalmente a una cota subfactorial explícita
+\(D^*_{n,K}\le D_{n,K}\), (17.12), (18.7) y (16.7) darían
+
+\[
+C_{n,K}=(n-1)\frac{2A_K}{c_K}D_{n,K},
+\tag{18.10}
+\]
+
+\[
+\boxed{
+I_n^{[P]}(\tau)\le I_n^\Pi(\tau)
+\le n(n-1)^2\kappa_K\frac{2A_K}{c_K}D_{n,K}.
+}
+\tag{18.11}
+\]
+
+No se abre el sublema (18.5), ni uniformidad QMD, mezcla Poisson,
+Fisher--localización o Kerr.
