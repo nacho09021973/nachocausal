@@ -1085,3 +1085,197 @@ la saturación ocurra.
 El siguiente run mínimo, si se autorizara, debería atacar únicamente el
 `UNIFORM_SQRT_SCORE_MODULUS_LEMMA`, precedido por una cota de flujo ponderado
 que evite el mínimo global de celda. No se autoriza aquí ese run.
+
+## 16. `AGGREGATE_BOUNDARY_FLUX_PREFLIGHT`
+
+```text
+NATURALEZA = EXPLORATORY_ANALYTIC_PREFLIGHT
+AGGREGATE_BOUNDARY_FLUX_PREFLIGHT = PASS_AGGREGATE_LEMMA_IDENTIFIED
+UNIFORM_SQRT_SCORE_MODULUS = DEFERRED_NOT_OPENED
+POISSON_MIXTURE_REGULARITY = OPEN_NOT_STARTED
+FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
+NEXT_RUN_AUTHORIZED = NO
+```
+
+### 16.1. Auditoría exacta de la cota factorial
+
+Con \(F_{\sigma,n}=\pi_\sigma'\), la cadena de §15 es
+
+\[
+\begin{aligned}
+\mathcal B_n(\tau)
+&=\sum_\sigma\frac{F_{\sigma,n}^2}{\pi_\sigma}\\
+&\le \frac1{\min_\sigma\pi_\sigma}
+       \sum_\sigma F_{\sigma,n}^2\\
+&\le \frac1{\min_\sigma\pi_\sigma}
+       \left(\max_\sigma|F_{\sigma,n}|\right)
+       \sum_\sigma|F_{\sigma,n}|\\
+&\le \frac{n!}{a_K^n}\,
+       [(n-1)\kappa_K]\,[n(n-1)\kappa_K].
+\end{aligned}
+\tag{16.1}
+\]
+
+Las pérdidas son distintas y deben mantenerse separadas:
+
+```text
+LOSS-1 = tomar valores absolutos cara a cara en (15.5), perdiendo
+         cancelaciones dentro del flujo firmado F_sigma
+LOSS-2 = eliminar las demás restricciones de cámara al acotar cada integral
+         de coárea por el volumen completo de su proyección
+LOSS-3 = usar sum F_sigma^2 <= max|F_sigma| sum|F_sigma|
+LOSS-4 = desacoplar flujo y masa mediante
+         1/pi_sigma <= 1/min_eta pi_eta
+LOSS-5 = minorar cada celda por el evento suficiente "todos los puntos en R"
+LOSS-6 = asignar a cada permutación sólo 1/n! del volumen de R^n
+```
+
+El factor \(a_K^{-n}\) nace en `LOSS-5`: exigir que los \(n\) puntos caigan
+simultáneamente en un rectángulo local de masa al menos \(a_K\). El factor
+\(n!\) nace en `LOSS-6`: dentro de ese rectángulo, las \(n!\) permutaciones
+de rangos tienen igual volumen. Ambos entran en Fisher sólo después de
+`LOSS-4`, cuando todos los denominadores se sustituyen por la peor celda.
+Por tanto no está probado que ninguno de esos factores describa el Fisher
+agregado real.
+
+### 16.2. B1: interfaces compartidas y flujo antisimétrico
+
+Fuera de empates múltiples, una cara móvil de una cámara está dada por el
+intercambio de dos posiciones adyacentes en el orden por \(u\). Si
+\(s_k=(k,k+1)\), las dos permutaciones de rango a ambos lados difieren por
+el intercambio correspondiente de las entradas en las posiciones \(k\) y
+\(k+1\). Agregando todos los componentes geométricos que separan dos
+celdas \(\sigma\) y \(\eta\), definamos \(J_{\sigma,\eta}(\tau)\) como el
+flujo firmado orientado hacia la celda \(\sigma\).
+
+La misma interfaz con la orientación opuesta da exactamente
+
+\[
+J_{\sigma,\eta}=-J_{\eta,\sigma}.
+\tag{16.2}
+\]
+
+La fórmula (15.5), agrupada por interfaces, se convierte en la identidad de
+divergencia
+
+\[
+\boxed{
+F_{\sigma,n}(\tau)
+=\sum_{\eta\sim\sigma}J_{\sigma,\eta}(\tau).
+}
+\tag{16.3}
+\]
+
+La suma total de (16.3) es cero por (16.2), en acuerdo con
+\(\sum_\sigma\pi_\sigma'=0\). Esta antisimetría es exacta, pero por sí sola
+no controla la energía ponderada: las cancelaciones pueden reducir
+\(F_\sigma\), nunca proporcionar automáticamente el factor \(\pi_\sigma\)
+que exige Fisher.
+
+### 16.3. B2/B3: reducción a una desigualdad flujo--masa local
+
+Sea \(Q_{\sigma,\eta}=Q_{\eta,\sigma}\ge0\) el flujo absoluto de la interfaz:
+se integra el valor absoluto de la velocidad normal con la misma medida de
+coárea que en (15.5), sumando todos sus componentes. Entonces
+
+\[
+|J_{\sigma,\eta}|\le Q_{\sigma,\eta},
+\qquad
+Q_\sigma:=\sum_{\eta\sim\sigma}Q_{\sigma,\eta}.
+\tag{16.4}
+\]
+
+El recuento agregado de §15.3 ya demuestra
+
+\[
+\sum_{\{\sigma,\eta\}}Q_{\sigma,\eta}
+\le\binom n2\kappa_K,
+\tag{16.5}
+\]
+
+donde cada interfaz no orientada se cuenta una sola vez. Así, el área/flujo
+total relevante tiene una cota polinómica; no contiene un factor \(n!\).
+
+Aplicando Cauchy--Schwarz **antes** de dividir por la masa de la celda,
+
+\[
+F_{\sigma,n}^2
+\le Q_\sigma
+\sum_{\eta\sim\sigma}
+\frac{J_{\sigma,\eta}^2}{Q_{\sigma,\eta}},
+\tag{16.6}
+\]
+
+con la convención \(0/0=0\). Por tanto basta una comparación local entre el
+flujo incidente y la masa:
+
+```text
+AGGREGATE_FLUX_MASS_TRACE_LEMMA
+
+Existe C_{n,K} explícita, sin crecimiento factorial impuesto a priori,
+tal que para toda sigma y tau in K,
+
+    Q_sigma(tau) <= C_{n,K} pi_sigma(tau).
+```
+
+Si este lema vale, (16.4)--(16.6) implican rigurosamente
+
+\[
+\begin{aligned}
+\mathcal B_n(\tau)
+&\le C_{n,K}
+\sum_\sigma\sum_{\eta\sim\sigma}
+\frac{J_{\sigma,\eta}^2}{Q_{\sigma,\eta}}\\
+&\le C_{n,K}
+\sum_\sigma\sum_{\eta\sim\sigma}Q_{\sigma,\eta}\\
+&\le C_{n,K}\,n(n-1)\kappa_K.
+\end{aligned}
+\tag{16.7}
+\]
+
+Esta reducción conserva conjuntamente masa y flujo hasta el único paso
+\(Q_\sigma/\pi_\sigma\le C_{n,K}\), y evita por completo
+\(1/\min_\sigma\pi_\sigma\). Probar una cota subfactorial para
+\(C_{n,K}\) produciría una mejora subfactorial de Fisher. El preflight no
+demuestra esa desigualdad de traza ni propone una escala para
+\(C_{n,K}\).
+
+### 16.4. B4: estado del falsificador de celdas raras
+
+Una masa pequeña \(\pi_{\sigma_n}\) no es por sí sola una obstrucción.
+Para probar `OBSTRUCTION_RARE_CELLS_PROVED` haría falta una familia explícita
+con una cota inferior del tipo
+
+\[
+\frac{F_{\sigma_n,n}(\tau)^2}{\pi_{\sigma_n}(\tau)}
+\ge L_n,
+\tag{16.8}
+\]
+
+para una sucesión \(L_n\) que fuerce crecimiento fuerte del Fisher. La
+representación disponible no proporciona tal cota inferior: (15.7),
+(15.8) y (16.5) son cotas superiores de flujo y permiten cancelaciones
+firmadas. Tampoco se ha probado que \(Q_{\sigma_n}/\pi_{\sigma_n}\) sea
+grande para una familia explícita.
+
+```text
+RARE_CELL_MASS_SMALL = POSSIBLE_BUT_NOT_A_FISHER_OBSTRUCTION
+RARE_CELL_FISHER_LARGE = NOT_PROVED
+RARE_CELL_OBSTRUCTION = OPEN
+```
+
+### 16.5. Evaluación y techo
+
+- **B1:** pasa estructuralmente; (16.2)--(16.3) dan el balance exacto sobre
+  el grafo de interfaces.
+- **B2:** reduce el problema a un único lema local de traza flujo--masa.
+- **B3:** (16.5) prueba que el flujo absoluto total se cuenta por pares y
+  tiene cota polinómica, no factorial.
+- **B4:** no produce obstrucción; falta toda cota inferior rare-cell del
+  tipo (16.8).
+
+El preflight no demuestra una cota subfactorial para \(\mathcal B_n\), pero
+sí elimina la necesidad lógica de usar la probabilidad mínima global y
+reduce una mejora agregada a `AGGREGATE_FLUX_MASS_TRACE_LEMMA`. No se abre
+el `UNIFORM_SQRT_SCORE_MODULUS_LEMMA`, no se estudia la mezcla Poisson y no
+se extrae ninguna consecuencia de localización.
