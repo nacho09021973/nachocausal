@@ -1,13 +1,20 @@
 # WP6 — `FINITE_N_VISIBLE_SPAN_PATTERN_PREFLIGHT`
 
 ```text
-STATUS = UPPER_INCLUSION_PROVED / LOWER_INCLUSION_REDUCED_TO_FINITE_RANK
+STATUS = CLOSED_BY_FULL_CLASS_SUM_RANK_THEOREM
 N5_NOT_OPENED
-GENERAL_EQUALITY = CONJECTURE
-GENERAL_MONOTONICITY = NOT_PROVED
-DENSITY_CONCLUSION = CONDITIONAL
+GENERAL_EQUALITY = PROVED_IN_FOLLOWUP
+GENERAL_MONOTONICITY = PROVED_IN_FOLLOWUP
+DENSITY_CONCLUSION = PROVED_IN_FOLLOWUP
 NOVELTY_CERTIFICATE = NO
 ```
+
+> **Cierre posterior.** La reducción de este preflight fue cerrada en
+> `wp6_full_class_sum_rank_theorem.md` mediante una familia explícita de posets
+> casi cadena y una triangularización por laplacianos de aristas. Las marcas
+> `OPEN`, `CONJECTURE` y `CONDITIONAL` que aparecen más abajo conservan el
+> estado histórico del preflight en el momento de redactarse; no son el estado
+> terminal vigente.
 
 ## 1. Pregunta y resultado del preflight
 
