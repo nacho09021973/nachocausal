@@ -1795,10 +1795,11 @@ separadas:
 cociente por isometrías la curva `epsilon -> [g_epsilon]` se pliega sobre sí
 misma en `epsilon=0`, y por eso el Fisher de primer orden en el canal `[P]`
 debe anularse. Puede existir identificabilidad de orden superior en
-`|epsilon|`; **ese problema no se abre aquí**.
+`|epsilon|`; **ese problema no se abre en esta sección**, y queda resuelto en
+§5.6: la ley del poset sí cambia a orden `epsilon^2`, ya con `N=2`.
 
 ```text
-HIGHER_ORDER_IDENTIFIABILITY_IN_ABS_EPSILON = NOT_OPENED
+HIGHER_ORDER_IDENTIFIABILITY_IN_ABS_EPSILON = PROVED_SECOND_ORDER_VISIBLE (§5.6)
 ```
 
 #### Reinterpretación obligatoria del teorema mixto
@@ -1844,6 +1845,269 @@ GEOMETRIC_TANGENT_REALIZABILITY = NOT_FULLY_OPENED
 
 Un solo testigo decide la pregunta existencial; no se caracteriza `Im P` ni se
 afirma que todo `wedge^2 H` sea realizable.
+
+
+### 5.6 `HIGHER_ORDER_IDENTIFIABILITY_IN_ABS_EPSILON_PREFLIGHT` (2026-08-30)
+
+Se trabaja **exclusivamente** con el witness (5.54). No se abre `wedge^2 H`.
+
+#### Fórmula finita exacta de la ley de rangos
+
+No hace falta la expansión de la cópula a segundo orden. Para `N` puntos iid de
+`mu_epsilon`, ordenando cada coordenada, el suceso `{Pi_N=pi}` es exactamente
+el de que el punto de `u`-rango `i` tenga `v`-rango `pi(i)`, luego
+
+\[
+p_\pi(\varepsilon):=\mathbb P_\varepsilon(\Pi_N=\pi)
+=N!\int_\Delta\!\!\int_\Delta\prod_{i=1}^Nq_\varepsilon(u_i,v_{\pi(i)})\,dv\,du,
+\qquad
+\Delta=\{0<t_1<\dots<t_N<1\}.
+\tag{5.59}
+\]
+
+Con `q_epsilon=e^{2 epsilon psi}/Z(epsilon)` y
+`T_pi:=sum_i psi(u_i,v_(pi(i)))`, y escribiendo `<.>` para la esperanza bajo
+dos familias independientes de estadísticos de orden uniformes (densidad `N!`
+sobre `Delta` en cada coordenada), (5.59) se reduce a
+
+\[
+\boxed{
+p_\pi(\varepsilon)
+=\frac{\bigl\langle e^{2\varepsilon T_\pi}\bigr\rangle}
+        {N!\,Z(\varepsilon)^N}.
+}
+\tag{5.60}
+\]
+
+En `epsilon=0` da `1/N!`, la ley uniforme del nulo.
+
+#### Lema F — regularidad
+
+`psi` es continua sobre el compacto `D`, luego acotada por `M:=||psi||_inf`.
+Entonces `|T_pi|<=NM` y, para `|epsilon|<=r`,
+
+\[
+\Bigl|\partial_\varepsilon^k e^{2\varepsilon T_\pi}\Bigr|
+\le(2NM)^k e^{2rNM},
+\]
+
+una cota constante e integrable sobre el dominio de medida finita
+`Delta x Delta`. Por convergencia dominada se puede derivar bajo la integral a
+todo orden, y lo mismo vale para `Z(epsilon)`, que además no se anula. Por
+tanto `p_pi` es **real-analítica** en `epsilon`, no sólo `C^2`. La hipótesis
+usada es exactamente la de S1, `psi in C(D;R)`; no se requiere nada más.
+
+```text
+SECOND_ORDER_REGULARITY = REAL_ANALYTIC (stronger than C^2)
+```
+
+#### Teorema 18 — derivadas primera y segunda exactas
+
+Con `bar psi=0` para el witness, `Z(epsilon)=1+2 epsilon^2 sigma^2+O(epsilon^4)`,
+`sigma^2:=int_D psi^2 d mu_0`. Sustituyendo en (5.60),
+
+\[
+N!\,p_\pi(\varepsilon)
+=1+2\varepsilon\langle T_\pi\rangle
++2\varepsilon^2\bigl(\langle T_\pi^2\rangle-N\sigma^2\bigr)+O(\varepsilon^3),
+\]
+
+de donde
+
+\[
+\boxed{
+p_\pi'(0)=\frac{2}{N!}\langle T_\pi\rangle,
+\qquad
+p_\pi''(0)=\frac{4}{N!}\bigl(\langle T_\pi^2\rangle-N\sigma^2\bigr).
+}
+\tag{5.61}
+\]
+
+La primera es consistente con lo ya congelado: por independencia de los
+estadísticos de orden en las dos coordenadas,
+`<T_pi> = sum_i H^(N)_(i,pi(i))(psi)` con `H^(N)` de (5.33), luego
+`N! p_pi'(0) = 2 sum_i H_(i,pi(i))(P psi) = S_N(P psi)`, el score de (5.34).
+
+#### Paridad, re-derivada dentro de este cálculo
+
+Por antisimetría, `sum_i psi(u_i,v_(pi(i))) = -sum_j psi(v_j,u_(pi^(-1)(j)))`;
+renombrando las variables mudas de integración (ambas recorren `Delta`) en
+(5.59)--(5.60) y usando `Z(-epsilon)=Z(epsilon)`,
+
+\[
+p_\pi(-\varepsilon)=p_{\pi^{-1}}(\varepsilon),
+\tag{5.62}
+\]
+
+que es (5.58). Como cada fibra `Gamma_C` es cerrada bajo inversión
+(Teorema 14), `p_C(-epsilon)=p_C(epsilon)`, luego `p_C'(0)=0` y la expansión
+empieza en orden par:
+
+\[
+p_C(\varepsilon)=p_C(0)+\tfrac12p_C''(0)\varepsilon^2+O(\varepsilon^4).
+\tag{5.63}
+\]
+
+```text
+PARITY_REVERIFIED = YES, independently inside this computation
+```
+
+#### Mecanismo: `psi^2` es simétrica
+
+La parte diagonal de `<T_pi^2>` es
+
+\[
+\sum_i\bigl\langle\psi(U_{(i)},V_{(\pi(i))})^2\bigr\rangle
+=\sum_iH^{(N)}_{i,\pi(i)}(\psi^2),
+\]
+
+la matriz del kernel `psi^2`. Y para `psi` antisimétrica
+`psi^2(v,u)=(-psi(u,v))^2=psi^2(u,v)`: **`psi^2` es simétrica**. Lo mismo se ve
+en la densidad, cuyo término de orden dos es
+`2 epsilon^2(psi^2-sigma^2)`, simétrico. Su proyección de interacción no se
+anula:
+
+\[
+\mathcal P(\psi^2)\neq0,
+\qquad
+\|\mathcal P(\psi^2)\|_{HS}^2=\tfrac{3028}{245}.
+\tag{5.64}
+\]
+
+Es decir: la deformación de orden `epsilon^2` vive en el sector **simétrico**,
+justo el de retención asintótica total (Teorema 12). Ésa es la razón
+estructural por la que cabe esperar señal a segundo orden, y por la que la
+invisibilidad no puede ser permanente. (5.64) no afirma que el tangente de
+cópula de segundo orden sea `2 P(psi^2)`; esa expansión no se calcula aquí y no
+se necesita.
+
+#### Teorema 19 — visibilidad de segundo orden ya en `N=2`
+
+Todos los números salen del backend determinista
+`dev/wp6_second_order_antisymmetric_witness.py`, con asertos internos para
+`sum_pi p'(0)=0`, `sum_pi p''(0)=0`, `p'_pi(0)=-p'_(pi^(-1))(0)` y `p_C'(0)=0`.
+
+Para `N=2`, con `sigma^2=2` y las dos clases de dos elementos:
+
+\[
+\boxed{
+p''_{\rm anticadena}(0)=+\tfrac85,
+\qquad
+p''_{\rm cadena}(0)=-\tfrac85,
+}
+\qquad
+p_C(0)=\tfrac12\ \text{ambas},
+\tag{5.65}
+\]
+
+y `sum_C p_C''(0)=0` exactamente. Como `N=2` es la menor cardinalidad con más
+de una clase, el `N` mínimo con señal de segundo orden es el mínimo posible:
+
+```text
+MINIMAL_N_WITH_SECOND_ORDER_SIGNAL = 2
+```
+
+Para `N=3` las cinco clases dan
+`48/35, 64/35, -52/35, -52/35, -8/35`, de nuevo con suma cero y todas no nulas.
+
+Esto **prueba** el enunciado existencial: (5.59)--(5.61) son analíticas y la
+evaluación en `N=2` es una integral exacta de un polinomio sobre un
+2-símplex, en aritmética racional. No es evidencia numérica de un enunciado
+asintótico; es el cálculo cerrado de una cantidad finita.
+
+\[
+\boxed{
+\exists\,N,C:\quad
+\left.\frac{d^2}{d\varepsilon^2}
+\mathbb P_\varepsilon([P_N]=C)\right|_0\neq0.
+}
+\]
+
+Interpretación de (5.65): a segundo orden el witness antisimétrico **aumenta**
+la probabilidad de la anticadena y **disminuye** la de la cadena. El poset ve
+la magnitud de la deformación; el signo sigue cocientado por la isotropía.
+
+#### Consecuencia: identificabilidad local en `|epsilon|`
+
+De (5.63) y (5.65), para `0<|epsilon|` suficientemente pequeño,
+
+\[
+\boxed{
+P_\varepsilon^{[P]}\neq P_0^{[P]}
+\qquad\text{ya a }N=2.
+}
+\tag{5.66}
+\]
+
+```text
+HIGHER_ORDER_IDENTIFIABILITY_IN_ABS_EPSILON = PROVED_SECOND_ORDER_VISIBLE
+ABS_EPSILON_LOCALLY_VISIBLE = YES
+SIGN_IDENTIFIABLE = NO
+```
+
+**Lo que NO se afirma.** No se afirma reconstrucción de `|epsilon|` a partir de
+una sola muestra, ni consistencia de ningún estimador, ni tasa, ni nada sobre
+la Hauptvermutung. (5.66) es separación de leyes a `N` fijo, nada más.
+
+#### Parámetro `theta=epsilon^2`
+
+Como `p_C` es par y real-analítica, `p_C(epsilon)=g_C(epsilon^2)` con `g_C`
+real-analítica en un entorno de `0`, y
+
+\[
+\left.\frac{d}{d\theta}\mathbb P_\theta([P_N]=C)\right|_{0^+}
+=\tfrac12p_C''(0),
+\tag{5.67}
+\]
+
+no nula por (5.65). La derivada existe como **derivada por la derecha**:
+`theta=0` es un punto de **frontera** del modelo `{P_theta : theta>=0}`.
+
+```text
+THETA_EQUALS_EPSILON_SQUARED_BOUNDARY_DERIVATIVE = EXISTS, = (1/2) p_C''(0) != 0
+ABS_EPSILON_BOUNDARY_SCORE = DEFINED_AS_ONE_SIDED_DERIVATIVE
+```
+
+**No** se declara el modelo QMD regular en `theta=0`, ni se invoca LAN ni
+eficiencia asintótica: son enunciados de frontera y requieren su propio
+tratamiento. El siguiente lema concreto, **no abierto aquí**, es la validez
+unilateral de QMD/LAN en `theta=0^+`.
+
+#### Hellinger de segundo orden
+
+Con la convención del repositorio `H^2(p,q)=int(sqrt p-sqrt q)^2` sin factor
+`1/2` (`wp6_domain_bridge_fixed_ef_box.md:119`,
+`manuscript_limits_draft.md:594`), de (5.63),
+
+\[
+H^2\bigl(P_\varepsilon^{[P]},P_0^{[P]}\bigr)
+=K_N\varepsilon^4+o(\varepsilon^4),
+\qquad
+K_N=\sum_C\frac{p_C''(0)^2}{16\,p_C(0)}.
+\tag{5.68}
+\]
+
+El backend evalúa y asevera `K_N>0`:
+
+\[
+K_2=\tfrac{16}{25},
+\qquad
+K_3=\tfrac{3684}{1225}.
+\tag{5.69}
+\]
+
+La escala `epsilon^4` no se impuso: se sigue de la paridad más `p_C''(0)!=0`.
+
+#### Corrección del techo de claims
+
+`PERMANENT_FIRST_ORDER_INVISIBILITY` sigue siendo correcto y **conserva
+obligatoriamente el calificativo `FIRST_ORDER`**. Queda prohibido escribir
+"permanent invisibility" a secas para el witness: la ley del poset sí cambia,
+a orden `epsilon^2`, ya con dos elementos. La formulación correcta es
+
+> primer orden invisible, localmente visible en `|epsilon|`.
+
+Sigue prohibido, por §5.5, llamar a esto *physical information loss*.
 
 
 Para el sector mixto, §5.4 promueve ya la fórmula de razón de normas (5.52)
@@ -1915,7 +2179,17 @@ DISCRETE_ISOTROPY_STATUS = IDENTIFIES +eps WITH -eps; poset law exactly even
 ANTISYMMETRIC_FISHER_KERNEL_INTERPRETATION =
     first-order insensitivity to R-odd directions, NOT physical information loss
 PHYSICAL_INFORMATION_LOSS_WORDING = FORBIDDEN for wedge^2 H
-HIGHER_ORDER_IDENTIFIABILITY_IN_ABS_EPSILON = NOT_OPENED
+HIGHER_ORDER_IDENTIFIABILITY_IN_ABS_EPSILON = PROVED_SECOND_ORDER_VISIBLE
+    minimal N = 2; p''_antichain(0) = +8/5, p''_chain(0) = -8/5 (5.65)
+    H^2(P_eps,P_0) = K_N eps^4 + o(eps^4); K_2 = 16/25, K_3 = 3684/1225 (5.69)
+    mechanism: psi^2 is SYMMETRIC and P(psi^2) != 0, ||P(psi^2)||_HS^2 = 3028/245
+ABS_EPSILON_LOCALLY_VISIBLE = YES
+SIGN_IDENTIFIABLE = NO
+ABS_EPSILON_BOUNDARY_SCORE = DEFINED_AS_ONE_SIDED_DERIVATIVE (theta = eps^2)
+BOUNDARY_QMD_LAN_AT_THETA_ZERO = NOT_OPENED (next concrete lemma)
+PERMANENT_INVISIBILITY_WORDING = FORBIDDEN without the FIRST_ORDER qualifier
+SINGLE_SAMPLE_RECONSTRUCTION_CLAIMED = NO
+HAUPTVERMUTUNG_CLAIMED = NO
 FULL_WEDGE_REALIZABILITY_PROVED = NO
 GEOMETRIC_TANGENT_REALIZABILITY = NOT_FULLY_OPENED
 N5_OPENED = NO
