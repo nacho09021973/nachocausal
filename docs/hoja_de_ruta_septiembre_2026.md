@@ -1004,7 +1004,7 @@ Comprobación directa del caso `m=1`, independiente de los Pasos 2--3: con
 ORDER_STATISTIC_MEAN_ZERO_NORM = PROVED_EXACT
 ```
 
-#### Corolario — constante uniforme nítida
+#### Corolario — constante uniforme
 
 Como `f in H widehat tensor_sym H` tiene ambos factores en `H`, (5.37a)
 refina (5.37) a `||H^(N)(f)||_F <= [N(N-1)/(N+1)]\,||f||_HS`, y (5.36) da
@@ -1019,12 +1019,68 @@ refina (5.37) a `||H^(N)(f)||_F <= [N(N-1)/(N+1)]\,||f||_HS`, y (5.36) da
 \tag{5.37d}
 \]
 
-`4N(N-1)/(N+1)^2` crece estrictamente hacia `4`, que es exactamente el valor
-del límite (5.40); la cota uniforme es por tanto asintóticamente nítida y la
-constante `4` no puede rebajarse. **Este corolario no mejora ninguna tasa**:
-`Delta_N(f,f)/N -> 0` para cada `f` fijo por el Teorema 11, y (5.37d) es sólo
-un control uniforme sobre la esfera HS. `RATE` sigue siendo
-`o_f(1)_NO_UNIFORM_RATE_CLAIMED`.
+**Las dos desigualdades de (5.37d) no tienen el mismo estatus. No se deben
+citar juntas como "cota nítida".**
+
+*La segunda es nítida, y de hecho se alcanza exactamente.* Para
+`f=e_1^(tensor 2)` se tiene `H^(N)(f)=(T_Ne_1)(T_Ne_1)^T`, luego
+`||H^(N)(f)||_F=||T_Ne_1||^2=N(N-1)/(N+1)` por el Lema B', y (5.36) da
+
+\[
+\frac{I_N^\Pi(e_1^{\otimes2})}N
+=\frac{4}{N(N-1)}\left(\frac{N(N-1)}{N+1}\right)^{\!2}
+=\frac{4N(N-1)}{(N+1)^2}
+\qquad\forall N\ge2,
+\tag{5.37e}
+\]
+
+con igualdad para todo `N`, no sólo en el límite. La constante
+`4N(N-1)/(N+1)^2` crece estrictamente hacia `4`, el valor del límite (5.40),
+de modo que `4` es la mejor constante uniforme posible para el Fisher de
+referencia.
+
+*La primera no se sabe nítida.* El extremizador del miembro derecho es
+`e_1^(tensor 2)`, y precisamente allí
+
+\[
+\Delta_N(e_1^{\otimes2},e_1^{\otimes2})=0
+\qquad\forall N\ge2
+\]
+
+por (5.3b)--(5.3c). Es decir, en la dirección que satura la cota dominante la
+pérdida es **exactamente nula**: la cadena `Delta_N<=I_N^Pi` es máximamente
+holgada justo donde el segundo paso es exacto. Nada de lo anterior determina
+`sup_f Delta_N(f,f)/(N||f||_HS^2)`, que queda sin calcular.
+
+```text
+REFERENCE_FISHER_HS_BOUND = SHARP; attained at e_1^ox2 for every N >= 2 (5.37e)
+NORMALIZED_LOSS_BOUND     = VALID, SHARPNESS_OPEN
+```
+
+**Este corolario no mejora ninguna tasa**: `Delta_N(f,f)/N -> 0` para cada `f`
+fijo por el Teorema 11, y (5.37d) es sólo un control uniforme sobre la esfera
+HS. `RATE` sigue siendo `o_f(1)_NO_UNIFORM_RATE_CLAIMED`.
+
+#### Observación — el doble papel de `e_1`
+
+Registrada como observación, **no como principio** y sin lectura física:
+
+\[
+e_1=
+\begin{cases}
+\text{dirección que maximiza el Fisher de referencia por norma HS}
+&\text{(Lema B', (5.37e))},\\
+\text{dirección cuyo Fisher se conserva exactamente tras el cociente}
+&\text{((5.3b)--(5.3c))}.
+\end{cases}
+\]
+
+En S1 la dirección estadísticamente más fuerte es también la que el poset
+abstracto transmite sin pérdida alguna. El Lema B' explica además por qué el
+primer modo no es una casualidad numérica: `e_1` es el primer autovector no
+constante del operador de Bernstein--Durrmeyer que gobierna los perfiles de
+estadísticos de orden. No se deriva de aquí ninguna conclusión, ni sobre
+horizontes ni sobre el benchmark.
 
 Las demostraciones de los Teoremas 9--12 se dejan **sin cambios**, apoyadas en
 la cota `||T_N||<=sqrt N` y en la constante `4N/(N-1)<=8`: (5.37d) es un
@@ -1314,8 +1370,13 @@ SHARP_CONSTANT_ON_H = ||T_N|_H||^2 = N(N-1)/(N+1) for all N>=2, PROVED (Lema B')
     mechanism: T_N^* T_N = N * M_{N-1}, Bernstein-Durrmeyer; shifted Legendre
     eigenfunctions, eigenvalues lambda_{n,m} = (n+1)!n!/((n+m+1)!(n-m)!)
     strictly decreasing; extremiser e_1 ~ t-1/2, simple
-SHARP_NORMALIZED_LOSS_BOUND = Delta_N/N <= 4N(N-1)/(N+1)^2 ||f||_HS^2 < 4 (5.37d)
-UNIFORM_CONSTANT = 4, asymptotically sharp, not attained
+NORMALIZED_LOSS_BOUND = VALID, SHARPNESS_OPEN
+    Delta_N/N <= 4N(N-1)/(N+1)^2 ||f||_HS^2 < 4 (5.37d), but the extremiser of
+    the right-hand side is e_1^ox2, where Delta_N = 0 exactly; the chain is
+    maximally slack there. sup_f Delta_N(f,f)/(N ||f||_HS^2) NOT DETERMINED.
+REFERENCE_FISHER_HS_BOUND = SHARP; equality at e_1^ox2 for every N>=2 (5.37e)
+UNIFORM_CONSTANT = 4 for the reference Fisher; best possible, not attained
+E1_DOUBLE_ROLE = OBSERVATION_ONLY, no principle and no physical reading
 RATE_IMPROVED = NO (Theorems 9-12 unchanged, still on the sqrt N bound)
 R_CONTROL = NOT_REQUIRED_AT_INFINITE_RANK
 R_CONTROL_LEGACY_5_10 = TRACE_NORM_TYPE_WEIGHTED_BY_PROFILE_SUP_NORMS_BYPASSED
