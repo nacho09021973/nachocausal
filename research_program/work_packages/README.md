@@ -21,11 +21,19 @@ Cada paquete debería fijar:
   `PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_POINT_QMD_OBSTRUCTION_PROVED`,
   `COMMON_POINT_ISOMORPHISM = REFUTED`, and
   `MOVING_SUPPORT_QMD_STATUS = PROVED_NON_QMD_FOR_POINT_EXPERIMENT`.
-  `DOMAIN_BRIDGE = OPEN_AT_FINITE_CHANNEL`: regularity after the finite
-  permutation/poset channel remains open and is not authorized.
+  `FINITE_CHANNEL_QMD = PROVED_FOR_EACH_FIXED_N` and
+  `FINITE_POSET_CHANNEL_QMD = PROVED_ON_CHANNEL_IMAGE_FOR_EACH_FIXED_N`;
+  uniformity in \(N\) is not claimed there.
+- `wp6_poisson_order_number_bridge.md`:
+  `POISSON_ORDER_NUMBER_BRIDGE = PROVED_IN_CURRENT_SCOPE`. For normalized S1, \(N\)
+  is ancilar and the Poisson mixture is QMD unilaterally in
+  \(\theta=\varepsilon^2\); for a scale orbit with known \(\rho\), cardinality
+  exactly restores the scale signal.
 
-The Fisher branch is a frozen structural tool. No next run, S3, dimensional
-extension, new observable, or benchmark bridge is authorized by this index.
+The Fisher branch remains a structural tool. The 2026-08-30 Poisson opening is
+limited to the analytical order+number bridge above: it authorizes no S3,
+dimensional extension, new observable, benchmark run, horizon claim, or
+simulation.
 
 ## Historical observable-design front (closed as program north)
 

@@ -2070,8 +2070,8 @@ ABS_EPSILON_BOUNDARY_SCORE = DEFINED_AS_ONE_SIDED_DERIVATIVE
 
 **No** se declara el modelo QMD regular en `theta=0`, ni se invoca LAN ni
 eficiencia asintótica: son enunciados de frontera y requieren su propio
-tratamiento. El siguiente lema concreto, **no abierto aquí**, es la validez
-unilateral de QMD/LAN en `theta=0^+`.
+tratamiento. El siguiente lema concreto, cerrado separadamente en §5.7, es la
+validez **unilateral de QMD** en `theta=0^+`. LAN no forma parte de ese lema.
 
 #### Hellinger de segundo orden
 
@@ -2108,6 +2108,281 @@ a orden `epsilon^2`, ya con dos elementos. La formulación correcta es
 > primer orden invisible, localmente visible en `|epsilon|`.
 
 Sigue prohibido, por §5.5, llamar a esto *physical information loss*.
+
+
+### 5.7 `ONE_SIDED_QMD_IN_THETA` (2026-08-30)
+
+Esta sección cierra únicamente la regularidad cuadrática lateral del modelo
+finito reparametrizado. Fijemos \(N\) y sea \(\mathcal Y_N\) la imagen finita
+del canal de clases de posets realizables por permutaciones. Escribimos
+
+\[
+g_C(\theta):=p_C(\sqrt\theta),\qquad \theta\in[0,\infty),
+\qquad C\in\mathcal Y_N.
+\tag{5.70}
+\]
+
+Por la paridad y analiticidad real probadas en §5.6, cada \(p_C\) tiene una
+serie local sólo en potencias pares. Por tanto existe una función analítica
+local de la variable \(\theta\), también denotada \(g_C\), tal que
+
+\[
+g_C(\theta)
+=p_C(0)+a_C\theta+O(\theta^2),
+\qquad
+a_C=g_C'(0^+)=\tfrac12p_C''(0).
+\tag{5.71}
+\]
+
+No aparece aquí ningún problema de soporte nulo. En el nulo, la ley de
+permutaciones es uniforme y, para cada clase de la imagen,
+
+\[
+p_C(0)=\frac{|\Gamma_C|}{N!}>0.
+\tag{5.72}
+\]
+
+#### Definición lateral usada
+
+Diremos que el modelo es **QMD unilateral en \(0^+\)** si existe
+\(\dot\ell^{(+)}_N\in L^2(P_0^{[P]})\) tal que, cuando
+\(\theta\downarrow0\),
+
+\[
+\sum_{C\in\mathcal Y_N}
+\left[
+\sqrt{g_C(\theta)}-\sqrt{g_C(0)}
+-\frac{\theta}{2}\dot\ell^{(+)}_N(C)\sqrt{g_C(0)}
+\right]^2
+=o(\theta^2).
+\tag{5.73}
+\]
+
+La palabra *unilateral* es parte del enunciado: la aproximación se toma en el
+cono tangente admisible \(h\ge0\), no en un entorno abierto de cero.
+
+#### Teorema 20 — QMD unilateral y su información
+
+Para cada \(N\) fijo, la familia
+\(\{P_\theta^{[P]}:\theta\ge0\}\) es QMD unilateral en \(0^+\), con
+
+\[
+\boxed{
+\dot\ell_N^{(+)}(C)
+=\frac{a_C}{p_C(0)}
+=\frac{p_C''(0)}{2p_C(0)}.
+}
+\tag{5.74}
+\]
+
+Su media bajo el nulo es cero y la norma cuadrática del score lateral es
+
+\[
+\boxed{
+I_{N,\theta}^{(+)}
+:=\sum_{C\in\mathcal Y_N}p_C(0)
+       \bigl(\dot\ell_N^{(+)}(C)\bigr)^2
+=\sum_{C\in\mathcal Y_N}\frac{p_C''(0)^2}{4p_C(0)}
+=4K_N.
+}
+\tag{5.75}
+\]
+
+**Prueba.** Por (5.71)--(5.72), la regla de la cadena para la raíz cuadrada da,
+para cada \(C\),
+
+\[
+\sqrt{g_C(\theta)}
+=\sqrt{p_C(0)}
++\frac{a_C}{2\sqrt{p_C(0)}}\,\theta
++O_C(\theta^2).
+\tag{5.76}
+\]
+
+Al sustituir (5.74), el término lineal de (5.73) coincide exactamente con el
+de (5.76). Como \(\mathcal Y_N\) es finito, la suma de los cuadrados de los
+restos es \(O(\theta^4)=o(\theta^2)\). Esto prueba (5.73). Además,
+la normalización \(\sum_Cg_C(\theta)=1\) implica
+
+\[
+\mathbb E_0\dot\ell_N^{(+)}
+=\sum_Cp_C(0)\dot\ell_N^{(+)}(C)
+=\sum_Ca_C
+=0.
+\tag{5.77}
+\]
+
+Finalmente, la primera igualdad de (5.75) es la norma \(L^2(P_0)\) del score;
+las otras dos siguen de \(a_C=p_C''(0)/2\) y de la definición de \(K_N\) en
+(5.68). \(\square\)
+
+#### Hellinger y valores exactos
+
+Con la convención sin factor \(1/2\) del repositorio, (5.73) da
+
+\[
+\boxed{
+H^2(P_\theta^{[P]},P_0^{[P]})
+=\frac14I_{N,\theta}^{(+)}\theta^2+o(\theta^2)
+=K_N\theta^2+o(\theta^2).
+}
+\tag{5.78}
+\]
+
+Como \(\theta=\varepsilon^2\), (5.78) es exactamente (5.68), no una nueva
+aproximación. El backend
+`dev/wp6_second_order_antisymmetric_witness.py` calcula y asevera, en
+aritmética exacta, el centrado (5.77) y \(I_{N,\theta}^{(+)}=4K_N\). En
+particular,
+
+\[
+\boxed{
+I_{2,\theta}^{(+)}=\frac{64}{25},
+\qquad
+I_{3,\theta}^{(+)}=\frac{14736}{1225}.
+}
+\tag{5.79}
+\]
+
+Para \(N=2\), el score lateral vale \(+8/5\) en la anticadena y \(-8/5\) en
+la cadena. Así, el alfabeto causal no sólo separa \(\theta>0\) del nulo: su
+primer contraste no trivial ya está presente en el causet más pequeño que
+dispone de dos tipos de orden.
+
+#### Lectura geométrica y techo de claims
+
+La anulación en la coordenada \(\varepsilon\) era el pliegue de una órbita por
+la reflexión, no la desaparición de la deformación. La coordenada
+\(\theta=\varepsilon^2\) describe localmente la semirrecta de órbitas y hace
+lineal la primera variación observable:
+
+\[
+\begin{array}{ccl}
+\varepsilon &:& I_N^{[P]}(0)=0,\\
+|\varepsilon| &:& \text{magnitud geométricamente relevante},\\
+\theta=\varepsilon^2 &:& \dot\ell_N^{(+)}\ne0,\\
+H^2 &:& \asymp\varepsilon^4=\theta^2.
+\end{array}
+\tag{5.80}
+\]
+
+Esto no convierte \(0\) en un punto interior. No se extiende el modelo a
+\(\theta<0\), no se declara LAN bilateral, no se identifica un experimento
+asintótico de frontera y no se deducen eficiencia, estimadores ni tasas. La
+afirmación probada es exactamente (5.73), para cada \(N\) fijo.
+
+```text
+ONE_SIDED_QMD_IN_THETA = PROVED_FOR_EACH_FIXED_N
+THETA_PARAMETER_SPACE = [0,+infinity); ZERO_IS_BOUNDARY
+THETA_ZERO = BOUNDARY_POINT
+THETA_RIGHT_SCORE = p_C''(0) / (2 p_C(0)); CENTERED_UNDER_P0
+THETA_ONE_SIDED_INFORMATION = 4 K_N > 0
+    I_2 = 64/25; I_3 = 14736/1225
+HELLINGER_IN_THETA = (1/4) I_{N,theta}^{(+)} theta^2 + o(theta^2)
+INTERIOR_QMD_AT_THETA_ZERO = NOT_CLAIMED
+BILATERAL_LAN_AT_THETA_ZERO = NOT_CLAIMED
+BOUNDARY_ASYMPTOTIC_EXPERIMENT = NOT_OPENED
+```
+
+
+### 5.8 `POISSON_ORDER_PLUS_NUMBER_BRIDGE` (2026-08-30)
+
+El contrato nuevo queda desarrollado en
+[WP6 — Puente Poisson order+number](../research_program/work_packages/wp6_poisson_order_number_bridge.md).
+La primera obligación es separar dos mecanismos que el nombre del canal puede
+ocultar.
+
+Para una familia de volumen \(V_t\), densidad conocida \(\rho\),
+\(\lambda_t=\rho V_t\), y ley condicional \(p_{t,n,C}\) del poset dado
+\(N=n\), la ley conjunta factoriza exactamente como
+
+\[
+Q_t(n,C)
+=e^{-\lambda_t}\frac{\lambda_t^n}{n!}\,p_{t,n,C}.
+\tag{5.81}
+\]
+
+Cuando existen los scores y la serie es sumable, (5.81) da la descomposición
+ortogonal
+
+\[
+\boxed{
+I^{\mathrm{ord+num}}(t_0)
+=\frac{(\lambda_{t_0}')^2}{\lambda_{t_0}}
++\mathbb E_{N\sim\operatorname{Pois}(\lambda_{t_0})}
+ I_N^{[P]}(t_0).
+}
+\tag{5.82}
+\]
+
+El primer sumando es información de número; el segundo, información de orden
+condicionada al número observado.
+
+#### El witness S1 normalizado
+
+En S1, la división por \(Z(\varepsilon)\) conserva exactamente el volumen:
+\(V_\varepsilon=V_0\). Por tanto \(N\) es **ancilar** para \(\varepsilon\) y
+\(\theta\); aquí order+number no añade una señal de cardinalidad. Sin embargo,
+la mezcla Poisson conserva la señal de los experimentos condicionales.
+
+La cota \(|T_\pi|\le N\|\psi\|_\infty\) y la fórmula (5.61) dan
+
+\[
+\left|\dot\ell_N^{(+)}(C)\right|
+\le2\left(N^2\|\psi\|_\infty^2+N\sigma^2\right),
+\qquad
+I_{N,\theta}^{(+)}=O(N^4).
+\tag{5.83}
+\]
+
+Los momentos exponenciales de Poisson dominan también el resto de la expansión
+de raíces, no sólo el score. El WP prueba así QMD unilateral de la mezcla y
+
+\[
+\boxed{
+I_{\mathrm{Pois},\theta}^{(+)}
+=\mathbb E_{\operatorname{Pois}(\lambda)}
+  I_{N,\theta}^{(+)}
+\ge\frac{32}{25}e^{-\lambda}\lambda^2>0.
+}
+\tag{5.84}
+\]
+
+La última desigualdad usa únicamente el suceso \(N=2\) y (5.79).
+
+#### La órbita de escala
+
+Si las leyes condicionadas \(p_{t,n,C}\) son idénticas pero \(V_t\) cambia,
+la razón de verosimilitudes depende sólo de \(N\). En esa subfamilia la
+cardinalidad es suficiente y
+
+\[
+H^2(\operatorname{Pois}(\lambda),\operatorname{Pois}(\mu))
+=2\left[
+1-\exp\!\left\{-\frac12(\sqrt\lambda-\sqrt\mu)^2\right\}
+\right],
+\qquad
+I^{\mathrm{number}}(t_0)
+=\frac{(\lambda_{t_0}')^2}{\lambda_{t_0}}.
+\tag{5.85}
+\]
+
+Éste es el sentido preciso en que número restaura escala a \(\rho\) conocida.
+No debe trasladarse al witness S1 normalizado, donde \(\lambda\) es constante.
+
+~~~text
+POISSON_ORDER_NUMBER_BRIDGE = PROVED_IN_CURRENT_SCOPE
+JOINT_LAW_FACTORIZATION = EXACT
+NUMBER_PLUS_CONDITIONAL_ORDER_FISHER_SPLITTING = PROVED_ORTHOGONAL
+NORMALIZED_S1_N_ANCILLARY = YES
+NORMALIZED_S1_POISSON_ONE_SIDED_QMD_IN_THETA = PROVED
+NORMALIZED_S1_I_POIS_THETA >= (32/25) exp(-lambda) lambda^2 > 0
+SCALE_ORBIT_WITH_KNOWN_RHO = EXACTLY_SEPARATED_BY_N
+NUMBER_SUFFICIENT_FOR_SCALE = EXACT
+UNKNOWN_RHO_SCALE_IDENTIFIABILITY = NOT_CLAIMED
+SINGLE_REALIZATION_RECONSTRUCTION = NOT_CLAIMED
+HAUPTVERMUTUNG = NOT_CLAIMED
+~~~
 
 
 Para el sector mixto, §5.4 promueve ya la fórmula de razón de normas (5.52)
@@ -2186,17 +2461,27 @@ HIGHER_ORDER_IDENTIFIABILITY_IN_ABS_EPSILON = PROVED_SECOND_ORDER_VISIBLE
 ABS_EPSILON_LOCALLY_VISIBLE = YES
 SIGN_IDENTIFIABLE = NO
 ABS_EPSILON_BOUNDARY_SCORE = DEFINED_AS_ONE_SIDED_DERIVATIVE (theta = eps^2)
-BOUNDARY_QMD_LAN_AT_THETA_ZERO = NOT_OPENED (next concrete lemma)
+ONE_SIDED_QMD_IN_THETA = PROVED_FOR_EACH_FIXED_N (§5.7)
+THETA_ONE_SIDED_INFORMATION = 4 K_N; I_2 = 64/25; I_3 = 14736/1225
+THETA_ZERO = BOUNDARY_POINT
+INTERIOR_QMD_AT_THETA_ZERO = NOT_CLAIMED
+BILATERAL_LAN_AT_THETA_ZERO = NOT_CLAIMED
 PERMANENT_INVISIBILITY_WORDING = FORBIDDEN without the FIRST_ORDER qualifier
 SINGLE_SAMPLE_RECONSTRUCTION_CLAIMED = NO
 HAUPTVERMUTUNG_CLAIMED = NO
+LOCAL_METRIC_RECONSTRUCTION = NOT_CLAIMED
 FULL_WEDGE_REALIZABILITY_PROVED = NO
 GEOMETRIC_TANGENT_REALIZABILITY = NOT_FULLY_OPENED
-N5_OPENED = NO
-EF_OPENED = NO
-POISSON_OPENED = NO
+N5_FISHER_SPECTRUM = NOT_OPENED
+EF = NOT_OPENED
+POISSON_ORDER_NUMBER_BRIDGE = PROVED_IN_CURRENT_SCOPE (§5.8)
+NORMALIZED_S1_N_ANCILLARY = YES
+NORMALIZED_S1_POISSON_ONE_SIDED_QMD_IN_THETA = PROVED
+SCALE_ORBIT_WITH_KNOWN_RHO = EXACTLY_SEPARATED_BY_N
+NUMBER_SUFFICIENT_FOR_SCALE = EXACT
 FISHER_LOCALISATION_OPENED = NO
-KERR_OPENED = NO
+DIMENSION_2PLUS1 = NOT_OPENED
+KERR = NOT_OPENED
 NEXT_RUN_AUTHORIZED = NO
 ```
 

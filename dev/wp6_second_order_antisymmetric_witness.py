@@ -22,6 +22,16 @@ everything being a polynomial integral over a simplex, hence exact in Q.
 Hellinger convention is the repository's:  H^2(p,q) = int (sqrt p - sqrt q)^2,
 no factor 1/2 (wp6_domain_bridge_fixed_ef_box.md:119, manuscript_limits_draft.md:594).
 
+For the intrinsic boundary coordinate theta = eps^2, the same exact data give
+
+    d^+ p_C / d theta (0) = p_C''(0) / 2,
+    score_C^+                = p_C''(0) / (2 p_C(0)),
+    I_{N,theta}^+            = sum_C p_C''(0)^2 / (4 p_C(0)) = 4 K_N.
+
+The accompanying roadmap proof establishes one-sided QMD at theta = 0.  This
+backend checks its finite-alphabet coefficients; it does not claim ordinary
+interior QMD or two-sided LAN at the boundary.
+
 Exploratory WP6 backend.  Exact rational arithmetic, no seeds, no simulation.
 
 Run:
@@ -174,15 +184,20 @@ def analyse(n: int) -> dict[str, object]:
     for key, members in sorted(classes.items()):
         c1 = sp.nsimplify(sum(first[p] for p in members))
         c2 = sp.nsimplify(sum(second[p] for p in members))
+        p0 = sp.nsimplify(sp.Rational(len(members), factorial))
+        theta_derivative = sp.nsimplify(c2 / 2)
+        theta_score = sp.nsimplify(theta_derivative / p0)
         # Parity of the poset law: every class has vanishing first derivative.
         assert c1 == 0
         rows.append(
             {
                 "size": len(members),
                 "n_relations": n_relations(n, members[0]),
-                "p0": str(sp.nsimplify(sp.Rational(len(members), factorial))),
+                "p0": str(p0),
                 "second_derivative": str(c2),
                 "second_derivative_float": float(c2),
+                "theta_right_derivative_at_zero": str(theta_derivative),
+                "theta_right_score_at_zero": str(theta_score),
             }
         )
 
@@ -202,6 +217,27 @@ def analyse(n: int) -> dict[str, object]:
     )
     assert hellinger > 0
 
+    # Boundary coordinate theta = eps^2.  Normalisation centres the right
+    # score, and its L2(P_0) norm is exactly four times the eps^4 Hellinger
+    # coefficient.  Positivity of every p0 follows here from nonempty fibres of
+    # the uniform permutation law, so no zero-cell convention is needed.
+    theta_score_mean = sp.nsimplify(
+        sum(
+            sp.nsimplify(row["p0"])
+            * sp.nsimplify(row["theta_right_score_at_zero"])
+            for row in rows
+        )
+    )
+    theta_information = sp.nsimplify(
+        sum(
+            sp.nsimplify(row["p0"])
+            * sp.nsimplify(row["theta_right_score_at_zero"]) ** 2
+            for row in rows
+        )
+    )
+    assert theta_score_mean == 0
+    assert theta_information == 4 * hellinger
+
     return {
         "n": n,
         "sigma_squared": str(sigma2),
@@ -210,6 +246,10 @@ def analyse(n: int) -> dict[str, object]:
         "classes": rows,
         "hellinger_quartic_coefficient": str(hellinger),
         "hellinger_quartic_coefficient_float": float(hellinger),
+        "theta_right_score_mean": str(theta_score_mean),
+        "theta_one_sided_fisher_information": str(theta_information),
+        "theta_one_sided_fisher_information_float": float(theta_information),
+        "theta_information_equals_four_times_hellinger_coefficient": "True",
     }
 
 
@@ -221,6 +261,13 @@ def main() -> None:
         parser.error("exact simplex backend intentionally capped at 2 <= N <= 4")
     payload = {
         "second_order_mechanism": squared_witness_report(),
+        "theta_boundary_parameter": {
+            "coordinate": "theta = epsilon^2",
+            "parameter_space": "[0, +infinity)",
+            "qmd_status": "PROVED_ONE_SIDED_AT_ZERO_IN_ROADMAP",
+            "ordinary_interior_qmd_claimed": "False",
+            "two_sided_lan_claimed": "False",
+        },
         "by_cardinality": [analyse(n) for n in args.n],
     }
     print(json.dumps(payload, indent=2))
