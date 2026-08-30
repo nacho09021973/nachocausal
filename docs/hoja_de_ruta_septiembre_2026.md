@@ -388,6 +388,7 @@ promoverla habrá que cerrar de nuevo:
 ```text
 FINITE_RANK_BOUNDED_CONTINUOUS_SYMMETRIC_RETENTION = PROVED_BY_ASSEMBLY
 FINITE_RANK_SYMMETRIC_RETENTION = PROVED
+INFINITE_RANK_SYMMETRIC_RETENTION = PROVED
 ```
 
 ### 5.1 Preflight autorizado — rango finito simétrico (2026-08-29)
@@ -434,6 +435,93 @@ Aquí `C_A,N_A` proceden de `Pr(B_N)<=C_A/N`; la constante no depende de
 exacto, norma `L2` positiva y, por compacidad, acotación uniforme. La
 normalización es `P psi=lambda a tensor a`, tangente de cópula
 `h_psi=2 lambda a tensor a` y score (5.2).
+
+#### Denominador fijado
+
+En toda esta sección y en cualquier extensión de S1 se define
+
+\[
+\boxed{
+\eta_N(f):=\frac{I_N^{[P]}(f,f)}{I_N^\Pi(f,f)}.
+}
+\tag{5.3a}
+\]
+
+El oráculo es, por definición, la **permutación relativa de rangos**
+`Pi_N`, antes del canal `Pi_N -> [P_Pi_N]`. No es la configuración continua
+etiquetada y tampoco un cociente adicional de `Pi_N` por conjugación u otra
+acción. Esta elección es la que usan el teorema modular, (5.3) y las fórmulas
+exactas (5.12)--(5.14).
+
+El cociente de una muestra iid etiquetada por permutación simultánea de sus
+etiquetas no define aquí un segundo oráculo con menor Fisher: la verosimilitud
+y su score son ya simétricos en los puntos, de modo que la muestra no ordenada
+es suficiente para la muestra etiquetada. La filtración polinómica finita
+`P_(N-1)` aparece al pasar de las coordenadas continuas a `Pi_N`, no al borrar
+los nombres iid. Por otra parte, cocientar por el intercambio de las dos
+coordenadas sí mataría el sector antisimétrico, pero sería otro experimento y
+no se denomina `I_N^Pi`.
+
+En consecuencia, el teorema fuerte que se contempla aquí significa
+suficiencia asintótica de `[P]` **respecto del oráculo de rangos** en el sector
+simétrico. Toda comparación con la configuración continua completa debe
+enunciar además, y por separado, el paso de proyección de su score sobre
+`sigma(Pi_N)`.
+
+**Control de normalización.** El espectro generalizado de §15 del WP6 de
+clasificación usa como Gram completa la del score continuo, no `G_N^Pi`.
+Sus cocientes a `N=4` (`0.480`, `0.455`, `0.449` para el rayo truncado) no son
+valores de (5.3a). Con el denominador de rangos, el cálculo exacto da
+respectivamente `1`, `1739/1740` y `6901763/6906252`. No se intercambian ambos
+denominadores en ningún argumento posterior.
+
+**Uso del rayo.** El truncamiento
+`f^(M)=sum_(k<=M) k^(-2)e_k tensor e_k` queda clasificado exclusivamente como
+control de ingeniería del backend. El peso Fisher `k^(-4)` y la retención
+exacta observada del primer modo pueden mantener su cociente agregado cerca de
+uno aunque un modo alto pierda mucha información. Por tanto ese agregado no se
+usa como evidencia del intercambio `M <-> N`, del Lema C ni de retención en
+toda la clase HS. Los diagnósticos pertinentes son las eficiencias diagonales
+modo a modo y la Gram completa.
+
+**Mezcla modal.** En los cálculos racionales exactos `N=4,5,6`, `G_N^Pi` es
+diagonal en los modos `e_k tensor e_k`, mientras que `G_N^[P]` tiene términos
+cruzados no nulos entre modos `k>=2`. En consecuencia, la eficiencia de una
+suma se calcula con `w^T G_N^[P] w`; no se sustituye por una media ponderada de
+las eficiencias diagonales.
+
+**Lema del primer modo.** La enumeración exacta da
+
+\[
+I_N^{[P]}(e_1^{\otimes2},e_1^{\otimes2})
+=I_N^\Pi(e_1^{\otimes2},e_1^{\otimes2})
+\qquad(N=4,5,6).
+\tag{5.3b}
+\]
+
+La igualdad vale para todo `N>=2`. En efecto, el score es un múltiplo de la rho
+de Spearman y su distancia cuadrática de rangos satisface
+
+\[
+\sum_i(i-\sigma(i))^2
+=\sum_{v\in G_\sigma}d(v)^2-4t(G_\sigma),
+\tag{5.3c}
+\]
+
+donde `G_sigma` es el grafo de incomparabilidad, `d(v)` sus grados y `t(G)` su
+número de triángulos. El lado derecho es un invariante del poset no etiquetado,
+de modo que el score es constante en cada fibra y la pérdida Fisher es cero.
+La demostración completa está en
+`dev/WP6_LEGENDRE_RAY_EXACT_SPECTRUM_NOTES.md`.
+
+```text
+INFINITE_RANK_HS = OPEN; K_MINUS_2_RAY_IS_NOT_EVIDENCE_FOR_C; N7_BLOCKED_BY_O_FACTORIAL_SQUARED_CANONICALIZATION; NEXT_ANALYTIC_CLOSURE = K1_LEMMA_PROVED_NO_MORE_N
+```
+
+`INFINITE_RANK_HS = OPEN` es el estado del preflight de 2026-08-29 y queda
+**superado** por §5.3 (2026-08-30). Lo que no queda superado es la advertencia
+adjunta: el rayo `k^(-2)` sigue sin ser evidencia del intercambio `M <-> N`,
+y el cierre de §5.3 no se apoya en él en ningún paso.
 
 #### Forma de pérdida
 
@@ -744,6 +832,323 @@ la subclase continua/acotada de §5.1. Este cierre es tangente/Fisher en el
 espacio de Hilbert; no afirma que todo vector `L2` sea realizado por una senda
 positiva continua de densidades con la regularidad geométrica original.
 
+### 5.3 `INFINITE_RANK_SYMMETRIC_RETENTION` (2026-08-30)
+
+El preflight de rango infinito no necesita un lema nuevo de momentos. El
+intercambio `R -> infinity` / `N -> infinity` se justifica por acotación
+uniforme en `N` del operador de pérdida normalizado, y esa acotación se
+obtiene del denominador, no del numerador. La ruta de traza (5.10) queda
+**esquivada**, no reparada.
+
+#### Extensión lineal del score al sector HS
+
+Con `rho_(i,N)` de (5.18) y `T_N` de (5.19), defínase para
+`f in L^2([0,1]^2)` la matriz `N x N`
+
+\[
+H^{(N)}_{ij}(f)
+:=\iint f(s,t)\rho_{i,N}(s)\rho_{j,N}(t)\,ds\,dt
+=\bigl((T_N\otimes T_N)f\bigr)_{ij}.
+\tag{5.33}
+\]
+
+`H^(N)` es lineal en `f`. Para `f=a tensor a` da
+`H_ij=(T_Na)_i(T_Na)_j`, de modo que (5.1)--(5.2) se reescriben como
+
+\[
+S_N(f)=2\sum_{i=1}^N H^{(N)}_{i,\Pi_N(i)}(f),
+\tag{5.34}
+\]
+
+y (5.34) es la única extensión lineal de (5.2) al sector HS. **Convención.**
+Fuera del cono de rango finito, (5.34) *define* el vector de score y
+`G_N^Pi(f,g):=E[S_N(f)S_N(g)]`, `G_N^[P](f,g):=E[E[S_N(f)|[P]]E[S_N(g)|[P]]]`.
+No se afirma que un `f` HS arbitrario sea el tangente de una senda geométrica
+positiva admisible; es la misma reserva ya registrada al final de §5.2.
+
+Como `sum_j rho_(j,N)=N` y `int f(s,t)dt=0` en c.t.p. `s` para
+`f in H widehat tensor H`, la matriz `H^(N)(f)` tiene sumas de fila y de
+columna exactamente nulas.
+
+\[
+\sum_j H^{(N)}_{ij}(f)=\sum_i H^{(N)}_{ij}(f)=0.
+\tag{5.35}
+\]
+
+#### Lema A — identidad Gram exacta del oráculo de rangos
+
+Sea `H` una matriz `N x N` con sumas de fila y columna nulas y `Pi` uniforme
+en `S_N`. Descomponiendo `E[sum_(i,j) H_(i,Pi(i))H_(j,Pi(j))]` en los casos
+`i=j` e `i != j`, y usando
+
+\[
+\sum_{i\neq j}\sum_{k\neq l}H_{ik}H_{jl}
+=\Bigl(\sum_{ik}H_{ik}\Bigr)^2
+-\sum_i\Bigl(\sum_kH_{ik}\Bigr)^2
+-\sum_k\Bigl(\sum_iH_{ik}\Bigr)^2
++\|H\|_F^2
+=\|H\|_F^2,
+\]
+
+resulta `E[(sum_i H_(i,Pi(i)))^2] = ||H||_F^2/N + ||H||_F^2/(N(N-1))`. Por
+tanto, con (5.34),
+
+\[
+\boxed{
+G_N^\Pi(f,g)
+=\frac4{N-1}\bigl\langle H^{(N)}(f),H^{(N)}(g)\bigr\rangle_F.
+}
+\tag{5.36}
+\]
+
+Especializada a (5.8) esto reproduce (5.12) verbatim: (5.36) es su forma
+polarizada e independiente de base, no una normalización distinta.
+
+#### Lema B — `T_N tensor T_N` es una contracción tras normalizar
+
+(5.20) dice exactamente `||T_N||_(L^2 -> ell^2) <= sqrt N`. Sea
+`tilde T_N := N^(-1/2)T_N`, una contracción. El producto tensorial hilbertiano
+de contracciones es una contracción y `L^2 widehat tensor L^2` es el espacio
+HS con su propia norma, luego
+
+\[
+\bigl\|\tilde T_N\otimes\tilde T_N\bigr\|\le1
+\quad\Longleftrightarrow\quad
+\bigl\|H^{(N)}(f)\bigr\|_F\le N\|f\|_{HS}.
+\tag{5.37}
+\]
+
+#### Teorema 9 — cota HS uniforme del denominador
+
+Combinando (5.36) y (5.37), para todo `f in H widehat tensor_sym H` y todo
+`N>=2`,
+
+\[
+\boxed{
+0\le I_N^\Pi(f)
+=\frac4{N-1}\bigl\|H^{(N)}(f)\bigr\|_F^2
+\le\frac{4N}{N-1}\,N\,\|f\|_{HS}^2
+\le 8N\|f\|_{HS}^2.
+}
+\tag{5.38}
+\]
+
+La constante exacta es `4N/(N-1)`, monótona decreciente a `4`. La clase de
+norma es **Hilbert--Schmidt (Schatten-2)**; no interviene `sum_r|lambda_r|`,
+ni `||a_r||_inf`, ni el rango `R`. No se requiere trace class.
+
+#### Corolario — cota HS uniforme de la pérdida
+
+`G_N^[P](f,f)=E[E[S_N(f)|[P]]^2]>=0`, luego por (5.6)
+
+\[
+\boxed{
+0\le T_N(f,f):=\frac{\Delta_N(f,f)}N
+\le\frac{I_N^\Pi(f)}N
+\le8\|f\|_{HS}^2,
+\qquad
+\sup_N\|T_N\|_{\rm op}\le8.
+}
+\tag{5.39}
+\]
+
+Esto sustituye a (5.10) como control uniforme. Sólo usa positividad de
+`G_N^[P]`, la identidad de varianza condicional (5.5)--(5.6) y (5.38).
+
+#### Teorema 10 — límite del denominador en todo HS
+
+Sea `J_N(f,g):=I_N^Pi(f,g)/N`, forma semidefinida positiva con
+`||J_N||_op<=8` por (5.38). Para rango finito, (5.14) da
+`J_N(f_R,f_R) -> 4||f_R||_HS^2`. Por Cauchy--Schwarz (5.7) aplicada a `J_N`,
+
+\[
+\bigl|\sqrt{J_N(f,f)}-\sqrt{J_N(f_R,f_R)}\bigr|
+\le\sqrt{J_N(f-f_R,f-f_R)}
+\le\sqrt8\,\|f-f_R\|_{HS},
+\]
+
+de modo que
+
+\[
+\limsup_N\bigl|\sqrt{J_N(f,f)}-2\|f\|_{HS}\bigr|
+\le(\sqrt8+2)\|f-f_R\|_{HS}
+\xrightarrow[R\to\infty]{}0,
+\]
+
+\[
+\boxed{
+\frac{I_N^\Pi(f)}N\longrightarrow4\|f\|_{HS}^2
+\qquad\forall f\in H\widehat\otimes_{\rm sym}H.
+}
+\tag{5.40}
+\]
+
+#### Teorema 11 — pérdida normalizada nula en todo HS
+
+Mismo argumento con `T_N`. Para rango finito, (5.30)/(5.32) dan
+`T_N(f_R,f_R) -> 0`. Por (5.7) y (5.39),
+
+\[
+\sqrt{T_N(f,f)}
+\le\sqrt{T_N(f_R,f_R)}+\sqrt{T_N(f-f_R,f-f_R)}
+\le\sqrt{T_N(f_R,f_R)}+\sqrt8\,\|f-f_R\|_{HS},
+\]
+
+\[
+\limsup_N\sqrt{T_N(f,f)}\le\sqrt8\,\|f-f_R\|_{HS},
+\qquad
+\boxed{\frac{\Delta_N(f,f)}N\longrightarrow0.}
+\tag{5.41}
+\]
+
+**Orden lógico, explícito.** (i) `R` se elige *primero*, sólo con
+`f_R -> f` en HS y sin mirar `N`; (ii) el término `f-f_R` se controla por
+(5.39), que es uniforme en `N`; (iii) `R` queda fijo; (iv) sólo entonces
+`N -> infinity` actúa sobre el término de rango finito. No se intercambian
+límites en ningún punto y no se invoca "por densidad" sin esta cadena.
+
+**Densidad utilizada.** Para `f in H widehat tensor_sym H`, el teorema
+espectral da `f=sum_k lambda_k e_k tensor e_k` con `{e_k}` ortonormal; cada
+`e_k` con `lambda_k != 0` está en el rango de `f`, luego `int e_k=0` y
+`e_k in H`. La truncación `f_R=sum_(k<=R)` es simétrica de rango finito,
+`f-f_R in H widehat tensor_sym H`, y `||f-f_R||_HS -> 0`. Esto es la misma
+densidad ya registrada como `cl(union_N V_N)=H widehat tensor_sym H`.
+
+#### Lema C — buena definición de `eta_N` y umbral `N_0(f)`
+
+`eta_N(f)` es un cociente y hay que decir dónde está definido. Por (5.36),
+`I_N^Pi(f)=0` si y sólo si `H^(N)(f)=0`, es decir si y sólo si
+`f perp P_(N-1) tensor P_(N-1)`; para `f` simétrico, si y sólo si
+`f perp V_N=Sym^2 P_(N-1)`. Esto coincide exactamente con la restricción al
+sector simétrico de (6.8) del teorema de rango de clase completa, que da
+
+\[
+\ker G_{[P]}^{(N)}
+=\bigl(\operatorname{Sym}^2P_{N-1}\bigr)^{\perp_{\rm sym}}
+\oplus\bigwedge^2H,
+\]
+
+de modo que **ambas** formas de Gram tienen el mismo núcleo dentro del sector
+simétrico y `eta_N(f)` es de la forma `0/0` precisamente sobre `V_N^perp`, no
+`0` ni `1`.
+
+Por (5.40), `I_N^Pi(f)/N -> 4||f||_HS^2>0` para `f != 0`, luego existe
+`N_0(f)` finito con
+
+\[
+I_N^\Pi(f)>0
+\qquad\forall N\ge N_0(f).
+\tag{5.41a}
+\]
+
+Equivalentemente: ningún `f != 0` es invisible a toda cardinalidad, que es la
+lectura cuantitativa de `cl(union_N V_N)=H widehat tensor_sym H`. El umbral
+`N_0(f)` depende de `f` y no es uniforme sobre la esfera HS: para `f=e_k
+tensor e_k` se tiene `N_0>=k+1`. Todos los enunciados sobre `eta_N` en esta
+sección se entienden para `N>=N_0(f)`.
+
+#### Teorema 12 — `INFINITE_RANK_SYMMETRIC_RETENTION`
+
+Para todo `0 != f in H widehat tensor_sym H` y todo `N>=N_0(f)` del Lema C,
+por (5.40) el denominador
+normalizado tiende a `4||f||_HS^2>0` y por (5.41) el numerador de pérdida
+normalizado tiende a cero, luego
+
+\[
+\boxed{
+1-\eta_N(f)
+=\frac{\Delta_N(f,f)/N}{I_N^\Pi(f)/N}
+\longrightarrow0,
+\qquad
+\eta_N(f)\longrightarrow1.
+}
+\tag{5.42}
+\]
+
+La tasa disponible es sólo `o_f(1)`: (5.41) hereda de (5.32) la ausencia de
+velocidad universal, y el paso de densidad no la recupera. La tasa
+`O(N^(-1/2))` sigue restringida a la subclase acotada/continua de rango finito
+de §5.1.
+
+#### Compatibilidad con el modo `k=1`
+
+(5.3b)--(5.3c) dan `Delta_N(e_1^(tensor 2),e_1^(tensor 2))=0` para todo
+`N>=2`, no `-> 0`. Es compatible con el Teorema 12 de la forma más fuerte
+posible, pero su naturaleza es distinta: **suficiencia exacta a `N` finito**
+del poset no etiquetado para la rho de Spearman, vía el invariante
+`sum_i(i-sigma(i))^2 = sum_v d(v)^2 - 4t(G_sigma)`. Por eso el modo `k=1` no
+se usa, ni aquí ni en ningún agregado del rayo `k^(-2)`, como evidencia de
+convergencia asintótica.
+
+#### Dos niveles: teorema hilbertiano vs. realizabilidad geométrica
+
+El cierre de esta sección es un teorema **en el espacio de Hilbert tangente**.
+Debe enunciarse como
+
+> el canal del poset no etiquetado es asintóticamente Fisher-suficiente sobre
+> el cierre tangente simétrico Hilbert--Schmidt completo de S1,
+
+y no como una afirmación sobre deformaciones métricas arbitrarias. La
+traducción geométrica sólo es directa para tangentes que sepamos realizar por
+una senda admisible: la clase `psi=alpha+beta+lambda f tensor f` de S2, y sus
+sumas finitas con perfiles suficientemente regulares. Para un `f` HS genérico
+no se ha exhibido tal senda.
+
+```text
+THEOREM_HILBERT = PROVED
+GEOMETRIC_REALIZABILITY_OF_ARBITRARY_HS = OPEN
+```
+
+No se debe deslizar el primero al segundo en ningún resumen del programa.
+
+#### Mapa del sector tangente completo de S1
+
+Reuniendo (6.7)--(6.8) del teorema de rango de clase completa con (5.42):
+
+\[
+\begin{array}{ccl}
+H\widehat\otimes_{\rm sym}H
+&:&\text{retención Fisher asintótica total, }\eta_N\to1
+   \text{ para todo }f\neq0,\\[1mm]
+\textstyle\bigwedge^2H
+&:&\subseteq\ker G_{[P]}^{(N)}\ \text{para todo }N
+   \text{ — invisible exactamente, a toda cardinalidad,}
+\end{array}
+\]
+
+y dentro del sector simétrico el modo fundamental es un caso de suficiencia
+exacta, `eta_N(e_1^(tensor 2))=1` para todo `N>=2`. La pérdida permanente del
+sector antisimétrico es una afirmación sobre el canal `[P]`; no dice que
+`I_N^Pi` se anule allí. El cociente `eta_N` en el sector mixto no se enuncia
+aquí: `MIXED_SECTOR_LIMIT = CONJECTURE`.
+
+#### Ataque adversarial — resultado
+
+La obstrucción buscada era una sucesión `f_m` con `||f_m||_HS=1` y `N_m` tales
+que `Delta_(N_m)(f_m,f_m)/N_m` no admitiera cota uniforme. No puede existir:
+(5.39) acota esa cantidad por `8` sobre toda la esfera unidad HS,
+simultáneamente en `f` y en `N`. La divergencia `sum_r|lambda_r|=infinity`
+refutaba únicamente la técnica (5.10), que aquí no se usa. `ADVERSARIAL_SEQUENCE
+= NONEXISTENT_BY_(5.39)`.
+
+#### Verificación simbólica de las tres piezas estructurales
+
+La restricción diagonal de (5.36) ya está aseverada en el backend exploratorio
+`dev/wp6_legendre_ray_exact_spectrum.py` (`assert oracle == expected_oracle`).
+La forma polarizada general de (5.36) con modos cruzados
+`e_j tensor e_k + e_k tensor e_j`, la contracción (5.37) y la desigualdad
+`0 <= Delta_N <= G_N^Pi` de (5.39) se comprobaron exactamente sobre `Q` para
+`N=4,5` en un script de sesión. Un segundo pase de auditoría, independiente del
+primero y extendido a modos `k>=N` fuera del span visible, verificó además:
+coincidencia de los núcleos de `G_N^Pi` y `G_N^[P]` dentro del sector simétrico
+(cross-check de (6.8) y base del Lema C); la cota del Teorema 9 sobre kernels
+que mezclan modos visibles e invisibles; el carácter `0/0` de `eta_N` sobre
+`V_N^perp`; y `G_N^[P]=0` exacto sobre kernels antisimétricos, con `G_N^Pi>0`
+(cross-check de (6.7)). Ambas comprobaciones son `NOT_AN_ARTIFACT`: la
+demostración es analítica y ningún número de ellas entra en este documento ni
+en ningún resultado publicado. El `assert oracle == expected_oracle` del backend
+citado sí es reproducible y se re-ejecutó en el run de congelación.
+
 Para el sector mixto, el cociente no etiquetado mata exactamente la componente
 antisimétrica, pero no se promueve aquí ninguna fórmula para el cociente con
 denominador de referencia. Permanece:
@@ -752,12 +1157,39 @@ denominador de referencia. Permanece:
 FINITE_RANK_BOUNDED_CONTINUOUS_SYMMETRIC_RETENTION = PROVED_BY_ASSEMBLY
 L2_ORDER_STATISTIC_FOURTH_MOMENT_LEMMA = PROVED
 FINITE_RANK_SYMMETRIC_RETENTION = PROVED
-R_CONTROL = TRACE_NORM_TYPE_WEIGHTED_BY_PROFILE_SUP_NORMS
+INFINITE_RANK_SYMMETRIC_RETENTION_PREFLIGHT = PASS_HS_UNIFORM_CONTINUITY
+INFINITE_RANK_SYMMETRIC_RETENTION = PROVED
+FULL_SYMMETRIC_HS_RETENTION = PROVED
+THEOREM_HILBERT = PROVED
+GEOMETRIC_REALIZABILITY_OF_ARBITRARY_HS = OPEN
+TRACE_CLASS_RESTRICTION = REMOVED
+RATE = o_f(1)_NO_UNIFORM_RATE_CLAIMED
+ETA_WELL_DEFINED_FOR = N >= N_0(f); eta is 0/0 exactly on V_N^perp (Lema C)
+N_0_UNIFORM_OVER_HS_SPHERE = NO
+ANTISYMMETRIC_SECTOR = EXACTLY_INVISIBLE_IN_[P]_FOR_ALL_N (6.7)
+R_CONTROL = NOT_REQUIRED_AT_INFINITE_RANK
+R_CONTROL_LEGACY_5_10 = TRACE_NORM_TYPE_WEIGHTED_BY_PROFILE_SUP_NORMS_BYPASSED
+UNIFORM_CONTROL_NORM = HILBERT_SCHMIDT_SCHATTEN_2
+TRACE_NORM_REQUIRED = NO
+HS_UNIFORM_OPERATOR_BOUND = sup_N ||Delta_N/N||_op <= 8
+EXACT_HS_CONSTANT = 4N/(N-1) <= 8 for N>=2, -> 4
+REFERENCE_FISHER_HS_BOUND = I_N^Pi(f) <= (4N/(N-1)) N ||f||_HS^2
+REFERENCE_FISHER_HS_LIMIT = I_N^Pi(f)/N -> 4||f||_HS^2
 L2_FINITE_RANK_RATE = o_f(1)_WITHOUT_UNIVERSAL_RATE
+HS_RATE = o_f(1)_WITHOUT_UNIVERSAL_RATE
 FULL_SYMMETRIC_S1_FISHER_RETENTION_PREFLIGHT = PASS_FINITE_RANK_NEW_LEMMA_IDENTIFIED
-FIRST_MISSING_LEMMA = NONE_AT_FINITE_RANK
-INFINITE_RANK_EXTENSION_STATUS = NOT_OPENED
+FIRST_MISSING_LEMMA = NONE
+ADVERSARIAL_SEQUENCE = NONEXISTENT_BY_(5.39)
+HS_UNIFORMITY_OBSTRUCTION = NONE
+FIRST_LEGENDRE_MODE_EXACT_SUFFICIENCY_PRESERVED = YES
+INFINITE_RANK_EXTENSION_STATUS = CLOSED_SYMMETRIC_SECTOR_ONLY
 MIXED_SECTOR_LIMIT = CONJECTURE
+SECTOR_MIXED = NOT_OPENED
+N5_OPENED = NO
+EF_OPENED = NO
+POISSON_OPENED = NO
+FISHER_LOCALISATION_OPENED = NO
+KERR_OPENED = NO
 NEXT_RUN_AUTHORIZED = NO
 ```
 
