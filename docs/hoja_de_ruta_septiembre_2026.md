@@ -918,29 +918,117 @@ HS con su propia norma, luego
 \tag{5.37}
 \]
 
-**Nitidez de (5.37) — auditoría de la constante.** Sobre todo `L^2` la cota
-`||T_N||<=sqrt N` es *exacta*: `sum_i rho_(i,N)=N` implica `T_N 1=(1,...,1)`, de
-modo que la función constante satura Jensen. Pero el dominio real es
-`H=L_0^2`, y allí la constante es estrictamente menor. Restringido a `H`, el
-operador `T_N` tiene `(T_NT_N^*)_(ij)=<rho_i-1,rho_j-1>` y el cálculo exacto
-sobre `Q` da
+**Nitidez de (5.37).** Sobre todo `L^2` la cota `||T_N||<=sqrt N` es *exacta*:
+`sum_i rho_(i,N)=N` da `T_N1=(1,...,1)`, de modo que la constante satura
+Jensen. Pero el dominio real es `H=L_0^2`, y allí la norma es estrictamente
+menor y calculable en forma cerrada.
+
+#### Lema B' — norma exacta de `T_N` sobre `H`
+
+**Lema.** Para todo `N>=2`,
 
 \[
-\bigl\|T_N|_H\bigr\|^2=\frac{N(N-1)}{N+1}
-\qquad(N=2,\dots,8\ \text{verificado}),
+\boxed{
+\bigl\|T_N|_H\bigr\|^2=\frac{N(N-1)}{N+1},
+}
 \tag{5.37a}
 \]
 
-que llevaría a la constante uniforme `4N(N-1)/(N+1)^2 < 4`, creciente hacia
-`4`, es decir exactamente el valor del límite (5.40). El bound sería entonces
-asintóticamente nítido.
+alcanzada exactamente en la dirección `e_1(t)\propto t-\tfrac12`, y el
+extremizador es único salvo escalar.
 
-`(5.37a)` está **verificado sólo para `N=2,...,8` y no demostrado**; se
-registra como observación, no se usa en ningún paso de la prueba y no
-promociona ninguna constante. Todos los enunciados de §5.3 usan únicamente la
-cota demostrada `||T_N||<=sqrt N`, cuya constante exacta es `4N/(N-1)`, con
-supremo `8` alcanzado en `N=2`. `8` se conserva sólo como bound uniforme
-simple.
+*Paso 1 — identificación con el operador de Bernstein--Durrmeyer.* Con
+`b_(k,n)(t)=binom(n,k)t^k(1-t)^(n-k)`, (5.18) es exactamente
+`rho_(i,N)=N\,b_(i-1,N-1)`. Como `T_N^*c=sum_i c_i rho_(i,N)`, con `n:=N-1`,
+
+\[
+T_N^*T_Na
+=N^2\sum_{k=0}^{n}b_{k,n}(x)\!\int_0^1\!a\,b_{k,n}
+=N\,M_na,
+\qquad
+M_na:=(n+1)\sum_{k=0}^nb_{k,n}(x)\!\int_0^1\!a\,b_{k,n}.
+\tag{5.37b}
+\]
+
+`M_n` es el operador de Bernstein--Durrmeyer: autoadjunto y positivo, con
+núcleo simétrico `(n+1)sum_k b_(k,n)(s)b_(k,n)(t)`. Se anula sobre
+`P_n^perp`, porque `b_(k,n) in P_n`.
+
+*Paso 2 — triangularidad y coeficiente diagonal.* De
+`int_0^1 t^m b_(k,n)=n!(k+m)!/(k!(n+m+1)!)` y del hecho de que
+`(k+m)!/k!=(k+1)\cdots(k+m)` es mónico de grado `m` en `k`, cuyo factorial
+descendente principal tiene esperanza exacta `n!/(n-m)!\,x^m` bajo
+`K~Bin(n,x)`, resulta para `m<=n`
+
+\[
+M_n(t^m)(x)=\lambda_{n,m}x^m+(\text{grado}<m),
+\qquad
+\lambda_{n,m}=\frac{(n+1)!\,n!}{(n+m+1)!\,(n-m)!}.
+\tag{5.37c}
+\]
+
+En particular `M_n(P_m) subseteq P_m` para todo `m<=n`.
+
+*Paso 3 — diagonalización.* `M_n` es autoadjunto y deja invariante toda la
+cadena `P_0 subset P_1 subset ... subset P_n`, luego deja invariante cada
+complemento ortogonal `P_m ominus P_(m-1)`, que es unidimensional y está
+generado por el Legendre desplazado `e_m`. Por tanto los `e_m` son
+autofunciones y, por (5.37c), el autovalor es `lambda_(n,m)`. El espectro de
+`M_n` es `{lambda_(n,m)}_(m=0)^n union {0}`, este último sobre `P_n^perp`.
+
+*Paso 4 — monotonía y conclusión.* Directamente de (5.37c),
+
+\[
+\frac{\lambda_{n,m+1}}{\lambda_{n,m}}=\frac{n-m}{n+m+2}<1,
+\]
+
+así que `lambda_(n,m)` es estrictamente decreciente en `m`, con
+`lambda_(n,0)=1`. La única autofunción no centrada es `e_0=1`, luego
+`H=cl span{e_m: m>=1}` y el máximo de `M_n` sobre `H` es `lambda_(n,1)`,
+simple. Con `n=N-1`,
+
+\[
+\bigl\|T_N|_H\bigr\|^2
+=N\lambda_{N-1,1}
+=N\cdot\frac{N-1}{N+1},
+\]
+
+que es (5.37a). El autovalor es simple por la monotonía estricta, de modo que
+el extremizador es `e_1` salvo escalar. `∎`
+
+Comprobación directa del caso `m=1`, independiente de los Pasos 2--3: con
+`u=t-1/2` se tiene `(T_Nu)_i=(2i-N+1)/(2(N+1))` y
+`sum_i(2i-n)b_(i,n)(x)=2n(x-1/2)`, luego `T_N^*T_Nu=N(N-1)u/(N+1)`.
+
+```text
+ORDER_STATISTIC_MEAN_ZERO_NORM = PROVED_EXACT
+```
+
+#### Corolario — constante uniforme nítida
+
+Como `f in H widehat tensor_sym H` tiene ambos factores en `H`, (5.37a)
+refina (5.37) a `||H^(N)(f)||_F <= [N(N-1)/(N+1)]\,||f||_HS`, y (5.36) da
+
+\[
+\boxed{
+\frac{\Delta_N(f,f)}N
+\le\frac{I_N^\Pi(f)}N
+\le\frac{4N(N-1)}{(N+1)^2}\|f\|_{HS}^2
+<4\|f\|_{HS}^2.
+}
+\tag{5.37d}
+\]
+
+`4N(N-1)/(N+1)^2` crece estrictamente hacia `4`, que es exactamente el valor
+del límite (5.40); la cota uniforme es por tanto asintóticamente nítida y la
+constante `4` no puede rebajarse. **Este corolario no mejora ninguna tasa**:
+`Delta_N(f,f)/N -> 0` para cada `f` fijo por el Teorema 11, y (5.37d) es sólo
+un control uniforme sobre la esfera HS. `RATE` sigue siendo
+`o_f(1)_NO_UNIFORM_RATE_CLAIMED`.
+
+Las demostraciones de los Teoremas 9--12 se dejan **sin cambios**, apoyadas en
+la cota `||T_N||<=sqrt N` y en la constante `4N/(N-1)<=8`: (5.37d) es un
+refinamiento posterior y ningún paso depende de él.
 
 #### Teorema 9 — cota HS uniforme del denominador
 
@@ -1194,6 +1282,12 @@ demostración es analítica y ningún número de ellas entra en este documento n
 en ningún resultado publicado. El `assert oracle == expected_oracle` del backend
 citado sí es reproducible y se re-ejecutó en el run de congelación.
 
+El Lema B' se comprobó igualmente como *sanity check* para `N=2,...,9`: el
+espectro completo de la Gram `<rho_i,rho_j>` coincide con `N lambda_(N-1,m)` de
+(5.37c), y `T_N^*T_N(t-1/2)=[N(N-1)/(N+1)](t-1/2)` exactamente. La prueba del
+Lema B' es analítica y vale para todo `N>=2`; esa comprobación no forma parte
+de ella.
+
 Para el sector mixto, el cociente no etiquetado mata exactamente la componente
 antisimétrica, pero no se promueve aquí ninguna fórmula para el cociente con
 denominador de referencia. Permanece:
@@ -1215,8 +1309,14 @@ ANTISYMMETRIC_SECTOR = EXACTLY_INVISIBLE_IN_[P]_FOR_ALL_N (6.7)
 FIRST_LEGENDRE_MODE_EXACT_POSET_SUFFICIENCY = PROVED
 DIM_V_N = binom(N,2) = rank G_[P]^(N)   [Teorema 1, (1.3)]
 BEST_BOUND_USED = 4N/(N-1), sup = 8 at N=2 (from the PROVED ||T_N||<=sqrt N)
-SHARP_CONSTANT_ON_H = OBSERVED_NOT_PROVED: ||T_N|_H||^2 = N(N-1)/(N+1), N=2..8
-                      -> would give sup constant 4, matching the (5.40) limit
+ORDER_STATISTIC_MEAN_ZERO_NORM = PROVED_EXACT
+SHARP_CONSTANT_ON_H = ||T_N|_H||^2 = N(N-1)/(N+1) for all N>=2, PROVED (Lema B')
+    mechanism: T_N^* T_N = N * M_{N-1}, Bernstein-Durrmeyer; shifted Legendre
+    eigenfunctions, eigenvalues lambda_{n,m} = (n+1)!n!/((n+m+1)!(n-m)!)
+    strictly decreasing; extremiser e_1 ~ t-1/2, simple
+SHARP_NORMALIZED_LOSS_BOUND = Delta_N/N <= 4N(N-1)/(N+1)^2 ||f||_HS^2 < 4 (5.37d)
+UNIFORM_CONSTANT = 4, asymptotically sharp, not attained
+RATE_IMPROVED = NO (Theorems 9-12 unchanged, still on the sqrt N bound)
 R_CONTROL = NOT_REQUIRED_AT_INFINITE_RANK
 R_CONTROL_LEGACY_5_10 = TRACE_NORM_TYPE_WEIGHTED_BY_PROFILE_SUP_NORMS_BYPASSED
 UNIFORM_CONTROL_NORM = HILBERT_SCHMIDT_SCHATTEN_2
