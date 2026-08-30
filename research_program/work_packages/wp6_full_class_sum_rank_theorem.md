@@ -433,9 +433,19 @@ S1:
 
 ```text
 PROGRESSIVELY_DENSE_RECOVERY = symmetric S1 interaction sector only
-PERMANENT_INFORMATION_LOSS = antisymmetric S1 interaction sector
+PERMANENT_FIRST_ORDER_INVISIBILITY = antisymmetric S1 interaction sector
 FINITE_N_RESOLUTION = polynomial degree at most n-1 in each coordinate
 ```
+
+**Corrección de redacción (2026-08-30, hoja de ruta §5.5).** El segundo flag
+decía `PERMANENT_INFORMATION_LOSS`. Esa lectura no está autorizada. El
+intercambio `R(u,v)=(v,u)` preserva `D`, el orden producto, `mu_0` y `g_0`, y
+para un generador antisimétrico se tiene `R^*g_epsilon = g_(-epsilon)`
+exactamente, de modo que la ley del poset no etiquetado es **par** en
+`epsilon`. La invisibilidad del sector antisimétrico es insensibilidad de
+primer orden a direcciones impares bajo una isometría del fondo, no
+destrucción de información física. Puede existir identificabilidad de orden
+superior en `|epsilon|`; no se abre aquí.
 
 No afirma reconstrucción no lineal de una geometría, identificabilidad a
 distancia finita, recuperación de coordenadas, comportamiento fuera de S1 ni

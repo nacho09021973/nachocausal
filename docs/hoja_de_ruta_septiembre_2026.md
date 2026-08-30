@@ -1574,13 +1574,276 @@ No se encontró ningún término cruzado no nulo. `INTERACTION_FOUND = NO`.
 
 #### Reserva de realizabilidad, agravada en el sector antisimétrico
 
-`GEOMETRIC_REALIZABILITY_OF_ARBITRARY_HS = OPEN` sigue en pie y aquí es más
-severa. La clase geométrica de S2 es `psi=alpha+beta+lambda f tensor f`, cuyo
-tangente de cópula `h_psi=2 P psi` es **simétrico**; ningún elemento no nulo
-de `wedge^2 H` se ha exhibido como tangente de una senda admisible. Por tanto
-(5.52) es un enunciado sobre la forma cuadrática extendida por (5.34), y no
-debe leerse todavía como una afirmación sobre deformaciones métricas con parte
-antisimétrica. Los tres niveles de §5.3 se mantienen separados.
+`GEOMETRIC_REALIZABILITY_OF_ARBITRARY_HS = OPEN` sigue en pie para el espacio
+completo. **Corrección (§5.5, 2026-08-30):** la frase original de esta sección
+—"ningún elemento no nulo de `wedge^2 H` se ha exhibido como tangente de una
+senda admisible"— es **falsa**. El testigo (5.54) es admisible y su tangente
+está en `wedge^2 H \ {0}`. Lo que S2 restringe a tangentes simétricos es la
+clase `psi=alpha+beta+lambda f tensor f` de S2, no la admisibilidad de S1, que
+sólo pide `psi in C(D;R)`.
+
+Ahora bien, esa realizabilidad **no** convierte (5.52) en pérdida de
+información geométrica física: por el Teorema 17, `R^*g_epsilon=g_(-epsilon)`,
+de modo que la dirección antisimétrica identifica `+epsilon` con `-epsilon` por
+una isometría del fondo y la ley del poset es exactamente par en `epsilon`.
+La lectura autorizada de (5.52) es la de §5.5: insensibilidad de primer orden
+a las direcciones impares bajo la isotropía discreta. Los tres niveles de §5.3
+se mantienen separados.
+
+
+### 5.5 `GEOMETRIC_ANTISYMMETRIC_REALIZABILITY_PREFLIGHT` (2026-08-30)
+
+Se decide **sólo** la pregunta existencial: ¿existe una perturbación S1
+admisible cuyo tangente estadístico no nulo esté en `wedge^2 H`? Y, si existe,
+¿es una deformación geométricamente distinta módulo las equivalencias
+admitidas, o su invisibilidad de primer orden la explica la isotropía discreta
+`(u,v) <-> (v,u)`? **No** se caracteriza `Im P`.
+
+#### Lema E — `P` conmuta con el intercambio de coordenadas
+
+Sea `(R psi)(u,v):=psi(v,u)`. Con la factorización (9.2) del WP de
+clasificación, `P=(I-M_u)(I-M_v)`, donde en la notación de (3.5)
+`(M_u psi)(u,v)=psi_U(u)=int psi(u,v')dv'` y
+`(M_v psi)(u,v)=psi_V(v)=int psi(u',v)du'`. Entonces
+
+\[
+(M_uR\psi)(u,v)=\int\psi(v',u)\,dv'=\psi_V(u)=(RM_v\psi)(u,v),
+\]
+
+y simétricamente `M_vR=RM_u`. Como `M_uM_v psi = bar psi` es constante y
+`mu_0=du\,dv` es invariante bajo `R`, también `M_uM_vR=RM_uM_v`. Por tanto
+
+\[
+\boxed{
+\mathcal PR
+=R-RM_v-RM_u+RM_uM_v
+=R\mathcal P.
+}
+\tag{5.53}
+\]
+
+En consecuencia `R psi=-psi` implica `R(P psi)=-P psi`: **una `psi`
+antisimétrica produce un `P psi` antisimétrico**. Como
+`ran P = R` tiene ambas marginales nulas (Proposición 9.1), todo `P psi`
+antisimétrico no nulo está en `wedge^2 H` con `H=L_0^2`.
+
+#### Testigo explícito
+
+Sean `e_1,e_2` los Legendre desplazados ortonormales, ambos centrados, y
+
+\[
+\boxed{
+\psi(u,v):=e_1(u)e_2(v)-e_2(u)e_1(v).
+}
+\tag{5.54}
+\]
+
+`psi` es un polinomio, luego `psi in C(D;R)`, que es **exactamente** la
+hipótesis de S1 (§3 del WP de clasificación: "Sea `psi in C(D;R)`"). Como
+`int e_1=int e_2=0`, se tiene `psi_U=psi_V=bar psi=0`, luego
+
+\[
+\mathcal P\psi=\psi\neq0,
+\qquad
+h_\psi=2\mathcal P\psi=2(e_1\otimes e_2-e_2\otimes e_1),
+\qquad
+\|h_\psi\|_{HS}^2=8.
+\tag{5.55}
+\]
+
+Por (5.53), `R h_psi = -h_psi`. Por tanto
+
+\[
+\boxed{
+h_\psi\in\textstyle\bigwedge^2H\setminus\{0\}.
+}
+\]
+
+#### Admisibilidad S1
+
+La única hipótesis documentada sobre el generador es `psi in C(D;R)`; **S1 no
+impone ninguna simetría a `psi`**, y en particular no exige `psi(u,v)=psi(v,u)`.
+La clase `psi=alpha+beta+lambda f tensor f` es la clase *de S2*, no una
+restricción de admisibilidad de S1; el Lema 9.2 y el Corolario 9.3 restringen
+el **objetivo** `P psi = lambda f tensor f`, no el dominio de generadores.
+
+Con `psi` continua sobre el compacto `D`, `psi` es acotada, `Z(epsilon)` es
+finita y positiva y
+
+\[
+q_\varepsilon=\frac{e^{2\varepsilon\psi}}{Z(\varepsilon)}>0
+\qquad\text{para todo }\varepsilon\in\mathbb R,
+\]
+
+que es literalmente lo registrado en §3 del WP ("`q_epsilon>0` **para todo**
+`varepsilon`, no sólo cerca del nulo"). Luego la familia es admisible sin
+restricción de tamaño:
+
+```text
+S1_ADMISSIBILITY = SATISFIED
+EPSILON_NEIGHBORHOOD_EXISTS = YES, epsilon_0 = infinity
+```
+
+#### Gauge continuo
+
+Por la Proposición 9.1, `ker P = A = {alpha(u)+beta(v)}`. Como `P psi=psi != 0`,
+`psi notin ker P`:
+
+```text
+CONTINUOUS_GAUGE_STATUS = NON_GAUGE
+```
+
+Esto dice únicamente que la dirección no es una reparametrización de
+marginales. **No** autoriza a llamarla físicamente distinta; véase lo que
+sigue, que es el punto central de esta sección.
+
+#### Teorema 17 — isotropía discreta del fondo: `R^*g_\varepsilon=g_{-\varepsilon}`
+
+`R(u,v)=(v,u)` aplica `D=[0,1]^2` en sí mismo, preserva el orden producto
+
+\[
+(u,v)\preceq(u',v')\iff u\le u',v\le v'
+\]
+
+—la condición es simétrica en las dos coordenadas—, preserva `mu_0=du\,dv`, y
+es una isometría de la métrica plana `g_0`, que en coordenadas nulas es
+proporcional a `du\,dv`. (Geométricamente `R` es la reflexión espacial
+`x -> -x` con `u=t+x`, `v=t-x`: una isometría de Minkowski `1+1` que preserva
+la orientación temporal y el diamante.)
+
+Para `psi` antisimétrica, usando `R^*g_0=g_0` y `psi circ R=-psi`,
+
+\[
+R^*g_\varepsilon
+=\frac{e^{2\varepsilon(\psi\circ R)}}{Z(\varepsilon)}\,R^*g_0
+=\frac{e^{-2\varepsilon\psi}}{Z(\varepsilon)}\,g_0 .
+\]
+
+Además, como `R` preserva `mu_0`, el cambio de variables da
+
+\[
+Z(-\varepsilon)=\int_De^{-2\varepsilon\psi}d\mu_0
+=\int_De^{-2\varepsilon(\psi\circ R)}d\mu_0
+=\int_De^{+2\varepsilon\psi}d\mu_0=Z(\varepsilon),
+\]
+
+es decir `Z` es **par** en `epsilon`. Por tanto
+
+\[
+\boxed{
+R^*g_\varepsilon=g_{-\varepsilon}
+\qquad\text{exactamente, para todo }\varepsilon\in\mathbb R.
+}
+\tag{5.56}
+\]
+
+**Consecuencia sobre las leyes.** `R` es un automorfismo de `(D,preceq)` que
+transporta `mu_epsilon` a `mu_(-epsilon)`. Como el causet no etiquetado sólo
+registra el orden, la ley del poset no etiquetado es invariante bajo `R` por
+construcción — esto no es un convenio del programa, es forzado. Luego
+
+\[
+\mathbb P_{\varepsilon}\bigl([P]=C\bigr)
+=\mathbb P_{-\varepsilon}\bigl([P]=C\bigr)
+\qquad\forall N,C,\varepsilon,
+\tag{5.57}
+\]
+
+la ley del poset es **exactamente par** en `epsilon`, y su derivada en
+`epsilon=0` se anula necesariamente. Ésa es la explicación geométrica de
+`E[S_N(f_a)|[P]]=0`: no es una coincidencia combinatoria de la fibra, es la
+paridad forzada por una isometría del fondo.
+
+En cambio, `R` **no** deja invariante la ley de rangos: intercambiar `u` y `v`
+sustituye la permutación de rangos `pi` por `pi^(-1)`, de modo que
+
+\[
+\mathbb P_{-\varepsilon}(\Pi_N=\pi)
+=\mathbb P_{\varepsilon}(\Pi_N=\pi^{-1}),
+\tag{5.58}
+\]
+
+que es un cambio genuino salvo en las involuciones. De ahí que
+`I_N^Pi(f_a)>0` mientras `I_N^[P](f_a)=0`, sin contradicción. (5.57)--(5.58)
+son la versión geométrica del mecanismo de fibra del Teorema 14.
+
+#### Veredicto y las cuatro nociones que NO deben identificarse
+
+```text
+GEOMETRIC_ANTISYMMETRIC_REALIZABILITY =
+    REALIZABLE_BUT_DISCRETE_ISOTROPY_IDENTIFIED
+```
+
+El testigo (5.54) es admisible, su tangente es antisimétrico no nulo y no es
+gauge continuo; pero `g_epsilon` y `g_(-epsilon)` son **isométricas** vía `R`,
+y esa isometría es una equivalencia forzada para el canal `[P]`. Se mantienen
+separadas:
+
+1. **Gauge infinitesimal generado por un campo vectorial** — `ker P`. El
+   testigo NO es de este tipo.
+2. **Isotropía discreta del punto base** — `R` es una isometría de
+   `(D,g_0,preceq,mu_0)`. SÍ está presente.
+3. **Isometría de `g_epsilon` y `g_(-epsilon)`** — (5.56). SÍ, exacta.
+4. **Invisibilidad Fisher de primer orden** — se SIGUE de (3) por (5.57).
+
+(3) implica (4); (4) no implica (3) en general. Aquí se tiene (3), de modo que
+(4) queda explicada y no requiere ninguna lectura de pérdida física.
+
+**Lo que NO se sigue.** La familia no es trivial: `g_epsilon != g_0` para
+`epsilon != 0`, y nada de lo anterior dice que `g_epsilon` sea isométrica a
+`g_0`. Lo identificado es el **signo** de `epsilon`, no la deformación. En el
+cociente por isometrías la curva `epsilon -> [g_epsilon]` se pliega sobre sí
+misma en `epsilon=0`, y por eso el Fisher de primer orden en el canal `[P]`
+debe anularse. Puede existir identificabilidad de orden superior en
+`|epsilon|`; **ese problema no se abre aquí**.
+
+```text
+HIGHER_ORDER_IDENTIFIABILITY_IN_ABS_EPSILON = NOT_OPENED
+```
+
+#### Reinterpretación obligatoria del teorema mixto
+
+`MIXED_SECTOR_LIMIT = PROVED_NORM_RATIO` (5.52) **no** debe leerse como
+pérdida de información geométrica física. La lectura correcta es:
+
+> la ley del poset no etiquetado es insensible, a primer orden, a las
+> direcciones impares bajo la isotropía discreta del fondo.
+
+Queda **prohibida** en cualquier redacción la expresión *physical information
+loss* aplicada a `wedge^2 H`, y en particular la lectura de que una
+deformación métrica con parte antisimétrica "pierde esa fracción de su
+información". La fracción `||f_a||^2/(||f_s||^2+||f_a||^2)` mide la parte del
+tangente que es odd bajo `R`, no información física destruida.
+
+#### Ataque adversarial — resultado
+
+1. *¿`psi` antisimétrica permitida?* Sí: la hipótesis documentada es
+   `psi in C(D;R)`, sin simetría. Verificado en la fuente, no asumido.
+2. *¿`h_psi != 0`?* Sí, `||h_psi||_HS^2=8` por cálculo exacto.
+3. *¿Familia admisible para `epsilon != 0`?* Sí, `q_epsilon>0` para todo
+   `epsilon`, documentado; `epsilon_0=infinity`.
+4. *¿Tangente non-gauge?* Sí, `psi notin ker P`.
+5. *¿`R^*g_epsilon=g_(-epsilon)`?* Derivado en el Teorema 17, incluida la
+   paridad de `Z`, no asumido.
+6. *¿`R` equivalencia admitida?* Sí, y por una razón que no depende de
+   convenios: `R` preserva `preceq` y `mu_0`, luego la ley del causet no
+   etiquetado es invariante por construcción.
+7. *¿Salto de non-gauge a físicamente distinto?* **BLOQUEADO. Éste era el
+   error a evitar y es el resultado de la sección:** non-gauge en el sentido
+   de `ker P` no implica geométricamente distinto módulo las equivalencias
+   admitidas, porque la isotropía discreta identifica `+epsilon` con
+   `-epsilon`.
+
+No se usó en ningún paso la clasificación Fisher como prueba de realizabilidad
+geométrica; la dirección del argumento es la contraria.
+
+```text
+FULL_WEDGE_REALIZABILITY_PROVED = NO
+GEOMETRIC_TANGENT_REALIZABILITY = NOT_FULLY_OPENED
+```
+
+Un solo testigo decide la pregunta existencial; no se caracteriza `Im P` ni se
+afirma que todo `wedge^2 H` sea realizable.
 
 
 Para el sector mixto, §5.4 promueve ya la fórmula de razón de normas (5.52)
@@ -1643,7 +1906,18 @@ POSET_FISHER_SPLITTING = I_N^[P](f) = I_N^[P](f_s) (5.48)
 ANTISYMMETRIC_REFERENCE_FISHER_LIMIT = I_N^Pi(f_a)/N -> 4||f_a||_HS^2 (5.51)
 PURE_ANTISYMMETRIC_CASE = eta_N = 0 EXACTLY for N >= N_0(f), not only in limit
 INTERACTION_FOUND = NO
-ANTISYMMETRIC_GEOMETRIC_REALIZABILITY = OPEN_AND_MORE_SEVERE
+GEOMETRIC_ANTISYMMETRIC_REALIZABILITY = REALIZABLE_BUT_DISCRETE_ISOTROPY_IDENTIFIED
+    witness psi = e_1 ox e_2 - e_2 ox e_1 (5.54); admissible, eps_0 = infinity;
+    h_psi in wedge^2 H \ {0}, ||h_psi||_HS^2 = 8; NON_GAUGE (psi notin ker P)
+BACKGROUND_SWAP_ISOMETRY = YES, R preserves D, the product order, mu_0 and g_0
+R_PULLBACK_G_EPSILON = R^* g_eps = g_{-eps} exactly, all eps (5.56)
+DISCRETE_ISOTROPY_STATUS = IDENTIFIES +eps WITH -eps; poset law exactly even
+ANTISYMMETRIC_FISHER_KERNEL_INTERPRETATION =
+    first-order insensitivity to R-odd directions, NOT physical information loss
+PHYSICAL_INFORMATION_LOSS_WORDING = FORBIDDEN for wedge^2 H
+HIGHER_ORDER_IDENTIFIABILITY_IN_ABS_EPSILON = NOT_OPENED
+FULL_WEDGE_REALIZABILITY_PROVED = NO
+GEOMETRIC_TANGENT_REALIZABILITY = NOT_FULLY_OPENED
 N5_OPENED = NO
 EF_OPENED = NO
 POISSON_OPENED = NO
