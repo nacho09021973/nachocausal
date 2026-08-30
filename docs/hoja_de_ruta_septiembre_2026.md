@@ -918,6 +918,30 @@ HS con su propia norma, luego
 \tag{5.37}
 \]
 
+**Nitidez de (5.37) — auditoría de la constante.** Sobre todo `L^2` la cota
+`||T_N||<=sqrt N` es *exacta*: `sum_i rho_(i,N)=N` implica `T_N 1=(1,...,1)`, de
+modo que la función constante satura Jensen. Pero el dominio real es
+`H=L_0^2`, y allí la constante es estrictamente menor. Restringido a `H`, el
+operador `T_N` tiene `(T_NT_N^*)_(ij)=<rho_i-1,rho_j-1>` y el cálculo exacto
+sobre `Q` da
+
+\[
+\bigl\|T_N|_H\bigr\|^2=\frac{N(N-1)}{N+1}
+\qquad(N=2,\dots,8\ \text{verificado}),
+\tag{5.37a}
+\]
+
+que llevaría a la constante uniforme `4N(N-1)/(N+1)^2 < 4`, creciente hacia
+`4`, es decir exactamente el valor del límite (5.40). El bound sería entonces
+asintóticamente nítido.
+
+`(5.37a)` está **verificado sólo para `N=2,...,8` y no demostrado**; se
+registra como observación, no se usa en ningún paso de la prueba y no
+promociona ninguna constante. Todos los enunciados de §5.3 usan únicamente la
+cota demostrada `||T_N||<=sqrt N`, cuya constante exacta es `4N/(N-1)`, con
+supremo `8` alcanzado en `N=2`. `8` se conserva sólo como bound uniforme
+simple.
+
 #### Teorema 9 — cota HS uniforme del denominador
 
 Combinando (5.36) y (5.37), para todo `f in H widehat tensor_sym H` y todo
@@ -1103,7 +1127,28 @@ No se debe deslizar el primero al segundo en ningún resumen del programa.
 
 #### Mapa del sector tangente completo de S1
 
-Reuniendo (6.7)--(6.8) del teorema de rango de clase completa con (5.42):
+Reuniendo el Teorema 1 (1.2)--(1.3), (6.7)--(6.8) del teorema de rango de clase
+completa, el lema del primer modo y (5.42), S1 queda con cuatro niveles.
+
+**Nivel 1 — visibilidad a `N` finito.** Por (1.2)--(1.3),
+
+\[
+V_N=\operatorname{Sym}^2P_{N-1},
+\qquad
+\dim V_N=\operatorname{rank}G_{[P]}^{(N)}=\binom N2,
+\qquad
+V_N\subsetneq V_{N+1},
+\]
+
+y `cl(union_N V_N)=H widehat tensor_sym H`. A cada `N` la resolución es
+polinómica de grado `<=N-1` en cada coordenada: mucho es invisible, pero nada
+fijo lo es para siempre (Lema C).
+
+**Nivel 2 — modo fundamental, suficiencia exacta.**
+`eta_N(e_1^(tensor 2))=1` para todo `N>=2`, por (5.3b)--(5.3c). No es un
+ejemplo de convergencia.
+
+**Niveles 3 y 4 — sector simétrico completo y núcleo permanente:**
 
 \[
 \begin{array}{ccl}
@@ -1167,6 +1212,11 @@ RATE = o_f(1)_NO_UNIFORM_RATE_CLAIMED
 ETA_WELL_DEFINED_FOR = N >= N_0(f); eta is 0/0 exactly on V_N^perp (Lema C)
 N_0_UNIFORM_OVER_HS_SPHERE = NO
 ANTISYMMETRIC_SECTOR = EXACTLY_INVISIBLE_IN_[P]_FOR_ALL_N (6.7)
+FIRST_LEGENDRE_MODE_EXACT_POSET_SUFFICIENCY = PROVED
+DIM_V_N = binom(N,2) = rank G_[P]^(N)   [Teorema 1, (1.3)]
+BEST_BOUND_USED = 4N/(N-1), sup = 8 at N=2 (from the PROVED ||T_N||<=sqrt N)
+SHARP_CONSTANT_ON_H = OBSERVED_NOT_PROVED: ||T_N|_H||^2 = N(N-1)/(N+1), N=2..8
+                      -> would give sup constant 4, matching the (5.40) limit
 R_CONTROL = NOT_REQUIRED_AT_INFINITE_RANK
 R_CONTROL_LEGACY_5_10 = TRACE_NORM_TYPE_WEIGHTED_BY_PROFILE_SUP_NORMS_BYPASSED
 UNIFORM_CONTROL_NORM = HILBERT_SCHMIDT_SCHATTEN_2
