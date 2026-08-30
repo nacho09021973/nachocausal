@@ -1308,8 +1308,9 @@ H\widehat\otimes_{\rm sym}H
 y dentro del sector simétrico el modo fundamental es un caso de suficiencia
 exacta, `eta_N(e_1^(tensor 2))=1` para todo `N>=2`. La pérdida permanente del
 sector antisimétrico es una afirmación sobre el canal `[P]`; no dice que
-`I_N^Pi` se anule allí. El cociente `eta_N` en el sector mixto no se enuncia
-aquí: `MIXED_SECTOR_LIMIT = CONJECTURE`.
+`I_N^Pi` se anule allí — en efecto (5.51) da `I_N^Pi(f_a)/N -> 4||f_a||_HS^2`.
+El cociente `eta_N` en el sector mixto se enuncia en §5.4, Teorema 16:
+`MIXED_SECTOR_LIMIT = PROVED_NORM_RATIO`.
 
 #### Ataque adversarial — resultado
 
@@ -1344,9 +1345,247 @@ espectro completo de la Gram `<rho_i,rho_j>` coincide con `N lambda_(N-1,m)` de
 Lema B' es analítica y vale para todo `N>=2`; esa comprobación no forma parte
 de ella.
 
-Para el sector mixto, el cociente no etiquetado mata exactamente la componente
-antisimétrica, pero no se promueve aquí ninguna fórmula para el cociente con
-denominador de referencia. Permanece:
+### 5.4 `MIXED_SECTOR_PREFLIGHT` (2026-08-30)
+
+Se abre el sector mixto **sólo** en el nivel hilbertiano de S1. Se decide la
+estructura exacta de las dos formas de Gram bajo
+
+\[
+H\widehat\otimes H
+=\bigl(H\widehat\otimes_{\rm sym}H\bigr)
+\oplus\Bigl(\textstyle\bigwedge^2H\Bigr),
+\qquad
+f=f_s+f_a.
+\]
+
+El score se extiende linealmente por (5.34) a todo `H widehat tensor H`; la
+reserva de §5.3 sobre realizabilidad geométrica se mantiene y se agrava en el
+sector antisimétrico (véase el final de esta sección).
+
+#### Lema D — `H_N` entrelaza transposición e intercambio de coordenadas
+
+Sea `f^T(s,t):=f(t,s)`. De (5.33), por el cambio de variables `s <-> t`,
+
+\[
+\bigl(H^{(N)}(f)\bigr)^{\mathsf T}_{ij}
+=H^{(N)}_{ji}(f)
+=\iint f(s,t)\rho_{j,N}(s)\rho_{i,N}(t)
+=\iint f(t,s)\rho_{i,N}(s)\rho_{j,N}(t)
+=H^{(N)}_{ij}(f^{\mathsf T}),
+\]
+
+es decir `H^(N)(f)^T = H^(N)(f^T)` exactamente, para todo `N` y todo
+`f in L^2([0,1]^2)`. Que el mismo operador `T_N` actúe en las dos ranuras es
+esencial: es lo que hace conmutar `H^(N)` con la transposición. En
+consecuencia
+
+\[
+\boxed{
+f_s^{\mathsf T}=f_s\Rightarrow H^{(N)}(f_s)^{\mathsf T}=H^{(N)}(f_s),
+\qquad
+f_a^{\mathsf T}=-f_a\Rightarrow H^{(N)}(f_a)^{\mathsf T}=-H^{(N)}(f_a).
+}
+\tag{5.43}
+\]
+
+#### Teorema 13 — el Fisher de referencia separa exactamente los sectores
+
+Para matrices reales, `<A,B>_F=tr(A^TB)` anula todo par simétrico/antisimétrico.
+Por (5.43) y la identidad exacta (5.36),
+
+\[
+\boxed{
+G_N^\Pi(f_s,f_a)=\frac4{N-1}\bigl\langle
+H^{(N)}(f_s),H^{(N)}(f_a)\bigr\rangle_F=0
+\qquad\forall N\ge2,
+}
+\tag{5.44}
+\]
+
+y por tanto, **exactamente y a todo `N`**,
+
+\[
+I_N^\Pi(f)=I_N^\Pi(f_s)+I_N^\Pi(f_a).
+\tag{5.45}
+\]
+
+Esto no es una aproximación asintótica ni depende de ninguna hipótesis sobre
+la fibra: es ortogonalidad de Frobenius transportada por `H^(N)`.
+
+#### Teorema 14 — el sector antisimétrico es invisible bilinealmente
+
+`(6.7)` afirma `wedge^2 H subseteq ker G_[P]^(N)`. Aquí se prueba la forma
+fuerte, que es puntual y da todos los términos cruzados.
+
+Intercambiar las dos coordenadas `u <-> v` deja **literalmente invariante** el
+orden producto, porque la relación `u_i<u_j` y `v_i<v_j` es simétrica en las
+dos coordenadas, y sustituye la permutación de rangos `pi` por `pi^(-1)`. Por
+tanto `[P_pi]=[P_(pi^(-1))]` y toda fibra `F` del cociente `pi -> [P_pi]` es
+cerrada bajo inversión. Para `H` antisimétrica,
+
+\[
+S_H(\pi^{-1})=\sum_jH_{\pi^{-1}(j),j}=-\sum_jH_{j,\pi^{-1}(j)}=-S_H(\pi),
+\]
+
+luego `sum_(pi in F) S_H(pi) = sum_(pi in F) S_H(pi^(-1)) = - sum_(pi in F)
+S_H(pi)`, y la suma es nula. Como `Pi_N` es uniforme, la ley condicional en
+cada fibra es uniforme y
+
+\[
+\boxed{
+\mathbb E\bigl[S_N(f_a)\mid[P]\bigr]=0
+\quad\text{puntualmente},
+\qquad\forall N,\ \forall f_a\in\textstyle\bigwedge^2H.
+}
+\tag{5.46}
+\]
+
+(No hace falta emparejar `pi` con `pi^(-1)`: basta que `F` sea invariante. Las
+involuciones `pi=pi^(-1)` dan `S_H(pi)=0` directamente.)
+
+De (5.46), para **todo** `g in H widehat tensor H`,
+
+\[
+G_N^{[P]}(f_a,g)
+=\mathbb E\bigl[\mathbb E[S_N(f_a)|[P]]\,\mathbb E[S_N(g)|[P]]\bigr]=0,
+\tag{5.47}
+\]
+
+y en particular `G_N^[P](f_s,f_a)=0`. La misma conclusión se sigue, más
+débilmente, de (6.7) y Cauchy--Schwarz (5.7):
+`|G_N^[P](f_s,f_a)|^2 <= G_N^[P](f_s,f_s)G_N^[P](f_a,f_a)=0`. Por tanto
+
+\[
+\boxed{
+I_N^{[P]}(f)=I_N^{[P]}(f_s)
+\qquad\forall N.
+}
+\tag{5.48}
+\]
+
+#### Teorema 15 — límite del Fisher de referencia en todo `H widehat tensor H`
+
+El Lema B' da algo más fuerte que la ruta epsilon/3 del Teorema 10, y cubre el
+sector antisimétrico sin argumento de densidad. Con `tilde T_N=N^(-1/2)T_N`,
+(5.37b) es exactamente
+
+\[
+\tilde T_N^*\tilde T_N=M_{N-1},
+\]
+
+cuyo espectro es `{lambda_(N-1,m)}` sobre `e_m`, `m<=N-1`, y `0` sobre
+`P_(N-1)^perp`. De (5.37c),
+
+\[
+\lambda_{n,m}=\prod_{r=1}^m\frac{n-r+1}{n+r+1}\in[0,1],
+\qquad
+\lambda_{N-1,m}\xrightarrow[N\to\infty]{}1
+\ \text{ para cada }m\text{ fijo.}
+\tag{5.49}
+\]
+
+Para `f=sum_(j,k>=1)c_(jk)\,e_j tensor e_k in H widehat tensor H`,
+
+\[
+\bigl\|(\tilde T_N\otimes\tilde T_N)f\bigr\|_F^2
+=\sum_{j,k\ge1}\lambda_{N-1,j}\lambda_{N-1,k}|c_{jk}|^2
+\longrightarrow\sum_{j,k\ge1}|c_{jk}|^2=\|f\|_{HS}^2
+\tag{5.50}
+\]
+
+por convergencia dominada, con dominante sumable `|c_(jk)|^2` y factores en
+`[0,1]`. Como `I_N^Pi(f)=\frac{4N}{N-1}N\|(tilde T_N tensor tilde T_N)f\|_F^2`,
+
+\[
+\boxed{
+\frac{I_N^\Pi(f)}N\longrightarrow4\|f\|_{HS}^2
+\qquad\forall f\in H\widehat\otimes H,
+}
+\tag{5.51}
+\]
+
+simétrico, antisimétrico o mixto. El Teorema 10 queda como caso particular; su
+demostración por densidad sigue siendo válida y no se retira, pero (5.51) es
+estrictamente más general y no usa densidad.
+
+**Lema C extendido.** Igual que en §5.3, `I_N^Pi(f)=0` si y sólo si
+`f perp P_(N-1) tensor P_(N-1)`, y (5.51) da `N_0(f)<infinity` para todo
+`f != 0` en `H widehat tensor H`. Todo lo que sigue se entiende para
+`N>=N_0(f)`. Nótese que `wedge^2P_1=0`, de modo que a `N=2` todo el sector
+antisimétrico es invisible también para `G_N^Pi`; esto lo absorbe `N_0`.
+
+#### Teorema 16 — `MIXED_SECTOR_LIMIT`
+
+Sea `0 != f=f_s+f_a` y `N>=N_0(f)`. Por (5.45), (5.48), (5.51) y el
+Teorema 11 aplicado a `f_s`,
+
+\[
+\eta_N(f)
+=\frac{I_N^{[P]}(f_s)}{I_N^\Pi(f_s)+I_N^\Pi(f_a)}
+=\frac{I_N^\Pi(f_s)/N-\Delta_N(f_s,f_s)/N}
+       {I_N^\Pi(f_s)/N+I_N^\Pi(f_a)/N}
+\longrightarrow
+\frac{4\|f_s\|_{HS}^2-0}{4\|f_s\|_{HS}^2+4\|f_a\|_{HS}^2},
+\]
+
+es decir
+
+\[
+\boxed{
+\eta_N(f)\longrightarrow
+\frac{\|f_s\|_{HS}^2}{\|f_s\|_{HS}^2+\|f_a\|_{HS}^2}.
+}
+\tag{5.52}
+\]
+
+El denominador límite es `4||f||_HS^2>0` por la ortogonalidad de la
+descomposición, luego el cociente está bien definido en el límite.
+
+**Casos extremos, ambos automáticos.**
+
+- `f_a=0`: (5.52) da `1`, recuperando el Teorema 12.
+- `f_s=0`: por (5.48) el numerador es **exactamente** cero, luego
+  `eta_N(f)=0` para todo `N>=N_0(f)`, no sólo en el límite. La pérdida
+  antisimétrica es total y finita-`N`, no asintótica.
+
+```text
+MIXED_SECTOR_PREFLIGHT = PASS_EXACT_ORTHOGONAL_SPLITTING
+MIXED_SECTOR_LIMIT = PROVED_NORM_RATIO
+```
+
+#### Ataque adversarial — resultado
+
+- *Ortogonalidad sym/skew tras `T_N tensor T_N`*: no se asume, se prueba en el
+  Lema D, y depende de que sea **el mismo** `T_N` en ambas ranuras. Con dos
+  operadores distintos la simetría no se conservaría.
+- *Transposición vs. intercambio `u <-> v`*: identificados explícitamente por
+  el cambio de variables del Lema D y por la invariancia literal del orden
+  producto en el Teorema 14.
+- *Extensión HS del sector antisimétrico*: (5.51) es espectral y directa, sin
+  densidad ni epsilon/3, luego no hereda ninguna laguna de aquéllas.
+- *Cross terms de `G_N^[P]`*: cubiertos por (5.46), que es puntual, no sólo
+  diagonal; y por Cauchy--Schwarz como ruta independiente.
+- *Normalización del Fisher de referencia*: se usa (5.36) sin cambios; el
+  denominador es el oráculo de rangos `Pi_N` fijado en (5.3a), no otro.
+- *Degeneración del denominador*: Lema C extendido, `N>=N_0(f)`.
+- *Forma cuadrática vs. tangente realizable*: ver el párrafo siguiente.
+
+No se encontró ningún término cruzado no nulo. `INTERACTION_FOUND = NO`.
+
+#### Reserva de realizabilidad, agravada en el sector antisimétrico
+
+`GEOMETRIC_REALIZABILITY_OF_ARBITRARY_HS = OPEN` sigue en pie y aquí es más
+severa. La clase geométrica de S2 es `psi=alpha+beta+lambda f tensor f`, cuyo
+tangente de cópula `h_psi=2 P psi` es **simétrico**; ningún elemento no nulo
+de `wedge^2 H` se ha exhibido como tangente de una senda admisible. Por tanto
+(5.52) es un enunciado sobre la forma cuadrática extendida por (5.34), y no
+debe leerse todavía como una afirmación sobre deformaciones métricas con parte
+antisimétrica. Los tres niveles de §5.3 se mantienen separados.
+
+
+Para el sector mixto, §5.4 promueve ya la fórmula de razón de normas (5.52)
+en el nivel hilbertiano, con separación exacta de sectores a todo `N`.
+Permanece:
 
 ```text
 FINITE_RANK_BOUNDED_CONTINUOUS_SYMMETRIC_RETENTION = PROVED_BY_ASSEMBLY
@@ -1394,8 +1633,17 @@ ADVERSARIAL_SEQUENCE = NONEXISTENT_BY_(5.39)
 HS_UNIFORMITY_OBSTRUCTION = NONE
 FIRST_LEGENDRE_MODE_EXACT_SUFFICIENCY_PRESERVED = YES
 INFINITE_RANK_EXTENSION_STATUS = CLOSED_SYMMETRIC_SECTOR_ONLY
-MIXED_SECTOR_LIMIT = CONJECTURE
-SECTOR_MIXED = NOT_OPENED
+MIXED_SECTOR_PREFLIGHT = PASS_EXACT_ORTHOGONAL_SPLITTING
+MIXED_SECTOR_LIMIT = PROVED_NORM_RATIO   (was CONJECTURE; §5.4 Teorema 16)
+SECTOR_MIXED = OPENED_HILBERT_LEVEL_ONLY
+REFERENCE_FISHER_SYM_ANTI_CROSS = 0 exactly, all N (5.44)
+POSET_FISHER_SYM_ANTI_CROSS = 0 exactly, all N (5.46)-(5.47)
+REFERENCE_FISHER_SPLITTING = I_N^Pi(f) = I_N^Pi(f_s) + I_N^Pi(f_a) (5.45)
+POSET_FISHER_SPLITTING = I_N^[P](f) = I_N^[P](f_s) (5.48)
+ANTISYMMETRIC_REFERENCE_FISHER_LIMIT = I_N^Pi(f_a)/N -> 4||f_a||_HS^2 (5.51)
+PURE_ANTISYMMETRIC_CASE = eta_N = 0 EXACTLY for N >= N_0(f), not only in limit
+INTERACTION_FOUND = NO
+ANTISYMMETRIC_GEOMETRIC_REALIZABILITY = OPEN_AND_MORE_SEVERE
 N5_OPENED = NO
 EF_OPENED = NO
 POISSON_OPENED = NO
