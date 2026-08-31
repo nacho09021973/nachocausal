@@ -7,19 +7,20 @@
 > antes de cerrar el puente geométrico. Mantener `FAMILY_FROZEN`,
 > `NO_UNIVERSALITY_CLAIM` y `PRIORITY = PROVISIONAL_NOT_SEALED`.
 
-## Checkpoint vigente — 2026-08-28
+## Checkpoint histórico — 2026-08-28
 
 Las fases S1 y S2 que el plan inferior describía como futuras ya están
-cerradas. La secuencia de §§0–14 se conserva como registro de planificación,
-pero no constituye autorización para reabrir S3–S7. El estado operativo que
-manda al reanudar desde otro clon es:
+cerradas. Este checkpoint se conserva como registro de planificación y del
+estado que regía el 2026-08-28, pero queda `SUPERSEDED` para los cierres
+autoritativos posteriores registrados más abajo. No constituye autorización
+para reabrir S3–S7. Su estado histórico era:
 
 ```text
 GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
 S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY
 STOP_AFTER_S2 = SI
 S3_NOT_OPENED
-S4_NOT_OPENED
+S4_NOT_OPENED  [HISTORICAL_AT_2026-08-28; SUPERSEDED]
 NO_HORIZON_CLAIM
 NO_PRIORITY_CLAIM
 FISHER_BRANCH_ROLE = STRUCTURAL_TOOL
@@ -47,6 +48,27 @@ GOBERNANZA: docs/program_reopening_note_2026-08-28_R4.md (firmada 2026-08-28)
 G2: §2.2 enmendada a Convención B el 2026-08-28
     (lambda parametriza P psi, no el tangente de copula)
 PLAN_INFERIOR: REGISTRO_HISTORICO_DE_SECUENCIACION
+```
+
+## Estado autoritativo actual — HEAD `b5e8705` (2026-08-31)
+
+Este bloque manda sobre los estados históricos incompatibles del checkpoint
+de 2026-08-28 y de la secuencia de planificación preservada en §§0–14. No
+reabre fases ni modifica la gobernanza científica.
+
+```text
+RELATIVE_FISHER_OPERATOR_IDENTIFICATION = PROVED
+RELATIVE_OPERATOR_FINITE_N_PROJECTION = REFUTED
+RELATIVE_OPERATOR_SOT_LIMIT = P_SYM_PROVED
+RELATIVE_ASYMPTOTIC_IDEMPOTENCE_SOT = PROVED
+RELATIVE_OPERATOR_NORM_CONVERGENCE = REFUTED
+GARBLING_N_PLUS_1_TO_N = PROVED_BY_UNIFORM_DELETION
+FULL_SYMMETRIC_HS_RETENTION = PROVED
+MIXED_SECTOR_LIMIT = PROVED_NORM_RATIO
+HIGHER_ORDER_IDENTIFIABILITY_IN_ABS_EPSILON = PROVED_SECOND_ORDER_VISIBLE
+ONE_SIDED_QMD_IN_THETA = PROVED
+GEOMETRIC_REALIZABILITY_OF_ARBITRARY_HS = OPEN
+NEXT_RUN_AUTHORIZED = NO
 ```
 
 ## 0. Punto de partida preservado
@@ -1333,7 +1355,8 @@ primero y extendido a modos `k>=N` fuera del span visible, verificó además:
 coincidencia de los núcleos de `G_N^Pi` y `G_N^[P]` dentro del sector simétrico
 (cross-check de (6.8) y base del Lema C); la cota del Teorema 9 sobre kernels
 que mezclan modos visibles e invisibles; el carácter `0/0` de `eta_N` sobre
-`V_N^perp`; y `G_N^[P]=0` exacto sobre kernels antisimétricos, con `G_N^Pi>0`
+`V_N^perp` dentro del Hilbert simétrico; y `G_N^[P]=0` exacto sobre kernels
+antisimétricos, con `G_N^Pi>0`
 (cross-check de (6.7)). Ambas comprobaciones son `NOT_AN_ARTIFACT`: la
 demostración es analítica y ningún número de ellas entra en este documento ni
 en ningún resultado publicado. El `assert oracle == expected_oracle` del backend
@@ -1589,6 +1612,373 @@ una isometría del fondo y la ley del poset es exactamente par en `epsilon`.
 La lectura autorizada de (5.52) es la de §5.5: insensibilidad de primer orden
 a las direcciones impares bajo la isotropía discreta. Los tres niveles de §5.3
 se mantienen separados.
+
+
+### 5.4bis `RELATIVE_FISHER_OPERATOR_IDENTIFICATION` (2026-08-31)
+
+Esta sección cierra únicamente la identificación operatorial relativa de las
+formas Fisher ya construidas. No abre realizabilidad geométrica, no modifica
+el canal, no introduce una generalización de la familia y no cambia ningún
+claim físico.
+
+#### Hilbert común y formas normalizadas
+
+Sea `H=L_0^2([0,1])`. El Hilbert tangente común de la clase completa es
+
+\[
+\boxed{
+\mathcal H
+=H\widehat\otimes H
+=\operatorname{Sym}^2H\oplus\bigwedge^2H.
+}
+\tag{5.52a}
+\]
+
+Las formas de Gram de (5.34)--(5.36) definen, por Riesz, los operadores
+positivos acotados `B_N,A_N in L(mathcal H)` mediante
+
+> **Desambiguación local.** En esta sección, `A_N` y `B_N` designan operadores
+> Fisher. No deben confundirse con los eventos históricos homónimos usados en
+> secciones anteriores.
+
+\[
+\boxed{
+\langle f,B_Ng\rangle
+=\frac{G_N^\Pi(f,g)}{4N},
+\qquad
+\langle f,A_Ng\rangle
+=\frac{G_N^{[P]}(f,g)}{4N}.
+}
+\tag{5.52b}
+\]
+
+La identidad de varianza condicional (5.5)--(5.6), o equivalentemente la
+contractividad de la esperanza condicional, da exactamente
+
+\[
+\boxed{0\le A_N\le B_N\le I.}
+\tag{5.52c}
+\]
+
+La última cota usa la norma exacta de `T_N|_H` del Lema B'; la parte esencial
+para la factorización relativa es `A_N<=B_N`.
+
+No se identifican sus soportes. Por (5.36), el Lema C extendido y (6.8) del
+teorema de rango de clase completa,
+
+\[
+\begin{aligned}
+\ker B_N
+&=\bigl(P_{N-1}\widehat\otimes P_{N-1}\bigr)^\perp,\\
+\operatorname{supp}B_N
+&=\mathcal S_N
+=P_{N-1}\widehat\otimes P_{N-1},
+\end{aligned}
+\tag{5.52d}
+\]
+
+mientras
+
+\[
+\begin{aligned}
+\ker A_N
+&=\bigl(\operatorname{Sym}^2P_{N-1}\bigr)^{\perp_{\rm sym}}
+  \oplus\bigwedge^2H,\\
+\operatorname{supp}A_N
+&=V_N
+=\operatorname{Sym}^2P_{N-1}.
+\end{aligned}
+\tag{5.52e}
+\]
+
+Así, la permutación de rangos ve también
+`wedge^2 P_(N-1)`, mientras el poset no etiquetado anula ese sector
+exactamente. En particular `supp A_N` es un subespacio propio de `supp B_N`
+cuando el sector antisimétrico finito no es trivial.
+
+#### Operador Fisher relativo sobre el soporte
+
+Para cada `N`, `B_N|_(mathcal S_N)` es positivo definido sobre el espacio de
+dimensión finita `mathcal S_N`. Se define
+
+\[
+\boxed{
+R_N
+=B_N^{\dagger/2}A_NB_N^{\dagger/2},
+}
+\tag{5.52f}
+\]
+
+donde `dagger` denota la pseudoinversa de Moore--Penrose. Equivalentemente,
+
+\[
+R_N|_{\mathcal S_N}
+=\bigl(B_N|_{\mathcal S_N}\bigr)^{-1/2}
+ A_N
+ \bigl(B_N|_{\mathcal S_N}\bigr)^{-1/2},
+\qquad
+R_N=0\quad\text{sobre }\ker B_N.
+\tag{5.52g}
+\]
+
+No se escribe `B_N^(-1/2)` globalmente. Como `A_N<=B_N`, la factorización de
+Douglas —aquí equivalente al cálculo finito sobre `mathcal S_N`— da
+
+\[
+\boxed{
+A_N=B_N^{1/2}R_NB_N^{1/2},
+\qquad
+0\le R_N\le I.
+}
+\tag{5.52h}
+\]
+
+Es la única solución reducida por `P_(mathcal S_N) R_N P_(mathcal S_N)=R_N`.
+Además, como `B_N` preserva la descomposición simétrica/antisimétrica y `A_N`
+es positivo definido sobre `V_N`,
+
+\[
+\ker R_N=V_N^\perp,
+\qquad
+\operatorname{supp}R_N=V_N.
+\tag{5.52i}
+\]
+
+#### Identidad exacta de retención
+
+Para todo `f in mathcal H` tal que `<f,B_N f> > 0`, sea
+
+\[
+u_N(f):=B_N^{1/2}f\neq0.
+\tag{5.52j}
+\]
+
+Entonces (5.3a) y (5.52h) dan, sin límite ni aproximación,
+
+\[
+\boxed{
+\eta_N(f)
+=\frac{\langle f,A_Nf\rangle}{\langle f,B_Nf\rangle}
+=\frac{\langle u_N(f),R_Nu_N(f)\rangle}{\|u_N(f)\|^2}.
+}
+\tag{5.52k}
+\]
+
+A `N` finito queda **prohibido** sustituir `u_N(f)` por `f` y escribir
+`eta_N(f)=<f,R_N f>/||f||^2`. Si `f in ker B_N`, (5.52c) implica también
+`f in ker A_N` y el cociente original es `0/0`, no cero. Para todo `f!=0`,
+el Lema C extendido ya garantiza un `N_0(f)<infinity` tal que
+`<f,B_N f> > 0` para todo `N>=N_0(f)`; el umbral no es uniforme sobre la esfera
+HS.
+
+#### Esperanza condicional y no idempotencia finita
+
+Defínase el score normalizado
+
+\[
+D_Nf:=\frac{S_N(f)}{2\sqrt N}
+\quad\text{en }L_0^2(\Pi_N),
+\qquad
+Q_N:=\mathbb E[\cdot\mid[P]].
+\tag{5.52l}
+\]
+
+`Q_N` es la proyección ortogonal de esperanza condicional y
+
+\[
+B_N=D_N^*D_N,
+\qquad
+A_N=D_N^*Q_ND_N.
+\tag{5.52m}
+\]
+
+El operador definido sobre `mathcal S_N`
+
+\[
+U_N:=D_NB_N^{\dagger/2}\big|_{\mathcal S_N}
+=D_N\bigl(B_N|_{\mathcal S_N}\bigr)^{-1/2}
+\tag{5.52n}
+\]
+
+es una isometría de `mathcal S_N` sobre el subespacio de scores de la
+permutación, y
+
+\[
+\boxed{R_N|_{\mathcal S_N}=U_N^*Q_NU_N.}
+\tag{5.52o}
+\]
+
+La identidad global se completa con `R_N=0` sobre `ker B_N`, como en
+(5.52g); no se extiende aquí `U_N` fuera de `mathcal S_N`.
+
+Por tanto `R_N` se interpreta como compresión de conditional expectation,
+operador Fisher relativo y operador del generalized Rayleigh quotient. No es
+en general una proyección: comprimir una proyección a un subespacio no
+invariante no preserva idempotencia.
+
+El falsificador finito ya está registrado en el control de normalización tras
+(5.3a): a `N=4` aparece la retención simétrica exacta `1739/1740<1`. Para esa
+dirección `u_N(f) in V_N=supp R_N`; si `R_N` fuese la proyección de soporte
+`V_N`, actuaría como la identidad y la retención sería uno. Luego
+
+\[
+\boxed{R_N^2\neq R_N\quad\text{en general};\qquad R_4^2\neq R_4.}
+\tag{5.52p}
+\]
+
+La proyección de esperanza condicional es `Q_N`, no su compresión `R_N`.
+
+#### Límite operatorial relativo
+
+El espectro explícito de (5.49)--(5.50) y los Teoremas 11, 14--16 dan
+
+\[
+B_N\xrightarrow{\rm SOT}I,
+\qquad
+A_N\xrightarrow{\rm SOT}P_{\rm sym}.
+\tag{5.52q}
+\]
+
+La segunda convergencia se entiende en `mathcal H`: la forma poset converge a
+la norma simétrica, los términos antisimétricos y cruzados son exactamente
+nulos y la familia es uniformemente acotada.
+
+La inversa no se pasa al límite globalmente. Sea primero el núcleo denso
+
+\[
+\mathcal D:=\bigcup_{m\ge1}P_m\widehat\otimes P_m.
+\tag{5.52r}
+\]
+
+Para `h in mathcal D`, se tiene `h in mathcal S_N` para todo `N` bastante
+grande y, por la convergencia explícita de cada autovalor fijo de `B_N`,
+
+\[
+\bigl(B_N|_{\mathcal S_N}\bigr)^{-1/2}h\longrightarrow h.
+\tag{5.52s}
+\]
+
+Usando (5.52g), la contractividad uniforme de `A_N` y (5.52q), resulta
+
+\[
+\langle h,R_Nh\rangle\longrightarrow
+\langle h,P_{\rm sym}h\rangle
+\qquad(h\in\mathcal D).
+\tag{5.52t}
+\]
+
+La cota `0<=R_N<=I` extiende (5.52t) por densidad a todo `mathcal H`; la
+polarización da convergencia débil. Finalmente, para contracciones positivas,
+un límite débil que es una proyección es automáticamente límite fuerte, pues
+`R_N^2<=R_N`. Por tanto
+
+\[
+\boxed{R_N\xrightarrow{\rm SOT}P_{\rm sym}.}
+\tag{5.52u}
+\]
+
+Como los `R_N` están uniformemente acotados, también `R_N^2 -> P_sym^2` en
+SOT y
+
+\[
+\boxed{
+(R_N-R_N^2)f\longrightarrow0
+\qquad\forall f\in\mathcal H.
+}
+\tag{5.52v}
+\]
+
+#### Dos obstrucciones uniformes
+
+No hay convergencia en norma. Para el vector unitario móvil
+
+\[
+h_N:=e_N\otimes e_N
+\tag{5.52w}
+\]
+
+se tiene `h_N in ker B_N subseteq ker R_N`, mientras
+`P_sym h_N=h_N`. Así,
+
+\[
+\boxed{
+R_Nh_N=0,
+\qquad
+P_{\rm sym}h_N=h_N,
+\qquad
+\|R_N-P_{\rm sym}\|\ge1
+}
+\tag{5.52x}
+\]
+
+para todo `N`.
+
+Además, en la base `e_j tensor e_k`, los autovalores positivos de `B_N` son
+
+\[
+\beta_{N,jk}
+=\frac{N}{N-1}\lambda_{N-1,j}\lambda_{N-1,k},
+\qquad 1\le j,k\le N-1,
+\tag{5.52y}
+\]
+
+con `lambda_(n,m)` de (5.49). En particular,
+
+\[
+\beta_{N,N-1,N-1}
+=\frac{N}{N-1}
+\left(\frac{N!(N-1)!}{(2N-1)!}\right)^2
+\longrightarrow0.
+\tag{5.52z}
+\]
+
+Luego `||B_N^(dagger/2)||` no está uniformemente acotada. Esto prohíbe todo
+argumento de continuidad uniforme de la inversa y separa estrictamente la
+convergencia SOT ya probada de cualquier afirmación en norma. Los resultados
+actuales no deciden `||R_N-R_N^2|| -> 0`; esa propiedad uniforme queda
+`OPEN_NOT_NEEDED` y no se abre como objetivo.
+
+#### Garbling por borrado y obligaciones superseded
+
+Para los experimentos fixed-`N`, el kernel
+
+\[
+K_{N+1,N}(C,D)
+:=\frac1{N+1}\#\{v\in C:[C-v]=D\}
+\tag{5.52aa}
+\]
+
+está bien definido sobre clases no etiquetadas. Borrar uniformemente un punto
+de una muestra iid de tamaño `N+1` deja exactamente la ley iid de tamaño `N`,
+de modo que el garbling es independiente del parámetro y exacto. Ésta es una
+afirmación distinta de `V_N subsetneq V_(N+1)` y de la normalización Fisher
+por `N`.
+
+Cualquier planificación anterior que presentase como próximos objetivos
+«demostrar el garbling `N+1 -> N`», «demostrar idempotencia fuerte» o
+«demostrar la existencia del límite proyectivo» se conserva sólo como registro
+histórico y queda
+
+```text
+SUPERSEDED_BY_RELATIVE_FISHER_OPERATOR_IDENTIFICATION
+```
+
+El cierre no autoriza convergencia en norma, realizabilidad geométrica HS,
+universalidad, Hauptvermutung ni reconstrucción a partir de una sola
+realización. La anulación antisimétrica de primer orden mantiene exactamente
+la lectura de §5.5: insensibilidad a direcciones impares bajo la isotropía que
+identifica `+epsilon` con `-epsilon`, no pérdida de información física.
+
+```text
+RELATIVE_FISHER_OPERATOR_IDENTIFICATION = PROVED
+RELATIVE_OPERATOR_FINITE_N_PROJECTION = REFUTED
+RELATIVE_OPERATOR_SOT_LIMIT = P_SYM_PROVED
+RELATIVE_ASYMPTOTIC_IDEMPOTENCE_SOT = PROVED
+RELATIVE_OPERATOR_NORM_CONVERGENCE = REFUTED
+RELATIVE_IDEMPOTENCE_NORM = OPEN_NOT_NEEDED
+GARBLING_N_PLUS_1_TO_N = PROVED_BY_UNIFORM_DELETION
+GEOMETRIC_REALIZABILITY_OF_ARBITRARY_HS = OPEN
+```
 
 
 ### 5.5 `GEOMETRIC_ANTISYMMETRIC_REALIZABILITY_PREFLIGHT` (2026-08-30)
@@ -2398,9 +2788,20 @@ INFINITE_RANK_SYMMETRIC_RETENTION = PROVED
 FULL_SYMMETRIC_HS_RETENTION = PROVED
 THEOREM_HILBERT = PROVED
 GEOMETRIC_REALIZABILITY_OF_ARBITRARY_HS = OPEN
+RELATIVE_FISHER_OPERATOR_IDENTIFICATION = PROVED
+RELATIVE_OPERATOR_FINITE_N_PROJECTION = REFUTED
+RELATIVE_OPERATOR_SOT_LIMIT = P_SYM_PROVED
+RELATIVE_ASYMPTOTIC_IDEMPOTENCE_SOT = PROVED
+RELATIVE_OPERATOR_NORM_CONVERGENCE = REFUTED
+RELATIVE_IDEMPOTENCE_NORM = OPEN_NOT_NEEDED
+GARBLING_N_PLUS_1_TO_N = PROVED_BY_UNIFORM_DELETION
 TRACE_CLASS_RESTRICTION = REMOVED
 RATE = o_f(1)_NO_UNIFORM_RATE_CLAIMED
-ETA_WELL_DEFINED_FOR = N >= N_0(f); eta is 0/0 exactly on V_N^perp (Lema C)
+KER_B_N = mathcal S_N^perp; mathcal S_N = P_(N-1) widehat tensor P_(N-1)
+ETA_ZERO_OVER_ZERO_IFF = f in ker B_N = mathcal S_N^perp
+ETA_WELL_DEFINED_FOR = N >= N_0(f) for each f != 0
+VISIBLE_ANTISYMMETRIC_FINITE_N = 0 != f in wedge^2 P_(N-1) subset V_N^perp
+    but f notin ker B_N; I_N^Pi(f)>0, I_N^[P](f)=0, eta_N(f)=0
 N_0_UNIFORM_OVER_HS_SPHERE = NO
 ANTISYMMETRIC_SECTOR = EXACTLY_INVISIBLE_IN_[P]_FOR_ALL_N (6.7)
 FIRST_LEGENDRE_MODE_EXACT_POSET_SUFFICIENCY = PROVED
@@ -2486,6 +2887,15 @@ NEXT_RUN_AUTHORIZED = NO
 ```
 
 ## 6. Fase S5 — clasificar la información que sí se pierde
+
+> **SUPERSEDED_BY_§5.4–§5.6.** El texto de esta sección se conserva como
+> planificación histórica y no describe el estado vigente. Para el testigo
+> correspondiente, la realizabilidad geométrica antisimétrica está
+> establecida; el Fisher de primer orden del poset se anula en el sector
+> antisimétrico; esto **no** representa pérdida física, porque la isotropía
+> identifica `+epsilon` con `-epsilon`; la identificabilidad de orden superior
+> es visible a segundo orden; y la QMD unilateral en
+> `theta=epsilon^2` está probada.
 
 Después del sector simétrico se estudiará su contraparte. Para
 
