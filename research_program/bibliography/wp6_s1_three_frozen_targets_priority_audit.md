@@ -6,7 +6,8 @@
 > EVEN_ZOHAR_STRONG_PARTIAL_PRECURSOR /
 > KURECKA_MANDATORY_PARTIAL_PRECURSOR /
 > DIACONIS_1989_PARTIALLY_ADJUDICATED /
-> DIACONIS_1988_JOHNSON_RESIDUAL_RISK_OPEN /
+> DIACONIS_1988_CH8_CH9_INDEX_VERIFIED_2026-09-02_NO_POSET_OR_SPAN_THEOREM_FOUND /
+> DIACONIS_1988_RESIDUAL_RISK_NARROWED_TO_CH5_AND_CH1_4_6_7 /
 > P1_CLASS_SUM_SPAN_IS_THE_PRIORITY_GATE /
 > P2_GENERIC_FACTORIZATION_PRECEDED /
 > P2_EXACT_SUPPORT_REDUCES_TO_P1 /
@@ -300,6 +301,90 @@ El riesgo residual ya no es que allí aparezca el espacio abstracto
 \(M^{(N-2,2)}\), pues eso está precedido, sino que aparezca un teorema de
 rango/base para las sumas concretas equivalentes a nuestras fibras.
 
+### 3.6bis Verificación directa del monográfico Diaconis 1988
+
+Fecha de esta verificación: 2026-09-02. Fuente: Institute of Mathematical
+Statistics Lecture Notes-Monograph Series, vol. 11 (1988), acceso abierto vía
+Project Euclid
+(<https://projecteuclid.org/ebooks/institute-of-mathematical-statistics-lecture-notes-monograph-series/group-representations-in-probability-and-statistics/toc/10.1214/lnms/1215467407>).
+
+Se leyó íntegramente, imagen por imagen (el volumen es un escaneo, no texto
+OCR):
+
+- Capítulo 8, *Spectral Analysis*, pp. 141–166 (DOI
+  `10.1214/lnms/1215467417`) — el capítulo señalado como de mayor riesgo
+  porque cubre expresamente análisis espectral de datos de rankings y de
+  homogeneous spaces.
+- Capítulo 9, *Models*, pp. 167–178 (DOI `10.1214/lnms/1215467418`).
+- Índice completo, pp. 193–198 (DOI `10.1214/lnms/1215467420`) — cubre
+  terminológicamente los capítulos 1–7 (teoría de representación, paseos
+  aleatorios, métricas, teoría de \(S_n\)) que no se leyeron página por
+  página.
+
+El Capítulo 5, *Examples of Data on Permutations and Homogeneous Spaces*,
+pp. 92–101 (DOI `10.1214/lnms/1215467414`), se intentó pero quedó bloqueado
+por la protección anti-bot (Incapsula) de Project Euclid; **no fue leído**.
+Los capítulos 1–4, 6 y 7 tampoco se leyeron página por página; su cobertura
+es solo indirecta, vía el índice.
+
+Resultado sobre los cuatro puntos planteados:
+
+1. **¿Trata el espacio de pares no ordenados / módulo tipo Johnson?** Sí,
+   explícitamente. p. 148 (Cap. 8B, Caso 2, pares ordenados de \(n\)):
+   \(L(X)=S^n\oplus2S^{n-1,1}\oplus S^{n-2,2}\oplus S^{n-2,1,1}\). p. 155
+   (Cap. 8C, Ejemplo 3, *The Diallel Cross Design*), para pares **no
+   ordenados** \(\{i,j\}\) indexados por cruces de \(n\) variedades: *"the
+   standard ANOVA decomposition corresponds to the decomposition of what we
+   have called \(M^{n-2,2}\cong S^n\oplus S^{n-1,1}\oplus S^{n-2,2}\)"*. p. 151
+   (Remark 2) trata el caso análogo de tríos no ordenados de un conjunto de
+   6 elementos.
+2. **¿Identifica \(\operatorname{Sym}(E_N)\) o un módulo equivalente de
+   dimensión \(\binom N2\)?** Sí: el \(M^{n-2,2}\) del Ejemplo 3 anterior
+   (p. 155) tiene dimensión \(\binom n2\) y es exactamente ese módulo,
+   presentado con un ejemplo de diseño experimental concreto. No añade
+   novedad frente a lo ya adjudicado para Diaconis 1989 — refuerza que el
+   módulo abstracto, e incluso este caso concreto de pares no ordenados,
+   estaban ya en el monográfico de 1988 con más detalle que en el artículo
+   de 1989.
+3. **¿Aparece alguna operación equivalente a sumar por las fibras
+   permutación → poset 2D no etiquetado?** No localizada. Ni "poset" ni
+   "partially ordered set" aparecen en ninguna entrada del índice completo
+   (pp. 193–198), que por construcción cubre terminológicamente todo el
+   libro. Todos los objetos que Diaconis suma o proyecta son siempre
+   \(G\)-órbitas de conjuntos, pares o rankings bajo el grupo simétrico (o
+   algún otro grupo clásico) sobre un homogeneous space \(X=G/H\); en ningún
+   punto aparecen clases de isomorfismo de un poset bajo su propio grupo de
+   automorfismos.
+4. **¿Algún teorema implica
+   \(\operatorname{span}\{A_C|_{E_N}\}=\operatorname{Sym}(E_N)\)?** No
+   encontrado. El aparato formal más próximo es el Radon transform (Método
+   3, pp. 151–152, Lemma 1: \(R^+R^-\) es una proyección ortogonal de
+   \(M^{n-k,k}\) sobre la copia de \(M^{n-j,j}\)) y el Teorema 1 (p. 149,
+   fórmula de proyección \(\Pi_i=\frac{d_i}{|G|}\sum_t\chi_i(t)^*\rho(t)\)).
+   Ambos son teoremas de proyección/rango sobre los módulos \(M^\lambda\)
+   clásicos de conjuntos etiquetados bajo \(S_n\), no un teorema de que las
+   sumas concretas sobre fibras de isomorfismo de posets no etiquetados
+   generen \(\operatorname{Sym}^2(P_{N-1})\).
+
+Adjudicación: los puntos 1–2 (precedidos) no cambian el veredicto de P1 —
+solo lo refuerzan, deflactando aún más cualquier reclamo de novedad sobre el
+módulo abstracto, algo que ya estaba asumido desde Diaconis 1989. Los puntos
+3–4, que son el ingrediente específicamente reclamado como potencialmente
+nuevo, no aparecen en las ~44 páginas leídas íntegramente (Cap. 8 + Cap. 9)
+ni en el índice completo del libro. El riesgo residual se reduce de "todo el
+monográfico sin inspeccionar" a un remanente concreto y acotado: el
+Capítulo 5 (10 páginas, bloqueado por acceso) y los capítulos 1–4/6/7
+(cubiertos solo indirectamente vía índice).
+
+```text
+DIACONIS_1988_CH8_MODELS_INDEX_VERIFIED = YES (pp. 141-178, 193-198 full text)
+DIACONIS_1988_CH5_VERIFIED = NO (access blocked, Incapsula)
+DIACONIS_1988_CH1_4_6_7_VERIFIED = INDEX_ONLY
+DIACONIS_1988_POSET_OR_JOHNSON_SCHEME_TERM_FOUND = NO
+DIACONIS_1988_CLASS_SUM_SPAN_THEOREM_FOUND = NO
+P1_RESIDUAL_RISK_UPDATED = NARROWED_TO_CH5_AND_CH1_4_6_7_UNVERIFIED
+```
+
 ### 3.7 Estadística de rangos y cópulas
 
 La aparición de polinomios de Bernstein en proyecciones de estadísticas de
@@ -338,13 +423,17 @@ La parte no precedida localizada es estrecha y concreta:
 
 ```text
 P1_EXACT_STATEMENT_FOUND = NO
-P1_PRIORITY = INCONCLUSIVE_WITH_EVIDENCE_FAVORING_NOT_REFUTED
+P1_PRIORITY = INCONCLUSIVE_WITH_EVIDENCE_MORE_STRONGLY_FAVORING_NOT_REFUTED
 P1_CLOSEST_PRECURSOR = EVEN_ZOHAR_2020
 P1_MANDATORY_DIFFERENTIAL_PRECURSOR = KURECKA_2022
-P1_ABSTRACT_SYMMETRIC_MODULE_PRECEDED = DIACONIS_1989
+P1_ABSTRACT_SYMMETRIC_MODULE_PRECEDED = DIACONIS_1988_AND_1989
 P1_NOVEL_INGREDIENT_IF_CONFIRMED = UNLABELED_POSET_FIBER_CLASS_SUM_SPAN
-P1_RESIDUAL_RISK = DIACONIS_1988_AND_JOHNSON_CLASS_SUM_EQUIVALENT
-P1_EXTERNAL_SPECIALIST_CHECK = REQUIRED
+P1_RESIDUAL_RISK = DIACONIS_1988_CH5_AND_CH1_4_6_7_UNVERIFIED (see 3.6bis;
+  narrowed from "monográfico entero sin inspeccionar" tras leer íntegramente
+  Cap.8 + Cap.9 + índice completo el 2026-09-02: sin rastro de "poset",
+  "Johnson scheme" ni teorema de span/rango sobre class sums de fibras)
+P1_EXTERNAL_SPECIALIST_CHECK = REQUIRED (scope now narrower: Cap.5 pp.92-101
+  + spot-check de Cap.1-4/6/7, no el monográfico completo)
 ```
 
 ## 4. P2 — factorización del diferencial
