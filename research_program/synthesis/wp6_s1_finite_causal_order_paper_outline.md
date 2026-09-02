@@ -1,7 +1,9 @@
 # WP6 — Outline del paper de visibilidad tangente de leyes causales finitas
 
 > **STATUS: PAPER_SKELETON_DRAFT / INTERNAL_ONLY / NOT_FROZEN /
-> PRIORITY_AUDIT_PENDING / NO_NOVELTY_CERTIFICATE / NO_NEW_MATHEMATICS.**
+> PRIORITY_AUDIT_CLOSED_2026-09-02 (P1/P2/P3 = PRIORITY_NOT_REFUTED,
+> see `wp6_s1_three_frozen_targets_priority_audit.md`) /
+> NO_NOVELTY_CERTIFICATE / NO_NEW_MATHEMATICS.**
 >
 > Este documento organiza exclusivamente resultados S1 ya probados o
 > corolarios inmediatos por ensamblaje. No abre la clasificación general de
@@ -183,7 +185,11 @@ uniforme, independiente del parámetro.
 > theorem, or a classification beyond this model.
 
 **Nota de freeze.** El abstract no usará `first`, `novel`, `for the first time`
-ni equivalentes hasta cerrar la auditoría bibliográfica adversarial.
+ni equivalentes. Tras el cierre de la auditoría bibliográfica adversarial
+(`bf09c54`, P1/P2/P3 = `PRIORITY_NOT_REFUTED`) esta restricción ya no es por
+auditoría pendiente, sino permanente mientras `NO_NOVELTY_CERTIFICATE` siga
+en pie (§10): la revisión de un especialista externo sigue siendo
+obligatoria antes de cualquier afirmación de novedad.
 
 ## 4. Contribuciones declarables
 
@@ -310,12 +316,94 @@ borrado de §5.4.
 
 ### §1. Introduction
 
-- Bombelli como precursor directo del mapa geometría \(\to\) leyes finitas y
-  de su geometría estadística.
-- Pregunta estrecha: calcular diferencial, kernel, rango y resolución Fisher
-  en una clase explícita.
-- Contribuciones C1–C4, sin claim de prioridad absoluta.
-- No reconstrucción, no universalidad, no horizontes.
+**Estado: prosa de trabajo redactada tras el cierre de la auditoría de
+prioridad (`bf09c54`). Integra los cinco precedentes; no altera ningún
+teorema.**
+
+> Bombelli [*Statistical Lorentzian geometry and the closeness of
+> Lorentzian manifolds*, arXiv:gr-qc/0002053, 2000] introduced the object
+> this paper studies: the full law of an unlabeled causal poset at fixed
+> cardinality $N$, sampled from a Lorentzian geometry, together with a
+> statistical notion of closeness between two such laws. Janson [*Poset
+> limits and exchangeable random posets*, arXiv:0902.0306, 2011] supplies
+> the general limiting framework of poset kernels and consistent finite
+> laws in which this construction sits, and Surya [*A Closeness Function on
+> Coarse Grained Lorentzian Geometries*, arXiv:2510.19403, 2025] gives, via
+> expected interval abundances, a closely related account of how increasing
+> $N$ can lift degeneracies in this kind of causal compression. None of the
+> three computes the differential of the finite-$N$ law at a reference
+> geometry, its kernel, or its rank.
+>
+> We work in an explicit $1+1$-dimensional causal-diamond model (S1) with
+> an independent-reference null geometry and ask the narrow question this
+> leaves open: what, to first order in a perturbation of the underlying
+> Lorentzian geometry, survives the map from a continuous perturbation to
+> the finite unlabeled-poset law?
+>
+> Answering this requires two further steps that are already present,
+> separately, in adjacent literatures, but not combined. First, at the
+> level of *labeled* permutations rather than *unlabeled two-dimensional
+> posets*, the differential of a permutation-pattern statistic around the
+> uniform reference is understood in detail: Even-Zohar [*Patterns in
+> Random Permutations*, Combinatorica 40, 2020, 775–804] decomposes the
+> full space of pattern densities via the representation theory of $S_N$,
+> isolating the standard-representation block $V_1^{\rm EZ}$ of dimension
+> $(N-1)^2$, realized explicitly via $U^TA(\sigma)U$; Kurečka [*Lower bound
+> on the size of a quasirandom forcing set of permutations*, Combin.
+> Probab. Comput. 31, 2022] differentiates the pattern density directly,
+> expressing the gradient in a Bernstein-type basis on $E_N=\mathbf1^\perp$
+> via compressed permutation matrices $A_\pi|_{E_N}$ and covering-matrix
+> sums $\sum_\pi t_\pi A_\pi$. Second, the abstract target module is also
+> not new: Diaconis [*A generalization of spectral analysis with
+> application to ranked data*, Ann. Statist. 17, 1989, 949–979] and the
+> monograph [*Group Representations in Probability and Statistics*, IMS
+> Lecture Notes-Monograph Series 11, 1988] give, for unordered-pair effects
+> on rankings, the decomposition
+> $M^{(N-2,2)}\simeq S^{(N)}\oplus S^{(N-1,1)}\oplus S^{(N-2,2)}$ — a
+> module of dimension $\binom N2$ that is, up to naming, our target space
+> $\operatorname{Sym}^2P_{N-1}$, illustrated already in 1988 with the
+> Diallel Cross Design. And the many-to-one map from labeled permutations
+> to unlabeled two-dimensional posets that we quotient by is itself
+> classical combinatorics: Bayoumi, El-Zahar and Khamis [*Counting
+> two-dimensional posets*, Discrete Math. 131, 1994] describe the fibers of
+> this map explicitly, including their closure under $\sigma\mapsto
+> \sigma^{-1}$ and the near-uniqueness of realizers for prime posets.
+>
+> What none of these five results does is the one step that connects them:
+> sum the permutation-level differential over the fibers of the
+> permutation-to-unlabeled-poset map, and show that the resulting
+> class-sum vectors *span* the full symmetric target module,
+> \[
+> \operatorname{span}\{A_C|_{E_N}:C\in\mathcal C_N\}=\operatorname{Sym}(E_N).
+> \]
+> This is exactly Theorem C ($\S5$) below, and it is the hinge on which the
+> rest of the paper — the exact kernel, the identifiable quotient, and the
+> Fisher-resolution statement — turns. Everything else is either a direct
+> corollary of this span theorem (Corollaries D, E; Theorem F) or a
+> separate, self-contained second-order statement about one explicit
+> antisymmetric orbit (Theorem G, Corollary H).
+>
+> We state the contribution as narrowly as the adversarial priority audit
+> leaves it:
+> \[
+> \boxed{\text{previous work identifies the ambient permutation-level
+> structure;}\quad\text{we identify exactly what survives the quotient to
+> unlabeled finite causal-order laws.}}
+> \]
+> We write "we identify" and "we prove," not "for the first time" or
+> "novel": a scoped literature search (§9 below;
+> `wp6_s1_three_frozen_targets_priority_audit.md`) did not locate this
+> exact class-sum span theorem, but the search was not an exhaustive
+> systematic review — no full MathSciNet/zbMATH/Scopus/Web-of-Science
+> coverage — and its absence is not a certificate of novelty
+> (`NOVELTY_CERTIFICATE = NO`, §10).
+>
+> We make no claim of nonlinear reconstruction, geometric identifiability
+> at finite distance, or any result about Schwarzschild, horizons, or
+> higher dimensions.
+
+Contribuciones C1–C4 (tabla §4) siguen inmediatamente a este párrafo en el
+manuscrito, sin reafirmar prioridad absoluta más allá de lo anterior.
 
 ### §2. The S1 model and finite causal-order experiments
 
@@ -364,14 +452,91 @@ borrado de §5.4.
 
 ### §8. Relation to prior work
 
-- Bombelli: marco global y distancia estadística; precedencia plena del
-  framework.
-- Surya: resolución creciente mediante abundancias de intervalos; vecino
-  directo, objeto comprimido distinto.
-- Estadística de rangos, cópulas, permutones, posets de permutación y
-  representaciones de \(S_N\): completar tras la auditoría adversarial.
-- Distinguir espectro Fisher de espectros de operadores sobre un causet
-  realizado.
+**Estado: prosa de trabajo redactada tras el cierre de la auditoría de
+prioridad (`bf09c54`). Reproduce las adjudicaciones de
+`wp6_s1_three_frozen_targets_priority_audit.md` §§3.1–3.7; no reabre nada.**
+
+**Causal-set framework.** Bombelli (2000) precedes the framework in full:
+the full unlabeled-poset law at fixed cardinality, its compression to a
+finite probability list, and the question of small geometric variations.
+Janson (2011) supplies the global poset-limit framework these finite laws
+sit inside. Surya (2025) precedes the general narrative that increasing
+$N$ can lift degeneracies of a causal compression, via expected interval
+abundances — a distinct compressed object from ours. None of the three
+computes the S1 differential, its rank, or its kernel.
+
+**Permutation-to-poset fibers.** Bayoumi, El-Zahar and Khamis (1994) work
+explicitly with the many-to-one correspondence between permutations and
+two-dimensional posets, and record its closure under
+$\sigma\mapsto\sigma^{-1}$ and the near-uniqueness of realizers for prime
+posets. They do not sum a matrix-valued statistic over a fiber, differ­
+entiate a sampling law, or prove a span theorem on $E_N$.
+
+**Pre-quotient permutation differential.** Even-Zohar (2020) is the
+closest neighbor to the pre-quotient side of our construction: the
+standard-representation block $V_1^{\rm EZ}$, dimension $(N-1)^2$, realized
+via $U^TA(\sigma)U$. His scaling regime ($n\to\infty$ fluctuations of a
+random permutation's pattern profile) must not be identified without proof
+with our first jet in the local S1 parameter $\varepsilon$, and he does not
+sum over unlabeled-poset isomorphism fibers. Kurečka (2022) is the
+mandatory differential precursor at the labeled-permutation level: he
+differentiates the pattern density $d(\pi,\mu)$ exactly around the uniform
+permuton, defines the gradient polynomial $P_\pi(\alpha,\beta)$ with
+coefficients $c_{ij}(P_\pi)=K_{ij,N}(\mathbf b_{i+2}^N)^TA_\pi\mathbf
+b_{j+2}^N$, and characterizes vanishing combinations via the covering
+matrix $\sum_\pi t_\pi A_\pi$. This precedes, substantially, the finite
+polynomials, the Bernstein-type basis, the compression of permutation
+matrices to $E_N$, and the covering-matrix technique used in §§3–4 below;
+none of these should be presented as new. What Kurečka does not do is our
+additional quotient — summing $A_\sigma$ over the fiber $\Gamma_C$ of
+permutations mapping to a fixed unlabeled poset $C$, and proving that the
+resulting $\{A_C|_{E_N}\}$ span all of $\operatorname{Sym}(E_N)$. Chan,
+Král', Noel, Pehova, Sharifzadeh and Volec (2019/2020) and Garbe, Král',
+Malekshahian and Penaguiao (2023/2025) are adjacent permuton-forcing and
+feasible-region results that likewise do not supply this span theorem and
+rule out generic phrases like "first classification of the degrees of
+freedom of pattern densities."
+
+**Abstract target module.** Diaconis (1989) decomposes functions on
+rankings via $S_N$ representation theory and gives, for unordered-pair
+effects, $M^{(N-2,2)}\simeq S^{(N)}\oplus S^{(N-1,1)}\oplus S^{(N-2,2)}$ —
+already the module and the $\binom N2$ dimension behind a Johnson-scheme
+reformulation of $\operatorname{Sym}(E_N)$. The 1988 monograph makes this
+concrete and precedes it further: Ch. 8 (Diallel Cross Design, p. 155)
+instantiates the same module on unordered pairs of $n$ varieties with the
+identical decomposition, and Ch. 9 develops the associated model family.
+Neither work introduces unlabeled two-dimensional-poset fibers, their
+class sums, or a proof that those class sums span the full module. Chapter
+5 of the monograph (verified in full, `bf09c54`) is a purely motivational
+examples chapter with no theorems at all, and the full index (pp. 193–198)
+contains no entry for "poset" or "partially ordered set" anywhere in the
+book. So the symmetric representation and its decomposition are not new;
+the class-sum span theorem over poset-isomorphism fibers is the piece not
+located.
+
+**Rank statistics and copulas.** Hallin, Mellouk and Rifi (2001) precede
+Bernstein-polynomial appearances in rank-statistic projections (Hájek
+projections, asymptotic approximation, not our exact finite-$N$ score
+span). Hoff (2007) establishes the rank likelihood as a marginal-free
+semiparametric likelihood; Sei and Matsumoto (2020) and Hoff, Niu and
+Wellner (2014) develop the induced divergence and efficient geometry of
+Gaussian-copula/rank models, including finite-$n$ identifiability loss.
+None of these adds the additional quotient from a full permutation to an
+unlabeled poset, or the equality $V_N=\operatorname{Sym}^2P_{N-1}$ for a
+nonparametric S1 tangent.
+
+**What §§3–7 must therefore not claim.** The full pre-quotient standard
+block, the differential/Bernstein/covering-matrix technique at the
+permutation level, and the abstract unordered-pair symmetric module are
+all preceded and must be cited as such, not presented as contributions.
+The single package that should go to an external permuton/rank-statistics
+specialist is the implication chain of §12 of the priority audit: pattern
+gradient $\to A_\sigma|_{E_N}$ (near Kurečka) $\to$ poset-isomorphism class
+sum $A_C=\sum_{\sigma\in\Gamma_C}A_\sigma$ $\to$
+$\operatorname{span}\{A_C|_{E_N}\}=\operatorname{Sym}(E_N)$ $\to$
+$V_N=\operatorname{Sym}^2P_{N-1}$ and $D\mathscr S_N=B_NP_N^{\rm vis}$.
+Distinguish, throughout, the Fisher spectrum on $V_N$ from the spectrum of
+any operator defined on a single realized causet.
 
 ### §9. Discussion: causal compression
 
@@ -514,11 +679,14 @@ historia S1.
 
 ## 12. Gate antes de redactar el cuerpo completo
 
-1. Confirmar que el PI acepta el título y la tesis de §§1–2.
+1. Confirmar que el PI acepta el título y la tesis de §§1–2. **PENDIENTE.**
 2. Ejecutar la auditoría de prioridad contra P1–P3 sin mover los blancos.
+   **HECHO** — `wp6_s1_three_frozen_targets_priority_audit.md`, `bf09c54`.
 3. Clasificar cada pieza como `PRECEDED`, `KNOWN_THEOREM_SPECIALIZATION` o
-   `PRIORITY_NOT_REFUTED`.
+   `PRIORITY_NOT_REFUTED`. **HECHO** — ver tabla ejecutiva de la auditoría.
 4. Ajustar Introduction, Related Work y abstract sin alterar los teoremas.
+   **BORRADOR HECHO** (este commit, §§1 y 8) — pendiente de aceptación del
+   PI, no de auditoría adicional.
 5. Redactar el cuerpo desde las anclas de §11; no reconstruir pruebas de
    memoria.
 6. Mantener fuera \(Q_N\) general salvo que el manuscrito revele una laguna
