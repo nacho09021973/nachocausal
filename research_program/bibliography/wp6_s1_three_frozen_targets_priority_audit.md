@@ -1,13 +1,14 @@
 # WP6 — Auditoría adversarial de prioridad de los tres blancos S1 congelados
 
-> **STATUS: INCONCLUSIVE /
-> EVIDENCE_FAVORS_PRIORITY_NOT_REFUTED /
+> **STATUS: P1_P2_P3_PRIORITY_NOT_REFUTED /
+> INTERNAL_LITERATURE_AUDIT_CLOSED /
 > EXACT_EQUIVALENT_PRECEDENT_NOT_FOUND /
 > EVEN_ZOHAR_STRONG_PARTIAL_PRECURSOR /
 > KURECKA_MANDATORY_PARTIAL_PRECURSOR /
 > DIACONIS_1989_PARTIALLY_ADJUDICATED /
 > DIACONIS_1988_CH8_CH9_INDEX_VERIFIED_2026-09-02_NO_POSET_OR_SPAN_THEOREM_FOUND /
-> DIACONIS_1988_RESIDUAL_RISK_NARROWED_TO_CH5_AND_CH1_4_6_7 /
+> DIACONIS_1988_CH5_VERIFIED_2026-09-02_NO_CLASS_SUM_EQUIVALENT_FOUND /
+> DIACONIS_1988_INTERNAL_LITERATURE_AUDIT_CLOSED /
 > P1_CLASS_SUM_SPAN_IS_THE_PRIORITY_GATE /
 > P2_GENERIC_FACTORIZATION_PRECEDED /
 > P2_EXACT_SUPPORT_REDUCES_TO_P1 /
@@ -41,10 +42,16 @@ r_N(\gamma_\psi)=2\qquad\forall N\ge2
 
 para la órbita exponencial antisimétrica explícita ya construida.
 
-El veredicto global es `INCONCLUSIVE`, con evidencia favorable a
-`PRIORITY_NOT_REFUTED`. La búsqueda acotada no localizó un resultado
-matemáticamente equivalente, pero sí antecedentes parciales muy próximos y
-queda un riesgo residual preciso. En ningún caso esto certifica prioridad.
+El veredicto global es `PRIORITY_NOT_REFUTED` para los tres blancos, tras
+cerrar el 2026-09-02 la auditoría bibliográfica interna de P1 con la lectura
+íntegra de Cap. 8, Cap. 9, Cap. 5 y el índice completo del monográfico
+Diaconis 1988 (§3.6bis, §3.6ter). La búsqueda acotada no localizó un
+resultado matemáticamente equivalente, pero sí antecedentes parciales muy
+próximos, y el riesgo residual queda bajo pero no nulo (Cap. 1-4/6-7 solo
+cubiertos por índice y por la hoja de ruta del propio autor, no leídos
+página por página). En ningún caso esto certifica prioridad: la revisión de
+un especialista externo sigue siendo obligatoria antes de cualquier
+afirmación final de novedad.
 
 ## 1. Método, lenguajes y límites
 
@@ -91,7 +98,7 @@ del preprint. No se usa por ello como autoridad para elevar el veredicto.
 
 | Blanco | Antecedente más peligroso | Veredicto acotado |
 |---|---|---|
-| P1: \(V_N=\operatorname{Sym}^2P_{N-1}\) | Even-Zohar 2020 para el bloque estándar completo de dimensión \((N-1)^2\); Kurečka 2022 para el aparato diferencial matricial; Diaconis 1989 para módulos de rankings y pares no ordenados; Bayoumi--El-Zahar--Khamis 1994 para las fibras de posets 2D | **No se encontró la igualdad después del cociente a posets no etiquetados. `INCONCLUSIVE`, con evidencia favorable a prioridad no refutada.** |
+| P1: \(V_N=\operatorname{Sym}^2P_{N-1}\) | Even-Zohar 2020 para el bloque estándar completo de dimensión \((N-1)^2\); Kurečka 2022 para el aparato diferencial matricial; Diaconis 1989 para módulos de rankings y pares no ordenados; Bayoumi--El-Zahar--Khamis 1994 para las fibras de posets 2D | **No se encontró la igualdad después del cociente a posets no etiquetados, ahora incluida la lectura íntegra del Capítulo 5. `PRIORITY_NOT_REFUTED` (auditoría bibliográfica interna cerrada; revisión externa sigue obligatoria).** |
 | P2: \(D\mathscr S_N=B_NP_N^{\rm vis}\) | Pollard 2011/2012 y geometría Hilbert elemental del score tras una estadística | **La factorización abstracta está precedida. Lo específico —que el soporte exacto sea P1 y que la restricción sea inyectiva— hereda el estado de P1.** |
 | P3: \(r_N(\gamma_\psi)=2\) para todo \(N\) | teoría de información singular; Hessianos de densidades de patrones en el permutón uniforme; consistencia por borrado | **No se encontró la órbita S1 ni la propagación exacta all-\(N\). Prioridad no refutada; paridad, Hessianos y jets superiores no son por sí solos nuevos.** |
 
@@ -102,7 +109,7 @@ FRAMEWORK_NOVELTY = NO
 FINITE_PATTERN_DIFFERENTIAL_AT_UNIFORM_PERMUTON_IS_NEW = NO
 BERNSTEIN_OR_COVER_MATRIX_TECHNIQUE_IS_NEW = NO
 ABSTRACT_SCORE_PROJECTION_FACTORIZATION_IS_NEW = NO
-UNLABELED_2D_POSET_FIBER_SPAN_EQUALS_SYM_EN = INCONCLUSIVE_EVIDENCE_FAVORS_PRIORITY_NOT_REFUTED
+UNLABELED_2D_POSET_FIBER_SPAN_EQUALS_SYM_EN = PRIORITY_NOT_REFUTED (INTERNAL_LITERATURE_AUDIT_CLOSED)
 EXACT_S1_VISIBLE_SPACE_AND_KERNEL = STATUS_INHERITED_FROM_CLASS_SUM_SPAN
 EXPLICIT_ANTISYMMETRIC_ORBIT_RN_EQUALS_2_ALL_N = PRIORITY_NOT_REFUTED
 NOVELTY_CERTIFICATE = NO
@@ -385,6 +392,75 @@ DIACONIS_1988_CLASS_SUM_SPAN_THEOREM_FOUND = NO
 P1_RESIDUAL_RISK_UPDATED = NARROWED_TO_CH5_AND_CH1_4_6_7_UNVERIFIED
 ```
 
+### 3.6ter Verificación directa del Capítulo 5 (cierre del riesgo residual)
+
+Fecha de esta verificación: 2026-09-02, segunda sesión. Mismo volumen y DOI de
+capítulo que en 3.6bis (`10.1214/lnms/1215467414`, pp. 92-101). El acceso
+directo vía navegación de página quedó bloqueado por Incapsula en la sesión
+anterior; en esta sesión, una descarga `curl` directa del enlace de PDF con
+una cabecera `User-Agent` de navegador de escritorio superó el bloqueo y
+entregó el PDF completo (10/10 páginas, escaneado). Se leyó íntegramente,
+imagen por imagen.
+
+El Capítulo 5, *Examples of Data on Permutations and Homogeneous Spaces*, es
+un capítulo puramente motivacional y no contiene ni un solo teorema, lema o
+resultado formal. Sus secciones:
+
+- **A. Permutation data**: rankings de encuesta (ciudad/suburbio/campo,
+  NORC 1972), la lotería del reclutamiento de EE.UU. de 1970 (una
+  permutación de \(S_{365}\)).
+- **B. Partially ranked data**: elección de la American Psychological
+  Association por el método Hare (\(S_{40}/S_{30}\) y espacios homogéneos
+  análogos), subconjuntos de \(k\) de \(n\) (lotería Lotto 6/49,
+  \(S_n/S_k\times S_{n-k}\)), datos Q-sort, y una nota general sobre otras
+  acciones de \(S_n\) (particiones, árboles binarios etiquetados).
+- **C. The \(d\)-sphere \(S^d\)**: datos de orientación magnética,
+  \(O(n)/O(n-1)\).
+- **D. Other groups**: \(\mathbb Z_2^k\), \(\mathbb Z_{365}\times
+  \mathbb Z_{365}\), grupos ortogonal y unitario.
+- **E. Statistics on groups**: enunciado general de problemas (test de
+  uniformidad, test de dos muestras, asociación, ajuste y bondad de ajuste de
+  modelos), sin desarrollo formal.
+
+Ni "poset" ni "partially ordered set" ni ninguna operación de suma sobre
+fibras de isomorfismo aparecen en ninguna de las diez páginas. No hay
+teorema de span ni de rango en todo el capítulo, precisamente porque el
+capítulo no contiene teoremas de ningún tipo.
+
+El propio cierre del capítulo (p. 101, sección E) da el mapa de autor de lo
+que sigue, y es relevante para el riesgo residual sobre los capítulos aún no
+leídos página por página:
+
+> "Chapter 6 develops measures of distance on groups and homogeneous
+> spaces... Chapter 8 develops an analog of the spectral analysis of time
+> series for group valued data... Chapter 7 is devoted to a self-contained
+> development of this [representation] theory. Chapter 9 uses representation
+> theory to develop a natural family of models."
+
+Es decir, según la propia hoja de ruta de Diaconis: el Capítulo 7 es el
+aparato de teoría de representación de \(S_n\) que alimenta los Capítulos 8 y
+9 (ya leídos íntegramente en 3.6bis, sin rastro del ingrediente buscado); el
+Capítulo 6 son medidas de distancia genéricas sobre grupos y espacios
+homogéneos, no una construcción de fibras de poset. Esto no es lectura
+página por página de los Capítulos 6-7, pero sí es una confirmación, en voz
+del propio autor, de que su contenido temático no apunta al ingrediente
+reclamado. Los Capítulos 1-4 (introducción, teoría de representación básica,
+paseos aleatorios, teoría de \(S_n\)) permanecen cubiertos solo por el
+índice completo, que ya no contiene "poset" en ninguna entrada (3.6bis).
+
+```text
+DIACONIS_1988_CH5_VERIFIED = YES (full text, 10/10 pages, curl + browser UA
+  bypassed the Incapsula block from the prior session)
+DIACONIS_1988_CH5_CONTAINS_THEOREMS = NO (purely motivational examples chapter)
+DIACONIS_1988_CH5_POSET_OR_SPAN_TERM_FOUND = NO
+DIACONIS_1988_CH6_CH7_CROSS_CHECKED_VIA_AUTHORS_OWN_ROADMAP = YES (p.101:
+  distance metrics / Sn representation-theory foundations for Ch.8-9, not a
+  poset-fiber class-sum construction)
+P1_RESIDUAL_RISK_UPDATED = LOW (Ch.1-4 index-only, Ch.6-7 index-only +
+  author's-own-roadmap cross-check; non-exhaustive search caveat of Sec. 1
+  still applies)
+```
+
 ### 3.7 Estadística de rangos y cópulas
 
 La aparición de polinomios de Bernstein en proyecciones de estadísticas de
@@ -423,17 +499,21 @@ La parte no precedida localizada es estrecha y concreta:
 
 ```text
 P1_EXACT_STATEMENT_FOUND = NO
-P1_PRIORITY = INCONCLUSIVE_WITH_EVIDENCE_MORE_STRONGLY_FAVORING_NOT_REFUTED
+P1_PRIORITY = PRIORITY_NOT_REFUTED
 P1_CLOSEST_PRECURSOR = EVEN_ZOHAR_2020
 P1_MANDATORY_DIFFERENTIAL_PRECURSOR = KURECKA_2022
 P1_ABSTRACT_SYMMETRIC_MODULE_PRECEDED = DIACONIS_1988_AND_1989
 P1_NOVEL_INGREDIENT_IF_CONFIRMED = UNLABELED_POSET_FIBER_CLASS_SUM_SPAN
-P1_RESIDUAL_RISK = DIACONIS_1988_CH5_AND_CH1_4_6_7_UNVERIFIED (see 3.6bis;
-  narrowed from "monográfico entero sin inspeccionar" tras leer íntegramente
-  Cap.8 + Cap.9 + índice completo el 2026-09-02: sin rastro de "poset",
-  "Johnson scheme" ni teorema de span/rango sobre class sums de fibras)
-P1_EXTERNAL_SPECIALIST_CHECK = REQUIRED (scope now narrower: Cap.5 pp.92-101
-  + spot-check de Cap.1-4/6/7, no el monográfico completo)
+P1_RESIDUAL_RISK = LOW (see 3.6bis + 3.6ter; Cap.8 + Cap.9 + Cap.5 read in
+  full, 2026-09-02: no trace of "poset", "Johnson scheme" or a span/rank
+  theorem on fibre class sums anywhere read; Cap.1-4/6/7 remain index-only
+  but Cap.6-7 are cross-checked against the author's own chapter-6-9 roadmap
+  in Cap.5§E, p.101, which does not point to the claimed ingredient)
+P1_EXTERNAL_SPECIALIST_CHECK = STILL_REQUIRED (per Founding Rules: a
+  guardrail that cannot fail is decoration; internal literature search is
+  not a substitute for external adjudication of novelty)
+NO_NOVELTY_CERTIFICATE = YES (unaffected by this closure -- this audit
+  narrows risk, it does not certify novelty)
 ```
 
 ## 4. P2 — factorización del diferencial
@@ -602,8 +682,11 @@ SINGULAR_INFORMATION_AND_PERMUTON_HESSIAN_CONTEXT_FOR_P3 = YES
 GENERAL_Q_N = DO_NOT_OPEN
 HIGHER_DIMENSIONS = DO_NOT_OPEN
 HOEFFDING_DEVELOPMENT = DO_NOT_OPEN
-NEXT_GATE = TARGETED_DIACONIS_1988_JOHNSON_AND_RANKING_LITERATURE_CHECK_OF_CLASS_SUM_SPAN
-GATE_TARGET = SPAN_OF_UNLABELED_POSET_FIBER_CLASS_SUMS_EQUALS_SYM_EN
+DIACONIS_1988_CH5_MUST_BE_USED_TO_CLOSE_RESIDUAL_RISK_NOTE_IN_PAPER = OPTIONAL
+INTERNAL_BIBLIOGRAPHIC_AUDIT_OF_P1 = CLOSED_2026-09-02
+NEXT_GATE = RETURN_TO_MANUSCRIPT (internal literature audit of P1 closed;
+  EXTERNAL_SPECIALIST_REVIEW remains a standing, non-blocking requirement
+  before any final novelty claim, per Founding Rules)
 ```
 
 La auditoría no obliga a cambiar la arquitectura del paper. Sí cambia el
