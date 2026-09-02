@@ -527,11 +527,132 @@ reconstruye nada de memoria.
 
 ### §4. Exact all-\(N\) visible subspaces
 
-- Teorema de sumas de clase.
-- Posets casi cadena.
-- Laplacianos de ciclos y aristas.
-- Prueba de \(V_N=\operatorname{Sym}^2P_{N-1}\).
-- Dimensión, nesting y densidad.
+**Estado: prosa de trabajo. Ancla:** `wp6_full_class_sum_rank_theorem.md`,
+§§1–5 y §6.1–6.3 (el kernel de §6.4 se difiere a §5, Corolario D — no se
+incluye aquí). Notación \(n\to N\) respecto del archivo fuente, para casar
+con el resto del manuscrito; fórmulas y numeración interna reproducidas sin
+reconstrucción de memoria. **Dependencia hacia adelante:** usa
+\(G_{[P]}^{(N)}\) y \(R_C^{(N)}\), que §3 (aún sin redactar) debe introducir
+formalmente; se da aquí una definición mínima autocontenida, anclada en
+`wp6_finite_n_visible_span_pattern_preflight.md` §4, para que §4 no dependa
+de que §3 exista todavía.
+
+> §3 establishes that $V_N=\operatorname{span}\{R_C^{(N)}:C\in\mathcal
+> C_N\}$ — the visible space of the poset Fisher form
+> $G_{[P]}^{(N)}(f,g)=\sum_{C\in\mathcal C_N}\langle f,R_C^{(N)}\rangle
+> \langle g,R_C^{(N)}\rangle/\mu_{N,0}(C)$, i.e. the orthogonal complement
+> of its kernel — satisfies $V_N\subseteq\operatorname{Sym}^2P_{N-1}$, and
+> reduces the reverse inclusion to a purely combinatorial statement about
+> permutation matrices. Write $E_N:=\mathbf1^\perp\subset\mathbb R^N$, and
+> for $C\in\mathcal C_N$ let $A_C:=\sum_{\sigma\in\Gamma_C}P_\sigma$ be the
+> sum of the permutation matrices representing a single poset-isomorphism
+> class. What remains is
+> \[
+> \operatorname{span}\{A_C|_{E_N}:C\in\mathcal C_N\}=\operatorname{Sym}(E_N).
+> \tag{4.1}
+> \]
+>
+> **A family of $\binom N2$ near-chain posets.** For integers
+> $0\le a<b\le N-1$, define $C_{a,b}$ on a chain $c_1<\cdots<c_{N-1}$
+> together with one extra element $z$ satisfying $c_i<z$ for $i\le a$,
+> $z<c_i$ for $i>b$, and $z$ incomparable with $c_{a+1},\ldots,c_b$. Every
+> linear extension inserts $z$ after exactly $k\in\{a,\ldots,b\}$ elements
+> of the chain, and two extensions realize the same order relation exactly
+> when $\{s,t\}=\{a,b\}$: the poset has exactly two linear-extension
+> pairs, giving, once the chain is normalized to $1<\cdots<N$, a single
+> cycle $\tau_{a,b}$ on the consecutive interval $I_{a,b}=\{a+1,\ldots,
+> b+1\}$ and its inverse. Hence
+> \[
+> \Gamma_{C_{a,b}}=\{\tau_{a,b},\tau_{a,b}^{-1}\}
+> \]
+> (a single transposition, without multiplicity, when $b=a+1$). The
+> multiset of strict-past cardinalities $\{|\mathrm{Past}(y)|:y\in
+> C_{a,b}\}=\{0,\ldots,b-1,b+1,\ldots,N-1\}\uplus\{a\}$ is missing $b$ and
+> repeats $a$, so it determines the pair $(a,b)$: the $\binom N2$ classes
+> $C_{a,b}$ are pairwise distinct.
+>
+> **From interval cycles to edge Laplacians.** For $1\le i<j\le N$ let
+> $L_{ij}:=(e_i-e_j)(e_i-e_j)^\top$ be the Laplacian of edge $\{i,j\}$ in
+> the complete graph on $N$ vertices. Restricted to $E_N$, the $\binom N2$
+> matrices $\{L_{ij}\}$ are linearly independent — a vanishing combination
+> forces every off-diagonal coefficient, hence every $w_{ij}$, to vanish —
+> so they form a basis of $\operatorname{Sym}(E_N)$; they also satisfy
+> $\sum_{i<j}L_{ij}=NI_{E_N}$. Set
+> $S_{a,b}:=P_{\tau_{a,b}}+P_{\tau_{a,b}}^\top$ — equal to $2A_{C_{a,b}}$
+> when $b=a+1$ and to $A_{C_{a,b}}$ otherwise, a nonzero scalar either way
+> — and $Q_{a,b}:=2I_{E_N}-S_{a,b}|_{E_N}$. Because $\tau_{a,b}$ is the
+> consecutive cycle on $I_{a,b}$, $Q_{a,b}$ is exactly that cycle's graph
+> Laplacian: $Q_{a,a+1}=2L_{a+1,a+2}$, and for $b>a+1$,
+> $Q_{a,b}=L_{a+1,b+1}+\sum_{k=a+1}^bL_{k,k+1}$. These two identities
+> triangularize by interval length and invert cleanly —
+> $L_{i,i+1}=\tfrac12Q_{i-1,i}$, and for $j>i+1$,
+> $L_{ij}=Q_{i-1,j-1}-\tfrac12\sum_{k=i}^{j-1}Q_{k-1,k}$ — so
+> \[
+> \operatorname{span}\{Q_{a,b}\}=\operatorname{span}\{L_{ij}:i<j\}
+> =\operatorname{Sym}(E_N).
+> \tag{4.2}
+> \]
+> This leaves exactly one gap: (4.2) uses the shared term $2I_{E_N}$
+> subtracted out of every $Q_{a,b}$, so it does not by itself show that
+> the class sums $S_{a,b}$ span the same space.
+>
+> **Closing the gap: the identity is itself a class-sum combination.**
+> From $\sum_{i<j}L_{ij}=NI_{E_N}$ and the triangularized identities
+> above, $I_{E_N}=\sum_{a<b}c_{a,b}Q_{a,b}$ for explicit coefficients
+> $c_{a,b}$ whose sum depends only on how many edges sit at each distance
+> $d=j-i$:
+> \[
+> s_N:=\sum_{a<b}c_{a,b}
+> =\frac1N\sum_{d=1}^{N-1}(N-d)\Bigl(1-\frac d2\Bigr)
+> =\frac{(N-1)(5-N)}{12}.
+> \]
+> Substituting $Q_{a,b}=2I_{E_N}-S_{a,b}|_{E_N}$ gives
+> $(1-2s_N)I_{E_N}=-\sum_{a<b}c_{a,b}S_{a,b}|_{E_N}$, and the coefficient
+> \[
+> 1-2s_N=\frac{N^2-6N+11}6=\frac{(N-3)^2+2}6
+> \]
+> is strictly positive for every integer $N$ — it never vanishes, at
+> $N=3$ or anywhere else — so
+> $I_{E_N}\in\operatorname{span}\{S_{a,b}|_{E_N}\}$. Feeding this back
+> into $Q_{a,b}=2I_{E_N}-S_{a,b}|_{E_N}$ shows every $Q_{a,b}$ is itself in
+> that span, and with (4.2),
+> \[
+> \operatorname{span}\{S_{a,b}|_{E_N}:a<b\}=\operatorname{Sym}(E_N).
+> \]
+> Since each $S_{a,b}$ is $A_{C_{a,b}}$ up to a nonzero scalar, this is
+> exactly (4.1). Combined with §3's reduction, this proves:
+>
+> **Theorem C.** *For every $N\ge2$,*
+> \[
+> \boxed{V_N=\operatorname{Sym}^2P_{N-1},\qquad
+> \dim V_N=\operatorname{rank}G_{[P]}^{(N)}=\binom N2.}
+> \]
+> *The proof is constructive at every $N$: it exhibits, and does not
+> merely count, an explicit family of $\binom N2$ poset classes whose
+> score representatives span the target space, without enumerating posets
+> or extrapolating from small $N$.*
+>
+> **Corollary E (filtration).** Since $P_{N-1}\subsetneq P_N$,
+> \[
+> V_N=\operatorname{Sym}^2P_{N-1}\subsetneq\operatorname{Sym}^2P_N=V_{N+1}
+> \qquad(N\ge2),
+> \]
+> with rank sequence $1,3,6,10,15,\ldots,\binom N2,\ldots$ — a strict
+> inclusion, not merely non-decreasing, at every step. A universal witness
+> of each new degree is $p_1\otimes p_N+p_N\otimes p_1\in V_{N+1}\setminus
+> V_N$: since the Fisher form is positive definite on $V_{N+1}$ and
+> vanishes on $V_N^\perp$, $I_N^{[P]}(p_1\otimes p_N)=0$ while
+> $I_{N+1}^{[P]}(p_1\otimes p_N)>0$ — the same witness recurs in the
+> Fisher computations of §6. Because centered polynomials are dense in
+> $H=L_0^2([0,1])$, Theorem C also gives, unconditionally,
+> \[
+> \overline{\bigcup_{N\ge2}V_N}=H\widehat\otimes_{\mathrm{sym}}H.
+> \]
+>
+> The exact kernel of $D\mathscr S_N$ — the orthogonal complement of $V_N$
+> together with the permanently invisible antisymmetric sector
+> $\bigwedge^2H$ — is not derived here; it is Corollary D, §5, the direct
+> functional consequence of Theorem C once the span is known.
 
 ### §5. Operator factorization and the identifiable quotient
 
@@ -561,6 +682,9 @@ reconstruye nada de memoria.
 **Estado: prosa de trabajo redactada tras el cierre de la auditoría de
 prioridad (`bf09c54`). Reproduce las adjudicaciones de
 `wp6_s1_three_frozen_targets_priority_audit.md` §§3.1–3.7; no reabre nada.**
+
+`TODO: convert §8 from editorial guidance to final paper prose after
+first full draft.`
 
 **Causal-set framework.** Bombelli (2000) precedes the framework in full:
 the full unlabeled-poset law at fixed cardinality, its compression to a
@@ -594,7 +718,8 @@ matrix $\sum_\pi t_\pi A_\pi$. This precedes, substantially, the finite
 polynomials, the Bernstein-type basis, the compression of permutation
 matrices to $E_N$, and the covering-matrix technique used in §§3–4 below;
 none of these should be presented as new. What Kurečka does not do is our
-additional quotient — summing $A_\sigma$ over the fiber $\Gamma_C$ of
+additional quotient — summing the permutation matrix $P_\sigma$ over the
+fiber $\Gamma_C$ of
 permutations mapping to a fixed unlabeled poset $C$, and proving that the
 resulting $\{A_C|_{E_N}\}$ span all of $\operatorname{Sym}(E_N)$. Chan,
 Král', Noel, Pehova, Sharifzadeh and Volec (2019/2020) and Garbe, Král',
@@ -637,8 +762,8 @@ permutation level, and the abstract unordered-pair symmetric module are
 all preceded and must be cited as such, not presented as contributions.
 The single package that should go to an external permuton/rank-statistics
 specialist is the implication chain of §6.3 of the priority audit: pattern
-gradient $\to A_\sigma|_{E_N}$ (near Kurečka) $\to$ poset-isomorphism class
-sum $A_C=\sum_{\sigma\in\Gamma_C}A_\sigma$ $\to$
+gradient $\to P_\sigma|_{E_N}$ (near Kurečka) $\to$ poset-isomorphism class
+sum $A_C=\sum_{\sigma\in\Gamma_C}P_\sigma$ $\to$
 $\operatorname{span}\{A_C|_{E_N}\}=\operatorname{Sym}(E_N)$ $\to$
 $V_N=\operatorname{Sym}^2P_{N-1}$ and $D\mathscr S_N=B_NP_N^{\rm vis}$.
 Distinguish, throughout, the Fisher spectrum on $V_N$ from the spectrum of
@@ -796,10 +921,21 @@ historia S1.
    PI, no de auditoría adicional.
 5. Redactar el cuerpo desde las anclas de §11; no reconstruir pruebas de
    memoria. **EN CURSO**: §2 (dominio S1, cuatro objetos, tres niveles
-   observacionales) redactado, ancla `wp6_d2_geometric_tangent_
-   classification.md` §§1,3,5. Pendientes en orden: §4 (Teorema all-\(N\)),
-   §6 (Fisher \(N=2,3,4\) + asintótica), §7 (senda antisimétrica,
-   \(r_N=2\)), §9 (Discussion / causal compression), §11 (Conclusion +
-   claim ceiling). §3, §5, §10 y apéndices después del cuerpo continuo.
+   observacionales, cadena \(\psi\to\mu_N^{[P]}\) cerrada) y §4 (Teorema C:
+   familia casi cadena, laplacianos de aristas, identidad en el span,
+   Corolario E de filtración — kernel diferido a §5) redactados; anclas
+   `wp6_d2_geometric_tangent_classification.md` §§1,3,5 y
+   `wp6_full_class_sum_rank_theorem.md` §§1–5,6.1–6.3 +
+   `wp6_finite_n_visible_span_pattern_preflight.md` §4 (definición mínima
+   de \(G_{[P]}^{(N)}\), dependencia hacia adelante hasta que §3 exista).
+   Pendientes en orden: §5 (factorización + kernel, Corolario D — cierra
+   el bloque "teorema all-\(N\)" que el PI pidió como una unidad; no
+   depende de §3, usa sólo \(V_N\) de §4 y el formalismo QMD de §2), luego
+   §3 (representantes de score — cierra la dependencia hacia adelante que
+   §4 dejó abierta sobre \(R_C^{(N)}\)/\(G_{[P]}^{(N)}\), necesaria antes
+   del ensamblaje final aunque no bloquee §5), §6 (Fisher \(N=2,3,4\) +
+   asintótica), §7 (senda antisimétrica, \(r_N=2\)), §9 (Discussion /
+   causal compression), §11 (Conclusion + claim ceiling). §10 y apéndices
+   después del cuerpo continuo.
 6. Mantener fuera \(Q_N\) general salvo que el manuscrito revele una laguna
    lógica real y se emita una autorización separada.
