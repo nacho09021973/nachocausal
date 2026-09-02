@@ -46,7 +46,7 @@ Subtítulo opcional:
 
 Razón de la formulación exacta: `Exact` debe tipar únicamente la
 clasificación all-\(N\) de visibilidad tangente (\(V_N\), kernel, cociente,
-factorización — Teorema C y Corolario D, §5), no el espectro Fisher, que es
+factorización — Teorema C, §4, y Corolario D, §5), no el espectro Fisher, que es
 exacto sólo en \(N=2,3,4\) más leyes de retención asintótica sectorial
 (Teorema F, §6). El título anterior ("Exact tangent visibility **and**
 Fisher resolution...") dejaba ambiguo si "Exact" calificaba también a
@@ -337,8 +337,11 @@ borrado de §5.4.
 ### §1. Introduction
 
 **Estado: prosa de trabajo redactada tras el cierre de la auditoría de
-prioridad (`bf09c54`). Integra los cinco precedentes; no altera ningún
-teorema.**
+prioridad (`bf09c54`, `wp6_s1_three_frozen_targets_priority_audit.md`,
+`NOVELTY_CERTIFICATE = NO`). Integra los cinco precedentes; no altera
+ningún teorema. El texto citable (bloque `>`) no debe contener nombres de
+archivo del repo ni etiquetas internas de auditoría — esa trazabilidad
+vive aquí, en la nota de estado, no en la prosa del paper.**
 
 > Bombelli [*Statistical Lorentzian geometry and the closeness of
 > Lorentzian manifolds*, arXiv:gr-qc/0002053, 2000] introduced the object
@@ -390,18 +393,25 @@ teorema.**
 > \sigma^{-1}$ and the near-uniqueness of realizers for prime posets.
 >
 > What none of these five results does is the one step that connects them:
-> sum the permutation-level differential over the fibers of the
+> sum the permutation-level differential over the fibers $\Gamma_C$ of the
 > permutation-to-unlabeled-poset map, and show that the resulting
-> class-sum vectors *span* the full symmetric target module,
+> class-sum score representatives *span* the full symmetric target module,
 > \[
-> \operatorname{span}\{A_C|_{E_N}:C\in\mathcal C_N\}=\operatorname{Sym}(E_N).
+> \operatorname{span}\{R_C^{(N)}:C\in\mathcal C_N\}
+> =\operatorname{Sym}^2P_{N-1}.
 > \]
-> This is exactly Theorem C ($\S5$) below, and it is the hinge on which the
+> This is exactly Theorem C ($\S4$) below, and it is the hinge on which the
 > rest of the paper — the exact kernel, the identifiable quotient, and the
 > Fisher-resolution statement — turns. Everything else is either a direct
 > corollary of this span theorem (Corollaries D, E; Theorem F) or a
 > separate, self-contained second-order statement about one explicit
-> antisymmetric orbit (Theorem G, Corollary H).
+> antisymmetric orbit (Theorem G, Corollary H). In the compressed
+> permutation-pattern language of §8 — restricting each class sum to
+> $E_N=\mathbf1^\perp$ instead of working in $\operatorname{Sym}^2P_{N-1}$
+> directly — the same statement reads
+> $\operatorname{span}\{A_C|_{E_N}:C\in\mathcal C_N\}=\operatorname{Sym}(E_N)$,
+> which is the form compared there against Kurečka's covering-matrix
+> technique.
 >
 > We state the contribution as narrowly as the adversarial priority audit
 > leaves it:
@@ -411,12 +421,10 @@ teorema.**
 > unlabeled finite causal-order laws.}}
 > \]
 > We write "we identify" and "we prove," not "for the first time" or
-> "novel": a scoped literature search (§9 below;
-> `wp6_s1_three_frozen_targets_priority_audit.md`) did not locate this
-> exact class-sum span theorem, but the search was not an exhaustive
-> systematic review — no full MathSciNet/zbMATH/Scopus/Web-of-Science
-> coverage — and its absence is not a certificate of novelty
-> (`NOVELTY_CERTIFICATE = NO`, §10).
+> "novel": a scoped literature search (§8) did not locate this exact
+> class-sum span theorem, but the search was not an exhaustive systematic
+> review — no full MathSciNet/zbMATH/Scopus/Web-of-Science coverage — and
+> its absence does not certify novelty (§10).
 >
 > We make no claim of nonlinear reconstruction, geometric identifiability
 > at finite distance, or any result about Schwarzschild, horizons, or
@@ -484,6 +492,25 @@ reconstruye nada de memoria.
 > this isomorphism class, invariant under the realizer. The quotient from
 > the labeled permutation $\Pi_N$ to the unlabeled poset $[P_{\Pi_N}]$ —
 > and exactly what survives it — is the subject of §§4–5.
+>
+> Write $\mathcal C_N$ for the set of isomorphism classes of
+> two-dimensional posets realized by some $\sigma\in S_N$, and for
+> $C\in\mathcal C_N$ let $\Gamma_C:=\{\sigma\in S_N:[P_\sigma]=C\}$ be its
+> fiber under $\sigma\mapsto[P_\sigma]$. The object this paper's tangent
+> statement is about is the law of the unlabeled poset itself,
+> \[
+> \mu_{N,\varepsilon}^{[P]}(C)
+> :=\mathbb P_\varepsilon\big([P_{\Pi_N}]=C\big)
+> =\sum_{\sigma\in\Gamma_C}p_\varepsilon(\sigma),
+> \qquad C\in\mathcal C_N,
+> \]
+> with reference value $\mu_{N,0}(C)=|\Gamma_C|/N!$. This closes the chain
+> the rest of the paper works with:
+> \[
+> \psi\ \longrightarrow\ \dot g_0\ \longrightarrow\ t_\psi\ \longrightarrow\
+> h_\psi\ \longrightarrow\ S_{N,\psi}\ \longrightarrow\
+> \mu_{N,\varepsilon}^{[P]}.
+> \]
 >
 > Throughout, $H=L_0^2([0,1])$ denotes the mean-zero $L^2$ space with the
 > shifted-Legendre basis, $P_{N-1}=\operatorname{span}\{p_1,\ldots,
@@ -609,7 +636,7 @@ block, the differential/Bernstein/covering-matrix technique at the
 permutation level, and the abstract unordered-pair symmetric module are
 all preceded and must be cited as such, not presented as contributions.
 The single package that should go to an external permuton/rank-statistics
-specialist is the implication chain of §12 of the priority audit: pattern
+specialist is the implication chain of §6.3 of the priority audit: pattern
 gradient $\to A_\sigma|_{E_N}$ (near Kurečka) $\to$ poset-isomorphism class
 sum $A_C=\sum_{\sigma\in\Gamma_C}A_\sigma$ $\to$
 $\operatorname{span}\{A_C|_{E_N}\}=\operatorname{Sym}(E_N)$ $\to$
