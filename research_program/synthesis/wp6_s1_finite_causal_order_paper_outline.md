@@ -35,21 +35,41 @@ SECOND_ORDER_EXPLICIT_ORBIT = SHORT_EXTENSION
 GENERAL_Q_N_CLASSIFICATION = OPEN_OPTIONAL_NOT_IN_PAPER
 ```
 
-## 1. Título provisional
+## 1. Título — FIJADO (gate cerrado, 2026-09-02)
 
-### Opción principal
-
-**Exact tangent visibility and Fisher resolution of finite causal-order laws**
+> **Exact tangent visibility of finite causal-order laws and Fisher
+> resolution in the S1 model**
 
 Subtítulo opcional:
 
 **The S1 interaction model in a (1+1)-dimensional causal diamond**
 
-### Alternativas conservadoras
+Razón de la formulación exacta: `Exact` debe tipar únicamente la
+clasificación all-\(N\) de visibilidad tangente (\(V_N\), kernel, cociente,
+factorización — Teorema C y Corolario D, §5), no el espectro Fisher, que es
+exacto sólo en \(N=2,3,4\) más leyes de retención asintótica sectorial
+(Teorema F, §6). El título anterior ("Exact tangent visibility **and**
+Fisher resolution...") dejaba ambiguo si "Exact" calificaba también a
+Fisher para toda \(N\), lo cual el paper no prueba. La reformulación separa
+los dos alcances mediante la sintaxis: *exact* modifica sólo *tangent
+visibility*; *Fisher resolution* entra como una segunda cláusula sin
+heredar ese calificador.
+
+`causal compression` permanece exclusivamente como idea fuerte de la
+Discussion (§9), no como término de título.
+
+### Alternativas descartadas
 
 1. **First-order compression by finite causal-order laws in the S1 model**
-2. **Visible tangent spaces of finite unlabeled causal orders**
-3. **Exact differential structure of finite causal-order laws**
+   — descartada: `compression` es demasiado interpretativo para encabezar
+   el paper, aunque funciona bien en Discussion.
+2. **Visible tangent spaces of finite unlabeled causal orders** —
+   descartada: correcta pero esconde la contribución Fisher (Teorema F),
+   que es sustantiva.
+3. **Exact differential structure of finite causal-order laws** —
+   descartada: segura pero demasiado genérica; pierde el rasgo memorable
+   del resultado (el cociente por isomorfismo de poset y la resolución
+   Fisher explícita).
 
 `Causal compression` se reserva como interpretación de la Discussion. No se
 usa por ahora como claim de título ni como nombre de una teoría general.
