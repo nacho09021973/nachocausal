@@ -427,11 +427,70 @@ manuscrito, sin reafirmar prioridad absoluta más allá de lo anterior.
 
 ### §2. The S1 model and finite causal-order experiments
 
-- Diamante \(1+1\), orden producto y medida nula uniforme.
-- Familia exponencial normalizada y proyección de interacción.
-- Tres niveles observacionales: muestra continua, permutación de rangos y
-  poset no etiquetado.
-- Convenciones QMD y espacios Hilbert.
+**Estado: prosa de trabajo. Ancla:**
+`wp6_d2_geometric_tangent_classification.md`, §§1, 3, 5 — reproduce sus
+fórmulas exactas (factor, signo y constante ya probados allí); no se
+reconstruye nada de memoria.
+
+> We work in the flat $1+1$-dimensional causal diamond in null coordinates,
+> reparametrized to $D=[0,1]^2$ with the product order
+> $(u,v)\preceq(u',v')\iff u\le u',\,v\le v'$, and the uniform reference
+> measure $\mu_0(du\,dv)=du\,dv$. A conformal generator $\psi\in C(D;\mathbb
+> R)$ defines the normalized exponential family
+> \[
+> g_\varepsilon=\frac{e^{2\varepsilon\psi}}{Z(\varepsilon)}g_0,\qquad
+> Z(\varepsilon)=\int_De^{2\varepsilon\psi}\,d\mu_0,
+> \]
+> which preserves total volume at every $\varepsilon$ — not only to first
+> order — and induces the sampling density $q_\varepsilon=e^{2\varepsilon
+> \psi}/Z(\varepsilon)$ for a Poisson sprinkling conditioned on $N$ points.
+> Differentiating at $\varepsilon=0$ gives the metric tangent
+> $\dot g_0=2(\psi-\bar\psi)g_0$, with $\bar\psi$ the mean of $\psi$ under
+> $\mu_0$.
+>
+> Four distinct objects appear along the chain from geometry to statistic,
+> and we keep them notationally separate throughout: the geometric
+> generator $\psi$; the log-tangent of the normalized joint density
+> $t_\psi=2(\psi-\bar\psi)$; the copula-density tangent $h_\psi$, obtained
+> after uniformizing both marginals,
+> \[
+> h_\psi(u,v)=2\big[\psi(u,v)-\psi_U(u)-\psi_V(v)+\bar\psi\big]
+> =2\mathcal P\psi,\qquad \mathcal P=(I-M_u)(I-M_v),
+> \]
+> with $\psi_U,\psi_V$ the two marginal means of $\psi$ and $\mathcal P$
+> the double-centering projection used throughout §§4–6; and the score
+> $S_{N,\psi}$ of the finite discrete experiment, defined below. The joint
+> and copula densities both equal $1$ at $\varepsilon=0$, so $t_\psi$ and
+> $h_\psi$ agree there in value but are not the same object — they differ
+> by the two marginal terms, and only $h_\psi$ is what the finite
+> experiment actually sees, since passing to ranks applies the marginal
+> probability integral transform and removes marginal information.
+>
+> A sample of $N$ points generates three progressively coarser
+> observations. At the finest level is the continuous sample
+> $(U_k,V_k)_{k=1}^N$ itself, with score
+> $T_{N,\psi}=\sum_kh_\psi(U_k,V_k)$. Ordering by $U$ and recording the
+> induced rank in $V$ produces a *labeled* rank permutation $\Pi_N\in S_N$;
+> its score is the conditional expectation
+> \[
+> S_{N,\psi}(\pi)=\mathbb E_0[T_{N,\psi}\mid\Pi_N=\pi],
+> \]
+> an identity that needs no independence assumption after conditioning and
+> follows directly from the likelihood. Finally — and this is the level
+> the finite causal-order law actually lives on — the *unlabeled*
+> two-dimensional poset is the isomorphism class $[P_{\Pi_N}]$ of the
+> permutation matrix: $\Pi_N$ depends on which linear realizer of $U$ and
+> of $V$ is used, but the order-only datum a causal set exposes is exactly
+> this isomorphism class, invariant under the realizer. The quotient from
+> the labeled permutation $\Pi_N$ to the unlabeled poset $[P_{\Pi_N}]$ —
+> and exactly what survives it — is the subject of §§4–5.
+>
+> Throughout, $H=L_0^2([0,1])$ denotes the mean-zero $L^2$ space with the
+> shifted-Legendre basis, $P_{N-1}=\operatorname{span}\{p_1,\ldots,
+> p_{N-1}\}\subset H$ its first $N-1$ modes, and derivatives of finite-$N$
+> laws at $\varepsilon=0$ are read as scores under the quadratic-mean-
+> differentiability (QMD) identification, specializing Bombelli's finite-law
+> construction to this S1 exponential family.
 
 ### §3. Score representatives of the finite law
 
@@ -699,7 +758,8 @@ historia S1.
 
 ## 12. Gate antes de redactar el cuerpo completo
 
-1. Confirmar que el PI acepta el título y la tesis de §§1–2. **PENDIENTE.**
+1. Confirmar que el PI acepta el título y la tesis de §§1–2. **HECHO**
+   (`d3011f7`) — título fijado, tesis de §2.1 sin cambios, alineada.
 2. Ejecutar la auditoría de prioridad contra P1–P3 sin mover los blancos.
    **HECHO** — `wp6_s1_three_frozen_targets_priority_audit.md`, `bf09c54`.
 3. Clasificar cada pieza como `PRECEDED`, `KNOWN_THEOREM_SPECIALIZATION` o
@@ -708,6 +768,11 @@ historia S1.
    **BORRADOR HECHO** (este commit, §§1 y 8) — pendiente de aceptación del
    PI, no de auditoría adicional.
 5. Redactar el cuerpo desde las anclas de §11; no reconstruir pruebas de
-   memoria.
+   memoria. **EN CURSO**: §2 (dominio S1, cuatro objetos, tres niveles
+   observacionales) redactado, ancla `wp6_d2_geometric_tangent_
+   classification.md` §§1,3,5. Pendientes en orden: §4 (Teorema all-\(N\)),
+   §6 (Fisher \(N=2,3,4\) + asintótica), §7 (senda antisimétrica,
+   \(r_N=2\)), §9 (Discussion / causal compression), §11 (Conclusion +
+   claim ceiling). §3, §5, §10 y apéndices después del cuerpo continuo.
 6. Mantener fuera \(Q_N\) general salvo que el manuscrito revele una laguna
    lógica real y se emita una autorización separada.
