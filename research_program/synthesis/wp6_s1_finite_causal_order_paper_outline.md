@@ -1444,17 +1444,17 @@ ceiling de §6). El texto citable (bloque `>`) no contiene nombres de
 archivo del repo, commits ni terminología de auditoría/gate — esa
 trazabilidad vive aquí, en la nota de estado.
 
-> Bombelli (2000) precedes the framework studied here in full: the
+> Bombelli (2000) already sets up the framework studied here: the
 > complete law of an unlabeled causal poset at fixed cardinality, and a
 > statistical comparison between two such laws obtained from different
 > geometries. Janson (2011) supplies the general limiting framework of
 > poset kernels and consistent finite laws in which this construction
-> sits. Surya (2025) precedes the broader narrative that increasing
-> resolution can lift degeneracies of a causal compression, through a
-> different observable — expected interval abundances rather than the
-> full unlabeled-poset law used here. None of the three computes the
+> sits. Surya (2025) tells a related story: increasing resolution can
+> lift degeneracies of a causal compression, though through a different
+> observable — expected interval abundances rather than the full
+> unlabeled-poset law used here. None of the three computes the
 > differential of the finite-$N$ law at a reference geometry, its rank, or
-> its kernel; that computation is the object of §§2–7.
+> its kernel. That computation is what §§2–7 do.
 >
 > The many-to-one correspondence between permutations and two-dimensional
 > posets that this differential must be summed over is itself classical.
@@ -1462,114 +1462,111 @@ trazabilidad vive aquí, en la nota de estado.
 > correspondence, its realizers, the closure of a fiber under
 > $\sigma\mapsto\sigma^{-1}$, and the near-uniqueness of realizers for
 > prime posets. Recovering that correspondence is not the contribution
-> here. What is added is summing a differential score representative over
-> the entire fiber,
+> here; we instead sum a differential score representative over the
+> entire fiber,
 > \[
 > A_C=\sum_{\sigma\in\Gamma_C}P_\sigma,
 > \]
-> and determining the span of the resulting class-sum representatives
-> after the quotient to unlabeled poset classes.
+> and ask what these class-sum representatives span once we pass to
+> unlabeled poset classes.
 >
-> On the permutation side of this quotient, before it is taken, the
-> relevant differential structure is close to two existing constructions.
-> Even-Zohar (2020) decomposes the space of pattern densities via the
-> representation theory of $S_N$ and isolates the standard-representation
-> block of dimension $(N-1)^2$, realized through permutation matrices
-> compressed to $\mathbf1^\perp$; his asymptotic regime concerns
-> fluctuations of a random permutation's pattern profile as the host size
-> grows, a scaling question distinct from the local $\varepsilon$-derivative
-> used here. Kurečka (2022) differentiates a pattern density directly
-> around the uniform permuton, expresses the resulting gradient in a
-> Bernstein-type basis on $E_N=\mathbf1^\perp$ through compressed
-> permutation matrices $A_\pi|_{E_N}$, and characterizes vanishing
-> gradient combinations via covering-matrix sums $\sum_\pi t_\pi A_\pi$.
-> Differentiating pattern densities, the appearance of a Bernstein-type
-> basis at this level, the compression of permutation matrices to $E_N$,
-> and the covering-matrix technique all belong to this line of work.
-> Restricting the class sums above to $E_N$, what neither construction
-> performs is
+> Before that quotient is taken, the relevant differential structure is
+> close to two existing constructions. Even-Zohar (2020) decomposes the
+> space of pattern densities via the representation theory of $S_N$ and
+> isolates the standard-representation block of dimension $(N-1)^2$,
+> realized through permutation matrices compressed to $\mathbf1^\perp$;
+> his asymptotic regime concerns fluctuations of a random permutation's
+> pattern profile as the host size grows, a scaling question distinct
+> from the local $\varepsilon$-derivative used here. Kurečka (2022)
+> differentiates a pattern density directly around the uniform permuton,
+> expresses the resulting gradient in a Bernstein-type basis on
+> $E_N=\mathbf1^\perp$ through compressed permutation matrices
+> $A_\pi|_{E_N}$, and characterizes vanishing gradient combinations via
+> covering-matrix sums $\sum_\pi t_\pi A_\pi$. Differentiating pattern
+> densities, the appearance of a Bernstein-type basis at this level, the
+> compression of permutation matrices to $E_N$, and the covering-matrix
+> technique all belong to this line of work. What neither construction
+> does is restrict those class sums to $E_N$ and show that they span the
+> full symmetric target there:
 > \[
 > \operatorname{span}\{A_C|_{E_N}:C\in\mathcal C_N\}
-> =\operatorname{Sym}(E_N),
+> =\operatorname{Sym}(E_N).
 > \]
-> the statement that the fiber-indexed class sums span the full symmetric
-> target once compressed to $E_N$. Chan, Král', Noel, Pehova, Sharifzadeh
-> and Volec (2019/2020) and Garbe, Král', Malekshahian and Penaguiao
-> (2023/2025) are adjacent permuton-forcing and feasible-region results —
-> quasirandomness-forcing pattern sums and the global dimension of the
-> feasible region of pattern densities, respectively — that likewise do
-> not supply this fiber-indexed span statement.
+> Chan, Král', Noel, Pehova, Sharifzadeh and Volec (2019/2020) and Garbe,
+> Král', Malekshahian and Penaguiao (2023/2025) are adjacent
+> permuton-forcing and feasible-region results, on quasirandomness-forcing
+> pattern sums and on the dimension of the feasible region of pattern
+> densities respectively, and they do not give this fiber-indexed span
+> statement either.
 >
-> The abstract target module and its dimension are also precedented.
-> Diaconis (1989) decomposes functions on rankings via $S_N$
-> representation theory and gives, for unordered-pair effects,
-> $M^{(N-2,2)}\simeq S^{(N)}\oplus S^{(N-1,1)}\oplus S^{(N-2,2)}$ — already
+> The abstract target module and its dimension already appear in the
+> representation-theory literature on rankings. Diaconis (1989) decomposes
+> functions on rankings via $S_N$ representation theory and gives, for
+> unordered-pair effects,
+> $M^{(N-2,2)}\simeq S^{(N)}\oplus S^{(N-1,1)}\oplus S^{(N-2,2)}$, already
 > the module, and the dimension $\binom N2$, behind a Johnson-scheme
 > reformulation of $\operatorname{Sym}(E_N)$. The 1988 monograph makes this
 > concrete with a worked instance on unordered pairs of experimental
 > varieties, the Diallel Cross Design, and develops the associated model
 > family. Neither work introduces unlabeled two-dimensional-poset fibers,
-> their class sums, or a rank theorem for those specific sums, so
-> $\operatorname{Sym}(E_N)$ and its dimension are not presented here as a
-> new representation; what remains is the narrower statement that sums
-> over isomorphism fibers of unlabeled two-dimensional posets generate
-> exactly that module.
+> their class sums, or a rank theorem for those specific sums. So
+> $\operatorname{Sym}(E_N)$ and its dimension are not a new representation
+> here; the narrower claim we are actually making is that sums over
+> isomorphism fibers of unlabeled two-dimensional posets generate exactly
+> that module.
 >
-> The idea of Fisher information after passing from continuous
-> observations to ranks is likewise not introduced here. Hallin, Mellouk
-> and Rifi (2001) precede the appearance of Bernstein-type polynomials in
-> Hájek projections of rank statistics, in an asymptotic rather than exact
-> finite-$N$ setting. Hoff (2007) establishes the rank likelihood as a
-> marginal-free semiparametric likelihood, and Hoff, Niu and Wellner
-> (2014) together with Sei and Matsumoto (2020) develop the induced
-> information and divergence of Gaussian-copula and rank models, including
-> finite-sample identifiability loss. None of these supplies the further
-> quotient from a full rank permutation to an unlabeled poset,
-> $\Pi_N\to[P_{\Pi_N}]$, or the exact classification of its S1 support
-> carried out in §§3–6.
+> Fisher information after passing from continuous observations to ranks
+> is not a new idea either. Hallin, Mellouk and Rifi (2001) already have
+> Bernstein-type polynomials showing up in Hájek projections of rank
+> statistics, though asymptotically rather than at our exact finite $N$.
+> Hoff (2007) establishes the rank likelihood as a marginal-free
+> semiparametric likelihood, and Hoff, Niu and Wellner (2014) together
+> with Sei and Matsumoto (2020) develop the induced information and
+> divergence of Gaussian-copula and rank models, including finite-sample
+> identifiability loss. None of these reaches the further quotient from a
+> full rank permutation to an unlabeled poset, $\Pi_N\to[P_{\Pi_N}]$, or
+> classifies its S1 support the way §§3–6 do.
 >
-> The operator identity connecting these two levels is likewise standard
-> once its kernel is known. Pollard (2011/2012) shows, in the
+> The operator identity connecting these two levels is standard once its
+> kernel is known. Pollard (2011/2012) shows, in the
 > differentiability-in-quadratic-mean framework, that the score of a
 > statistic is the conditional expectation of the original score; on a
 > Hilbert space, any bounded linear operator factors tautologically
 > through the orthogonal projection onto the complement of its kernel,
 > with an injective restriction to that complement. So the factorization
-> $D\mathscr S_N=B_NP_N^{\rm vis}$ used from §5 on is not an independent
-> operator construction. What is specific here, and inherited directly
-> from Theorem C, is identifying that complement exactly,
-> $(\ker D\mathscr S_N)^\perp=\operatorname{Sym}^2P_{N-1}$, from which the
-> injectivity of $B_N$ follows immediately.
+> $D\mathscr S_N=B_NP_N^{\rm vis}$, used from §5 on, is not an independent
+> operator construction. Theorem C is what pins the complement down
+> exactly, $(\ker D\mathscr S_N)^\perp=\operatorname{Sym}^2P_{N-1}$, and
+> the injectivity of $B_N$ follows immediately from that.
 >
-> §7 should likewise be read against, rather than as introducing, several
-> established mechanisms. Rotnitzky, Cox, Bottai and Robins (2000) study
-> likelihood models with singular information, relating the order of the
-> first nonvanishing derivative to inferential behavior and noting the
-> sign ambiguity that arises when that order is even; a law invisible at
-> first order and visible at a higher one, together with the role of
-> parity, is not a general contribution of this paper. Within the
-> permuton literature, forcing results go beyond the gradient: Chan (2021)
-> and Crudele, Dukes and Noel (2023) compute Hessians of pattern-density
-> combinations around the uniform permuton once the gradient vanishes,
-> precedent for using a second differential of a permutation-pattern law
-> to detect perturbations hidden at first order. That a size-two law is
-> the uniform-deletion push-forward of a size-$N$ law is standard
-> projective consistency of iid sampling, and differentiating an exact
-> identity with a parameter-independent kernel is a formal consequence of
-> it. What is specific here is the explicit package: the antisymmetric S1
-> orbit of §7, the exact parity
-> $\mu_{N,\varepsilon}^{[P]}=\mu_{N,-\varepsilon}^{[P]}$ it forces, the
-> nonvanishing second derivative $\mu_2''(0)\ne0$ computed for that orbit,
-> and its propagation through the uniform-deletion kernel to
-> $r_N(\gamma_\psi)=2$ for every $N\ge2$ (Theorem G, Corollary H).
+> §7 sits against several established mechanisms rather than introducing
+> them. Rotnitzky, Cox, Bottai and Robins (2000) study likelihood models
+> with singular information, relating the order of the first nonvanishing
+> derivative to inferential behavior and noting the sign ambiguity that
+> arises when that order is even; a law invisible at first order and
+> visible only at a higher one, and the role parity plays in that, is not
+> a general contribution of this paper. Within the permuton literature,
+> forcing results go beyond the gradient: Chan (2021) and Crudele, Dukes
+> and Noel (2023) compute Hessians of pattern-density combinations around
+> the uniform permuton once the gradient vanishes, precedent for using a
+> second differential of a permutation-pattern law to detect perturbations
+> hidden at first order. That a size-two law is the uniform-deletion
+> push-forward of a size-$N$ law is standard projective consistency of iid
+> sampling, and differentiating an exact identity with a
+> parameter-independent kernel is a formal consequence of it. None of
+> these three pieces is new by itself. What is ours is the combination:
+> the antisymmetric S1 orbit of §7, the exact parity it forces,
+> $\mu_{N,\varepsilon}^{[P]}=\mu_{N,-\varepsilon}^{[P]}$, the nonvanishing
+> second derivative $\mu_2''(0)\ne0$ computed for that orbit, and its
+> propagation through the uniform-deletion kernel to $r_N(\gamma_\psi)=2$
+> for every $N\ge2$ (Theorem G, Corollary H).
 >
-> Read together, these precedents supply the ambient permutation-level
-> differential and the abstract representation-theoretic target on one
-> side, and the general mechanics of statistic-induced scores and
-> singular first-order information on the other. What is determined here
-> is what survives between them: the exact effect of the additional
-> quotient from labeled rank permutations to unlabeled finite
-> causal-order laws, at every fixed cardinality $N$.
+> Put together, the precedents above cover the permutation-level
+> differential, the abstract representation-theoretic target, and the
+> general mechanics of statistic-induced scores and singular first-order
+> information. This paper determines what is left over: the exact effect
+> of the additional quotient from labeled rank permutations to unlabeled
+> finite causal-order laws, at every fixed cardinality $N$.
 
 ### §9. Discussion: causal compression
 
@@ -3449,6 +3446,7 @@ historia S1.
    SECTION8_RELATED_WORK_FINAL_PROSE = CLOSED
    ALL_PLANNED_APPENDICES_DRAFTED
    APPENDIX_E_EXTERNAL_FIBER_DEPENDENCY = CLOSED_WITH_EXPLICIT_CITATION
+   SECTION8_HUMAN_STYLE_PASS = CLOSED
    ```
 
    La dependencia bibliográfica de (E.15) queda cerrada con cita explícita
