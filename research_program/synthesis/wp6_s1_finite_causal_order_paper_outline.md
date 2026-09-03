@@ -2738,6 +2738,189 @@ una tasa uniforme ni convergencia en norma de operadores.
 > to geometry is restricted to tangents already known to arise from
 > admissible S1 paths.
 
+### Appendix F. Exact matrices and spectra for \(N=2,3,4\)
+
+**Estado: prosa de trabajo.** Documenta los cálculos racionales de
+(6.5)–(6.13) en las bases modales allí fijadas. No extiende esos cálculos a
+cardinalidad general ni modifica la interpretación de Theorem F.
+
+> Put
+> \[
+> x(t):=t-\frac12,\qquad
+> q(t):=\left(t-\frac12\right)^2-\frac1{12},\qquad
+> r(t):=\left(t-\frac12\right)^3
+>       -\frac3{20}\left(t-\frac12\right).
+> \tag{F.1}
+> \]
+> Direct integration gives the mutually orthogonal modal norms
+> \[
+> \|x\|^2=\frac1{12},\qquad
+> \|q\|^2=\frac1{180},\qquad
+> \|r\|^2=\frac1{2800}.
+> \tag{F.2}
+> \]
+> For cardinality \(N\), the continuous reference experiment consists of
+> \(N\) iid copula observations. By (A.4), its score is
+> \(2\sum_{k=1}^N f(U_k,V_k)\), and therefore
+> \[
+> G_{\rm full}^{(N)}(f,g)=4N\langle f,g\rangle.
+> \tag{F.3}
+> \]
+> Consequently, in any basis of \(V_N\), the nonzero eigenvalues of
+> \(\widehat F_N\) are the generalized eigenvalues of
+> \[
+> G_{[P]}^{(N)}v=\lambda\,G_{\rm full}^{(N)}v.
+> \tag{F.4}
+> \]
+> Thus the matrix of the Fisher form in a non-normalized basis is not the
+> matrix of the operator \(\widehat F_N\); the continuous Gram matrix in
+> (F.4) supplies the metric with respect to which the operator is
+> represented.
+>
+> **Cardinality \(N=2\).** Let \(e_{11}=x\otimes x\). Formula (6.6),
+> equivalently (A.13) specialized to the two poset classes, gives
+> \[
+> G_{[P]}^{(2)}(f,g)
+> =256\langle f,e_{11}\rangle\langle g,e_{11}\rangle.
+> \tag{F.5}
+> \]
+> Since \(\|e_{11}\|^2=\|x\|^4=1/144\), evaluation of (F.5) on
+> \(e_{11}\), together with (F.3), yields
+> \[
+> [G_{[P]}^{(2)}]=\left(\frac1{81}\right),
+> \qquad
+> [G_{\rm full}^{(2)}]=\left(\frac1{18}\right).
+> \tag{F.6}
+> \]
+> Their generalized quotient is therefore
+> \[
+> \operatorname{spec}_+(\widehat F_2)
+> =\left\{\frac{1/81}{1/18}\right\}
+> =\left\{\frac29\right\}.
+> \tag{F.7}
+> \]
+>
+> **Cardinality \(N=3\).** Use the orthogonal ordered basis
+> \[
+> e_{11}=x\otimes x,\qquad
+> e_{12}=x\otimes q+q\otimes x,\qquad
+> e_{22}=q\otimes q.
+> \tag{F.8}
+> \]
+> Substitution of the five class derivatives in the Fisher formula (A.13)
+> gives the first matrix below. For the second, (F.2)–(F.3) give
+> \(12\|e_{11}\|^2=1/12\),
+> \(12\|e_{12}\|^2=12\cdot2\|x\|^2\|q\|^2=1/90\), and
+> \(12\|e_{22}\|^2=1/2700\). Hence
+> \[
+> [G_{[P]}^{(3)}]
+> =\operatorname{diag}\left(
+> \frac1{32},\frac1{1200},\frac1{180000}
+> \right),
+> \qquad
+> [G_{\rm full}^{(3)}]
+> =\operatorname{diag}\left(
+> \frac1{12},\frac1{90},\frac1{2700}
+> \right).
+> \tag{F.9}
+> \]
+> Both matrices are diagonal in the same basis, so their entrywise
+> generalized quotients give
+> \[
+> \operatorname{spec}_+(\widehat F_3)
+> =\left\{\frac38,\frac3{40},\frac3{200}\right\},
+> \tag{F.10}
+> \]
+> with eigenvectors \(e_{11},e_{12},e_{22}\), respectively. This records
+> only Fisher anisotropy inside the three-dimensional visible support fixed
+> in §4.
+>
+> **Cardinality \(N=4\).** In exactly the order used in (6.9), set
+> \[
+> \begin{aligned}
+> e_{11}&=x\otimes x,&
+> e_{12}&=x\otimes q+q\otimes x,&
+> e_{13}&=x\otimes r+r\otimes x,\\
+> e_{22}&=q\otimes q,&
+> e_{23}&=q\otimes r+r\otimes q,&
+> e_{33}&=r\otimes r.
+> \end{aligned}
+> \tag{F.11}
+> \]
+> The exact class-score calculation from (A.13) gives
+> \[
+> [G_{[P]}^{(4)}]
+> =
+> \begin{pmatrix}
+> 4/75&0&0&0&0&0\\
+> 0&8/3375&0&0&0&0\\
+> 0&0&1/55125&1/354375&0&1/38587500\\
+> 0&0&1/354375&11/455625&0&-1/49612500\\
+> 0&0&0&0&2/4134375&0\\
+> 0&0&1/38587500&-1/49612500&0&11/5402250000
+> \end{pmatrix}.
+> \tag{F.12}
+> \]
+> Orthogonality and (F.2)–(F.3) give the corresponding continuous Gram
+> matrix
+> \[
+> [G_{\rm full}^{(4)}]
+> =\operatorname{diag}\left(
+> \frac19,\frac2{135},\frac1{1050},
+> \frac1{2025},\frac1{15750},\frac1{490000}
+> \right).
+> \tag{F.13}
+> \]
+> The isolated diagonal entries of (F.12)–(F.13) immediately produce the
+> three pure channels
+> \[
+> \lambda_{11}=\frac{4/75}{1/9}=\frac{12}{25},\qquad
+> \lambda_{12}=\frac{8/3375}{2/135}=\frac4{25},\qquad
+> \lambda_{23}=\frac{2/4134375}{1/15750}=\frac4{525}.
+> \tag{F.14}
+> \]
+> On the remaining invariant block
+> \(\operatorname{span}\{e_{13},e_{22},e_{33}\}\), taking
+> \(\det(G_{[P],\rm mix}^{(4)}-\lambda
+> G_{\rm full,\rm mix}^{(4)})\) gives, up to a nonzero rational factor,
+> \[
+> 144703125\lambda^3
+> -9975000\lambda^2
+> +142000\lambda
+> -128.
+> \tag{F.15}
+> \]
+> Its three roots are positive because the Fisher operator \(F_4\) is
+> positive definite on its support \(V_4\). For orientation only, as in
+> §6, they are
+> \[
+> 0.0494521212879\ldots,\qquad
+> 0.0185160720400\ldots,\qquad
+> 0.000966047034941\ldots.
+> \tag{F.16}
+> \]
+> Combining the three pure factors with the mixed block gives the full
+> generalized characteristic determinant, again up to a nonzero rational
+> factor:
+> \[
+> (25\lambda-12)(25\lambda-4)(525\lambda-4)
+> \left(
+> 144703125\lambda^3
+> -9975000\lambda^2
+> +142000\lambda
+> -128
+> \right).
+> \tag{F.17}
+> \]
+>
+> This appendix only documents the exact fixed-\(N\) calculations used in
+> §6. It provides no all-\(N\) spectral formula, proves no monotonicity of
+> eigenvalues with \(N\), and does not identify \(F_N\) with
+> \(P_N^{\rm vis}\). The generalized quotients compare the unlabeled-poset
+> law with \(N\) continuous observations of the reference copula. They are
+> not fractions of geometry and are not reconstruction results. No new
+> claim is added here.
+
 ## 8. Figuras y tablas mínimas
 
 1. **Diagrama del diferencial:**
@@ -2867,7 +3050,8 @@ historia S1.
    El cuerpo continuo queda completo. Appendices A (QMD y representantes de
    score), B (reducción finita a \(\operatorname{Sym}(E_N)\)), C (familia
    casi cadena y triangularización por laplacianos), D (kernel, nesting
-   estricto y densidad simétrica HS) y E (cotas HS y retención Fisher)
-   redactados. Pendientes en orden: appendices F–G.
+   estricto y densidad simétrica HS), E (cotas HS y retención Fisher) y F
+   (matrices y espectros exactos para \(N=2,3,4\)) cerrados. Pendiente:
+   Appendix G.
 6. Mantener fuera \(Q_N\) general salvo que el manuscrito revele una laguna
    lógica real y se emita una autorización separada.
