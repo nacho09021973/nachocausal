@@ -1855,7 +1855,7 @@ los representantes más allá de su continuación lineal hilbertiana.
 > \right)^2du\,dv=o(\varepsilon^2).
 > \tag{A.2}
 > \]
-> Thus the one-observation copula experiment is QMD at zero with score
+> So the one-observation copula experiment is QMD at zero with score
 > \(2f=h_\psi\).
 >
 > For a fixed \(N\), write
@@ -1939,8 +1939,8 @@ los representantes más allá de su continuación lineal hilbertiana.
 > \tag{A.9}
 > \]
 >
-> It remains to pass from labeled ranks to the observable unlabeled poset.
-> For \(C\in\mathcal C_N\), the fiber \(\Gamma_C\) is finite and fixed, so
+> The last step is to pass from labeled ranks to the observable unlabeled
+> poset. For \(C\in\mathcal C_N\), the fiber \(\Gamma_C\) is finite and fixed, so
 > direct summation of (A.9) gives
 > \[
 > \begin{aligned}
@@ -1975,11 +1975,11 @@ los representantes más allá de su continuación lineal hilbertiana.
 > {\mu_{N,0}^{[P]}(C)}.
 > \tag{A.12}
 > \]
-> Moreover,
+> Also,
 > \(\sum_{C\in\mathcal C_N}R_C^{(N)}=0\): after summing (A.9) over
 > \(\sigma\), each \(b_j^{(N)}\) occurs \((N-1)!\) times at every fixed
-> position and \(\sum_jb_j^{(N)}=0\). Thus (A.12) has zero mean, as a score
-> must, and polarization gives
+> position and \(\sum_jb_j^{(N)}=0\). So (A.12) has zero mean, as a score
+> must; polarization gives
 > \[
 > G_{[P]}^{(N)}(f,g)
 > =\sum_{C\in\mathcal C_N}
@@ -1992,7 +1992,7 @@ los representantes más allá de su continuación lineal hilbertiana.
 > Equations (A.9)–(A.13) were derived for continuous S1 tangents. Since
 > every \(R_C^{(N)}\) is a finite sum of polynomial tensors, the right-hand
 > sides define bounded linear functionals on
-> \(\mathcal X=H\widehat\otimes H\). This is precisely the Hilbert-space
+> \(\mathcal X=H\widehat\otimes H\). This is the Hilbert-space
 > extension used in §§3–6; it is not a claim that every element of
 > \(\mathcal X\) is geometrically realizable.
 
@@ -2078,9 +2078,9 @@ exacto \(2/N!\). \(B_N\) sigue reservado para el operador de codificación de
 > \mathbf1^\top A_C=|\Gamma_C|\mathbf1^\top,
 > \tag{B.7}
 > \]
-> so \(E_N\) is invariant under \(A_C\). Moreover,
+> so \(E_N\) is invariant under \(A_C\). Also,
 > \(P_\sigma^\top=P_{\sigma^{-1}}\), and the fiber \(\Gamma_C\) is closed
-> under inversion. Thus
+> under inversion. So
 > \[
 > A_C^\top=A_C,
 > \qquad
@@ -2158,10 +2158,10 @@ posets a cardinalidad fija.
 > Conversely, enumerating the elements in the first order of any ordered
 > realizer pair and recording their ranks in the second produces one such
 > \(\sigma\). Applying an automorphism or a simultaneous relabeling to both
-> orders does not change this relative-rank permutation. Thus no additional
+> orders does not change this relative-rank permutation, so no additional
 > permutations arise from the choice of an isomorphism.
 >
-> Thus the only ordered realizer pairs are \((L_a,L_b)\) and
+> So the only ordered realizer pairs are \((L_a,L_b)\) and
 > \((L_b,L_a)\). After normalizing the first extension to the natural order,
 > the relative permutation is a cycle \(\tau_{a,b}\) on the consecutive
 > interval
@@ -2186,7 +2186,7 @@ posets a cardinalidad fija.
 > \tag{C.6}
 > \]
 > It omits \(b\) and contains \(a\) twice, so it determines \((a,b)\).
-> Consequently the construction supplies exactly one distinct class for
+> This means the construction supplies exactly one distinct class for
 > each of the \(\binom N2\) pairs \(a<b\).
 >
 > For \(1\le i<j\le N\), define the edge Laplacian
@@ -2263,8 +2263,8 @@ posets a cardinalidad fija.
 > \tag{C.16}
 > \]
 >
-> It remains to remove the common identity term in (C.12). From (C.9) and
-> (C.15), there are coefficients \(c_{a,b}\) such that
+> The common identity term in (C.12) still has to be removed. From (C.9)
+> and (C.15), there are coefficients \(c_{a,b}\) such that
 > \[
 > I_{E_N}=\sum_{a<b}c_{a,b}Q_{a,b}.
 > \tag{C.17}
@@ -2296,7 +2296,7 @@ posets a cardinalidad fija.
 > =\frac{(N-3)^2+2}{6}>0.
 > \tag{C.20}
 > \]
-> Therefore \(I_{E_N}\) lies in the span of the
+> So \(I_{E_N}\) lies in the span of the
 > \(S_{a,b}|_{E_N}\). Equation (C.12) then puts every \(Q_{a,b}\) in that
 > same span, and (C.16) gives
 > \[
@@ -2304,8 +2304,8 @@ posets a cardinalidad fija.
 > =\operatorname{Sym}(E_N).
 > \tag{C.21}
 > \]
-> Finally, (C.11) shows that the selected class sums themselves span
-> \(\operatorname{Sym}(E_N)\). Appendix B then transports (C.21) to
+> The remaining step, (C.11), shows that the selected class sums themselves
+> span \(\operatorname{Sym}(E_N)\). Appendix B then transports (C.21) to
 > \(V_N=\operatorname{Sym}^2P_{N-1}\), completing the constructive proof of
 > Theorem C for every \(N\ge2\).
 
@@ -2461,7 +2461,7 @@ realizabilidad geométrica de cada tangente.
 > \(\Pi_{\rm sym}\), every symmetric Hilbert–Schmidt tensor can therefore be
 > approximated by finite sums of symmetrized polynomial tensors. Each such
 > finite sum belongs to \(\operatorname{Sym}^2P_m=V_{m+1}\) for some \(m\).
-> Consequently,
+> So
 > \[
 > \boxed{
 > \overline{\bigcup_{N\ge2}V_N}^{\,\|\cdot\|_{\mathcal X}}
@@ -2509,7 +2509,7 @@ bibliográficas normales.
 > :=\langle f,d_i^{(N)}\otimes d_j^{(N)}\rangle.
 > \tag{E.2}
 > \]
-> Thus \(H^{(N)}(f)=(\mathcal O_N\otimes\mathcal O_N)f\). Since
+> So \(H^{(N)}(f)=(\mathcal O_N\otimes\mathcal O_N)f\). Since
 > \(\sum_i d_i^{(N)}=N\) and both marginals of \(f\) vanish, this matrix has
 > zero row and column sums. Appendix A gives the rank-permutation score as
 > \[
@@ -2837,13 +2837,13 @@ cardinalidad general ni modifica la interpretación de Theorem F.
 > G_{\rm full}^{(N)}(f,g)=4N\langle f,g\rangle.
 > \tag{F.3}
 > \]
-> Consequently, in any basis of \(V_N\), the nonzero eigenvalues of
+> In any basis of \(V_N\), the nonzero eigenvalues of
 > \(\widehat F_N\) are the generalized eigenvalues of
 > \[
 > G_{[P]}^{(N)}v=\lambda\,G_{\rm full}^{(N)}v.
 > \tag{F.4}
 > \]
-> Thus the matrix of the Fisher form in a non-normalized basis is not the
+> So the matrix of the Fisher form in a non-normalized basis is not the
 > matrix of the operator \(\widehat F_N\); the continuous Gram matrix in
 > (F.4) supplies the metric with respect to which the operator is
 > represented.
@@ -3447,6 +3447,7 @@ historia S1.
    ALL_PLANNED_APPENDICES_DRAFTED
    APPENDIX_E_EXTERNAL_FIBER_DEPENDENCY = CLOSED_WITH_EXPLICIT_CITATION
    SECTION8_HUMAN_STYLE_PASS = CLOSED
+   APPENDICES_A_G_HUMAN_STYLE_PASS = CLOSED
    ```
 
    La dependencia bibliográfica de (E.15) queda cerrada con cita explícita
