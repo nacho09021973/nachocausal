@@ -350,81 +350,83 @@ vive aquí, en la nota de estado, no en la prosa del paper.**
 > statistical notion of closeness between two such laws. Janson [*Poset
 > limits and exchangeable random posets*, arXiv:0902.0306, 2011] supplies
 > the general limiting framework of poset kernels and consistent finite
-> laws in which this construction sits, and Surya [*A Closeness Function on
-> Coarse Grained Lorentzian Geometries*, arXiv:2510.19403, 2025] gives, via
-> expected interval abundances, a closely related account of how increasing
-> $N$ can lift degeneracies in this kind of causal compression. None of the
-> three computes the differential of the finite-$N$ law at a reference
-> geometry, its kernel, or its rank.
+> laws in which this construction sits. Surya [*A Closeness Function on
+> Coarse Grained Lorentzian Geometries*, arXiv:2510.19403, 2025] gives,
+> via expected interval abundances, a closely related account of how
+> increasing $N$ can lift degeneracies in this kind of causal compression.
+> None of the three computes the differential of the finite-$N$ law at a
+> reference geometry, its kernel, or its rank.
 >
 > We work in an explicit $1+1$-dimensional causal-diamond model (S1) with
-> an independent-reference null geometry and ask the narrow question this
-> leaves open: what, to first order in a perturbation of the underlying
-> Lorentzian geometry, survives the map from a continuous perturbation to
-> the finite unlabeled-poset law?
+> an independent-reference null geometry. The question we ask is narrow:
+> to first order in a perturbation of the underlying Lorentzian geometry,
+> what survives the map from a continuous perturbation to the finite
+> unlabeled-poset law?
 >
-> Answering this requires two further steps that are already present,
-> separately, in adjacent literatures, but not combined. First, at the
-> level of *labeled* permutations rather than *unlabeled two-dimensional
-> posets*, the differential of a permutation-pattern statistic around the
-> uniform reference is understood in detail: Even-Zohar [*Patterns in
-> Random Permutations*, Combinatorica 40, 2020, 775–804] decomposes the
-> full space of pattern densities via the representation theory of $S_N$,
+> Two pieces of an answer already exist, in adjacent literatures, without
+> being combined. At the level of *labeled* permutations rather than
+> *unlabeled two-dimensional posets*, the differential of a
+> permutation-pattern statistic around the uniform reference is
+> understood in some detail. Even-Zohar [*Patterns in Random
+> Permutations*, Combinatorica 40, 2020, 775–804] decomposes the full
+> space of pattern densities via the representation theory of $S_N$,
 > isolating the standard-representation block $V_1^{\rm EZ}$ of dimension
-> $(N-1)^2$, realized explicitly via $U^TA(\sigma)U$; Kurečka [*Lower bound
-> on the size of a quasirandom forcing set of permutations*, Combin.
-> Probab. Comput. 31, 2022] differentiates the pattern density directly,
-> expressing the gradient in a Bernstein-type basis on $E_N=\mathbf1^\perp$
-> via compressed permutation matrices $A_\pi|_{E_N}$ and covering-matrix
-> sums $\sum_\pi t_\pi A_\pi$. Second, the abstract target module is also
-> not new: Diaconis [*A generalization of spectral analysis with
-> application to ranked data*, Ann. Statist. 17, 1989, 949–979] and the
-> monograph [*Group Representations in Probability and Statistics*, IMS
-> Lecture Notes-Monograph Series 11, 1988] give, for unordered-pair effects
-> on rankings, the decomposition
+> $(N-1)^2$, realized explicitly via $U^TA(\sigma)U$. Kurečka [*Lower
+> bound on the size of a quasirandom forcing set of permutations*,
+> Combin. Probab. Comput. 31, 2022] differentiates the pattern density
+> directly, expressing the gradient in a Bernstein-type basis on
+> $E_N=\mathbf1^\perp$ via compressed permutation matrices
+> $A_\pi|_{E_N}$ and covering-matrix sums $\sum_\pi t_\pi A_\pi$.
+>
+> The abstract target module is not new either. Diaconis [*A
+> generalization of spectral analysis with application to ranked data*,
+> Ann. Statist. 17, 1989, 949–979] and the monograph [*Group
+> Representations in Probability and Statistics*, IMS Lecture
+> Notes-Monograph Series 11, 1988] give, for unordered-pair effects on
+> rankings, the decomposition
 > $M^{(N-2,2)}\simeq S^{(N)}\oplus S^{(N-1,1)}\oplus S^{(N-2,2)}$ — a
 > module of dimension $\binom N2$ that is, up to naming, our target space
 > $\operatorname{Sym}^2P_{N-1}$, illustrated already in 1988 with the
 > Diallel Cross Design. And the many-to-one map from labeled permutations
 > to unlabeled two-dimensional posets that we quotient by is itself
 > classical combinatorics: Bayoumi, El-Zahar and Khamis [*Counting
-> two-dimensional posets*, Discrete Math. 131, 1994] describe the fibers of
-> this map explicitly, including their closure under $\sigma\mapsto
+> two-dimensional posets*, Discrete Math. 131, 1994] describe the fibers
+> of this map explicitly, including their closure under $\sigma\mapsto
 > \sigma^{-1}$ and the near-uniqueness of realizers for prime posets.
 >
-> What none of these five results does is the one step that connects them:
-> sum the permutation-level differential over the fibers $\Gamma_C$ of the
-> permutation-to-unlabeled-poset map, and show that the resulting
-> class-sum score representatives *span* the full symmetric target module,
+> None of these five results takes the one further step that connects
+> them: sum the permutation-level differential over the fibers $\Gamma_C$
+> of the permutation-to-unlabeled-poset map, and show that the resulting
+> class-sum score representatives *span* the full symmetric target
+> module,
 > \[
 > \operatorname{span}\{R_C^{(N)}:C\in\mathcal C_N\}
 > =\operatorname{Sym}^2P_{N-1}.
 > \]
-> This is exactly Theorem C ($\S4$) below, and it is the hinge on which the
-> rest of the paper — the exact kernel, the identifiable quotient, and the
-> Fisher-resolution statement — turns. Everything else is either a direct
-> corollary of this span theorem (Corollaries D, E; Theorem F) or a
-> separate, self-contained second-order statement about one explicit
-> antisymmetric orbit (Theorem G, Corollary H). In the compressed
-> permutation-pattern language of §8 — restricting each class sum to
-> $E_N=\mathbf1^\perp$ instead of working in $\operatorname{Sym}^2P_{N-1}$
-> directly — the same statement reads
+> This is Theorem C ($\S4$) below. The exact kernel, the identifiable
+> quotient, and the Fisher-resolution statement all turn on it.
+> Corollaries D and E and Theorem F follow from it directly; Theorem G
+> and Corollary H are a separate, self-contained second-order statement
+> about one explicit antisymmetric orbit. Fisher resolution and that
+> second-order orbit are substantive results with their own content, not
+> footnotes to the span theorem. In the compressed permutation-pattern
+> language of §8, restricting each class sum to $E_N=\mathbf1^\perp$
+> instead of working in $\operatorname{Sym}^2P_{N-1}$ directly, the same
+> statement reads
 > $\operatorname{span}\{A_C|_{E_N}:C\in\mathcal C_N\}=\operatorname{Sym}(E_N)$,
-> which is the form compared there against Kurečka's covering-matrix
-> technique.
+> the form compared there against Kurečka's covering-matrix technique.
 >
-> We state the contribution as narrowly as the adversarial priority audit
-> leaves it:
+> Put narrowly, this is the contribution:
 > \[
 > \boxed{\text{previous work identifies the ambient permutation-level
 > structure;}\quad\text{we identify exactly what survives the quotient to
 > unlabeled finite causal-order laws.}}
 > \]
 > We write "we identify" and "we prove," not "for the first time" or
-> "novel": a scoped literature search (§8) did not locate this exact
-> class-sum span theorem, but the search was not an exhaustive systematic
-> review — no full MathSciNet/zbMATH/Scopus/Web-of-Science coverage — and
-> its absence does not certify novelty (§10).
+> "novel." The individual ingredients above have substantial precedents,
+> discussed in §8. We are not aware of this exact class-sum span theorem
+> already stated in the literature, but that is not the same thing as a
+> claim that none exists (§10).
 >
 > We make no claim of nonlinear reconstruction, geometric identifiability
 > at finite distance, or any result about Schwarzschild, horizons, or
@@ -1575,33 +1577,34 @@ trazabilidad vive aquí, en la nota de estado.
 Corollaries D–E, Theorem F y Theorem G/Corollary H. No introduce una nueva
 definición, hipótesis o afirmación matemática.
 
-> The phrase *causal compression* provides a compact interpretation of the
-> exact S1 factorization
+> The phrase *causal compression* is a compact name for the exact S1
+> factorization
 > \[
 > D\mathscr S_N=B_NP_N^{\rm vis},
 > \qquad
 > V_N=\operatorname{Sym}^2P_{N-1}.
 > \tag{9.1}
 > \]
-> It should be read literally at the level proved here: the first
+> Read literally, at the level actually proved here: the first
 > differential of an infinite-dimensional interaction tangent is compressed
 > to the finite-dimensional component \(P_N^{\rm vis}f\), and that component
 > is then encoded injectively as a score of the finite unlabeled-poset law.
-> The projection selects what is visible, the map \(B_N\) performs the
+> The projection selects what is visible, \(B_N\) performs the
 > statistical encoding, and \(F_N=B_N^*B_N\) measures its directional
-> strength. These are three different parts of the same channel, not three
-> names for one operator.
+> strength. These are three different parts of one channel, not three
+> names for the same operator.
 >
-> **Why the compression is causal.** In the \(1+1\)-dimensional diamond, the
-> order relation is determined by the joint pattern of the two null rankings.
-> Passing from continuous coordinates to ranks removes marginal information;
-> passing from a rank permutation to an unlabeled poset removes the choice of
-> linear realizer. What survives both operations at first order is exactly the
-> symmetric polynomial interaction sector in (9.1). In this restricted and
-> model-specific sense, the causal past and future compress the present: the
-> finite order does not preserve a perturbation point by point, but records a
-> finite collection of symmetric interaction modes through the relations
-> among the sampled events.
+> The word *causal* here is not decorative. In the \(1+1\)-dimensional
+> diamond, the order relation is fixed by the joint pattern of the two
+> null rankings. Passing from continuous coordinates to ranks throws away
+> marginal information; passing from a rank permutation to an unlabeled
+> poset throws away the choice of linear realizer. What survives both
+> steps at first order is exactly the symmetric polynomial interaction
+> sector in (9.1). In this restricted, model-specific sense the causal
+> past and future compress the present: the finite order does not
+> preserve a perturbation point by point, it records a finite collection
+> of symmetric interaction modes through the relations among the sampled
+> events.
 >
 > **Resolution grows, but not uniformly.** Theorem C and Corollary E turn this
 > interpretation into an exact filtration,
@@ -1655,14 +1658,15 @@ definición, hipótesis o afirmación matemática.
 > it does not classify higher-order behavior throughout
 > \(\bigwedge^2H\).
 >
-> Taken together, §§3–7 describe the local anatomy of one precise channel:
-> score representatives identify its finite linear functionals; the all-
-> \(N\) span theorem determines their exact support; the quotient isolates
-> the equivalence class identified by the differential; the Fisher operator
-> resolves directions within that support; and the antisymmetric orbit shows
-> how a symmetry-forced first-order zero can carry a nonzero second jet. This
-> is a theorem about tangent visibility and statistical resolution for the S1
-> finite-law experiment, not a reconstruction theorem.
+> §§3–7 together describe the local anatomy of one channel. Score
+> representatives give its finite linear functionals; the all-\(N\) span
+> theorem pins down their exact support; the quotient marks off the
+> equivalence class the differential identifies; the Fisher operator then
+> resolves directions within that support, and the antisymmetric orbit of
+> §7 shows that a symmetry-forced first-order zero can still carry a
+> nonzero second jet. The result is a statement about tangent visibility
+> and statistical resolution for the S1 finite-law experiment, not a
+> reconstruction theorem.
 >
 > In particular, *the causal past and future compress the present* must not be
 > read as saying that causal data universally determine a present geometry.
@@ -1730,11 +1734,12 @@ bibliográficas. No abre extensiones nuevas.
 **Estado: prosa de trabajo.** Ensambla únicamente C1–C4 y conserva el techo
 de §§9–10. No introduce resultados ni problemas nuevos.
 
-> We have determined the local differential structure of the finite
-> unlabeled causal-order law at the independent reference point of the
-> \(1+1\)-dimensional S1 model. The score representatives of §3 reduce the
-> problem to class sums over the fibers of the permutation-to-poset map, and
-> the constructive all-\(N\) argument of §4 proves
+> The finite unlabeled causal-order law has, at the independent reference
+> point of the \(1+1\)-dimensional S1 model, a local differential
+> structure we can now state exactly. The score representatives of §3
+> reduce the problem to class sums over the fibers of the
+> permutation-to-poset map, and the constructive all-\(N\) argument of §4
+> gives
 > \[
 > \operatorname{span}\{R_C^{(N)}:C\in\mathcal C_N\}
 > =V_N=\operatorname{Sym}^2P_{N-1},
@@ -1743,11 +1748,11 @@ de §§9–10. No introduce resultados ni problemas nuevos.
 > \quad(N\ge2).
 > \tag{11.1}
 > \]
-> This identifies exactly which first-order interaction modes survive the
-> additional quotient from a rank permutation to an unlabeled causal order.
+> These are exactly the first-order interaction modes that survive the
+> additional quotient from a rank permutation to an unlabeled causal
+> order.
 >
-> The operator formulation makes the resulting notion of identification
-> precise. For every \(N\),
+> The operator picture makes this precise. For every \(N\),
 > \[
 > D\mathscr S_N=B_NP_N^{\rm vis},
 > \qquad
@@ -1757,16 +1762,16 @@ de §§9–10. No introduce resultados ni problemas nuevos.
 > \mathcal X/\ker D\mathscr S_N\simeq V_N.
 > \tag{11.2}
 > \]
-> The visible spaces are strictly nested and their union is dense in the
-> symmetric interaction Hilbert space. Thus increasing cardinality opens new
-> first-order directions at every step, while the quotient in (11.2) states
-> only differential identifiability at the reference model.
+> The visible spaces are strictly nested, and their union is dense in the
+> symmetric interaction Hilbert space: increasing cardinality keeps
+> opening new first-order directions, while (11.2) itself states only
+> differential identifiability at the reference model.
 >
-> Visibility does not determine statistical sensitivity. The positive
-> operator \(F_N=B_N^*B_N\) resolves directions inside \(V_N\), and the exact
-> spectra at \(N=2,3,4\) exhibit both strong anisotropy and, at \(N=4\), modal
-> mixing. After normalization by the Fisher information of \(N\) continuous
-> copula observations, Theorem F gives
+> Visibility is one thing, statistical sensitivity another. The positive
+> operator \(F_N=B_N^*B_N\) resolves directions inside \(V_N\), and the
+> exact spectra at \(N=2,3,4\) show both strong anisotropy and, at
+> \(N=4\), modal mixing. Normalized by the Fisher information of \(N\)
+> continuous copula observations, Theorem F gives
 > \[
 > \widehat F_N\xrightarrow{\rm SOT}\Pi_{\rm sym},
 > \qquad
@@ -1774,26 +1779,26 @@ de §§9–10. No introduce resultados ni problemas nuevos.
 > \quad\text{for every }N.
 > \tag{11.3}
 > \]
-> Hence every fixed symmetric Hilbert–Schmidt tangent is asymptotically
-> retained, but not uniformly over the unit sphere. Keeping the two stages
-> continuous observations \(\to\) ranks \(\to\) unlabeled posets separate is
-> essential to locate the corresponding Fisher losses.
+> Every fixed symmetric Hilbert–Schmidt tangent is asymptotically
+> retained, but not uniformly over the unit sphere; keeping the two
+> stages, continuous observations \(\to\) ranks and ranks
+> \(\to\) unlabeled posets, separate is what lets us locate the
+> corresponding Fisher losses.
 >
-> Finally, the explicit antisymmetric orbit of §7 shows why a first-order
-> kernel is not a nonlinear invisibility theorem. Coordinate exchange folds
-> \(g_\varepsilon\) onto the isometric geometry \(g_{-\varepsilon}\), so the
-> finite laws are even and their first derivatives vanish. Nevertheless, the
-> exact \(N=2\) second derivative and projective consistency under uniform
-> deletion give
+> The explicit antisymmetric orbit of §7 completes the picture.
+> Coordinate exchange folds \(g_\varepsilon\) onto the isometric geometry
+> \(g_{-\varepsilon}\), so the finite laws are even and their first
+> derivatives vanish; the exact \(N=2\) second derivative and projective
+> consistency under uniform deletion nonetheless give
 > \[
 > r_N(\gamma_\psi)=2
 > \qquad\forall N\ge2.
 > \tag{11.4}
 > \]
-> This is an all-resolution statement for one admissible orbit, not a
-> classification of the antisymmetric sector.
+> One admissible orbit, at every resolution, not a classification of the
+> antisymmetric sector.
 >
-> The resulting picture has three distinct layers:
+> Three layers make up the resulting picture:
 > \[
 > \boxed{
 > \text{tangent visibility}=V_N,
@@ -1804,13 +1809,12 @@ de §§9–10. No introduce resultados ni problemas nuevos.
 > \text{ for the explicit witness}.}
 > \tag{11.5}
 > \]
-> Together they provide an exact local account of what the finite causal-
-> order channel retains in S1. They do not reconstruct a Lorentzian metric or
-> continuous coordinates from a causet, prove global or nonlinear
-> identifiability, realize every Hilbert–Schmidt tangent geometrically, or
-> extend the result beyond the \(1+1\)-dimensional S1 model. The statistical
-> framework itself is inherited from prior work; the contribution isolated
-> here is the explicit differential classification and its stated
+> This is an exact, local account of what the finite causal-order channel
+> retains in S1, not a reconstruction of geometry from a causet, a claim
+> of global or nonlinear identifiability, or a result beyond the
+> \(1+1\)-dimensional S1 model; §10 states the full limits. The
+> statistical framework itself is inherited from prior work — what is
+> isolated here is the explicit differential classification and its
 > consequences within that fixed scope.
 
 ## 7. Apéndices previstos
@@ -3448,6 +3452,7 @@ historia S1.
    APPENDIX_E_EXTERNAL_FIBER_DEPENDENCY = CLOSED_WITH_EXPLICIT_CITATION
    SECTION8_HUMAN_STYLE_PASS = CLOSED
    APPENDICES_A_G_HUMAN_STYLE_PASS = CLOSED
+   INTRO_DISCUSSION_CONCLUSION_HUMAN_STYLE_PASS = CLOSED
    ```
 
    La dependencia bibliográfica de (E.15) queda cerrada con cita explícita
