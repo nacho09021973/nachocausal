@@ -2445,7 +2445,15 @@ realizabilidad geométrica de cada tangente.
 **Estado: prosa de trabajo.** Demuestra Theorem F separando el paso
 observaciones continuas \(\to\) rangos del paso rangos \(\to\) poset no
 etiquetado. Todas las convergencias son para tangentes fijos; no se obtiene
-una tasa uniforme ni convergencia en norma de operadores.
+una tasa uniforme ni convergencia en norma de operadores. La dependencia
+bibliográfica externa de (E.15) queda cerrada con cita explícita: el paso
+determinista transporta el teorema de Gallai vía el puente primo probado en
+`research_program/work_packages/wp6_d2_modular_fiber_score.md` §§6.4–6.5
+(Theorem 3), y el paso probabilístico externo es
+`wp6_d2_modular_fiber_score.md` §7.5, que aplica el Theorem 2/Lemma 1 de
+Bouvel–Chauve–Mishna–Rossin. Estos nombres de archivo son sólo trazabilidad
+editorial; el texto citable dentro del blockquote usa referencias
+bibliográficas normales.
 
 > For \(a\in H\), define the order-statistic transform
 > \[
@@ -2603,8 +2611,7 @@ una tasa uniforme ni convergencia en norma de operadores.
 > \tag{E.14}
 > \]
 >
-> The modular-fiber lemma, combined with the standard exceptional-set
-> estimate used in §6, supplies a
+> Two independent facts combine to supply a
 > \([P_{\Pi_N}]\)-measurable event \(\mathcal G_N\) and constants
 > \(C_{\rm fib},N_{\rm fib}<\infty\) such that
 > \[
@@ -2615,7 +2622,30 @@ una tasa uniforme ni convergencia en norma de operadores.
 > \quad\text{on }\mathcal G_N,
 > \tag{E.15}
 > \]
-> with the set understood without multiplicity for involutions. For symmetric
+> with the set understood without multiplicity for involutions. The first
+> fact is deterministic: on the event that the incomparability graph
+> \(G_{\Pi_N}^{\rm inc}\) is prime, the fiber of the unlabeled poset over
+> \(\Pi_N\) collapses exactly to \(\{\Pi_N,\Pi_N^{-1}\}\). This is proved
+> structurally, not merely cited, by transporting Gallai's uniqueness
+> theorem for the two transitive orientations of a prime comparability
+> graph — Gallai [*Transitiv orientierbare Graphen*, Acta Mathematica
+> Academiae Scientiarum Hungaricae **18**, 1967, 25–66,
+> DOI 10.1007/BF02020961] — to the two competing linear extensions of the
+> finite poset. \(\mathcal G_N\) is taken to be exactly this primality
+> event, which is \([P_{\Pi_N}]\)-measurable since the incomparability
+> graph is determined up to isomorphism by the unlabeled poset. The second
+> fact is probabilistic and external to this paper: the complementary event
+> — the incomparability graph failing to be prime, i.e. the atypical shape
+> of the associated strong interval tree — has probability \(O(N^{-1})\)
+> under the uniform reference law, by the average-case analysis of Bouvel,
+> Chauve, Mishna and Rossin [*Average-Case Analysis of Perfect Sorting by
+> Reversals*, Combinatorial Pattern Matching (CPM 2009), LNCS 5577,
+> 314–325, DOI 10.1007/978-3-642-02441-2_28], whose Theorem 2, via their
+> Lemma 1, bounds exactly this exceptional probability. Combining the two
+> gives (E.15), with \(C_{\rm fib}\) and \(N_{\rm fib}\) existential
+> constants inherited from that source and not otherwise specified: this
+> paper does not reprove, and does not sharpen, the \(O(N^{-1})\) estimate.
+> For symmetric
 > \(f\), (E.2) gives \(H^{(N)}(f)^\top=H^{(N)}(f)\), and hence
 > \(S_N^\Pi(f)(\sigma^{-1})=S_N^\Pi(f)(\sigma)\). The conditional variance
 > in (E.10) therefore vanishes on \(\mathcal G_N\). Cauchy–Schwarz and
@@ -3373,9 +3403,14 @@ historia S1.
 
    ```text
    Appendices A–G closed / ALL PLANNED APPENDICES DRAFTED
+   APPENDIX_E_EXTERNAL_FIBER_DEPENDENCY = CLOSED_WITH_EXPLICIT_CITATION
    ```
 
-   No se declara `PAPER_FINAL`: §8 conserva un TODO editorial y quedan
+   La dependencia bibliográfica de (E.15) queda cerrada con cita explícita
+   (Gallai para la unicidad de orientaciones transitivas del cociente
+   primo; Bouvel–Chauve–Mishna–Rossin para la cota \(O(N^{-1})\) del evento
+   excepcional), sin reabrir el argumento matemático ya cerrado. No se
+   declara `PAPER_FINAL`: §8 conserva un TODO editorial y quedan
    verificaciones finales y bibliográficas pendientes.
 6. Mantener fuera \(Q_N\) general salvo que el manuscrito revele una laguna
    lógica real y se emita una autorización separada.
