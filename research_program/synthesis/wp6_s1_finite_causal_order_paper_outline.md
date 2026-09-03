@@ -351,9 +351,10 @@ vive aquí, en la nota de estado, no en la prosa del paper.**
 > statistical notion of closeness between two such laws. Janson [*Poset
 > limits and exchangeable random posets*, arXiv:0902.0306, 2011] supplies
 > the general limiting framework of poset kernels and consistent finite
-> laws in which this construction sits. Surya [*A Closeness Function on
-> Coarse Grained Lorentzian Geometries*, arXiv:2510.19403, 2025] gives,
-> via expected interval abundances, a closely related account of how
+> laws in which this construction sits. Surya [*Closeness function on
+> coarse grained Lorentzian geometries*, Phys. Rev. D 113, 024034, 2026,
+> arXiv:2510.19403] gives, via expected interval abundances, a closely
+> related account of how
 > increasing $N$ can lift degeneracies in this kind of causal compression.
 > None of the three computes the differential of the finite-$N$ law at a
 > reference geometry, its kernel, or its rank.
@@ -609,8 +610,12 @@ definición normativa de \(R_\sigma^{(N)}\), \(R_C^{(N)}\) y
 > law. Its \(\mu_{N,0}\)-mean is zero because the derivatives in (3.7) sum
 > to zero over \(C\).
 >
-> Interchanging the two rank coordinates sends \(\sigma\) to
-> \(\sigma^{-1}\) without changing the abstract poset. Consequently,
+> Each fiber is closed under inversion: if \(i<j\) then
+> \(\sigma(i)<\sigma(j)\), so setting \(a=\sigma(i)\), \(b=\sigma(j)\)
+> gives \(a<b\) and \(\sigma^{-1}(a)=i<j=\sigma^{-1}(b)\), i.e.
+> \(i\mapsto\sigma(i)\) is a poset isomorphism \(P_{\sigma^{-1}}\cong
+> P_\sigma\), so interchanging the two rank coordinates sends \(\sigma\)
+> to \(\sigma^{-1}\) without changing the abstract poset. Consequently,
 > \[
 > \sigma\in\Gamma_C\Longleftrightarrow\sigma^{-1}\in\Gamma_C,
 > \qquad
@@ -815,6 +820,10 @@ convención.
 > together with the permanently invisible antisymmetric sector
 > $\bigwedge^2H$ — is not derived here; it is Corollary D, §5, the direct
 > functional consequence of Theorem C once the span is known.
+>
+> The finite reduction used in the argument is recorded in Appendix B,
+> while Appendix C collects the almost-chain and Laplacian construction in
+> full detail.
 
 ### §5. Operator factorization and the identifiable quotient
 
@@ -937,6 +946,9 @@ fórmula de representantes de §3 y no redefine ni \(R_C^{(N)}\) ni
 > This is the precise sense in which the finite law identifies the quotient:
 > it is a statement about its first differential at the reference model,
 > not nonlinear identifiability of geometries at finite distance.
+>
+> Appendix D collects the kernel, quotient, strict-nesting and density
+> arguments used here.
 >
 > The projection \(P_N^{\rm vis}\) specifies **which** tangent directions
 > survive; it does not specify how strongly the finite law encodes different
@@ -1248,6 +1260,10 @@ espacio visible, el diferencial ni su factorización.
 > the unlabeled-poset law with \(N\) continuous copula observations; they are
 > not fractions of the full geometry, do not imply reconstruction, and do
 > not establish monotonicity of individual Fisher eigenvalues with \(N\).
+>
+> Appendix E gives the estimates behind the asymptotic retention statement,
+> and Appendix F records the exact matrices and generalized spectra for
+> \(N=2,3,4\).
 
 ### §7. An antisymmetric orbit visible at second order
 
@@ -1343,7 +1359,8 @@ segundo diferencial general ni un operador \(Q_N\).
 > the integral to every order, so \(p_\pi\) is real analytic. Coordinate
 > exchange gives
 > \(p_\pi(-\varepsilon)=p_{\pi^{-1}}(\varepsilon)\). Each fiber
-> \(\Gamma_C\) is closed under inversion; summing (7.7) over the fiber proves
+> \(\Gamma_C\) is closed under inversion (§3); summing (7.7) over the fiber
+> proves
 > (7.5), hence the assertion. \(\square\)
 >
 > To measure the first nonvanishing response of the complete finite law,
@@ -1437,6 +1454,9 @@ segundo diferencial general ni un operador \(Q_N\).
 > introduced. The first-order zero is explained by the exact isometric fold
 > \(\varepsilon\leftrightarrow-\varepsilon\); it must not be described as
 > physical information loss.
+>
+> Appendix G gives the finite-likelihood derivatives, the exact \(N=2\)
+> integration, and the deletion-kernel argument.
 
 ### §8. Relation to prior work
 
@@ -1452,7 +1472,7 @@ trazabilidad vive aquí, en la nota de estado.
 > statistical comparison between two such laws obtained from different
 > geometries. Janson (2011) supplies the general limiting framework of
 > poset kernels and consistent finite laws in which this construction
-> sits. Surya (2025) tells a related story: increasing resolution can
+> sits. Surya (2026) tells a related story: increasing resolution can
 > lift degeneracies of a causal compression, though through a different
 > observable — expected interval abundances rather than the full
 > unlabeled-poset law used here. None of the three computes the
@@ -1496,7 +1516,7 @@ trazabilidad vive aquí, en la nota de estado.
 > =\operatorname{Sym}(E_N).
 > \]
 > Chan, Král', Noel, Pehova, Sharifzadeh and Volec (2019/2020) and Garbe,
-> Král', Malekshahian and Penaguiao (2023/2025) are adjacent
+> Král', Malekshahian and Penaguiao (2025) are adjacent
 > permuton-forcing and feasible-region results, on quasirandomness-forcing
 > pattern sums and on the dimension of the feasible region of pattern
 > densities respectively, and they do not give this fiber-indexed span
@@ -2086,7 +2106,7 @@ exacto \(2/N!\). \(B_N\) sigue reservado para el operador de codificación de
 > \]
 > so \(E_N\) is invariant under \(A_C\). Also,
 > \(P_\sigma^\top=P_{\sigma^{-1}}\), and the fiber \(\Gamma_C\) is closed
-> under inversion. So
+> under inversion (§3). So
 > \[
 > A_C^\top=A_C,
 > \qquad
@@ -3033,9 +3053,15 @@ distinto del ya enunciado en §7.
 > T_\pi:=\sum_{i=1}^N\psi\bigl(U_{(i)},V_{(\pi(i))}\bigr).
 > \tag{G.2}
 > \]
-> Boundedness of \(\psi\) on the compact \(D\) permits differentiation
-> under the integral to every order (Lemma F of the roadmap, §5.6),
-> so, exactly as in (7.7),
+> Since \(\psi\) is bounded on the compact \(D\), the integrand
+> \(e^{2\varepsilon T_\pi}\) defining the numerator and the integrand
+> \(e^{2\varepsilon\psi}\) defining \(Z(\varepsilon)\), together with their
+> \(\varepsilon\)-derivatives of every order, are uniformly dominated on
+> every compact interval of \(\varepsilon\); differentiation under the
+> integral is therefore valid to every order, so both the numerator and
+> \(Z(\varepsilon)\) are real analytic, and \(Z(\varepsilon)>0\) for every
+> \(\varepsilon\in\mathbb R\) because the integrand is strictly positive.
+> So, exactly as in (7.7),
 > \[
 > \boxed{
 > p_\pi(\varepsilon)
@@ -3084,8 +3110,8 @@ distinto del ya enunciado en §7.
 > p_\pi(-\varepsilon)=p_{\pi^{-1}}(\varepsilon),
 > \tag{G.5}
 > \]
-> which is (7.7)/(5.62). Each fiber \(\Gamma_C\) is closed under inversion
-> (Theorem 14 of the roadmap), so summing (G.5) over \(\Gamma_C\) gives
+> which is (7.7). Each fiber \(\Gamma_C\) is closed under inversion (§3),
+> so summing (G.5) over \(\Gamma_C\) gives
 > \[
 > \boxed{
 > \mu_{N,\varepsilon}^{[P]}(C)=\mu_{N,-\varepsilon}^{[P]}(C)
@@ -3118,7 +3144,7 @@ distinto del ya enunciado en §7.
 > \tag{G.7}
 > \]
 > already at the level of a single permutation, not only of its class —
-> reproducing exactly the vanishing recorded for \(N=2\) in (5.65)/(7.9).
+> reproducing exactly the vanishing recorded for \(N=2\) in (7.9).
 >
 > For the second moments, expand \(\psi=\ell_1\otimes\ell_2-\ell_2\otimes
 > \ell_1\) inside each square. Because the \(U\)-process is independent of
@@ -3198,11 +3224,7 @@ distinto del ya enunciado en §7.
 > =\tfrac12\) from the uniform reference law on \(S_2\), and the exact
 > check \(\sum_C\mu_2''(C)=\tfrac85-\tfrac85=0\), consistent with (G.6)
 > summed over \(\varepsilon\)-independent total mass. These fractions
-> reproduce (7.10)/(5.65); the backend
-> `dev/wp6_second_order_antisymmetric_witness.py` was run as an exact
-> verification of (G.9)–(G.12) and returns the same rational values, but
-> the derivation above is self-contained and does not depend on trusting
-> the script.
+> reproduce (7.10); the derivation above is self-contained.
 >
 > **The uniform-deletion kernel.** For \(m\ge3\) and unlabeled classes
 > \(C\in\mathcal C_m\), \(D\in\mathcal C_{m-1}\), define
@@ -3456,6 +3478,7 @@ historia S1.
    APPENDICES_A_G_HUMAN_STYLE_PASS = CLOSED
    INTRO_DISCUSSION_CONCLUSION_HUMAN_STYLE_PASS = CLOSED
    ABSTRACT_LIMITATIONS_HUMAN_STYLE_PASS = CLOSED
+   GLOBAL_INTERNAL_CONSISTENCY_FIXES = CLOSED
    ```
 
    La dependencia bibliográfica de (E.15) queda cerrada con cita explícita
