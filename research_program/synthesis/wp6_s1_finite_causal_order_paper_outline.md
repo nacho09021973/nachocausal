@@ -2921,6 +2921,321 @@ cardinalidad general ni modifica la interpretación de Theorem F.
 > not fractions of geometry and are not reconstruction results. No new
 > claim is added here.
 
+### Appendix G. Second-order derivatives and uniform-deletion kernel
+
+**Estado: prosa de trabajo, cierre de apéndice — el último previsto.**
+Cierra en detalle el cálculo explícito de §7 ((7.1)–(7.16)), con anclas en
+`docs/hoja_de_ruta_septiembre_2026.md` §§5.5–5.6 para la senda admisible y el
+cálculo exacto en \(N=2\), y §5.4bis del mismo documento para el kernel de
+borrado uniforme. `dev/wp6_second_order_antisymmetric_witness.py` se usa
+exclusivamente como backend exacto de verificación de las fracciones que
+siguen, no como fuente de la prueba. La convención de likelihood/score es la
+de Appendix A. Esta sección trata una única senda antisimétrica explícita.
+No clasifica el segundo diferencial general, no define un operador \(Q_N\)
+ni un cono cuadrático nulo, y no amplía Corollary H con un resultado
+distinto del ya enunciado en §7.
+
+> **The witness and the finite likelihood.** With \(\ell_1,\ell_2\) as in
+> (7.1) and the generator \(\psi\) of (7.1)–(7.2),
+> \[
+> \bar\psi=0,
+> \qquad
+> \|\psi\|_{L^2(D)}^2=2,
+> \]
+> already established in §7; realizability is not reopened here. For exact
+> polynomial integration it is convenient to use the equivalent factored
+> form, obtained from (7.1) by direct expansion in \(u,v\):
+> \[
+> \psi(u,v)
+> =-2\sqrt{15}\,(u-v)\bigl(6uv-3u-3v+2\bigr).
+> \tag{G.1}
+> \]
+> For \(\pi\in S_N\) and two independent families of uniform order
+> statistics \(U_{(1)}<\dots<U_{(N)}\), \(V_{(1)}<\dots<V_{(N)}\), set
+> \[
+> T_\pi:=\sum_{i=1}^N\psi\bigl(U_{(i)},V_{(\pi(i))}\bigr).
+> \tag{G.2}
+> \]
+> Boundedness of \(\psi\) on the compact \(D\) permits differentiation
+> under the integral to every order (Lemma F of the roadmap, §5.6),
+> so, exactly as in (7.7),
+> \[
+> \boxed{
+> p_\pi(\varepsilon)
+> =\frac{\bigl\langle e^{2\varepsilon T_\pi}\bigr\rangle_0}
+>        {N!\,Z(\varepsilon)^N},
+> }
+> \qquad
+> Z(\varepsilon)=\int_De^{2\varepsilon\psi}\,d\mu_0,
+> \tag{G.3}
+> \]
+> where \(\langle\cdot\rangle_0\) is expectation, at \(\varepsilon=0\),
+> under the two independent order-statistic vectors, and \(p_\pi\) is real
+> analytic on all of \(\mathbb R\).
+>
+> **First and second derivatives.** Since \(\bar\psi=0\),
+> \(Z'(0)=2\int_D\psi\,d\mu_0=0\) and
+> \[
+> Z''(0)=4\int_D\psi^2\,d\mu_0=4\|\psi\|_{L^2(D)}^2.
+> \]
+> Expanding \(\langle e^{2\varepsilon T_\pi}\rangle_0
+> =1+2\varepsilon\langle T_\pi\rangle_0
+> +2\varepsilon^2\langle T_\pi^2\rangle_0+O(\varepsilon^3)\) and
+> \(Z(\varepsilon)^{-N}=1-2N\|\psi\|_{L^2(D)}^2\varepsilon^2+O(\varepsilon^4)\)
+> in (G.3) and matching coefficients gives
+> \[
+> \boxed{
+> p_\pi'(0)=\frac2{N!}\langle T_\pi\rangle_0,
+> }
+> \qquad
+> \boxed{
+> p_\pi''(0)=\frac4{N!}
+> \left(\langle T_\pi^2\rangle_0-N\|\psi\|_{L^2(D)}^2\right).
+> }
+> \tag{G.4}
+> \]
+> This reproduces (7.9); it is a scalar identity attached to the single
+> path (G.3), not the definition of an operator on \(\bigwedge^2H\).
+>
+> **Parity.** Since \(\psi(v,u)=-\psi(u,v)\), relabeling the dummy
+> variables in (G.2)–(G.3) — the \(U\)- and \(V\)-order-statistic families
+> are independent and identically distributed, so exchanging their roles is
+> a valid change of variables — turns \(T_\pi\) into \(-T_{\pi^{-1}}\)
+> after reindexing \(j=\pi(i)\), and turns \(Z(\varepsilon)\) into
+> \(Z(-\varepsilon)\) with \(Z(-\varepsilon)=Z(\varepsilon)\). Hence
+> \[
+> p_\pi(-\varepsilon)=p_{\pi^{-1}}(\varepsilon),
+> \tag{G.5}
+> \]
+> which is (7.7)/(5.62). Each fiber \(\Gamma_C\) is closed under inversion
+> (Theorem 14 of the roadmap), so summing (G.5) over \(\Gamma_C\) gives
+> \[
+> \boxed{
+> \mu_{N,\varepsilon}^{[P]}(C)=\mu_{N,-\varepsilon}^{[P]}(C)
+> }
+> \qquad(N\ge2,\ C\in\mathcal C_N),
+> \tag{G.6}
+> \]
+> which is (7.5). Every odd derivative of every class probability vanishes
+> at \(\varepsilon=0\); this documents the computation of §7 and is not a
+> new parity theorem.
+>
+> **Self-contained computation at \(N=2\).** The two permutations of
+> \(S_2\) are the identity, whose fiber is the chain, and the transposition,
+> whose fiber is the antichain:
+> \[
+> T_{\rm chain}=\psi(U_{(1)},V_{(1)})+\psi(U_{(2)},V_{(2)}),
+> \qquad
+> T_{\rm antichain}=\psi(U_{(1)},V_{(2)})+\psi(U_{(2)},V_{(1)}),
+> \]
+> with \((U_{(1)},U_{(2)})\) and \((V_{(1)},V_{(2)})\) two independent
+> pairs of order statistics of two uniforms on \([0,1]\), jointly
+> distributed with density \(2\) on each simplex \(0<t_1<t_2<1\).
+>
+> Both permutations of \(S_2\) are involutions
+> (\(\mathrm{id}^{-1}=\mathrm{id}\), \(\mathrm{swap}^{-1}=\mathrm{swap}\)),
+> so (G.5) gives \(p_\pi(-\varepsilon)=p_\pi(\varepsilon)\) for each
+> individually, and in particular
+> \[
+> \langle T_{\rm chain}\rangle_0=\langle T_{\rm antichain}\rangle_0=0,
+> \tag{G.7}
+> \]
+> already at the level of a single permutation, not only of its class —
+> reproducing exactly the vanishing recorded for \(N=2\) in (5.65)/(7.9).
+>
+> For the second moments, expand \(\psi=\ell_1\otimes\ell_2-\ell_2\otimes
+> \ell_1\) inside each square. Because the \(U\)-process is independent of
+> the \(V\)-process, every cross term factors into a product of a
+> two-point \(U\)-moment and a two-point \(V\)-moment (identically
+> distributed to the \(U\)-moments). Write, for \(j,k\in\{1,2\}\) and
+> \(i\in\{1,2\}\),
+> \[
+> A_{jk}:=\mathbb E\bigl[\ell_j(U_{(1)})\,\ell_k(U_{(2)})\bigr],
+> \qquad
+> M_i(jk):=\mathbb E\bigl[\ell_j(U_{(i)})\,\ell_k(U_{(i)})\bigr].
+> \tag{G.8}
+> \]
+> Direct integration against the pair density \(2\) on \(0<t_1<t_2<1\)
+> and the marginal order-statistic densities \(2(1-t)\) (\(i=1\)) and
+> \(2t\) (\(i=2\)) gives the elementary values
+> \[
+> A_{11}=A_{22}=0,
+> \qquad
+> A_{12}=-A_{21}=\frac1{\sqrt{15}},
+> \tag{G.9}
+> \]
+> \[
+> M_1(11)=M_1(22)=M_2(11)=M_2(22)=1,
+> \qquad
+> M_1(12)=-\frac2{\sqrt{15}}=-M_2(12).
+> \tag{G.10}
+> \]
+> Expanding \(\psi(x,y)^2=\ell_1(x)^2\ell_2(y)^2
+> -2\ell_1(x)\ell_2(x)\ell_1(y)\ell_2(y)+\ell_2(x)^2\ell_1(y)^2\) and using
+> independence of same- or different-index order statistics from the two
+> processes,
+> \[
+> \bigl\langle\psi(U_{(i)},V_{(i)})^2\bigr\rangle_0
+> =2M_i(11)M_i(22)-2M_i(12)^2,
+> \qquad
+> \bigl\langle\psi(U_{(1)},V_{(2)})^2\bigr\rangle_0
+> =M_1(11)M_2(22)-2M_1(12)M_2(12)+M_1(22)M_2(11),
+> \]
+> and, expanding the cross products
+> \(\psi(U_{(1)},V_{(1)})\psi(U_{(2)},V_{(2)})\) and
+> \(\psi(U_{(1)},V_{(2)})\psi(U_{(2)},V_{(1)})\) into four terms each and
+> grouping \(U\)-factors against \(V\)-factors,
+> \[
+> \bigl\langle\psi(U_{(1)},V_{(1)})\psi(U_{(2)},V_{(2)})\bigr\rangle_0
+> =2A_{11}A_{22}-2A_{12}A_{21},
+> \qquad
+> \bigl\langle\psi(U_{(1)},V_{(2)})\psi(U_{(2)},V_{(1)})\bigr\rangle_0
+> =-\bigl(A_{12}^2+A_{21}^2\bigr).
+> \]
+> Substituting (G.9)–(G.10): each diagonal term of \(T_{\rm chain}^2\)
+> equals \(2(1)(1)-2(2/\sqrt{15})^2=22/15\), and the cross term equals
+> \(2(0)(0)-2(1/\sqrt{15})(-1/\sqrt{15})=2/15\); each diagonal term of
+> \(T_{\rm antichain}^2\) equals
+> \(1-2(-2/\sqrt{15})(2/\sqrt{15})+1=38/15\), and the cross term equals
+> \(-(1/15+1/15)=-2/15\). Summing,
+> \[
+> \boxed{
+> \langle T_{\rm chain}^2\rangle_0
+> =2\cdot\frac{22}{15}+2\cdot\frac2{15}=\frac{16}5,
+> \qquad
+> \langle T_{\rm antichain}^2\rangle_0
+> =2\cdot\frac{38}{15}+2\left(-\frac2{15}\right)=\frac{24}5.
+> }
+> \tag{G.11}
+> \]
+> With \(N\|\psi\|_{L^2(D)}^2=2\cdot2=4\), (G.4) and (G.11) give
+> \[
+> \boxed{
+> \mu_2''(\mathrm{antichain})=\frac45\left(\frac{24}5-4\right)=\frac85,
+> \qquad
+> \mu_2''(\mathrm{chain})=\frac45\left(\frac{16}5-4\right)=-\frac85,
+> }
+> \tag{G.12}
+> \]
+> together with \(\mu_{2,0}(\mathrm{antichain})=\mu_{2,0}(\mathrm{chain})
+> =\tfrac12\) from the uniform reference law on \(S_2\), and the exact
+> check \(\sum_C\mu_2''(C)=\tfrac85-\tfrac85=0\), consistent with (G.6)
+> summed over \(\varepsilon\)-independent total mass. These fractions
+> reproduce (7.10)/(5.65); the backend
+> `dev/wp6_second_order_antisymmetric_witness.py` was run as an exact
+> verification of (G.9)–(G.12) and returns the same rational values, but
+> the derivation above is self-contained and does not depend on trusting
+> the script.
+>
+> **The uniform-deletion kernel.** For \(m\ge3\) and unlabeled classes
+> \(C\in\mathcal C_m\), \(D\in\mathcal C_{m-1}\), define
+> \[
+> K_{m,m-1}(C,D)
+> :=\frac1m\#\{v\in C:[C\setminus\{v\}]=D\}.
+> \tag{G.13}
+> \]
+> *Well-defined on classes.* Fix a labeled representative of \(C\); if
+> \(\phi:C\to C'\) is a poset isomorphism onto another representative, then
+> for every \(v\in C\) the restriction \(\phi|_{C\setminus\{v\}}\) is an
+> isomorphism \(C\setminus\{v\}\to C'\setminus\{\phi(v)\}\), so \(\phi\)
+> carries \(\{v\in C:[C\setminus v]=D\}\) bijectively onto
+> \(\{v'\in C':[C'\setminus v']=D\}\). The count in (G.13), hence
+> \(K_{m,m-1}(C,D)\), does not depend on the labeled representative chosen
+> for \(C\).
+>
+> *Markov kernel.* Each summand is a nonnegative count, so
+> \(K_{m,m-1}(C,D)\ge0\). Every \(v\in C\) deletes to a poset lying in
+> exactly one class \(D\in\mathcal C_{m-1}\), so summing the count over all
+> \(D\) counts each of the \(m\) elements of \(C\) exactly once:
+> \[
+> \sum_{D\in\mathcal C_{m-1}}K_{m,m-1}(C,D)=\frac1m\sum_{v\in C}1=1.
+> \tag{G.14}
+> \]
+>
+> *Parameter-independence.* (G.13) is a purely combinatorial count on
+> unlabeled finite posets; it makes no reference to \(\varepsilon\) or to
+> \(\mu_{m,\varepsilon}^{[P]}\).
+>
+> *Deletion of an iid point.* Let \(X_1,\dots,X_m\) be iid from
+> \(q_\varepsilon\), and let \(V\) be uniform on \(\{1,\dots,m\}\),
+> independent of the sample. For every fixed \(j\), \((X_i)_{i\ne j}\) is
+> an iid sample of size \(m-1\) from \(q_\varepsilon\), being a fixed
+> subvector of an iid vector; averaging over the uniform, independent
+> choice of the deleted index leaves this law unchanged, so the joint law
+> of \((X_i)_{i\ne V}\) is exactly the \((m-1)\)-fold product of
+> \(q_\varepsilon\). Passing to ranks and then to the unlabeled poset gives,
+> coordinatewise,
+> \[
+> \boxed{
+> \mu_{m-1,\varepsilon}^{[P]}(D)
+> =\sum_{C\in\mathcal C_m}
+> \mu_{m,\varepsilon}^{[P]}(C)\,K_{m,m-1}(C,D)
+> }
+> \qquad(D\in\mathcal C_{m-1},\ m\ge3).
+> \tag{G.15}
+> \]
+>
+> **Composition to \(N=2\).** As in (7.13), define
+> \[
+> K_{N\to2}:=K_{3,2}\circ K_{4,3}\circ\cdots\circ K_{N,N-1},
+> \qquad K_{2\to2}:=I.
+> \tag{G.16}
+> \]
+> Iterating (G.15) from \(m=N\) down to \(m=3\) gives, for every
+> \(\varepsilon\) and every \(N\ge2\),
+> \[
+> \mu_{2,\varepsilon}^{[P]}=K_{N\to2}\,\mu_{N,\varepsilon}^{[P]}.
+> \tag{G.17}
+> \]
+>
+> **Commutation with the jets.** For fixed \(N\), both sides of (G.17)
+> are functions of \(\varepsilon\) valued in the finite-dimensional spaces
+> \(\mathbb R^{\mathcal C_2}\) and \(\mathbb R^{\mathcal C_N}\), and
+> \(K_{N\to2}\) is a fixed linear map between them, independent of
+> \(\varepsilon\) by the third property of (G.13). Differentiating (G.17)
+> \(k\) times therefore commutes termwise with this linear map — a matter
+> of linearity on a finite-dimensional space, with no limit or asymptotic
+> argument:
+> \[
+> \boxed{
+> \bigl(\mu_2^{[P]}\bigr)^{(k)}(0)
+> =K_{N\to2}\bigl(\mu_N^{[P]}\bigr)^{(k)}(0)
+> }
+> \qquad(k\ge1).
+> \tag{G.18}
+> \]
+>
+> **Closure of Corollary H.** Assembling the pieces above: parity (G.6)
+> gives \(r_N(\gamma_\psi)\ge2\) for every \(N\ge2\), by definition (7.8).
+> If \((\mu_N^{[P]})''(0)\) vanished for some \(N\ge2\), (G.18) with
+> \(k=2\) would force \(K_{N\to2}(\mu_N^{[P]})''(0)=0\), i.e.
+> \((\mu_2^{[P]})''(0)=0\) — contradicting the exact values \((8/5,-8/5)\)
+> of (G.12). Hence, exactly as in Corollary H of §7,
+> \[
+> \boxed{
+> r_N(\gamma_\psi)=2\qquad\forall N\ge2.
+> }
+> \tag{G.19}
+> \]
+> This closes Corollary H; it is not presented as a result distinct from
+> it.
+>
+> This appendix treats a single explicit antisymmetric path, (G.1)–(G.3);
+> it does not classify the general second differential on
+> \(\bigwedge^2H\), does not define an operator \(Q_N\), and does not
+> define a quadratic null cone. It does not assert that every element of
+> \(\bigwedge^2H\) has \(r_N=2\): (G.19) is an existence and
+> non-vanishing statement for the single witness \(\psi\) of (7.1),
+> propagated to every \(N\ge2\) by the parameter-independent deletion
+> kernel of (G.13)–(G.18), not a classification result. No estimator,
+> consistency statement, or rate is introduced, and no nonlinear
+> reconstruction is claimed. The vanishing of the first-order jet in (G.6)
+> is the exact isometric fold \(\varepsilon\leftrightarrow-\varepsilon\)
+> of Theorem G and (7.4)–(7.6); it must not be described as physical
+> information loss. What (G.19) detects is the local magnitude of this
+> deformation at second order, not its sign, which remains identified by
+> the fold.
+
 ## 8. Figuras y tablas mínimas
 
 1. **Diagrama del diferencial:**
@@ -3050,8 +3365,17 @@ historia S1.
    El cuerpo continuo queda completo. Appendices A (QMD y representantes de
    score), B (reducción finita a \(\operatorname{Sym}(E_N)\)), C (familia
    casi cadena y triangularización por laplacianos), D (kernel, nesting
-   estricto y densidad simétrica HS), E (cotas HS y retención Fisher) y F
-   (matrices y espectros exactos para \(N=2,3,4\)) cerrados. Pendiente:
-   Appendix G.
+   estricto y densidad simétrica HS), E (cotas HS y retención Fisher), F
+   (matrices y espectros exactos para \(N=2,3,4\)) y G (derivadas de
+   segundo orden en la senda antisimétrica explícita, cálculo autosuficiente
+   en \(N=2\) y kernel de borrado uniforme, cerrando Corollary H para todo
+   \(N\ge2\)) cerrados.
+
+   ```text
+   Appendices A–G closed / ALL PLANNED APPENDICES DRAFTED
+   ```
+
+   No se declara `PAPER_FINAL`: §8 conserva un TODO editorial y quedan
+   verificaciones finales y bibliográficas pendientes.
 6. Mantener fuera \(Q_N\) general salvo que el manuscrito revele una laguna
    lógica real y se emita una autorización separada.
