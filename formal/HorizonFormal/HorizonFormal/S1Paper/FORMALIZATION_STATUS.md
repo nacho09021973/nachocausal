@@ -17,25 +17,56 @@ is the textual mention of that rule inside `ClaimMap.md`).
 Status vocabulary (as specified): `LEAN_PROVED`, `LEAN_PROVED_ABSTRACT_INTERFACE`,
 `LEAN_EXACT_CHECK`, `PARTIAL`, `NOT_FORMALIZED`.
 
+**Second pass (2026-09-04).** Four further modules — `PermutationPoset.lean`,
+`AlmostChain.lean`, `Fiber.lean`, `ClassSum.lean` — close what the first pass reported
+as its one genuine formal boundary, `CLASS_SUM_TO_POSET_BRIDGE`. Its rows are marked
+below. As an independent guard against a *mis-modelled* statement (a formalization that
+compiles but states something weaker or different from Appendix C), the fiber lemma is
+additionally cross-checked by brute-force enumeration over all of `S_N` for `N = 2..6`
+in `fiber_bruteforce_check.py`, which recomputes the fiber from the raw definitions and
+compares it against `{τ, τ⁻¹}`; it passes for all `binom N 2` pairs at every one of
+those `N`. That script is evidence about the *statement*, never about the proof — the
+proof is the Lean term, checked by the kernel for all `N` at once.
+
 ## Theorem C — the class-sum span theorem (§4, Appendix B, Appendix C)
 
 | CLAIM | LEAN THEOREM | STATUS | ASSUMPTIONS | WHAT LEAN CERTIFIES | WHAT LEAN DOES NOT CERTIFY |
 |---|---|---|---|---|---|
 | `E_N = \mathbf1^\perp`, `\dim E_N = N-1` | `EN`, `finrank_EN` (`FiniteLinearAlgebra.lean`) | `LEAN_PROVED` | `N ≥ 1` | `EN N` is exactly the kernel of the coordinate-sum functional on `Fin N → ℝ`, and its dimension is `N - 1`, for every `N`. | Nothing withheld — this is the full claim. |
 | `\operatorname{Sym}(E_N)` as doubly-centered symmetric matrices | `DCSymM` | `LEAN_PROVED` (definition + submodule laws) | — | `DCSymM N` (symmetric `N×N` matrices with vanishing row sums) is a genuine `ℝ`-submodule of `Matrix (Fin N) (Fin N) ℝ`, matching Appendix B's `\widetilde M` construction. | That this is *isomorphic* to `\operatorname{Sym}^2 P_{N-1}` inside `H` — that isomorphism (`\mathfrak T_N`/`\Lambda_N`, Appendix B (B.4)–(B.5)) is not built; see the `OUT_OF_SCOPE_ANALYTIC` row below. |
-| Edge Laplacians `L_{ij}` are linearly independent and span `\operatorname{Sym}(E_N)` | `edgeLaplacian_linearIndependent`, `DCSymM_eq_sum_edgeLaplacian` | `LEAN_PROVED` | `N ≥ 1` (uses `i < j` pairs, vacuous for `N ≤ 1`) | For every `N`, `\{L_{ij} : i<j\}` (`\binom N2` matrices) is linearly independent **and** spans `DCSymM N` exactly, via an *explicit reconstruction formula* `M = \sum_{i<j}(-M_{ij})\bullet L_{ij}` for every `M \in \operatorname{DCSymM} N` — a direct, complete route to Appendix C's target span `\operatorname{span}\{A_C\vert_{E_N}\} = \operatorname{Sym}(E_N)`, bypassing the paper's own interval-cycle/identity-recovery argument (see next row). | **This is not yet the paper's theorem.** `L_{ij}` is a general edge Laplacian, not necessarily a near-chain-poset class sum `A_{C_{a,b}}`. See `CLASS_SUM_TO_POSET_BRIDGE` below — the bridge from this fact to the paper's actual claim is **not formalized**. |
+| Edge Laplacians `L_{ij}` are linearly independent and span `\operatorname{Sym}(E_N)` | `edgeLaplacian_linearIndependent`, `DCSymM_eq_sum_edgeLaplacian` | `LEAN_PROVED` | `N ≥ 1` (uses `i < j` pairs, vacuous for `N ≤ 1`) | For every `N`, `\{L_{ij} : i<j\}` (`\binom N2` matrices) is linearly independent **and** spans `DCSymM N` exactly, via an *explicit reconstruction formula* `M = \sum_{i<j}(-M_{ij})\bullet L_{ij}` for every `M \in \operatorname{DCSymM} N` — a direct, complete route to Appendix C's target span `\operatorname{span}\{A_C\vert_{E_N}\} = \operatorname{Sym}(E_N)`, bypassing the paper's own interval-cycle/identity-recovery argument (see next row). | **This is not by itself the paper's theorem.** `L_{ij}` is a general edge Laplacian, not a near-chain-poset class sum `A_{C_{a,b}}`. The poset side of that connection is now proved (rows below); what is still missing is the matrix chain (C.12)–(C.19) that expresses one family through the other — see `APPENDIX_C_MATRIX_HALF` below. |
 | Identity recovery `1 - 2s_N = \frac{(N-3)^2+2}{6} > 0` (App. C (C.18)–(C.20)) | `sN`, `one_sub_two_sN_eq`, `one_sub_two_sN_pos` | `LEAN_PROVED` | none (holds for *every* `N : ℕ`, not just `N ≥ 2`) | The exact algebraic identity and its strict positivity, proved as a genuine `∀ N` statement (`ring` + `positivity`), not a finite check. This is the specific target requested and is **not** used by the `DCSymM_eq_sum_edgeLaplacian` route above (that route sidesteps the need for it); it stands as an independently certified fact matching the paper's own argument shape. | That `s_N` as defined here is *the* coefficient sum arising from the paper's specific `L`-to-`Q` triangular substitution (C.13)–(C.17) — that derivation (which combinatorial coefficients `c_{a,b}` sum to `s_N`) is not formalized; `sN` is simply defined by the paper's closed form `(N-1)(5-N)/12`. |
-| `S_{a,b}` *is* (up to nonzero scalar) the class sum `A_{C_{a,b}}` of the near-chain poset family, and `\operatorname{span}\{A_C\vert_{E_N}:C\in\mathcal C_N\}=\operatorname{Sym}(E_N)` for the *actual* poset classes | — | `NOT_FORMALIZED` (`CLASS_SUM_TO_POSET_BRIDGE`) | — | Nothing. | This is the genuine formal boundary of this pass: no `PartialOrder` instance for the near-chain family `C_{a,b}` is constructed, no isomorphism-class quotient `[P_\sigma]` or fiber `\Gamma_C=\{\sigma : [P_\sigma]=C\}` is built, and the fact `\Gamma_{C_{a,b}}=\{\tau_{a,b},\tau_{a,b}^{-1}\}` (Appendix C (C.1)–(C.5)) is not proved. **Per the task's own instruction, this is reported honestly rather than papered over: `THEOREM_C_LEAN=PARTIAL`, not `LEAN_PROVED`.** |
+| `P_\sigma` is a genuine poset; `[P_\sigma]` as an unlabeled isomorphism class; fibers closed under inversion | `leSigma_refl/_trans/_antisymm`, `PosetIsomorphic` (+`_refl/_symm/_trans`), `posetIso_inv`, `posetIsomorphic_inv` (`PermutationPoset.lean`) | `LEAN_PROVED` | — | The three order laws of `i \preceq_\sigma j \iff i\le j \wedge \sigma i\le\sigma j`, proved from the definition; `[P_\sigma]=[P_\tau]` modelled as an explicit order-isomorphism (a bijection carrying one relation to the other, *not* a labeled equality); and §3's closure `\sigma\in\Gamma_C\iff\sigma^{-1}\in\Gamma_C` as a real isomorphism witness `i\mapsto\sigma(i)`. Both relations are `Decidable`, so `\Gamma_C` is an honest `Finset`, not a choice artefact. | The bundled mathlib `PartialOrder (Fin N)` *instance* is deliberately not registered (one canonical order per type; different `\sigma` would need different instances). Nothing downstream uses the bundled form. |
+| `\tau_{a,b}` is a permutation; self-inverse exactly in the adjacent case | `tau`, `tau_val`, `tau_self_inv_of_adjacent`, `tau_ne_inv_of_not_adjacent` (`AlmostChain.lean`) | `LEAN_PROVED` | `a<b` | The interval cycle is built as a genuine `Equiv.Perm (Fin N)` (injectivity proved, not assumed), with a closed value formula; and the manuscript's parenthetical "when `b=a+1` the two displayed permutations coincide" is proved in **both** directions — `\tau=\tau^{-1}` iff `b=a+1`. | Nothing withheld. |
+| **Every linear extension of `C_{a,b}` inserts `z` after exactly `k\in\{a,\ldots,b\}` chain elements** (Appendix C, the sentence before (C.3)) | `IsExtension`, `extension_val`, `extension_eq_tau`, `extension_eq_one` (`Fiber.lean`) | `LEAN_PROVED` | `a<b` | The full classification: for *every* extension `\pi` of `P_{\tau_{a,b}}`, `k:=\pi(b)` satisfies `a\le k\le b` and `\pi` is then determined pointwise by the closed formula (`\pi=L_k`); in particular `L_a=\tau_{a,b}` and `L_b=\mathrm{id}`. Proved by a counting argument, not asserted. The manuscript states this in one line without proof. | Nothing withheld for this statement. |
+| **`\Gamma_{C_{a,b}}=\{\tau_{a,b},\tau_{a,b}^{-1}\}` (C.5)** | `fiber_eq` (`Fiber.lean`), `fiber_almostChain` (`ClassSum.lean`) | `LEAN_PROVED` | `a<b` | The fiber lemma itself, as an **iff** (both inclusions), for every `N` and every `a<b`, following the manuscript's own realizer route: an isomorphism `e:P_\sigma\cong P_\tau` pushes the natural order and the `\sigma`-order forward to two extensions of `P_\tau` whose intersection is `P_\tau`, the two incomparabilities `a\parallel b` and `b-1\parallel b` force `\{k_1,k_2\}=\{a,b\}`, and `\sigma=\pi_2\pi_1^{-1}\in\{\tau,\tau^{-1}\}`. Also given as a `Finset` identity, so the class sum can be computed. | The identification of `[P_{\tau_{a,b}}]` with the manuscript's *abstract presentation* (C.1)–(C.2) (chain `c_1<\cdots<c_{N-1}` plus `z`) is a presentation choice, not a separately proved lemma: the Lean class is defined as the isomorphism class of `P_{\tau_{a,b}}`. The two agree by inspection (the incomparable pairs of `P_{\tau_{a,b}}` are exactly `(i,b)`, `a\le i<b`), and that fact is used inside the proof, but it is not stated as its own theorem. |
+| **`S_{a,b}=2A_{C_{a,b}}` (`b=a+1`), `=A_{C_{a,b}}` (`b>a+1`) — (C.11)** | `permM`, `permM_transpose`, `classSum`, `Sab`, `Sab_eq_two_classSum`, `Sab_eq_classSum`, `Sab_nonzero_smul_classSum`, `span_Sab_eq_span_classSum` (`ClassSum.lean`) | `LEAN_PROVED` | `a<b` | Exactly (C.11), in the manuscript's own matrix convention (3.12) `P_\sigma=\sum_ie_ie_{\sigma(i)}^\top`, including `P_\sigma^\top=P_{\sigma^{-1}}` (3.8), the "nonzero scalar either way" statement, and its span consequence. **The matrices Appendix C manipulates are certified to be nonzero multiples of the class sums of genuine unlabeled two-dimensional poset classes.** | — |
+| The `\binom N2` classes `C_{a,b}` are pairwise distinct (conclusion of (C.6)) | `tau_ne_self_iff`, `almostChain_pair_eq_of_isomorphic` (`Fiber.lean`) | `LEAN_PROVED` | `a<b`, `a'<b'` | Distinct pairs give non-isomorphic classes, so the family really supplies `\binom N2` distinct classes. | Proved by a **different route** than the manuscript's: via the non-fixed set of `\tau_{a,b}` being the interval `[a,b]` (invariant under inversion), not via the strict-past-cardinality multiset of (C.6). The multiset computation (C.6) itself is not formalized. |
+| `\operatorname{span}\{A_C\vert_{E_N}:C\in\mathcal C_N\}=\operatorname{Sym}(E_N)` — the span statement itself | — | `NOT_FORMALIZED` (`APPENDIX_C_MATRIX_HALF`) | — | Nothing. | **This is now the genuine remaining boundary of Theorem C.** What is missing is no longer the poset side but the *matrix* side of Appendix C: (a) `Q_{a,b}:=2I_{E_N}-S_{a,b}\vert_{E_N}` is the cycle's graph Laplacian and the triangular identities (C.13)–(C.14) with their inversion (C.15); (b) the identity-recovery step (C.17)–(C.19), i.e. that the coefficients `c_{a,b}` of (C.17) sum to `s_N` — only the *algebra* `1-2s_N>0` from the closed form is proved (see the row above), never the derivation that this particular sum equals `s_N`. Reported honestly: `THEOREM_C_LEAN=PARTIAL`, not `LEAN_PROVED`. |
 | `V_N = \operatorname{Sym}^2 P_{N-1}` transported from the `E_N` reduction | — | `OUT_OF_SCOPE_ANALYTIC` | — | — | Needs the shifted-Legendre/Bernstein polynomial Hilbert space `H = L^2_0([0,1])`; not attempted. |
 
-**`THEOREM_C_LEAN = PARTIAL`.** The pure finite-linear-algebra core (independence,
-explicit spanning, identity-recovery non-vanishing) is fully and honestly certified —
-this is a real, non-trivial, complete piece of mathematics with zero gaps in what it
-claims. What is **not** certified is that the specific matrices spanning
-`\operatorname{Sym}(E_N)` are the paper's actual poset class sums. This was judged, in
-advance, to be the single most expensive remaining step (needs poset theory, `S_N`-orbit
-combinatorics, and the near-chain family's realizer uniqueness argument) and was left as
-an explicit, reported boundary rather than forced through or quietly assumed.
+**`THEOREM_C_LEAN = PARTIAL`** — but the boundary has moved, and it is worth being
+precise about where it now sits.
+
+The pure finite-linear-algebra core (independence, explicit spanning,
+identity-recovery non-vanishing) was already fully certified. What the first pass
+flagged as its single most expensive missing step — `CLASS_SUM_TO_POSET_BRIDGE`, the
+fact that the matrices Appendix C manipulates are the class sums of *actual* unlabeled
+poset classes — is now **closed**: the poset `P_\sigma`, the unlabeled isomorphism
+class, the fiber `\Gamma_C`, the near-chain family `\tau_{a,b}`, the classification of
+linear extensions, the fiber lemma (C.5), the class-sum identity (C.11), and the
+pairwise distinctness of the `\binom N2` classes are all proved, with no `sorry` and
+only the three standard axioms.
+
+`CLASS_SUM_TO_POSET_BRIDGE = LEAN_PROVED`.
+
+What is still **not** certified is the *matrix half* of Appendix C: the cycle-Laplacian
+identities (C.12)–(C.16) and the identity-recovery step (C.17)–(C.19) that removes the
+shared `2I_{E_N}` term. Those are ordinary finite matrix computations rather than a
+conceptual obstacle, but they are computations that have not been done here, so the
+end-to-end span statement (4.1) remains unformalized and Theorem C stays `PARTIAL`.
+The remaining transport (B.9)–(B.10) to `\operatorname{Sym}^2P_{N-1}` is separately
+`OUT_OF_SCOPE_ANALYTIC`, unchanged.
 
 ## Corollary D — kernel, factorization, quotient (§5, Appendix D)
 
@@ -79,12 +110,15 @@ LEAN_CORE_CERTIFICATION = PARTIAL
 **Why not `PASS`.** The task's five simultaneous conditions for `PASS` are: (1) Theorem
 C formalized *including* the class-sum-to-poset bridge; (2) Corollary D's logical core;
 (3) nesting; (4) the deletion/propagation logic of Corollary H; (5) no `sorry`/axioms,
-all modules compiling. Conditions (2)–(5) are met. Condition (1) is **not**: the
-finite-linear-algebra span/independence/identity-recovery core of Theorem C is fully
-certified, but the bridge connecting those matrices to actual poset class sums
-`A_{C_{a,b}}` is not built. This was a deliberate, reported scope decision (flagged in
-`ClaimMap.md` before any proof was attempted, not discovered after the fact and
-rationalized), matching the task's own explicit instruction for exactly this outcome.
+all modules compiling. Conditions (2)–(5) are met. Condition (1) is now **partly** met:
+the class-sum-to-poset bridge itself *is* built and proved (`PermutationPoset.lean`,
+`AlmostChain.lean`, `Fiber.lean`, `ClassSum.lean`), which was the step flagged in
+`ClaimMap.md` as the one at realistic risk of being abandoned. What still blocks (1) is
+the matrix half of Appendix C — (C.12)–(C.19) — which the first pass had already
+certified in an equivalent but *different* form (`DCSymM_eq_sum_edgeLaplacian` spans
+`\operatorname{Sym}(E_N)` by edge Laplacians via an explicit reconstruction formula) and
+which is therefore not a conceptual gap, only an unfinished bookkeeping chain between
+the two certified halves. Until that chain is written the honest verdict stays `PARTIAL`.
 
 **What this pass is confident about, as a result of the adversarial exercise.** No
 mathematical inconsistency was found between the paper and what Lean can certify. Every
