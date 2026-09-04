@@ -2,6 +2,9 @@ import HorizonFormal.S1Paper.PermutationPoset
 import HorizonFormal.S1Paper.AlmostChain
 import HorizonFormal.S1Paper.Fiber
 import HorizonFormal.S1Paper.ClassSum
+import HorizonFormal.S1Paper.Restriction
+import HorizonFormal.S1Paper.CycleLaplacian
+import HorizonFormal.S1Paper.SpanTheoremC
 import HorizonFormal.S1Paper.FiniteLinearAlgebra
 import HorizonFormal.S1Paper.AbstractQuotient
 import HorizonFormal.S1Paper.Nesting

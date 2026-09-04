@@ -26,7 +26,12 @@ additionally cross-checked by brute-force enumeration over all of `S_N` for `N =
 in `fiber_bruteforce_check.py`, which recomputes the fiber from the raw definitions and
 compares it against `{τ, τ⁻¹}`; it passes for all `binom N 2` pairs at every one of
 those `N`. That script is evidence about the *statement*, never about the proof — the
-proof is the Lean term, checked by the kernel for all `N` at once.
+proof is the Lean term, checked by the kernel for all `N` at once. A
+**third pass** then closed the matrix half of Appendix C; it is recorded in its own
+section at the end of this file (`## Third pass — matrix closure of Theorem C`), which
+supersedes two specific rows/verdicts of the earlier sections. The earlier sections are
+left exactly as they were written — they are the record of what those passes concluded,
+not a description of the present state.
 
 ## Theorem C — the class-sum span theorem (§4, Appendix B, Appendix C)
 
@@ -151,3 +156,88 @@ None of these is a gap *in the paper* — each is a fact the manuscript itself s
 uses transparently. They are recorded here because the task requires every
 not-independently-verified hypothesis to be named, not because they cast doubt on the
 paper.
+
+---
+
+## Third pass — matrix closure of Theorem C
+
+Scope of this pass: Appendix C (C.12)–(C.21) only, plus the class-sum conclusion. No
+other front was opened (no Theorem F, no Hilbert–Schmidt density, no Bernstein/`L²`
+transport, no second order, no change to the manuscript). New modules:
+`Restriction.lean`, `CycleLaplacian.lean`, `SpanTheoremC.lean`.
+
+### What it supersedes
+
+Two statements in the sections above are superseded and should be read against this
+section instead:
+
+1. In the Theorem C table, the row `APPENDIX_C_MATRIX_HALF = NOT_FORMALIZED` — the
+   chain (C.12)–(C.21) it describes is now proved.
+2. The `THEOREM_C_LEAN = PARTIAL` verdict paragraph and the `Why not PASS` paragraph of
+   the Global result, insofar as they attribute the gap to the missing matrix chain.
+
+### The `E_N` model
+
+`Sym(E_N)` is the already-certified `DCSymM N`; restriction to `E_N` is conjugation by
+the projection `cproj = I - N⁻¹J`, and `I_{E_N}` is `cproj` itself. `restr M` fixes
+`DCSymM` (`restr_eq_self`) and lands in it on symmetric inputs (`restr_mem_DCSymM`), so
+no information is added or lost by the model. No second notion of matrix, restriction,
+class sum or permutation matrix was introduced: `DCSymM`, `edgeLaplacian`, `tau`,
+`fiber`, `classSum`, `Sab` are the objects already in this directory.
+
+| CLAIM | LEAN THEOREM | STATUS | WHAT LEAN CERTIFIES | WHAT LEAN DOES NOT CERTIFY |
+|---|---|---|---|---|
+| `Q_{a,b} := 2I_{E_N} - S_{a,b}\vert_{E_N}` (C.12) | `Smat`, `Qmat`, `Qmat_of_lt`, `Qmat_eq_two_one_sub_Sab` (`CycleLaplacian.lean`) | `LEAN_PROVED` | `Q` is *defined* from the `S_{a,b}` that (C.11) already ties to the real class sum — the Laplacian description is derived, never assumed. `Qmat_eq_two_one_sub_Sab` additionally shows `2I - S_{a,b}` is already in `Sym(E_N)`, so the restriction is invisible here. | — |
+| `2I - (P_σ+P_σᵀ) = ∑_i L_{i,σ(i)}` (the mechanism behind (C.13)–(C.14)) | `two_smul_one_sub_permSym` | `LEAN_PROVED` | The identity for **every** permutation of `Fin N`, proved entrywise. It is strictly more general than the paper's step and is what makes the cycle decomposition fall out. | — |
+| **(C.13)** `Q_{a,a+1} = 2L_{a,a+1}` | `Qmat_adjacent` | `LEAN_PROVED` | The length-two case with the unique edge counted twice, from the definition of `Q`. | — |
+| **(C.14)** `Q_{a,b} = L_{a,b} + ∑_{k∈[a,b)}L_{k,k+1}` | `Qmat_eq_cycleLaplacian`, `Qmat_nonadjacent`, `pathL` | `LEAN_PROVED` | `Q_{a,b}` is the consecutive cycle's graph Laplacian, for every `a<b`. Index convention: 0-indexed `Fin N`, so the manuscript's `L_{a+1,b+1}` is `edgeLaplacian N a b`; vertex sets agree (`{a,…,b}`). | — |
+| **(C.15)** triangular inversion | `wInv`, `edgeLaplacian_eq_Qcomb` | `LEAN_PROVED` | An **explicit** coefficient vector `wInv i j` with `∑_{x<y} wInv i j (x,y)·Q_{x,y} = L_{ij}`, proved algebraically from (C.13)–(C.14). One uniform formula covers both of the manuscript's cases: at `j=i+1` the long-interval term and the single adjacent term collide and give `L = ½Q`. No dimension count is used. | — |
+| **(C.16)** `span{Q_{a,b}} = Sym(E_N)` | `span_QSet` | `LEAN_PROVED` | Equality of submodules, via (C.15) and the already-certified edge-Laplacian span `span_LSet` (which is (C.8)). | — |
+| **(C.9)** `I_{E_N} = N⁻¹∑_{i<j}L_{ij}` | `cproj_eq_sum_edgeLaplacian` (`Restriction.lean`) | `LEAN_PROVED` | Obtained from the first pass's reconstruction theorem by reading off `cproj`'s off-diagonal entries. | — |
+| **(C.17)** explicit `c_{a,b}` | `cCoef`, `cproj_eq_Qcomb_cCoef` | `LEAN_PROVED` | `c` is **constructed** — `c := N⁻¹ ∑_{i<j} wInv i j`, i.e. (C.9) with each `L_{ij}` substituted by (C.15) — and then `∑_p c_p Q_p = I_{E_N}` is proved. `c` is never obtained from an existential, and `cCoef_eq_zero_of_not_lt` shows it is supported on the pairs `a<b`, so the coefficient *sum* below counts nothing spurious. | — |
+| **(C.18)** `∑_{a<b} c_{a,b} = s_N` | `coeffSum_wInv`, `pair_distance_sum`, `coeffSum_cCoef_eq_sN` | `LEAN_PROVED` | **The step that was deliberately left uncertified before.** `coeffSum_wInv` proves the manuscript's distance argument — one edge at distance `d=j-i` contributes total coefficient `1-d/2` (`1/2` at `d=1`; one long-interval term of coefficient `1` minus `d` adjacent terms of `1/2`) — and `pair_distance_sum` evaluates `∑_{i<j}(1-(j-i)/2) = N·s_N` in closed form. The first pass proved `sN` *by its closed form*; this pass proves that the sum of the coefficients actually constructed in (C.17) equals it. | — |
+| **(C.19)** `(1-2s_N)I_{E_N} = -∑ c_{a,b}S_{a,b}\vert_{E_N}` | `identity_elimination` | `LEAN_PROVED` | The identity-term elimination, from (C.17) and the definition of `Q`. | — |
+| **(C.20)** `1-2s_N = ((N-3)²+2)/6 > 0` | `one_sub_two_sN_pos` (first pass) | `REUSED` | Reused, not re-proved; used here only through `≠ 0`. | — |
+| **(C.21)** `span{S_{a,b}\vert_{E_N}} = Sym(E_N)` | `span_SSet` | `LEAN_PROVED` | Equality of submodules. `I_{E_N}` enters the span by dividing (C.19) by the nonzero scalar of (C.20); every `Q_{a,b}` then follows, and (C.16) closes it. | — |
+| **`span{A_C\vert_{E_N} : C∈𝒞_N} = Sym(E_N)`** | `span_classSum_restr_eq` | `LEAN_PROVED` | **The target of this pass**, as an equality of submodules, for every `N ≠ 0` (the manuscript states `N ≥ 2`; at `N=1` both sides are `0`). The `⊇` direction goes through the real class sums via the certified (C.11) scalar; the `⊆` direction needs `A_C` symmetric, proved as `classSum_isSymm` from the fiber's closure under inversion (manuscript (3.8)). `classSum_congr` proves `A_C` depends only on the class, so indexing by permutations is indexing by classes. No dimension count substitutes for the inclusion. | That `DCSymM N` *is* `Sym(E_N)` is the model set up in `FiniteLinearAlgebra.lean`, not a separately proved isomorphism theorem. |
+
+### Guardrails
+
+`appendixC_matrix_check.py` recomputes every object of this pass from the raw
+definitions (`tau`, `P_σ`, `S`, `cproj`, `restr`, `Q`, `wInv`, `cCoef`) and checks
+(C.13), (C.14), (C.15), (C.17), (C.18), (C.19), (C.20), (C.21) and the final class-sum
+span numerically for `N = 2..6`, including that the span has rank `C(N,2)` over *all*
+realized poset classes. `fiber_bruteforce_check.py` (second pass) still passes for
+`N = 2..6`. **Neither script participates in any Lean proof**; they are evidence that the
+formalized statements say what Appendix C says, against the risk of a formalization that
+compiles while stating something weaker. The proofs are the Lean terms, kernel-checked
+for all `N` at once.
+
+`#print axioms` on `two_smul_one_sub_permSym`, `Qmat_eq_two_one_sub_Sab`,
+`Qmat_eq_cycleLaplacian`, `Qmat_adjacent`, `Qmat_nonadjacent`, `edgeLaplacian_eq_Qcomb`,
+`span_QSet`, `cproj_eq_Qcomb_cCoef`, `coeffSum_wInv`, `pair_distance_sum`,
+`coeffSum_cCoef_eq_sN`, `identity_elimination`, `span_SSet`, `classSum_isSymm` and
+`span_classSum_restr_eq` reports only `propext`, `Classical.choice`, `Quot.sound`. The
+`sorry`/`admit`/`axiom` grep over `S1Paper/*.lean` is still empty. `lake build` compiles
+the whole tree (4716 jobs).
+
+### Status after this pass
+
+```text
+CLASS_SUM_TO_POSET_BRIDGE      = LEAN_PROVED   (second pass)
+THEOREM_C_FINITE_MATRIX_FORM   = LEAN_PROVED   (this pass)
+BERNSTEIN_TRANSPORT_TO_VN      = NOT_FORMALIZED
+```
+
+**No `POTENTIAL_PAPER_LOGIC_GAP` was found.** Every step of (C.12)–(C.21) went through
+with the real definitions, and the manuscript's two-case split in (C.11) and
+(C.13)/(C.14) is exactly right — in Lean the adjacent case is forced, not chosen.
+
+**What this does and does not license.** Lean now certifies the finite matrix theorem
+that is the combinatorial hinge of Theorem C: the class sums of unlabeled
+two-dimensional poset classes, restricted to `E_N`, span `Sym(E_N)` for every `N`. It
+does **not** certify Theorem C as stated in the manuscript, which is about
+`V_N = Sym²P_{N-1}`: the transport `Sym(E_N) ↔ Sym²P_{N-1}` through `Λ_N`/`𝔗_N`
+(Appendix B (B.9)–(B.10)) needs the shifted-Legendre/Bernstein polynomial Hilbert space
+and is still `OUT_OF_SCOPE_ANALYTIC`, as are Theorem F's asymptotics and the density
+statement. The paper is not "Lean-certified"; its finite combinatorial core now is.
