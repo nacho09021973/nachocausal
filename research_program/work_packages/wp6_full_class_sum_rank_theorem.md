@@ -451,6 +451,29 @@ No afirma reconstrucción no lineal de una geometría, identificabilidad a
 distancia finita, recuperación de coordenadas, comportamiento fuera de S1 ni
 ningún resultado sobre Schwarzschild, horizontes o dimensión mayor.
 
+### 7.1. TODO editorial para la Discussion — `CAUSAL_COMPRESSION`
+
+En la Discussion final debe recuperarse, como **interpretación física del
+resultado exacto S1** y no como teorema universal, la idea de que *el pasado y
+el futuro causales comprimen el presente*. El anclaje matemático debe limitarse
+a
+
+\[
+D\mathscr S_N=B_NP_N^{\rm vis},
+\qquad
+V_N=\operatorname{Sym}^2P_{N-1}.
+\]
+
+La ley causal finita no conserva una perturbación continua punto a punto: a
+primer orden conserva sólo su componente en \(V_N\). Al crecer \(N\), el sector
+visible se amplía estrictamente. Las perturbaciones antisimétricas permanecen
+invisibles a primer orden y pueden reaparecer únicamente en un orden
+estadístico superior.
+
+No presentar esta lectura como una afirmación de que el pasado y el futuro
+determinan universalmente el presente. Es exclusivamente la interpretación
+física de la compresión exacta demostrada para el canal y la clase S1.
+
 Tampoco certifica novedad. Bombelli sigue siendo el antecedente del marco
 estadístico y Surya el vecino directo de resolución creciente mediante
 abundancias de intervalos. La aportación matemática estrecha que debe someterse
