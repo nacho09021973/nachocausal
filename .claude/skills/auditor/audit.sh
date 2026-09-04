@@ -103,74 +103,114 @@ fi
 datafiles="$( { git ls-files '*.csv' '*.tsv' '*.out' '*.parquet' 2>/dev/null;
                 git ls-files 'data/*' 'results/*' 'outputs/*' 2>/dev/null; } \
               | sort -u | grep -vE '\.(md|py|txt|gitkeep|json)$' || true)"
+# A path may satisfy the historical literal-reference fallback only if it can
+# plausibly BE a generator. Documentation, audit tooling, provenance metadata and
+# tests are not generators: a filename mentioned only there is no evidence that
+# anything produces the artifact. Auditor report 040 recorded the concrete failure
+# this guard closes — a test file listing the 23 historical basenames silenced all
+# 23 provenance warnings without the registry ever being consulted.
+is_generator_candidate() {
+  case "$1" in
+    tests/*|*/tests/*) return 1 ;;
+    .claude/*|*/.claude/*) return 1 ;;
+    docs/*|*/docs/*) return 1 ;;
+    provenance/*|*/provenance/*) return 1 ;;
+  esac
+  case "$(basename "$1")" in
+    test_*) return 1 ;;
+    *_test.py|*_test.sh|*_test.js|*_test.ts|*_test.go|*_test.rs) return 1 ;;
+  esac
+  return 0
+}
+
 for f in $datafiles; do
   [ -z "$f" ] && continue
   # This TSV is audit metadata, not a generated result/data artifact.
   [ "$f" = "$provenance_registry" ] && continue
   base="$(basename "$f")"
-  if git grep -q -- "$base" -- '*.py' '*.sh' '*.js' '*.ts' '*.ipynb' '*.go' '*.rs' 'Makefile' 2>/dev/null; then
-    continue
+
+  # (A) Registry first. A declared provenance row is authoritative and is never
+  #     eclipsed by a literal filename match: if a row exists it must fully
+  #     validate, or the artifact is an ERROR.
+  registry_rows=""
+  registry_count=0
+  if [ -e "$provenance_registry" ] && [ "$registry_usable" -eq 1 ]; then
+    registry_rows="$(awk -F '\t' -v artifact="$f" 'NR > 1 && $1 == artifact { print }' \
+                      "$provenance_registry" 2>/dev/null || true)"
+    registry_count="$(printf '%s\n' "$registry_rows" | grep -c . || true)"
+    registry_count="${registry_count:-0}"
   fi
 
-  if [ ! -e "$provenance_registry" ] || [ "$registry_usable" -ne 1 ]; then
-    echo "WARN: committed data file with no generator reference: $f"
-    warnings=$((warnings + 1))
-    continue
-  fi
-
-  registry_rows="$(awk -F '\t' -v artifact="$f" 'NR > 1 && $1 == artifact { print }' \
-                    "$provenance_registry" 2>/dev/null || true)"
-  registry_count="$(printf '%s\n' "$registry_rows" | grep -c . || true)"
-  if [ "${registry_count:-0}" -eq 0 ]; then
-    echo "WARN: committed data file with no generator reference: $f"
-    warnings=$((warnings + 1))
-    continue
-  fi
-  if [ "$registry_count" -ne 1 ]; then
+  if [ "$registry_count" -gt 1 ]; then
     echo "ERROR: provenance inconsistency for $f: expected exactly one registry row, found $registry_count"
     errors=$((errors + 1))
     continue
   fi
 
-  registry_field_count="$(printf '%s\n' "$registry_rows" | awk -F '\t' '{ print NF }')"
-  IFS=$'\t' read -r registry_artifact generator_path command_or_template provenance_anchor \
-    <<< "$registry_rows"
-  if [ "$registry_field_count" -ne 4 ] || [ -z "$registry_artifact" ] || \
-     [ -z "$generator_path" ] || [ -z "$command_or_template" ] || \
-     [ -z "$provenance_anchor" ]; then
-    echo "ERROR: provenance inconsistency for $f: registry row must contain four non-empty tab-separated fields"
-    errors=$((errors + 1))
-    continue
-  fi
-  if [ ! -f "$generator_path" ] || \
-     ! git ls-files --error-unmatch -- "$generator_path" >/dev/null 2>&1; then
-    echo "ERROR: provenance inconsistency for $f: generator is missing or untracked: $generator_path"
-    errors=$((errors + 1))
+  if [ "$registry_count" -eq 1 ]; then
+    registry_field_count="$(printf '%s\n' "$registry_rows" | awk -F '\t' '{ print NF }')"
+    IFS=$'\t' read -r registry_artifact generator_path command_or_template provenance_anchor \
+      <<< "$registry_rows"
+    if [ "$registry_field_count" -ne 4 ] || [ -z "$registry_artifact" ] || \
+       [ -z "$generator_path" ] || [ -z "$command_or_template" ] || \
+       [ -z "$provenance_anchor" ]; then
+      echo "ERROR: provenance inconsistency for $f: registry row must contain four non-empty tab-separated fields"
+      errors=$((errors + 1))
+      continue
+    fi
+    if [ ! -f "$generator_path" ] || \
+       ! git ls-files --error-unmatch -- "$generator_path" >/dev/null 2>&1; then
+      echo "ERROR: provenance inconsistency for $f: generator is missing or untracked: $generator_path"
+      errors=$((errors + 1))
+      continue
+    fi
+
+    case "$provenance_anchor" in
+      git:*)
+        anchor_commit="${provenance_anchor#git:}"
+        if ! printf '%s\n' "$anchor_commit" | grep -Eq '^[0-9a-fA-F]{40}$' || \
+           ! git cat-file -e "${anchor_commit}^{commit}" 2>/dev/null; then
+          echo "ERROR: provenance inconsistency for $f: invalid git commit anchor: $provenance_anchor"
+          errors=$((errors + 1))
+          continue
+        fi
+        if ! git diff-tree --root --no-commit-id --name-only -r "$anchor_commit" -- "$f" \
+             2>/dev/null | grep -Fxq -- "$f"; then
+          echo "ERROR: provenance inconsistency for $f: anchor commit does not introduce or modify the artifact: $provenance_anchor"
+          errors=$((errors + 1))
+          continue
+        fi
+        ;;
+      *)
+        echo "ERROR: provenance inconsistency for $f: unsupported provenance anchor: $provenance_anchor"
+        errors=$((errors + 1))
+        continue
+        ;;
+    esac
+
+    # Registry row present and fully validated: provenance is established.
     continue
   fi
 
-  case "$provenance_anchor" in
-    git:*)
-      anchor_commit="${provenance_anchor#git:}"
-      if ! printf '%s\n' "$anchor_commit" | grep -Eq '^[0-9a-fA-F]{40}$' || \
-         ! git cat-file -e "${anchor_commit}^{commit}" 2>/dev/null; then
-        echo "ERROR: provenance inconsistency for $f: invalid git commit anchor: $provenance_anchor"
-        errors=$((errors + 1))
-        continue
+  # (B) No registry row for this artifact: fall back to the historical literal
+  #     reference, but only when the reference lives in genuine generator code.
+  candidates="$(git grep -l -- "$base" \
+                  -- '*.py' '*.sh' '*.js' '*.ts' '*.ipynb' '*.go' '*.rs' 'Makefile' \
+                  2>/dev/null || true)"
+  resolved=0
+  if [ -n "$candidates" ]; then
+    while IFS= read -r cand; do
+      [ -z "$cand" ] && continue
+      if is_generator_candidate "$cand"; then
+        resolved=1
+        break
       fi
-      if ! git diff-tree --root --no-commit-id --name-only -r "$anchor_commit" -- "$f" \
-           2>/dev/null | grep -Fxq -- "$f"; then
-        echo "ERROR: provenance inconsistency for $f: anchor commit does not introduce or modify the artifact: $provenance_anchor"
-        errors=$((errors + 1))
-        continue
-      fi
-      ;;
-    *)
-      echo "ERROR: provenance inconsistency for $f: unsupported provenance anchor: $provenance_anchor"
-      errors=$((errors + 1))
-      continue
-      ;;
-  esac
+    done <<< "$candidates"
+  fi
+  [ "$resolved" -eq 1 ] && continue
+
+  echo "WARN: committed data file with no generator reference: $f"
+  warnings=$((warnings + 1))
 done
 
 echo "----------------------------------------"
