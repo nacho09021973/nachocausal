@@ -1,5 +1,8 @@
 import HorizonFormal.S1Paper.CycleLaplacian
 import HorizonFormal.S1Paper.Fiber
+import Mathlib.LinearAlgebra.Basis.Defs
+import Mathlib.LinearAlgebra.Basis.Basic
+import Mathlib.LinearAlgebra.Dimension.StrongRankCondition
 
 /-!
 # Appendix C (C.15)–(C.21) and the finite matrix form of Theorem C
@@ -446,5 +449,86 @@ theorem span_classSum_restr_eq (hN : N ≠ 0) :
     obtain ⟨c, hc, hEq⟩ := Sab_nonzero_smul_classSum x y h
     rw [hEq, restr_smul]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨tau x y h, rfl⟩)
+
+
+/-! ## Dimension of the certified span
+
+The span statement above says *which* module the class sums generate. This section adds
+its dimension, so that the certificate cannot be read as covering more (or less) than it
+does. Nothing new is built: the basis is the edge-Laplacian family already proved
+independent and spanning in `FiniteLinearAlgebra.lean`.
+
+Note what is deliberately **not** proved here: the manuscript's boxed Theorem C also
+asserts `dim V_N = rank G_{[P]}^{(N)}`, and no Lean theorem identifies the rank of the
+Fisher/Gram matrix. That remains `NOT_FORMALIZED`; see `FORMALIZATION_STATUS.md`. -/
+
+lemma card_filter_lt_fin (y : Fin N) :
+    (Finset.univ.filter (fun x : Fin N => x < y)).card = y.val := by
+  classical
+  have hset : (Finset.univ.filter (fun x : Fin N => x < y))
+      = Finset.univ.filter (fun x : Fin N => x.val < y.val) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.lt_def]
+  rw [hset, card_filter_val_lt]
+
+lemma sum_range_id_eq_choose (n : ℕ) : ∑ k ∈ Finset.range n, k = n.choose 2 := by
+  rw [Nat.choose_two_right]
+  have h := Finset.sum_range_id_mul_two n
+  omega
+
+/-- The index set of the edge Laplacians has `C(N,2)` elements. -/
+lemma card_pairs (N : ℕ) :
+    Fintype.card {p : Fin N × Fin N // p.1 < p.2} = N.choose 2 := by
+  classical
+  rw [Fintype.card_subtype, Finset.card_filter, Fintype.sum_prod_type, Finset.sum_comm]
+  have hrow : ∀ y : Fin N, (∑ x : Fin N, if x < y then 1 else 0) = y.val := by
+    intro y
+    rw [← Finset.card_filter]
+    exact card_filter_lt_fin y
+  rw [Finset.sum_congr rfl (fun y _ => hrow y),
+    Fin.sum_univ_eq_sum_range (fun k => k) N, sum_range_id_eq_choose]
+
+/-- The edge Laplacians form a basis of `Sym(E_N)` — independence and spanning are the
+first pass's theorems, assembled here into a `Basis`. -/
+noncomputable def edgeBasis (N : ℕ) :
+    Module.Basis {p : Fin N × Fin N // p.1 < p.2} ℝ (DCSymM N) := by
+  classical
+  refine Module.Basis.mk (v := fun p => ⟨edgeLaplacian N p.1.1 p.1.2,
+      edgeLaplacian_mem_DCSymM N p.1.1 p.1.2⟩) ?_ ?_
+  · exact LinearIndependent.of_comp (DCSymM N).subtype (edgeLaplacian_linearIndependent N)
+  · intro M _
+    have hM := DCSymM_eq_sum_edgeLaplacian N M.2
+    have hlift : M = ∑ p : {p : Fin N × Fin N // p.1 < p.2},
+        (-(M.val p.1.1 p.1.2)) •
+          (⟨edgeLaplacian N p.1.1 p.1.2, edgeLaplacian_mem_DCSymM N p.1.1 p.1.2⟩ :
+            DCSymM N) := by
+      apply Subtype.ext
+      simpa using hM
+    rw [hlift]
+    exact Submodule.sum_mem _
+      (fun p _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨p, rfl⟩))
+
+/-- **`dim Sym(E_N) = C(N,2)`.** -/
+theorem finrank_DCSymM (N : ℕ) : Module.finrank ℝ (DCSymM N) = N.choose 2 := by
+  rw [Module.finrank_eq_card_basis (edgeBasis N), card_pairs N]
+
+/-- The same in the arithmetic form the manuscript writes. -/
+theorem finrank_DCSymM_eq_half (N : ℕ) :
+    Module.finrank ℝ (DCSymM N) = N * (N - 1) / 2 := by
+  rw [finrank_DCSymM, Nat.choose_two_right]
+
+/-- **The dimension of the certified class-sum span:**
+`dim span{A_C|_{E_N} : C ∈ 𝒞_N} = C(N,2)`.
+
+Stated for the **real class sums** of `ClassSum.lean`, not for the edge Laplacians: it is
+`span_classSum_restr_eq` that carries the poset content, and this theorem only computes
+the dimension of that same module. -/
+theorem finrank_span_classSum_restr (hN : N ≠ 0) :
+    Module.finrank ℝ (Submodule.span ℝ (ASet N)) = N.choose 2 := by
+  rw [span_classSum_restr_eq hN, finrank_DCSymM]
+
+theorem finrank_span_classSum_restr_eq_half (hN : N ≠ 0) :
+    Module.finrank ℝ (Submodule.span ℝ (ASet N)) = N * (N - 1) / 2 := by
+  rw [finrank_span_classSum_restr hN, Nat.choose_two_right]
 
 end HorizonFormal.S1Paper

@@ -229,6 +229,13 @@ THEOREM_C_FINITE_MATRIX_FORM   = LEAN_PROVED   (this pass)
 BERNSTEIN_TRANSPORT_TO_VN      = NOT_FORMALIZED
 ```
 
+> **[RETIRED — see the fourth pass below.]** The token
+> `THEOREM_C_FINITE_MATRIX_FORM` is left here as the historical record of what this pass
+> concluded, but it is **no longer the operative certificate**: auditor report 037 (W-16)
+> found its name broader than the theorem behind it, since the manuscript's boxed
+> Theorem C also asserts `dim V_N = rank G_{[P]}^{(N)}`. It is replaced by the narrower
+> tokens of the fourth pass. Read those, not this line.
+
 **No `POTENTIAL_PAPER_LOGIC_GAP` was found.** Every step of (C.12)–(C.21) went through
 with the real definitions, and the manuscript's two-case split in (C.11) and
 (C.13)/(C.14) is exactly right — in Lean the adjacent case is forced, not chosen.
@@ -241,3 +248,57 @@ does **not** certify Theorem C as stated in the manuscript, which is about
 (Appendix B (B.9)–(B.10)) needs the shifted-Legendre/Bernstein polynomial Hilbert space
 and is still `OUT_OF_SCOPE_ANALYTIC`, as are Theorem F's asymptotics and the density
 statement. The paper is not "Lean-certified"; its finite combinatorial core now is.
+
+---
+
+## Fourth pass — dimension and certificate-width closure
+
+Scope: close auditor finding **W-16** of
+`docs/auditor/auditor_report_037_wp6-s1-paper-and-lean-evidence.md`. No new mathematical
+front; no change to the manuscript, outline or bibliography. Everything below lands in
+`SpanTheoremC.lean` (no new module was needed).
+
+W-16 said, correctly: the third pass's summary token named "the finite matrix form of
+Theorem C", but the manuscript's boxed Theorem C is `V_N = Sym²P_{N-1}` **and**
+`dim V_N = rank G_{[P]}^{(N)} = C(N,2)`, while Lean proved only the span equality — there
+was no `finrank` theorem for `DCSymM` at all. Two things were done: the dimension was
+actually proved, and the token was split so that no part of it can be read as covering
+the Gram rank or the Bernstein transport.
+
+| CLAIM | LEAN THEOREM | STATUS | WHAT LEAN CERTIFIES | WHAT LEAN DOES NOT CERTIFY |
+|---|---|---|---|---|
+| `#{(i,j) : i<j} = C(N,2)` | `card_pairs`, `sum_range_id_eq_choose`, `card_filter_lt_fin` | `LEAN_PROVED` | The index set of the edge Laplacians has exactly `N.choose 2` elements. | — |
+| `{L_{ij}}` is a **basis** of `Sym(E_N)` | `edgeBasis` | `LEAN_PROVED` | The first pass's independence (`edgeLaplacian_linearIndependent`) and spanning (`DCSymM_eq_sum_edgeLaplacian`) assembled into an actual `Module.Basis` of `DCSymM N`. Nothing is re-derived. | — |
+| `dim Sym(E_N) = C(N,2)` | `finrank_DCSymM`, `finrank_DCSymM_eq_half` | `LEAN_PROVED` | `Module.finrank ℝ (DCSymM N) = N.choose 2`, and the same in the manuscript's arithmetic form `N(N-1)/2` (via `Nat.choose_two_right`), for every `N`. | — |
+| **`dim span{A_C\vert_{E_N} : C∈𝒞_N} = C(N,2)`** | `finrank_span_classSum_restr`, `finrank_span_classSum_restr_eq_half` | `LEAN_PROVED` | The dimension of the **certified class-sum span itself** — stated for `ASet N`, i.e. the real class sums of `ClassSum.lean`, not for the edge Laplacians. It is `span_classSum_restr_eq` that carries the poset content; this theorem only computes that module's dimension. Holds for every `N ≠ 0`. | — |
+| `dim V_N = rank G_{[P]}^{(N)}` | — | `NOT_FORMALIZED` (`THEOREM_C_GRAM_RANK`) | Nothing. | **Deliberately not attempted.** No Lean object for the Fisher/Gram matrix `G_{[P]}^{(N)}` exists: `grep -rniE 'gram|rank G'` over `S1Paper/*.lean` returns only the two docstring lines in `SpanTheoremC.lean` that disclaim it. It follows in the ordinary paper from the span, but that inference is *not* Lean-checked and must not be reported as if it were. |
+
+### Operative certificate (supersedes the third pass's single token)
+
+```text
+CLASS_SUM_TO_POSET_BRIDGE           = LEAN_PROVED      (second pass)
+THEOREM_C_CLASS_SUM_SPAN            = LEAN_PROVED      (third pass)
+THEOREM_C_CLASS_SUM_SPAN_DIMENSION  = LEAN_PROVED      (this pass)
+THEOREM_C_GRAM_RANK                 = NOT_FORMALIZED
+BERNSTEIN_TRANSPORT_TO_VN           = NOT_FORMALIZED
+THEOREM_C_FINITE_MATRIX_FORM        = RETIRED          (too broad; replaced by the two
+                                                        THEOREM_C_CLASS_SUM_SPAN* tokens)
+```
+
+**Lean certifies the finite class-sum span theorem and its dimension; it does not certify
+the Bernstein transport to `V_N = Sym²P_{N-1}`, nor a separate theorem identifying the
+rank of the Fisher/Gram matrix.** Consequently the ledger must not be read, at any point,
+as `Theorem C as stated in the manuscript = Lean proved`.
+
+### Checks
+
+`lake build` PASS (4716 jobs). `#print axioms` on `card_pairs`, `edgeBasis`,
+`finrank_DCSymM`, `finrank_DCSymM_eq_half`, `finrank_span_classSum_restr` and
+`finrank_span_classSum_restr_eq_half` reports only `propext`, `Classical.choice`,
+`Quot.sound`. The `sorry`/`admit`/`axiom` grep over `S1Paper/*.lean` is still empty. The
+dimension value agrees with `appendixC_matrix_check.py`, which independently finds span
+rank `C(N,2)` for `N = 2..6`; that script still participates in no Lean proof.
+
+`ClaimMap.md` remains untouched (pre-registered planning), as do the manuscript, the
+outline, the bibliography, and auditor report 037 — the report is historical evidence and
+is not rewritten after the remediation it prompted.
