@@ -112,13 +112,14 @@ datafiles="$( { git ls-files '*.csv' '*.tsv' '*.out' '*.parquet' 2>/dev/null;
 is_generator_candidate() {
   case "$1" in
     tests/*|*/tests/*) return 1 ;;
+    test/*|*/test/*) return 1 ;;
+    mytests/*|*/mytests/*) return 1 ;;
     .claude/*|*/.claude/*) return 1 ;;
     docs/*|*/docs/*) return 1 ;;
     provenance/*|*/provenance/*) return 1 ;;
   esac
   case "$(basename "$1")" in
-    test_*) return 1 ;;
-    *_test.py|*_test.sh|*_test.js|*_test.ts|*_test.go|*_test.rs) return 1 ;;
+    conftest.py|test_*|*_test|*_test.*) return 1 ;;
   esac
   return 0
 }

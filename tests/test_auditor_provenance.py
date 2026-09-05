@@ -3,6 +3,8 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 AUDIT_SCRIPT = ROOT / ".claude" / "skills" / "auditor" / "audit.sh"
@@ -45,6 +47,26 @@ HISTORICAL_ARTIFACTS = {
     "evidence/new_geometry_20260719/mink_control_metrics.csv",
 }
 BOGUS_ANCHOR = "git:" + "0" * 40
+FALLBACK_DENIED_CANDIDATE_PATHS = (
+    "tests/test_name.py",
+    "pkg/tests/helper.py",
+    "test/test_name.py",
+    "pkg/test/helper.py",
+    "mytests/test_name.py",
+    "pkg/mytests/helper.py",
+    "conftest.py",
+    "dev/conftest.py",
+    "dev/test_name.py",
+    "foo_test.py",
+    "foo_test.ipynb",
+    "foo_test.sh",
+    "docs/generator.py",
+    "pkg/docs/generator.py",
+    "provenance/generator.py",
+    "pkg/provenance/generator.py",
+    ".claude/generator.py",
+    "pkg/.claude/generator.py",
+)
 
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -237,28 +259,32 @@ def test_bogus_anchor_errors_even_though_basename_is_in_tests(tmp_path: Path) ->
     assert "Auditor: 1 error(s), 0 warning(s)" in result.stdout
 
 
-def test_deleted_registry_warns_even_though_basename_is_in_tests(tmp_path: Path) -> None:
-    artifact = "data/reports/only_named_in_tests.csv"
-    repo, _anchor = _init_fixture(tmp_path, {artifact}, mention_in_tests={artifact})
+@pytest.mark.parametrize("candidate_path", FALLBACK_DENIED_CANDIDATE_PATHS)
+def test_test_infrastructure_denylist_cannot_satisfy_fallback(
+    tmp_path: Path, candidate_path: str
+) -> None:
+    """Pin every directory and basename exclusion by executing the real auditor."""
+    artifact = "data/reports/only_named_in_denied_candidate.csv"
+    repo, _anchor = _init_fixture(tmp_path, {artifact})
+    _write(repo, candidate_path, _mentions({artifact}))
+    _git(repo, "add", candidate_path)
+    _git(repo, "commit", "-m", f"sole basename reference in {candidate_path}")
     result = _audit(repo)
     assert result.returncode == 0
     assert f"WARN: committed data file with no generator reference: {artifact}" in result.stdout
     assert "Auditor: 0 error(s), 1 warning(s)" in result.stdout
 
 
-def test_docs_and_auditor_paths_cannot_satisfy_the_fallback(tmp_path: Path) -> None:
-    artifact = "data/reports/only_named_in_docs.csv"
-    repo, _anchor = _init_fixture(tmp_path, {artifact}, mention_in_docs={artifact})
-    result = _audit(repo)
-    assert result.returncode == 0
-    assert f"WARN: committed data file with no generator reference: {artifact}" in result.stdout
-    assert "Auditor: 0 error(s), 1 warning(s)" in result.stdout
-
-
-def test_legitimate_generator_reference_still_passes(tmp_path: Path) -> None:
+@pytest.mark.parametrize("candidate_path", ("dev/real_generator.py", "scripts/real_generator.py"))
+def test_legitimate_generator_reference_still_passes(
+    tmp_path: Path, candidate_path: str
+) -> None:
     """The historical literal fallback survives for real generator code."""
     artifact = "data/reports/named_in_real_generator.csv"
-    repo, _anchor = _init_fixture(tmp_path, {artifact}, mention_in_generator={artifact})
+    repo, _anchor = _init_fixture(tmp_path, {artifact})
+    _write(repo, candidate_path, _mentions({artifact}))
+    _git(repo, "add", candidate_path)
+    _git(repo, "commit", "-m", f"sole basename reference in {candidate_path}")
     result = _audit(repo)
     assert result.returncode == 0
     assert artifact not in result.stdout
