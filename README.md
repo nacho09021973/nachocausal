@@ -369,14 +369,16 @@ floor, is separately frozen in `docs/preregistration_003.md`). The honest bounda
 
 ## Running / reproducing on a fresh machine
 
-The validation path is **pure numpy**. Anyone can reproduce everything under identical
-conditions with just this repo and the pinned environment:
+The sealed numeric core is **pure numpy**. The canonical repository validation path
+also imports the test-suite support packages pinned in `requirements.txt`. Anyone can
+reproduce everything under identical conditions with just this repo and that
+environment:
 
 ```bash
 git clone https://github.com/nacho09021973/nachocausal
 cd nachocausal
 python3 -m venv .venv && . .venv/bin/activate     # Python 3.12 (sealed: 3.12.3)
-pip install -r requirements.txt                    # numpy==1.26.4 (hard-pinned), pytest
+pip install -r requirements.txt                    # pinned canonical test/audit environment
 
 make test       # bit-exact regression vs the 64 audited O multisets + leak/seed guards
 make dry-run    # run the full frozen PASS/FAIL path on dev seeds (verdict discarded)
