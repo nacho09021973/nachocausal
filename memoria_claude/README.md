@@ -29,4 +29,4 @@ cp -r memoria_claude/*.md ~/.claude/projects/-home-adnac-nachocausal/memory/
   de entorno). No forma parte de los resultados científicos: nada aquí es un registro
   congelado, un umbral ni un veredicto — para eso están `docs/` y los comités.
 
-Última sincronización: 2026-07-05 (post-cierre R-VAR, tras `plan_genial.md`).
+Última sincronización: 2026-09-05 (cierre de la V1 bilingüe del paper WP6/S1, `046b377`).

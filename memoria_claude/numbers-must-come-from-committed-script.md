@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 8846831e-d475-4229-b6b1-cce722f8893c
-  modified: 2026-07-25T07:25:08.422Z
+  modified: 2026-08-01T08:39:06.120Z
 ---
 
 Al redactar una nota de resultados en nachocausal, **todo** número debe salir del stdout del script
@@ -26,4 +26,4 @@ vez de ser decoración). Después: barrido mecánico de comprobación, extraer t
 la nota y exigir que aparezca verbatim en una captura fresca del stdout
 (`grep -oE '[0-9]+\.[0-9]{3,}' nota.md` → `grep -F` contra la captura). Correr `/auditor` **antes**
 de tocar etiquetas `[PROVED]`/`[OPEN]`, nunca después. Relacionado:
-[[program-paused-reentry-marker]].
+[[program-status-reentry-marker]].
