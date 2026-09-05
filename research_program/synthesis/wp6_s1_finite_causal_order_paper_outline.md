@@ -2706,9 +2706,22 @@ bibliográficas normales.
 > finite poset forces the quotient permutation to be \(\alpha\) or
 > \(\alpha^{-1}\); the permitted internal patterns \(1,12,21\) are all
 > involutions, and on a two-element block \(12\) induces a chain and
-> \(21\) an antichain, so no isomorphism can exchange them.
+> \(21\) an antichain, so no isomorphism can exchange them. In the
+> \(\alpha\) branch every internal pattern is therefore fixed and
+> \(\sigma=\pi\); in the \(\alpha^{-1}\) branch the exact
+> inverse-of-an-inflation identity
+> \[
+> \bigl(\alpha[\tau_1,\ldots,\tau_m]\bigr)^{-1}
+> =\alpha^{-1}[\tau_{\alpha^{-1}(1)}^{-1},\ldots,
+>                \tau_{\alpha^{-1}(m)}^{-1}]
+> \]
+> applies, and since \(1,12,21\) are all involutions it returns
+> \(\sigma=\pi^{-1}\). The argument is written out in full in Appendix E
+> of the manuscript and in Teorema 4 of
+> `wp6_d2_modular_fiber_score.md`; it is summarized, not reproved, here.
 > \(\mathcal G_N\) is \([P_{\Pi_N}]\)-measurable because the strong
-> interval tree is the modular decomposition tree of the permutation graph,
+> interval tree is the modular decomposition tree of the permutation graph
+> — Remark 1 of Bouvel, Chauve, Mishna and Rossin, cited in full below —
 > which the unlabeled poset determines up to isomorphism. The second
 > fact is probabilistic and external to this paper: the complement of this
 > prime-root-with-leaves-or-twins event has probability \(O(N^{-1})\)
@@ -2717,11 +2730,20 @@ bibliográficas normales.
 > Reversals*, Combinatorial Pattern Matching (CPM 2009), LNCS 5577,
 > 314–325, DOI 10.1007/978-3-642-02441-2_28], whose Theorem 2, via their
 > Lemma 1 applied with \(c=1\), bounds exactly this exceptional
-> probability. The narrower primality event would not serve here: by
-> Equation (1) of that same source, a uniform permutation is simple with
-> probability tending to \(e^{-2}\), so the complement of the primality
-> event has probability tending to \(1-e^{-2}\) and is not
-> \(O(N^{-1})\). Combining the two
+> probability. The narrower primality event would not serve here, and the
+> reason is quantitative. By Habib and Paul [*A survey of the algorithmic
+> aspects of modular decomposition*, Computer Science Review **4** (2010),
+> 41–59, §7.1, Lemma 20, p. 55], the strong modules of a permutation graph
+> are exactly the strong common intervals of its two realizing orders;
+> hence for \(N\ge4\) the graph \(G_{\Pi_N}^{\rm inc}\) is prime
+> precisely when \(\Pi_N\) is a simple permutation, which is the
+> \(k=0\) case of Theorem 2's own twin count (this transport is carried
+> out in §A.1 of `wp6_d2_modular_fiber_score.md`; for \(N\le3\) no prime
+> graph exists at all). By Equation (1) of Bouvel, Chauve, Mishna and
+> Rossin — \(s_n=(n!/e^2)(1-4/n+2/(n(n-1))+O(n^{-3}))\) — a uniform
+> permutation is simple with probability tending to \(e^{-2}\), so the
+> complement of the primality event has probability tending to
+> \(1-e^{-2}\): a constant, not \(O(N^{-1})\). Combining the two
 > gives (E.15), with \(C_{\rm fib}\) and \(N_{\rm fib}\) existential
 > constants inherited from that source and not otherwise specified: this
 > paper does not reprove, and does not sharpen, the \(O(N^{-1})\) estimate.
