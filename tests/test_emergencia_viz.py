@@ -100,7 +100,7 @@ def test_el_atajo_daba_un_falso_negativo_y_el_predicado_no() -> None:
     tabla = _tabla(filas)
 
     atajo = tabla["pearson_bootstrap95_high"].max() < datos.APARCADO_FUERTE
-    assert atajo is False                                  # lo que decía el atajo
+    assert not bool(atajo)                                 # lo que decía el atajo
     assert datos.aparcada_fuerte(tabla, "X") is True       # lo que dice el contrato
 
 
