@@ -2689,26 +2689,39 @@ bibliográficas normales.
 > \quad\text{on }\mathcal G_N,
 > \tag{E.15}
 > \]
-> with the set understood without multiplicity for involutions. The first
-> fact is deterministic: on the event that the incomparability graph
-> \(G_{\Pi_N}^{\rm inc}\) is prime, the fiber of the unlabeled poset over
-> \(\Pi_N\) collapses exactly to \(\{\Pi_N,\Pi_N^{-1}\}\). This is proved
-> structurally, not merely cited, by transporting Gallai's uniqueness
-> theorem for the two transitive orientations of a prime comparability
-> graph — Gallai [*Transitiv orientierbare Graphen*, Acta Mathematica
-> Academiae Scientiarum Hungaricae **18**, 1967, 25–66,
+> with the set understood without multiplicity for involutions. Here
+> \(\mathcal G_N\) is the event that the strong interval tree of
+> \(\Pi_N\) has a prime root and that every child of the root is either a
+> leaf or a twin, i.e. a linear node with two leaf children. **This is not
+> the event that the whole incomparability graph \(G_{\Pi_N}^{\rm inc}\)
+> is prime: twins are allowed.** The first fact is deterministic: on
+> \(\mathcal G_N\) the fiber of the unlabeled poset over \(\Pi_N\)
+> collapses exactly to \(\{\Pi_N,\Pi_N^{-1}\}\). This is proved
+> structurally, not merely cited. Contracting the maximal strong blocks
+> below the root gives isomorphic quotient posets, and transporting
+> Gallai's uniqueness theorem for the two transitive orientations of a
+> prime comparability graph — Gallai [*Transitiv orientierbare Graphen*,
+> Acta Mathematica Academiae Scientiarum Hungaricae **18**, 1967, 25–66,
 > DOI 10.1007/BF02020961] — to the two competing linear extensions of the
-> finite poset. \(\mathcal G_N\) is taken to be exactly this primality
-> event, which is \([P_{\Pi_N}]\)-measurable since the incomparability
-> graph is determined up to isomorphism by the unlabeled poset. The second
-> fact is probabilistic and external to this paper: the complementary event
-> — the incomparability graph failing to be prime, i.e. the atypical shape
-> of the associated strong interval tree — has probability \(O(N^{-1})\)
+> finite poset forces the quotient permutation to be \(\alpha\) or
+> \(\alpha^{-1}\); the permitted internal patterns \(1,12,21\) are all
+> involutions, and on a two-element block \(12\) induces a chain and
+> \(21\) an antichain, so no isomorphism can exchange them.
+> \(\mathcal G_N\) is \([P_{\Pi_N}]\)-measurable because the strong
+> interval tree is the modular decomposition tree of the permutation graph,
+> which the unlabeled poset determines up to isomorphism. The second
+> fact is probabilistic and external to this paper: the complement of this
+> prime-root-with-leaves-or-twins event has probability \(O(N^{-1})\)
 > under the uniform reference law, by the average-case analysis of Bouvel,
 > Chauve, Mishna and Rossin [*Average-Case Analysis of Perfect Sorting by
 > Reversals*, Combinatorial Pattern Matching (CPM 2009), LNCS 5577,
 > 314–325, DOI 10.1007/978-3-642-02441-2_28], whose Theorem 2, via their
-> Lemma 1, bounds exactly this exceptional probability. Combining the two
+> Lemma 1 applied with \(c=1\), bounds exactly this exceptional
+> probability. The narrower primality event would not serve here: by
+> Equation (1) of that same source, a uniform permutation is simple with
+> probability tending to \(e^{-2}\), so the complement of the primality
+> event has probability tending to \(1-e^{-2}\) and is not
+> \(O(N^{-1})\). Combining the two
 > gives (E.15), with \(C_{\rm fib}\) and \(N_{\rm fib}\) existential
 > constants inherited from that source and not otherwise specified: this
 > paper does not reprove, and does not sharpen, the \(O(N^{-1})\) estimate.
