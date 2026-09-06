@@ -813,6 +813,10 @@ The scope of these statements is limited in several specific respects.
 
 **Priority.** The statistical comparison of finite causal-order laws, and the expectation that larger samples sharpen resolution, both have clear precedents, reviewed in §8 together with substantial partial precedents for the individual ingredients. We have not found an exact counterpart of the all-$N$ class-sum span theorem, or of the antisymmetric-orbit statement, in the literature considered there; that absence is not itself a priority claim, and the search was not exhaustive.
 
+*For Karim.*
+
+*What is forgotten is not always gone; sometimes it is merely hidden between what was and what is yet to come.*
+
 ## References
 
 - **[BayoumiElZaharKhamis1994]** Bayoumi I. Bayoumi, Mohamed H. El-Zahar, and Soheir M. Khamis. Counting two-dimensional posets. *Discrete Mathematics*, 131 (1–3): 29–37, 1994. doi: 10.1016/0012-365X(94)90370-0.

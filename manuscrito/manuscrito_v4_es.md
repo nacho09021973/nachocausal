@@ -813,6 +813,10 @@ El alcance de estos enunciados está limitado en varios aspectos concretos.
 
 **Prioridad.** La comparación estadística de leyes finitas de orden causal, y la expectativa de que muestras mayores afinen la resolución, tienen ambas precedentes claros, revisados en §8 junto con precedentes parciales sustanciales para los ingredientes individuales. No hemos encontrado una contrapartida exacta del teorema de generado por sumas de clase para todo $N$, ni del enunciado sobre la órbita antisimétrica, en la literatura allí considerada; esa ausencia no constituye por sí misma una reivindicación de prioridad, y la búsqueda no fue exhaustiva.
 
+*For Karim.*
+
+*What is forgotten is not always gone; sometimes it is merely hidden between what was and what is yet to come.*
+
 ## Referencias
 
 - **[BayoumiElZaharKhamis1994]** Bayoumi I. Bayoumi, Mohamed H. El-Zahar, and Soheir M. Khamis. Counting two-dimensional posets. *Discrete Mathematics*, 131 (1–3): 29–37, 1994. doi: 10.1016/0012-365X(94)90370-0.
