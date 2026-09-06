@@ -1,5 +1,9 @@
 # Direcciones visibles en órdenes causales finitos
 
+José Ignacio Martín Gandul
+
+Autor de correspondencia: jmartin596@alumno.uned.es
+
 ## Resumen
 
 Estudiamos un modelo de interacción conforme explícito en $1+1$ dimensiones sobre un diamante causal, al que llamamos modelo S1, a través de su canal de orden causal no etiquetado, desarrollado en torno a una geometría de referencia independiente. Para cada cardinalidad $N$ determinamos exactamente qué perturbaciones de primer orden sobreviven al paso de la cópula continua a la ley del orden causal no etiquetado. La respuesta es $V_N=\operatorname{Sym}^2P_{N-1}$, donde $P_{N-1}\subset L^2_0([0,1])$ está generado por los primeros $N-1$ modos de Legendre desplazados y centrados. Estos espacios visibles tienen dimensión $\binom N2$, están estrictamente encajados y tienen unión densa en el espacio de Hilbert simétrico de interacción. El diferencial del score factoriza como $D\mathscr S_N=B_NP_N^{\rm vis}$ con $B_N$ inyectivo, de modo que su núcleo es el complemento ortogonal simétrico de $V_N$ junto con todo el sector antisimétrico. Visibilidad y resolución estadística son cuestiones distintas: el operador de Fisher sobre $V_N$ es definido positivo pero anisótropo, y no tiene por qué ser diagonal en la base modal; normalizado por $N$ observaciones continuas de la cópula converge a la proyección simétrica en la topología fuerte de operadores, pero no en norma de operador. Una órbita exponencial antisimétrica explícita tiene una ley finita de posets par cuyo primer jet no nulo es exactamente de orden dos para todo $N\ge2$.

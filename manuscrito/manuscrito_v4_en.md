@@ -1,5 +1,9 @@
 # Visible Directions in Finite Causal Orders
 
+José Ignacio Martín Gandul
+
+Corresponding author: jmartin596@alumno.uned.es
+
 ## Abstract
 
 We study an explicit $1+1$-dimensional conformal interaction model on a causal diamond, which we call the S1 model, through its unlabeled causal-order channel, expanded at an independent reference geometry. For each cardinality $N$ we determine exactly which first-order perturbations survive the passage from the continuous copula to the law of the unlabeled causal order. The answer is $V_N=\operatorname{Sym}^2P_{N-1}$, where $P_{N-1}\subset L^2_0([0,1])$ is spanned by the first $N-1$ centered shifted-Legendre modes. These visible spaces have dimension $\binom N2$, are strictly nested, and have dense union in the symmetric interaction Hilbert space. The score differential factors as $D\mathscr S_N=B_NP_N^{\rm vis}$ with $B_N$ injective, so its kernel is the symmetric orthogonal complement of $V_N$ together with the entire antisymmetric sector. Visibility and statistical resolution are different questions: the Fisher operator on $V_N$ is positive definite but anisotropic, and need not be diagonal in the modal basis; normalized by $N$ continuous copula observations it converges to the symmetric projection in the strong operator topology, but not in operator norm. One explicit antisymmetric exponential orbit has an even finite-poset law whose first nonzero jet is of order exactly two for every $N\ge2$.
