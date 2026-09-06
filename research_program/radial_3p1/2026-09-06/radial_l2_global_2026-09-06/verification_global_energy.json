@@ -1,0 +1,42 @@
+{
+  "status": "all_exact_checks_passed",
+  "examples": [
+    {
+      "g": "-x + y",
+      "b": "-(2*y - 1)**2/12",
+      "energy": "1/1080",
+      "boundary_flux": "-1/2160",
+      "left_hand_side": "1/2160"
+    },
+    {
+      "g": "(-x + y)*(x + y - 1)",
+      "b": "-(2*y - 1)*(3*y**2 - 3*y + 1)/24",
+      "energy": "1/30240",
+      "boundary_flux": "-1/30240",
+      "left_hand_side": "0"
+    },
+    {
+      "g": "x*y*(-x + y)",
+      "b": "-y*(9*y**2 - 7*y + 1)/72",
+      "energy": "521/10886400",
+      "boundary_flux": "-53/2177280",
+      "left_hand_side": "1/42525"
+    },
+    {
+      "g": "(-x + y)*(x**2 + y**2)",
+      "b": "-(72*y**4 - 54*y**3 + 53*y**2 - 41*y + 9)/360",
+      "energy": "119369/272160000",
+      "boundary_flux": "-991/4252500",
+      "left_hand_side": "11189/54432000"
+    },
+    {
+      "g": "x**2*y**2*(-x + y)",
+      "b": "-y*(16*y**3 - 10*y**2 + y - 1)/240",
+      "energy": "761/120960000",
+      "boundary_flux": "-19/6048000",
+      "left_hand_side": "127/40320000"
+    }
+  ],
+  "zero_marginal_example_energy": "23/529200",
+  "note": "The L2 extension and variational reconstruction are proved analytically in the companion note."
+}

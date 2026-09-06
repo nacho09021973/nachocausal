@@ -1,0 +1,58 @@
+{
+  "symbolic": {
+    "K_gt": "exactly zero",
+    "Markov_identity_non_kernel_polynomial": "exact at (1/4,3/4)",
+    "beta": 0.5615528128088303,
+    "two_moments": "exactly zero",
+    "corner_identity": "exact",
+    "corner_Neumann_bound_epsilon_1_4": 0.06544714718796467
+  },
+  "sequence_before_corner_correction": [
+    {
+      "n": 16,
+      "epsilon": 1.1253517471925912e-07,
+      "norm_a_squared": 0.6670020167468234,
+      "norm_Kg_over_norm_g": 0.17917076316454963,
+      "sqrt_n_times_ratio": 0.7166830526581985
+    },
+    {
+      "n": 32,
+      "epsilon": 1.2664165549094176e-14,
+      "norm_a_squared": 0.8333333896009141,
+      "norm_Kg_over_norm_g": 0.11346016563901272,
+      "sqrt_n_times_ratio": 0.6418276201431585
+    },
+    {
+      "n": 64,
+      "epsilon": 1.603810890548638e-28,
+      "norm_a_squared": 0.9166666666666696,
+      "norm_Kg_over_norm_g": 0.07649485647647002,
+      "sqrt_n_times_ratio": 0.6119588518117601
+    },
+    {
+      "n": 128,
+      "epsilon": 2.572209372642415e-56,
+      "norm_a_squared": 0.9583333333333333,
+      "norm_Kg_over_norm_g": 0.05290109464673711,
+      "sqrt_n_times_ratio": 0.5985075641103869
+    }
+  ],
+  "quadrature_refinement": "24 versus 40 nodes per logarithmic interval: passed",
+  "corner_correction_independent_finite_scale_check": [
+    {
+      "nodes": 80,
+      "total_weighted_moment": 1.2164127217792706e-16,
+      "max_diagonal_defect_at_nine_points": 7.087754862189488e-15
+    },
+    {
+      "nodes": 160,
+      "total_weighted_moment": 9.083051930763083e-18,
+      "max_diagonal_defect_at_nine_points": 7.387970443750724e-15
+    },
+    {
+      "nodes": 320,
+      "total_weighted_moment": 4.468839950595282e-18,
+      "max_diagonal_defect_at_nine_points": 8.110916452364059e-16
+    }
+  ]
+}
