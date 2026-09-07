@@ -70,7 +70,7 @@ h_\psi=2\bigl[\psi-\psi_U-\psi_V+\bar\psi\bigr]=2\mathcal P\psi,
 \tag{2.2}
 $$
 
-with $\psi_U,\psi_V$ the marginal means; and the score of the finite discrete experiment. Both families have reference density $1$ at $\varepsilon=0$, but their tangents differ in general, by the marginal terms $2(\psi_U+\psi_V-2\bar\psi)$; passing to ranks applies the marginal probability integral transform and removes marginal information, so only $h_\psi$ is seen by the finite experiment.
+with $\psi_U,\psi_V$ the marginal means; and the score of the finite discrete experiment. Here $M_u$ and $M_v$ are the marginal-mean operators $(M_u\psi)(v):=\int_0^1\psi(u,v)\,du=:\psi_U(v)$ and $(M_v\psi)(u):=\int_0^1\psi(u,v)\,dv=:\psi_V(u)$; they commute, with $M_uM_v\psi=\bar\psi:=\int_D\psi\,d\mu_0$, so expanding $(I-M_u)(I-M_v)$ returns the bracket in (2.2). Both families have reference density $1$ at $\varepsilon=0$, but their tangents differ in general, by the marginal terms $2(\psi_U+\psi_V-2\bar\psi)$; passing to ranks applies the marginal probability integral transform and removes marginal information, so only $h_\psi$ is seen by the finite experiment.
 
 A sample of $N$ points gives three progressively coarser observations. The continuous sample $(U_k,V_k)_{k\le N}$ has score $T_{N,\psi}=\sum_kh_\psi(U_k,V_k)$. Ordering by $U$ and recording the induced $V$-rank gives a *labeled* rank permutation $\Pi_N\in S_N$. What a causal set exposes is coarser still: the *unlabeled* isomorphism class $[P_{\Pi_N}]$ of the permutation matrix, invariant under the choice of linear realizer.
 
@@ -372,7 +372,7 @@ D\mathscr S_N^*D\mathscr S_N=P_N^{\rm vis}F_NP_N^{\rm vis},
 \tag{5.5}
 $$
 
-positive definite on $V_N$ because $B_N$ is injective and $V_N$ finite dimensional. The continuous reference experiment of $N$ independent copula observations has score $2\sum_kf(U_k,V_k)$ and Fisher form $4N\langle f,g\rangle$. Since $D\mathscr S_Nf$ is the conditional expectation of that score given $[P_{\Pi_N}]$ and conditional expectation contracts $L^2$ ([Pollard2013]), $I_N^{[P]}(f)\le4N\|f\|^2$; normalizing by that form gives
+positive definite on $V_N$ because $B_N$ is injective and $V_N$ finite dimensional. The continuous reference experiment of $N$ independent copula observations has score $2\sum_kf(U_k,V_k)$ and Fisher form $4N\langle f,g\rangle$; write $G_{\rm full}^{(N)}(f,g):=4N\langle f,g\rangle$ for this reference Fisher form. Since $D\mathscr S_Nf$ is the conditional expectation of that score given $[P_{\Pi_N}]$ and conditional expectation contracts $L^2$ ([Pollard2013]), $I_N^{[P]}(f)\le4N\|f\|^2$; normalizing by that form gives
 
 $$
 \widehat F_N:=\frac1{4N}\,D\mathscr S_N^*D\mathscr S_N\quad\text{on }\mathcal X,

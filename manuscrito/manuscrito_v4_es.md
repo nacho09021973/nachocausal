@@ -70,7 +70,7 @@ h_\psi=2\bigl[\psi-\psi_U-\psi_V+\bar\psi\bigr]=2\mathcal P\psi,
 \tag{2.2}
 $$
 
-con $\psi_U,\psi_V$ las medias marginales; y el score del experimento discreto finito. Ambas familias tienen densidad de referencia $1$ en $\varepsilon=0$, pero sus tangentes difieren en general, en los términos marginales $2(\psi_U+\psi_V-2\bar\psi)$; pasar a rangos aplica la transformada integral de probabilidad marginal y elimina la información marginal, de modo que el experimento finito solo ve $h_\psi$.
+con $\psi_U,\psi_V$ las medias marginales; y el score del experimento discreto finito. Aquí $M_u$ y $M_v$ son los operadores de media marginal $(M_u\psi)(v):=\int_0^1\psi(u,v)\,du=:\psi_U(v)$ y $(M_v\psi)(u):=\int_0^1\psi(u,v)\,dv=:\psi_V(u)$; conmutan, con $M_uM_v\psi=\bar\psi:=\int_D\psi\,d\mu_0$, de modo que desarrollar $(I-M_u)(I-M_v)$ devuelve el corchete de (2.2). Ambas familias tienen densidad de referencia $1$ en $\varepsilon=0$, pero sus tangentes difieren en general, en los términos marginales $2(\psi_U+\psi_V-2\bar\psi)$; pasar a rangos aplica la transformada integral de probabilidad marginal y elimina la información marginal, de modo que el experimento finito solo ve $h_\psi$.
 
 Una muestra de $N$ puntos da tres observaciones progresivamente más gruesas. La muestra continua $(U_k,V_k)_{k\le N}$ tiene score $T_{N,\psi}=\sum_kh_\psi(U_k,V_k)$. Ordenar por $U$ y registrar el rango inducido en $V$ da una permutación de rangos *etiquetada* $\Pi_N\in S_N$. Lo que un conjunto causal expone es aún más grueso: la clase de isomorfía *no etiquetada* $[P_{\Pi_N}]$ de la matriz de permutación, invariante bajo la elección de realizador lineal.
 
@@ -372,7 +372,7 @@ D\mathscr S_N^*D\mathscr S_N=P_N^{\rm vis}F_NP_N^{\rm vis},
 \tag{5.5}
 $$
 
-definido positivo sobre $V_N$ porque $B_N$ es inyectivo y $V_N$ tiene dimensión finita. El experimento de referencia continuo de $N$ observaciones independientes de la cópula tiene score $2\sum_kf(U_k,V_k)$ y forma de Fisher $4N\langle f,g\rangle$. Como $D\mathscr S_Nf$ es la esperanza condicional de ese score dado $[P_{\Pi_N}]$ y la esperanza condicional contrae $L^2$ ([Pollard2013]), $I_N^{[P]}(f)\le4N\|f\|^2$; normalizar por esa forma da
+definido positivo sobre $V_N$ porque $B_N$ es inyectivo y $V_N$ tiene dimensión finita. El experimento de referencia continuo de $N$ observaciones independientes de la cópula tiene score $2\sum_kf(U_k,V_k)$ y forma de Fisher $4N\langle f,g\rangle$; escribimos $G_{\rm full}^{(N)}(f,g):=4N\langle f,g\rangle$ para esta forma de Fisher de referencia. Como $D\mathscr S_Nf$ es la esperanza condicional de ese score dado $[P_{\Pi_N}]$ y la esperanza condicional contrae $L^2$ ([Pollard2013]), $I_N^{[P]}(f)\le4N\|f\|^2$; normalizar por esa forma da
 
 $$
 \widehat F_N:=\frac1{4N}\,D\mathscr S_N^*D\mathscr S_N\quad\text{en }\mathcal X,
