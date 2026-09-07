@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-07",
+  "track": "aproximantes duales por recursion polinomica",
+  "repository_head_at_freeze": "5efd1875a61cc1921e1d133af27b64a9f94082f0",
+  "policy": "Front frozen by the user after the exact reduction of the residual to ker K. Working results, no independent adjudication, no radial uniqueness claim. Hashes, not repository HEAD, identify the frozen uncommitted files.",
+  "terminal_state": "explicit_recursion_verified_limit_open",
+  "reason_for_freeze": "The remaining obstacle is spectral, not quantitative: r_n -> Pi_{ker K} h_k, so no bound built from K* M_omega^2 K can force r_n -> 0. Numerical extension is excluded as well: ||r_n||^2 = int lambda^{2n} dmu and the limit is mu({1}), which finitely many steps cannot resolve.",
+  "reopens_only_if": "ker K cap H_alt cap g_t^perp = {0} is proved; then Lemma of section 7 makes P_{n,k} the explicit approximants.",
+  "next_front": "Radial uniqueness, outside this track. Strongest handle: Kg=0 <=> Pf=f and D=0 (2026-09-06 note, section 3).",
+  "verifier_reproduced_byte_identical": true,
+  "files": [
+    {
+      "path": "aproximantes_duales_por_recursion.md",
+      "sha256": "aacd1eb0b8441292b0c5edb6a29083325573d473fbbba96c4221d5f41a77e59c"
+    },
+    {
+      "path": "verify_dual_recursion.py",
+      "sha256": "5b5adae0f6aafa46044124ea0389c24c0d2053a76ba2e2852cdfe3d00777a46e"
+    },
+    {
+      "path": "verification_dual_recursion.json",
+      "sha256": "f11447c76524d083ee4667b31952f10d517b9efb0433549fd94e62478fd4b2c9"
+    }
+  ]
+}
