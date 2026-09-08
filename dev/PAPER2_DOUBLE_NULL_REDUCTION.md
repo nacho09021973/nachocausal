@@ -27,11 +27,12 @@ Asignación editorial: esto es **Paper II** (puente matemático 1+1D). El materi
 - P4. El guardián `earlier` (`t_j < t_i`) es **redundante** fuera de la diagonal.
 - P5. Forma normal de Hammersley: en coordenadas nulas el sprinkling es un Poisson
   planar de intensidad `mu = rho·|f|/2` con `f = 1 - r_S/r`, y `ds^2 = |f| dv dw`.
-- P6. De P5 **más el teorema externo de Deuschel–Zeitouni** se deriva
-  `L(i)/sqrt(2 rho) -> tau_max(x)`. Esta pieza es **condicional**: Deuschel–Zeitouni
-  no está en `biblioteca/` y no se demuestra aquí. Y es **bloque a bloque**: vale
-  para `F_x` contenido enteramente en el exterior o enteramente en el interior, no
-  para futuros que crucen el horizonte.
+- P6. De P5 **más una cadena de dependencias externas** se deriva
+  `L(i)/sqrt(2 rho) -> tau_max(x)`. Esa cadena no es un solo insumo: es
+  Deuschel–Zeitouni 1995 **más E1–E4** (§4.1). Ninguna de las cuatro se demuestra
+  aquí. La pieza es además **bloque a bloque**: vale para `F_x` contenido
+  enteramente en el exterior o enteramente en el interior, no para futuros que
+  crucen el horizonte.
 
 **No se prueba**: nada que cruce `r = r_S`. §7 aísla la obstrucción, que resulta
 ser cuádruple y no una molestia técnica.
@@ -231,11 +232,11 @@ modo que `r` decrece estrictamente a lo largo de cualquier curva causal futura y
 > **Alcance del Teorema 2 y del Corolario 4.** (i)–(iii) son un cambio de
 > variables y no dependen de ningún resultado externo, pero están enunciados
 > **en cada bloque por separado**: la carta `(v, w)` no existe globalmente (O1).
-> El Corolario 4, que es donde aparece la ley de altura, está además
-> **condicionado al teorema externo de Deuschel–Zeitouni**, ausente de
-> `biblioteca/` y no demostrado aquí. Tal como está, el paquete cubre
-> `F_x ⊂ D_ext` o `F_x ⊂ D_int`, y **no** cubre futuros truncados que crucen
-> `r = r_S`.
+> El Corolario 4, que es donde aparece la ley de altura, depende además de
+> **Deuschel–Zeitouni 1995 y de las extensiones E1–E4** listadas en §4.1;
+> ninguna se demuestra aquí. Clasificación de aplicabilidad en §4.2. Tal como
+> está, el paquete cubre `F_x ⊂ D_ext` o `F_x ⊂ D_int`, y **no** cubre futuros
+> truncados que crucen `r = r_S`.
 
 *Prueba.* (iii) es el Teorema 1. Para (ii), el jacobiano es
 `det ∂(v,U)/∂(t*,r) = -(1 + R') = -2/f`, luego `|J| = 2/|f|`. Como `det g = -1`,
@@ -274,9 +275,66 @@ salen del jacobiano y del factor conforme.** En el caso intervalo,
 `tau_max = tau`, `A = tau^2/2`, y `L -> 2 sqrt(rho A)`, es decir `m_2 = 2`.
 
 Esto convierte el punto (ii) del enunciado candidato del Paper II en un teorema
-**condicionado a un único insumo externo** — Deuschel–Zeitouni, que no está en
-`biblioteca/` y no se demuestra aquí — y **válido sólo dentro de un bloque**. No
-es un enunciado sobre `F_x` que cruce el horizonte.
+**condicional**, y **válido sólo dentro de un bloque**. No es un enunciado sobre
+`F_x` que cruce el horizonte. La dependencia exacta es la de §4.1, y la
+clasificación de aplicabilidad la de §4.2.
+
+---
+
+## 4.1 Dependencia externa exacta del Corolario 4
+
+Auditoría completa, con referencias de página al artículo original:
+**`dev/PAPER2_DEUSCHEL_ZEITOUNI_APPLICABILITY.md`** (commit `7f60638`). El PDF y
+su markdown derivado están en `biblioteca/`, que es git-ignored.
+
+El Corolario 4 **no** está condicionado a «un único insumo externo». Depende de
+cinco piezas, ninguna demostrada aquí:
+
+| Dep. | Contenido | Estado |
+|---|---|---|
+| **DZ 1995** | Deuschel & Zeitouni, *Limiting Curves for I.I.D. Records*, Ann. Probab. **23**(2), 852-878. Teorema 2(i), p. 855: `ell_max(n)/sqrt(n) -> 2 J_bar` en probabilidad, bajo (A1)-(A2), **en el cuadrado unidad `[0,1]^2`** | adquirido y auditado; se cita, no se demuestra |
+| **E1** | **Poissonización.** DZ trabaja con `n` i.i.d. de tamaño fijo; nuestro sprinkling es Poisson. La palabra «Poisson» no aparece en ninguna de las 27 páginas del artículo | PENDIENTE — elemental (monotonía de `ell_max` + concentración de `N` + emparedado), pero hay que escribirlo |
+| **E2** | **Extensión del cuadrado a `F_x` no rectangular.** El dominio de DZ es `[0,1]^2`; la única relajación (Remarks 1-2, p. 863) es una partición finita **en rectángulos**. En `(v,w)` la caja congelada no es un rectángulo, luego `F_x = J^+(x) ∩ D` tampoco | PENDIENTE — la más frágil: el esquema (emparedado monótono entre uniones de rectángulos) es elemental, pero exige un **lema de continuidad de `J_bar` bajo refinamiento del dominio que DZ no demuestra** |
+| **E3** | **Densidad que no satisface la cota inferior.** (A2), p. 853, exige `p` acotada **inferiormente**; nuestra `mu = rho\|f\|/2` tiende a 0 en `r -> r_S`. La relajación `(A2'')` (Remark 2, p. 863) sólo admite que la densidad se anule **idénticamente sobre rectángulos enteros de una rejilla, con salto**, no una anulación continua sobre una curva interior. Y la demostración del Teorema 2 (Lemas 7-9, pp. 874-876) controla **cocientes** de densidades, que divergen justo ahí | PENDIENTE — no elemental cerca del horizonte; es lo que fuerza las condiciones de distancia positiva de §4.2 |
+| **E4** | **Extensión del resultado variacional exacto requerido.** Los Remarks 1-2 (p. 863) relajan `(A2)` **para el Teorema 1**, no para el Teorema 2(i), que es el enunciado que necesitamos. Los autores sólo declaran que las demostraciones corren «in exactly the same way» (p. 877) | PENDIENTE — inspección de demostración; no citable tal cual |
+
+Reconciliación de numeraciones, para que los dos documentos no se contradigan:
+`E1` y `E2` coinciden con las del informe de auditoría. `E3` aquí es la cota
+inferior de la densidad, que en el informe no llevaba etiqueta y aparecía como la
+discusión de (A2) (§1.3) y como la condición de distancia al horizonte (§3.A/B).
+`E4` aquí es el `E4` del informe (traslado Teorema 1 → Teorema 2(i)). El `E3` del
+informe —**extremo libre** frente al problema esquina-a-esquina `phi(0)=0`,
+`phi(1)=1` de DZ (p. 854)— no desaparece; se conserva como:
+
+| Dep. | Contenido | Estado |
+|---|---|---|
+| **E5** | **Extremo libre.** `tau_max(x) = sup_{y ∈ F_x} d(x,y)` tiene extremo **libre** sobre la frontera de truncación; DZ optimiza de esquina a esquina, `phi(0)=0`, `phi(1)=1` | PENDIENTE — elemental, y **vacía** en el caso rectangular, donde la esquina lejana es el óptimo |
+
+## 4.2 Clasificación de aplicabilidad
+
+```text
+CASO RECTANGULAR / INTERVALO que satisfaga las hipótesis de DZ
+    (F_x rectángulo en (v,w); mu acotada superior e inferiormente
+     y C_b^1 en su clausura)
+  -> DEUSCHEL_ZEITOUNI_APPLIES = DIRECT
+     E2, E3 y E5 son vacías. DIRECT se entiende para el enunciado tal
+     cual está: n i.i.d. fijo. La versión Poisson sigue necesitando E1.
+
+BLOQUES POR SEPARADO, acotados lejos de r_S
+    (exterior: clausura(F_x) ⊂ {r >= r_S + eps};
+     interior: clausura(F_x) ⊂ {eps_0 <= r <= r_S - eps}, lejos también
+     de r = 0, donde |f| = r_S/r - 1 diverge y (A1) fallaría —
+     en la caja congelada aguanta sólo porque r >= 0.1)
+  -> DEUSCHEL_ZEITOUNI_APPLIES = AFTER_ELEMENTARY_EXTENSION
+     Requiere E1, E2, E4, E5. Si E2 no se concede como elemental,
+     esto degrada a NOT_ESTABLISHED.
+
+FUTUROS QUE CRUZAN r = r_S
+  -> DEUSCHEL_ZEITOUNI_APPLIES = NOT_ESTABLISHED
+     Por O1-O4 (§7): no hay un único plano (v,w), el dominio no sería
+     acotado, mu -> 0 continuamente en la interfaz, y el cruce lo decide
+     v sola. No se intenta resolver aquí.
+```
 
 ---
 
@@ -395,16 +453,19 @@ no se puede— es trabajo pendiente, no un corolario de este documento.
 | Reducción nula doble, bloque a bloque | **PROBADA** (Teorema 1), verificada contra el código |
 | `func` forzada por `det g = -1` | **PROBADA** (Lema 2, Corolario 1) |
 | Forma normal de Hammersley, `mu = rho\|f\|/2` | **PROBADA** (Teorema 2) |
-| `L -> sqrt(2 rho) tau_max` **dentro de un bloque** | **PROBADA condicionalmente** — falta Deuschel–Zeitouni, ausente de `biblioteca/` |
+| `L -> sqrt(2 rho) tau_max` **dentro de un bloque** | **PROBADA condicionalmente** — depende de DZ 1995 **más E1-E4** (§4.1); `AFTER_ELEMENTARY_EXTENSION` (§4.2) |
+| Lo mismo con `F_x` rectángulo que cumpla las hipótesis | **DIRECT** en el enunciado `n` i.i.d. de DZ; la versión Poisson necesita E1 (§4.2) |
 | `V/rho -> A` | elemental (Campbell/Slivnyak); pendiente el término de borde |
 | Lo anterior para `F_x` que **cruza** el horizonte | **ABIERTO** — O1–O4 |
 | Reformulación intrínseca (order-only) de O4 | **ABIERTA** — §7.1; O4 es hoy un enunciado en el embedding |
 | Efectos de borde de caja (minimales) | **ABIERTO** — Madsen concede que la capa excluida no encoge con `rho` |
 
-Insumo externo único e identificado: un teorema de límite variacional tipo
-Hammersley para densidad variable en región general (Deuschel–Zeitouni 1995,
-*Limiting curves for i.i.d. records*). **No está en `biblioteca/`.** Adquirirlo es
-el siguiente paso barato y de mayor apalancamiento.
+Insumo externo identificado y **ya adquirido**: Deuschel–Zeitouni 1995,
+*Limiting Curves for I.I.D. Records*, Ann. Probab. **23**(2), 852-878. Está en
+`biblioteca/` (git-ignored) y auditado en
+`dev/PAPER2_DEUSCHEL_ZEITOUNI_APPLICABILITY.md`. La auditoría mostró que **no
+basta por sí solo**: hacen falta además E1-E4 (§4.1), y el veredicto por bloque
+es el de §4.2.
 
 Para el caso que cruza el horizonte hacen falta, además, o bien una versión que
 admita densidad que se anula sobre una curva interior (O3), o bien un lema de
@@ -442,3 +503,8 @@ exit     : 0
 Seis regímenes en verde (caja congelada, dominio ancho, sólo exterior, sólo
 interior, `|r-r_S|` hasta `1e-9`, `r_S = 2.0`) y las ocho identidades simbólicas
 en verde. `nachocausal/` no fue tocado: el verificador sólo lo importa.
+
+Re-ejecutado sin cambios el 2026-09-08 sobre `7f60638`, tras la corrección de
+alcance de §4.1/§4.2: **ALL CHECKS PASS, exit 0**, mismas cifras. Esa corrección
+es editorial y no toca los Teoremas 1-2, las identidades del chart ni el
+verificador.
