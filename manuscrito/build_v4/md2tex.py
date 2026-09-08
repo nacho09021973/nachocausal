@@ -128,11 +128,15 @@ SECNUM  = re.compile(r'^(\d+)\.\s+(.*)$')
 ITALIC_ONLY = re.compile(r'^\*(?!\*)(.+)\*$')
 THM_KINDS = {'Teorema': 'teorema', 'Corolario': 'corolario', 'Lema': 'lema',
              'Proposici\u00f3n': 'proposicion', 'Definici\u00f3n': 'definicion',
-             'Observaci\u00f3n': 'observacion'}
+             'Observaci\u00f3n': 'observacion',
+             'Theorem': 'teorema', 'Corollary': 'corolario', 'Lemma': 'lema',
+             'Proposition': 'proposicion', 'Definition': 'definicion',
+             'Remark': 'observacion'}
 THM_HEAD = re.compile(
-    r'^\*\*(Teorema|Corolario|Lema|Proposici\u00f3n|Definici\u00f3n|Observaci\u00f3n)'
+    r'^\*\*(Teorema|Corolario|Lema|Proposici\u00f3n|Definici\u00f3n|Observaci\u00f3n|'
+    r'Theorem|Corollary|Lemma|Proposition|Definition|Remark)'
     r'\s+(\d+)\s*(?:\(([^)]*)\))?\.\*\*\s*(.*)$')
-PROOF_HEAD = re.compile(r'^\*Demostraci\u00f3n\.\*')
+PROOF_HEAD = re.compile(r'^\*(Demostraci\u00f3n|Proof)\.\*')
 
 def theorem_spans(lines):
     # Returns (thm_heads, thm_italic, thm_close, proof_open, proof_close).
@@ -299,7 +303,7 @@ def convert(md):
             if sm:
                 out.append(r'\section{%s}' % inline(sm.group(2)))
                 seen_section = True
-            elif not seen_section and text.lower().startswith('resumen'):
+            elif not seen_section and text.lower().startswith(('resumen', 'abstract')):
                 meta['abstractname'] = text
                 out.append(r'\begin{abstract}')
                 in_abstract = True
@@ -341,7 +345,7 @@ def convert(md):
 
         # ---- front matter (before any heading other than title)
         if meta['title'] and not out and not in_abstract:
-            if st.startswith('Autor de correspondencia:'):
+            if st.startswith(('Autor de correspondencia:', 'Corresponding author:')):
                 meta['email'] = st.split(':', 1)[1].strip()
                 i += 1
                 continue
@@ -513,17 +517,17 @@ PREAMBLE = r"""%% PIPELINE_PROVENANCE=RECONSTRUCTED_BY_GOLDEN_REPLAY
 %% the golden markdown carries in its prose (1,2,3,4,5,6 across Teorema and
 %% Corolario) are exactly one shared counter, and the converter checks that.
 \theoremstyle{plain}
-\newtheorem{teorema}{Teorema}
-\newtheorem{corolario}[teorema]{Corolario}
-\newtheorem{lema}[teorema]{Lema}
-\newtheorem{proposicion}[teorema]{Proposici\'on}
-\newtheorem{definicion}[teorema]{Definici\'on}
-\newtheorem{observacion}[teorema]{Observaci\'on}
-\renewcommand{\proofname}{Demostraci\'on}
+\newtheorem{teorema}{__THEOREMNAME__}
+\newtheorem{corolario}[teorema]{__COROLLARYNAME__}
+\newtheorem{lema}[teorema]{__LEMMANAME__}
+\newtheorem{proposicion}[teorema]{__PROPOSITIONNAME__}
+\newtheorem{definicion}[teorema]{__DEFINITIONNAME__}
+\newtheorem{observacion}[teorema]{__REMARKNAME__}
+\renewcommand{\proofname}{__PROOFNAME__}
 
 %% Spanish fixed names without babel
 \renewcommand{\abstractname}{__ABSTRACTNAME__}
-\renewcommand{\refname}{Referencias}
+\renewcommand{\refname}{__REFNAME__}
 
 %% Hanging-indent reference list, calibrated to the golden: the first line of
 %% each entry starts 4pt LEFT of the text margin (ink x0 = 68.0) and the
@@ -685,11 +689,25 @@ def build(md, overrides=None):
     meta, body = convert(md)
     p = dict(DEFAULTS)
     if overrides: p.update(overrides)
+    abstract = meta.get('abstractname', 'Resumen')
+    english = abstract.lower().startswith('abstract')
+    names = {
+        'THEOREMNAME': 'Theorem' if english else 'Teorema',
+        'COROLLARYNAME': 'Corollary' if english else 'Corolario',
+        'LEMMANAME': 'Lemma' if english else 'Lema',
+        'PROPOSITIONNAME': 'Proposition' if english else "Proposici\\'on",
+        'DEFINITIONNAME': 'Definition' if english else "Definici\\'on",
+        'REMARKNAME': 'Remark' if english else "Observaci\\'on",
+        'PROOFNAME': 'Proof' if english else "Demostraci\\'on",
+        'REFNAME': 'References' if english else 'Referencias',
+    }
     pre = PREAMBLE
     pre = pre.replace('__TITLE__', meta['title'])
     pre = pre.replace('__AUTHOR__', meta['author'])
     pre = pre.replace('__EMAIL__', meta['email'])
-    pre = pre.replace('__ABSTRACTNAME__', meta.get('abstractname', 'Resumen'))
+    pre = pre.replace('__ABSTRACTNAME__', abstract)
+    for k, v in names.items():
+        pre = pre.replace('__%s__' % k, v)
     for k, v in p.items():
         pre = pre.replace('__%s__' % k, v)
     return pre + '\n'.join(body) + '\n\n\\end{document}\n'
