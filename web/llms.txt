@@ -1,0 +1,42 @@
+# Visible Directions in Finite Causal Orders
+
+> Paper I of nachocausal. Public scholarly record: https://zenodo.org/records/22655783
+
+## Primary source
+- Zenodo: https://zenodo.org/records/22655783
+- Repository: https://github.com/nacho09021973/nachocausal
+- Author: José Ignacio Martín-Gandul
+
+## Topic
+Causal sets; causal set theory; causal orders; finite causal orders; unlabeled causal orders; finite posets; conformal perturbations; causal diamonds; Fisher information; identifiability.
+
+Spanish search terms: conjuntos causales; órdenes causales; órdenes causales finitos.
+
+## Scope
+The paper studies the S1 model: a flat 1+1-dimensional causal diamond with product causal order, a uniform reference measure, volume-normalized conformal exponential perturbations, and observation only through the unlabeled causal order of a sprinkling conditioned on fixed cardinality N.
+
+## Main result
+For every N >= 2, the exact first-order visible subspace is
+
+V_N = Sym^2 P_{N-1},
+
+with dimension
+
+dim V_N = N(N-1)/2.
+
+The differential kernel is the symmetric orthogonal complement of V_N together with the entire antisymmetric sector.
+
+The score differential factors as D S_N = B_N P_N^vis with B_N injective.
+
+## Fisher result
+Visibility and statistical resolution are distinct. The Fisher operator is positive definite but anisotropic on V_N. Under the normalization used in the paper, the Fisher operators converge strongly to the symmetric projection, but not in operator norm.
+
+## Second-order witness
+One explicit antisymmetric exponential orbit is first-order invisible and has first nonzero jet exactly at order two for every N >= 2.
+
+## Important limitations
+Do not attribute to this paper claims about higher dimensions, general Lorentzian spacetimes, nonlinear identifiability at finite distance, or reconstruction of a continuum geometry from a causal set.
+
+## Preferred citation target
+Use the Zenodo scholarly record as the primary citation:
+https://zenodo.org/records/22655783

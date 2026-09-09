@@ -1,0 +1,35 @@
+SEO/GEO deployment note
+
+This package was prepared from the canonical ZIP and published as a static site.
+
+Already included:
+- indexable HTML with visible English + Spanish academic summary
+- ScholarlyArticle JSON-LD
+- FAQPage JSON-LD matched by visible FAQ content
+- Highwire / citation_* academic metadata
+- Dublin Core metadata
+- Open Graph / Twitter metadata
+- robots.txt allowing OAI-SearchBot and GPTBot
+- llms.txt with the same scientific claim envelope as the visible page
+- links to the Zenodo scholarly record and GitHub repository
+
+Publication:
+- URL: https://visible-directions.adnacho.chatgpt.site/
+- ChatGPT Sites project: appgprj_6aa111e4c02881919253eb09febb7a8b
+- ChatGPT Sites deployed version: 2
+- ChatGPT Sites source commit: 9ea549eb6c9e4a3b782515b41834a1f004eb4574
+- Source ZIP SHA256: 3438e6ad4959d116422bb0826ddeeb98d244a0a2f399f292acf30ec6f7771edc
+
+Final URL updates applied:
+- <link rel="canonical"> points to the public page URL.
+- og:url points to the public page URL.
+- og:image and twitter:image point to the public logo URL.
+- sitemap.xml contains the public page URL.
+- robots.txt advertises the sitemap.
+
+No DOI, date, journal, affiliation, or scientific claim was added to the public metadata beyond the package contents.
+
+Validation performed:
+- Local JSON-LD, academic metadata, bilingual terms, scope guards, internal links, fragments, JPEG signature, llms.txt, and OAI-SearchBot robots access pass.
+- Public HTTP validation passes for index.html, robots.txt, llms.txt, sitemap.xml, and assets/nachocausal-mark.jpg. The validator normalizes the automatic Cloudflare challenge script injected into HTML responses before byte comparison.
+- Chrome headless screenshot of the public URL rendered the expected page and logo.

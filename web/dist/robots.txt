@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+# The public scholarly record:
+# https://zenodo.org/records/22655783
+
+Sitemap: https://visible-directions.adnacho.chatgpt.site/sitemap.xml
