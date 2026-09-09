@@ -12,6 +12,16 @@ está enunciado para el **cuadrado unidad** con densidad **acotada inferiormente
 y para **`n` puntos i.i.d.**, no para un proceso de Poisson. Las tres cosas nos
 afectan.
 
+**Actualización E2 (2026-09-08).** El emparedado por área pequeña no basta:
+el funcional del orden inducido permite puentes de peso cero fuera del soporte.
+La [nota E2](PAPER2_E2_RECTANGULAR_APPROXIMATION.md) contiene una demostración
+propuesta para la caja compacta en cada bloque, con aproximaciones explícitas,
+control de las curvas en cada frontera y justificación del límite para pesos
+constantes por rectángulos. Sigue pendiente la revisión independiente. Las
+calificaciones de extensiones pendientes de este informe describen la auditoría
+del artículo; la nota nueva aporta argumentos propios, no nuevas atribuciones
+a DZ. Se retira la recomendación de sustituir ahora la caja por un diamante.
+
 ---
 
 ## 0. Procedencia y licencia
@@ -311,6 +321,14 @@ de caja, no por la física**. Eso debe quedar escrito en cualquier enunciado.
 
 ### C. Futuro que cruza el horizonte
 
+**Actualización (2026-09-09).** Las objeciones que siguen describen la antigua
+carta `(v,w)`, auditada aquí. La [nueva nota](PAPER2_HORIZON_THRESHOLD_LIMIT.md)
+construye `(v,Z)`, regular y con orden producto también entre bloques; O4 no
+impide tal representación. Incluye una prueba propuesta del límite por
+recortes compactos y control de la banda del horizonte. Sigue sin ser una
+aplicación directa de DZ al indicador de la caja; la revisión de la extensión
+propia queda pendiente. Se conserva debajo el diagnóstico de la ruta original.
+
 ```text
 DEUSCHEL_ZEITOUNI_APPLIES = NOT_ESTABLISHED
 ```
@@ -347,14 +365,18 @@ No he aplicado la corrección porque la lista de artefactos de esta tarea es
 explícita (PDF, markdown derivado, **un único** informe). Queda registrada aquí
 como pendiente.
 
-## 4.1 Recomendación accionable: cambiar la caja por un diamante
+## 4.1 Referencia posterior: el diamante no sustituye la caja
 
-E2 —la extensión más frágil— **desaparece por completo** si el parche continuo
+En un problema distinto, E2 **desaparece** si el parche continuo
 `D` se elige como un **intervalo de Alexandrov** del bloque en vez de una caja
 coordenada: entonces `D` es un rectángulo en `(v,w)`, `F_x = J^+(x) ∩ D` es
 también un rectángulo, y el reescalado al cuadrado unidad es afín. Quedarían
-sólo E1 (elemental), E3 (trivial en un rectángulo: la esquina lejana es el
-óptimo) y E4.
+sólo las otras dependencias aplicables; el extremo libre es trivial en un
+rectángulo porque la esquina lejana es el óptimo. Esto no resuelve E2 para la
+caja y no es una propuesta de cambiar el dominio ni abrir otro contrato.
+Primero debe revisarse la demostración de la nota E2. Además, un intervalo
+curvo no satisface en general `A = tau^2/2`: la rectangularidad nula no elimina
+la variación de la densidad conforme ni garantiza `R_2 -> 4`.
 
 Esto coincide con lo que la propia literatura del repositorio ya había marcado:
 el enunciado de EGS sobre cardinalidad-de-futuro está textualmente acotado a un

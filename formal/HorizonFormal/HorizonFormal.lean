@@ -7,4 +7,6 @@ import HorizonFormal.Ends
 import HorizonFormal.ChainEnds
 import HorizonFormal.Accessibility
 import HorizonFormal.Horizon
+import HorizonFormal.E2Segment
+import HorizonFormal.HorizonThreshold
 import HorizonFormal.S1Paper

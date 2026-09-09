@@ -37,8 +37,8 @@ Definimos
 ℓ_int(i) = max {|C| : C ⊆ P_ρ^int es cadena y min C = i}.
 ```
 
-Si un bloque no contiene puntos, su longitud y los máximos correspondientes
-se interpretan como `0`.
+La altura del conjunto vacío y todos los máximos sobre conjuntos vacíos se
+interpretan como `0`, incluido el caso de dos bloques no vacíos sin par cruzado.
 
 La longitud máxima de cadena en `P_ρ` satisface exactamente
 
@@ -66,10 +66,14 @@ determinista. No justifica aún el intercambio de
 lim_{ρ→∞} max   y   max lim_{ρ→∞}.
 ```
 
-El paso al límite requiere control uniforme de las longitudes ancladas y de
-la maximización sobre pares de cruce, además de un tratamiento de la pérdida
-de compacidad de la carta nula al aproximarse a `r = r_S`.
+**Continuación (2026-09-09):**
+[umbral finito, carta regular y control del horizonte](PAPER2_HORIZON_THRESHOLD_LIMIT.md).
+Allí se demuestra la identidad por umbral, distinguiendo cadenas cruzadas de
+cadenas puras cuando un lado está vacío. La monotonía de los perfiles permite
+pasar de convergencia puntual a uniforme si el límite es continuo.
 
-La siguiente tarea acotada es reorganizar el término cruzado por un umbral de
-`v`, y demostrar el control uniforme necesario antes de invocar cualquier
-límite variacional.
+La misma nota exhibe una carta nula regular `(v,Z)` que representa el orden
+de ambos bloques y prueba una cota uniforme para borrar una banda del
+horizonte. Incluye una demostración propuesta de los límites compactos con
+umbral y del paso al máximo. Su revisión matemática sigue pendiente; esta
+identidad finita no se convierte por sí sola en un teorema de detección.

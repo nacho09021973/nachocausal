@@ -4,6 +4,15 @@ STATUS: PRUEBA_ANALITICA / NOTAS_DE_EXPLORACION / NO_ES_PREREGISTRO / NO_SELLA_N
 DATE: 2026-09-08
 CAPA: dev/. No modifica `nachocausal/`. El seal queda intacto.
 
+**Actualización de alcance (2026-09-09).**
+La [nota de umbral y carta regular](PAPER2_HORIZON_THRESHOLD_LIMIT.md), §3,
+exhibe una carta `(v,Z)` exponencial con signo, inyectiva y regular a través
+del horizonte, con orden producto y densidad positiva. O1-O3 describen las
+limitaciones de la antigua `(v,w)`; no son una imposibilidad de representación
+global. La nueva nota incluye una prueba propuesta del límite cruzado,
+pendiente de revisión. Los enunciados de este documento mantienen su alcance
+original por bloques; la reformulación order-only sigue abierta.
+
 Ejecuta el **paso F** del informe de estado del puente 1+1D. Objeto: demostrar que
 la relación causal que calcula `nachocausal/generator.py:88-133` con `kind="BH"`
 es, **en el exterior y en el interior por separado**, el orden componente a
@@ -272,7 +281,21 @@ El supremo de `∫ dtau` sobre curvas causales futuras es, por definición, la
 distancia lorentziana máxima alcanzable dentro de `F_x`. **La constante
 `sqrt(2 rho)` y la identificación del límite con el tiempo propio no se postulan:
 salen del jacobiano y del factor conforme.** En el caso intervalo,
-`tau_max = tau`, `A = tau^2/2`, y `L -> 2 sqrt(rho A)`, es decir `m_2 = 2`.
+`tau_max = tau` si las curvas se restringen al intervalo causal correspondiente.
+**En un intervalo Minkowski plano** vale además `A = tau^2/2`, y se
+recupera `L / sqrt(rho A) -> 2`. En un intervalo curvo, la rectangularidad nula
+no hace constante la densidad conforme: no implica esa identidad de volumen
+ni, para `R_2 = L^2/N`, el límite 4.
+
+**Corrección de E2 (2026-09-08).** Área pequeña de la diferencia de dominios
+no controla el funcional con curvas contenidas en ellos. Las cadenas del orden
+inducido permiten saltos entre componentes. La construcción y demostración
+propuestas en [la nota E2](PAPER2_E2_RECTANGULAR_APPROXIMATION.md) usan curvas
+ambiente con peso cero fuera del soporte, prueban su identificación con curvas
+contenidas para esta caja y controlan cada frontera explícitamente. Su alcance
+es compacto dentro de un bloque; la revisión independiente sigue pendiente.
+La distancia que allí aparece es `tau_F`, restringida a la caja, y no se
+identifica automáticamente con la distancia lorentziana del espacio ambiente.
 
 Esto convierte el punto (ii) del enunciado candidato del Paper II en un teorema
 **condicional**, y **válido sólo dentro de un bloque**. No es un enunciado sobre
@@ -294,7 +317,7 @@ cinco piezas, ninguna demostrada aquí:
 |---|---|---|
 | **DZ 1995** | Deuschel & Zeitouni, *Limiting Curves for I.I.D. Records*, Ann. Probab. **23**(2), 852-878. Teorema 2(i), p. 855: `ell_max(n)/sqrt(n) -> 2 J_bar` en probabilidad, bajo (A1)-(A2), **en el cuadrado unidad `[0,1]^2`** | adquirido y auditado; se cita, no se demuestra |
 | **E1** | **Poissonización.** DZ trabaja con `n` i.i.d. de tamaño fijo; nuestro sprinkling es Poisson. La palabra «Poisson» no aparece en ninguna de las 27 páginas del artículo | PENDIENTE — elemental (monotonía de `ell_max` + concentración de `N` + emparedado), pero hay que escribirlo |
-| **E2** | **Extensión del cuadrado a `F_x` no rectangular.** El dominio de DZ es `[0,1]^2`; la única relajación (Remarks 1-2, p. 863) es una partición finita **en rectángulos**. En `(v,w)` la caja congelada no es un rectángulo, luego `F_x = J^+(x) ∩ D` tampoco | PENDIENTE — la más frágil: el esquema (emparedado monótono entre uniones de rectángulos) es elemental, pero exige un **lema de continuidad de `J_bar` bajo refinamiento del dominio que DZ no demuestra** |
+| **E2** | **Extensión del cuadrado a `F_x` no rectangular.** Hay que identificar el funcional del orden inducido y controlar las curvas cerca de cada frontera; el área de la diferencia no basta | DEMOSTRACIÓN PROPUESTA, REVISIÓN PENDIENTE — [nota E2](PAPER2_E2_RECTANGULAR_APPROXIMATION.md), §§1-7: rejillas explícitas, accesibilidad, recorte radial y cota variacional `O(sqrt(h))`, sólo en compactos de un bloque |
 | **E3** | **Densidad que no satisface la cota inferior.** (A2), p. 853, exige `p` acotada **inferiormente**; nuestra `mu = rho\|f\|/2` tiende a 0 en `r -> r_S`. La relajación `(A2'')` (Remark 2, p. 863) sólo admite que la densidad se anule **idénticamente sobre rectángulos enteros de una rejilla, con salto**, no una anulación continua sobre una curva interior. Y la demostración del Teorema 2 (Lemas 7-9, pp. 874-876) controla **cocientes** de densidades, que divergen justo ahí | PENDIENTE — no elemental cerca del horizonte; es lo que fuerza las condiciones de distancia positiva de §4.2 |
 | **E4** | **Extensión del resultado variacional exacto requerido.** Los Remarks 1-2 (p. 863) relajan `(A2)` **para el Teorema 1**, no para el Teorema 2(i), que es el enunciado que necesitamos. Los autores sólo declaran que las demostraciones corren «in exactly the same way» (p. 877) | PENDIENTE — inspección de demostración; no citable tal cual |
 
@@ -372,8 +395,9 @@ lo explica exactamente:
 
 ## 7. La obstrucción en `r = r_S`, aislada
 
-La reducción es exacta bloque a bloque y **no se puede pegar**. Cuatro hechos
-independientes, cada uno suficiente por sí solo.
+La reducción es exacta bloque a bloque. La antigua elección `(v,w)` no sirve
+directamente como carta única. Los siguientes hechos explican sus límites;
+la carta regular `(v,Z)` de la actualización anterior permite superarlos.
 
 Antes de enunciarlos, una distinción que no debe perderse:
 
@@ -392,7 +416,8 @@ exterior, `psi(r) = v + w` en el interior. Un par `(v, w)` desnudo, sin la
 etiqueta del bloque, no determina `r`. Y aun conociendo la etiqueta, los rangos
 se solapan: `psi(D_int) = (-inf, 0)` está **contenido** en `psi(D_ext) = R`.
 Luego la etiqueta interior/exterior es información **extra**, no derivable de
-`(v, w)`: ningún par de coordenadas nulas de este chart separa los dos bloques.
+`(v, w)`. Esta conclusión se refiere a ese par concreto: la transformación
+exponencial con signo `(v,Z)` sí separa los bloques.
 
 **O2 — el horizonte está en el infinito de coordenadas *de la carta nula*.**
 `R(r) -> -inf` cuando `r -> r_S` **por ambos lados**, luego `|U|, |W| -> inf`. La
