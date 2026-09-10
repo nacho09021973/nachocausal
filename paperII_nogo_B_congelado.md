@@ -10,6 +10,8 @@ PAPER_II_SCIENTIFIC_CORE=CLOSED
 PROBLEMA_A=OPEN_NOT_REQUIRED
 ```
 
+Versión editorial canónica: [manuscrito en español](manuscrito/paper_ii_es.md). El [registro de cierre editorial](docs/paper_ii_editorial_closure.md) fija la arquitectura, las fuentes y el alcance del original Markdown.
+
 El cierre de B corresponde al contrato corregido con un entorno relativamente compacto \(U_0\). El estado del teorema positivo se conserva del núcleo anterior; esta actualización incorpora la prueba de B y no constituye una nueva auditoría del teorema positivo. Paper II sale de investigación activa salvo que una revisión independiente encuentre un fallo.
 
 ---

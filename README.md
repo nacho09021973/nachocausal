@@ -17,6 +17,19 @@ The [post-N1–N5 limits-paper route](tarea_grok_2.md), the
 [original horizon roadmap](docs/roadmap.md) remain historical input where not superseded by that
 checkpoint.
 
+## Paper II — local geometry and global horizons (closed)
+
+The [Spanish manuscript](manuscrito/paper_ii_es.md) brings together the
+Schwarzschild 1+1 chain-height limits and the exact No-go B for global horizon
+certification from a finite observation. The two explicit extensions preserve
+an entire fixed, relatively compact neighborhood of the observed box and induce
+the same poset law, including cardinality, at every positive Poisson intensity.
+The scientific core and Markdown editorial source are closed; reconstructing
+the distinguished Schwarzschild surface remains open and is not required.
+See the [frozen contract](paperII_nogo_B_congelado.md) and
+[editorial closure record](docs/paper_ii_editorial_closure.md). This checkpoint
+does not claim a 3+1 result or alter the earlier benchmark's sealed results.
+
 ## Current theory result — Fisher efficiency of unlabeled 2D posets
 
 The rank-to-poset branch now contains a finite-\(N\) theorem for the exact
