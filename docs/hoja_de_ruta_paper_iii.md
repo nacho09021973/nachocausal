@@ -268,8 +268,19 @@ Quedan fuera de este claim ceiling: horizontes, localización, reconstrucción
 de \(r=2M\), Schwarzschild \(3+1\), Kerr, universalidad de \(R\) y transferencia
 automática desde Paper II.
 
+## Ejecución de la Fase 0
+
+La primera iteración está ejecutada y registrada en
+[el contrato de calibración de la Fase 0](paper_iii_fase0_contrato.md), con
+verificador permanente en `dev/verify_3p1_phase0_contract.py`. Resultado:
+
+```text
+GATE_0=BLOCKED   (9 bloqueos abiertos; ningún barrido ejecutado)
+```
+
 ## Inventario de dependencias
 
+- [Contrato de calibración de la Fase 0](paper_iii_fase0_contrato.md).
 - [Notas exploratorias de escala](../dev/PAPER3_3P1_SCALE_NOTES.md).
 - [Pierna intervalar](../dev/explore_3p1_bg_reference.py).
 - [Calibración exploratoria de caja](../dev/explore_3p1_scale_calibration.py).
