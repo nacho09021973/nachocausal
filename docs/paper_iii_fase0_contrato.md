@@ -14,7 +14,9 @@ HORIZON_CLAIM=NONE
 RESOLUTION_001=SIGNED_2026-09-10
 RESOLUTION_002=SIGNED_2026-09-10
 PHASE_1_ROLE=NULL_CALIBRATION
-BLOCKERS_OPEN=7
+PHASE_0_STEP_1_REPRODUCTION=PASS_BYTE_EXACT
+G0_7=CLOSED
+BLOCKERS_OPEN=6
 SIGNED_CONVENTION_VIOLATIONS=1
 ```
 
@@ -305,6 +307,95 @@ auditoría de esta fase (101–103 para los contrastes de uniformidad, 999 para 
 tasa de aceptación) reutilizan deliberadamente las de la pierna de precisión
 sólo en contrastes que no producen ninguna cifra reportada.
 
+
+### 5.2 Evidencia de reproducción — paso 1 de la secuencia obligatoria
+
+Fecha: 2026-09-10. Ejecuta **únicamente** el paso 1 («reproducir») del orden
+obligatorio de [R001 §5](paper_iii_resolucion_001_convencion_L.md). No se aplicó
+ninguna resolución pendiente, no se editó ningún generador y no se ejecutó
+ningún barrido, tamaño, semilla ni observable nuevo.
+
+**Identidad del generador.** Los cinco artefactos exploratorios entraron al
+repositorio en un único commit y no han sido modificados desde entonces, de modo
+que el fichero del árbol de trabajo *es* el generador productor:
+
+```text
+git log --follow -- <cada fichero>   ->   un solo commit: 0338307
+sha256(0338307:f) == sha256(HEAD:f) == sha256(worktree f)   para los cinco
+```
+
+| Generador | sha256 (completo) | commit |
+|---|---|---|
+| `dev/explore_3p1_bg_reference.py` | `f9a181e2524b7d79dbc64837cb4d31de8d8111870d365de6be844504eb414b93` | `0338307` |
+| `dev/explore_3p1_scale_calibration.py` | `a1b67a37a2eed73bd83000d48d4366c643dca505d857914ffd045dab23561a7b` | `0338307` |
+
+El hash de ambos generadores se registró antes y después de la corrida y es
+idéntico: no fueron modificados por la ejecución.
+
+**Aislamiento.** Los dos scripts escriben en rutas relativas fijas
+(`dev/explore_3p1_bg_reference.py:90,137` y
+`dev/explore_3p1_scale_calibration.py:188`), que son exactamente las rutas
+comprometidas. Para no sobrescribirlas, los generadores se copiaron **sin
+editar** a una raíz temporal fuera del repositorio con su propio subdirectorio
+`dev/`, y se ejecutaron desde allí. Verificado tras la corrida: `git status` y
+`git diff HEAD` sobre `dev/` vacíos, y los tres JSON del repositorio conservan su
+hash original.
+
+**Comandos reales ejecutados**, en la raíz temporal:
+
+```bash
+python3 dev/explore_3p1_bg_reference.py               # pierna base       rc=0   9 s
+python3 dev/explore_3p1_bg_reference.py --precision    # pierna precisión  rc=0  84 s
+python3 dev/explore_3p1_scale_calibration.py           # pierna de caja    rc=0   8 s
+```
+
+Son los únicos puntos de entrada que los scripts exponen: `--precision` es el
+único argumento reconocido (`dev/explore_3p1_bg_reference.py:146`) y las
+semillas, tamaños y densidades están cableados en el código
+(`:72,74,101,102` y `:48,49`), de modo que las configuraciones ejecutadas son
+por construcción las comprometidas y ninguna otra.
+
+**Runtime.**
+
+```text
+python 3.12.3   ·   numpy 1.26.4   ·   Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39
+```
+
+**Resultado de la comparación.** Prioridad A satisfecha en los tres artefactos;
+no fue necesario descender a comparación semántica:
+
+| Artefacto | sha256 comprometido | sha256 regenerado | bytes | Veredicto |
+|---|---|---|---|---|
+| `..._bg_reference_precision_results.json` | `eb101d3f…379491e7` | `eb101d3f…379491e7` | 1307 = 1307 | **idéntico byte a byte** |
+| `..._bg_reference_results.json` | `5dbb04bc…62167bc6` | `5dbb04bc…62167bc6` | 1060 = 1060 | **idéntico byte a byte** |
+| `..._scale_calibration_results.json` | `e5cb5fb7…920bcd6f` | `e5cb5fb7…920bcd6f` | 6458 = 6458 | **idéntico byte a byte** |
+
+El comparador aplica igualdad exacta —comparación bit a bit de cada `float` vía
+`float.hex()`— y no tolera ninguna discrepancia numérica; al coincidir los
+SHA256 completos, no llegó a ejercerse.
+
+**Cierre.**
+
+```text
+G0-7 = CLOSED
+```
+
+Queda demostrada la correspondencia generador → JSON comprometido para los tres
+artefactos auditados. No se cierra por inferencia ningún otro bloqueo: `G0-1` y
+`G0-5` siguen abiertos y requieren los pasos 2 y 3 («convertir», «reejecutar»),
+que esta iteración **no** ejecuta.
+
+Recuento tras este cierre:
+
+```text
+GATE_0 = BLOCKED   (6 abiertos: G0-1, G0-3, G0-4, G0-5, G0-6, G0-8;
+                    1 violación de convención firmada pendiente)
+```
+
+Nota: `dev/verify_3p1_phase0_contract.py` sigue listando `G0-7` como abierto en
+su sección `[H]`. Actualizar ese verificador queda fuera del alcance autorizado
+de este paso y requiere instrucción separada.
+
 ---
 
 ## 6. Separación entre el límite conocido y la corrección que se quiere medir
@@ -348,13 +439,13 @@ Fase 1 debe respetar:
 | G0-4 | «expect 1» y «expect 1/4» son líneas base falsas para las filas de minimales: `<V>_min/rho` deriva `+18.2 %` | línea base | corrección de anotación |
 | G0-5 | `R` es cuártico en `L`: la deriva `x1.73` pasa a `~x1.10` bajo la otra convención | interpretación | cifras **derogadas** a procedencia por R001; medición pendiente de reejecución |
 | G0-6 | Notas y hoja de ruta llaman Poisson a ambas piernas; la intervalar es binomial | documentación | redacción |
-| G0-7 | Nada certifica JSON contra generador | procedencia | reejecución (Fase 1) |
+| G0-7 | Nada certifica JSON contra generador | procedencia | **CERRADO** 2026-09-10 — reproducción byte a byte de los tres artefactos, §5.2 |
 | G0-8 | `dev/explore_3p1_bg_reference.py:1` y `dev/explore_3p1_scale_calibration.py:1` siguen diciendo «Paper II», lo que §0 de las notas prohíbe explícitamente | documentación | redacción |
 | G0-9 | 3 de 10 filas violan la cota inferior rigurosa de `m_4` bajo la normalización reportada; 0 de 10 la violan contando extremos | decidió G0-2 | **ADJUDICADO** por R001 |
 | G0-10 | Bajo R001 toda pendiente del canal no restringido cae sobre 1/4 dentro del suelo de ruido | alcance | **CERRADO** por [R002](paper_iii_resolucion_002_reescopado_fase1.md): Fase 1 reescopada como calibración nula |
 
 ```text
-GATE_0 = BLOCKED   (7 abiertos; 1 violación de convención firmada pendiente)
+GATE_0 = BLOCKED   (6 abiertos tras cerrar G0-7; 1 violación de convención firmada pendiente)
 ```
 
 La hoja de ruta lo prescribe: «Si hay ambigüedad en el conteo de extremos, en
