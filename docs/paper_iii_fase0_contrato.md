@@ -544,7 +544,7 @@ Fase 1 debe respetar:
 | G0-3 | Ninguna pendiente de §3.2 lleva incertidumbre; el exponente exacto 1 sale `1.0179` | estadística | redacción + réplicas (Fase 1) |
 | G0-4 | «expect 1» y «expect 1/4» son líneas base falsas para las filas de minimales: `<V>_min/rho` deriva `+18.2 %` | línea base | corrección de anotación |
 | G0-5 | `R` es cuártico en `L`: la deriva `x1.73` pasa a `x1.11` **medida** bajo R001 | interpretación | **CERRADO** 2026-09-10 — `median_R_min` medida en el artefacto R001, §5.4; `R` sigue sin interpretar |
-| G0-6 | Notas y hoja de ruta llaman Poisson a ambas piernas; la intervalar es binomial | documentación | redacción |
+| G0-6 | Notas y hoja de ruta llamaban Poisson a ambas piernas; la intervalar es binomial | documentación | **CERRADO** 2026-09-10 por [R003](paper_iii_resolucion_003_proceso_puntual.md) |
 | G0-7 | Nada certifica JSON contra generador | procedencia | **CERRADO** 2026-09-10 — reproducción byte a byte de los tres artefactos, §5.2 |
 | G0-8 | `dev/explore_3p1_bg_reference.py:1` y `dev/explore_3p1_scale_calibration.py:1` siguen diciendo «Paper II», lo que §0 de las notas prohíbe explícitamente | documentación | redacción |
 | G0-9 | 3 de 10 filas violan la cota inferior rigurosa de `m_4` bajo la normalización reportada; 0 de 10 la violan contando extremos | decidió G0-2 | **ADJUDICADO** por R001 |
@@ -576,7 +576,7 @@ auditor.
 2. **`N` sigue siendo el interior**, sin los extremos, porque los extremos no
    son puntos sembrados. Con eso `rho * Vol = N` exactamente y la normalización
    de BG es literal.
-3. **Declarar la pierna intervalar como binomial** (Poisson condicionado a
+3. **[FIRMADA 2026-09-10 — [R003](paper_iii_resolucion_003_proceso_puntual.md)] Declarar la pierna intervalar como binomial** (Poisson condicionado a
    `N = n`) en las notas y en la hoja de ruta. La elección es legítima y además
    deseable — es el canal `N = n` del que ya habla `CLAUDE.md` — pero debe
    decirse.

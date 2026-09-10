@@ -88,6 +88,23 @@ CAL_GEN_SHA256_HISTORICAL = "a1b67a37a2eed73bd83000d48d4366c643dca505d857914ffd0
 CAL_GEN_SHA256_R001 = "b5ca8c99021aeed7541e587fbae44d2a76c1dc6cb26589140d125cbd426fb2bb"
 CAL_R001_SHA256 = "0aa224027835be64cca2033f38c3b9b6344af6216259dbe26bb0d6fc0ac55b68"
 
+NOTES = "dev/PAPER3_3P1_SCALE_NOTES.md"
+ROADMAP = "docs/hoja_de_ruta_paper_iii.md"
+
+
+# ---------------------------------------------------------------------------
+# Signed documentary resolutions. Each predicate checks the CONDITION the
+# resolution actually imposes, so a blocker closes on evidence in the files and
+# reopens by itself if that evidence is edited away.
+# ---------------------------------------------------------------------------
+def r003_applied() -> bool:
+    """R003: the interval leg must be declared binomial wherever its figures are
+    reported, and neither text may call both legs Poisson sprinklings."""
+    notes, road = open(NOTES).read(), open(ROADMAP).read()
+    return ("binomial" in notes and "binomial" in road
+            and "sprinklings de Poisson" not in road
+            and "sprinklings de Poisson" not in notes)
+
 
 def sha256(path: str) -> str:
     return hashlib.sha256(open(path, "rb").read()).hexdigest()
@@ -450,11 +467,15 @@ def audit_point_process() -> None:
     print("      process class: interval leg draws EXACTLY n_target points -> BINOMIAL (Poisson conditioned on N=n).")
     print("                     box leg draws rng.poisson(rho * V_box)     -> POISSON.")
     print("      Both are homogeneous w.r.t. Lebesgue = Minkowski volume (sqrt(-g) = 1 in inertial coordinates).")
-    findings.append(
-        "G0-6 OPEN (documentation): dev/PAPER3_3P1_SCALE_NOTES.md and docs/hoja_de_ruta_paper_iii.md "
-        "call both legs Poisson sprinklings. The interval leg is binomial. The two agree in the "
-        "large-N limit and the fixed-N choice is legitimate, but the roadmap requires it be declared."
-    )
+    if r003_applied():
+        print("      G0-6 CLOSED by R003: both texts declare the interval leg binomial, and neither")
+        print("      describes the two legs as 'sprinklings de Poisson'.")
+    else:
+        findings.append(
+            "G0-6 OPEN (documentation): dev/PAPER3_3P1_SCALE_NOTES.md and docs/hoja_de_ruta_paper_iii.md "
+            "call both legs Poisson sprinklings. The interval leg is binomial. The two agree in the "
+            "large-N limit and the fixed-N choice is legitimate, but the roadmap requires it be declared."
+        )
 
 
 # ---------------------------------------------------------------------------

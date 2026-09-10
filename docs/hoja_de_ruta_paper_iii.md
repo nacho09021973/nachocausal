@@ -22,9 +22,11 @@ una señal geométrica.
 
 La primera pregunta es deliberadamente estrecha:
 
-> En sprinklings de Poisson sobre intervalos de Alexandrov de Minkowski
-> \(3+1\), ¿cómo se aproxima \(L/N^{1/4}\) al régimen de gran \(N\), y qué
-> parte de la desviación observable puede atribuirse únicamente a tamaño finito?
+> En sprinklings sobre intervalos de Alexandrov de Minkowski \(3+1\) — un
+> proceso **binomial**, es decir Poisson condicionado a \(N=n\), no un
+> sprinkling de Poisson (R003) —, ¿cómo se aproxima \(L/N^{1/4}\) al régimen de
+> gran \(N\), y qué parte de la desviación observable puede atribuirse
+> únicamente a tamaño finito?
 
 Aquí \(L\) es la longitud de la cadena máxima entre los extremos del intervalo
 y \(N\) su cardinalidad interior. Esta fase no estudia horizontes, detectores,

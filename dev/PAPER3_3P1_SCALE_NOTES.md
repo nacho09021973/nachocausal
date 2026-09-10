@@ -95,6 +95,13 @@ Estatus de toda esta sección: **exploratorio**. Ver salvaguarda 5 (§2.1).
 
 ### 3.1 Pierna de referencia (intervalo de Alexandrov 4D, donde BG *es* teorema)
 
+> **Clase de proceso puntual (R003, 2026-09-10).** Esta pierna es un **proceso
+> binomial**: extrae un número fijo de puntos i.i.d. uniformes en el intervalo de
+> Alexandrov, es decir un Poisson condicionado a `N = n`
+> (`dev/explore_3p1_bg_reference.py:32-41`). La elección de `N` fijo es
+> deliberada y legítima — es el canal `N = n` de `CLAUDE.md` — pero no debe
+> describirse como «sprinkling de Poisson».
+
 Cadena máxima extremo-a-extremo, **8 semillas** (101..108) por punto:
 
 | N | `<L>` ± e.e. | `L/N^{1/4}` |
@@ -115,6 +122,13 @@ Existe además una pierna preliminar de 3 semillas (21..23, `N <= 16 000`) en
 la tabla de arriba y no debe mezclarse con ella.
 
 ### 3.2 Pierna de caja (futuros truncados, `rho` = 500 … 8 000, 3 semillas)
+
+> **Clase de proceso puntual (R003, 2026-09-10).** Esta pierna sí es un proceso
+> de **Poisson** homogéneo de intensidad `rho`
+> (`dev/explore_3p1_scale_calibration.py:59`). Ambas piernas son homogéneas
+> respecto a la medida de Lebesgue, que en coordenadas inerciales coincide con el
+> volumen de Minkowski, pero **no son la misma clase de proceso** que la pierna
+> intervalar de §3.1.
 
 ```text
 d log <V>_all / d log rho     = 1.0179    (esperado 1)       -> OK
