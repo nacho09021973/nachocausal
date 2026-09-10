@@ -97,6 +97,20 @@ ROADMAP = "docs/hoja_de_ruta_paper_iii.md"
 # resolution actually imposes, so a blocker closes on evidence in the files and
 # reopens by itself if that evidence is edited away.
 # ---------------------------------------------------------------------------
+def r005_applied() -> bool:
+    """R005: every slope reported in the notes carries its seed dispersion and
+    replica count, and the pooled-error rule and the design floor are stated."""
+    notes = open(NOTES).read()
+    labels = ("d log <V>_all / d log rho", "d log <L>_all / d log rho",
+              "d log <L>_all / d log <V>_all", "d log <V>_min / d log rho",
+              "d log <L>_min / d log rho", "d log <L>_min / d log <V>_min")
+    for lab in labels:
+        line = next((ln for ln in notes.splitlines() if lab in ln and "|" in ln), None)
+        if line is None or "\u00b1" not in line:
+            return False
+    return "agrupada" in notes and "1.0179" in notes
+
+
 def r003_applied() -> bool:
     """R003: the interval leg must be declared binomial wherever its figures are
     reported, and neither text may call both legs Poisson sprinklings."""
@@ -373,10 +387,15 @@ def audit_baselines_and_uncertainty() -> None:
               + f"{cal['slopes'][key]:>9.4f}{np.std(per, ddof=1):>8.4f}   {ann}")
     v_all = cal["slopes"]["logV_all_vs_logrho"]
     check("the exactly-linear exponent 1 is recovered only to ~2% at 3 seeds", abs(v_all - 1.0) > 0.005)
-    findings.append(
-        f"G0-3 OPEN: no slope in sec.3.2 carries an uncertainty. The design's own noise floor is "
-        f"visible in the exactly-known exponent, returned as {v_all:.4f} instead of 1."
-    )
+    if r005_applied():
+        print(f"      G0-3 CLOSED by R005: every slope in the notes carries its seed dispersion and")
+        print(f"      replica count, the pooled-error rule is stated, and the design floor is the")
+        print(f"      exactly-known exponent returned as {v_all:.4f} instead of 1.")
+    else:
+        findings.append(
+            f"G0-3 OPEN: no slope in sec.3.2 carries an uncertainty. The design's own noise floor is "
+            f"visible in the exactly-known exponent, returned as {v_all:.4f} instead of 1."
+        )
 
     print("\n[E] baseline audit: the minimal-restricted rows do not test the BG exponent")
     agg_vm = [float(np.mean([r["mean_V_min"] for r in cal["rows"] if r["rho"] == rho])) for rho in rhos]

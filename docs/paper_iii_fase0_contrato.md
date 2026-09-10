@@ -541,7 +541,7 @@ Fase 1 debe respetar:
 |---|---|---|---|
 | G0-1 | `dev/explore_3p1_scale_calibration.py:94` contaba relaciones; la convención firmada son elementos | definición | **CERRADO** 2026-09-10 — convertido (`3230986`) y reejecutado; artefacto R001 verificado, §5.3–5.4 |
 | G0-2 | La pierna intervalar excluye `p` y `q`; la pendiente global va de `0.2835` a `0.2552` según se cuenten | definición | **CERRADO** por R001 |
-| G0-3 | Ninguna pendiente de §3.2 lleva incertidumbre; el exponente exacto 1 sale `1.0179` | estadística | redacción + réplicas (Fase 1) |
+| G0-3 | Ninguna pendiente de §3.2 llevaba incertidumbre; el exponente exacto 1 sale `1.0179` | estadística | **CERRADO** 2026-09-10 por [R005](paper_iii_resolucion_005_incertidumbre.md) |
 | G0-4 | «expect 1» y «expect 1/4» son líneas base falsas para las filas de minimales: `<V>_min/rho` deriva `+18.2 %` | línea base | corrección de anotación |
 | G0-5 | `R` es cuártico en `L`: la deriva `x1.73` pasa a `x1.11` **medida** bajo R001 | interpretación | **CERRADO** 2026-09-10 — `median_R_min` medida en el artefacto R001, §5.4; `R` sigue sin interpretar |
 | G0-6 | Notas y hoja de ruta llamaban Poisson a ambas piernas; la intervalar es binomial | documentación | **CERRADO** 2026-09-10 por [R003](paper_iii_resolucion_003_proceso_puntual.md) |
@@ -583,7 +583,7 @@ auditor.
 4. **Retirar «expect 1» y «expect 1/4» de las filas de minimales** y
    reetiquetarlas como magnitudes con línea base desconocida y dependiente de
    `rho`, o retirarlas del contraste de escala.
-5. **Toda pendiente reportada lleva su dispersión entre semillas**, y toda
+5. **[FIRMADA 2026-09-10 — [R005](paper_iii_resolucion_005_incertidumbre.md)] Toda pendiente reportada lleva su dispersión entre semillas**, y toda
    desviación se compara contra el suelo que devuelve el exponente exactamente
    conocido en el mismo diseño.
 6. **Corregir las dos cabeceras «Paper II»** a Paper III.

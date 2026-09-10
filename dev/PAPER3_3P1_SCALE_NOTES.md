@@ -130,14 +130,30 @@ la tabla de arriba y no debe mezclarse con ella.
 > volumen de Minkowski, pero **no son la misma clase de proceso** que la pierna
 > intervalar de §3.1.
 
-```text
-d log <V>_all / d log rho     = 1.0179    (esperado 1)       -> OK
-d log <L>_all / d log rho     = 0.3161    (esperado 0.25)
-d log <L>_all / d log <V>_all = 0.3106    (esperado 0.25)
-d log <V>_min / d log rho     = 1.0634    (esperado 1)
-d log <L>_min / d log rho     = 0.3195    (esperado 0.25)
-d log <L>_min / d log <V>_min = 0.3005    (esperado 0.25)
-```
+> **Dispersión y modelo de error (R005, 2026-09-10).** Cada pendiente va con su
+> dispersión entre semillas y su número de réplicas. Las dispersiones no son
+> cifras nuevas: se reconstruyen de las filas por semilla de este mismo artefacto
+> y están auditadas en el contrato de Fase 0 §4.2. El **suelo de resolución del
+> diseño** lo da la magnitud de valor exactamente conocido: `d log<V>_all/d log rho`
+> vale 1 por construcción y el diseño lo devuelve como `1.0179`. Es una referencia
+> de este diseño, no una incertidumbre teórica universal.
+
+| Pendiente | valor | dispersión entre semillas | réplicas |
+|---|---|---|---|
+| `d log <V>_all / d log rho` | 1.0179 | ± 0.0261 | 3 |
+| `d log <L>_all / d log rho` | 0.3161 | ± 0.0082 | 3 |
+| `d log <L>_all / d log <V>_all` | 0.3106 | ± 0.0159 | 3 |
+| `d log <V>_min / d log rho` | 1.0634 | ± 0.0247 | 3 |
+| `d log <L>_min / d log rho` | 0.3195 | ± 0.0065 | 3 |
+| `d log <L>_min / d log <V>_min` | 0.3005 | ± 0.0104 | 3 |
+
+> **Modelo de error (R005).** Mientras `L` sea un entero de dispersión del orden
+> de la unidad, la desviación típica **no se estima punto a punto** sino de forma
+> **agrupada** sobre el barrido. El motivo está medido: en la pierna de precisión,
+> con ocho réplicas, en `N = 8000` seis de los ocho valores coinciden y la `sd`
+> sale la mitad que en los otros tres puntos, lo que por sí solo produce un
+> χ²/dof de 3.26 que baja a 1.64 con `sd` agrupada. Un contraste cuyo resultado
+> dependa de la `sem` de un único punto no es admisible como evidencia.
 
 Mediana de `R` sobre minimales, **promediada sobre las 3 semillas**, al subir
 `rho` x16:
