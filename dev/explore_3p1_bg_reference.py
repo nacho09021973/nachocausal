@@ -97,25 +97,54 @@ def main() -> int:
 # Precision leg. Same code path as main(), more seeds and one N decade further.
 # Deterministic: seeds 101..108 fixed. Persisted so that the table in
 # dev/PAPER3_3P1_SCALE_NOTES.md sec. 3.1 has a machine-readable backing.
+#
+# REPLICATION EXTENSION (PI decision, 2026-09-10). Phase 1 found that what limits
+# this design is the REPLICA COUNT, not the range of N: with 8 integer-valued
+# replicas the N=8000 point carries 71.7% of the constant-model chi2 purely
+# because six of its eight replicas coincide. The extension therefore adds nine
+# seeds at the SAME four N and changes nothing else -- same sprinkler, same chain
+# routine, same normalisation, same tau, same binomial process, same observable.
+#
+# The two runs are separate artifacts with separate identities. The 8-seed one is
+# historical and is never overwritten: it backs sec. 3.1 of the notes through
+# dev/verify_3p1_notes_figures.py. This is the same NEW_VERSIONED_ARTIFACT policy
+# the box leg already follows for its pre-R001 / R001 lineages.
+#
+# Seeds 109..117 continue the existing block contiguously. They were fixed by
+# that rule alone, before any of them was run, and are disjoint from every other
+# seed list in Paper III: box leg (11,12,13), interval base leg (21,22,23),
+# precision leg (101..108), point-process audit (101,102,103 and 999).
 # ---------------------------------------------------------------------------
 PRECISION_NS = (2000, 8000, 16000, 32000)
 PRECISION_SEEDS = tuple(range(101, 109))
+PRECISION_OUT = "dev/explore_3p1_bg_reference_precision_results.json"
+
+PRECISION17_SEEDS = tuple(range(101, 118))  # 101..108 historical + 109..117 added
+PRECISION17_OUT = "dev/explore_3p1_bg_reference_precision17_results.json"
 
 
-def main_precision() -> int:
+def main_precision(seeds: tuple = PRECISION_SEEDS, out: str = PRECISION_OUT) -> int:
+    """Default arguments reproduce the historical 8-seed artifact byte for byte.
+
+    Seeds are consumed in the order given and each seed's chain is independent of
+    every other, so the first len(PRECISION_SEEDS) entries of the 17-seed run are
+    the 8-seed run's entries, value for value. That identity is what certifies
+    the extension did not perturb the design, and it is checked in section [A3]
+    of dev/verify_3p1_phase0_contract.py.
+    """
     tau = 1.0
     rows = []
     for n_target in PRECISION_NS:
         Ls = [
             longest_chain_endpoint_to_endpoint(sprinkle_interval_4d(s, n_target, tau), tau)
-            for s in PRECISION_SEEDS
+            for s in seeds
         ]
         a = np.asarray(Ls, dtype=float)
         sem = float(a.std(ddof=1) / np.sqrt(a.size))
         rows.append(
             {
                 "N": n_target,
-                "n_seeds": len(PRECISION_SEEDS),
+                "n_seeds": len(seeds),
                 "mean_L": float(a.mean()),
                 "sem_L": sem,
                 "L_over_N_quarter": float(a.mean()) / n_target**0.25,
@@ -134,15 +163,17 @@ def main_precision() -> int:
         for i in range(len(Ns) - 1)
     ]
     print("local slopes:", [round(v, 4) for v in local])
-    with open("dev/explore_3p1_bg_reference_precision_results.json", "w") as fh:
+    with open(out, "w") as fh:
         json.dump(
-            {"tau": tau, "seeds": list(PRECISION_SEEDS), "rows": rows,
+            {"tau": tau, "seeds": list(seeds), "rows": rows,
              "local_slopes": local}, fh, indent=2)
-    print("wrote dev/explore_3p1_bg_reference_precision_results.json")
+    print(f"wrote {out}")
     return 0
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--precision":
         sys.exit(main_precision())
+    if len(sys.argv) > 1 and sys.argv[1] == "--precision17":
+        sys.exit(main_precision(PRECISION17_SEEDS, PRECISION17_OUT))
     sys.exit(main())

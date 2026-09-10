@@ -74,6 +74,24 @@ CAL_GEN = "dev/explore_3p1_scale_calibration.py"
 # ---------------------------------------------------------------------------
 CAL_R001 = "dev/explore_3p1_scale_calibration_r001_results.json"
 
+# ---------------------------------------------------------------------------
+# The INTERVAL leg also exists twice, and for the same reason: a replication
+# extension must not destroy the provenance of what it extends.
+#
+#   PREC     8 replicas, seeds 101..108. Historical and immutable. Backs sec.
+#            3.1 of the notes through dev/verify_3p1_notes_figures.py.
+#   PREC17   17 replicas, seeds 101..117 (PI decision, 2026-09-10). Same four N,
+#            same sprinkler, same chain routine, same tau, same binomial
+#            process, same observable. ONLY the replica count changed.
+#
+# Because each seed's chain is independent, the first 8 entries of PREC17 must
+# equal PREC value for value. Section [A3] checks exactly that: it is what
+# certifies the extension left the design alone, and it would fail loudly if
+# the generator edit had perturbed the sampler.
+# ---------------------------------------------------------------------------
+PREC17 = "dev/explore_3p1_bg_reference_precision17_results.json"
+PREC17_SHA256 = "62403ded8f9d784bb348dbd21c870bdfa394efc5a8ee6067ed886d75b89b5a10"
+
 # Certified byte-for-byte against their generators in step 1 of the mandatory
 # sequence (2026-09-10, contract sec. 5.2). G0-7 is closed only while these hold.
 ARTIFACT_SHA256 = {
@@ -99,7 +117,7 @@ BG_GEN = "dev/explore_3p1_bg_reference.py"
 BG_GEN_SHA256_AT_ARTIFACTS = "f9a181e2524b7d79dbc64837cb4d31de8d8111870d365de6be844504eb414b93"
 LIVE_SHA256 = {
     CAL_GEN: "74d7d3d8a3f7d3d36199004bd0bf483b65ab4a785537a959d8ecd34495addd58",  # R004 + R006
-    BG_GEN: "3b91aa5da07081f1338cf204222c637a707f076dbc23586babeefa326131512a",   # R006
+    BG_GEN: "8f6a63d703d8db8bcb546423be4131fd8b6a2634ac9ee713a32ec824721bc7ce",   # R006 + 17-replica extension
 }
 
 
@@ -344,6 +362,91 @@ def audit_r001_lineage() -> None:
     print(f"      median_R_min drift: historical x{d_o[-1]/d_o[0]:.2f}  ->  R001 measured x{d_n[-1]/d_n[0]:.2f}")
     print("      Convention-sensitivity measurement only. R is NOT interpreted here: no claim of")
     print("      stabilisation, universality or geometry, and the minimal channel stays out while G0-4 is open.")
+
+
+# ---------------------------------------------------------------------------
+def audit_precision17_lineage() -> None:
+    """The two interval-leg replica counts, checked separately and never merged.
+
+    The extension earns its provenance the same way the box leg did: the
+    historical artifact is untouched, the new one hashes to what was validated,
+    the seed list is a strict contiguous extension disjoint from every other seed
+    list in Paper III, and the replicas the two runs SHARE are identical value for
+    value. That last check is the one that matters -- it is what proves the edit
+    to the generator was editorial and did not move the sampler.
+    """
+    print("\n[A3] interval-leg replica counts: 8-seed HISTORICAL and 17-seed EXTENSION")
+    if not os.path.exists(PREC17):
+        check("17-replica artifact is present", False)
+        return
+
+    old, new = json.load(open(PREC)), json.load(open(PREC17))
+    print(f"      historical  {PREC.split('/')[-1]:52s} {sha256(PREC)[:16]}")
+    print(f"      extension   {PREC17.split('/')[-1]:52s} {sha256(PREC17)[:16]}")
+
+    ok = check("historical 8-replica artifact still hashes to the G0-7-certified value",
+               sha256(PREC) == ARTIFACT_SHA256[PREC])
+    ok &= check("17-replica artifact hashes to the validated run output",
+                sha256(PREC17) == PREC17_SHA256)
+
+    from explore_3p1_bg_reference import (PRECISION17_SEEDS, PRECISION_NS,
+                                          PRECISION_SEEDS)
+    ok &= check("the extension changed the replica count and NOTHING else about the design",
+                tuple(old["seeds"]) == PRECISION_SEEDS
+                and tuple(new["seeds"]) == PRECISION17_SEEDS
+                and [r["N"] for r in old["rows"]] == [r["N"] for r in new["rows"]]
+                == list(PRECISION_NS)
+                and old["tau"] == new["tau"] == 1.0)
+    ok &= check("17 replicas at every N, declared and realised",
+                all(r["n_seeds"] == 17 == len(r["Ls"]) for r in new["rows"]))
+
+    # The seed list is a contiguous extension, and the added seeds are fresh.
+    added = tuple(s for s in PRECISION17_SEEDS if s not in PRECISION_SEEDS)
+    ok &= check("added seeds are exactly the nine that continue the block: 109..117",
+                added == tuple(range(109, 118)))
+    # Every other seed list Paper III has ever consumed.
+    from explore_3p1_scale_calibration import SEEDS as BOX_SEEDS
+    base_seeds = (21, 22, 23)  # dev/explore_3p1_bg_reference.py main(), hardcoded
+    spent = set(BOX_SEEDS) | set(base_seeds) | set(PRECISION_SEEDS) \
+        | set(AUDIT_SEEDS) | {AUDIT_ACCEPT_SEED}
+    ok &= check(f"added seeds are disjoint from every other Paper III seed list "
+                f"({sorted(spent)})", not (set(added) & spent))
+
+    # THE check: shared replicas must be identical, value for value.
+    shared = all(n["Ls"][:len(PRECISION_SEEDS)] == o["Ls"]
+                 for o, n in zip(old["rows"], new["rows"]))
+    ok &= check("the 8 shared replicas are identical in both runs -- the generator "
+                "edit did not move the sampler", shared)
+    for o, n in zip(old["rows"], new["rows"]):
+        print(f"        N={o['N']:6d}  shared 8: {o['Ls']}")
+        print(f"        {'':8s}  added  9: {n['Ls'][len(PRECISION_SEEDS):]}")
+
+    # Aggregates re-derive from the raw Ls, exactly as section [A] demands of PREC.
+    agg = True
+    for r in new["rows"]:
+        a = np.asarray(r["Ls"], dtype=float)
+        agg &= abs(a.mean() - r["mean_L"]) < 1e-12
+        agg &= abs(a.std(ddof=1) / np.sqrt(a.size) - r["sem_L"]) < 1e-12
+        agg &= abs(a.mean() / r["N"] ** 0.25 - r["L_over_N_quarter"]) < 1e-12
+    Lm = [r["mean_L"] for r in new["rows"]]
+    Ns = [r["N"] for r in new["rows"]]
+    loc = [np.log(Lm[i + 1] / Lm[i]) / np.log(Ns[i + 1] / Ns[i]) for i in range(len(Ns) - 1)]
+    agg &= bool(np.allclose(loc, new["local_slopes"]))
+    check("17-replica leg: every stored aggregate re-derives from its raw Ls", agg)
+
+    # R005 is a REPORTING rule, and the extension is the thing it was written for:
+    # with L integer and 8 replicas the sd was tie-dominated. Report what changed.
+    def pooled(o):
+        sd = np.array([np.asarray(r["Ls"], float).std(ddof=1) for r in o["rows"]])
+        return float(np.sqrt(np.mean(sd ** 2))), sd
+    p_old, sd_old = pooled(old)
+    p_new, sd_new = pooled(new)
+    print(f"      pooled sd  8 replicas: {p_old:.4f} ({(len(sd_old))*(8-1)} dof), "
+          f"per-point sd spread {sd_old.min():.4f}..{sd_old.max():.4f}")
+    print(f"      pooled sd 17 replicas: {p_new:.4f} ({(len(sd_new))*(17-1)} dof), "
+          f"per-point sd spread {sd_new.min():.4f}..{sd_new.max():.4f}")
+    print("      R005's pooled-sd clause exists because of the 8-replica tie pattern;")
+    print("      the extension is the remedy it pointed at, not a change to the rule.")
 
 
 # ---------------------------------------------------------------------------
@@ -782,6 +885,7 @@ def main() -> int:
     print("=" * 92)
     audit_internal_consistency()
     audit_r001_lineage()
+    audit_precision17_lineage()
     audit_chain_conventions()
     audit_baselines_and_uncertainty()
     audit_point_process()
