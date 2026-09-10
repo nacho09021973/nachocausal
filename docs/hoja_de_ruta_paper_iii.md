@@ -8,6 +8,7 @@ PAPER_III_ROUTE=1
 PHASE_0=CLOSED   GATE_0=PASS
 PHASE_1=CLOSED   VERDICT=NULL_NOT_REJECTED   GATE_1=PASS
 PHASE_2=NEXT, NOT_STARTED   (STATIC_SPHERICAL_EXCISION)
+PHASE_2_ENTRY=BLOCK_1: d_obs derivation + metric proof + transitivity, NO SIMULATIONS
 PHASE_3=SCHWARZSCHILD_3P1=DEFERRED
 NEW_VALIDATION_RUNS=NOT_AUTHORIZED
 NEW_OBSERVABLES=NOT_AUTHORIZED
@@ -212,6 +213,48 @@ GATE_2=FAIL iff the excision creates non-transitive or implementation-dependent 
 Un resultado positivo en esta fase significa que una interfaz timelike altera
 la estadística de futuros de una forma controlable. No significa que exista un
 horizonte ni que un poset lo localice.
+
+### Fase 2 — bloque 1, y sólo el bloque 1
+
+Punto de entrada fijado por el PI el 2026-09-10. La Fase 2 **no** se aborda
+entera: se abre por su primer bloque, que es **matemático y sin simulaciones**.
+
+> **Pregunta física de la Fase 2.** ¿Puede definirse el \(d_{\mathrm{obs}}\) de la
+> excisión esférica estática únicamente a partir de la estructura admitida por el
+> modelo, de modo que sea una métrica genuina y que el orden causal construido con
+> él sea transitivo?
+
+Alcance del bloque 1, exhaustivo:
+
+```text
+1. derivacion de d_obs         geometrica, incluidos tangencias y casos degenerados
+2. prueba de que es una METRICA  no negatividad, identidad, simetria, desigualdad
+                                 triangular -- probadas, no asumidas
+3. prueba de TRANSITIVIDAD       del orden causal que induce
+NADA MAS
+```
+
+Queda **fuera** del bloque 1, y no se empieza hasta cerrarlo: el verificador
+numérico independiente, la definición de la región observada, el control Minkowski
+emparejado, cualquier sprinkling, cualquier medida de \(L\) o de volumen futuro, y
+cualquier funcional de forma.
+
+**Por qué en este orden.** El verificador y el control emparejado se construyen
+*después* de la derivación, no antes ni a la vez. Si el código llega primero,
+termina decidiendo implícitamente qué significa \(d_{\mathrm{obs}}\), y entonces la
+prueba de métrica y de transitividad ya no prueban nada sobre el modelo: prueban
+algo sobre la implementación. El orden obligatorio es
+
+```text
+derivacion + pruebas  ->  verificador independiente  ->  control emparejado
+```
+
+y es el mismo principio que la secuencia **reproducir → convertir → reejecutar**
+de [R001 §5](paper_iii_resolucion_001_convencion_L.md): fijar el significado antes
+de dejar que un artefacto lo fije por su cuenta.
+
+**Estado del bloque 1:** `NOT_STARTED`. Nada de la Fase 2 se ha ejecutado ni
+derivado.
 
 ## Fase 3 — decisión sobre funcionales de forma
 
