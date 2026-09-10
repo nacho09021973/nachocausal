@@ -25,9 +25,13 @@ verifier detects it by hash rather than by a hardcoded flag.
 Exit codes (code 2 was previously reserved for signed-convention debt; with the
 conversion done there is no such debt, and the honest distinction left to draw is
 between a broken script and a clean script whose gate is still blocked):
-    0  structural checks pass and GATE_0 has no open blocker
+    0  structural checks pass and NEITHER gate has an open blocker
     1  a structural check failed (something is genuinely broken)
-    2  structural checks pass but GATE_0 is blocked by open blockers
+    2  structural checks pass but a gate is blocked by open blockers
+
+GATE_1 was added on 2026-09-10 (section [L]) when Phase 1 closed. GATE_0's own
+criteria are untouched by that addition; the two gates keep separate finding
+lists and only the exit code is shared.
 
 RESOLUTION 2 (2026-09-10, docs/paper_iii_resolucion_002_reescopado_fase1.md)
 rescoped Phase 1 as a NULL CALIBRATION. Its three operative rules are checked
@@ -50,7 +54,7 @@ import json
 import os
 import re
 import sys
-from math import e, gamma
+from math import e, erfc, exp, gamma, pi
 
 import numpy as np
 
@@ -90,6 +94,7 @@ CAL_R001 = "dev/explore_3p1_scale_calibration_r001_results.json"
 # the generator edit had perturbed the sampler.
 # ---------------------------------------------------------------------------
 PREC17 = "dev/explore_3p1_bg_reference_precision17_results.json"
+CLOSURE = "docs/paper_iii_fase1_closure.md"
 PREC17_SHA256 = "62403ded8f9d784bb348dbd21c870bdfa394efc5a8ee6067ed886d75b89b5a10"
 
 # Certified byte-for-byte against their generators in step 1 of the mandatory
@@ -180,6 +185,7 @@ AUDIT_ACCEPT_SEED = 999
 
 failures: list[str] = []
 findings: list[str] = []
+gate1_findings: list[str] = []
 pending: list[str] = []  # signed work done in code but not yet re-run (G0-1, G0-5)
 R001_VALIDATED = False  # set by audit_r001_lineage(); gates the G0-1/G0-5 closures
 
@@ -848,6 +854,175 @@ def audit_null_calibration() -> None:
 
 
 # ---------------------------------------------------------------------------
+def audit_gate1_closure() -> None:
+    """GATE_1, checked against evidence rather than asserted.
+
+    GATE_0's criteria are NOT touched by this section; it adds a second gate and
+    keeps its findings in a separate list.
+
+    The gate is defined identically in docs/hoja_de_ruta_paper_iii.md and in
+    R002 sec. 5, and its PASS clause is outcome-neutral by its own wording --
+    "the outcome -- rejected or not -- is reproducible and stable". So PASS
+    qualifies the process and NULL_NOT_REJECTED names the outcome; the closure
+    records both. What is checked here:
+
+      L1  the closure document exists and declares the status fields
+      L2  its four headline figures are RE-DERIVED from the committed 17-replicate
+          artifact under R001 and the R005 pooled-error rule -- not read as
+          constants. Edit the artifact or the document and they stop agreeing.
+      L3  each of the three PASS conditions has its cited backing document, and
+          that document still carries the figure it is cited for
+      L4  the residual is recorded as OPEN_DIAGNOSTIC_RESIDUAL, and none of the
+          forbidden claims appears
+      L5  the roadmap reflects the closure
+
+    Delete the closure, contradict it, or move a number, and GATE_1 stops passing.
+    """
+    print("\n[L] GATE_1: documentary closure of Phase 1, checked against the artifact")
+
+    def g1(label: str, ok: bool, finding: str = "") -> bool:
+        """Report a GATE_1 condition. A documentary blocker is NOT a structural
+        failure: it never touches `failures`, so the exit code stays 2 (gate
+        blocked) rather than 1 (script broken)."""
+        print(f"  {'OK      ' if ok else 'BLOCKED '}  {label}")
+        if not ok and finding:
+            gate1_findings.append(finding)
+        return ok
+
+    if not os.path.exists(CLOSURE):
+        print(f"  BLOCKED   L0 {CLOSURE} is absent")
+        gate1_findings.append(f"GATE_1 OPEN: {CLOSURE} does not exist; Phase 1 is not closed.")
+        return
+    doc = open(CLOSURE).read()
+    road = open(ROADMAP).read()
+
+    # ---- L1: declared status -------------------------------------------------
+    required = ("PHASE_1_STATUS=CLOSED", "PHASE_1_VERDICT=NULL_NOT_REJECTED",
+                "GATE_1=PASS", "PHASE_2_STATUS=NOT_STARTED",
+                "R_INTERPRETATION=DEFERRED")
+    missing = [k for k in required if k not in doc]
+    g1("L1 closure declares CLOSED / NULL_NOT_REJECTED / GATE_1=PASS / "
+       "PHASE_2 NOT_STARTED", not missing,
+       "GATE_1 OPEN: closure is missing " + ", ".join(missing) + ".")
+
+    # ---- L2: headline figures re-derived from the artifact -------------------
+    o = json.load(open(PREC17))
+    N = np.array([r["N"] for r in o["rows"]], dtype=float)
+    Ls = [np.asarray(r["Ls"], dtype=float) + 2.0 for r in o["rows"]]   # R001
+    L = np.array([a.mean() for a in Ls])
+    sd = np.array([a.std(ddof=1) for a in Ls])
+    n_rep = Ls[0].size
+    sem = float(np.sqrt(np.mean(sd ** 2))) / np.sqrt(n_rep)            # R005 pooled
+    y, sy = L / N ** 0.25, sem / N ** 0.25
+    w = 1.0 / sy ** 2
+    m4 = float((w * y).sum() / w.sum())
+    se4 = float(1.0 / np.sqrt(w.sum()))
+    chi2 = float((w * (y - m4) ** 2).sum())
+    dof = len(N) - 1
+    # chi-square survival at 3 dof, in closed form: no new dependency.
+    pval = erfc((chi2 / 2) ** 0.5) + (2 * chi2 / pi) ** 0.5 * exp(-chi2 / 2)
+    grid = np.linspace(0.05, 0.60, 110001)
+    F = N[None, :] ** grid[:, None]
+    A = (F * L).sum(1) / (F * F).sum(1)
+    beta = float(grid[int(np.argmin(((L - A[:, None] * F) ** 2).sum(1)))])
+
+    print(f"      re-derived from {PREC17.split('/')[-1]}  ({n_rep} replicas, R001 + R005 pooled)")
+    print(f"        m4 = {m4:.4f} +/- {se4:.4f}   chi2 = {chi2:.4f} / {dof} dof   "
+          f"p = {pval:.3f}   beta = {beta:.4f}   beta-1/4 = {beta-0.25:+.4f}")
+    assert dof == 3, "the closed-form p-value below is the 3-dof case"
+
+    # Read the figures the document REPORTS, from its own results block, and
+    # compare them numerically. Checking that a string appears "somewhere" is not
+    # a check: the same number occurs in the justification section, so a corrupted
+    # results block would still match. Parse the block, or the guardrail is
+    # decoration.
+    block = doc.split("## 3. RESULTADOS PRINCIPALES", 1)[-1].split("## 4.", 1)[0]
+    want = {"m4": (m4, 5e-5), "se4": (se4, 5e-5), "chi2": (chi2, 5e-5),
+            "p": (pval, 5e-4), "beta": (beta, 5e-5), "shift": (beta - 0.25, 5e-5)}
+    pats = {
+        "m4":    r"^\s*m4\s*=\s*([0-9.]+)\s*\+/-\s*([0-9.]+)",
+        "chi2":  r"chi2\s*=\s*([0-9.]+)\s*/\s*3\s*dof",
+        "p":     r"^\s*M0 p\s*=\s*([0-9.]+)",
+        "beta":  r"^\s*beta\s*=\s*([0-9.]+)",
+        "shift": r"^\s*beta_shift\s*=\s*([+-][0-9.]+)",
+    }
+    got, bad = {}, []
+    for key, pat in pats.items():
+        mm = re.search(pat, block, re.M)
+        if not mm:
+            bad.append(f"{key}: not stated in the results block")
+            continue
+        got[key] = float(mm.group(1))
+        if key == "m4":
+            got["se4"] = float(mm.group(2))
+    for key, (val, tol) in want.items():
+        if key not in got:
+            continue
+        if abs(got[key] - val) > tol:
+            bad.append(f"{key}: document says {got[key]}, artifact yields {val:.6f}")
+    ok2 = g1("L2 the closure's reported figures equal what the artifact yields",
+             not bad,
+             "GATE_1 OPEN: the closure's results block contradicts the committed "
+             "artifact: " + "; ".join(bad) + ".")
+
+    # m_4 must sit inside the rigorous band, which is what makes the null credible
+    ok2 &= g1("L2 the fitted constant lies inside the rigorous m_4 band",
+              1.8555 <= m4 <= 2.5296,
+              f"GATE_1 OPEN: m_4 = {m4:.4f} is outside [1.8555, 2.5296].")
+    # the null must actually survive, or NULL_NOT_REJECTED would be a false label
+    ok2 &= g1("L2 the null is NOT rejected at the resolution reached (chi2/dof < 2.5)",
+              chi2 / dof < 2.5,
+              "GATE_1 OPEN: the closure claims NULL_NOT_REJECTED but the constant "
+              f"model gives chi2/dof = {chi2/dof:.2f}.")
+    # and the residual must still be below the declared design floor
+    ok2 &= g1("L2 the residual stays below the declared design floor 0.0179",
+              abs(beta - 0.25) < 0.0179,
+              f"GATE_1 OPEN: beta - 1/4 = {beta-0.25:+.4f} now exceeds the declared "
+              "floor 0.0179; the closure's premise no longer holds.")
+
+    # ---- L3: the three PASS conditions have live backing ---------------------
+    backing = {
+        "(a) resolution characterised": ("docs/paper_iii_fase1_replicacion_17.md", "0.0179"),
+        "(b) null tested against it": ("docs/paper_iii_fase1_replicacion_17.md", "0.202"),
+        "(c) internal calibration recorded": ("docs/paper_iii_fase1_internal_floor.md",
+                                              "INTERNAL_CALIBRATION_INCONCLUSIVE"),
+        "model battery on record": ("docs/paper_iii_fase1_model_battery.md",
+                                    "CONSTANT_MODEL_SUFFICIENT_AT_CURRENT_RESOLUTION"),
+    }
+    broken = []
+    for label, (path, needle) in backing.items():
+        if not os.path.exists(path) or needle not in open(path).read():
+            broken.append(f"{label} -> {path}")
+    g1("L3 every document the closure leans on exists and still carries its "
+       "cited figure", not broken,
+       "GATE_1 OPEN: missing or contradicted backing: " + "; ".join(broken) + ".")
+
+    # ---- L4: residual recorded, forbidden claims absent ----------------------
+    g1("L4 the residual is recorded as OPEN_DIAGNOSTIC_RESIDUAL",
+       "OPEN_DIAGNOSTIC_RESIDUAL" in doc,
+       "GATE_1 OPEN: the closure no longer records the residual as "
+       "OPEN_DIAGNOSTIC_RESIDUAL.")
+    forbidden = [t for t in ("NO  beta demostrado igual a 1/4",
+                             "NO  regimen asintotico demostrado",
+                             "NO  correccion de tamano finito igual a cero",
+                             "NO  m4 conocido exactamente",
+                             "NO  beta != 1/4") if t not in doc]
+    g1("L4 the claim ceiling still states every forbidden reading of PASS",
+       not forbidden,
+       "GATE_1 OPEN: the claim ceiling dropped: " + "; ".join(forbidden) + ".")
+
+    # ---- L5: roadmap reflects the closure ------------------------------------
+    g1("L5 the roadmap records Phase 1 CLOSED / GATE_1=PASS and Phase 2 NOT_STARTED",
+       "PHASE_1=CLOSED   VERDICT=NULL_NOT_REJECTED   GATE_1=PASS" in road
+       and "PHASE_2=NEXT, NOT_STARTED" in road,
+       "GATE_1 OPEN: the roadmap does not record the Phase 1 closure and Phase 2 "
+       "as NOT_STARTED.")
+
+    print("      GATE_1 rides on evidence: remove the closure, move a number, or drop a")
+    print("      claim-ceiling clause, and these checks stop passing.")
+
+
+# ---------------------------------------------------------------------------
 def audit_provenance() -> None:
     print("\n[H] provenance scope of the existing verifier")
     src = open("dev/verify_3p1_notes_figures.py").read()
@@ -893,6 +1068,7 @@ def main() -> int:
     audit_r1_restatement()
     audit_null_calibration()
     audit_provenance()
+    audit_gate1_closure()
 
     print("\n" + "=" * 92)
     # Blockers are counted by distinct G0-x id. A single id that shows up in two
@@ -907,16 +1083,29 @@ def main() -> int:
     print(f"\nGATE_0 BLOCKERS:    {len(open_ids)} open  ->  {', '.join(open_ids) if open_ids else 'none'}")
     for f in findings:
         print("\n  - " + f.replace(". ", ".\n    ", 2))
+    print(f"\nGATE_1 BLOCKERS:    {len(gate1_findings)} open")
+    for f in gate1_findings:
+        print("\n  - " + f.replace(". ", ".\n    ", 2))
+
     print("\n" + "=" * 92)
     print("GATE_0 = " + ("BLOCKED" if open_ids else "PASS")
           + "   (roadmap: 'Si hay ambiguedad en el conteo de extremos, en la normalizacion")
     print("                    o en la procedencia de una cifra, la fase no avanza.')")
+    if gate1_findings:
+        print("GATE_1 = BLOCKED   the Phase 1 closure is absent or contradicted; "
+              "Phase 2 is NOT open")
+    else:
+        print("GATE_1 = PASS   PHASE_1=CLOSED  VERDICT=NULL_NOT_REJECTED  "
+              "PHASE_2=NOT_STARTED")
+        print("         PASS means: Minkowski 3+1 is calibrated enough to serve as the")
+        print("         reference control for Phase 2. It does NOT mean beta = 1/4, an")
+        print("         asymptotic regime, a zero finite-size correction, or m_4 known.")
     if pending:
         print("PENDING=STEP_3_BOX_LEG_REEXECUTION   (signed work not yet re-run; not a regression)")
     print("=" * 92)
     if failures:
         return 1
-    return 2 if open_ids else 0
+    return 2 if (open_ids or gate1_findings) else 0
 
 
 if __name__ == "__main__":

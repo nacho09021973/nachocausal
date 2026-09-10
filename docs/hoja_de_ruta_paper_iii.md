@@ -3,15 +3,27 @@
 Fecha de decisión: 2026-09-10.
 
 ```text
-PAPER_III_STATUS=PLANNING_ONLY
+PAPER_III_STATUS=PHASE_1_CLOSED
 PAPER_III_ROUTE=1
-PHASE_1=3P1_MINKOWSKI_ALEXANDROV_CALIBRATION
-PHASE_2=STATIC_SPHERICAL_EXCISION
+PHASE_0=CLOSED   GATE_0=PASS
+PHASE_1=CLOSED   VERDICT=NULL_NOT_REJECTED   GATE_1=PASS
+PHASE_2=NEXT, NOT_STARTED   (STATIC_SPHERICAL_EXCISION)
 PHASE_3=SCHWARZSCHILD_3P1=DEFERRED
 NEW_VALIDATION_RUNS=NOT_AUTHORIZED
 NEW_OBSERVABLES=NOT_AUTHORIZED
 HORIZON_CLAIM=NONE
+R_INTERPRETATION=DEFERRED
 ```
+
+> **Cierre de la Fase 1, 2026-09-10.** Registrado en
+> [el cierre de la Fase 1](paper_iii_fase1_closure.md). `GATE_1 = PASS` significa
+> que Minkowski 3+1 intervalar queda suficientemente calibrado como control de
+> referencia para comenzar la Fase 2; **no** significa que `beta` esté demostrado
+> igual a `1/4`, ni que se haya alcanzado un régimen asintótico, ni que la
+> corrección de tamaño finito sea cero, ni que `m₄` se conozca exactamente. El
+> residuo `beta − 1/4 = +0.0104` queda registrado como `OPEN_DIAGNOSTIC_RESIDUAL`:
+> ni señal, ni bloqueo. Los bloques que siguen se conservan sin editar como
+> registro de la planificación previa al cierre.
 
 Esta hoja ordena el trabajo preparatorio de Paper III. No es una
 pre-registro, no congela semillas ni umbrales y no autoriza nuevos barridos.
@@ -146,10 +158,25 @@ GATE_1=FAIL  iff a provenance, implementation, or causal-order check fails
 de ser un no-resultado: es la calibración que la Fase 2 necesita para poder
 atribuir a la excisión cualquier diferencia que aparezca.
 
+> **RESUELTA 2026-09-10.** `PHASE_1_VERDICT = NULL_NOT_REJECTED` y `GATE_1 = PASS`.
+> Las dos etiquetas no compiten: la condición de `PASS` dice «el resultado — se
+> rechace o no — es reproducible y estable», luego `PASS` califica el proceso y
+> `NULL_NOT_REJECTED` nombra el desenlace. La justificación condición por
+> condición, contra evidencia, está en
+> [el cierre de la Fase 1](paper_iii_fase1_closure.md) §1, y el verificador la
+> comprueba en su sección `[L]`.
+
 ## Fase 2 — control de excisión esférica estática
 
 Esta fase se abre solo con `GATE_1=PASS` o con una decisión explícita que
 mantenga el resultado como estudio de control finito.
+
+> **2026-09-10.** `GATE_1 = PASS` está declarado, luego la Fase 2 queda
+> **autorizada como siguiente paso y NO iniciada**. Su apertura sigue exigiendo
+> los entregables previos que esta misma sección lista — `d_obs`, la prueba de que
+> es una métrica y de que el orden resultante es transitivo, el verificador
+> numérico independiente y el control Minkowski emparejado — ninguno de los cuales
+> existe todavía.
 
 Modelo: Minkowski \(3+1\) con una bola espacial estática excindida. La
 causalidad se define mediante
@@ -289,6 +316,19 @@ Después de la Fase 2 puede añadirse:
 Quedan fuera de este claim ceiling: horizontes, localización, reconstrucción
 de \(r=2M\), Schwarzschild \(3+1\), Kerr, universalidad de \(R\) y transferencia
 automática desde Paper II.
+
+> **Cerrada la Fase 1, 2026-09-10**, el claim máximo pasa a ser:
+>
+> > En el rango explorado, la nula \(L \propto N^{1/4}\) **no se rechaza** a la
+> > resolución alcanzada por el diseño, y el canal intervalar no restringido de
+> > Minkowski \(3+1\) queda calibrado como control de referencia.
+>
+> El párrafo anterior, que presuponía «una corrección de tamaño finito que debe
+> caracterizarse», quedó sin sostén al firmarse R001 y fue retirado como premisa
+> por [R002](paper_iii_resolucion_002_reescopado_fase1.md); se conserva sin editar
+> como registro. Siguen prohibidos, además de lo ya listado: afirmar
+> \(\beta \neq 1/4\), un régimen asintótico alcanzado o no alcanzado, una
+> corrección de tamaño finito nula, y \(m_4\) como conocido en vez de acotado.
 
 ## Ejecución de la Fase 0
 
