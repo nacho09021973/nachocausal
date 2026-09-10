@@ -30,6 +30,12 @@ See the [frozen contract](paperII_nogo_B_congelado.md) and
 [editorial closure record](docs/paper_ii_editorial_closure.md). This checkpoint
 does not claim a 3+1 result or alter the earlier benchmark's sealed results.
 
+Paper III now has a separate [roadmap](docs/hoja_de_ruta_paper_iii.md): first
+calibrate finite-size scaling in \(3+1\)-dimensional Minkowski Alexandrov
+intervals, then study a static spherical excision as a timelike control. The
+roadmap does not authorize new runs, horizon claims, or Schwarzschild \(3+1\)
+execution.
+
 ## Current theory result — Fisher efficiency of unlabeled 2D posets
 
 The rank-to-poset branch now contains a finite-\(N\) theorem for the exact
