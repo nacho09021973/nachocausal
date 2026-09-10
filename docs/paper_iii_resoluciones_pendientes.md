@@ -4,7 +4,7 @@
 STATUS=DRAFT_FOR_SIGNATURE
 DATE=2026-09-10
 SIGNED=R001 (convención de L), R002 (reescopado de la Fase 1)
-PENDING=R2, R3, R4, R5, R6, R7
+PENDING=NONE   (R2-R7 firmadas el 2026-09-10; R7 en paper_iii_resolucion_007_estatus_R.md)
 BLOCKERS_COVERED=G0-3, G0-4, G0-6, G0-8
 ```
 

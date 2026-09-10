@@ -22,7 +22,7 @@ RESOLUTION_003=SIGNED_2026-09-10
 RESOLUTION_004=SIGNED_2026-09-10
 RESOLUTION_005=SIGNED_2026-09-10
 RESOLUTION_006=SIGNED_2026-09-10
-RESOLUTION_007=UNSIGNED
+RESOLUTION_007=SIGNED_2026-09-10
 G0_1=CLOSED
 G0_3=CLOSED
 G0_4=CLOSED
@@ -519,7 +519,7 @@ G0-7 = CLOSED   intacto, sobre el linaje histórico, que no se ha tocado
 ```
 
 ```text
-GATE_0 = PASS   (0 abiertos; R003–R006 firmadas el 2026-09-10, R007 sin firmar)
+GATE_0 = PASS   (0 abiertos; R003–R007 firmadas el 2026-09-10)
 ```
 
 ---
@@ -571,8 +571,20 @@ Fase 1 debe respetar:
 | G0-10 | Bajo R001 toda pendiente del canal no restringido cae sobre 1/4 dentro del suelo de ruido | alcance | **CERRADO** por [R002](paper_iii_resolucion_002_reescopado_fase1.md): Fase 1 reescopada como calibración nula |
 
 ```text
-GATE_0 = PASS   (los ocho bloqueos cerrados; R007 sigue sin firmar y `R` sin interpretar)
+GATE_0 = PASS   (los ocho bloqueos cerrados; R001–R007 firmadas y `R` sin interpretar)
 ```
+
+> **Actualización 2026-09-10 — R007 firmada.** El estatus de `R` está firmado en
+> [Resolución 007](paper_iii_resolucion_007_estatus_R.md). Las tres condiciones
+> que su texto imponía se cumplen, de modo que la prohibición procedimental deja
+> de bloquear por sí misma — pero **el PI no ejerce esa apertura**:
+> `R_INTERPRETATION=DEFERRED` sigue vigente, no se afirma que `R` estabilice ni
+> que no lo haga, `median_R_min` sigue sin restituir, y el canal de minimales
+> sigue cerrado por [R004](paper_iii_resolucion_004_lineas_base_minimales.md),
+> que es una restricción independiente y todavía activa. Las siete resoluciones
+> de la Fase 0 quedan firmadas. Los párrafos anteriores se conservan sin editar
+> como registro de lo que era cierto antes de la firma.
+
 
 La hoja de ruta lo prescribe: «Si hay ambigüedad en el conteo de extremos, en
 la normalización o en la procedencia de una cifra, la fase no avanza». Hay
