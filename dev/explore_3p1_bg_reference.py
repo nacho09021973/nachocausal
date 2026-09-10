@@ -1,4 +1,4 @@
-"""EXPLORATION (dev/) — Paper II, Phase I reference leg.
+"""EXPLORATION (dev/) — Paper III, Phase I reference leg.
 
 Separates the two things that the L ~ V^{1/4} claim conflates:
 

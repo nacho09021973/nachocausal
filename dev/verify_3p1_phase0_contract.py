@@ -98,8 +98,8 @@ BG_GEN = "dev/explore_3p1_bg_reference.py"
 # NOW, so an undeclared edit is caught while the provenance record stays honest.
 BG_GEN_SHA256_AT_ARTIFACTS = "f9a181e2524b7d79dbc64837cb4d31de8d8111870d365de6be844504eb414b93"
 LIVE_SHA256 = {
-    CAL_GEN: "1f4ff9275d067970bc22c0b23315abac3a8e10141dd4e6a8a0e662880c29d467",  # after R004
-    BG_GEN: "f9a181e2524b7d79dbc64837cb4d31de8d8111870d365de6be844504eb414b93",
+    CAL_GEN: "74d7d3d8a3f7d3d36199004bd0bf483b65ab4a785537a959d8ecd34495addd58",  # R004 + R006
+    BG_GEN: "3b91aa5da07081f1338cf204222c637a707f076dbc23586babeefa326131512a",   # R006
 }
 
 
@@ -108,6 +108,17 @@ LIVE_SHA256 = {
 # resolution actually imposes, so a blocker closes on evidence in the files and
 # reopens by itself if that evidence is edited away.
 # ---------------------------------------------------------------------------
+def r006_applied() -> bool:
+    """R006: neither generator header may still say 'Paper II'.
+
+    The obvious test is wrong: "Paper II" is a substring of "Paper III", so a
+    plain containment check would keep firing after the correction and the
+    blocker would never close. Match the negative lookahead instead.
+    """
+    return not any(re.search(r"Paper II(?!I)", open(p).readline())
+                   for p in (BG_GEN, CAL_GEN))
+
+
 def r004_applied() -> bool:
     """R004: the three minimal-restricted slope reports may no longer declare a
     baseline, and the notes must record the channel's suspension."""
@@ -752,9 +763,11 @@ def audit_provenance() -> None:
         print(f"        {'OK  ' if ok else 'FAIL'}  {path.split('/')[-1]:48s} {got[:16]}")
     check("G0-7 stays closed: the three certified artifacts are unchanged", bool(intact))
 
-    stale_heads = [p for p in ("dev/explore_3p1_bg_reference.py", "dev/explore_3p1_scale_calibration.py")
-                   if "Paper II" in open(p).readline()]
-    if stale_heads:
+    if r006_applied():
+        print("      G0-8 CLOSED by R006: both generator headers read 'Paper III'.")
+    else:
+        stale_heads = [p for p in (BG_GEN, CAL_GEN)
+                       if re.search(r"Paper II(?!I)", open(p).readline())]
         # One blocker id, however many files carry it.
         findings.append("G0-8 OPEN (documentation): line 1 still reads 'Paper II' in "
                         + " and ".join(stale_heads)

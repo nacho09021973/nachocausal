@@ -1,4 +1,4 @@
-"""EXPLORATION (dev/) — Paper II, Phase I: 3+1 discrete scale calibration.
+"""EXPLORATION (dev/) — Paper III, Phase I: 3+1 discrete scale calibration.
 
 NOT on the validation path. This file does NOT import, touch, or re-seal
 `nachocausal/` (the frozen 1+1D generator stays exactly as it is: it is 2D by

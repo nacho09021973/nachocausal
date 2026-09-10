@@ -6,7 +6,7 @@ auditoría de entrada»).
 
 ```text
 PAPER_III_PHASE=0
-GATE_0=BLOCKED
+GATE_0=PASS
 NEW_VALIDATION_RUNS=NONE_EXECUTED
 NEW_OBSERVABLES=NONE_DEFINED
 SWEEPS_EXECUTED=NONE
@@ -18,11 +18,22 @@ PHASE_0_STEP_1_REPRODUCTION=PASS_BYTE_EXACT
 PHASE_0_STEP_2_CONVERSION=DONE
 PHASE_0_STEP_3_REEXECUTION=DONE
 ARTIFACT_POLICY=NEW_VERSIONED_ARTIFACT
+RESOLUTION_003=SIGNED_2026-09-10
+RESOLUTION_004=SIGNED_2026-09-10
+RESOLUTION_005=SIGNED_2026-09-10
+RESOLUTION_006=SIGNED_2026-09-10
+RESOLUTION_007=UNSIGNED
 G0_1=CLOSED
+G0_3=CLOSED
+G0_4=CLOSED
 G0_5=CLOSED
+G0_6=CLOSED
 G0_7=CLOSED
-BLOCKERS_OPEN=4
+G0_8=CLOSED
+BLOCKERS_OPEN=0
+GATE_0=PASS
 R_INTERPRETATION=DEFERRED
+PHASE_1=NOT_STARTED
 ```
 
 > **Actualización 2026-09-10.** La resolución 1 de §8 está **firmada** y
@@ -296,15 +307,24 @@ artefactos existentes»), no a la Fase 0.
 
 ### 5.1 Tabla única de entradas
 
-| Artefacto | sha256 (16) | Semillas | Réplicas | Tamaños | Proceso | Región |
-|---|---|---|---|---|---|---|
-| `dev/explore_3p1_bg_reference.py` | `f9a181e2524b7d79` | — | — | — | — | generador intervalar |
-| `dev/explore_3p1_bg_reference_precision_results.json` | `eb101d3f63ac6a36` | 101–108 | 8 | `N = 2 000, 8 000, 16 000, 32 000` | binomial | `I(p,q)`, `tau=1` |
-| `dev/explore_3p1_bg_reference_results.json` | `5dbb04bc7b1b3f4c` | 21–23 | 3 | `N = 500 … 16 000` | binomial | `I(p,q)`, `tau=1` |
-| `dev/explore_3p1_scale_calibration.py` | `a1b67a37a2eed73b` | — | — | — | — | generador de caja |
-| `dev/explore_3p1_scale_calibration_results.json` | `e5cb5fb7ba5c3635` | 11–13 | 3 | `rho = 500 … 8 000` | Poisson | `[0,1]^4` |
-| `dev/verify_3p1_notes_figures.py` | `816b476eb48c1262` | — | — | — | — | verificador notas↔JSON |
-| `dev/PAPER3_3P1_SCALE_NOTES.md` | `230c9c955881cfdd` | — | — | — | — | nota exploratoria |
+Dos columnas de hash, y **nunca se confunden**. El *productor de registro* dice
+qué fichero produjo realmente cada artefacto y es inmutable: una corrección
+editorial posterior (R004, R006) no lo reescribe. El *estado actual* dice qué
+hay hoy en el árbol, y cambia cuando una resolución firmada edita el fichero.
+
+| Artefacto | sha256 productor de registro (16) | sha256 actual (16) | Semillas | Répl. | Tamaños | Proceso | Región |
+|---|---|---|---|---|---|---|---|
+| `dev/explore_3p1_bg_reference.py` | `f9a181e2524b7d79` · `0338307` | `3b91aa5da07081f1` · R006 | — | — | — | — | generador intervalar |
+| `dev/explore_3p1_bg_reference_precision_results.json` | — | `eb101d3f63ac6a36` | 101–108 | 8 | `N = 2 000, 8 000, 16 000, 32 000` | binomial | `I(p,q)`, `tau=1` |
+| `dev/explore_3p1_bg_reference_results.json` | — | `5dbb04bc7b1b3f4c` | 21–23 | 3 | `N = 500 … 16 000` | binomial | `I(p,q)`, `tau=1` |
+| `dev/explore_3p1_scale_calibration.py` | `a1b67a37a2eed73b` · `0338307` (histórico)<br>`b5ca8c99021aeed7` · `3230986` (R001) | `74d7d3d8a3f7d3d3` · R004+R006 | — | — | — | — | generador de caja |
+| `dev/explore_3p1_scale_calibration_results.json` | producido por `a1b67a37…` | `e5cb5fb7ba5c3635` | 11–13 | 3 | `rho = 500 … 8 000` | Poisson | `[0,1]^4` |
+| `dev/explore_3p1_scale_calibration_r001_results.json` | producido por `b5ca8c99…` | `0aa224027835be64` | 11–13 | 3 | `rho = 500 … 8 000` | Poisson | `[0,1]^4` |
+| `dev/verify_3p1_notes_figures.py` | — | `816b476eb48c1262` | — | — | — | — | verificador notas↔JSON (histórico) |
+| `dev/PAPER3_3P1_SCALE_NOTES.md` | — | `69297e2cf94ddcb0` · R003+R004+R005 | — | — | — | — | nota exploratoria |
+
+Los cuatro artefactos de datos conservan su hash: ninguna de las resoluciones
+firmadas ha ejecutado nada.
 
 Commit productor de los cinco primeros: `0338307`. Las tres listas de semillas
 son disjuntas, de modo que las tres piernas son independientes; las semillas de
@@ -499,7 +519,7 @@ G0-7 = CLOSED   intacto, sobre el linaje histórico, que no se ha tocado
 ```
 
 ```text
-GATE_0 = BLOCKED   (4 abiertos: G0-3, G0-4, G0-6, G0-8)
+GATE_0 = PASS   (0 abiertos; R003–R006 firmadas el 2026-09-10, R007 sin firmar)
 ```
 
 ---
@@ -546,12 +566,12 @@ Fase 1 debe respetar:
 | G0-5 | `R` es cuártico en `L`: la deriva `x1.73` pasa a `x1.11` **medida** bajo R001 | interpretación | **CERRADO** 2026-09-10 — `median_R_min` medida en el artefacto R001, §5.4; `R` sigue sin interpretar |
 | G0-6 | Notas y hoja de ruta llamaban Poisson a ambas piernas; la intervalar es binomial | documentación | **CERRADO** 2026-09-10 por [R003](paper_iii_resolucion_003_proceso_puntual.md) |
 | G0-7 | Nada certifica JSON contra generador | procedencia | **CERRADO** 2026-09-10 — reproducción byte a byte de los tres artefactos, §5.2 |
-| G0-8 | `dev/explore_3p1_bg_reference.py:1` y `dev/explore_3p1_scale_calibration.py:1` siguen diciendo «Paper II», lo que §0 de las notas prohíbe explícitamente | documentación | redacción |
+| G0-8 | Las cabeceras de los dos generadores decían «Paper II», lo que §0 de las notas prohíbe | documentación | **CERRADO** 2026-09-10 por [R006](paper_iii_resolucion_006_atribucion_editorial.md) |
 | G0-9 | 3 de 10 filas violan la cota inferior rigurosa de `m_4` bajo la normalización reportada; 0 de 10 la violan contando extremos | decidió G0-2 | **ADJUDICADO** por R001 |
 | G0-10 | Bajo R001 toda pendiente del canal no restringido cae sobre 1/4 dentro del suelo de ruido | alcance | **CERRADO** por [R002](paper_iii_resolucion_002_reescopado_fase1.md): Fase 1 reescopada como calibración nula |
 
 ```text
-GATE_0 = BLOCKED   (4 abiertos tras cerrar G0-1, G0-5 y G0-7: G0-3, G0-4, G0-6, G0-8)
+GATE_0 = PASS   (los ocho bloqueos cerrados; R007 sigue sin firmar y `R` sin interpretar)
 ```
 
 La hoja de ruta lo prescribe: «Si hay ambigüedad en el conteo de extremos, en
@@ -586,7 +606,7 @@ auditor.
 5. **[FIRMADA 2026-09-10 — [R005](paper_iii_resolucion_005_incertidumbre.md)] Toda pendiente reportada lleva su dispersión entre semillas**, y toda
    desviación se compara contra el suelo que devuelve el exponente exactamente
    conocido en el mismo diseño.
-6. **Corregir las dos cabeceras «Paper II»** a Paper III.
+6. **[FIRMADA 2026-09-10 — [R006](paper_iii_resolucion_006_atribucion_editorial.md)] Corregir las dos cabeceras «Paper II»** a Paper III.
 7. **`R` no se interpreta en absoluto** hasta que 1 y 5 estén aplicados y la
    pierna de caja reejecutada. La frase «`R` deriva y no estabiliza» queda
    retirada del techo de claims hasta entonces.
