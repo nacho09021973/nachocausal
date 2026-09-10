@@ -88,10 +88,13 @@ def future_cardinality(C: np.ndarray) -> np.ndarray:
 
 
 def longest_future_chain(C: np.ndarray, order: np.ndarray) -> np.ndarray:
-    """L(i) = number of RELATIONS in the longest chain starting at i
-    (so L = 0 for a maximal element). `order` must be a linear extension."""
+    """L(i) = number of ELEMENTS in the longest chain starting at i
+    (so L = 1 for a maximal element). `order` must be a linear extension."""
     n = C.shape[0]
-    L = np.zeros(n, dtype=np.int64)
+    # Resolution 001: L is the chain's cardinality, so the DP's base case is the
+    # element itself. The recurrence below is unchanged; the base case is what
+    # distinguishes counting elements from counting relations.
+    L = np.ones(n, dtype=np.int64)
     for i in order[::-1]:
         row = C[i]
         if row.any():
