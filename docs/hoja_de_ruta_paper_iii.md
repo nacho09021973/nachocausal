@@ -278,9 +278,25 @@ verificador permanente en `dev/verify_3p1_phase0_contract.py`. Resultado:
 GATE_0=BLOCKED   (9 bloqueos abiertos; ningún barrido ejecutado)
 ```
 
+La resolución 1 de ese contrato quedó **firmada** el 2026-09-10 y está
+registrada en [Resolución 001](paper_iii_resolucion_001_convencion_L.md):
+
+```text
+GATE_0=BLOCKED   (8 abiertos; 1 violación de convención firmada pendiente)
+RESOLUTION_001=SIGNED   L = cardinalidad de la cadena, extremos incluidos
+```
+
+Bajo esa convención, la premisa que esta hoja recoge más arriba — «una
+pendiente efectiva cercana a 0.29, no 0.25» — deja de estar sostenida en el
+canal no restringido: las pendientes pasan a 0.2552, 0.2516 y 0.2450 contra un
+suelo de ruido de 0.0179. Eso abre `G0-10` y obliga a re-escopar la pregunta de
+la Fase 1 antes de abrirla. El párrafo de «Evidencia que ya existe» se conserva
+sin editar como registro de lo que se creía antes de la firma.
+
 ## Inventario de dependencias
 
 - [Contrato de calibración de la Fase 0](paper_iii_fase0_contrato.md).
+- [Resolución 001 — convención de longitud de cadena](paper_iii_resolucion_001_convencion_L.md).
 - [Notas exploratorias de escala](../dev/PAPER3_3P1_SCALE_NOTES.md).
 - [Pierna intervalar](../dev/explore_3p1_bg_reference.py).
 - [Calibración exploratoria de caja](../dev/explore_3p1_scale_calibration.py).

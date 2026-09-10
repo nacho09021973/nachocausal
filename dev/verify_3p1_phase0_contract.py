@@ -9,6 +9,18 @@ of the interval generator against the exact Alexandrov density.
 Complements dev/verify_3p1_notes_figures.py, which checks notes-vs-JSON only.
 This one checks JSON-vs-itself, code-vs-code, and generator-vs-measure.
 
+Since RESOLUTION 1 was signed (2026-09-10, docs/paper_iii_resolucion_001_convencion_L.md)
+the chain-length convention is no longer an open question but an ENFORCED INVARIANT:
+
+    L = cardinality of the maximal chain, i.e. its NUMBER OF ELEMENTS.
+    For a causal interval bounded by endpoints p, q, BOTH endpoints count.
+
+A file that violates it is a violation, not a finding. Exit codes:
+    0  structural checks pass and no signed-convention debt outstanding
+    1  a structural check failed (something is genuinely broken)
+    2  structural checks pass, signed-convention debt outstanding (expected
+       until the Phase 1 box-leg re-execution)
+
 Run:  python3 dev/verify_3p1_phase0_contract.py
 Exit: 0 iff every structural check passes. Findings are reported either way;
       an open finding is a Gate-0 blocker, not a script failure.
@@ -36,6 +48,7 @@ AUDIT_ACCEPT_SEED = 999
 
 failures: list[str] = []
 findings: list[str] = []
+violations: list[str] = []  # breaches of the SIGNED convention (Resolution 1)
 
 
 def check(label: str, ok: bool) -> bool:
@@ -120,31 +133,28 @@ def audit_chain_conventions() -> None:
     check("sealed estimator uses the vertex convention (maximal element -> 1)", int(sealed_L[2]) == 1)
     check("interval leg agrees with the sealed vertex convention", interval_L == 3)
     ok = int(box_L[2]) == 0
-    check("box leg DIVERGES from the sealed convention by exactly one", ok)
+    check("box leg still counts RELATIONS (detected, not tolerated)", ok)
     if ok:
-        findings.append(
-            "G0-1 OPEN: dev/explore_3p1_scale_calibration.py:94 counts RELATIONS while "
-            "nachocausal/estimator.py:47 and dev/explore_3p1_bg_reference.py:53 count ELEMENTS. "
-            "dev/PAPER3_3P1_SCALE_NOTES.md sec.1 asserts a single frozen convention for both."
+        violations.append(
+            "G0-1 VIOLATION of Resolution 1: dev/explore_3p1_scale_calibration.py:94 counts "
+            "RELATIONS. The signed convention is ELEMENTS. The generator must NOT be edited "
+            "before the Phase 1 provenance re-run (see [H]); the fix and the re-execution are "
+            "one Phase 1 step, in that order."
         )
 
-    print("\n[C] the interval leg does not count the two Alexandrov endpoints p, q")
+    print("\n[C] endpoint count: SUPERSEDED interior-only vs SIGNED endpoint-inclusive")
     prec = json.load(open(PREC))
     Ns = np.array([r["N"] for r in prec["rows"]], dtype=float)
     Lm = np.array([r["mean_L"] for r in prec["rows"]], dtype=float)
     print(f"      {'convention':<18}" + "".join(f"{int(n):>10d}" for n in Ns) + f"{'local slopes':>26}{'global':>9}")
-    for off, name in ((0, "L   (as reported)"), (1, "L+1"), (2, "L+2 (with p, q)")):
+    for off, name in ((0, "L   (superseded)"), (1, "L+1"), (2, "L+2 (SIGNED, with p,q)")):
         Q = (Lm + off) / Ns**0.25
         ls = [np.log((Lm + off)[i + 1] / (Lm + off)[i]) / np.log(Ns[i + 1] / Ns[i]) for i in range(len(Ns) - 1)]
         print(f"      {name:<18}" + "".join(f"{v:>10.4f}" for v in Q)
               + "  " + " ".join(f"{v:7.4f}" for v in ls) + f"{slope(Ns, Lm + off):9.4f}")
     g0, g2 = slope(Ns, Lm), slope(Ns, Lm + 2)
     check("endpoint convention shifts the global slope by more than 0.02", abs(g0 - g2) > 0.02)
-    findings.append(
-        f"G0-2 OPEN: the same artifact yields d log<L>/d log N = {g0:.4f} without the two Alexandrov "
-        f"endpoints and {g2:.4f} with them. The reported departure from 1/4 is not "
-        "convention-invariant at the N that were run."
-    )
+    print(f"      G0-2 CLOSED by Resolution 1: the signed count is L+2, global slope {g2:.4f} (was {g0:.4f}).")
 
 
 # ---------------------------------------------------------------------------
@@ -307,13 +317,68 @@ def audit_m4_band() -> None:
     q2 = np.array([(r["mean_L"] + 2) / r["N"] ** 0.25 for r in prec["rows"]])
     print(f"      precision leg spread over the N range:  as reported {q0.min():.4f}..{q0.max():.4f} "
           f"({q0.max()/q0.min()-1:+.1%}, monotone)   with endpoints {q2.min():.4f}..{q2.max():.4f} ({q2.max()/q2.min()-1:+.1%})")
-    findings.append(
-        f"G0-9 OPEN, and it decides G0-2: under the reported interior-only count {out_reported} of 10 rows "
+    print(f"      G0-9 ADJUDICATED: it decided G0-2, and Resolution 1 signed the outcome it pointed to.")
+    _ = (
+        f"under the superseded interior-only count {out_reported} of 10 rows "
         f"fall OUTSIDE the rigorous band {lo:.4f} <= m_4 <= {hi:.4f}, which no admissible normalisation may do. "
         f"Counting the two Alexandrov endpoints puts all 10 inside and turns the headline of sec.3.1 "
-        f"({q0.max()/q0.min()-1:+.1%} monotone rise) into a {q2.max()/q2.min()-1:+.1%} spread. "
-        "The claim that the asymptotic regime has not been reached rests on the convention, not on the data."
+        f"({q0.max()/q0.min()-1:+.1%} monotone rise) into a {q2.max()/q2.min()-1:+.1%} spread."
     )
+
+
+# ---------------------------------------------------------------------------
+def audit_r1_restatement() -> None:
+    """What Resolution 1 recovers by arithmetic, and what it does not.
+
+    The interval leg stores the raw per-seed chain counts, so the signed
+    convention is a shift of +2 on integers already committed: a restatement,
+    not a measurement. The box leg stores only aggregates; <L> is linear so it
+    shifts by +1 exactly, but median(L^4/V) is not a function of median((L-1)^4/V)
+    and cannot be recovered without re-running.
+    """
+    print("\n[J] Resolution 1 applied to the committed artifacts (arithmetic on provenance)")
+    for tag, path in (("precision (8 seeds)", PREC), ("base (3 seeds)", BASE)):
+        o = json.load(open(path))
+        N = np.array([r["N"] for r in o["rows"]], dtype=float)
+        L0 = np.array([r["mean_L"] for r in o["rows"]], dtype=float)
+        L1 = L0 + 2.0
+        q0, q1 = L0 / N**0.25, L1 / N**0.25
+        print(f"      {tag}:  d log<L>/d log N   superseded {slope(N, L0):.4f}  ->  SIGNED {slope(N, L1):.4f}")
+        print(f"      {'':<{len(tag)}}   spread of L/N^(1/4)  superseded {q0.max()/q0.min()-1:+.1%}"
+              f"  ->  SIGNED {q1.max()/q1.min()-1:+.1%}")
+
+    cal = json.load(open(CAL))
+    rhos = cal["rho_sweep"]
+    agg = {k: [float(np.mean([r[k] for r in cal["rows"] if r["rho"] == rho])) for rho in rhos]
+           for k in ("mean_V_all", "mean_L_all", "mean_V_min", "mean_L_min")}
+    print(f"\n      box leg, <L> shifts by +1 exactly:")
+    print(f"      {'slope':<30}{'superseded':>12}{'SIGNED':>10}   expected")
+    for label, ykey, xs, exp in (
+        ("d log<L>_all / d log rho", "mean_L_all", rhos, "1/4"),
+        ("d log<L>_all / d log<V>_all", "mean_L_all", agg["mean_V_all"], "1/4"),
+        ("d log<L>_min / d log rho", "mean_L_min", rhos, "1/4  (baseline unsound, G0-4)"),
+        ("d log<L>_min / d log<V>_min", "mean_L_min", agg["mean_V_min"], "1/4  (baseline unsound, G0-4)"),
+    ):
+        y = agg[ykey]
+        print(f"      {label:<30}{slope(xs, y):>12.4f}{slope(xs, [v + 1 for v in y]):>10.4f}   {exp}")
+
+    a_all = slope(rhos, [v + 1 for v in agg["mean_L_all"]])
+    v_all = cal["slopes"]["logV_all_vs_logrho"]
+    floor = abs(v_all - 1.0)
+    check("the unrestricted L slope lands within the design's own noise floor of 1/4",
+          abs(a_all - 0.25) <= floor)
+    print(f"      |{a_all:.4f} - 0.25| = {abs(a_all-0.25):.4f}  vs  noise floor |{v_all:.4f} - 1| = {floor:.4f}")
+    findings.append(
+        f"G0-10 OPEN (scope): under Resolution 1 every UNRESTRICTED slope lands at 1/4 within the "
+        f"design's own noise floor (interval leg {slope(np.array([r['N'] for r in json.load(open(PREC))['rows']], dtype=float), np.array([r['mean_L'] for r in json.load(open(PREC))['rows']], dtype=float) + 2):.4f} "
+        f"and {slope(np.array([r['N'] for r in json.load(open(BASE))['rows']], dtype=float), np.array([r['mean_L'] for r in json.load(open(BASE))['rows']], dtype=float) + 2):.4f}; box leg {a_all:.4f}). "
+        "The premise of the roadmap's Phase 1 question -- an observable departure from 1/4 -- is no "
+        "longer supported in the unrestricted channel. Only the minimal-restricted slopes still "
+        "deviate, and those are exactly the ones G0-4 shows are measured against an unsound baseline. "
+        "Phase 1 needs a re-scoped question, which is a PI decision."
+    )
+    print("\n      NOT restatable: median_R_min. The artifact stores the median of L^4/V, not the")
+    print("      per-element L, and median((L+1)^4/V) is no function of median(L^4/V). Re-run required.")
 
 
 # ---------------------------------------------------------------------------
@@ -329,6 +394,9 @@ def audit_provenance() -> None:
         "generators. Closing it requires one deterministic re-execution, which the roadmap assigns "
         "to Phase 1 ('reproducir primero los artefactos existentes')."
     )
+    print("      SEQUENCING GUARD: G0-7 can only ever be closed by re-running the generators AS THEY")
+    print("      STAND against the committed JSONs. Editing a generator to apply Resolution 1 before")
+    print("      that run destroys the check permanently. Order is: reproduce, then convert, then re-run.")
     for path in ("dev/explore_3p1_bg_reference.py", "dev/explore_3p1_scale_calibration.py"):
         head = open(path).readline()
         if "Paper II" in head:
@@ -346,19 +414,28 @@ def main() -> int:
     audit_baselines_and_uncertainty()
     audit_point_process()
     audit_m4_band()
+    audit_r1_restatement()
     audit_provenance()
 
     print("\n" + "=" * 92)
-    print(f"STRUCTURAL CHECKS: {'ALL PASS' if not failures else 'FAILURES: ' + str(failures)}")
-    print(f"GATE_0 FINDINGS:   {len(findings)} open")
+    print(f"STRUCTURAL CHECKS:  {'ALL PASS' if not failures else 'FAILURES: ' + str(failures)}")
+    print(f"SIGNED-CONVENTION:  {len(violations)} violation(s) of Resolution 1")
+    for v in violations:
+        print("\n  ! " + v.replace(". ", ".\n    ", 2))
+    print(f"\nGATE_0 FINDINGS:    {len(findings)} open")
     for f in findings:
         print("\n  - " + f.replace(". ", ".\n    ", 2))
     print("\n" + "=" * 92)
     print("GATE_0 = " + ("BLOCKED" if findings else "PASS")
           + "   (roadmap: 'Si hay ambiguedad en el conteo de extremos, en la normalizacion")
     print("                    o en la procedencia de una cifra, la fase no avanza.')")
+    if violations:
+        print("EXPECTED_UNTIL=PHASE_1_BOX_LEG_REEXECUTION   (the debt is signed work not yet done,")
+        print("                                             not a regression)")
     print("=" * 92)
-    return 0 if not failures else 1
+    if failures:
+        return 1
+    return 2 if violations else 0
 
 
 if __name__ == "__main__":

@@ -11,8 +11,19 @@ NEW_VALIDATION_RUNS=NONE_EXECUTED
 NEW_OBSERVABLES=NONE_DEFINED
 SWEEPS_EXECUTED=NONE
 HORIZON_CLAIM=NONE
-BLOCKERS_OPEN=9
+RESOLUTION_001=SIGNED_2026-09-10
+BLOCKERS_OPEN=8
+SIGNED_CONVENTION_VIOLATIONS=1
 ```
+
+> **Actualización 2026-09-10.** La resolución 1 de §8 está **firmada** y
+> registrada en [Resolución 001](paper_iii_resolucion_001_convencion_L.md).
+> Cierra `G0-2`, adjudica `G0-9`, deroga las cifras de `R` a procedencia y abre
+> `G0-10` (alcance). Los generadores **no se han tocado**: hacerlo antes de la
+> corrida de reproducción destruiría `G0-7` de forma permanente — véase §5 de la
+> resolución. Las secciones que siguen conservan el análisis tal como se hizo
+> antes de la firma; la restitución bajo la convención firmada está en §3 de la
+> resolución.
 
 No se ejecutó ningún barrido, no se definió ningún observable nuevo y no se
 tocó ningún instrumento sellado. Todo lo que sigue es aritmética sobre los
@@ -329,18 +340,19 @@ Fase 1 debe respetar:
 
 | id | Bloqueo | Tipo | Cierra en |
 |---|---|---|---|
-| G0-1 | `dev/explore_3p1_scale_calibration.py:94` cuenta relaciones; el sellado y la pierna intervalar cuentan elementos. §1 de las notas afirma una convención única | definición | decisión + reejecución (Fase 1) |
-| G0-2 | La pierna intervalar excluye `p` y `q`; la pendiente global va de `0.2835` a `0.2552` según se cuenten | definición | decisión |
+| G0-1 | `dev/explore_3p1_scale_calibration.py:94` cuenta relaciones; el sellado y la pierna intervalar cuentan elementos | definición | **decidido** por R001; violación registrada, pendiente de reproducir → convertir → reejecutar |
+| G0-2 | La pierna intervalar excluye `p` y `q`; la pendiente global va de `0.2835` a `0.2552` según se cuenten | definición | **CERRADO** por R001 |
 | G0-3 | Ninguna pendiente de §3.2 lleva incertidumbre; el exponente exacto 1 sale `1.0179` | estadística | redacción + réplicas (Fase 1) |
 | G0-4 | «expect 1» y «expect 1/4» son líneas base falsas para las filas de minimales: `<V>_min/rho` deriva `+18.2 %` | línea base | corrección de anotación |
-| G0-5 | `R` es cuártico en `L`: la deriva `x1.73` pasa a `~x1.10` bajo la otra convención | interpretación | reejecución (Fase 1) |
+| G0-5 | `R` es cuártico en `L`: la deriva `x1.73` pasa a `~x1.10` bajo la otra convención | interpretación | cifras **derogadas** a procedencia por R001; medición pendiente de reejecución |
 | G0-6 | Notas y hoja de ruta llaman Poisson a ambas piernas; la intervalar es binomial | documentación | redacción |
 | G0-7 | Nada certifica JSON contra generador | procedencia | reejecución (Fase 1) |
 | G0-8 | `dev/explore_3p1_bg_reference.py:1` y `dev/explore_3p1_scale_calibration.py:1` siguen diciendo «Paper II», lo que §0 de las notas prohíbe explícitamente | documentación | redacción |
-| G0-9 | 3 de 10 filas violan la cota inferior rigurosa de `m_4` bajo la normalización reportada; 0 de 10 la violan contando extremos | **decide G0-2** | decisión |
+| G0-9 | 3 de 10 filas violan la cota inferior rigurosa de `m_4` bajo la normalización reportada; 0 de 10 la violan contando extremos | decidió G0-2 | **ADJUDICADO** por R001 |
+| G0-10 | Bajo R001 toda pendiente del canal no restringido cae sobre 1/4 dentro del suelo de ruido (0.2552, 0.2516, 0.2450 contra un suelo de 0.0179). La premisa de la pregunta de la Fase 1 deja de estar sostenida | alcance | **re-escopado de la Fase 1 — decisión del PI** |
 
 ```text
-GATE_0 = BLOCKED
+GATE_0 = BLOCKED   (8 abiertos; 1 violación de convención firmada pendiente)
 ```
 
 La hoja de ruta lo prescribe: «Si hay ambigüedad en el conteo de extremos, en
@@ -355,7 +367,7 @@ Ninguna de estas decisiones se ha ejecutado. Se proponen para su firma porque
 la Fase 0 debe *fijar* definiciones, y fijarlas es una decisión del PI, no del
 auditor.
 
-1. **Convención única de `L`, en toda la línea 3+1**: número de **elementos**,
+1. **[FIRMADA 2026-09-10 — [R001](paper_iii_resolucion_001_convencion_L.md)] Convención única de `L`, en toda la línea 3+1**: número de **elementos**,
    con los dos extremos de Alexandrov incluidos en la pierna intervalar.
    Justificación: es la convención del enunciado de Brightwell–Gregory tal como
    lo cita la fuente local, es la del estimador sellado, y es la única de las
@@ -382,7 +394,13 @@ auditor.
 
 Aplicados 1–7, `GATE_0` puede reevaluarse; G0-1, G0-5 y G0-7 sólo cierran con
 la reejecución determinista que la Fase 1 ya tiene autorizada como su primer
-paso.
+paso, y **en ese orden**: reproducir los generadores tal como están (cierra
+G0-7), luego convertir a la convención firmada, luego reejecutar (cierra G0-1 y
+G0-5). Invertir los dos primeros pasos destruye G0-7 sin remedio.
+
+Firmada la 1, quedan sin firmar las resoluciones 2–7. La 7 (`R` no se
+interpreta) queda además reforzada: la última cláusula del texto firmado ya
+deroga toda cifra de `R` a artefacto de procedencia.
 
 ## 9. Techo de claims tras esta iteración
 
