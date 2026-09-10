@@ -90,6 +90,17 @@ CAL_R001_SHA256 = "0aa224027835be64cca2033f38c3b9b6344af6216259dbe26bb0d6fc0ac55
 
 NOTES = "dev/PAPER3_3P1_SCALE_NOTES.md"
 ROADMAP = "docs/hoja_de_ruta_paper_iii.md"
+BG_GEN = "dev/explore_3p1_bg_reference.py"
+
+# PRODUCER OF RECORD vs LIVE EDITORIAL STATE. The producer hashes above are
+# immutable: they say which file actually produced an artifact, and a later
+# editorial correction never rewrites them. LIVE_SHA256 pins what the files are
+# NOW, so an undeclared edit is caught while the provenance record stays honest.
+BG_GEN_SHA256_AT_ARTIFACTS = "f9a181e2524b7d79dbc64837cb4d31de8d8111870d365de6be844504eb414b93"
+LIVE_SHA256 = {
+    CAL_GEN: "1f4ff9275d067970bc22c0b23315abac3a8e10141dd4e6a8a0e662880c29d467",  # after R004
+    BG_GEN: "f9a181e2524b7d79dbc64837cb4d31de8d8111870d365de6be844504eb414b93",
+}
 
 
 # ---------------------------------------------------------------------------
@@ -97,6 +108,16 @@ ROADMAP = "docs/hoja_de_ruta_paper_iii.md"
 # resolution actually imposes, so a blocker closes on evidence in the files and
 # reopens by itself if that evidence is edited away.
 # ---------------------------------------------------------------------------
+def r004_applied() -> bool:
+    """R004: the three minimal-restricted slope reports may no longer declare a
+    baseline, and the notes must record the channel's suspension."""
+    for ln in open(CAL_GEN).read().splitlines():
+        if "_min" in ln and "loglog_slope" in ln and "expect" in ln:
+            return False
+    notes = open(NOTES).read()
+    return "no pueden citarse como evidencia" in notes and "R004" in notes
+
+
 def r005_applied() -> bool:
     """R005: every slope reported in the notes carries its seed dispersion and
     replica count, and the pooled-error rule and the design floor are stated."""
@@ -222,8 +243,21 @@ def audit_r001_lineage() -> None:
         return
     ok &= check("R001 artifact hashes to the validated step-3 output",
                 sha256(CAL_R001) == CAL_R001_SHA256)
-    ok &= check("the live generator is the recorded producer of the R001 artifact",
-                live_gen == CAL_GEN_SHA256_R001)
+    # The producer of record is immutable. Signed editorial resolutions may move
+    # the live file afterwards; that must be declared, and must never be allowed
+    # to rewrite who produced the artifact.
+    ok &= check("live box generator is exactly the declared editorial state",
+                live_gen == LIVE_SHA256[CAL_GEN])
+    ok &= check("live interval generator is exactly the declared editorial state",
+                sha256(BG_GEN) == LIVE_SHA256[BG_GEN])
+    from explore_3p1_scale_calibration import RHO_SWEEP, SEEDS, T_EDGE, X_EDGE
+    ok &= check("editorial resolutions left the box design untouched (rho sweep, seeds, box edges)",
+                tuple(RHO_SWEEP) == (500.0, 1000.0, 2000.0, 4000.0, 8000.0)
+                and tuple(SEEDS) == (11, 12, 13) and T_EDGE == 1.0 and X_EDGE == 1.0)
+    if live_gen != CAL_GEN_SHA256_R001:
+        print("      NOTE: the live file has moved since the artifact was produced, by signed")
+        print("      editorial resolutions only. The producer of record stays the commit-3230986")
+        print("      file and is never rewritten to the later hash.")
 
     old = json.load(open(CAL))
     new = json.load(open(CAL_R001))
@@ -408,12 +442,16 @@ def audit_baselines_and_uncertainty() -> None:
     print(f"      drift over the sweep:  minimals {drift_min:+.1%}   all elements {drift_all:+.1%}")
     check("<V>_all/rho is flat, confirming the exactly-linear baseline for 'all'", abs(drift_all) < 0.06)
     check("<V>_min/rho is NOT flat, refuting the annotated baseline for 'minimals'", drift_min > 0.15)
-    findings.append(
-        "G0-4 OPEN: dev/explore_3p1_scale_calibration.py:184-186 annotates 'expect 1' and 'expect 1/4' "
-        "for the minimal-restricted slopes. Min(C) is a rho-dependent selection that pushes minimal "
-        f"elements toward the past corner, so <V>_min/rho drifts {drift_min:+.1%} across the sweep. "
-        "Those three rows are measured against a baseline that does not hold."
-    )
+    if r004_applied():
+        print("      G0-4 CLOSED by R004: the three minimal-restricted rows no longer declare a")
+        print("      baseline, and the notes record the channel as suspended -- not reopened.")
+    else:
+        findings.append(
+            "G0-4 OPEN: the minimal-restricted slopes in dev/explore_3p1_scale_calibration.py still "
+            "annotate 'expect 1' and 'expect 1/4'. Min(C) is a rho-dependent selection that pushes "
+            f"minimal elements toward the past corner, so <V>_min/rho drifts {drift_min:+.1%} across "
+            "the sweep. Those three rows are measured against a baseline that does not hold."
+        )
 
     print("\n[F] R = L^4 / V under the two candidate conventions (sensitivity, not a recomputation)")
     agg_lm = [float(np.mean([r["mean_L_min"] for r in cal["rows"] if r["rho"] == rho])) for rho in rhos]

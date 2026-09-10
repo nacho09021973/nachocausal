@@ -184,9 +184,14 @@ def main() -> int:
     print(f"d log <V>_all / d log rho = {loglog_slope(rhos, V_all):.4f}   (expect 1)")
     print(f"d log <L>_all / d log rho = {loglog_slope(rhos, L_all):.4f}   (expect 1/4)")
     print(f"d log <L>_all / d log <V>_all = {loglog_slope(V_all, L_all):.4f}  (expect 1/4)")
-    print(f"d log <V>_min / d log rho = {loglog_slope(rhos, V_min):.4f}   (expect 1)")
-    print(f"d log <L>_min / d log rho = {loglog_slope(rhos, L_min):.4f}   (expect 1/4)")
-    print(f"d log <L>_min / d log <V>_min = {loglog_slope(V_min, L_min):.4f}  (expect 1/4)")
+    # Resolution 004: Min(C) is a rho-DEPENDENT selection, so the expectation
+    # conditioned on being minimal is not linear in rho and these three rows have
+    # NO known baseline. They are descriptive only: they may not be cited as
+    # evidence of departure from the asymptotic law, nor compared with the
+    # unrestricted channel under the same parametrisation (R002, condition C3).
+    print(f"d log <V>_min / d log rho = {loglog_slope(rhos, V_min):.4f}   (baseline unknown, R004)")
+    print(f"d log <L>_min / d log rho = {loglog_slope(rhos, L_min):.4f}   (baseline unknown, R004)")
+    print(f"d log <L>_min / d log <V>_min = {loglog_slope(V_min, L_min):.4f}  (baseline unknown, R004)")
 
     with open("dev/explore_3p1_scale_calibration_results.json", "w") as fh:
         json.dump(

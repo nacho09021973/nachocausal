@@ -542,7 +542,7 @@ Fase 1 debe respetar:
 | G0-1 | `dev/explore_3p1_scale_calibration.py:94` contaba relaciones; la convención firmada son elementos | definición | **CERRADO** 2026-09-10 — convertido (`3230986`) y reejecutado; artefacto R001 verificado, §5.3–5.4 |
 | G0-2 | La pierna intervalar excluye `p` y `q`; la pendiente global va de `0.2835` a `0.2552` según se cuenten | definición | **CERRADO** por R001 |
 | G0-3 | Ninguna pendiente de §3.2 llevaba incertidumbre; el exponente exacto 1 sale `1.0179` | estadística | **CERRADO** 2026-09-10 por [R005](paper_iii_resolucion_005_incertidumbre.md) |
-| G0-4 | «expect 1» y «expect 1/4» son líneas base falsas para las filas de minimales: `<V>_min/rho` deriva `+18.2 %` | línea base | corrección de anotación |
+| G0-4 | «expect 1» y «expect 1/4» eran líneas base falsas para las filas de minimales: `<V>_min/rho` deriva `+18.2 %` | línea base | **CERRADO** 2026-09-10 por [R004](paper_iii_resolucion_004_lineas_base_minimales.md); canal suspendido, no reabierto |
 | G0-5 | `R` es cuártico en `L`: la deriva `x1.73` pasa a `x1.11` **medida** bajo R001 | interpretación | **CERRADO** 2026-09-10 — `median_R_min` medida en el artefacto R001, §5.4; `R` sigue sin interpretar |
 | G0-6 | Notas y hoja de ruta llamaban Poisson a ambas piernas; la intervalar es binomial | documentación | **CERRADO** 2026-09-10 por [R003](paper_iii_resolucion_003_proceso_puntual.md) |
 | G0-7 | Nada certifica JSON contra generador | procedencia | **CERRADO** 2026-09-10 — reproducción byte a byte de los tres artefactos, §5.2 |
@@ -580,7 +580,7 @@ auditor.
    `N = n`) en las notas y en la hoja de ruta. La elección es legítima y además
    deseable — es el canal `N = n` del que ya habla `CLAUDE.md` — pero debe
    decirse.
-4. **Retirar «expect 1» y «expect 1/4» de las filas de minimales** y
+4. **[FIRMADA 2026-09-10 — [R004](paper_iii_resolucion_004_lineas_base_minimales.md)] Retirar «expect 1» y «expect 1/4» de las filas de minimales** y
    reetiquetarlas como magnitudes con línea base desconocida y dependiente de
    `rho`, o retirarlas del contraste de escala.
 5. **[FIRMADA 2026-09-10 — [R005](paper_iii_resolucion_005_incertidumbre.md)] Toda pendiente reportada lleva su dispersión entre semillas**, y toda

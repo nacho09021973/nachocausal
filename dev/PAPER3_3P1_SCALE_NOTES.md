@@ -155,6 +155,16 @@ la tabla de arriba y no debe mezclarse con ella.
 > χ²/dof de 3.26 que baja a 1.64 con `sd` agrupada. Un contraste cuyo resultado
 > dependa de la `sem` de un único punto no es admisible como evidencia.
 
+> **Canal de minimales suspendido (R004, 2026-09-10).** Las tres filas `_min` de
+> arriba **no tienen línea base conocida**: `Min(C)` es una selección dependiente
+> de `rho`, de modo que la esperanza condicionada a ser minimal no es lineal en
+> `rho` — medido, `⟨V⟩_min/rho` deriva +18.2 % mientras `⟨V⟩_all/rho` es plano.
+> Las anotaciones «esperado 1» y «esperado 0.25» quedan retiradas de esas filas.
+> Sus pendientes **no pueden citarse como evidencia** de desviación respecto de la
+> ley asintótica, ni compararse con el canal no restringido bajo la misma
+> parametrización, hasta que el canal disponga de línea base propia derivada y
+> verificada. Es la condición C3 de R002.
+
 Mediana de `R` sobre minimales, **promediada sobre las 3 semillas**, al subir
 `rho` x16:
 
