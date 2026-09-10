@@ -15,9 +15,14 @@ RESOLUTION_001=SIGNED_2026-09-10
 RESOLUTION_002=SIGNED_2026-09-10
 PHASE_1_ROLE=NULL_CALIBRATION
 PHASE_0_STEP_1_REPRODUCTION=PASS_BYTE_EXACT
+PHASE_0_STEP_2_CONVERSION=DONE
+PHASE_0_STEP_3_REEXECUTION=DONE
+ARTIFACT_POLICY=NEW_VERSIONED_ARTIFACT
+G0_1=CLOSED
+G0_5=CLOSED
 G0_7=CLOSED
-BLOCKERS_OPEN=6
-SIGNED_CONVENTION_VIOLATIONS=1
+BLOCKERS_OPEN=4
+R_INTERPRETATION=DEFERRED
 ```
 
 > **Actualización 2026-09-10.** La resolución 1 de §8 está **firmada** y
@@ -396,6 +401,107 @@ Nota: `dev/verify_3p1_phase0_contract.py` sigue listando `G0-7` como abierto en
 su sección `[H]`. Actualizar ese verificador queda fuera del alcance autorizado
 de este paso y requiere instrucción separada.
 
+
+### 5.3 Los dos linajes de la pierna de caja
+
+Política aprobada por el PI el 2026-09-10: **`NEW_VERSIONED_ARTIFACT`**. El
+artefacto histórico **no se sobrescribe**. La reejecución bajo R001 entra como un
+segundo artefacto con nombre, hash y productor propios, y los dos linajes se
+verifican por separado y nunca se mezclan.
+
+El nombre reutiliza la ranura de variante que el repositorio ya tiene —
+`explore_3p1_bg_reference_precision_results.json` convive con
+`explore_3p1_bg_reference_results.json` sin sustituirlo — de modo que `_r001_`
+se lee como hermano y no como reemplazo. No se introduce ninguna política
+general de versionado para el resto del repositorio.
+
+| | HISTORICAL_PRE_R001 | R001_REEXECUTION |
+|---|---|---|
+| Artefacto | `dev/explore_3p1_scale_calibration_results.json` | `dev/explore_3p1_scale_calibration_r001_results.json` |
+| sha256 | `e5cb5fb7ba5c3635b055a4363e5a50e6a8cb3c0a4746f0bf37834135920bcd6f` | `0aa224027835be64cca2033f38c3b9b6344af6216259dbe26bb0d6fc0ac55b68` |
+| Productor | generador pre-R001 `a1b67a37…3561a7b`, commit `0338307` | generador convertido `b5ca8c99…26fb2bb`, commit `3230986` |
+| Convención de `L` | relaciones — maximal `= 0` (derogada) | **elementos — maximal `= 1`** (R001) |
+| Semillas | 11, 12, 13 | 11, 12, 13 (idénticas) |
+| `rho` | 500 … 8 000 | 500 … 8 000 (idénticas) |
+| Proceso · región | Poisson · `[0,1]⁴` | Poisson · `[0,1]⁴` (idénticos) |
+| Propósito | procedencia certificada; respalda §3.2 de la nota exploratoria | medición exacta bajo la convención firmada |
+| Bloqueos que sostiene | `G0-7` | `G0-1`, `G0-5` |
+| Verificador | `dev/verify_3p1_notes_figures.py` (contrato histórico) | `dev/verify_3p1_phase0_contract.py`, sección `[A2]` |
+
+El histórico permanece **presente e inmutable** en el árbol de trabajo: su
+certificación no se traslada a git como sustituto del artefacto. `G0-7` sigue
+apoyándose exclusivamente en el linaje histórico, y `G0-1`/`G0-5` exclusivamente
+en el linaje R001.
+
+### 5.4 Evidencia de la reejecución R001 — paso 3
+
+Corrida única del generador convertido con su configuración cableada, en raíz
+temporal aislada, sin flags añadidos y sin semillas ni densidades nuevas.
+Runtime `python 3.12.3` · `numpy 1.26.4`. `rc=0` en 7 s.
+
+**Cero cambios inesperados.** Clasificación campo a campo, re-verificada por el
+verificador en `[A2]`:
+
+| Clase | Campos | Contenido |
+|---|---|---|
+| `UNCHANGED` | 95 | `N`, `n_minimal`, `mean_V_all`, `mean_V_min`, `seed`, `rho`, `box`, `seeds`, `rho_sweep`, y las dos pendientes de `V` |
+| `EXACTLY_CHANGED_BY_R001` | 45 | `mean_L_all`, `mean_L_min`, `max_L` — desplazamiento de **exactamente +1** |
+| `DERIVED_CHANGE_FROM_R001` | 49 | `median_R_all`, `median_R_min`, `cross_sectional_slope` y las cuatro pendientes de `L` |
+| `UNEXPECTED_CHANGE` | **0** | — |
+
+Las magnitudes independientes de `L` son **idénticas bit a bit** en las quince
+filas, y las dos pendientes de `V` no se mueven (`1.0179`, `1.0634`): la
+realización puntual y la matriz causal subyacentes son las mismas, como debe ser
+cuando lo único que cambió es el caso base del DP.
+
+Pendientes bajo R001:
+
+```text
+d log<L>_all / d log rho        0.2450     (histórica 0.3161)
+d log<L>_all / d log<V>_all     0.2407     (histórica 0.3106)
+d log<L>_min / d log rho        0.2788     (histórica 0.3195)
+d log<L>_min / d log<V>_min     0.2622     (histórica 0.3005)
+```
+
+Coinciden con la restitución aritmética ya auditada en
+[R001 §3.1](paper_iii_resolucion_001_convencion_L.md).
+
+`median_R_min`, media de las tres semillas, **medida**:
+
+| `rho` | histórica | **R001 medida** | `median_R_all` R001 |
+|---|---|---|---|
+| 500 | 3.449 | **7.699** | 7.033 |
+| 1 000 | 3.790 | **7.377** | 6.263 |
+| 2 000 | 4.792 | **8.092** | 6.506 |
+| 4 000 | 5.248 | **8.189** | 6.092 |
+| 8 000 | 5.975 | **8.515** | 6.214 |
+
+Deriva histórica `×1.73`; deriva R001 medida `≈ ×1.11`.
+
+> **Esto es una medición de sensibilidad a la convención, y nada más.** No es un
+> claim sobre universalidad, estabilización ni geometría de `R`. El artefacto
+> histórico sólo permitía una *estimación* de esta cifra, porque guarda la
+> mediana de `L⁴/V` y no las `L` por elemento; la reejecución es exactamente lo
+> que la resuelve. `R` sigue **sin interpretar**: rige R7, sin firmar. Y el canal
+> de minimales no puede usarse como contraste de escala mientras `G0-4` siga
+> abierto, de modo que las dos filas `_min` de arriba se registran, no se leen.
+
+**Cierres.** No se declaran: los comprueba el verificador contra el artefacto
+R001, y caen si la evidencia cambia.
+
+```text
+G0-1 = CLOSED   la cadena generador convertido -> artefacto R001 se verifica por hash,
+                los invariantes independientes de L coinciden bit a bit, y no hay
+                ningún cambio inesperado
+G0-5 = CLOSED   median_R_min está MEDIDA en las quince filas del artefacto R001,
+                no estimada
+G0-7 = CLOSED   intacto, sobre el linaje histórico, que no se ha tocado
+```
+
+```text
+GATE_0 = BLOCKED   (4 abiertos: G0-3, G0-4, G0-6, G0-8)
+```
+
 ---
 
 ## 6. Separación entre el límite conocido y la corrección que se quiere medir
@@ -433,11 +539,11 @@ Fase 1 debe respetar:
 
 | id | Bloqueo | Tipo | Cierra en |
 |---|---|---|---|
-| G0-1 | `dev/explore_3p1_scale_calibration.py:94` cuenta relaciones; el sellado y la pierna intervalar cuentan elementos | definición | **decidido** por R001; violación registrada, pendiente de reproducir → convertir → reejecutar |
+| G0-1 | `dev/explore_3p1_scale_calibration.py:94` contaba relaciones; la convención firmada son elementos | definición | **CERRADO** 2026-09-10 — convertido (`3230986`) y reejecutado; artefacto R001 verificado, §5.3–5.4 |
 | G0-2 | La pierna intervalar excluye `p` y `q`; la pendiente global va de `0.2835` a `0.2552` según se cuenten | definición | **CERRADO** por R001 |
 | G0-3 | Ninguna pendiente de §3.2 lleva incertidumbre; el exponente exacto 1 sale `1.0179` | estadística | redacción + réplicas (Fase 1) |
 | G0-4 | «expect 1» y «expect 1/4» son líneas base falsas para las filas de minimales: `<V>_min/rho` deriva `+18.2 %` | línea base | corrección de anotación |
-| G0-5 | `R` es cuártico en `L`: la deriva `x1.73` pasa a `~x1.10` bajo la otra convención | interpretación | cifras **derogadas** a procedencia por R001; medición pendiente de reejecución |
+| G0-5 | `R` es cuártico en `L`: la deriva `x1.73` pasa a `x1.11` **medida** bajo R001 | interpretación | **CERRADO** 2026-09-10 — `median_R_min` medida en el artefacto R001, §5.4; `R` sigue sin interpretar |
 | G0-6 | Notas y hoja de ruta llaman Poisson a ambas piernas; la intervalar es binomial | documentación | redacción |
 | G0-7 | Nada certifica JSON contra generador | procedencia | **CERRADO** 2026-09-10 — reproducción byte a byte de los tres artefactos, §5.2 |
 | G0-8 | `dev/explore_3p1_bg_reference.py:1` y `dev/explore_3p1_scale_calibration.py:1` siguen diciendo «Paper II», lo que §0 de las notas prohíbe explícitamente | documentación | redacción |
@@ -445,7 +551,7 @@ Fase 1 debe respetar:
 | G0-10 | Bajo R001 toda pendiente del canal no restringido cae sobre 1/4 dentro del suelo de ruido | alcance | **CERRADO** por [R002](paper_iii_resolucion_002_reescopado_fase1.md): Fase 1 reescopada como calibración nula |
 
 ```text
-GATE_0 = BLOCKED   (6 abiertos tras cerrar G0-7; 1 violación de convención firmada pendiente)
+GATE_0 = BLOCKED   (4 abiertos tras cerrar G0-1, G0-5 y G0-7: G0-3, G0-4, G0-6, G0-8)
 ```
 
 La hoja de ruta lo prescribe: «Si hay ambigüedad en el conteo de extremos, en

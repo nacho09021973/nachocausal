@@ -47,6 +47,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import sys
 from math import e, gamma
@@ -61,6 +62,18 @@ BASE = "dev/explore_3p1_bg_reference_results.json"
 CAL = "dev/explore_3p1_scale_calibration_results.json"
 CAL_GEN = "dev/explore_3p1_scale_calibration.py"
 
+# ---------------------------------------------------------------------------
+# TWO LINEAGES. The box leg exists twice, on purpose, and they are never mixed.
+#
+#   HISTORICAL_PRE_R001   CAL, produced by CAL_GEN_SHA256_HISTORICAL.
+#                         Immutable. Carries G0-7 and backs sec. 3.2 of the
+#                         exploratory notes via dev/verify_3p1_notes_figures.py.
+#   R001_REEXECUTION      CAL_R001, produced by CAL_GEN_SHA256_R001 (commit
+#                         3230986). Same seeds, same rho, same design; the only
+#                         scientific difference is R001 for L. Carries G0-1/G0-5.
+# ---------------------------------------------------------------------------
+CAL_R001 = "dev/explore_3p1_scale_calibration_r001_results.json"
+
 # Certified byte-for-byte against their generators in step 1 of the mandatory
 # sequence (2026-09-10, contract sec. 5.2). G0-7 is closed only while these hold.
 ARTIFACT_SHA256 = {
@@ -68,10 +81,12 @@ ARTIFACT_SHA256 = {
     BASE: "5dbb04bc7b1b3f4c6e32b621ef3f10462937d5a4bf1f438283b6916e62167bc6",
     CAL: "e5cb5fb7ba5c3635b055a4363e5a50e6a8cb3c0a4746f0bf37834135920bcd6f",
 }
-# The box generator AS IT STOOD when it produced CAL, i.e. before step 2 applied
-# R001. A live hash differing from this is the signal that the committed box
-# evidence predates the conversion.
-CAL_GEN_SHA256_AT_ARTIFACT = "a1b67a37a2eed73bd83000d48d4366c643dca505d857914ffd045dab23561a7b"
+# The box generator AS IT STOOD when it produced CAL: pre-conversion. Recorded by
+# the step-1 byte-exact reproduction; it is NOT the live file any more.
+CAL_GEN_SHA256_HISTORICAL = "a1b67a37a2eed73bd83000d48d4366c643dca505d857914ffd045dab23561a7b"
+# The converted generator (step 2, commit 3230986) that produced CAL_R001.
+CAL_GEN_SHA256_R001 = "b5ca8c99021aeed7541e587fbae44d2a76c1dc6cb26589140d125cbd426fb2bb"
+CAL_R001_SHA256 = "0aa224027835be64cca2033f38c3b9b6344af6216259dbe26bb0d6fc0ac55b68"
 
 
 def sha256(path: str) -> str:
@@ -85,6 +100,7 @@ AUDIT_ACCEPT_SEED = 999
 failures: list[str] = []
 findings: list[str] = []
 pending: list[str] = []  # signed work done in code but not yet re-run (G0-1, G0-5)
+R001_VALIDATED = False  # set by audit_r001_lineage(); gates the G0-1/G0-5 closures
 
 
 def check(label: str, ok: bool) -> bool:
@@ -145,6 +161,116 @@ def audit_internal_consistency() -> None:
 
 
 # ---------------------------------------------------------------------------
+def audit_r001_lineage() -> None:
+    """The two box-leg lineages, checked separately and never merged.
+
+    Closing G0-1 and G0-5 is not asserted here: it is earned, by a chain that
+    must hold end to end -- the converted generator is the live file, it is the
+    recorded producer of the R001 artifact, that artifact still hashes to what
+    was validated, the L-independent quantities are bit-identical to the
+    historical run, the L-dependent ones moved exactly as R001 requires, and
+    nothing else moved at all.
+    """
+    global R001_VALIDATED
+    print("\n[A2] box-leg lineages: HISTORICAL_PRE_R001 and R001_REEXECUTION")
+
+    live_gen = sha256(CAL_GEN)
+    print(f"      historical artifact  {CAL.split('/')[-1]:52s} {sha256(CAL)[:16]}")
+    print(f"        its producer       (pre-R001, recorded in step 1)             {CAL_GEN_SHA256_HISTORICAL[:16]}")
+    print(f"      R001 artifact        {CAL_R001.split('/')[-1]:52s} "
+          f"{sha256(CAL_R001)[:16] if os.path.exists(CAL_R001) else '<MISSING>'}")
+    print(f"        its producer       (converted, commit 3230986)                {CAL_GEN_SHA256_R001[:16]}")
+    print(f"      live generator                                                    {live_gen[:16]}")
+
+    ok = check("historical box artifact still hashes to the G0-7-certified value",
+               sha256(CAL) == ARTIFACT_SHA256[CAL])
+    ok &= check("the two lineages have genuinely different producers",
+                CAL_GEN_SHA256_HISTORICAL != CAL_GEN_SHA256_R001)
+    if not os.path.exists(CAL_R001):
+        check("R001 artifact is present", False)
+        return
+    ok &= check("R001 artifact hashes to the validated step-3 output",
+                sha256(CAL_R001) == CAL_R001_SHA256)
+    ok &= check("the live generator is the recorded producer of the R001 artifact",
+                live_gen == CAL_GEN_SHA256_R001)
+
+    old = json.load(open(CAL))
+    new = json.load(open(CAL_R001))
+    ok &= check("R001 run kept the historical design: same seeds, same rho, same box",
+                old["seeds"] == new["seeds"] and old["rho_sweep"] == new["rho_sweep"]
+                and old["box"] == new["box"] and len(old["rows"]) == len(new["rows"]))
+
+    def bits(a, b):
+        if isinstance(a, float) and isinstance(b, float):
+            return a.hex() == b.hex()
+        return type(a) is type(b) and a == b
+
+    # L-independent: the point realisation and everything derived from V alone.
+    INVARIANT = ("N", "n_minimal", "mean_V_all", "mean_V_min")
+    inv = all(bits(o[k], n[k]) for o, n in zip(old["rows"], new["rows"]) for k in INVARIANT)
+    inv &= all(bits(old["slopes"][k], new["slopes"][k])
+               for k in ("logV_all_vs_logrho", "logV_min_vs_logrho"))
+    ok &= check("L-independent quantities are bit-identical to the historical run "
+                "(same point realisation, same causal matrix)", inv)
+
+    # The R001 signature: every element gains its own base case, so these shift
+    # by exactly one. Anything else moving is an unexpected change.
+    PLUS_ONE = ("mean_L_all", "mean_L_min", "max_L")
+    DERIVED = ("median_R_all", "median_R_min", "cross_sectional_slope")
+    shifted = all(abs((n[k] - o[k]) - 1.0) < 1e-12
+                  for o, n in zip(old["rows"], new["rows"]) for k in PLUS_ONE)
+    ok &= check("R001 signature: mean_L_all, mean_L_min and max_L shift by exactly +1",
+                shifted)
+
+    unexpected = []
+    for o, n in zip(old["rows"], new["rows"]):
+        for k in sorted(set(o) | set(n)):
+            if k not in o or k not in n:
+                unexpected.append(f"rows.{k}")
+            elif k in INVARIANT or k in ("seed", "rho"):
+                if not bits(o[k], n[k]):
+                    unexpected.append(f"rows.{k}")
+            elif k in PLUS_ONE or k in DERIVED:
+                continue
+            else:
+                unexpected.append(f"rows.{k} (unclassified)")
+    for k in sorted(set(old["slopes"]) | set(new["slopes"])):
+        moved = not bits(old["slopes"][k], new["slopes"][k])
+        # Only the slopes of V alone are L-independent. "logL_vs_logV_all" is an
+        # L slope despite the substring, so match the prefix, not the substring.
+        if moved and k.startswith("logV"):
+            unexpected.append(f"slopes.{k}")
+        if not moved and k.startswith("logL"):
+            unexpected.append(f"slopes.{k} (an L slope that did not move)")
+    ok &= check(f"no unexpected change: every field is invariant, +1, or L-derived "
+                f"({len(unexpected)} unexpected)", not unexpected)
+    if unexpected:
+        print(f"      FIRST DIVERGENCE: {unexpected[0]}")
+
+    # G0-5 needs R measured, not estimated. The historical artifact could only
+    # ever give an estimate, because it stores median(L^4/V) and not the L.
+    measured = all(isinstance(n.get("median_R_min"), float) and np.isfinite(n["median_R_min"])
+                   for n in new["rows"])
+    ok &= check("R001 artifact carries a MEASURED median_R_min in all 15 rows", measured)
+
+    R001_VALIDATED = bool(ok)
+    print(f"\n      {'slope':<26}{'historical':>12}{'R001':>10}")
+    for k in ("logL_all_vs_logrho", "logL_vs_logV_all", "logL_min_vs_logrho", "logL_vs_logV_min"):
+        print(f"      {k:<26}{old['slopes'][k]:>12.4f}{new['slopes'][k]:>10.4f}")
+    print(f"\n      {'rho':>8}{'median_R_min hist':>20}{'median_R_min R001':>20}{'median_R_all R001':>20}")
+    for rho in new["rho_sweep"]:
+        mo = float(np.mean([r["median_R_min"] for r in old["rows"] if r["rho"] == rho]))
+        mn = float(np.mean([r["median_R_min"] for r in new["rows"] if r["rho"] == rho]))
+        ma = float(np.mean([r["median_R_all"] for r in new["rows"] if r["rho"] == rho]))
+        print(f"      {rho:8.0f}{mo:20.3f}{mn:20.3f}{ma:20.3f}")
+    d_o = ([float(np.mean([r["median_R_min"] for r in old["rows"] if r["rho"] == x])) for x in new["rho_sweep"]])
+    d_n = ([float(np.mean([r["median_R_min"] for r in new["rows"] if r["rho"] == x])) for x in new["rho_sweep"]])
+    print(f"      median_R_min drift: historical x{d_o[-1]/d_o[0]:.2f}  ->  R001 measured x{d_n[-1]/d_n[0]:.2f}")
+    print("      Convention-sensitivity measurement only. R is NOT interpreted here: no claim of")
+    print("      stabilisation, universality or geometry, and the minimal channel stays out while G0-4 is open.")
+
+
+# ---------------------------------------------------------------------------
 def audit_chain_conventions() -> None:
     print("\n[B] chain-length convention: three implementations on ONE explicit 3-chain")
     from explore_3p1_bg_reference import longest_chain_endpoint_to_endpoint
@@ -174,26 +300,21 @@ def audit_chain_conventions() -> None:
     check("box leg returns the R001 semantics [3, 2, 1] on the 3-chain",
           [int(v) for v in box_L] == [3, 2, 1])
 
-    # Code conforms; the committed evidence does not yet. Detected by hash.
-    live = sha256(CAL_GEN)
-    stale = live != CAL_GEN_SHA256_AT_ARTIFACT
-    print(f"\n      box generator live sha256      {live}")
-    print(f"      produced the committed JSON    {CAL_GEN_SHA256_AT_ARTIFACT}")
-    print(f"      R001 conformance of the code : YES        "
-          f"evidence regenerated under R001: {'NOT YET' if stale else 'YES'}")
-    if stale:
-        # G0-1 remains an OPEN BLOCKER: the decision is applied in code but the
-        # evidence has not been regenerated. It is counted among the blockers,
-        # and `pending` only records what kind of debt it is.
+    # Code conformance is settled here; whether the EVIDENCE exists under R001 is
+    # settled in [A2], and G0-1 follows that, not this.
+    print(f"\n      R001 conformance of the code : YES        "
+          f"evidence regenerated under R001: {'YES' if R001_VALIDATED else 'NOT YET'}")
+    if R001_VALIDATED:
+        print(f"      G0-1 CLOSED: the R001 lineage certified in [A2] is the re-executed evidence.")
+    else:
         findings.append(
             "G0-1 OPEN (pending re-execution): the box generator implements R001 (step 2, commit "
-            "3230986) but dev/explore_3p1_scale_calibration_results.json was produced by the "
-            "pre-conversion generator, so every L, max_L and R it holds is still on the superseded "
-            "convention. Step 3 re-executes the box leg; until then the evidence is stale, not wrong "
-            "code."
+            "3230986) but no certified R001 artifact is present, so every L, max_L and R on record "
+            "is still on the superseded convention. Step 3 re-executes the box leg; until then the "
+            "evidence is stale, not wrong code."
         )
         pending.append(
-            "box leg: R001 applied to the code, committed evidence not yet regenerated -> G0-1, G0-5"
+            "box leg: R001 applied to the code, evidence not yet regenerated -> G0-1, G0-5"
         )
 
     print("\n[C] endpoint count: SUPERSEDED interior-only vs SIGNED endpoint-inclusive")
@@ -271,12 +392,16 @@ def audit_baselines_and_uncertainty() -> None:
     r1 = float(np.mean([r["median_R_min"] for r in cal["rows"] if r["rho"] == rhos[-1]]))
     print(f"      reported drift  x{r1/r0:.2f}      first-order estimate under the vertex convention  x{scaled[-1]/scaled[0]:.2f}")
     check("the reported R drift is not convention-invariant", abs(r1 / r0 - scaled[-1] / scaled[0]) > 0.3)
-    findings.append(
-        f"G0-5 OPEN: R is quartic in L, so the superseded off-by-one rescales it by up to "
-        f"{((agg_lm[0]+1)/agg_lm[0])**4:.2f}x at the smallest rho. The headline 'R drifts by x{r1/r0:.2f}' "
-        f"becomes roughly x{scaled[-1]/scaled[0]:.2f} under R001. The code is converted; the exact "
-        "curve still requires re-running the box leg (step 3)."
-    )
+    if R001_VALIDATED:
+        print("      G0-5 CLOSED: median_R_min is MEASURED under R001 in the [A2] lineage, so the")
+        print("      first-order estimate above is superseded by an exact figure. R stays uninterpreted.")
+    else:
+        findings.append(
+            f"G0-5 OPEN: R is quartic in L, so the superseded off-by-one rescales it by up to "
+            f"{((agg_lm[0]+1)/agg_lm[0])**4:.2f}x at the smallest rho. The headline 'R drifts by "
+            f"x{r1/r0:.2f}' becomes roughly x{scaled[-1]/scaled[0]:.2f} under R001. The code is "
+            "converted; the exact curve still requires re-running the box leg (step 3)."
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -539,6 +664,7 @@ def audit_provenance() -> None:
     print("      It certifies notes-vs-JSON. JSON-vs-GENERATOR was certified separately, in step 1")
     print("      of the mandatory sequence: all three artifacts reproduced BYTE-FOR-BYTE from the")
     print("      unedited generators (2026-09-10, contract sec. 5.2). G0-7 is CLOSED.")
+    print("      G0-7 rides on the HISTORICAL lineage alone; the R001 artifact is not part of it.")
     print("      That closure holds only while the artifacts are the ones certified, so re-check:")
     intact = True
     for path, want in ARTIFACT_SHA256.items():
@@ -564,6 +690,7 @@ def main() -> int:
     print("PAPER III — PHASE 0 GATE CONTRACT VERIFIER (read-only; no sweep, no new observable)")
     print("=" * 92)
     audit_internal_consistency()
+    audit_r001_lineage()
     audit_chain_conventions()
     audit_baselines_and_uncertainty()
     audit_point_process()
