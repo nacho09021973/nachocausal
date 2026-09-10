@@ -15,11 +15,19 @@ the chain-length convention is no longer an open question but an ENFORCED INVARI
     L = cardinality of the maximal chain, i.e. its NUMBER OF ELEMENTS.
     For a causal interval bounded by endpoints p, q, BOTH endpoints count.
 
-A file that violates it is a violation, not a finding. Exit codes:
-    0  structural checks pass and no signed-convention debt outstanding
+Step 2 of the mandatory sequence applied it to the box leg (commit 3230986), so
+the CODE now conforms and section [B] asserts the full [3, 2, 1] semantics. What
+is still outstanding is the EVIDENCE: the committed box artifact was produced by
+the pre-conversion generator, so G0-1 and G0-5 stay open until step 3 re-runs it.
+That is a pending re-execution, not a breach of the signed convention, and the
+verifier detects it by hash rather than by a hardcoded flag.
+
+Exit codes (code 2 was previously reserved for signed-convention debt; with the
+conversion done there is no such debt, and the honest distinction left to draw is
+between a broken script and a clean script whose gate is still blocked):
+    0  structural checks pass and GATE_0 has no open blocker
     1  a structural check failed (something is genuinely broken)
-    2  structural checks pass, signed-convention debt outstanding (expected
-       until the Phase 1 box-leg re-execution)
+    2  structural checks pass but GATE_0 is blocked by open blockers
 
 RESOLUTION 2 (2026-09-10, docs/paper_iii_resolucion_002_reescopado_fase1.md)
 rescoped Phase 1 as a NULL CALIBRATION. Its three operative rules are checked
@@ -30,13 +38,16 @@ in section [K]:
     C3  minimal-restricted rows are excluded from the primary calibration
 
 Run:  python3 dev/verify_3p1_phase0_contract.py
-Exit: 0 iff every structural check passes. Findings are reported either way;
-      an open finding is a Gate-0 blocker, not a script failure.
+Findings are reported whatever the exit code; an open finding is a Gate-0
+blocker, not a script failure. Blockers are counted by distinct G0-x id, never
+by how many files or occurrences a single id touches.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
+import re
 import sys
 from math import e, gamma
 
@@ -48,6 +59,23 @@ sys.path.insert(0, ".")
 PREC = "dev/explore_3p1_bg_reference_precision_results.json"
 BASE = "dev/explore_3p1_bg_reference_results.json"
 CAL = "dev/explore_3p1_scale_calibration_results.json"
+CAL_GEN = "dev/explore_3p1_scale_calibration.py"
+
+# Certified byte-for-byte against their generators in step 1 of the mandatory
+# sequence (2026-09-10, contract sec. 5.2). G0-7 is closed only while these hold.
+ARTIFACT_SHA256 = {
+    PREC: "eb101d3f63ac6a3625f18557f6fcb8ab08e45935e7f67ef34963ec37379491e7",
+    BASE: "5dbb04bc7b1b3f4c6e32b621ef3f10462937d5a4bf1f438283b6916e62167bc6",
+    CAL: "e5cb5fb7ba5c3635b055a4363e5a50e6a8cb3c0a4746f0bf37834135920bcd6f",
+}
+# The box generator AS IT STOOD when it produced CAL, i.e. before step 2 applied
+# R001. A live hash differing from this is the signal that the committed box
+# evidence predates the conversion.
+CAL_GEN_SHA256_AT_ARTIFACT = "a1b67a37a2eed73bd83000d48d4366c643dca505d857914ffd045dab23561a7b"
+
+
+def sha256(path: str) -> str:
+    return hashlib.sha256(open(path, "rb").read()).hexdigest()
 
 # Declared audit seeds. Used ONLY by the generator-measure audit (G0-C), never
 # by any leg that produces a reported figure.
@@ -56,7 +84,7 @@ AUDIT_ACCEPT_SEED = 999
 
 failures: list[str] = []
 findings: list[str] = []
-violations: list[str] = []  # breaches of the SIGNED convention (Resolution 1)
+pending: list[str] = []  # signed work done in code but not yet re-run (G0-1, G0-5)
 
 
 def check(label: str, ok: bool) -> bool:
@@ -136,18 +164,36 @@ def audit_chain_conventions() -> None:
 
     print(f"      sealed   nachocausal/estimator.py       Lfut = {list(map(int, sealed_L))}  -> maximal element = 1  (VERTICES)")
     print(f"      interval dev/explore_3p1_bg_reference   L    = {interval_L}              -> 3-chain = 3          (VERTICES)")
-    print(f"      box      dev/explore_3p1_scale_calib.   L    = {list(map(int, box_L))}  -> maximal element = 0  (EDGES)")
+    print(f"      box      dev/explore_3p1_scale_calib.   L    = {list(map(int, box_L))}  -> maximal element = 1  (ELEMENTS)")
 
-    check("sealed estimator uses the vertex convention (maximal element -> 1)", int(sealed_L[2]) == 1)
-    check("interval leg agrees with the sealed vertex convention", interval_L == 3)
-    ok = int(box_L[2]) == 0
-    check("box leg still counts RELATIONS (detected, not tolerated)", ok)
-    if ok:
-        violations.append(
-            "G0-1 VIOLATION of Resolution 1: dev/explore_3p1_scale_calibration.py:94 counts "
-            "RELATIONS. The signed convention is ELEMENTS. The generator must NOT be edited "
-            "before the Phase 1 provenance re-run (see [H]); the fix and the re-execution are "
-            "one Phase 1 step, in that order."
+    # R001: the whole vector, not one entry, so a base-case regression anywhere
+    # along the chain is caught rather than only at the maximal element.
+    check("sealed estimator returns the R001 semantics [3, 2, 1] on the 3-chain",
+          [int(v) for v in sealed_L] == [3, 2, 1])
+    check("interval leg agrees with R001 (3-chain -> 3)", interval_L == 3)
+    check("box leg returns the R001 semantics [3, 2, 1] on the 3-chain",
+          [int(v) for v in box_L] == [3, 2, 1])
+
+    # Code conforms; the committed evidence does not yet. Detected by hash.
+    live = sha256(CAL_GEN)
+    stale = live != CAL_GEN_SHA256_AT_ARTIFACT
+    print(f"\n      box generator live sha256      {live}")
+    print(f"      produced the committed JSON    {CAL_GEN_SHA256_AT_ARTIFACT}")
+    print(f"      R001 conformance of the code : YES        "
+          f"evidence regenerated under R001: {'NOT YET' if stale else 'YES'}")
+    if stale:
+        # G0-1 remains an OPEN BLOCKER: the decision is applied in code but the
+        # evidence has not been regenerated. It is counted among the blockers,
+        # and `pending` only records what kind of debt it is.
+        findings.append(
+            "G0-1 OPEN (pending re-execution): the box generator implements R001 (step 2, commit "
+            "3230986) but dev/explore_3p1_scale_calibration_results.json was produced by the "
+            "pre-conversion generator, so every L, max_L and R it holds is still on the superseded "
+            "convention. Step 3 re-executes the box leg; until then the evidence is stale, not wrong "
+            "code."
+        )
+        pending.append(
+            "box leg: R001 applied to the code, committed evidence not yet regenerated -> G0-1, G0-5"
         )
 
     print("\n[C] endpoint count: SUPERSEDED interior-only vs SIGNED endpoint-inclusive")
@@ -226,10 +272,10 @@ def audit_baselines_and_uncertainty() -> None:
     print(f"      reported drift  x{r1/r0:.2f}      first-order estimate under the vertex convention  x{scaled[-1]/scaled[0]:.2f}")
     check("the reported R drift is not convention-invariant", abs(r1 / r0 - scaled[-1] / scaled[0]) > 0.3)
     findings.append(
-        f"G0-5 OPEN: R is quartic in L, so the off-by-one of G0-1 rescales it by up to "
+        f"G0-5 OPEN: R is quartic in L, so the superseded off-by-one rescales it by up to "
         f"{((agg_lm[0]+1)/agg_lm[0])**4:.2f}x at the smallest rho. The headline 'R drifts by x{r1/r0:.2f}' "
-        f"becomes roughly x{scaled[-1]/scaled[0]:.2f} once the sealed vertex convention is used. "
-        "The exact curve requires re-running the box leg, which is Phase 1 work."
+        f"becomes roughly x{scaled[-1]/scaled[0]:.2f} under R001. The code is converted; the exact "
+        "curve still requires re-running the box leg (step 3)."
     )
 
 
@@ -490,21 +536,26 @@ def audit_provenance() -> None:
     src = open("dev/verify_3p1_notes_figures.py").read()
     check("dev/verify_3p1_notes_figures.py runs no sweep (it only reads the JSONs)",
           "sprinkle" not in src and "import explore" not in src)
-    print("      It certifies notes-vs-JSON. Nothing in the repository certifies JSON-vs-GENERATOR:")
-    print("      the committed results are not re-executed and their producing commit is not recorded.")
-    findings.append(
-        "G0-7 OPEN: no artifact records that the committed JSONs are the output of the committed "
-        "generators. Closing it requires one deterministic re-execution, which the roadmap assigns "
-        "to Phase 1 ('reproducir primero los artefactos existentes')."
-    )
-    print("      SEQUENCING GUARD: G0-7 can only ever be closed by re-running the generators AS THEY")
-    print("      STAND against the committed JSONs. Editing a generator to apply Resolution 1 before")
-    print("      that run destroys the check permanently. Order is: reproduce, then convert, then re-run.")
-    for path in ("dev/explore_3p1_bg_reference.py", "dev/explore_3p1_scale_calibration.py"):
-        head = open(path).readline()
-        if "Paper II" in head:
-            findings.append(f"G0-8 OPEN (documentation): {path}:1 still reads 'Paper II', which "
-                            "dev/PAPER3_3P1_SCALE_NOTES.md sec.0 explicitly forbids for 3+1D material.")
+    print("      It certifies notes-vs-JSON. JSON-vs-GENERATOR was certified separately, in step 1")
+    print("      of the mandatory sequence: all three artifacts reproduced BYTE-FOR-BYTE from the")
+    print("      unedited generators (2026-09-10, contract sec. 5.2). G0-7 is CLOSED.")
+    print("      That closure holds only while the artifacts are the ones certified, so re-check:")
+    intact = True
+    for path, want in ARTIFACT_SHA256.items():
+        got = sha256(path)
+        ok = got == want
+        intact &= ok
+        print(f"        {'OK  ' if ok else 'FAIL'}  {path.split('/')[-1]:48s} {got[:16]}")
+    check("G0-7 stays closed: the three certified artifacts are unchanged", bool(intact))
+
+    stale_heads = [p for p in ("dev/explore_3p1_bg_reference.py", "dev/explore_3p1_scale_calibration.py")
+                   if "Paper II" in open(p).readline()]
+    if stale_heads:
+        # One blocker id, however many files carry it.
+        findings.append("G0-8 OPEN (documentation): line 1 still reads 'Paper II' in "
+                        + " and ".join(stale_heads)
+                        + ", which dev/PAPER3_3P1_SCALE_NOTES.md sec.0 explicitly forbids for 3+1D "
+                        "material.")
     check("both generator headers were checked for the Paper II/III mis-assignment", True)
 
 
@@ -522,24 +573,28 @@ def main() -> int:
     audit_provenance()
 
     print("\n" + "=" * 92)
+    # Blockers are counted by distinct G0-x id. A single id that shows up in two
+    # files (G0-8 did) is one blocker, not two.
+    open_ids = sorted({m.group(0) for f in findings if (m := re.match(r"G0-\d+", f))},
+                      key=lambda s: int(s.split("-")[1]))
+
     print(f"STRUCTURAL CHECKS:  {'ALL PASS' if not failures else 'FAILURES: ' + str(failures)}")
-    print(f"SIGNED-CONVENTION:  {len(violations)} violation(s) of Resolution 1")
-    for v in violations:
-        print("\n  ! " + v.replace(". ", ".\n    ", 2))
-    print(f"\nGATE_0 FINDINGS:    {len(findings)} open")
+    print(f"R001 CONVENTION:    code conforms; {len(pending)} item(s) pending re-execution")
+    for v in pending:
+        print("\n  ~ " + v.replace(". ", ".\n    ", 2))
+    print(f"\nGATE_0 BLOCKERS:    {len(open_ids)} open  ->  {', '.join(open_ids) if open_ids else 'none'}")
     for f in findings:
         print("\n  - " + f.replace(". ", ".\n    ", 2))
     print("\n" + "=" * 92)
-    print("GATE_0 = " + ("BLOCKED" if findings else "PASS")
+    print("GATE_0 = " + ("BLOCKED" if open_ids else "PASS")
           + "   (roadmap: 'Si hay ambiguedad en el conteo de extremos, en la normalizacion")
     print("                    o en la procedencia de una cifra, la fase no avanza.')")
-    if violations:
-        print("EXPECTED_UNTIL=PHASE_1_BOX_LEG_REEXECUTION   (the debt is signed work not yet done,")
-        print("                                             not a regression)")
+    if pending:
+        print("PENDING=STEP_3_BOX_LEG_REEXECUTION   (signed work not yet re-run; not a regression)")
     print("=" * 92)
     if failures:
         return 1
-    return 2 if violations else 0
+    return 2 if open_ids else 0
 
 
 if __name__ == "__main__":
