@@ -12,7 +12,9 @@ NEW_OBSERVABLES=NONE_DEFINED
 SWEEPS_EXECUTED=NONE
 HORIZON_CLAIM=NONE
 RESOLUTION_001=SIGNED_2026-09-10
-BLOCKERS_OPEN=8
+RESOLUTION_002=SIGNED_2026-09-10
+PHASE_1_ROLE=NULL_CALIBRATION
+BLOCKERS_OPEN=7
 SIGNED_CONVENTION_VIOLATIONS=1
 ```
 
@@ -349,10 +351,10 @@ Fase 1 debe respetar:
 | G0-7 | Nada certifica JSON contra generador | procedencia | reejecución (Fase 1) |
 | G0-8 | `dev/explore_3p1_bg_reference.py:1` y `dev/explore_3p1_scale_calibration.py:1` siguen diciendo «Paper II», lo que §0 de las notas prohíbe explícitamente | documentación | redacción |
 | G0-9 | 3 de 10 filas violan la cota inferior rigurosa de `m_4` bajo la normalización reportada; 0 de 10 la violan contando extremos | decidió G0-2 | **ADJUDICADO** por R001 |
-| G0-10 | Bajo R001 toda pendiente del canal no restringido cae sobre 1/4 dentro del suelo de ruido (0.2552, 0.2516, 0.2450 contra un suelo de 0.0179). La premisa de la pregunta de la Fase 1 deja de estar sostenida | alcance | **re-escopado de la Fase 1 — decisión del PI** |
+| G0-10 | Bajo R001 toda pendiente del canal no restringido cae sobre 1/4 dentro del suelo de ruido | alcance | **CERRADO** por [R002](paper_iii_resolucion_002_reescopado_fase1.md): Fase 1 reescopada como calibración nula |
 
 ```text
-GATE_0 = BLOCKED   (8 abiertos; 1 violación de convención firmada pendiente)
+GATE_0 = BLOCKED   (7 abiertos; 1 violación de convención firmada pendiente)
 ```
 
 La hoja de ruta lo prescribe: «Si hay ambigüedad en el conteo de extremos, en
@@ -398,7 +400,9 @@ paso, y **en ese orden**: reproducir los generadores tal como están (cierra
 G0-7), luego convertir a la convención firmada, luego reejecutar (cierra G0-1 y
 G0-5). Invertir los dos primeros pasos destruye G0-7 sin remedio.
 
-Firmada la 1, quedan sin firmar las resoluciones 2–7. La 7 (`R` no se
+Firmadas la 1 y la 2 (esta última resolviendo `G0-10`), quedan sin firmar las
+resoluciones 2–7 de esta lista, cuya **redacción exacta para firma** está en
+[Resoluciones pendientes](paper_iii_resoluciones_pendientes.md). La 7 (`R` no se
 interpreta) queda además reforzada: la última cláusula del texto firmado ya
 deroga toda cifra de `R` a artefacto de procedencia.
 

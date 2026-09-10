@@ -32,8 +32,13 @@ Resuelve el bloqueo `G0-2` y adjudica `G0-9` de
 L(cadena)      = |cadena|                      (elementos, no relaciones)
 L(elem. maximal) = 1                            (no 0)
 L(intervalo p,q) = 2 + #{elementos interiores}  (extremos incluidos)
-N              = cardinalidad interior          (sin cambio; los extremos no son puntos sembrados)
 ```
+
+El texto firmado **no se pronuncia sobre `N`**. Toda la restitución de §3 asume
+`N` = cardinalidad interior, que es lo que los artefactos ya usan, pero esa
+convención es una **propuesta separada y sin firmar** (resolución 2, redacción
+exacta en [Resoluciones pendientes](paper_iii_resoluciones_pendientes.md)). Si
+`N` cambiara, las cifras de §3 cambiarían con ella.
 
 La convención coincide con la del estimador sellado
 (`nachocausal/estimator.py:47`, `Lfut[e] = 1 + max(...)`), con la de la pierna
@@ -43,7 +48,7 @@ with n elements […] The length of a path is its number of elements»*
 (`biblioteca/derived-md/Dynamics_of_Causal_Sets_arXiv_gr-qc0212064.md:178`),
 medida sobre *«the longest chain connecting x and y»* (idem `:249`).
 
-Mantener `N` como cardinalidad interior conserva la identidad
+Mantener `N` como cardinalidad interior — pendiente de firma — conservaría la identidad
 `rho · Vol = N` exactamente, de modo que la normalización de Brightwell–Gregory
 `L/(rho V)^{1/4}` y la `L/N^{1/4}` que reportan las notas siguen coincidiendo
 sin aproximación.

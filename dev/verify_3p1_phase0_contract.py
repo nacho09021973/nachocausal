@@ -21,6 +21,14 @@ A file that violates it is a violation, not a finding. Exit codes:
     2  structural checks pass, signed-convention debt outstanding (expected
        until the Phase 1 box-leg re-execution)
 
+RESOLUTION 2 (2026-09-10, docs/paper_iii_resolucion_002_reescopado_fase1.md)
+rescoped Phase 1 as a NULL CALIBRATION. Its three operative rules are checked
+in section [K]:
+    C1  1/4 is the null baseline, not an expectation
+    C2  m_4 is bounded, not known: L/N^(1/4) alone cannot separate a transient
+        from an unknown constant, so alpha must be fixed a priori
+    C3  minimal-restricted rows are excluded from the primary calibration
+
 Run:  python3 dev/verify_3p1_phase0_contract.py
 Exit: 0 iff every structural check passes. Findings are reported either way;
       an open finding is a Gate-0 blocker, not a script failure.
@@ -368,8 +376,10 @@ def audit_r1_restatement() -> None:
     check("the unrestricted L slope lands within the design's own noise floor of 1/4",
           abs(a_all - 0.25) <= floor)
     print(f"      |{a_all:.4f} - 0.25| = {abs(a_all-0.25):.4f}  vs  noise floor |{v_all:.4f} - 1| = {floor:.4f}")
-    findings.append(
-        f"G0-10 OPEN (scope): under Resolution 1 every UNRESTRICTED slope lands at 1/4 within the "
+    print("      G0-10 CLOSED by Resolution 2: Phase 1 rescoped as a null calibration; the "
+          "'slope near 0.29' premise is withdrawn.")
+    _ = (
+        f"under Resolution 1 every UNRESTRICTED slope lands at 1/4 within the "
         f"design's own noise floor (interval leg {slope(np.array([r['N'] for r in json.load(open(PREC))['rows']], dtype=float), np.array([r['mean_L'] for r in json.load(open(PREC))['rows']], dtype=float) + 2):.4f} "
         f"and {slope(np.array([r['N'] for r in json.load(open(BASE))['rows']], dtype=float), np.array([r['mean_L'] for r in json.load(open(BASE))['rows']], dtype=float) + 2):.4f}; box leg {a_all:.4f}). "
         "The premise of the roadmap's Phase 1 question -- an observable departure from 1/4 -- is no "
@@ -379,6 +389,99 @@ def audit_r1_restatement() -> None:
     )
     print("\n      NOT restatable: median_R_min. The artifact stores the median of L^4/V, not the")
     print("      per-element L, and median((L+1)^4/V) is no function of median(L^4/V). Re-run required.")
+
+
+# ---------------------------------------------------------------------------
+def audit_null_calibration() -> None:
+    """Resolution 2: is the NULL -- a pure constant, no correction -- rejected?
+
+    Under R001 this is arithmetic on the committed per-seed integers. It runs no
+    sweep. It reports the answer under two error models, because at 8 replicas of
+    an integer L the per-point sem is itself poorly determined.
+    """
+    print("\n[K] Resolution 2 null calibration: is a constant already consistent with the data?")
+
+    def leg(path):
+        rows = json.load(open(path))["rows"]
+        N = np.array([r["N"] for r in rows], dtype=float)
+        Ls = [np.asarray(r["Ls"], dtype=float) + 2.0 for r in rows]  # R001 convention
+        y = np.array([a.mean() for a in Ls]) / N**0.25
+        sd = np.array([a.std(ddof=1) for a in Ls])
+        return N, Ls, y, sd
+
+    def const_fit(y, s):
+        w = 1.0 / s**2
+        m = float((w * y).sum() / w.sum())
+        return float((w * (y - m) ** 2).sum()), m, float(1.0 / np.sqrt(w.sum()))
+
+    N, Ls, y, sd = leg(PREC)
+    n_rep = Ls[0].size
+    s_ind = sd / np.sqrt(n_rep) / N**0.25
+    pooled = float(np.sqrt(np.mean(sd**2)))
+    s_pool = np.full(len(N), pooled / np.sqrt(n_rep)) / N**0.25
+
+    print(f"      {'N':>7}{'Ls (R001)':>34}{'sd':>9}")
+    for i, a in enumerate(Ls):
+        print(f"      {int(N[i]):7d}{str([int(v) for v in a]):>34}{sd[i]:9.4f}")
+    print(f"      -> sd across the sweep: {sd.min():.4f} .. {sd.max():.4f}. With L integer and spread ~1,")
+    print(f"         a heavily tied 8-sample sd underestimates the true one and dominates any chi2.")
+
+    c_ind, m_ind, _ = const_fit(y, s_ind)
+    c_pool, m_pool, se_pool = const_fit(y, s_pool)
+    dof = len(N) - 1
+    print(f"\n      precision leg, per-point sem      chi2/dof = {c_ind/dof:.2f}   m_4 = {m_ind:.4f}")
+    print(f"      precision leg, POOLED sd          chi2/dof = {c_pool/dof:.2f}   m_4 = {m_pool:.4f} +/- {se_pool:.4f}")
+    Nb, Lsb, yb, sdb = leg(BASE)
+    c_b, m_b, se_b = const_fit(yb, sdb / np.sqrt(Lsb[0].size) / Nb**0.25)
+    print(f"      base leg, per-point sem           chi2/dof = {c_b/(len(Nb)-1):.2f}   m_4 = {m_b:.4f} +/- {se_b:.4f}")
+    check("C1: the null (pure constant) is NOT rejected under a robust error model",
+          c_pool / dof < 2.5 and c_b / (len(Nb) - 1) < 2.5)
+    check("C1: the fitted constant lies inside the rigorous m_4 band",
+          1.8555 <= m_pool <= 2.5296 and 1.8555 <= m_b <= 2.5296)
+
+    # C2: identifiability
+    print("\n      C2 identifiability -- L/N^(1/4) = m_4 (1 + c N^-alpha) has 3 free parameters,")
+    print(f"         and the precision leg has {len(N)} points. Fixing alpha a priori:")
+    w = 1.0 / s_pool**2
+    print(f"         {'alpha':>8}{'m_4':>10}{'c':>11}{'chi2 (dof 2)':>15}{'gain vs const':>15}")
+    gains = []
+    for al in (0.25, 0.5, 1.0):
+        X = np.column_stack([np.ones_like(N), N ** (-al)])
+        W = np.diag(w)
+        beta = np.linalg.solve(X.T @ W @ X, X.T @ W @ y)
+        r = y - X @ beta
+        chi = float(r @ W @ r)
+        gains.append(c_pool - chi)
+        print(f"         {al:8.2f}{beta[0]:10.4f}{beta[1]/beta[0]:11.3f}{chi:15.2f}{c_pool-chi:15.2f}")
+    check("C2: no fixed alpha is preferred -- alpha must be set a priori, never fitted",
+          max(gains) < 4.0)
+
+    # C3: the minimal channel is suspended
+    cal = json.load(open(CAL))
+    rhos = cal["rho_sweep"]
+    vm = [float(np.mean([r["mean_V_min"] for r in cal["rows"] if r["rho"] == x])) for x in rhos]
+    va = [float(np.mean([r["mean_V_all"] for r in cal["rows"] if r["rho"] == x])) for x in rhos]
+    d_min = (vm[-1] / rhos[-1]) / (vm[0] / rhos[0]) - 1
+    d_all = (va[-1] / rhos[-1]) / (va[0] / rhos[0]) - 1
+    print(f"\n      C3 minimal channel suspended: <V>_min/rho drifts {d_min:+.1%} vs {d_all:+.1%} for all elements.")
+    check("C3: the minimal channel's baseline is confirmed unsound, so it stays out of the calibration",
+          abs(d_min) > 3 * abs(d_all))
+
+    # design resolution
+    print("\n      design resolution -- smallest correction amplitude detectable at 2 sigma:")
+    se_diff = float(np.sqrt(s_pool[0] ** 2 + s_pool[-1] ** 2))
+    print(f"         {'alpha':>8}{'|c| min':>12}{'effect at N=' + str(int(N[0])):>22}")
+    for al in (0.25, 0.5, 1.0):
+        lever = N[0] ** (-al) - N[-1] ** (-al)
+        cmin = 2 * se_diff / lever / m_pool
+        print(f"         {al:8.2f}{cmin:12.3f}{cmin * N[0]**(-al):>21.1%}")
+    obs = y.max() / y.min() - 1
+    rel = pooled / np.sqrt(n_rep) / float(np.mean([a.mean() for a in Ls]))
+    print(f"         observed spread over the range: {obs:+.1%}   per-point uncertainty: {rel:.2%}")
+    for k, lbl in ((2, "2 sigma"), (3, "3 sigma")):
+        need = n_rep * (rel / (obs / k / np.sqrt(2))) ** 2
+        print(f"         to separate the endpoints at {lbl}: ~{int(np.ceil(need))} replicas per point")
+    print("         The binding constraint is REPLICAS, not N: the chain is O(N^2), replicas are linear.")
 
 
 # ---------------------------------------------------------------------------
@@ -415,6 +518,7 @@ def main() -> int:
     audit_point_process()
     audit_m4_band()
     audit_r1_restatement()
+    audit_null_calibration()
     audit_provenance()
 
     print("\n" + "=" * 92)

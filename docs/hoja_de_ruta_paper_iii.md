@@ -46,10 +46,17 @@ y sus artefactos contienen:
 | `dev/explore_3p1_scale_calibration_results.json` | caja truncada, \(\rho=500,\ldots,8000\), 3 semillas |
 | `dev/verify_3p1_notes_figures.py` | verificador de procedencia; pasa con `ALL FIGURES MATCH` |
 
-Los valores existentes muestran \(L/N^{1/4}\) creciente y una pendiente
+> **PREMISA RETIRADA — R002, 2026-09-10.** El párrafo que sigue se conserva como
+> registro de lo que se creía antes de fijar la convención de \(L\), y **no es
+> operativo**. Bajo R001 las pendientes del canal no restringido pasan a 0.2552,
+> 0.2516 y 0.2450 contra un suelo de ruido de 0.0179: la anomalía que describía
+> era el desfase de convención. Véase
+> [Resolución 002](paper_iii_resolucion_002_reescopado_fase1.md).
+
+~~Los valores existentes muestran \(L/N^{1/4}\) creciente y una pendiente
 efectiva cercana a \(0.29\), no \(0.25\), en el rango accesible. Eso es una
 medida exploratoria de transitorio, no una refutación del límite. La deriva de
-\(R=L^4/V\) impide usar \(R\) como calibrador antes de cerrar esta fase.
+\(R=L^4/V\) impide usar \(R\) como calibrador antes de cerrar esta fase.~~
 
 ## Principios de alcance
 
@@ -94,8 +101,18 @@ procedencia de una cifra, la fase no avanza.
 
 ## Fase 1 — calibración de tamaño finito en Alexandrov (3+1)
 
-Objetivo: describir empíricamente la aproximación a \(L/N^{1/4}\) sin convertir
-la pendiente accesible en exponente asintótico.
+> **REESCOPADA por [R002](paper_iii_resolucion_002_reescopado_fase1.md).** La
+> Fase 1 no busca una anomalía ya observada, porque no la hay. Es una
+> **calibración nula** del canal no restringido de Minkowski 3+1, previa a la
+> Fase 2.
+
+Objetivo revisado: caracterizar cuánto pueden desviarse de la ley asintótica
+\(L \propto N^{1/4}\) los observables **no restringidos** en el rango finito de
+\(N\) que realmente se use, **sin asumir que existe una corrección detectable**.
+\(1/4\) es la línea base nula; \(m_4\) sólo está acotado, no conocido, luego
+\(\alpha\) se fija por argumento previo y nunca se ajusta; y las filas
+restringidas a minimales quedan fuera de la calibración principal hasta tener su
+propia línea base.
 
 Trabajo permitido después de `GATE_0`:
 
@@ -115,14 +132,17 @@ promueve todavía \(R\), \(L^4/V\), ni un exponente ajustado como ley universal.
 Puerta de salida:
 
 ```text
-GATE_1=PASS iff the finite-size description is reproducible,
-         convention-stable, and clearly separated from the asymptotic claim
-GATE_1=OPEN iff the accessible range cannot distinguish competing corrections
-GATE_1=FAIL iff a provenance, implementation, or causal-order check fails
+GATE_1=PASS  iff the design resolution is characterised and declared, the 1/4
+             null is tested against it, and the outcome -- rejected or not --
+             is reproducible and stable across conventions and seeds
+GATE_1=NULL_NOT_REJECTED  iff the null survives at the resolution reached.
+             A valid outcome, and sufficient to open Phase 2 as a control
+GATE_1=FAIL  iff a provenance, implementation, or causal-order check fails
 ```
 
-Un `OPEN` deja Paper III en calibración; no autoriza saltar a una geometría con
-interfaz.
+`NULL_NOT_REJECTED` sustituye al antiguo `OPEN` como desenlace esperado, y deja
+de ser un no-resultado: es la calibración que la Fase 2 necesita para poder
+atribuir a la excisión cualquier diferencia que aparezca.
 
 ## Fase 2 — control de excisión esférica estática
 
@@ -297,6 +317,8 @@ sin editar como registro de lo que se creía antes de la firma.
 
 - [Contrato de calibración de la Fase 0](paper_iii_fase0_contrato.md).
 - [Resolución 001 — convención de longitud de cadena](paper_iii_resolucion_001_convencion_L.md).
+- [Resolución 002 — reescopado de la Fase 1 como calibración nula](paper_iii_resolucion_002_reescopado_fase1.md).
+- [Resoluciones pendientes — redacción exacta para firma](paper_iii_resoluciones_pendientes.md).
 - [Notas exploratorias de escala](../dev/PAPER3_3P1_SCALE_NOTES.md).
 - [Pierna intervalar](../dev/explore_3p1_bg_reference.py).
 - [Calibración exploratoria de caja](../dev/explore_3p1_scale_calibration.py).
