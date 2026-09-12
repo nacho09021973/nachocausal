@@ -1,0 +1,15 @@
+{
+  "unit": "PUENTE-3P1/B4.0",
+  "q_equals_Tm": true,
+  "det_T": 162,
+  "T_invertible": true,
+  "sum_probabilities": "1",
+  "comparable_pair_identity": "0",
+  "n3_independent_moments": [
+    "rho",
+    "E[f^2]",
+    "E[p^2]",
+    "E[p*f]"
+  ],
+  "B4_execution_authorized": false
+}

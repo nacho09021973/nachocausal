@@ -1,5 +1,31 @@
 # Fase 0 — Decisión de norte del programa
 
+```text
+REVISION / CROSS-PROGRAM TRACEABILITY — 2026-09-12
+
+This signed decision remains in force and is NOT amended or revoked.
+
+A distinct program ("VÍA B"), with its own claim grammar and governance,
+was opened on 2026-09-12. It does not reopen PHASE_0_R1.
+
+Canonical entry point:
+docs/puente_schwarzschild_3p1_2026-09-12.md
+
+The new program does not target horizon localization/reconstruction or a
+proxy thereof. Its frozen scalar target is
+
+    φ(λ) = μ(K ∩ {r < 2M}) / μ(K),
+
+a dilation-invariant fraction of the observed region lying in the
+interior sector.
+
+Current theoretical frontier: L3.
+No validation run is authorized by this cross-reference.
+```
+
+*Metadato histórico añadido 2026-09-12. No modifica ninguna palabra del cuerpo
+firmado ni de la tabla R1–R3 / N1–N5 de §7.*
+
 > **STATUS: PHASE_0_CLOSED / PI_SIGN_OFF_RECORDED /
 > NOT_A_PREREGISTRATION / NOT_A_NOVELTY_CERTIFICATE / DOES_NOT_TOUCH_SEAL /
 > DOES_NOT_DISCHARGE_ITEM_5 / FASE_1_OPENED.**

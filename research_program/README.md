@@ -4,28 +4,54 @@
 > autoriza cambios en el camino sellado, y no convierte ninguna conjetura conceptual en resultado.
 > Su función es separar el objetivo científico general del estado actual de un estimador concreto.
 
-## Checkpoint vigente — 2026-08-28
+## Estado canónico vigente — 2026-09-12
 
 La rama Fisher cerró S1 y S2 y queda congelada como herramienta estructural.
-La auditoría de reingreso al benchmark Schwarzschild transporta exactamente el
-orden producto en nulas y, a `N=n`, el esqueleto
-`Pi_n -> [P_{Pi_n}]`; no transporta todavía el experimento paramétrico regular
-de S1/S2. El primer obstáculo es `DOMAIN_BRIDGE`. La no-QMD por soporte móvil
-no está demostrada para el patch sellado: sólo existe el bosquejo de WP4
-Prop. 2, por lo que su estado es `OPEN`.
+El puente físico a cardinalidad fija y el push-forward al observable futuro
+quedan cerrados analíticamente; no se establece positividad de Fisher para
+`O_n`. T19 queda cerrado como resultado autónomo de identificabilidad de
+segundo orden. La extensión Poisson permanece aparcada en una frontera
+`OPEN_REDUCED`, sin autorización de nuevas ejecuciones.
 
 ```text
 GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
 S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY
 FISHER_BRANCH_ROLE = STRUCTURAL_TOOL
-PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_EXACT_FIRST_OBLIGATION
-FIRST_PHYSICAL_OBSTACLE = DOMAIN_BRIDGE
-MOVING_SUPPORT_QMD_STATUS = OPEN
+FIXED_N_PHYSICAL_CHANNEL_BRIDGE = CLOSED
+FIXED_N_OBSERVABLE_QMD = PROVED
+T12_TO_POSET_FIRST_ORDER_FISHER_VISIBILITY = PROVED
+T12_TO_O_N_FIRST_ORDER_FISHER_POSITIVITY = NOT_IMPLIED
+T19_TO_O_2_SECOND_ORDER_VISIBILITY = PROVED
+T19_TO_PREREG002_FALSIFIABLE_TRANSFER = NOT_ESTABLISHED
+T19_STRUCTURAL_RESULT = CLOSED_AUTONOMOUSLY
+POISSON_QMD_BRANCH = PARKED_OPEN_REDUCED
+GLOBAL_WEIGHTED_ORDER_CELL_FLUX_BOUND = OPEN_REDUCED
+INTEGRATED_ADJACENT_GAP_HAZARD = OPEN_REDUCED
+SUBFACTORIAL_C_NK = NOT_PROVED
+RARE_CELL_OBSTRUCTION = NOT_PROVED
+POISSON_MIXTURE_QMD = OPEN_UNIFORM_BOUND
+PREREG_002 = UNCHANGED
+NEW_VALIDATION_RUNS = NOT_AUTHORIZED
+SCHWARZSCHILD_3P1_RUNS = NOT_AUTHORIZED
+PUENTE_3P1_BLOCK = OPEN_VIA_B_NEW_PROGRAM
+PHASE_0_R1 = UNCHANGED_IN_FORCE
+PUENTE_3P1_TARGET = PHI_LAMBDA_INTERIOR_VOLUME_FRACTION
+PUENTE_3P1_OBSERVABLE_PARAM = LAMBDA_PATCH_SHAPE
+DILATION_ORBIT_AT_FIXED_N = PURE_GAUGE_VERIFIED
+ABSOLUTE_M_AS_TARGET = EXCLUDED_ALL_CHANNELS
+PUENTE_3P1_L3_SEPARATION = OPEN
+B1_PHI_CLOSED_FORM = DERIVED_AND_VERIFIED
+B1_BOOST_GAUGE_ON_LAMBDA = IDENTIFIED_AND_VERIFIED
+EFFECTIVE_LAMBDA_DIMENSION = 3
+B1_LEMMA_FORCES_TV_ZERO = NOT_ESTABLISHED
+B1_BLOCKING_SUBPROBLEM = ANGULAR_REACH_DELTA_MAX
 NEXT_RUN_AUTHORIZED = NO
 ```
 
-Fuentes de reanudación: `docs/hoja_de_ruta_septiembre_2026.md` y
-`docs/physical_reentry_audit_001_2026-08-28.md`.
+Fuente detallada: `docs/physical_channel_observable_bridge_2026-09.md`.
+Bloque 3+1D vigente: `docs/puente_schwarzschild_3p1_2026-09-12.md` (VÍA B, `PI_SIGN_OFF`
+2026-09-12; blanco `φ(λ)`; `PHASE_0_R1` intacto).
+Los checkpoints anteriores se conservan como registro histórico.
 
 ## Estructura de carpeta
 
