@@ -1,4 +1,4 @@
-"""PUENTE-3P1 / B1.4 — deterministic certified interval for the frozen pair.
+"""PUENTE-3P1 / B1.4 — numerical separation diagnostic for the frozen pair.
 
 Lower bounds come from explicit two-segment causal paths; the upper bound is the B1.2
 Cauchy-Schwarz bound. Fixed Gauss-Legendre quadrature is used only for the radial integral.
@@ -23,7 +23,7 @@ def G(uv):
 
 def q(uv):
     s = s_of_uv(uv)
-    return np.exp(-0.5 * s) / np.sqrt(s)
+    return 2.0 * np.exp(-0.5 * s) / s ** 1.5
 
 
 def angular_prob(budget):
@@ -45,15 +45,22 @@ def rho_bounds(lam, order):
     gy = G(uy * vy)
     ordered = (ux <= uy) & (vx <= vy)
     du, dv = np.maximum(uy - ux, 0.0), np.maximum(vy - vx, 0.0)
-    qcorners = np.stack([q(lo * v0), q(lo * v1), q(hi * v0), q(hi * v1)])
-    qmin, qmax = float(np.min(qcorners)), float(np.max(qcorners))
-    upper_budget = qmax * np.sqrt(du * dv)
+    # Pointwise angular upper bound.  Since q_true is increasing in uv, the
+    # maximum over U in [ux, uy] at fixed V is attained at uy for V >= 0 and
+    # at ux for V < 0.  The remaining integral is numerical quadrature.
+    upper_nodes, upper_weights = roots_legendre(16)
+    tt = (upper_nodes + 1.0) / 2.0
+    vq = vx[..., None] + dv[..., None] * tt
+    uq = np.where(vq >= 0.0, uy[..., None], ux[..., None])
+    qv = q(uq * vq)
+    qv_sq_int = dv * np.sum(upper_weights * qv ** 2, axis=-1) / 2.0
+    upper_budget = np.sqrt(du * np.maximum(qv_sq_int, 0.0))
 
-    # Explicit two-segment paths; beta controls the U-coordinate of the fixed knot.
-    # alpha is fixed at 1/2, and beta grid includes the straight path beta=1/2.
+    # Explicit two-segment paths; every member is admissible, so this fixed
+    # grid supplies a numerical lower diagnostic, not a global certificate.
     path_nodes, path_weights = roots_legendre(12)
     lower_budget = np.zeros_like(du)
-    for beta in (0.25, 0.5, 0.75):
+    for beta in np.linspace(0.05, 0.95, 19):
         vm = (vx + vy) / 2.0
         um = ux + beta * (uy - ux)
         total = np.zeros_like(du)
@@ -83,17 +90,25 @@ def main():
         # Enclose observed quadrature variation conservatively around the tighter-order result.
         lo14, hi14, z14 = by_order[1]
         spread = max(abs(by_order[1][i] - by_order[0][i]) for i in (0, 1))
-        results.append({"lambda": list(lam), "rho_lower": max(0.0, lo14 - spread),
-                        "rho_upper": min(1.0, hi14 + spread), "quadrature_orders": [10, 14],
+        results.append({"lambda": list(lam), "numerical_rho_lower": max(0.0, lo14 - spread),
+                        "numerical_rho_upper": min(1.0, hi14 + spread), "quadrature_orders": [10, 14],
                         "raw_by_order": by_order, "normalization_Z": z14,
                         "reported_quadrature_margin": spread})
-    separated = (results[0]["rho_upper"] < results[1]["rho_lower"] or
-                 results[1]["rho_upper"] < results[0]["rho_lower"])
+    separated = (results[0]["numerical_rho_upper"] < results[1]["numerical_rho_lower"] or
+                 results[1]["numerical_rho_upper"] < results[0]["numerical_rho_lower"])
+    numerical_gap = max(0.0, results[1]["numerical_rho_lower"] - results[0]["numerical_rho_upper"],
+                        results[0]["numerical_rho_lower"] - results[1]["numerical_rho_upper"])
     out = {"unit": "PUENTE-3P1/B1.4", "frozen_pair": True,
            "lambda_pair": [list(LAMBDA0), list(LAMBDA1)], "results": results,
+           "pointwise_angular_bounds_valid": True,
+           "global_integration_error_formal": False,
+           "global_integration_error_method": "quadrature_order_stability_only",
+           "numerical_separation_gap": numerical_gap,
            "no_search": True, "no_seeds": True, "no_monte_carlo": True,
-           "frozen_endpoint_isomorphism": "RULED_OUT_BY_POSITIVE_TV",
-           "terminal": "B1.4_POSITIVE" if separated else "B1.4_INCONCLUSIVE_BY_BOUNDS"}
+           "frozen_endpoint_isomorphism":
+               "NUMERICALLY_SEPARATED_ONLY" if separated else "NOT_ESTABLISHED",
+           "terminal": "B1.4_CORRECTED_NUMERICALLY_SEPARATED" if separated
+           else "B1.4_CORRECTED_NUMERICALLY_INCONCLUSIVE"}
     print(json.dumps(out, indent=2))
     with open(__file__.rsplit("/", 1)[0] + "/verification_certified_rho_frozen_pair.json", "w") as fh:
         json.dump(out, fh, indent=2)

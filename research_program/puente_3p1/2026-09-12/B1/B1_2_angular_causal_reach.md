@@ -42,7 +42,10 @@ Por tanto, el máximo desplazamiento angular permitido por esa curva radial es
 
 ```text
 L[U] = integral_{Vx}^{Vy} q(U(V)V) sqrt(U'(V)) dV,
-q(s) = exp(-s/2)/sqrt(s).
+q(s) = sqrt(C)/r = 2 exp(-s/2)/s^(3/2).
+
+En efecto, con `r=2Ms` y `C=32M^3 exp(-s)/r`,
+`C/r^2 = 4 exp(-s)/s^3`, de modo que `sqrt(C)/r = 2 exp(-s/2)/s^(3/2)`.
 ```
 
 La relación causal angular exacta es entonces
@@ -109,7 +112,7 @@ paso y requerirá congelar primero el par testigo.
 
 `verify_angular_causal_reach.py` comprueba:
 
-1. la identidad algebraica `C/r² = q(s)²`;
+1. la identidad algebraica `C/r² = 4 exp(-s)/s³ = q(s)²`;
 2. que la trayectoria recta respeta las cotas `LB <= UB` en casos fijos;
 3. que el caso radial (`Delta=0`) y los casos degenerados dan `Delta_max=0`;
 4. la monotonicidad usada para localizar `q_max` en las esquinas.

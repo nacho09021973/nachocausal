@@ -1,5 +1,8 @@
 # B2.1 — Inyectividad local de la ley order-only en `t0` congelado
 
+> **HISTÓRICO / SUPERSEDED BY CORRECTED-KERNEL B2.** Este artefacto usa el kernel angular
+> pre-corrección y no es evidencia para el resultado con el kernel físico actual.
+
 > **STATUS: `FROZEN_PATH / FROZEN_T0 / DETERMINISTIC_ENCLOSURES / NO_SEARCH`.**
 > No se modifica la curva de B2 ni el punto `t0=0.5`.
 

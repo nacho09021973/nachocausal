@@ -1,0 +1,73 @@
+{
+  "unit": "PUENTE-3P1/B2_CORRECTED_KERNEL",
+  "path": "lambda(t)=(1-t)*lambda0+t*lambda1",
+  "lambda0": [
+    0.5,
+    1.0,
+    1.0,
+    0.5,
+    0.1
+  ],
+  "lambda1": [
+    0.2,
+    0.8,
+    2.0,
+    0.9,
+    0.1
+  ],
+  "t0": 0.5,
+  "kernel": "q(uv)=2*exp(-s(uv)/2)/s(uv)^(3/2)",
+  "raw_orders": [
+    [
+      -0.05913367733970991,
+      -0.017981213212172047,
+      0.4405563729539994,
+      [
+        -0.5182386208940609,
+        0.0019220230554911099,
+        0.002973157125875176
+      ]
+    ],
+    [
+      -0.0592233701210826,
+      -0.017953527265046586,
+      0.44055637293214,
+      [
+        -0.5182386207899582,
+        0.0019359432752483394,
+        0.0029915522149262137
+      ]
+    ],
+    [
+      -0.05926132928041254,
+      -0.0179414320768466,
+      0.44055637293212796,
+      [
+        -0.5182386207898783,
+        0.0019418754160427855,
+        0.0029993880888136916
+      ]
+    ]
+  ],
+  "numerical_stability_interval": [
+    -0.059299288439742484,
+    -0.017903472917516657
+  ],
+  "quadrature_error_certificate": {
+    "status": "MISSING_FORMAL_REMAINDER_BOUND",
+    "orders": [
+      10,
+      14,
+      18
+    ],
+    "observed_last_step_margin": 3.7959159329942205e-05,
+    "is_certified": false,
+    "reason": "Gauss-order differences bound observed variation only; no outward-rounded interval quadrature or analytic remainder estimate is implemented."
+  },
+  "no_new_path": true,
+  "no_new_t0": true,
+  "no_search": true,
+  "no_seeds": true,
+  "no_monte_carlo": true,
+  "terminal": "B2_CORRECTED_INCONCLUSIVE_BY_BOUNDS"
+}

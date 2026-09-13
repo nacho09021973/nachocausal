@@ -22,7 +22,7 @@ def s_of_uv(uv):
 
 def q_of_uv(uv):
     s = s_of_uv(uv)
-    return math.exp(-0.5 * s) / math.sqrt(s)
+    return 2.0 * math.exp(-0.5 * s) / s ** 1.5
 
 
 def bounds(ux, uy, vx, vy):
@@ -54,22 +54,25 @@ def main():
         rows.append({"points": [ux, uy, vx, vy], "lower": lb, "upper": ub,
                      "lower_le_upper": lb <= ub + 1e-12})
 
-    # Algebra: C/r^2 = exp(-s)/s = q(s)^2 after r=2Ms.
+    # Algebra from the original metric: with r=2Ms,
+    # C/r^2 = [32 M^3 exp(-s)/r] / r^2 = 4 exp(-s)/s^3 = q(s)^2.
     algebra = []
     for s in (0.2, 0.7, 1.0, 2.0, 5.0):
-        lhs = math.exp(-s) / s
-        rhs = (math.exp(-0.5 * s) / math.sqrt(s)) ** 2
+        lhs = 4.0 * math.exp(-s) / s ** 3
+        rhs = (2.0 * math.exp(-0.5 * s) / s ** 1.5) ** 2
         algebra.append(abs(lhs - rhs))
 
     # q decreases with s; s increases with -UV.
     s_values = [0.2, 0.7, 1.0, 2.0, 5.0]
-    q_values = [math.exp(-0.5 * s) / math.sqrt(s) for s in s_values]
+    q_values = [2.0 * math.exp(-0.5 * s) / s ** 1.5 for s in s_values]
     monotone = all(a > b for a, b in zip(q_values, q_values[1:]))
 
     out = {
         "unit": "PUENTE-3P1/B1.2",
         "formula": "Delta_max=min(pi,sup_U integral q(UV)*sqrt(U') dV)",
         "deterministic_quadrature": True,
+        "pointwise_angular_bounds_rigorous": True,
+        "global_integration_error_formal": False,
         "no_runs": True,
         "no_seeds": True,
         "no_pair_search": True,
@@ -79,7 +82,8 @@ def main():
         "degenerate_radial_case": bounds(0.1, 0.1, 0.2, 0.8) == (0.0, 0.0),
         "reverse_coordinate_case": bounds(0.5, -0.1, 0.2, 0.8) == (0.0, 0.0),
     }
-    assert out["algebra_max_abs_error"] < 1e-14
+    # The identity is exact algebraically; allow ordinary double-precision roundoff.
+    assert out["algebra_max_abs_error"] < 1e-12
     assert out["q_strictly_decreases_with_s"]
     assert all(row["lower_le_upper"] for row in rows)
     assert out["degenerate_radial_case"] and out["reverse_coordinate_case"]

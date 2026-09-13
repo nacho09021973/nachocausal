@@ -1,5 +1,8 @@
 # B2.2 — Derivada de forma directa de `rho` en `t0=0.5`
 
+> **HISTÓRICO / SUPERSEDED BY CORRECTED-KERNEL B2.** Este artefacto usa el kernel angular
+> pre-corrección y no es evidencia para el resultado con el kernel físico actual.
+
 > **STATUS: `FROZEN_PATH / FROZEN_T0 / SHAPE_DERIVATIVE_DERIVED / DETERMINISTIC_ENCLOSURES`.**
 > No hay diferencias finitas, búsqueda de parámetros, semillas ni Monte Carlo.
 
