@@ -1,495 +1,220 @@
-# Relatividad — Programa A / Gate M
+# Programa A de Relatividad — Gate M y taxonomía revisada
 
-**Estado:** EXPLORATORIO — GATE M ONLY  
-**Rama:** `relatividad`  
-**Objeto actual:** validar un estimador intrínseco de posición respecto de la frontera causal.  
-**No autorizado por este documento:** claims de universalidad, emergencia de Lorentz, emergencia de `c`, Gate S, Gate U o Programa B.
+**Estado:** marco conceptual revisado tras `ATTACK_01`–`ATTACK_04`.
 
----
+**Disciplina:** documento `dev/`; no es resultado confirmatorio, no ejecuta Gate M/S/U y no cambia
+umbrales ni preregistraciones congeladas.
 
-## 1. Separación de programas
+## 1. Alcance y ataques previos
 
-Este frente distingue dos programas conceptualmente diferentes y no los mezcla.
+La versión amplia anterior queda restringida por cuatro ataques analíticos:
 
-### Programa A — universalidad de saturación del cono causal
+- [ATTACK 01 — volumen normalizado](RELATIVIDAD_ATTACK_01_VOLUME_COUNTEREXAMPLE.md): las
+  condiciones intrínseca + retardada + relabeling-invariant + sin embedding no fuerzan saturación;
+  `chi=f(n/N_ref)` puede conservar profundidad timelike finita.
+- [ATTACK 02 — trivialización lorentziana](RELATIVIDAD_ATTACK_02_LORENTZ_TRIVIALIZATION.md):
+  `v_front -> c` puede ser la asintótica de una hipérbola timelike, sin universalidad dinámica.
+- [ATTACK 03 — ambigüedad de escalado](RELATIVIDAD_ATTACK_03_SCALING_LIMIT_AMBIGUITY.md):
+  `Delta -> 0` carece de interpretación sin camino de límite, escalas y normalización fijados.
+- [ATTACK 04 — confusión frente/umbral](RELATIVIDAD_ATTACK_04_FRONT_THRESHOLD_CONFUSION.md):
+  llegada a amplitud finita, soporte y frente no pueden identificarse sin un observable adicional
+  que sobreviva a falsos positivos y negativos.
 
-Se parte de un causal set
+Consecuencia inmediata: no se permite usar “emergencia de la causalidad”, “hemos explicado `c`” ni
+“velocidad universal” como lectura automática de una convergencia de pendientes o de umbrales.
 
-\[
-\mathcal C=(C,\prec)
-\]
+## 2. Taxonomía canónica: cono cinemático y cono dinámico
 
-con `\prec` fundamental. La dinámica no genera el orden: solo determina qué parte del futuro causal permitido recibe respuesta efectiva.
+### 2.1 Cono cinemático `K`
 
-La pregunta fuerte de este programa, todavía **no abierta**, sería si una clase amplia de dinámicas intrínsecas y no calibradas campo por campo satura universalmente la frontera causal en el régimen macroscópico.
+`K` es la estructura de lo permitido por la relación causal primitiva. En un causal set estándar,
 
-### Programa B — emergencia del propio orden causal
+```text
+K = K_prec,
+```
 
-No se introduce `\prec` como primitivo; se intentaría derivarlo posteriormente a partir de una estructura de respuesta.
+donde `prec` es input. `prec` no contiene metros ni segundos; tampoco fija por sí solo el número
+`299792458 m/s`.
 
-Este programa queda **fuera de alcance y bloqueado**. Ningún resultado de Gate M o Gate S del Programa A autoriza lenguaje de emergencia del propio orden causal.
+### 2.2 Cono dinámico `D`
 
----
+`D` es la región o frontera alcanzada por una perturbación bajo una dinámica concreta. Las tres
+relaciones posibles son:
 
-## 2. Jerarquía de gates
+```text
+D ⊊ K    subsaturación;
+D = K     saturación;
+D ⊄ K     filtración/acausalidad.
+```
 
-### Gate M — método
+Si la dinámica es estrictamente retardada respecto de `prec`, `D ⊄ K` queda excluida por
+construcción. El problema no trivial es distinguir `D=K` de `D⊊K`.
+
+Esto no debe llamarse “emergencia de la causalidad”: `K` ya estaba presente como primitiva.
+
+## 3. Cuatro sentidos de emergencia
+
+```text
+E1  Emergencia del continuo:
+    orden + número -> geometría u operador continuo aproximado.
+    No es la tesis fuerte de este programa.
+
+E2  Emergencia de un frente macroscópico:
+    regla discreta -> frente o velocidad efectiva.
+    Es débil y no implica geometría lorentziana emergente.
+
+E3  Unicidad entre especies:
+    microdinámicas genuinamente distintas -> una misma frontera macroscópica.
+    Ocurre SOBRE un K dado y pertenece a la tesis de saturación.
+
+E4  Emergencia de la estructura causal:
+    K/prec no entra como primitiva; la relación causal se reconstruye después
+    desde respuesta, susceptibilidad o soporte y se prueba que forma un orden
+    localmente finito con límite lorentziano.
+```
+
+La expresión “emergencia de la causalidad” sólo está permitida para `E4`. `E4` es un proyecto
+separado y queda bloqueado mientras `prec/K` sea input.
+
+## 4. Tesis S — saturación
+
+Dado `(C,prec)`, la pregunta admisible es si una clase amplia de dinámicas intrínsecas satisface,
+en un camino de límite explícitamente fijado,
+
+```text
+partial D = partial K_prec.
+```
+
+La evidencia tendría que ser simultáneamente:
+
+- no circular: la clase de dinámicas y el criterio se definen antes del resultado;
+- isotrópica;
+- robusta realización por realización, no sólo en promedio;
+- válida para varias especies;
+- obtenida de dinámicas no diseñadas para recuperar `Box`;
+- evaluada con el camino de límite, escalas y normalizaciones preregistrados.
+
+El claim máximo permitido bajo S es:
+
+> Los campos no traen consigo su propio cono máximo; una clase de dinámicas satura un único borde
+> perteneciente al orden.
+
+No se permite elevarlo a:
+
+```text
+la causalidad emerge;
+hemos explicado c.
+```
+
+`v_front -> v_prec` es, como máximo, evidencia auxiliar. La cantidad principal debe controlar una
+profundidad causal/invariante y no sólo una pendiente coordenada. Además, “llegada al umbral” no se
+identifica automáticamente con `partial D`; véase §6.
+
+## 5. Tesis E — emergencia de `prec`
+
+Es un proyecto separado y bloqueado. Esquemáticamente, una formulación futura podría estudiar
+
+```text
+x prec y  <=>  delta phi(y) / delta phi(x) != 0,
+```
+
+o una definición posterior más rigurosa basada en soporte o susceptibilidad. Sólo E permitiría
+eventualmente afirmar que la estructura causal emerge de la respuesta.
+
+## 6. Soporte, frente y llegada
+
+Para una respuesta `chi(y,x)` hay que separar:
+
+```text
+soporte:                 chi(y,x) != 0;
+frente:                  frontera física/matemática de propagación;
+llegada a amplitud finita: T_dyn^(theta).
+```
+
+Los umbrales `theta={0.3,0.5,0.7}` pueden ser instrumentos de diagnóstico en Gate M, pero no son
+por definición `partial D` en Tesis S. Un umbral puede:
+
+- producir un falso negativo si una cola dominante alcanza `partial K` pero la amplitud principal
+  está dentro;
+- producir un falso positivo si una cola diminuta toca `partial K` mientras la respuesta relevante
+  permanece dentro;
+- cambiar de conclusión bajo reescalados monótonos de `chi` o normalizaciones equivalentes.
+
+Por ello, antes de cualquier promoción, debe existir una definición de frente que sea intrínseca,
+no idéntica al soporte retardado, independiente de un `theta` arbitrario, estable ante reescalado,
+robusta ante sprinkling, realización por realización y compatible con los límites de ATTACK_02/03.
+Si no aparece, la salida correcta es `STOPS_AS_FRONT_UNDEFINED`,
+`STOPS_AS_THRESHOLD_DEPENDENT` o `STOPS_AS_SUPPORT_TAUTOLOGY`, según el fallo.
+
+## 7. Jerarquía revisada de gates
+
+### Gate M — MÉTODO
 
 Pregunta única:
 
-> ¿Existe un estimador intrínseco que, sobre causal sets manifoldlike, distinga de forma estable la piel causal del interior timelike sin consultar la métrica ni las coordenadas del embedding?
+> ¿Existe un estimador intrínseco capaz de distinguir borde causal de interior causal y
+> comportamiento anómalo?
 
-Resultado máximo permitido tras un PASS:
+Gate M valida una capacidad metodológica. Sus umbrales diagnósticos no constituyen por sí mismos
+la Tesis S ni demuestran `partial D = partial K`.
 
-> El estimador discrimina borde causal e interior causal en causal sets manifoldlike.
+### Tesis S — SATURACIÓN
 
-Nada más.
+Pregunta física adicional:
 
-### Gate S — saturación
+> ¿Una clase no trivial de dinámicas, no calibrada a `Box`, satura `K_prec` según un observable de
+> frente no circular y un camino de límite especificado?
 
-**BLOQUEADO hasta PASS de Gate M.**
+### E3 — UNICIDAD ENTRE ESPECIES
 
-Requeriría una clase `\mathcal D` de dinámicas genuinas, retardadas, intrínsecas y no seleccionadas por recuperar `\Box`, para estudiar si
+Pregunta dentro de S:
 
-\[
-\lim_{L\to\infty}\Delta_\lambda(L)=0
-\qquad \forall\lambda\in\mathcal D,
-\]
+> ¿Es la misma frontera obtenida por especies o microdinámicas genuinamente diferentes?
 
-con control de fluctuaciones, simetría izquierda/derecha en `1+1` y al menos dos tipos de excitación.
+E3 no crea `K`; estudia universalidad dinámica sobre el cono ya dado.
 
-### Gate U — universalidad / cuenca
+### E4 — EMERGENCIA CAUSAL
 
-**BLOQUEADO hasta PASS de Gate S.**
+Proyecto independiente. Cerrado mientras `prec/K` sea una primitiva.
 
-Requeriría una familia parametrizada de dinámicas y una transformación de coarse-graining intrínseca
+## 8. Taxonomía anterior: trazabilidad
 
-\[
-\mathcal R:\mathcal D\to\mathcal D
-\]
+La taxonomía A/B y el antiguo “Gate U” no se borran conceptualmente, pero quedan:
 
-que no use `\Delta`, el embedding ni la proximidad al cono como criterio de bloqueo. Solo entonces tendría sentido hablar de cuenca o atractor.
+```text
+STATUS = SUPERSEDED / DEPRECATED
+```
 
----
+La sustitución es semántica y explícita:
 
-## 3. Regla de no circularidad
+| Elemento antiguo | Destino revisado |
+|---|---|
+| Universalidad entre especies | `E3`, como subpregunta de `S`. |
+| Gate U como nivel lógico independiente | Deprecated; no aparece en la jerarquía canónica. |
+| Atractor RG | Posible mecanismo para explicar `S` o `E3`, no una tesis causal `E4`. |
+| “Emergencia de causalidad” con `prec` dado | Claim inválido; sólo `E4` conserva ese nombre. |
 
-El primer experimento es una **calibración falsable del instrumento**, no una prueba embrionaria de universalidad.
+Contenido histórico bajo A/B o U debe conservarse con sus referencias, pero no puede presentarse
+como estado lógico vigente sin esta etiqueta.
 
-Dos advertencias quedan congeladas:
+## 9. Malentendido sobre `c`
 
-\[
-\text{“el instrumento ve el borde de }\prec\text{”}
-\not\Rightarrow
-\text{“el borde es emergente”.}
-\]
+No se identifica el valor escalar `c` con el resultado del programa. `prec` no contiene unidades
+de metros ni segundos. Lo que podría resultar universal es una clase o frontera nula perteneciente
+al orden; el número dimensional `299792458 m/s` requiere una convención física de unidades y no es
+un output de S.
 
-\[
-\text{“vemos un frente cercano al borde causal”}
-\not\Rightarrow
-\text{“hemos explicado }c\text{”.}
-\]
+## 10. Regla de decisión actual
 
-El valor numérico de `c` en unidades macroscópicas no es el objeto de este programa. Como máximo, fases posteriores podrían estudiar la **unicidad y saturación de una estructura nula común**.
+```text
+GATE_M  = método; no equivale a saturación.
+S       = saturación sobre K_prec; pendiente sola insuficiente.
+E3      = unicidad entre especies dentro de S.
+E4      = emergencia de prec; bloqueada.
+```
 
----
+Tras ATTACK_01–03, la versión amplia de S está falsada. ATTACK_04 debe decidir además si existe un
+observable de frente no circular. Hasta entonces, no se autoriza cálculo caro ni se puede afirmar
+saturación universal.
 
-## 4. Alcance exacto de Gate M
-
-Se usa:
-
-- el mismo sprinkling para todos los kernels;
-- la misma fuente `x=\gamma_0`;
-- la misma cadena-observador `\gamma`;
-- coordenadas radar construidas solo a partir de `(C,\prec)` y de `\gamma`;
-- el embedding únicamente para generar el poset y para figuras de control no utilizadas por el observable.
-
-Queda prohibido durante Gate M:
-
-- Sorkin / Benincasa–Dowker;
-- el d’Alembertiano local de Boguñá–Krioukov;
-- ajustar coeficientes para reproducir `\Box` o clavar el cono;
-- declarar llegada por `\chi\neq0`;
-- elegir ventanas, umbrales o escalas después de inspeccionar el observable final;
-- interpretar un resultado de Gate M como evidencia de Gate S o Gate U.
-
----
-
-## 5. Coordenadas radar intrínsecas
-
-Para un elemento `y`, se identifican sobre la cadena-observador
-
-\[
-\gamma_-(y)=\max\{z\in\gamma:z\prec y\},
-\]
-
-\[
-\gamma_+(y)=\min\{z\in\gamma:y\prec z\}.
-\]
-
-A partir de una distancia temporal intrínseca sobre `\gamma`, denotada `\tau_C`, se construyen
-
-\[
-t_C(y)=\frac{
-\tau_C(\gamma_0,\gamma_+(y))+
-\tau_C(\gamma_0,\gamma_-(y))}{2},
-\]
-
-\[
-r_C(y)=\frac{
-\tau_C(\gamma_-(y),\gamma_+(y))}{2}.
-\]
-
-La implementación concreta de `\tau_C` debe quedar fijada en el código/protocolo antes del run confirmatorio de Gate M y no puede usar coordenadas del embedding.
-
----
-
-## 6. Frontera causal estimada
-
-Para cada celda intrínseca `(t,r)`, se define
-
-\[
-F_{\rm caus}(t,r)
-=
-\frac{\#\{y\in S_{t,r}:x\prec y\}}
-{\#S_{t,r}}.
-\]
-
-El nivel primario queda fijado en
-
-\[
-q=0.5.
-\]
-
-El tiempo de llegada causal es
-
-\[
-T_{\rm caus}(r)
-=
-\inf\{t:F_{\rm caus}(t,r)\ge 0.5\}.
-\]
-
-No se optimiza `q` después de ver resultados.
-
----
-
-## 7. Kernels de validación
-
-Estos objetos son **kernels de respuesta para validar el estimador**, no microdinámicas físicas completas ni funciones de Green derivadas de una ecuación de movimiento.
-
-### `\lambda_1` — kernel de Hasse
-
-\[
-\chi_1(y,x)
-=
-\exp[-d_H(x,y)/d_*]
-\qquad (x\prec y).
-\]
-
-`d_H` es la distancia en el diagrama de recubrimiento. El kernel está diseñado como caso de respuesta próxima al borde causal.
-
-La regla que fija `d_*` debe congelarse antes del barrido en `N`. Si se usa un cuantil de la muestra, el cuantil `p_H` debe quedar preregistrado y la sucesión debe nombrarse explícitamente como `\lambda_1(N;p_H)`.
-
-### `\lambda_2` — kernel de volumen de intervalo
-
-Con intervalo abierto
-
-\[
-n^\circ(x,y)
-=
-\left|\{z:x\prec z\prec y\}\right|,
-\]
-
-se usa
-
-\[
-\chi_2(y,x)
-=
-\frac{n^\circ(x,y)}{n^\circ(x,y)+n_*}.
-\]
-
-Este kernel debe actuar como control de interior timelike: cerca del borde causal los intervalos son flacos; más al interior, `\chi_2` crece.
-
-`n_*` no puede elegirse libremente en cada `N`. La ley de escala debe quedar congelada antes del run principal. Una opción admisible es fijarlo respecto de un intervalo de referencia intrínseco,
-
-\[
-n_*=\alpha_V N_{\rm ref},
-\]
-
-con `\alpha_V` preregistrado y `N_ref` definido solo mediante el poset y la cadena-observador. Si la implementación existente usa otra regla, debe documentarse y congelarse antes de ejecutar Gate M.
-
-### `\lambda_-` — control difusivo
-
-Control negativo basado en una construcción difusiva intrínseca que utilice `d_H` y una noción de altura `h` derivada de cadenas.
-
-La fórmula exacta y sus parámetros deben estar fijados en el código/protocolo antes del run principal. Si no lo están, **Gate M permanece bloqueado**: no se improvisan después de inspeccionar `\lambda_1` o `\lambda_2`.
-
----
-
-## 8. De respuesta a tiempo de llegada
-
-En cada celda `(t,r)` se agrega la amplitud mediante mediana:
-
-\[
-A_\lambda(t,r)
-=
-\operatorname{median}_{y\in S_{t,r}}
-|\chi_\lambda(y,x)|.
-\]
-
-Se normaliza por radio:
-
-\[
-\widehat A_\lambda(t,r)
-=
-\frac{A_\lambda(t,r)}{\max_{t'}A_\lambda(t',r)}.
-\]
-
-Los umbrales quedan fijados en
-
-\[
-\theta\in\{0.3,0.5,0.7\}.
-\]
-
-El tiempo de llegada dinámica es
-
-\[
-T_{\rm dyn}^{\lambda,\theta}(r)
-=
-\inf\left\{t:\widehat A_\lambda(t,r)\ge\theta\right\}.
-\]
-
-No se usa `\chi\neq0` como criterio de llegada.
-
----
-
-## 9. Observable primario: profundidad causal excedente
-
-El observable primario de Gate M no es una velocidad ni una pendiente.
-
-En cada celda causalmente accesible se calcula
-
-\[
-M(t,r)
-=
-\operatorname{median}_{y\in S_{t,r},\,x\prec y}
- n^\circ(x,y).
-\]
-
-Después,
-
-\[
-M_{\rm caus}(r)
-=
-M(T_{\rm caus}(r),r),
-\]
-
-\[
-M_{\lambda,\theta}(r)
-=
-M(T_{\rm dyn}^{\lambda,\theta}(r),r).
-\]
-
-En dimensión `d`, se define
-
-\[
-\Delta_{\lambda,\theta}(r)
-=
-[M_{\lambda,\theta}(r)+1]^{1/d}
--
-[M_{\rm caus}(r)+1]^{1/d}.
-\]
-
-Para el run actual en `1+1`, `d=2`:
-
-\[
-\boxed{
-\Delta_{\lambda,\theta}(r)
-=
-\sqrt{M_{\lambda,\theta}(r)+1}
--
-\sqrt{M_{\rm caus}(r)+1}
-}.
-\]
-
-Interpretación operacional de Gate M:
-
-- `\Delta\approx0`: llegada próxima a la piel causal estimada;
-- `\Delta>0`: llegada en el interior timelike;
-- valores persistentemente incompatibles con la causalidad estimada obligan a auditar binning/reconstrucción antes de cualquier interpretación física.
-
----
-
-## 10. Diagnósticos secundarios
-
-Se conserva el retraso
-
-\[
-u_{\lambda,\theta}(r)
-=
-T_{\rm dyn}^{\lambda,\theta}(r)-T_{\rm caus}(r),
-\]
-
-pero **no se usa como observable primario**, porque una superficie timelike
-
-\[
-T(r)=\sqrt{r^2+a^2}
-\]
-
-satisface
-
-\[
-T(r)-r\to0
-\]
-
-cuando `r\to\infty` sin convertirse por ello en una superficie nula.
-
-La antigua razón de pendientes `\eta` queda, como máximo, como diagnóstico histórico. No autoriza claims de velocidad porque superficies timelike asintóticas al cono pueden producir `\eta\to1` geométricamente.
-
----
-
-## 11. Ventanas y agregación
-
-Las ventanas radiales deben fijarse por percentiles de `r_C` **antes de calcular pendientes o inspeccionar diferencias entre kernels**.
-
-Para cada ventana de escala `L`, se registra
-
-\[
-\bar\Delta_{\lambda,\theta}(L)
-=
-\operatorname{median}_{r\in W_L}
-\Delta_{\lambda,\theta}(r),
-\]
-
-junto con dispersión entre sprinklings.
-
-El protocolo debe conservar resultados por realización. Un efecto que exista solo después de promediar sprinklings no demuestra que el instrumento funcione en una realización típica.
-
-En `1+1`, además se debe controlar la simetría izquierda/derecha cuando la reconstrucción permita separar ambas orientaciones:
-
-\[
-\Delta_\lambda^{(+)}(L)-\Delta_\lambda^{(-)}(L)
-\to0
-\]
-
-dentro de las fluctuaciones esperables. Una asimetría persistente invalida la interpretación de un frente isotrópico.
-
----
-
-## 12. Escala de la primera batería
-
-El prototipo `N=2200` se considera **andamio diagnóstico**, no evidencia de Gate M.
-
-El run principal de validación deberá usar, como objetivo inicial:
-
-- `N\sim10^4` por sprinkling;
-- aproximadamente `20` sprinklings independientes;
-- mismas reglas preregistradas para celdas, ventanas, `q`, `\theta`, `d_*`, `n_*` y control difusivo.
-
-Estas cifras son objetivo de validación inicial, no garantía automática de potencia suficiente. Si la resolución sigue siendo insuficiente, el resultado correcto es `INCONCLUSIVE`, no reajustar el observable mirando las respuestas.
-
----
-
-## 13. Gate M — criterios de decisión
-
-### PASS
-
-Gate M puede declararse `PASS` solo si, a resolución suficiente, se obtiene de forma estable:
-
-\[
-\bar\Delta_1
-<
-\bar\Delta_2,
-\qquad
-\bar\Delta_1
-<
-\bar\Delta_-,
-\]
-
-con:
-
-- separación reproducible entre sprinklings;
-- estabilidad cualitativa para `\theta=0.3,0.5,0.7`;
-- ausencia de dependencia violenta del binning;
-- control razonable de simetría izquierda/derecha en `1+1`;
-- sin consultar el embedding para decidir el resultado.
-
-Claim máximo autorizado tras PASS:
-
-> El estimador intrínseco distingue una respuesta próxima a la frontera causal de respuestas situadas más profundamente en el interior causal en causal sets manifoldlike `1+1` bajo esta batería de validación.
-
-### FAIL
-
-Gate M es `FAIL` si ocurre de forma robusta cualquiera de los siguientes:
-
-- volumen o difusión colapsan sobre Hasse en `\Delta`;
-- la ordenación cambia cualitativamente entre los umbrales preregistrados;
-- el estimador no separa borde e interior con mayor resolución;
-- la simetría izquierda/derecha falla persistentemente sin explicación de muestreo;
-- la conclusión depende de usar información del embedding.
-
-### INCONCLUSIVE
-
-Se usa `INCONCLUSIVE` cuando el muestreo, ocupación de celdas o fluctuaciones no permiten decidir sin cambiar el protocolo.
-
-No se transforma un `INCONCLUSIVE` en `PASS` retocando a posteriori ventanas, umbrales o escalas.
-
----
-
-## 14. Criterios de parada del programa
-
-Durante Gate M se deja de escalar la batería y se vuelve a diseño si:
-
-1. el estimador no distingue de forma estable Hasse de los controles de interior;
-2. `\Delta(\theta)` depende violentamente de `\theta\in[0.3,0.7]`;
-3. la reconstrucción intrínseca produce falsos adelantamientos sistemáticos que no desaparecen al aumentar resolución;
-4. la separación solo existe en el promedio y no en realizaciones típicas;
-5. cualquier parte necesaria del protocolo termina usando la métrica o coordenadas ocultas del embedding para decidir.
-
-Gate S y Gate U permanecen bloqueados aunque Gate M pase. Se requiere una decisión científica separada antes de abrirlos.
-
----
-
-## 15. Pruebas adversariales reservadas para Gate S
-
-Si Gate M pasa, la fase siguiente no empieza intentando confirmar saturación. Empieza intentando destruirla.
-
-Antes de hablar de universalidad deben buscarse dinámicas intrínsecas admisibles que produzcan deliberadamente:
-
-- un frente persistentemente subcausal;
-- diferencias entre especies;
-- asimetría izquierda/derecha en `1+1` o anisotropía en dimensiones superiores;
-- dependencia de escala/energía que no tienda a una única característica.
-
-Si esos contraejemplos son fáciles y estables dentro de la clase admisible, no existe evidencia de una cuenca universal.
-
-Si resultan imposibles bajo restricciones independientes y bien motivadas, el objeto interesante sería un posible **resultado de rigidez causal**, no una simulación particular con `\eta\to1`.
-
----
-
-## 16. Disciplina de claims
-
-Estado actual del programa:
-
-\[
-\boxed{\text{PROGRAMA A / GATE M — EXPLORATORY METHOD VALIDATION}}
-\]
-
-No usar en informes, commits o discusión externa expresiones como:
-
-- “hemos explicado `c`”;
-- “`c` emerge”;
-- “la invariancia de Lorentz emerge”;
-- “el cono causal emerge”;
-- “hemos demostrado universalidad”.
-
-Antes de Gate U, la formulación fuerte máxima que podría llegar a ser evaluada en Programa A es:
-
-\[
-\boxed{
-\text{un único cono de respuesta puede ser un fenómeno de saturación colectiva,}
-\text{ no una propiedad independiente de cada campo.}
-}
-\]
-
-Hoy esa frase es una **hipótesis de trabajo**, no un resultado.
+**No se ejecuta ningún gate en este documento.**
