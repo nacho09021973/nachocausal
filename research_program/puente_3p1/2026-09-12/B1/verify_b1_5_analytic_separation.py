@@ -20,12 +20,20 @@ What this file does NOT use, by design (B1.5 stop rule):
     with the result, and every choice of them yields a *valid* bound.  Refining
     them tightens the bound; it never validates an invalid one.
 
+Arithmetic.  Every step from the scalar enclosures to the final comparison keeps
+its rounding direction outward (section 0).  No step relies on a rounding error
+being small compared to the separation gap: the result is a directed-rounding
+enclosure, not a float computation with a safety margin bolted on.  Audit
+041 (AUDIT_PASS_CONDITIONAL_H4) required exactly this, the mathematics of the
+chain having passed unchanged.
+
 Determinism: no seeds, no Monte Carlo, no search over lambda, no fitting.  The
 frozen pair is the one of B1.3 and is asserted against it below.
 """
 import json
 import math
 import os
+from fractions import Fraction
 
 import numpy as np
 from mpmath import iv
@@ -41,9 +49,77 @@ K_ANCHORS = 16      # U_y anchor bins for the lower bound
 L_CELLS = 16        # V cells for the lower bound
 N_CELLS_U = 480     # U cells for every one-dimensional quadrature bound
 N_CELLS_V = 160     # V cells for the C1 bound of the upper chain
-SLACK = 1e-9        # relative slack absorbing float accumulation (doc section 7, H4)
 
-E_INV = math.exp(-1.0)
+# ---------------------------------------------------------------------------
+# 0. Directed rounding.  Each IEEE-754 binary64 operation is correctly rounded,
+#    so its result differs from the exact value by at most half an ulp; moving
+#    one ulp outward therefore bounds the exact value with certainty.  Sums use
+#    math.fsum, which is exactly rounded regardless of sign or length, so a
+#    single outward step suffices for a whole sum as well.
+# ---------------------------------------------------------------------------
+INF = float("inf")
+
+
+def up(x):
+    return np.nextafter(x, INF)
+
+
+def dn(x):
+    return np.nextafter(x, -INF)
+
+
+def mul_up(a, b):
+    return up(np.multiply(a, b))
+
+
+def mul_dn(a, b):
+    return dn(np.multiply(a, b))
+
+
+def div_up(a, b):
+    return up(np.divide(a, b))
+
+
+def div_dn(a, b):
+    return dn(np.divide(a, b))
+
+
+def sub_up(a, b):
+    return up(np.subtract(a, b))
+
+
+def sub_dn(a, b):
+    return dn(np.subtract(a, b))
+
+
+def fsum_up(xs):
+    return float(up(math.fsum(xs)))
+
+
+def fsum_dn(xs):
+    return float(dn(math.fsum(xs)))
+
+
+def frac_up(fr):
+    return float(up(float(fr)))
+
+
+def frac_dn(fr):
+    return float(dn(float(fr)))
+
+
+# Recursive summation error constant, used only for the cumulative sums of
+# section 4, where fsum cannot be applied prefix-wise at acceptable cost:
+# |fl(sum) - sum| <= gamma_n * sum(|x_i|)  (Higham, Accuracy and Stability, 3.1).
+_U_ROUND = 2.0 ** -53
+
+
+def gamma_n(n):
+    return (n * _U_ROUND) / (1.0 - n * _U_ROUND)
+
+
+E_INV_HI = float(iv.exp(-iv.mpf(1)).b)     # rigorous upper bound for 1/e
+E_INV_LO = float(iv.exp(-iv.mpf(1)).a)
 
 # ---------------------------------------------------------------------------
 # 1. Scalar layer.  s(w) is defined by (1-s)e^s = w on s>0, where f(s)=(1-s)e^s
@@ -51,6 +127,10 @@ E_INV = math.exp(-1.0)
 #        s >= a   <=>   f(a) >= w ,      s <= b   <=>   f(b) <= w ,
 #    and an enclosure is certified by two scalar inequalities, each evaluated in
 #    rigorous interval arithmetic.  No Lambert W routine is called anywhere.
+#
+#    A product such as U*t is itself rounded, so the exact argument lies in
+#    [dn(U*t), up(U*t)]; the *_at helpers below enclose the function over that
+#    whole interval, never at the rounded point alone.
 # ---------------------------------------------------------------------------
 _CACHE_S, _CACHE_G, _CACHE_Q = {}, {}, {}
 
@@ -100,7 +180,7 @@ def G_encl(w):
     a, b = s_encl(key)
     va, vb = iv.mpf(a) * iv.exp(-iv.mpf(a)), iv.mpf(b) * iv.exp(-iv.mpf(b))
     lo = min(float(va.a), float(vb.a))
-    hi = E_INV if a <= 1.0 <= b else max(float(va.b), float(vb.b))
+    hi = E_INV_HI if a <= 1.0 <= b else max(float(va.b), float(vb.b))
     _CACHE_G[key] = (lo, hi)
     return lo, hi
 
@@ -118,8 +198,29 @@ def q_encl(w):
     return out
 
 
-def arr(fn, ws, idx):
-    return np.array([fn(w)[idx] for w in ws], dtype=float)
+def G_lo_at(wc):
+    """Lower bound of G over the rounding interval of the product wc."""
+    a, b = dn(wc), up(wc)
+    return min(G_encl(a)[0], G_encl(b)[0])
+
+
+def G_hi_at(wc):
+    a, b = dn(wc), up(wc)
+    if a <= 0.0 <= b:
+        return E_INV_HI
+    return max(G_encl(a)[1], G_encl(b)[1])
+
+
+def q_lo_at(wc):
+    return q_encl(dn(wc))[0]        # q increases in w
+
+
+def q_hi_at(wc):
+    return q_encl(up(wc))[1]
+
+
+def arr_at(fn, ws):
+    return np.array([fn(w) for w in ws], dtype=float)
 
 
 def grid(lo, hi, n, extra=()):
@@ -134,20 +235,24 @@ def grid(lo, hi, n, extra=()):
 #    because w = U V lies between U v1 and U v0 on one side of 0, G is increasing
 #    in w for w<0 and decreasing for w>0.  Both envelopes are unimodal in U with
 #    their peak at U = 0, which is forced to be a grid point, so each cell is
-#    monotone and endpoint values bracket the cell.
+#    monotone and endpoint values bracket the cell.  Refining in V shrinks the
+#    envelope gap like 1/L while keeping every integral one-dimensional.
 # ---------------------------------------------------------------------------
 def z_bracket(lam):
     v0, v1, uout, uin, _ = lam
     U = grid(-uout, uin, N_CELLS_U, extra=(0.0,))
     t = np.linspace(v0, v1, L_CELLS + 1)
-    dU = np.diff(U)
-    z_lo = z_hi = 0.0
-    for l in range(L_CELLS):          # one 1-D integral per V cell: envelope gap ~ 1/L
-        lo_env = arr(G_encl, U * t[l + 1], 0)
-        hi_env = arr(G_encl, U * t[l], 1)
-        z_lo += float(np.sum(dU * np.minimum(lo_env[:-1], lo_env[1:]))) * (t[l + 1] - t[l])
-        z_hi += float(np.sum(dU * np.maximum(hi_env[:-1], hi_env[1:]))) * (t[l + 1] - t[l])
-    return z_lo, z_hi
+    w_dn, w_up = dn(np.diff(U)), up(np.diff(U))
+    lo_terms, hi_terms = [], []
+    for l in range(L_CELLS):
+        lo_env = arr_at(G_lo_at, U * t[l + 1])
+        hi_env = arr_at(G_hi_at, U * t[l])
+        cell_lo = mul_dn(w_dn, np.minimum(lo_env[:-1], lo_env[1:]))
+        cell_hi = mul_up(w_up, np.maximum(hi_env[:-1], hi_env[1:]))
+        dt_dn, dt_up = dn(t[l + 1] - t[l]), up(t[l + 1] - t[l])
+        lo_terms.append(mul_dn(fsum_dn(cell_lo), dt_dn))
+        hi_terms.append(mul_up(fsum_up(cell_hi), dt_up))
+    return fsum_dn(lo_terms), fsum_up(hi_terms)
 
 
 # ---------------------------------------------------------------------------
@@ -161,29 +266,36 @@ def z_bracket(lam):
 #        int_{-uout}^{U_y} G(Ux v0)(U_y-Ux) dUx <= e^{-1}(U_y+uout)^2/2 ,
 #    leaving one outer one-dimensional integral.
 # ---------------------------------------------------------------------------
+def _wgt_exact(a, b, v0, v1):
+    """int_a^b (V-v0)(v1-V) dV, exactly, as a rational (no cancellation risk)."""
+    A, B, P, Q = Fraction(a), Fraction(b), Fraction(v0), Fraction(v1)
+    prim = lambda z: -z ** 3 / 3 + (P + Q) * z ** 2 / 2 - P * Q * z
+    return prim(B) - prim(A)
+
+
 def rho_upper(lam):
     v0, v1, uout, uin, _ = lam
     z_lo, _ = z_bracket(lam)
     U = grid(-uout, uin, N_CELLS_U, extra=(0.0,))
     V = grid(v0, v1, N_CELLS_V)
-
-    def wgt(a, b):  # int_a^b (V-v0)(v1-V) dV
-        F = lambda z: -z ** 3 / 3.0 + (v0 + v1) * z ** 2 / 2.0 - v0 * v1 * z
-        return F(b) - F(a)
-
-    weights = np.array([wgt(V[i], V[i + 1]) for i in range(len(V) - 1)])
+    weights = np.array([frac_up(_wgt_exact(V[i], V[i + 1], v0, v1))
+                        for i in range(len(V) - 1)])
     # C1(U) = int q(UV)^2 (V-v0)(v1-V) dV, upper bound; q^2 monotone in V
     c1_hi = np.empty(len(U))
     for i, u in enumerate(U):
         edge = V[1:] if u > 0 else V[:-1]        # the V endpoint maximising |w|-side
-        qh = arr(q_encl, u * edge, 1)
-        c1_hi[i] = float(np.sum(weights * qh ** 2))
-    g_hi = arr(G_encl, U * v0, 1)
-    a1 = E_INV * (U + uout) ** 2 / 2.0           # A1(U), increasing
+        qh = arr_at(q_hi_at, u * edge)
+        c1_hi[i] = fsum_up(mul_up(weights, mul_up(qh, qh)))
+    g_hi = arr_at(G_hi_at, U * v0)
+    # A1(U) = e^{-1}(U+uout)^2/2, increasing; all factors non-negative
+    off = up(np.add(U, uout))
+    a1 = div_up(mul_up(E_INV_HI, mul_up(off, off)), 2.0)
     # C1 and A1 increase in U; Gcheck is unimodal with peak at the grid point 0
-    cell = np.diff(U) * np.maximum(g_hi[:-1], g_hi[1:]) * a1[1:] * c1_hi[1:]
-    main_hi = float(np.sum(cell))
-    return main_hi / (2.0 * z_lo ** 2) * (1.0 + SLACK)
+    cells = mul_up(up(np.diff(U)),
+                   mul_up(np.maximum(g_hi[:-1], g_hi[1:]),
+                          mul_up(a1[1:], c1_hi[1:])))
+    main_hi = fsum_up(cells)
+    return float(div_up(main_hi, mul_dn(2.0, mul_dn(z_lo, z_lo))))
 
 
 # ---------------------------------------------------------------------------
@@ -197,78 +309,107 @@ def rho_upper(lam):
 #    [t_l,t_{m+1}].  Hence
 #        Delta_max >= sqrt(dU dV) * T,   T = mean of qtilde on [U_x, c_j],
 #    and with p(b) >= b^2/4 - b^4/48 the pair integral again factorises into
-#    one-dimensional pieces times the closed-form V moments
-#        int int (Vy-Vx) = F2, int int (Vy-Vx)^2 = F4.
+#    one-dimensional pieces times the closed-form V moments below.
 # ---------------------------------------------------------------------------
+def _v_moments(A, B, C, D, same):
+    """Exact rationals for int int (Vy-Vx) and int int (Vy-Vx)^2 over the block.
+
+    Same cell: the ordered triangle, (B-A)^3/6 and (B-A)^4/12.  Distinct cells:
+    the full rectangle [A,B] x [C,D], where the ordering is automatic.
+    """
+    A, B, C, D = Fraction(A), Fraction(B), Fraction(C), Fraction(D)
+    if same:
+        return (B - A) ** 3 / 6, (B - A) ** 4 / 12
+    f2 = lambda z: z ** 3 / 6
+    f4 = lambda z: z ** 4 / 12
+    v2 = f2(D - A) - f2(D - B) - f2(C - A) + f2(C - B)
+    v4 = f4(D - A) - f4(D - B) - f4(C - A) + f4(C - B)
+    return v2, v4
+
+
 def rho_lower(lam, diagnostics=None):
     v0, v1, uout, uin, _ = lam
     _, z_hi = z_bracket(lam)
     c = np.linspace(-uout, uin, K_ANCHORS + 1)
     t = np.linspace(v0, v1, L_CELLS + 1)
     U = grid(-uout, uin, N_CELLS_U, extra=tuple(c) + (0.0,))
-    dU = np.diff(U)
+    n_u = len(U)
+    dU_dn, dU_up = dn(np.diff(U)), up(np.diff(U))
     idx = {float(x): int(np.argmin(np.abs(U - x))) for x in c}
+    gam = gamma_n(n_u)
 
-    g_lo = {l: arr(G_encl, U * t[l], 0) for l in range(L_CELLS + 1)}
-    g_hi = {l: arr(G_encl, U * t[l], 1) for l in range(L_CELLS + 1)}
-    q_lo = {l: arr(q_encl, U * t[l], 0) for l in range(L_CELLS + 1)}
-    q_hi = {l: arr(q_encl, U * t[l], 1) for l in range(L_CELLS + 1)}
+    g_lo = {l: arr_at(G_lo_at, U * t[l]) for l in range(L_CELLS + 1)}
+    g_hi = {l: arr_at(G_hi_at, U * t[l]) for l in range(L_CELLS + 1)}
+    q_lo = {l: arr_at(q_lo_at, U * t[l]) for l in range(L_CELLS + 1)}
+    q_hi = {l: arr_at(q_hi_at, U * t[l]) for l in range(L_CELLS + 1)}
     neg = U < 0
 
-    F2 = lambda z: z ** 3 / 6.0
-    F4 = lambda z: z ** 4 / 12.0
-    total = 0.0
-    main_acc = 0.0
-    quart_acc = 0.0
+    terms = []
+    main_terms, quart_terms = [], []
     for l in range(L_CELLS):
         for m in range(l, L_CELLS):
             # qtilde_{l,m}(u): worst V in [t_l, t_{m+1}] -> t_{m+1} for u<0, t_l for u>=0
             qt_lo = np.where(neg, q_lo[m + 1], q_lo[l])
             qt_hi = np.where(neg, q_hi[m + 1], q_hi[l])
-            # qtilde is increasing in u: lower/upper Riemann sums of its primitive
-            cum_lo = np.concatenate([[0.0], np.cumsum(dU * qt_lo[:-1])])
-            cum_hi = np.concatenate([[0.0], np.cumsum(dU * qt_hi[1:])])
-            A, B, C, D = t[l], t[l + 1], t[m], t[m + 1]
-            if m == l:
-                v2, v4 = (B - A) ** 3 / 6.0, (B - A) ** 4 / 12.0
-            else:
-                v2 = F2(D - A) - F2(D - B) - F2(C - A) + F2(C - B)
-                v4 = F4(D - A) - F4(D - B) - F4(C - A) + F4(C - B)
+            # qtilde increases in u: lower/upper Riemann sums of its primitive.
+            # cumsum is not exactly rounded, so its error is bounded explicitly.
+            cl = np.concatenate([[0.0], np.cumsum(mul_dn(dU_dn, qt_lo[:-1]))])
+            ch = np.concatenate([[0.0], np.cumsum(mul_up(dU_up, qt_hi[1:]))])
+            err_lo = up(2.0 * gam * cl[-1])
+            err_hi = up(2.0 * gam * ch[-1])
+            v2f, v4f = _v_moments(t[l], t[l + 1], t[m], t[m + 1], m == l)
+            v2, v4 = frac_dn(v2f), frac_up(v4f)
             for j in range(K_ANCHORS):
                 cj, cj1 = c[j], c[j + 1]
                 jj = idx[float(cj)]
                 if jj < 1:
                     continue
-                sl = slice(0, jj)                      # cells inside [-uout, c_j]
-                ua, ub, wdt = U[:jj], U[1:jj + 1], dU[sl]
-                den = cj - ua
-                t_lo = np.maximum(0.0, (cum_lo[jj] - cum_lo[:jj]) / den)   # T at left ends
-                # T increases in U_x, so its cell maximum sits at the right end;
-                # the last cell ends at c_j, where the average degenerates to
-                # qtilde(c_j), the supremum of an increasing integrand.
-                den_r = cj - ub
-                t_hi = np.empty_like(ub)
+                ua, ub, wdn = U[:jj], U[1:jj + 1], dU_dn[:jj]
+                # T at the cell's left end (T increases in U_x) for the main term
+                t_lo = np.maximum(0.0, div_dn(sub_dn(sub_dn(cl[jj], cl[:jj]), err_lo),
+                                              up(np.subtract(cj, ua))))
+                # T at the right end for the quartic term; the last cell ends at
+                # c_j, where the average degenerates to qtilde(c_j), its supremum
+                den_r = np.subtract(cj, ub)
+                t_hi = np.full(jj, float(qt_hi[jj]))
                 ok = den_r > 0
-                t_hi[ok] = (cum_hi[jj] - cum_hi[1:jj + 1][ok]) / den_r[ok]
-                t_hi[~ok] = qt_hi[jj]
-                t_hi = np.minimum(t_hi, qt_hi[jj])
+                if ok.any():
+                    t_hi[ok] = div_up(sub_up(sub_up(ch[jj], ch[1:jj + 1][ok]), -err_hi),
+                                      dn(den_r[ok]))
+                t_hi = np.minimum(t_hi, float(qt_hi[jj]))
                 j1 = idx[float(cj1)]
                 gy_floor = min(float(g_lo[m + 1][jj]), float(g_lo[m + 1][j1]))
-                gy_ceil = (E_INV if cj <= 0.0 <= cj1
+                gy_ceil = (E_INV_HI if cj <= 0.0 <= cj1
                            else max(float(g_hi[m][jj]), float(g_hi[m][j1])))
-                m1_lo = gy_floor * ((cj1 - ub) ** 2 - (cj - ub) ** 2) / 2.0  # decreasing
-                m2_hi = gy_ceil * ((cj1 - ua) ** 3 - (cj - ua) ** 3) / 3.0   # decreasing
+                # M1 = int Ghat(Uy)(Uy-Ux) dUy >= gy_floor (c1-c0)((c1-Ux)+(c0-Ux))/2
+                # M2 = int Gcheck(Uy)(Uy-Ux)^2 dUy
+                #    <= gy_ceil (c1-c0)((c1-Ux)^2+(c1-Ux)(c0-Ux)+(c0-Ux)^2)/3
+                # Both rewritten without cancellation: every factor is >= 0.
+                d1l, d0l = dn(np.subtract(cj1, ub)), dn(np.subtract(cj, ub))
+                m1_lo = mul_dn(gy_floor,
+                               div_dn(mul_dn(dn(cj1 - cj), dn(np.add(d1l, d0l))), 2.0))
+                d1u, d0u = up(np.subtract(cj1, ua)), up(np.subtract(cj, ua))
+                poly = up(np.add(np.add(mul_up(d1u, d1u), mul_up(d1u, d0u)),
+                                 mul_up(d0u, d0u)))
+                m2_hi = mul_up(gy_ceil, div_up(mul_up(up(cj1 - cj), poly), 3.0))
                 gx_lo = np.minimum(g_lo[l + 1][:jj], g_lo[l + 1][1:jj + 1])
                 gx_hi = np.maximum(g_hi[l][:jj], g_hi[l][1:jj + 1])
-                p2 = float(np.sum(wdt * gx_lo * t_lo ** 2 * np.maximum(m1_lo, 0.0)))
-                p4 = float(np.sum(wdt * gx_hi * t_hi ** 4 * m2_hi))
-                main_acc += v2 * p2 / 4.0
-                quart_acc += v4 * p4 / 48.0
-                total += v2 * p2 / 4.0 - v4 * p4 / 48.0
+                p2 = fsum_dn(mul_dn(mul_dn(wdn, gx_lo),
+                                    mul_dn(mul_dn(t_lo, t_lo), np.maximum(m1_lo, 0.0))))
+                t2 = mul_up(t_hi, t_hi)
+                p4 = fsum_up(mul_up(mul_up(dU_up[:jj], gx_hi), mul_up(mul_up(t2, t2), m2_hi)))
+                main = div_dn(mul_dn(v2, max(p2, 0.0)), 4.0)
+                quart = div_up(mul_up(v4, p4), 48.0)
+                main_terms.append(main)
+                quart_terms.append(quart)
+                terms.append(main)
+                terms.append(-quart)
+    total_lo = fsum_dn(terms)
     if diagnostics is not None:
-        diagnostics.update(main_term=2.0 * main_acc / z_hi ** 2,
-                           quartic_term=2.0 * quart_acc / z_hi ** 2)
-    return 2.0 * total / z_hi ** 2 * (1.0 - SLACK)
+        diagnostics.update(
+            main_term=float(div_dn(mul_dn(2.0, fsum_dn(main_terms)), mul_up(z_hi, z_hi))),
+            quartic_term=float(div_up(mul_up(2.0, fsum_up(quart_terms)), mul_dn(z_hi, z_hi))))
+    return float(div_dn(mul_dn(2.0, total_lo), mul_up(z_hi, z_hi)))
 
 
 # ---------------------------------------------------------------------------
@@ -372,11 +513,20 @@ def main():
         "lambda_pair": [list(LAMBDA0), list(LAMBDA1)],
         "method": "closed_form_inequality_chain_one_dimensional_integrals_only",
         "proof_parameters": {"K_anchors": K_ANCHORS, "L_cells": L_CELLS,
-                             "N_cells_U": N_CELLS_U, "N_cells_V": N_CELLS_V,
-                             "relative_slack": SLACK},
+                             "N_cells_U": N_CELLS_U, "N_cells_V": N_CELLS_V},
         "scalar_layer": {"s_enclosure": "verified_by_monotone_scalar_inequality",
                          "lambert_w_used": False,
                          "interval_arithmetic": "scalar_only_mpmath_iv_dps25"},
+        "arithmetic": {
+            "mode": "outward_directed_rounding_end_to_end",
+            "sums": "math.fsum (exactly rounded) then one ulp outward",
+            "products_quotients": "one ulp outward after each binary64 operation",
+            "cumulative_sums": "np.cumsum with explicit Higham gamma_n error term",
+            "partition_moments": "exact rationals (fractions.Fraction), rounded outward",
+            "products_of_grid_values": "enclosed over [dn(x*y), up(x*y)], not at the "
+                                       "rounded point",
+            "global_slack_constant": None,
+        },
         "trigonometric_guards": guards,
         "pointwise_inequality_guards": guards_pw,
         "Z_bracket_lambda0": list(z0), "Z_bracket_lambda1": list(z1),

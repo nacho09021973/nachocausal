@@ -77,5 +77,6 @@ cerrarse, y se conserva tal cual. Fue superado después, para el mismo par conge
 recalcular `rho`, por una cadena de desigualdades con toda cuadratura reducida a dimensión 1:
 véase `B1_5_analytic_separation_certificate.md` y
 `verification_b1_5_analytic_separation.json` (`B1_FORMAL_CERTIFICATE = ESTABLISHED`,
-`U0 = 0.0199085 < L1 = 0.0228268`). Las bandas numéricas de §3 quedan estrictamente contenidas
-en los intervalos rigurosos de B1.5, que es la comprobación cruzada entre ambas unidades.
+`U0 = 0.01990853592 < L1 = 0.02282676120`). Las bandas numéricas de §3 quedan estrictamente
+contenidas en los intervalos rigurosos de B1.5, que es la comprobación cruzada entre ambas
+unidades.

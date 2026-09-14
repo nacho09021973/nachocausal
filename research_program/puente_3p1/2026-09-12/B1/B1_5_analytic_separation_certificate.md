@@ -26,15 +26,16 @@ rho(lambda0) <= U0 < L1 <= rho(lambda1).
 Resultado:
 
 ```text
-U0 = 0.019908535941221436          (cota superior burda para lambda0)
-L1 = 0.022826761181048354          (cota inferior burda para lambda1)
-gap = 0.0029182252398269187        margen relativo = 14.66 %
+U0 = 0.019908535921312993          (cota superior burda para lambda0)
+L1 = 0.022826761203854212          (cota inferior burda para lambda1)
+gap = 0.0029182252825412196        margen relativo = 14.66 %
 
 TV(P_{lambda0,2}, P_{lambda1,2}) = |rho(lambda0) - rho(lambda1)| >= 0.00291822
 ```
 
 ```text
 B1_FORMAL_CERTIFICATE = ESTABLISHED
+B1_ARITHMETIC_STATUS  = DIRECTED_ROUNDING_ENCLOSURE
 B1 = FORMAL_3P1_ORDER_NONDEGENERACY_ON_FROZEN_PAIR
 P_{lambda0,2} != P_{lambda1,2}
 ```
@@ -134,6 +135,31 @@ punto del certificado; la bisección en coma flotante sólo proporciona el punto
 después se verifica. `G` y `q` heredan el bracket por monotonía (`q` decrece en `s`; `G` es
 unimodal con máximo `1/e`).
 
+## 5bis. Aritmética: redondeo dirigido de extremo a extremo
+
+La capa escalar por sí sola no basta. En cuanto los extremos certificados se convierten a
+`float`, toda operación posterior —sumas de Riemann, `cumsum`, productos, momentos,
+normalización— puede redondear hacia el lado equivocado. Que el gap sea enorme frente al
+epsilon de máquina **no demuestra** que el error de redondeo esté acotado; sólo lo hace
+implausible. La versión certificada mantiene por tanto la dirección hacia afuera en cada paso:
+
+| objeto | tratamiento |
+|---|---|
+| operaciones binarias (`*`, `/`, `-`) | cada resultado IEEE-754 está correctamente redondeado (error `<= 1/2 ulp`), y se desplaza **un ulp hacia afuera** |
+| sumas | `math.fsum`, exactamente redondeada con cualquier signo y longitud, más un ulp hacia afuera |
+| sumas acumuladas (`cumsum`) | `np.cumsum` más un término de error explícito `gamma_n` de Higham, `gamma_n = n u /(1-n u)`, aplicado a ambos extremos de la diferencia de prefijos |
+| momentos de la partición (`V2`, `V4`, pesos de `C1`) | racionales **exactos** (`fractions.Fraction`) sobre los nodos, redondeados hacia afuera sólo al convertir |
+| fronteras de la partición | son valores binary64, es decir racionales exactos; celdas consecutivas comparten extremo, de modo que su unión es exactamente el dominio, y las anchuras se redondean hacia afuera |
+| productos de nodos (`U*t`) | el producto exacto no es el `float` calculado: la función se encierra sobre todo `[dn(U*t), up(U*t)]`, nunca en el punto redondeado |
+| `1/e` | cota superior rigurosa tomada de `mpmath.iv`, no `math.exp(-1)` |
+| `M1`, `M2` | reescritos sin cancelación, `(c1-u)^2-(c0-u)^2 = (c1-c0)((c1-u)+(c0-u))`, con todos los factores `>= 0` |
+| divisiones finales | `U0` divide por `Z_lo` redondeado hacia abajo; `L1` por `Z_hi` hacia arriba |
+
+No queda ninguna constante de holgura global: la comparación certificada es literalmente
+`U0_hi < L1_lo`. El coste de esta capa resultó ser nulo en la práctica —el error de redondeo
+real es de orden `1e-16` relativo— pero eso es ahora una **consecuencia medida**, no una
+hipótesis.
+
 ## 6. Guardarraíles y su sensibilidad medida
 
 Un guardarraíl que no puede fallar es decoración, así que se mide lo que detecta.
@@ -179,17 +205,20 @@ B1.4 se contradijeran, uno de los dos estaría mal; no se contradicen.
 
 Es un certificado **condicional**, y sus hipótesis son explícitas:
 
-- **H1.** El criterio causal de B1.2 §2: `x prec y <=> Ux<=Uy, Vx<=Vy, Delta <= Delta_max`, con
-  `Delta_max = min(pi, sup_U L[U])`. Se usan sólo sus dos consecuencias: que toda curva causal
-  queda por debajo de la cota Cauchy–Schwarz, y que la recta explícita es admisible. B1.2 está
-  marcado `DERIVED`; aquí no se vuelve a derivar.
+- **H1.** De B1.2 §2 se usan **sólo dos consecuencias**, y el certificado no se apoya en la
+  equivalencia variacional completa `Delta_max = min(pi, sup_U L[U])`:
+  **(H1a)** el desplazamiento angular de toda curva causal futura de `x` a `y` está acotado por
+  la cota de Cauchy–Schwarz de §3; **(H1b)** la recta explícita de `x` a `y` es una curva causal
+  admisible, luego su presupuesto acota `Delta_max` por debajo. Ambas quedan establecidas en
+  B1.2 (marcado `DERIVED`); aquí no se vuelven a derivar.
 - **H2.** La identidad a `n=2`: `TV(P_{lambda,2}, P_{lambda',2}) = |rho(lambda)-rho(lambda')|`
   (`B1_par_testigo_lambda.md` §5), que depende de que a `n=2` sólo haya dos clases de poset.
 - **H3.** La carta, el patch y la medida congelados (B0, `op11` §2).
-- **H4.** Modelo aritmético: los enclosures escalares son rigurosos (`mpmath.iv`); las sumas se
-  acumulan en float64 y el resultado se infla/desinfla un `1e-9` relativo. El margen de
-  separación es `1.5e-1` relativo, siete órdenes de magnitud por encima de ese holgura, de modo
-  que la acumulación en coma flotante no puede voltear el veredicto.
+- **H4.** Modelo aritmético: aritmética IEEE-754 binary64 con las operaciones básicas
+  correctamente redondeadas —la garantía del estándar— y `mpmath.iv` para la capa escalar. Con
+  eso, §5bis propaga la dirección hacia afuera en cada paso y la conclusión ya **no** descansa
+  en que un error de redondeo sea pequeño frente al gap. H4 queda reducida al modelo aritmético
+  de la máquina; no incluye ninguna holgura asumida.
 
 ## 8. Cumplimiento de la regla de parada de B1.5
 
@@ -201,10 +230,11 @@ partición enorme. Lo realmente usado:
 integral de pares 4D          : nunca discretizada (colapsada exacta por Fubini)
 dimensión de toda cuadratura  : 1
 aritmética intervalar         : escalar, sólo para encerrar s, G, q en puntos
+redondeo                      : dirigido hacia afuera en todo paso posterior (§5bis)
 Lambert W                     : no se usa
 partición                     : K=16 anclas, L=16 celdas, <=480 celdas 1D
-enclosures escalares certificados : 136188 (s), 136188 (q), 14804 (G)
-tiempo de ejecución           : ~15 s las cotas, ~40 s con los guardarraíles
+enclosures escalares certificados : 149424 (s), 149424 (q), 29165 (G)
+tiempo de ejecución           : ~18 s las cotas, ~43 s con los guardarraíles
 ```
 
 El recuento de enclosures es alto porque `C1(U)` se acota en 480 puntos de `U` con 160 celdas
@@ -235,7 +265,42 @@ sobrevive cuando los dos `lambda` se acercan (`B2`), que es donde la derivada y 
 cancelaciones reaparecen y donde B1.5 no dice nada. Este documento no autoriza abrir `B2`,
 ni `B3`, ni `n=3`, ni otro par testigo, ni ejecución alguna.
 
-## 11. Fuentes
+## 11. Historial de auditoría
+
+El objeto se congeló y se pusheó **antes** de auditarlo, para que el control fuera independiente
+de quien escribió la prueba.
+
+```text
+commit auditado : 5d029c7edbc43c788c055f0f53d7fbc003b3047c
+base            : origin/emergencia/p1a-canal-sigma-m (6f866a2)
+veredicto       : AUDIT_PASS_CONDITIONAL_H4
+```
+
+La auditoría no halló fallo en la normalización, el factor `2/Z^2`, el anclaje, el colapso por
+Fubini, las desigualdades trigonométricas ni la dirección de las cotas, y confirmó que el código
+**no** sustituye la pendiente por `sqrt((c_j-U_x)/dV)`: conserva `sqrt(dU dV)` y sólo rebaja el
+perfil de `q`. El defecto señalado fue exactamente uno, y era aritmético: la cadena abandonaba
+la aritmética intervalar al convertir a `float`, y sólo aplicaba una holgura global `1e-9` al
+final, de modo que
+
+```text
+"el gap es enorme comparado con 1e-9"   NO demuestra   |error float| < 1e-9 * |resultado| .
+```
+
+Clasificación entonces: `ROBUST_FLOAT_CERTIFICATE`, no enclosure con redondeo exterior. El
+parche de §5bis propaga la dirección hacia afuera desde la capa escalar hasta la comparación
+final y elimina la constante de holgura; la matemática de §3–§4 no se tocó. Los valores se
+movieron sólo en el dígito 11, que es justo lo que la holgura `1e-9` había estado inflando:
+
+```text
+antes (holgura 1e-9) : U0 = 0.019908535941221436   L1 = 0.022826761181048354
+ahora (dirigido)     : U0 = 0.019908535921312993   L1 = 0.022826761203854212
+```
+
+La recomendación de reformular H1 en términos de las dos consecuencias usadas, sin cargar B1.5
+con la equivalencia variacional completa, está aplicada en §7.
+
+## 12. Fuentes
 
 - Criterio causal angular y cotas LB/UB: `B1_2_angular_causal_reach.md` §2, §3
 - Par congelado e identidad a `n=2`: `B1_3_frozen_pair_and_rho.md` §2; `B1_par_testigo_lambda.md` §5
