@@ -69,3 +69,13 @@ No establece ni refuta la existencia de isomorfismos entre puntos arbitrariament
 curva de B2.
 
 **Artefacto de verificación:** `verification_certified_rho_frozen_pair.json`.
+
+## 4. Continuación
+
+El estado `B1_FORMAL_CERTIFICATE = NOT_ESTABLISHED` de §3 es el que tenía esta unidad al
+cerrarse, y se conserva tal cual. Fue superado después, para el mismo par congelado y sin
+recalcular `rho`, por una cadena de desigualdades con toda cuadratura reducida a dimensión 1:
+véase `B1_5_analytic_separation_certificate.md` y
+`verification_b1_5_analytic_separation.json` (`B1_FORMAL_CERTIFICATE = ESTABLISHED`,
+`U0 = 0.0199085 < L1 = 0.0228268`). Las bandas numéricas de §3 quedan estrictamente contenidas
+en los intervalos rigurosos de B1.5, que es la comprobación cruzada entre ambas unidades.

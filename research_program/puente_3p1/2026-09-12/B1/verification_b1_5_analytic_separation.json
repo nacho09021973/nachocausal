@@ -1,0 +1,125 @@
+{
+  "unit": "PUENTE-3P1/B1.5",
+  "frozen_pair": true,
+  "lambda_pair": [
+    [
+      0.5,
+      1.0,
+      1.0,
+      0.5,
+      0.1
+    ],
+    [
+      0.2,
+      0.8,
+      2.0,
+      0.9,
+      0.1
+    ]
+  ],
+  "method": "closed_form_inequality_chain_one_dimensional_integrals_only",
+  "proof_parameters": {
+    "K_anchors": 16,
+    "L_cells": 16,
+    "N_cells_U": 480,
+    "N_cells_V": 160,
+    "relative_slack": 1e-09
+  },
+  "scalar_layer": {
+    "s_enclosure": "verified_by_monotone_scalar_inequality",
+    "lambert_w_used": false,
+    "interval_arithmetic": "scalar_only_mpmath_iv_dps25"
+  },
+  "trigonometric_guards": {
+    "p_le_a2_over_4": true,
+    "p_ge_a2_4_minus_a4_48": true
+  },
+  "pointwise_inequality_guards": {
+    "lambda0": {
+      "none": {
+        "pairs_tested": 441,
+        "max_violation_anchor_le_line": -0.0012280885336668768,
+        "max_violation_line_le_cauchy_schwarz": -0.004508793902347874,
+        "ok": true
+      },
+      "anchor_above": {
+        "pairs_tested": 441,
+        "max_violation_anchor_le_line": 0.034334634215470006,
+        "max_violation_line_le_cauchy_schwarz": -0.004508793902347874,
+        "ok": true
+      },
+      "anchor_top": {
+        "pairs_tested": 441,
+        "max_violation_anchor_le_line": 0.09204657326263938,
+        "max_violation_line_le_cauchy_schwarz": -0.004508793902347874,
+        "ok": true
+      },
+      "qtilde_wrong_V": {
+        "pairs_tested": 441,
+        "max_violation_anchor_le_line": 0.04080552347340771,
+        "max_violation_line_le_cauchy_schwarz": -0.004508793902347874,
+        "ok": true
+      }
+    },
+    "lambda1": {
+      "none": {
+        "pairs_tested": 441,
+        "max_violation_anchor_le_line": -0.0034852999930707895,
+        "max_violation_line_le_cauchy_schwarz": -0.00626940678288232,
+        "ok": true
+      },
+      "anchor_above": {
+        "pairs_tested": 441,
+        "max_violation_anchor_le_line": 0.07382597727391971,
+        "max_violation_line_le_cauchy_schwarz": -0.00626940678288232,
+        "ok": true
+      },
+      "anchor_top": {
+        "pairs_tested": 441,
+        "max_violation_anchor_le_line": 0.15683137804548586,
+        "max_violation_line_le_cauchy_schwarz": -0.00626940678288232,
+        "ok": true
+      },
+      "qtilde_wrong_V": {
+        "pairs_tested": 441,
+        "max_violation_anchor_le_line": 0.1447910618147713,
+        "max_violation_line_le_cauchy_schwarz": -0.00626940678288232,
+        "ok": true
+      }
+    }
+  },
+  "Z_bracket_lambda0": [
+    0.27389563591999583,
+    0.27405693223671745
+  ],
+  "Z_bracket_lambda1": [
+    0.6320837683669016,
+    0.6330849889159251
+  ],
+  "rho_lambda0_upper_U0": 0.019908535941221436,
+  "rho_lambda0_lower": 0.011508776627145884,
+  "rho_lambda1_upper": 0.050435537147417726,
+  "rho_lambda1_lower_L1": 0.022826761181048354,
+  "lower_bound_decomposition_lambda1": {
+    "main_term": 0.023726456212532214,
+    "quartic_term": 0.0008996950086570868
+  },
+  "analytic_separation_gap": 0.0029182252398269187,
+  "relative_margin": 0.14658160943842255,
+  "b14_numerical_band_lambda0": [
+    0.012756190222626588,
+    0.018794228860215523
+  ],
+  "b14_numerical_band_lambda1": [
+    0.027931264080398928,
+    0.04383499708576354
+  ],
+  "consistency_upper_above_lower": true,
+  "consistency_with_b14_bands": true,
+  "no_search": true,
+  "no_seeds": true,
+  "no_monte_carlo": true,
+  "no_multidimensional_quadrature": true,
+  "terminal": "B1.5_ANALYTIC_SEPARATION_ESTABLISHED",
+  "B1_FORMAL_CERTIFICATE": "ESTABLISHED"
+}

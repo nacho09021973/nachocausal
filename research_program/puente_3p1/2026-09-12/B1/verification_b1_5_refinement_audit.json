@@ -1,0 +1,76 @@
+{
+  "unit": "PUENTE-3P1/B1.5-refinement",
+  "ladder": [
+    {
+      "K": 6,
+      "L": 6,
+      "N_cells_U": 160,
+      "N_cells_V": 60,
+      "U0": 0.02015905543843795,
+      "L1": 0.019939989314647633,
+      "gap": -0.00021906612379031867,
+      "relative_margin": -0.010866884336883062,
+      "separated": false
+    },
+    {
+      "K": 8,
+      "L": 8,
+      "N_cells_U": 240,
+      "N_cells_V": 80,
+      "U0": 0.020038525329140477,
+      "L1": 0.02115846737051905,
+      "gap": 0.001119942041378573,
+      "relative_margin": 0.05588944410744277,
+      "separated": true
+    },
+    {
+      "K": 12,
+      "L": 12,
+      "N_cells_U": 320,
+      "N_cells_V": 120,
+      "U0": 0.019968403905333484,
+      "L1": 0.02225912759656349,
+      "gap": 0.0022907236912300052,
+      "relative_margin": 0.11471741567778293,
+      "separated": true
+    },
+    {
+      "K": 16,
+      "L": 16,
+      "N_cells_U": 480,
+      "N_cells_V": 160,
+      "U0": 0.019908535941221436,
+      "L1": 0.022826761181048354,
+      "gap": 0.0029182252398269187,
+      "relative_margin": 0.14658160943842255,
+      "separated": true
+    },
+    {
+      "K": 20,
+      "L": 20,
+      "N_cells_U": 600,
+      "N_cells_V": 200,
+      "U0": 0.019882677366237982,
+      "L1": 0.02314786850228992,
+      "gap": 0.0032651911360519377,
+      "relative_margin": 0.16422291001897132,
+      "separated": true
+    }
+  ],
+  "coarsest_setting_that_separates": [
+    8,
+    8,
+    240,
+    80
+  ],
+  "no_reversal_after_threshold": true,
+  "separated_at_finest": true,
+  "U0_decreasing_under_refinement": true,
+  "L1_increasing_under_refinement": true,
+  "U0_stays_above_true_rho0_band_low": true,
+  "L1_stays_below_true_rho1_band_high": true,
+  "no_seeds": true,
+  "no_monte_carlo": true,
+  "no_search": true,
+  "terminal": "B1.5_REFINEMENT_MONOTONE_NO_REVERSAL"
+}
