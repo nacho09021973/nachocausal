@@ -31,9 +31,10 @@
   },
   "arithmetic": {
     "mode": "outward_directed_rounding_end_to_end",
-    "sums": "math.fsum (exactly rounded) then one ulp outward",
+    "sums": "explicit directed pairwise tree; math.fsum not relied upon",
     "products_quotients": "one ulp outward after each binary64 operation",
-    "cumulative_sums": "np.cumsum with explicit Higham gamma_n error term",
+    "cumulative_sums": "directed prefix sums carried on both sides; no summation error model",
+    "interval_to_float": "endpoints re-rounded outward (float() rounds to nearest and can move an endpoint inward)",
     "partition_moments": "exact rationals (fractions.Fraction), rounded outward",
     "products_of_grid_values": "enclosed over [dn(x*y), up(x*y)], not at the rounded point",
     "global_slack_constant": null
@@ -97,23 +98,23 @@
     }
   },
   "Z_bracket_lambda0": [
-    0.2738956359199955,
-    0.27405693223671773
+    0.27389563591999483,
+    0.27405693223671834
   ],
   "Z_bracket_lambda1": [
-    0.6320837683669008,
-    0.6330849889159257
+    0.6320837683668995,
+    0.6330849889159271
   ],
-  "rho_lambda0_upper_U0": 0.019908535921312993,
-  "rho_lambda0_lower": 0.011508776638644634,
-  "rho_lambda1_upper": 0.05043553709698246,
-  "rho_lambda1_lower_L1": 0.022826761203854212,
+  "rho_lambda0_upper_U0": 0.01990853592131315,
+  "rho_lambda0_lower": 0.01150877663865241,
+  "rho_lambda1_upper": 0.05043553709698282,
+  "rho_lambda1_lower_L1": 0.022826761203870553,
   "lower_bound_decomposition_lambda1": {
-    "main_term": 0.023726456212512195,
-    "quartic_term": 0.000899695008657981
+    "main_term": 0.02372645621252785,
+    "quartic_term": 0.0008996950086572979
   },
-  "analytic_separation_gap": 0.0029182252825412196,
-  "relative_margin": 0.14658161173053047,
+  "analytic_separation_gap": 0.002918225282557404,
+  "relative_margin": 0.14658161173134227,
   "b14_numerical_band_lambda0": [
     0.012756190222626588,
     0.018794228860215523

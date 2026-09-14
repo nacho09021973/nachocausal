@@ -53,9 +53,11 @@ N_CELLS_V = 160     # V cells for the C1 bound of the upper chain
 # ---------------------------------------------------------------------------
 # 0. Directed rounding.  Each IEEE-754 binary64 operation is correctly rounded,
 #    so its result differs from the exact value by at most half an ulp; moving
-#    one ulp outward therefore bounds the exact value with certainty.  Sums use
-#    math.fsum, which is exactly rounded regardless of sign or length, so a
-#    single outward step suffices for a whole sum as well.
+#    one ulp outward therefore bounds the exact value with certainty.  Nothing
+#    below relies on any stronger property of any library routine: sums are
+#    performed by an explicit directed pairwise tree, and the mpmath interval
+#    endpoints are re-rounded outward on conversion, since float() rounds to
+#    nearest and can otherwise move an endpoint INWARD (it does, for 1/e).
 # ---------------------------------------------------------------------------
 INF = float("inf")
 
@@ -66,6 +68,23 @@ def up(x):
 
 def dn(x):
     return np.nextafter(x, -INF)
+
+
+def iv_lo(x):
+    """Lower endpoint of an mpmath interval, rounded outward into binary64."""
+    return float(dn(float(x.a)))
+
+
+def iv_hi(x):
+    return float(up(float(x.b)))
+
+
+def add_up(a, b):
+    return up(np.add(a, b))
+
+
+def add_dn(a, b):
+    return dn(np.add(a, b))
 
 
 def mul_up(a, b):
@@ -92,12 +111,53 @@ def sub_dn(a, b):
     return dn(np.subtract(a, b))
 
 
-def fsum_up(xs):
-    return float(up(math.fsum(xs)))
+def sum_dn(xs):
+    """Lower bound of a sum, by a pairwise tree of directed binary64 additions.
+
+    Every node is one IEEE addition pushed one ulp down, so the result bounds the
+    exact sum from below for operands of any sign.  math.fsum is deliberately not
+    used: its exactness carries a documented double-rounding caveat on some
+    builds, which a single outward step would not cover.
+    """
+    a = np.asarray(xs, dtype=float).ravel()
+    if a.size == 0:
+        return 0.0
+    while a.size > 1:
+        if a.size & 1:
+            a = np.concatenate([a, np.array([0.0])])
+        a = dn(a[0::2] + a[1::2])
+    return float(a[0])
 
 
-def fsum_dn(xs):
-    return float(dn(math.fsum(xs)))
+def sum_up(xs):
+    a = np.asarray(xs, dtype=float).ravel()
+    if a.size == 0:
+        return 0.0
+    while a.size > 1:
+        if a.size & 1:
+            a = np.concatenate([a, np.array([0.0])])
+        a = up(a[0::2] + a[1::2])
+    return float(a[0])
+
+
+def prefix_bounds(terms_lo, terms_hi):
+    """Directed prefix sums: P_lo[i] <= sum(terms[:i]) <= P_hi[i].
+
+    Keeping both sides lets a partial sum be bracketed without any error model:
+        S_lo(i,j) = P_lo[j] - P_hi[i],   S_hi(i,j) = P_hi[j] - P_lo[i].
+    """
+    tlo = np.asarray(terms_lo, dtype=float).tolist()
+    thi = np.asarray(terms_hi, dtype=float).tolist()
+    n = len(tlo)
+    plo = [0.0] * (n + 1)
+    phi = [0.0] * (n + 1)
+    a = b = 0.0
+    for i in range(n):
+        a = math.nextafter(a + tlo[i], -INF)
+        b = math.nextafter(b + thi[i], INF)
+        plo[i + 1] = a
+        phi[i + 1] = b
+    return np.array(plo), np.array(phi)
 
 
 def frac_up(fr):
@@ -108,18 +168,7 @@ def frac_dn(fr):
     return float(dn(float(fr)))
 
 
-# Recursive summation error constant, used only for the cumulative sums of
-# section 4, where fsum cannot be applied prefix-wise at acceptable cost:
-# |fl(sum) - sum| <= gamma_n * sum(|x_i|)  (Higham, Accuracy and Stability, 3.1).
-_U_ROUND = 2.0 ** -53
-
-
-def gamma_n(n):
-    return (n * _U_ROUND) / (1.0 - n * _U_ROUND)
-
-
-E_INV_HI = float(iv.exp(-iv.mpf(1)).b)     # rigorous upper bound for 1/e
-E_INV_LO = float(iv.exp(-iv.mpf(1)).a)
+E_INV_HI = iv_hi(iv.exp(-iv.mpf(1)))     # rigorous upper bound for 1/e
 
 # ---------------------------------------------------------------------------
 # 1. Scalar layer.  s(w) is defined by (1-s)e^s = w on s>0, where f(s)=(1-s)e^s
@@ -165,7 +214,9 @@ def s_encl(w):
     for _ in range(80):
         lo = max(1e-300, s0 - pad * max(1.0, abs(s0)))
         hi = s0 + pad * max(1.0, abs(s0))
-        if float(_f_iv(lo).a) >= key and float(_f_iv(hi).b) <= key:
+        # f decreasing: certify f(lo) >= w >= f(hi) with OUTWARD conversions,
+        # so a rounding step can never make the test easier to pass.
+        if iv_lo(_f_iv(lo)) >= key and iv_hi(_f_iv(hi)) <= key:
             _CACHE_S[key] = (lo, hi)
             return lo, hi
         pad *= 4.0
@@ -179,8 +230,8 @@ def G_encl(w):
         return _CACHE_G[key]
     a, b = s_encl(key)
     va, vb = iv.mpf(a) * iv.exp(-iv.mpf(a)), iv.mpf(b) * iv.exp(-iv.mpf(b))
-    lo = min(float(va.a), float(vb.a))
-    hi = E_INV_HI if a <= 1.0 <= b else max(float(va.b), float(vb.b))
+    lo = min(iv_lo(va), iv_lo(vb))
+    hi = E_INV_HI if a <= 1.0 <= b else max(iv_hi(va), iv_hi(vb))
     _CACHE_G[key] = (lo, hi)
     return lo, hi
 
@@ -193,7 +244,7 @@ def q_encl(w):
     a, b = s_encl(key)
     hi_v = iv.mpf(2) * iv.exp(-iv.mpf(a) / 2) / (iv.mpf(a) ** iv.mpf(1.5))
     lo_v = iv.mpf(2) * iv.exp(-iv.mpf(b) / 2) / (iv.mpf(b) ** iv.mpf(1.5))
-    out = (float(lo_v.a), float(hi_v.b))
+    out = (iv_lo(lo_v), iv_hi(hi_v))
     _CACHE_Q[key] = out
     return out
 
@@ -250,9 +301,9 @@ def z_bracket(lam):
         cell_lo = mul_dn(w_dn, np.minimum(lo_env[:-1], lo_env[1:]))
         cell_hi = mul_up(w_up, np.maximum(hi_env[:-1], hi_env[1:]))
         dt_dn, dt_up = dn(t[l + 1] - t[l]), up(t[l + 1] - t[l])
-        lo_terms.append(mul_dn(fsum_dn(cell_lo), dt_dn))
-        hi_terms.append(mul_up(fsum_up(cell_hi), dt_up))
-    return fsum_dn(lo_terms), fsum_up(hi_terms)
+        lo_terms.append(mul_dn(sum_dn(cell_lo), dt_dn))
+        hi_terms.append(mul_up(sum_up(cell_hi), dt_up))
+    return sum_dn(lo_terms), sum_up(hi_terms)
 
 
 # ---------------------------------------------------------------------------
@@ -285,7 +336,7 @@ def rho_upper(lam):
     for i, u in enumerate(U):
         edge = V[1:] if u > 0 else V[:-1]        # the V endpoint maximising |w|-side
         qh = arr_at(q_hi_at, u * edge)
-        c1_hi[i] = fsum_up(mul_up(weights, mul_up(qh, qh)))
+        c1_hi[i] = sum_up(mul_up(weights, mul_up(qh, qh)))
     g_hi = arr_at(G_hi_at, U * v0)
     # A1(U) = e^{-1}(U+uout)^2/2, increasing; all factors non-negative
     off = up(np.add(U, uout))
@@ -294,7 +345,7 @@ def rho_upper(lam):
     cells = mul_up(up(np.diff(U)),
                    mul_up(np.maximum(g_hi[:-1], g_hi[1:]),
                           mul_up(a1[1:], c1_hi[1:])))
-    main_hi = fsum_up(cells)
+    main_hi = sum_up(cells)
     return float(div_up(main_hi, mul_dn(2.0, mul_dn(z_lo, z_lo))))
 
 
@@ -336,7 +387,6 @@ def rho_lower(lam, diagnostics=None):
     n_u = len(U)
     dU_dn, dU_up = dn(np.diff(U)), up(np.diff(U))
     idx = {float(x): int(np.argmin(np.abs(U - x))) for x in c}
-    gam = gamma_n(n_u)
 
     g_lo = {l: arr_at(G_lo_at, U * t[l]) for l in range(L_CELLS + 1)}
     g_hi = {l: arr_at(G_hi_at, U * t[l]) for l in range(L_CELLS + 1)}
@@ -353,10 +403,11 @@ def rho_lower(lam, diagnostics=None):
             qt_hi = np.where(neg, q_hi[m + 1], q_hi[l])
             # qtilde increases in u: lower/upper Riemann sums of its primitive.
             # cumsum is not exactly rounded, so its error is bounded explicitly.
-            cl = np.concatenate([[0.0], np.cumsum(mul_dn(dU_dn, qt_lo[:-1]))])
-            ch = np.concatenate([[0.0], np.cumsum(mul_up(dU_up, qt_hi[1:]))])
-            err_lo = up(2.0 * gam * cl[-1])
-            err_hi = up(2.0 * gam * ch[-1])
+            # Directed prefix sums of the lower/upper Riemann terms.  Both sides
+            # are carried, so a partial sum is bracketed by differences alone:
+            # no summation error model enters the certificate.
+            cl, cl_hi = prefix_bounds(mul_dn(dU_dn, qt_lo[:-1]), mul_up(dU_up, qt_lo[:-1]))
+            ch_lo, ch = prefix_bounds(mul_dn(dU_dn, qt_hi[1:]), mul_up(dU_up, qt_hi[1:]))
             v2f, v4f = _v_moments(t[l], t[l + 1], t[m], t[m + 1], m == l)
             v2, v4 = frac_dn(v2f), frac_up(v4f)
             for j in range(K_ANCHORS):
@@ -366,7 +417,7 @@ def rho_lower(lam, diagnostics=None):
                     continue
                 ua, ub, wdn = U[:jj], U[1:jj + 1], dU_dn[:jj]
                 # T at the cell's left end (T increases in U_x) for the main term
-                t_lo = np.maximum(0.0, div_dn(sub_dn(sub_dn(cl[jj], cl[:jj]), err_lo),
+                t_lo = np.maximum(0.0, div_dn(sub_dn(cl[jj], cl_hi[:jj]),
                                               up(np.subtract(cj, ua))))
                 # T at the right end for the quartic term; the last cell ends at
                 # c_j, where the average degenerates to qtilde(c_j), its supremum
@@ -374,7 +425,7 @@ def rho_lower(lam, diagnostics=None):
                 t_hi = np.full(jj, float(qt_hi[jj]))
                 ok = den_r > 0
                 if ok.any():
-                    t_hi[ok] = div_up(sub_up(sub_up(ch[jj], ch[1:jj + 1][ok]), -err_hi),
+                    t_hi[ok] = div_up(sub_up(ch[jj], ch_lo[1:jj + 1][ok]),
                                       dn(den_r[ok]))
                 t_hi = np.minimum(t_hi, float(qt_hi[jj]))
                 j1 = idx[float(cj1)]
@@ -389,26 +440,26 @@ def rho_lower(lam, diagnostics=None):
                 m1_lo = mul_dn(gy_floor,
                                div_dn(mul_dn(dn(cj1 - cj), dn(np.add(d1l, d0l))), 2.0))
                 d1u, d0u = up(np.subtract(cj1, ua)), up(np.subtract(cj, ua))
-                poly = up(np.add(np.add(mul_up(d1u, d1u), mul_up(d1u, d0u)),
-                                 mul_up(d0u, d0u)))
+                poly = add_up(add_up(mul_up(d1u, d1u), mul_up(d1u, d0u)),
+                              mul_up(d0u, d0u))
                 m2_hi = mul_up(gy_ceil, div_up(mul_up(up(cj1 - cj), poly), 3.0))
                 gx_lo = np.minimum(g_lo[l + 1][:jj], g_lo[l + 1][1:jj + 1])
                 gx_hi = np.maximum(g_hi[l][:jj], g_hi[l][1:jj + 1])
-                p2 = fsum_dn(mul_dn(mul_dn(wdn, gx_lo),
+                p2 = sum_dn(mul_dn(mul_dn(wdn, gx_lo),
                                     mul_dn(mul_dn(t_lo, t_lo), np.maximum(m1_lo, 0.0))))
                 t2 = mul_up(t_hi, t_hi)
-                p4 = fsum_up(mul_up(mul_up(dU_up[:jj], gx_hi), mul_up(mul_up(t2, t2), m2_hi)))
+                p4 = sum_up(mul_up(mul_up(dU_up[:jj], gx_hi), mul_up(mul_up(t2, t2), m2_hi)))
                 main = div_dn(mul_dn(v2, max(p2, 0.0)), 4.0)
                 quart = div_up(mul_up(v4, p4), 48.0)
                 main_terms.append(main)
                 quart_terms.append(quart)
                 terms.append(main)
                 terms.append(-quart)
-    total_lo = fsum_dn(terms)
+    total_lo = sum_dn(terms)
     if diagnostics is not None:
         diagnostics.update(
-            main_term=float(div_dn(mul_dn(2.0, fsum_dn(main_terms)), mul_up(z_hi, z_hi))),
-            quartic_term=float(div_up(mul_up(2.0, fsum_up(quart_terms)), mul_dn(z_hi, z_hi))))
+            main_term=float(div_dn(mul_dn(2.0, sum_dn(main_terms)), mul_up(z_hi, z_hi))),
+            quartic_term=float(div_up(mul_up(2.0, sum_up(quart_terms)), mul_dn(z_hi, z_hi))))
     return float(div_dn(mul_dn(2.0, total_lo), mul_up(z_hi, z_hi)))
 
 
@@ -519,9 +570,12 @@ def main():
                          "interval_arithmetic": "scalar_only_mpmath_iv_dps25"},
         "arithmetic": {
             "mode": "outward_directed_rounding_end_to_end",
-            "sums": "math.fsum (exactly rounded) then one ulp outward",
+            "sums": "explicit directed pairwise tree; math.fsum not relied upon",
             "products_quotients": "one ulp outward after each binary64 operation",
-            "cumulative_sums": "np.cumsum with explicit Higham gamma_n error term",
+            "cumulative_sums": "directed prefix sums carried on both sides; "
+                               "no summation error model",
+            "interval_to_float": "endpoints re-rounded outward (float() rounds to "
+                                 "nearest and can move an endpoint inward)",
             "partition_moments": "exact rationals (fractions.Fraction), rounded outward",
             "products_of_grid_values": "enclosed over [dn(x*y), up(x*y)], not at the "
                                        "rounded point",
@@ -533,7 +587,7 @@ def main():
         "rho_lambda0_upper_U0": u0, "rho_lambda0_lower": l0,
         "rho_lambda1_upper": u1, "rho_lambda1_lower_L1": l1,
         "lower_bound_decomposition_lambda1": diag1,
-        "analytic_separation_gap": l1 - u0,
+        "analytic_separation_gap": float(sub_dn(l1, u0)),
         "relative_margin": (l1 - u0) / u0 if u0 > 0 else None,
         "b14_numerical_band_lambda0": [0.012756190222626588, 0.018794228860215523],
         "b14_numerical_band_lambda1": [0.027931264080398928, 0.04383499708576354],

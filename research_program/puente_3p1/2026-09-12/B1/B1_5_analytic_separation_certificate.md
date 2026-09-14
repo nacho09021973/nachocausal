@@ -26,9 +26,9 @@ rho(lambda0) <= U0 < L1 <= rho(lambda1).
 Resultado:
 
 ```text
-U0 = 0.019908535921312993          (cota superior burda para lambda0)
-L1 = 0.022826761203854212          (cota inferior burda para lambda1)
-gap = 0.0029182252825412196        margen relativo = 14.66 %
+U0 = 0.01990853592131315           (cota superior burda para lambda0)
+L1 = 0.022826761203870553          (cota inferior burda para lambda1)
+gap = 0.002918225282557404         margen relativo = 14.66 %
 
 TV(P_{lambda0,2}, P_{lambda1,2}) = |rho(lambda0) - rho(lambda1)| >= 0.00291822
 ```
@@ -145,20 +145,22 @@ implausible. La versión certificada mantiene por tanto la dirección hacia afue
 
 | objeto | tratamiento |
 |---|---|
-| operaciones binarias (`*`, `/`, `-`) | cada resultado IEEE-754 está correctamente redondeado (error `<= 1/2 ulp`), y se desplaza **un ulp hacia afuera** |
-| sumas | `math.fsum`, exactamente redondeada con cualquier signo y longitud, más un ulp hacia afuera |
-| sumas acumuladas (`cumsum`) | `np.cumsum` más un término de error explícito `gamma_n` de Higham, `gamma_n = n u /(1-n u)`, aplicado a ambos extremos de la diferencia de prefijos |
+| operaciones binarias (`*`, `/`, `+`, `-`) | cada resultado IEEE-754 está correctamente redondeado (error `<= 1/2 ulp`), y se desplaza **un ulp hacia afuera** |
+| paso `mpmath.iv -> float` | los extremos se **re-redondean hacia afuera**: `float()` redondea al más próximo y puede mover un extremo *hacia adentro* — de hecho lo hace con `1/e`, donde `float(x.b) < x.b` |
+| sumas | árbol binario explícito de sumas dirigidas. **No** se usa `math.fsum`: su exactitud tiene una salvedad documentada de doble redondeo en algunas builds, que un solo `nextafter` no cubriría |
+| sumas acumuladas | prefijos dirigidos con **ambos** lados almacenados, de modo que una suma parcial se acota por diferencias: `S_lo = P_lo[j] - P_hi[i]`, `S_hi = P_hi[j] - P_lo[i]`. No entra ningún modelo de error de sumación |
 | momentos de la partición (`V2`, `V4`, pesos de `C1`) | racionales **exactos** (`fractions.Fraction`) sobre los nodos, redondeados hacia afuera sólo al convertir |
 | fronteras de la partición | son valores binary64, es decir racionales exactos; celdas consecutivas comparten extremo, de modo que su unión es exactamente el dominio, y las anchuras se redondean hacia afuera |
 | productos de nodos (`U*t`) | el producto exacto no es el `float` calculado: la función se encierra sobre todo `[dn(U*t), up(U*t)]`, nunca en el punto redondeado |
-| `1/e` | cota superior rigurosa tomada de `mpmath.iv`, no `math.exp(-1)` |
+| `1/e` | cota superior rigurosa de `mpmath.iv`, re-redondeada hacia arriba; no `math.exp(-1)` |
 | `M1`, `M2` | reescritos sin cancelación, `(c1-u)^2-(c0-u)^2 = (c1-c0)((c1-u)+(c0-u))`, con todos los factores `>= 0` |
 | divisiones finales | `U0` divide por `Z_lo` redondeado hacia abajo; `L1` por `Z_hi` hacia arriba |
 
 No queda ninguna constante de holgura global: la comparación certificada es literalmente
-`U0_hi < L1_lo`. El coste de esta capa resultó ser nulo en la práctica —el error de redondeo
-real es de orden `1e-16` relativo— pero eso es ahora una **consecuencia medida**, no una
-hipótesis.
+`U0_hi < L1_lo`. Tampoco queda ninguna dependencia de una garantía de biblioteca más fuerte que
+el redondeo correcto que exige IEEE-754 a las operaciones básicas. El coste de esta capa resultó
+ser nulo en la práctica —el error de redondeo real es de orden `1e-16` relativo— pero eso es
+ahora una **consecuencia medida**, no una hipótesis.
 
 ## 6. Guardarraíles y su sensibilidad medida
 
@@ -299,6 +301,37 @@ ahora (dirigido)     : U0 = 0.019908535921312993   L1 = 0.022826761203854212
 
 La recomendación de reformular H1 en términos de las dos consecuencias usadas, sin cargar B1.5
 con la equivalencia variacional completa, está aplicada en §7.
+
+### Segunda ronda: auditoría del delta aritmético
+
+```text
+delta auditado : e7e737a (redondeo dirigido) sobre 5d029c7
+veredicto      : AUDIT_REQUIRES_MINOR_FIX
+```
+
+Sin hallazgos nuevos en la matemática. Tres defectos aritméticos, todos reales:
+
+1. **`float(iv.endpoint)` podía redondear hacia adentro.** `float()` redondea al binary64 más
+   próximo y no conserva la orientación del extremo intervalar, así que un `.b` podía quedar por
+   debajo del extremo superior verdadero. Comprobado que ocurre **con `1/e`**:
+   `float(x.b) < x.b`. Afectaba a `E_INV_HI`, a `G_encl`, a `q_encl` y a las dos comparaciones
+   de `s_encl` —justo las que certifican el enclosure—. Corregido con `iv_lo`/`iv_hi`, que
+   re-redondean hacia afuera.
+2. **`math.fsum` no es una garantía portable.** La documentación de Python advierte de doble
+   redondeo en algunas builds, de modo que un único `nextafter` no basta. Sustituida por un árbol
+   binario explícito de sumas dirigidas.
+3. **Una suma interior sin dirigir**, `up(np.add(np.add(A,B),C))`, contradecía literalmente la
+   regla de un ulp por operación. Corregida a `add_up(add_up(A,B),C)`.
+
+Además se eliminó el `np.cumsum + gamma_n` de Higham, no por haber volteado nada sino porque
+introducía un modelo de error innecesario en una prueba formal; los prefijos se llevan ahora por
+ambos lados. El efecto sobre el resultado fue de unos pocos ulps, como se esperaba:
+
+```text
+con fsum/Higham  : U0 = 0.019908535921312993   L1 = 0.022826761203854212
+totalmente dirigido: U0 = 0.01990853592131315    L1 = 0.022826761203870553
+gap 0.0029182252825  ->  0.0029182252826
+```
 
 ## 12. Fuentes
 
