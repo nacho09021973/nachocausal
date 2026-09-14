@@ -1,0 +1,10 @@
+ Sí, pásame el prompt. Mantendría el alcance en un candidato order-only y su kill-test matemático en 1+1, todavía en solo lectura.
+
+  Exigiría fijar antes de evaluarlo:
+
+  - Qué recibe: únicamente el poset, sin etiquetas del embedding.
+  - Qué devuelve y qué significa exactamente «localizar el horizonte».
+  - Qué convergencia o identificabilidad se pretende demostrar.
+  - Qué contraejemplo bastaría para descartarlo.
+
+  La invariancia bajo reetiquetado es necesaria, pero no suficiente: el candidato debe distinguir el horizonte de efectos de borde, densidad y tamaño finito. El primer objetivo será intentar demostrar que no puede hacerlo.
