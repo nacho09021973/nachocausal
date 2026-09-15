@@ -74,9 +74,58 @@ Comprobar explícitamente:
 
 Si sólo puede probarse `o(rho^-2)` o una cota más débil, decirlo exactamente.
 
+## Pregunta C0 — finitud antes de cualquier coeficiente de C²
+
+El PI realizó una comprobación simbólica independiente, no incorporada como código al objeto congelado (`br.py` permanece local y no forma parte del repo). En Schwarzschild, usando la tétrada estática con `M=r=1`, boosts de rapidez `eta` en dirección arbitraria y `gamma=cosh(eta)`, obtuvo:
+
+- `E^2-H^2 = 6` para cualquier boost, consistente con `K=8(E^2-H^2)=48 M^2/r^6`;
+- para boost radial, `E^2+H^2=6` para todo `eta`;
+- para boost tangencial,
+
+\[
+E^2+H^2=36\gamma^4-36\gamma^2+6;
+\]
+
+- promedio sobre direcciones a rapidez fija,
+
+\[
+\langle E^2+H^2\rangle
+=\frac65\left(16\gamma^4-12\gamma^2+1\right).
+\]
+
+El control `gamma=1` devuelve `6`. Esta comprobación NO debe aceptarse por autoridad del repo: el auditor debe reproducirla o refutarla.
+
+Suponiendo correctamente transcrita la ecuación (79) de Wang en `d=4`, la corrección de volumen relevante contiene
+
+\[
+2032E^2+360H^2
+=836(E^2-H^2)+1196(E^2+H^2).
+\]
+
+Sólo el primer término es proporcional a `K`. El segundo es la densidad de Bel–Robinson `T(U_y,U_y,U_y,U_y)` y depende de la dirección temporal `U_y` del par `(x,y)`.
+
+A rapidez grande, la parte no invariante crece como `gamma^4 ~ e^{4 eta}`. A tiempo propio fijo, la medida del hiperboloide temporal en 4D crece como `sinh^2(eta) d eta ~ e^{2 eta} d eta`; si el peso depende sólo del volumen propio del intervalo, el integrando angular/rapidez crece formalmente como `e^{6 eta}`.
+
+**Límite lógico de esta observación:** para `eta` grande, `y` está lejos de `x` en coordenadas aunque el tiempo propio sea fijo, de modo que la expansión RNC local usada para obtener la corrección de Wang deja de ser válida. La divergencia formal NO demuestra que la integral exacta diverja. Sí demuestra que no se puede extender uniformemente la aproximación local sobre todo el hiperboloide sin un argumento adicional.
+
+Antes de calcular ningún número para `C^2`, el auditor debe responder:
+
+1. ¿Es finita la integral del término `E^2+H^2` sobre `J^-(x)` bajo las hipótesis exactas del esquema Belenchia–Benincasa–Dowker?
+2. Si no lo es sin regulación/soporte compacto, ¿qué región geométrica domina el problema: `W1`, `W2`, frontera de soporte u otra?
+3. ¿Existe en Belenchia–Benincasa–Dowker un argumento publicado que justifique cortar, regular o tratar localmente esa región a la precisión subdominante `O(rho^-1/2)` requerida aquí?
+4. Si la finitud sólo se obtiene imponiendo soporte compacto, parche finito o taper, ¿se demuestra que la contribución dependiente de esa prescripción es `o(rho^-1/2)` para `O_*`?
+
+Si la integral global para `phi=1` no está definida y ninguna prescripción publicada controla la dependencia del cutoff por debajo del orden objetivo, el estado debe promoverse a
+
+```text
+S4W_KRETSCHMANN_ESTIMATOR = NOT_DEFINED_WITHOUT_EXTRA_PRESCRIPTION
+```
+
+no meramente `NOT_ESTABLISHED`.
+
 ## Pregunta C — término local W1 y Weyl²
 
-Éste es el punto decisivo.
+Éste es el punto decisivo si C0 no mata antes el estimador.
 
 Rehacer la expansión a orden curvatura-cuadrada sin fijar prematuramente el frame estático de Schwarzschild.
 
@@ -145,6 +194,7 @@ VERDICT = ...
 
 A_ALGEBRA = PASS/FAIL + derivación mínima
 B_W2 = PASS/FAIL/CONDITIONAL + hipótesis
+C0_GLOBAL_FINITUDE = PASS/FAIL/REGULATED_ONLY + prescripción exacta
 C_W1_COEFFICIENT = PASS/FAIL/UNRESOLVED + valor si existe
 D_COVARIANT_STRUCTURE = PASS/FAIL/CONDITIONAL
 E_PRIOR_ART = EXACT_FOUND / STRUCTURAL_ONLY / NONE_FOUND_IN_SCOPED_SEARCH
