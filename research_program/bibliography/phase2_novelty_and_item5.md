@@ -42,7 +42,7 @@ El manuscript de límites ya refleja esto. Fase 2 no reabre N2/N4/N5 como medall
 
 ## 1. Paso 2.1 — Anclas verificadas (prioridad adversarial filtrada)
 
-**Procedencia.** Pista vía LLM (sesión Grok / `tarea_grok_1.md`), **re-verificada a fuente
+**Procedencia.** Pista vía LLM (sesión Grok / `old/prompts/tarea_grok_1.md`), **re-verificada a fuente
 primaria** en el filtro documentado en `tarea_grok_2.md` §1.1 (operador).  
 Marca: `LLM_LEAD_HUMAN_VERIFIED`.
 

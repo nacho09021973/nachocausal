@@ -11,11 +11,31 @@ For any AI or agent connecting to this repo, read [INSTRUCCIONES.md](INSTRUCCION
 the available machinery and the correct workflow between committee, auditor, external consultors,
 and Alloy.
 
+For a quick operational map of the repository, see [ESTADO_ACTIVO.md](ESTADO_ACTIVO.md).
+
 **Current program roadmap:** [September 2026 checkpoint](docs/hoja_de_ruta_septiembre_2026.md).
+The operational plan for the week of 21–27 September 2026 is
+[here](docs/hoja_de_ruta_21-27_septiembre_2026.md).
 The [post-N1–N5 limits-paper route](tarea_grok_2.md), the
 [15 July operational plan](docs/plan_operativo_15_julio_2026.md), and the
 [original horizon roadmap](docs/roadmap.md) remain historical input where not superseded by that
 checkpoint.
+
+## Repository map
+
+The active operational map is maintained in [ESTADO_ACTIVO.md](ESTADO_ACTIVO.md). In brief:
+
+- `nachocausal/`, `tests/`, `dev/`, `docs/`, `research_program/`, `formal/`, `scripts/`,
+  `certifier/` and `provenance/` contain the active code, contracts, development and audit
+  machinery.
+- `data/`, `evidence/`, `manuscrito/`, `web/` and `viz/` contain reproducible evidence or
+  deliverables.
+- `biblioteca/`, `results/`, `dev_ensemble_raw/`, `email/` and build caches are local or
+  regenerable and are not canonical by default.
+- `old/` preserves superseded auxiliary material for traceability; it is not a source of current
+  claims or contracts without revalidation.
+
+Before adding a new top-level directory, check the operational map and the repository instructions.
 
 ## Paper II — local geometry and global horizons (closed)
 

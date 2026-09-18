@@ -348,8 +348,8 @@ no: un almost-PASS en un proxy 1+1 ya conocido.
 | `research_program/bibliography/external_reader_candidates_n1_n5.md` | Tier A/B; hueco math.ST |
 | `research_program/bibliography/wp5_paso_d_independent_novelty_review.md` | Paso D; ítem 5 |
 | `research_program/work_packages/next_observable_candidate_matrix.md` | Matriz a marcar abandoned-as-north |
-| `tarea_grok_1.md` | Prompt adversarial original |
-| `instruccion_grok.md` | Protocolo anti-invención LLM |
+| `old/prompts/tarea_grok_1.md` | Prompt adversarial original |
+| `old/prompts/instruccion_grok.md` | Protocolo anti-invención LLM |
 | **este archivo** | Hoja de ruta unificada |
 
 ---
