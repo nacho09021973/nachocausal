@@ -74,7 +74,8 @@ def check(path: str) -> list[str]:
 
     # Founding-rule invariant: a pre-registration BLOCK (section 6) cannot coexist with a PROCEED
     # verdict. The warden writes "Verdict: BLOCK" in its filled section when it blocks.
-    prereg_block = re.search(r"(?im)^\s*[-*]?\s*Verdict:\s*BLOCK\b", text)
+    # Strip Markdown emphasis first: "**Verdict:** BLOCK" must count as a BLOCK too.
+    prereg_block = re.search(r"(?im)^\s*[-*]?\s*Verdict:\s*BLOCK\b", text.replace("*", ""))
     if prereg_block and m and m.group(1) in PROCEED_VERDICTS:
         errs.append(
             f"pre-registration BLOCK present but overall verdict is a PROCEED verdict "
