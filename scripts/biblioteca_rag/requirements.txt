@@ -1,0 +1,4 @@
+# Isolated from the sealed root requirements.txt (numpy==1.26.4 pin for the
+# validation path). This venv is only for the local RAG tool over biblioteca/.
+numpy>=2,<3
+requests>=2.31,<3
