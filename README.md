@@ -525,3 +525,11 @@ An extensive local library of causal-set-theory articles and books lives in `bib
 relevant "Towards black-hole horizons and geodesic focusing in causal sets"). It also holds
 markdown notes and PDF-derived markdown under `biblioteca/derived-md/`. The folder is local
 reference material only — it is git-ignored and not part of the committed project.
+
+**Before investigating any question, read `biblioteca/INDICE.md`** and check whether a paper in
+it can help (`grep -i <topic|keyword> biblioteca/INDICE.md`; one line per document, with subject
+tags). The index locates papers, it proves nothing: read the PDF and cite `file.pdf p.N` before
+relying on a paper, otherwise mark the claim `[UNVERIFIED]`. Tags marked `proposed` were written
+by an AI and are `[UNVERIFIED]`; a missing tag does not mean a missing paper, so also search by
+keyword. Do not edit `INDICE.md` by hand: edit `scripts/biblioteca_catalog/curated.csv` and
+regenerate with `python3 ~/herramientas/biblioteca_catalog/build_catalog.py --repo .`.

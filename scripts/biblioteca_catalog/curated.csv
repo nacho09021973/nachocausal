@@ -1,0 +1,209 @@
+# Curated fields for build_catalog.py. One row per document (path relative to biblioteca/).
+# status: proposed = written by an AI from the literal title/abstract/filename, NOT reviewed by the user
+#         confirmed = reviewed by the user. Change to `confirmed` only after review.
+# tags: ';'-separated; each must exist in tags.csv (the controlled vocabulary).
+# title: only when the automatic title is wrong or unreadable (restored from the literal p.1 text).
+# purpose: only with a verifiable source, cited in the field.
+path,title,tags,purpose,status
+0302009v1.pdf,,horizontes-bh;entropia,,proposed
+0809.1828v1.pdf,,teoria-de-ordenes,,proposed
+1002.1879v2.pdf,,probabilidad-estadistica,,proposed
+1004.1226v1.pdf,Logic is to the quantum as geometry is to gravity,mecanica-cuantica-historias,,proposed
+1710.09467v2.pdf,,teoria-de-ordenes;dimension-embedding,,proposed
+1802.09326v3.pdf,Dimension of CPT posets,teoria-de-ordenes;dimension-embedding,,proposed
+1909.08620v1.pdf,,horizontes-bh,,proposed
+2008.03221v2.pdf,,dimension-embedding;probabilidad-estadistica,,proposed
+2301.06480v1.pdf,,horizontes-bh,,proposed
+2301.13525v2.pdf,Higher-order curvature operators in causal set quantum gravity,accion-curvatura,,proposed
+2307.04150v1.pdf,,horizontes-bh;entropia,,proposed
+2404.11670v1.pdf,,horizontes-bh;entropia,,proposed
+2406.15893v1.pdf,,teoria-de-ordenes;probabilidad-estadistica,,proposed
+2503.01719v2.pdf,,reconstruccion-orden-numero,,proposed
+2507.01907v1.pdf,,reconstruccion-orden-numero,,proposed
+2601.03280v1.pdf,Reconstructing Minkowski geometry from causal separations,reconstruccion-orden-numero,,proposed
+2604.19493v1.pdf,,probabilidad-estadistica,,proposed
+2605.06813v1.pdf,,horizontes-bh,CLAUDE.md la cita como directamente relevante ("Towards black-hole horizons and geodesic focusing in causal sets"),proposed
+2605.07664v1.pdf,,probabilidad-estadistica,,proposed
+2605.23292v1.pdf,,probabilidad-estadistica,,proposed
+2605.27514v1.pdf,,simulacion,,proposed
+2607.05840v1.pdf,,reconstruccion-orden-numero;dimension-embedding,,proposed
+978-0-387-21580-8_3.pdf,,probabilidad-estadistica,,proposed
+"[Aad_van_der_Vaart,_Jon_Wellner].pdf",,probabilidad-estadistica,"Sin capa de texto; etiqueta deducida solo del nombre de fichero",proposed
+A Causal Set Black Hole_ arXiv0811.4235.pdf,,horizontes-bh,,proposed
+A Local Causal Model of Spacetime Dynamics.pdf,,fuera-del-nucleo,,proposed
+A Rough Set and GIS.pdf,,fuera-de-tema,,proposed
+An Innovative Approach for Attribute.pdf,,fuera-de-tema,,proposed
+ANEXO II BEAS JUN 2026_para firmaX1.pdf,,fuera-de-tema,Documento administrativo; no es literatura,proposed
+Asymptotic Statistics.pdf,,probabilidad-estadistica;libro,"p.1 dice Höpfner (De Gruyter); no es el libro de van der Vaart",proposed
+Benincasa_2013_The_Action_of_a_Causal_Set_PhD.pdf,,accion-curvatura;tesis,,proposed
+Benincasa_Dowker_2010_Scalar_Curvature_Causal_Set_arXiv1001.2725.pdf,,accion-curvatura,,proposed
+Benincasa_Dowker_Glaser_Actions_Quantum_Counting_arXiv2505.22217.pdf,,accion-curvatura,,proposed
+Bhandari_2023_Action_in_Causal_Set_Theory.pdf,,accion-curvatura,,proposed
+Bhatnagar_2021_Causal_Set_Theory_and_Benincasa_Dowker_Conjecture.pdf,,accion-curvatura,,proposed
+Bombelli_1987_PhD.pdf,,cst-fundamentos;tesis,,proposed
+Bosonic Fields in Causal Set Theory.pdf,,qft-cst,,proposed
+Boundary terms for causal sets.pdf,,accion-curvatura,,proposed
+Bounous_2022_On_the_Benincasa_Dowker_Conjecture.pdf,,accion-curvatura,,proposed
+Braun_2026_CQG_43_045015_spacetime_reconstruction_order_number.pdf,,reconstruccion-orden-numero,,proposed
+Carlip_Carlip_Surya_2022_arXiv2209.00327.pdf,,dinamica-crecimiento,,proposed
+Causal Inference Fast and Slow.pdf,,fuera-de-tema,,proposed
+"Causal Sets, a Possible Interpretation.pdf",,horizontes-bh;entropia;tesis,,proposed
+Causal_Set_dAlembertians_Various_Dimensions_arXiv1305.2588.pdf,,accion-curvatura,,proposed
+Causal_Set_Phenomenology_arXiv1009.1593.pdf,,fenomenologia,,proposed
+Causality Uncertainty Principle and Quantum.pdf,,fuera-del-nucleo,,proposed
+causetgloss.pdf,,cst-fundamentos,,proposed
+Chevalier_2023_Discrete_Causal_Action_and_Holes_in_Spacetime.pdf,,accion-curvatura,,proposed
+Coarse-grained models for loop quantum gravity and their renormalization-with-annotations.pdf,,fuera-de-tema,,proposed
+Collective Behavior in a Local Causal Model.pdf,,fuera-del-nucleo,,proposed
+Computer simulations of causal sets.pdf,,simulacion,,proposed
+Conciliating Mulla Sadra.pdf,,filosofia,,proposed
+Continuum_Limit_BDG_Causal_Set_Action_arXiv2007.13192.pdf,,accion-curvatura,,proposed
+Cosmological_Tests_of_Everpresent_Lambda_arXiv1703.06265.pdf,,cosmologia-lambda,,proposed
+Crystalline Time A Model of Cosmogenesis.pdf,,fuera-del-nucleo,,proposed
+Dark_Energy_From_Causal_Set_Theory_Luddy.pdf,,cosmologia-lambda,,proposed
+Deuschel_Zeitouni_1995_AnnProb_23_852_Limiting_Curves_for_IID_Records.pdf,,probabilidad-estadistica,,proposed
+Dhital_2023_Black_Hole_Entropy_in_Causal_Set_Approach.pdf,,horizontes-bh;entropia,,proposed
+Directions_in_Causal_Set_QG_arXiv1103.6272.pdf,,cst-fundamentos;revision,,proposed
+Discrete geometry of a small causal diamond.pdf,,cst-fundamentos,,proposed
+Discreteness without symmetry breaking a theorem.pdf,,fenomenologia,,proposed
+Do the Two Operations Addition.pdf,,fuera-de-tema,,proposed
+Dominance-Based Rough Set Approach in Selection.pdf,,fuera-de-tema,,proposed
+Dynamics_of_Causal_Sets_arXiv_gr-qc0212064.pdf,Dynamics of Causal Sets (D. P. Rideout; tesis),dinamica-crecimiento;tesis,,proposed
+emergencia/1805.07312v1_Aghili_Bombelli_Pilgrim_Path_Length_2D_Causal_Sets.pdf,,reconstruccion-orden-numero,,proposed
+emergencia/1912.00033v3_Hoehn_Smith_Lock_Trinity_Relational_Quantum_Dynamics.pdf,,tiempo-relacional,,proposed
+emergencia/2007.03835v3_Kambor_X_Manifold_Properties_Using_Chains.pdf,,dimension-embedding,,proposed
+emergencia/2008.02607v1_Zalel_Structure_of_Covtree.pdf,,dinamica-crecimiento,,proposed
+emergencia/2302.10582v1_Zalel_Covariant_Growth_Dynamics.pdf,,dinamica-crecimiento,,proposed
+emergencia/2308.10967v4_Hausmann_et_al_Measurement_Events_Temporal_QRF.pdf,,tiempo-relacional,,proposed
+emergencia/2502.09701v2_Johnston_Simpler_Embeddings_Causal_Sets.pdf,,dimension-embedding,,proposed
+emergencia/2509.07745v3_Barontini_Testing_Problem_of_Time_Cold_Atoms.pdf,,tiempo-relacional,,proposed
+emergencia/2603.12283v1_Ferradini_et_al_Emergent_Causal_Order_Time_Direction.pdf,,tiempo-relacional,,proposed
+emergencia/gr-qc0210061v2_Brightwell_et_al_Covariant_Observables.pdf,"""Observables"" in causal set cosmology",dinamica-crecimiento,,proposed
+emergencia/gr-qc0506133v1_Major_Rideout_Surya_Spatial_Hypersurfaces.pdf,,dinamica-crecimiento,,proposed
+emergencia/gr-qc0601069v1_Henson_Constructing_Minkowski_Interval.pdf,,dimension-embedding,,proposed
+emergencia/math9810105v2_Baik_Deift_Johansson_Longest_Increasing_Subsequence.pdf,,probabilidad-estadistica,,proposed
+Emergence_of_Spacetime_from_Causal_Sets_Philsci.pdf,,filosofia,,proposed
+Entanglement_Entropy_in_Causal_Set_Theory_Yazdi.pdf,,entropia;qft-cst,,proposed
+Everpresent_Lambda_arXiv_gr-qc0003043.pdf,Indications of causal set cosmology (Sorkin),cosmologia-lambda,,proposed
+Evolution_of_Universes_in_Causal_Set_Cosmology_arXiv1703.07556.pdf,,cosmologia-lambda;dinamica-crecimiento,,proposed
+Experimental Observation of Dynamical Phase.pdf,,fuera-de-tema,,proposed
+First_Steps_with_Causal_Sets_Capri.pdf,,cst-fundamentos;revision,,proposed
+fractional-graph-theory-a-rational-approach-to-the-theory-of-157bznenje.pdf,,teoria-de-ordenes;libro,,proposed
+Generalised_Sorkin_Johnston_Brum_Fredenhagen_States.pdf,,qft-cst,,proposed
+Glaser–Surya 2013 _arXiv1309.3403.pdf,,accion-curvatura,,proposed
+gr-qc0002053_Bombelli_Statistical_Lorentzian_Geometry_Closeness.pdf,Statistical Lorentzian geometry and the closeness of Lorentzian manifolds,reconstruccion-orden-numero,,proposed
+Henson_2006_Causal_Set_Approach_to_QG_arXiv_gr-qc0601121.pdf,,cst-fundamentos;revision,,proposed
+Hu_2013_Causal_Set_Approach_to_Quantum_Gravity.pdf,The Causal Set Approach to Quantum Gravity (Y. Hu; MSc Imperial),cst-fundamentos;tesis,,proposed
+Improve Results for Set Identities.pdf,,fuera-de-tema,,proposed
+Jalan_2021_Quantum_Field_Theory_on_3D_Causal_Sets.pdf,Quantum Field Theory on 3D Causal Sets (S. Jalan; MSc Imperial),qft-cst;tesis,,proposed
+Lectures on the Poisson Process.pdf,,probabilidad-estadistica,,proposed
+Libro_basico.pdf,,cst-fundamentos;revision,,proposed
+Libro_basico_2.pdf,,filosofia,,proposed
+Manifoldlike_Causal_Sets_eGrove_ETD.pdf,,dimension-embedding;tesis,,proposed
+Mathematical Foundations of the Vacuum.pdf,,fuera-del-nucleo,,proposed
+McGough_Exploring_Manifoldlike_Causal_Sets_and_Dimensions.pdf,,dimension-embedding;tesis,,proposed
+Modified Lorentz Transformations.pdf,,fuera-del-nucleo,,proposed
+ordenes dimension 001.pdf,,teoria-de-ordenes,,proposed
+ordenes dimension 002.pdf,,teoria-de-ordenes,,proposed
+ordenes dimension 003.pdf,,teoria-de-ordenes,"Sin capa de texto; etiqueta deducida solo del nombre de fichero",proposed
+ordenes dimension 004.pdf,,teoria-de-ordenes,,proposed
+ordenes dimension 005.pdf,On the well dimension of ordered sets (V. Novák),teoria-de-ordenes,,proposed
+ordenes dimension 006.pdf,,teoria-de-ordenes,,proposed
+ordenes dimension 007.pdf,The Dimension of Semiorders (I. Rabinovitch),teoria-de-ordenes,,proposed
+ordenes dimension 008.pdf,,teoria-de-ordenes,,proposed
+ordenes dimension 009.pdf,,teoria-de-ordenes,"Sin capa de texto; etiqueta deducida solo del nombre de fichero",proposed
+ordenes dimension 010.pdf,,teoria-de-ordenes,,proposed
+Origin of time and probability in quantum.pdf,,tiempo-relacional,,proposed
+paper_june_2026.pdf,,fuera-de-tema,,proposed
+parcial_Set_Trotter.pdf,Combinatorial problems in dimension theory for partially ordered sets (W. T. Trotter),teoria-de-ordenes,,proposed
+PhysRevD.110.024008-accepted.pdf,Measuring spatial distances in causal sets via causal overlaps (Boguñá; Krioukov),reconstruccion-orden-numero,,proposed
+preview-9780080933849_A23543816.pdf,,teoria-de-ordenes;libro,,proposed
+QFT_On_Causal_Sets_arXiv2306.04800.pdf,,qft-cst,,proposed
+Quantum_field_theory_on_a_causal_set.pdf,,qft-cst,,proposed
+Random graphs.pdf,,probabilidad-estadistica,,proposed
+Reaction Mechanics for Point Objects.pdf,,fuera-del-nucleo,,proposed
+Reid_2004_Manifold_Dimension_of_Causal_Sets_arXiv_gr-qc0207103.pdf,,dimension-embedding,,proposed
+Relational dynamics and Page_Wootters formalism.pdf,,tiempo-relacional,,proposed
+Relational Time as a Stochastic Variable.pdf,,tiempo-relacional,,proposed
+Rideout_Sorkin_1999_Classical_Sequential_Growth_Dynamics_arXiv_gr-qc9904062.pdf,A Classical Sequential Growth Dynamics for Causal Sets,dinamica-crecimiento,,proposed
+Singularity Resolution in Quantum Cosmology.pdf,,tiempo-relacional,,proposed
+sorkin/for.gr.course/general.info.I.pdf,,curso-sorkin,,proposed
+sorkin/for.gr.course/homework.set.1.pdf,,curso-sorkin,,proposed
+sorkin/for.gr.course/homework.set.2.pdf,,curso-sorkin,,proposed
+sorkin/for.gr.course/homework.set.3.pdf,,curso-sorkin,,proposed
+sorkin/for.gr.course/homework.set.4.pdf,,curso-sorkin,,proposed
+sorkin/for.gr.course/homework.set.5.pdf,,curso-sorkin,,proposed
+sorkin/for.gr.course/mathematical.language.gr.pdf,,curso-sorkin,,proposed
+sorkin/for.gr.course/syllabus.pdf,,curso-sorkin,,proposed
+sorkin/for.gr.course/tensors.gr.pdf,,curso-sorkin,,proposed
+sorkin/lecture.notes/geroch.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/lecture.notes/path.integral.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/lecture.notes/stokes.theorem.pdf,,curso-sorkin,,proposed
+sorkin/some.papers/100.contin.lim.pdf,Evidence for a continuum limit in causal set dynamics,dinamica-crecimiento,,proposed
+sorkin/some.papers/101.peyresq.pdf,,cosmologia-lambda,,proposed
+sorkin/some.papers/108.djamel.pdf,Black Hole Entropy as Causal Links,horizontes-bh;entropia,,proposed
+sorkin/some.papers/109.lambda.pdf,,cosmologia-lambda,,proposed
+sorkin/some.papers/111.balfest.pdf,,teoria-de-ordenes,,proposed
+sorkin/some.papers/113.qrw.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/114.heo.marolf.pdf,On the Status of Highly Entropic Objects,horizontes-bh;entropia,,proposed
+sorkin/some.papers/115.swerves.pdf,,fenomenologia,,proposed
+sorkin/some.papers/116.hamilton.crew.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/117.piombino.2004.pdf,,cosmologia-lambda,,proposed
+sorkin/some.papers/118.ten.theses.pdf,,horizontes-bh;entropia,,proposed
+sorkin/some.papers/121.sprinkling.pdf,,fenomenologia,,proposed
+sorkin/some.papers/122.nonlocality.pdf,,fenomenologia,,proposed
+sorkin/some.papers/123.ghirardi.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/125.rob.masoud.pdf,The disjointed thermodynamics of rotating black holes,horizontes-bh,,proposed
+sorkin/some.papers/126.asynchronous.becoming.pdf,,filosofia,,proposed
+sorkin/some.papers/128.cancer.pdf,,fuera-de-tema,,proposed
+sorkin/some.papers/130.swerves.II.pdf,,fenomenologia,,proposed
+sorkin/some.papers/134.tunneling.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/135.catuskoti.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/138.hilb.space.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/139.coevents.capetown.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/140.gudder.2site.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/141.fthqmt.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/142.causet.dcf.pdf,,qft-cst,,proposed
+sorkin/some.papers/143.s.from.w.pdf,,entropia;qft-cst,,proposed
+sorkin/some.papers/147.know.own.energy.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/148.pdf,,entropia;qft-cst,,proposed
+sorkin/some.papers/153.measure.q.measure.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/151.area.law.pdf,,entropia,,proposed
+sorkin/some.papers/156.bdry.and.corner.pdf,,accion-curvatura,,proposed
+sorkin/some.papers/157.G2f.pdf,,qft-cst,,proposed
+sorkin/some.papers/158.brownian.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/159.lambda.cmb.pdf,,cosmologia-lambda,,proposed
+sorkin/some.papers/160.rop.pdf,,fuera-de-tema,,proposed
+sorkin/some.papers/163.lor.trig.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/164.spr.2.pdf,,fenomenologia,,proposed
+sorkin/some.papers/168.tensor.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/25.ockham.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/28.KKmonopole.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/31.padova.entropy.pdf,,horizontes-bh;entropia,,proposed
+sorkin/some.papers/58.greensboro.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/59.victoria.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/63.eprb.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/67.qbrownian.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/80.qmqmt.pdf,,mecanica-cuantica-historias,,proposed
+sorkin/some.papers/82.forks.pdf,,cst-fundamentos,,proposed
+sorkin/some.papers/85.winnipeg.pdf,,horizontes-bh,,proposed
+sorkin/some.papers/87.jorma.yarmulke.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/88.madhavan.pdf,,horizontes-bh,,proposed
+sorkin/some.papers/89.fay.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/91.wrinkled.pdf,How Wrinkled is the Surface of a Black Hole?,horizontes-bh,,proposed
+sorkin/some.papers/95.jorma.pdf,,otros-sorkin,,proposed
+sorkin/some.papers/96.rubber.band.pdf,An energy bound deduced from the vanishing of the radiation reaction force during uniform acceleration,otros-sorkin,,proposed
+sorkin/some.papers/98.ccds.pdf,Causal continuity in degenerate spacetimes,otros-sorkin,,proposed
+Sorkin_1991_Spacetime_and_Causal_Sets_Cocoyoc.pdf,,cst-fundamentos,"p.1 ilegible; etiqueta deducida solo del nombre de fichero",proposed
+Sorkin_2007_Nonlocal_Quantum_Residue_Lambda.pdf,,cosmologia-lambda,,proposed
+Sorkin_2008_Light_Links_and_Causal_Sets_Dice08.pdf,,cst-fundamentos;fenomenologia,,proposed
+Spacetime as Temporal Layers of Spatial Graphs.pdf,,fuera-del-nucleo,,proposed
+Spacetime Structures in a Causal Model of.pdf,,fuera-del-nucleo,,proposed
+The causal set approach to quantum gravity.pdf,,cst-fundamentos;revision,,proposed
+THE TOPOLOGY OF GROMOV–HAUSDORFF SPACE.pdf,,reconstruccion-orden-numero,,proposed
+Testing the problem of time with cold atoms.pdf,,tiempo-relacional,,proposed
+Time as a test_field the no_boundary.pdf,,tiempo-relacional,,proposed
+Trouble_with_Causal_Sets_arXiv2405.14059.pdf,,cst-fundamentos,,proposed
+Tsybakov_Nonparametric_Estimation.pdf,,probabilidad-estadistica;libro,,proposed
+Wuthrich_2023_Philosophy_of_Causal_Set_Theory.pdf,,filosofia,,proposed
+Zwane_Cosmological_Tests_of_Everpresent_Lambda.pdf,,cosmologia-lambda,,proposed

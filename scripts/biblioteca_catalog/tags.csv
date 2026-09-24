@@ -1,0 +1,24 @@
+tag,descripcion
+cst-fundamentos,fundamentos y visiones generales de la teoria de conjuntos causales
+revision,articulo de revision o introduccion
+tesis,tesis doctoral o de master
+libro,libro o manual
+reconstruccion-orden-numero,recuperar geometria (metrica volumen distancia) a partir de orden y numero
+dimension-embedding,dimension y embeddings de causets en variedades (Myrheim-Meyer etc.)
+accion-curvatura,accion Benincasa-Dowker-Glaser dAlembertianos operadores de curvatura y localidad
+horizontes-bh,horizontes y agujeros negros en causets
+entropia,entropia (agujeros negros entrelazamiento area law)
+qft-cst,teoria cuantica de campos sobre conjuntos causales
+dinamica-crecimiento,dinamica de crecimiento secuencial (CSG) y observables cosmologicos
+cosmologia-lambda,constante cosmologica Lambda persistente y cosmologia de causets
+fenomenologia,discretitud invariancia Lorentz y senales observables
+mecanica-cuantica-historias,programa de historias / medida cuantica de Sorkin
+teoria-de-ordenes,conjuntos parcialmente ordenados y teoria de la dimension de posets
+probabilidad-estadistica,probabilidad procesos de Poisson grafos aleatorios y estadistica asintotica
+tiempo-relacional,problema del tiempo y dinamica relacional
+filosofia,filosofia de los causets y del tiempo
+simulacion,simulacion numerica y software
+curso-sorkin,material de curso de Sorkin (relatividad general)
+otros-sorkin,otros articulos de Sorkin sin materia propia
+fuera-del-nucleo,marginal respecto a CST (modelos causales alternativos etc.)
+fuera-de-tema,sin relacion con el proyecto
