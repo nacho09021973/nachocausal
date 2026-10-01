@@ -1,0 +1,60 @@
+{
+  "status": "explicit_recursion_verified_limit_open",
+  "sympy_version": "1.14.0",
+  "records": [
+    {
+      "moment": 0,
+      "lambda": "0",
+      "initial_norm_squared": "19/2217600",
+      "steps": [
+        {
+          "step": 1,
+          "test_degree": 6,
+          "degree_bound": 6,
+          "residual_degree": 15,
+          "residual_norm_squared": "12282133217171950463/1435706033769892684800000",
+          "weighted_forward_norm_squared_before_step": "5025953/3072364162560000",
+          "exact_energy_identity": true
+        },
+        {
+          "step": 2,
+          "test_degree": 16,
+          "degree_bound": 16,
+          "residual_degree": 25,
+          "residual_norm_squared": "39339019854051338231530130321805068760015960097277/4605442617980367294258974400379133400508416000000000000",
+          "weighted_forward_norm_squared_before_step": "118206807669074560375961565166241/73030512576893319936715504486809600000000",
+          "exact_energy_identity": true
+        }
+      ],
+      "first_test_polynomial": "(105*x**6 + 612*x**5*y - 621*x**5 - 483*x**4*y**2 - 1047*x**4*y + 927*x**4 + 966*x**3*y**2 + 492*x**3*y - 528*x**3 - 483*x**2*y**4 + 966*x**2*y**3 - 1260*x**2*y**2 + 120*x**2*y + 89*x**2 + 612*x*y**5 - 1047*x*y**4 + 492*x*y**3 + 120*x*y**2 - 2*x + 105*y**6 - 621*y**5 + 927*y**4 - 528*y**3 + 89*y**2 - 2*y)/420"
+    },
+    {
+      "moment": 3,
+      "lambda": "13/33",
+      "initial_norm_squared": "86953/1400982382800",
+      "steps": [
+        {
+          "step": 1,
+          "test_degree": 9,
+          "degree_bound": 9,
+          "residual_degree": 18,
+          "residual_norm_squared": "17433413600323014936353864653/281500770333113688363376930560000000",
+          "weighted_forward_norm_squared_before_step": "1570735250969/92661639424434400320000",
+          "exact_energy_identity": true
+        },
+        {
+          "step": 2,
+          "test_degree": 19,
+          "degree_bound": 19,
+          "residual_degree": 28,
+          "residual_norm_squared": "733292393474923611502746557614394578708432283695946112227/11866478760348835461131990393286818024081122721275392000000000000",
+          "weighted_forward_norm_squared_before_step": "5386464705579137816062479613171388873/318965921459532317914325496378645308928000000000",
+          "exact_energy_identity": true
+        }
+      ],
+      "first_test_polynomial": "(x + y - 1)*(10560*x**8 + 24398*x**7*y - 54439*x**7 - 56848*x**6*y**2 - 28545*x**6*y + 96366*x**6 + 56848*x**5*y**3 + 85272*x**5*y**2 - 7861*x**5*y - 80298*x**5 - 56848*x**4*y**4 - 28424*x**4*y**3 - 63650*x**4*y**2 + 26757*x**4*y + 33099*x**4 + 56848*x**3*y**5 - 28424*x**3*y**4 + 35226*x**3*y**3 + 17613*x**3*y**2 - 12336*x**3*y - 5829*x**3 - 56848*x**2*y**6 + 85272*x**2*y**5 - 63650*x**2*y**4 + 17613*x**2*y**3 - 8406*x**2*y**2 + 2097*x**2*y + 234*x**2 + 24398*x*y**7 - 28545*x*y**6 - 7861*x*y**5 + 26757*x*y**4 - 12336*x*y**3 + 2097*x*y**2 + 10560*y**8 - 54439*y**7 + 96366*y**6 - 80298*y**5 + 33099*y**4 - 5829*y**3 + 234*y**2)/6930"
+    }
+  ],
+  "claim_ceiling": "No assertion that the residual norms tend to zero. No capacity table extended.",
+  "verifier_sha256": "5b5adae0f6aafa46044124ea0389c24c0d2053a76ba2e2852cdfe3d00777a46e"
+}

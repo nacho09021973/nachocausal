@@ -1,0 +1,77 @@
+{
+  "status": "exact_checks_completed",
+  "max_polynomial_degree": 8,
+  "test_multiplier": "chi * (J tensor J)g / (y-x)",
+  "records": [
+    {
+      "g_reflection_parity": 0,
+      "boundary_parity": "odd",
+      "scope": "all_polynomials",
+      "dimension": 10,
+      "rank": 9,
+      "positive_semidefinite_on_finite_space": false,
+      "witness_g": "-8*(x - y)*(x + y - 1)*(2*x**2 - 2*x + 2*y**2 - 2*y + 1)",
+      "energy_exact": "-16/354375",
+      "diagonal_Kg": "16*x**2*(x - 1)**2*(2*x - 1)/5"
+    },
+    {
+      "g_reflection_parity": 0,
+      "boundary_parity": "odd",
+      "scope": "exact_diagonal_constraint",
+      "dimension": 7,
+      "rank": 6,
+      "positive_semidefinite_on_finite_space": false,
+      "witness_g": "-4*(x - y)*(x + y - 1)*(180000*x**6 - 302400*x**5*y - 388800*x**5 + 280800*x**4*y**2 + 475200*x**4*y + 265952*x**4 + 369600*x**3*y**3 - 1116000*x**3*y**2 + 84480*x**3*y - 56944*x**3 + 280800*x**2*y**4 - 1116000*x**2*y**3 + 1550912*x**2*y**2 - 478832*x**2*y + 4646*x**2 - 302400*x*y**5 + 475200*x*y**4 + 84480*x*y**3 - 478832*x*y**2 + 189212*x*y - 2964*x + 180000*y**6 - 388800*y**5 + 265952*y**4 - 56944*y**3 + 4646*y**2 - 2964*y + 171)/105",
+      "energy_exact": "-2035318048/2659406124375",
+      "diagonal_Kg": "0",
+      "witness_in_m_d": "4*d*m*(18075*d**6 + 140175*d**4*m**2 - 20559*d**4 + 11025*d**2*m**4 - 60550*d**2*m**2 + 4545*d**2 + 10725*m**6 - 20139*m**4 + 9585*m**2)/105",
+      "restricted_coordinates": [
+        "0",
+        "24",
+        "1",
+        "-13",
+        "-45",
+        "15",
+        "100"
+      ],
+      "temporal_gauge_correction": "19132/1155",
+      "centered_integral_crosscheck": true
+    },
+    {
+      "g_reflection_parity": 1,
+      "boundary_parity": "even",
+      "scope": "all_polynomials",
+      "dimension": 10,
+      "rank": 10,
+      "positive_semidefinite_on_finite_space": false,
+      "witness_g": "-8*(x - y)*(10*x**2 + 10*x*y - 15*x + 10*y**2 - 15*y + 6)",
+      "energy_exact": "-38/525",
+      "diagonal_Kg": "24*x**2*(x - 1)**2"
+    },
+    {
+      "g_reflection_parity": 1,
+      "boundary_parity": "even",
+      "scope": "exact_diagonal_constraint",
+      "dimension": 6,
+      "rank": 6,
+      "positive_semidefinite_on_finite_space": false,
+      "witness_g": "8*(x - y)*(378*x**4 + 258*x**3*y - 885*x**3 - 342*x**2*y**2 - 45*x**2*y + 650*x**2 + 258*x*y**3 - 45*x*y**2 - 40*x*y - 165*x + 378*y**4 - 885*y**3 + 650*y**2 - 165*y + 19)/15",
+      "energy_exact": "-22094/35083125",
+      "diagonal_Kg": "0",
+      "witness_in_m_d": "d*(51*d**4 - 2610*d**2*m**2 - 70*d**2 - 465*m**4 + 270*m**2 + 43)/15",
+      "restricted_coordinates": [
+        "4",
+        "2",
+        "10",
+        "0",
+        "0",
+        "0"
+      ],
+      "temporal_gauge_correction": "0",
+      "centered_integral_crosscheck": true
+    }
+  ],
+  "sympy_version": "1.14.0",
+  "verifier_sha256": "ae1293be828cb949cbe43700cf5992fd47722975a987ddc13e5a5fba3275ea97",
+  "claim_ceiling": "Finite inequality test only; no capacity limit or uniqueness claim."
+}

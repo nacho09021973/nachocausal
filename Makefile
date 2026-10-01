@@ -1,6 +1,7 @@
 # nachocausal — sealed-instrument targets (block #4).
-# Validation path is pure numpy (numpy==1.26.4). `gate` additionally needs the
-# external Minz clone via NACHOCAUSAL_MINZ_PATH.
+# Sealed numeric core is pure numpy (numpy==1.26.4). The canonical test suite also
+# imports support packages pinned in requirements.txt. `gate` additionally needs
+# the external Minz clone via NACHOCAUSAL_MINZ_PATH.
 
 PY ?= python
 

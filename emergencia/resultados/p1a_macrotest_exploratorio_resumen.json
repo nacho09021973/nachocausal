@@ -1,0 +1,126 @@
+{
+  "artifact_schema": "P1A_POST_HOC_EXPLORATORY_MACROTEST_D2_V1",
+  "artifacts": {
+    "p1a_macrotest_exploratorio_n_k_d2.csv": {
+      "phase": "POST_HOC_EXPLORATORY_MACROTEST",
+      "sha256": "aeefd21533807fedd5f3e0d14dd9768985a77ddc3e78986981287f240a18749a"
+    },
+    "p1a_macrotest_exploratorio_n_p_d2.csv": {
+      "phase": "POST_HOC_EXPLORATORY_MACROTEST",
+      "sha256": "ded2f28f042774d5e158ec2a29ce07d69555e9469d733ca0989de38e661e6d77"
+    }
+  },
+  "claim_ceiling": "Projective consistency of uniform permutations and exact finite n<=9 description only; no physical RG, power law, regression, or n->infinity claim",
+  "controls": {
+    "EXACT_THINNING_CONSISTENCY": "PASS",
+    "K_LT_6_ZERO": "PASS",
+    "P0_ZERO": "PASS",
+    "P1_REPRODUCES_FROZEN": "PASS",
+    "POLYNOMIAL_EVALUATION": "PASS"
+  },
+  "exact_identity": {
+    "EXACT_THINNING_CONSISTENCY": true,
+    "INDUCED_PATTERN_GIVEN_K_IS_UNIFORM_S_K": true,
+    "data_verification": "all 34 (n,k) cells agree exactly with the frozen S_k counts",
+    "proof": "For fixed retained positions A and tau in S_k, choose the k retained values in C(n,k) ways; tau fixes their placement on A and the remaining values have (n-k)! orders. Thus n!/k! permutations induce tau, independent of A and tau. Conditioning iid thinning on K=k makes A uniform."
+  },
+  "frozen_baseline": {
+    "6": {
+      "E_available": "1/720",
+      "U_orbital": "1/720",
+      "U_orbital_given_available": "1"
+    },
+    "7": {
+      "E_available": "37/5040",
+      "U_orbital": "1/140",
+      "U_orbital_given_available": "36/37"
+    },
+    "8": {
+      "E_available": "99/4480",
+      "U_orbital": "41/2016",
+      "U_orbital_given_available": "820/891"
+    },
+    "9": {
+      "E_available": "18043/362880",
+      "U_orbital": "5141/120960",
+      "U_orbital_given_available": "15423/18043"
+    }
+  },
+  "grid_diagnostics": {
+    "E_available": {
+      "6": "NONDECREASING",
+      "7": "NONDECREASING",
+      "8": "NONDECREASING",
+      "9": "NONDECREASING"
+    },
+    "U_orbital": {
+      "6": "NONDECREASING",
+      "7": "NONDECREASING",
+      "8": "NONDECREASING",
+      "9": "NONDECREASING"
+    },
+    "U_orbital_given_available": {
+      "6": "NONDECREASING",
+      "7": "NONINCREASING",
+      "8": "NONINCREASING",
+      "9": "NONINCREASING"
+    },
+    "scope": "descriptive on the fixed p grid"
+  },
+  "large_n_preflight": {
+    "LARGE_N_ORBITAL_BACKEND": "NOT_AVAILABLE",
+    "first_blocker": "emergencia/p1a_tie_aut_diagnostic.py::exact_automorphisms and evaluate_tie_aut reject n>9; no validated general r_orb backend was found"
+  },
+  "method": {
+    "empty_contributes_zero": true,
+    "evaluation": "EXACT_RATIONAL_BERNSTEIN_COEFFICIENT_AGGREGATION",
+    "literal_STATE_UNIQUE_used_as_proxy": false,
+    "monte_carlo": false,
+    "orbital_uniqueness_states": [
+      "UNIQUE",
+      "TIE_AUT_ONLY"
+    ],
+    "p_grid": [
+      "0",
+      "1/10",
+      "3/20",
+      "1/5",
+      "1/4",
+      "3/10",
+      "7/20",
+      "2/5",
+      "9/20",
+      "1/2",
+      "11/20",
+      "3/5",
+      "13/20",
+      "7/10",
+      "3/4",
+      "4/5",
+      "17/20",
+      "9/10",
+      "19/20",
+      "1"
+    ],
+    "population": "uniform permutation in S_n"
+  },
+  "phase": "POST_HOC_EXPLORATORY_MACROTEST",
+  "provenance": {
+    "coefficient_rows_reused": {
+      "6": 1,
+      "7": 37,
+      "8": 891,
+      "9": 18043
+    },
+    "exact_sources": {
+      "p1a_qp_coeficientes_d2.csv": "ab2b4bdad7c6571f917e019521dbd3b28f7e2d343df6a149c0d82402167309b9",
+      "p1a_qp_falsador_resumen.json": "9da715e59c4b1c730083cb86a032d1b883abe6c2e788ba92f86a2365377e515a",
+      "p1a_tie_aut_exacto_d2.json": "1bd9d882337b0aec56ff1bf87b0dd8de2fa415dc50b494eddb3bcfa4cf5c68f3"
+    },
+    "generator": "emergencia/p1a_macrotest_exploratorio_d2.py",
+    "generator_sha256": "ba893ec24016706362e7bb504d542eaeb19bb2f54c759e7dbf189845f48de0eb",
+    "new_dependencies": [],
+    "randomness": null
+  },
+  "result_status": "EXACT_MACROTEST_COMPLETED_LARGE_N_BLOCKED"
+}

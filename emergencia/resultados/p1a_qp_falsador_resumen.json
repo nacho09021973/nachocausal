@@ -1,0 +1,1025 @@
+{
+  "artifact_schema": "P1A_QP_FALSADOR_D2_V1",
+  "authorization": {
+    "all_members_reported": true,
+    "contract": "emergencia/P1a_contrato_falsador_paso7_d2.md",
+    "criterion": "EXACT_COEFFICIENT_VECTOR_EQUALITY",
+    "design_phase": "CLOSED_ON_SIGNOFF",
+    "multiplicity_correction": "NOT_APPLICABLE_EXACT_EQUALITY",
+    "null_band": null,
+    "p_choice": null,
+    "population": "AVAILABLE_FIBRES_WITH_AT_LEAST_TWO_MEMBERS",
+    "signoff": "PI, 26 August 2026",
+    "threshold": null
+  },
+  "declared_tautologies": {
+    "depth_monotonicity_of_D": "H4; direction forced, only magnitude informs",
+    "n6_is_vacuous": "H2; no free coefficient exists at n=6",
+    "q0_is_zero": "control; a_0 = 0 by construction",
+    "q1_equals_r_orb": "control tautologico; r_orb is a function of Xi^A",
+    "unavailable_fibre_is_zero": "H1, proved before execution and tested here"
+  },
+  "method": {
+    "cache": "memoized by induced pattern; r_orb is an isomorphism invariant",
+    "evaluation": "EXACT_MASK_SUM",
+    "monte_carlo": false,
+    "supremum": "certified rational enclosure via Sturm isolation on (0,1)",
+    "supremum_bracket_width": "<= 2^-40 before the exact Lipschitz correction"
+  },
+  "provenance": {
+    "absent_permutation_semantics": "a permutation absent from the coefficient table has Q(C) empty, hence a = b = 0 identically by H1; this is a theorem, not a convention",
+    "coefficient_csv": "p1a_qp_coeficientes_d2.csv",
+    "coefficient_csv_sha256": "ab2b4bdad7c6571f917e019521dbd3b28f7e2d343df6a149c0d82402167309b9",
+    "frozen_instrument": "emergencia/p1a_tie_aut_diagnostic.py",
+    "frozen_instrument_modified": false,
+    "frozen_instrument_sha256": "5614a5f33da0611170aaf5e77f24f2f19b646ec3f3559191c21d74fed402b7b4",
+    "generator": "emergencia/p1a_qp_falsador_d2.py",
+    "generator_sha256": "b5d1e2f6856cebadb6caba1b68d813dec1d6d9881322bd2776bd62f323685ca7",
+    "new_dependencies": [],
+    "randomness": null,
+    "supremum_module": "emergencia/p1a_sup_exacto.py",
+    "supremum_module_sha256": "3953d87324fa723c0e1e8623edd760f8f600641e47d52fd395545244a773c0e3"
+  },
+  "reports": [
+    {
+      "XI_A": {
+        "D_high": 0.0,
+        "D_low": 0.0,
+        "D_witness": null,
+        "excluded_singleton_fibres": 1,
+        "excluded_unavailable_fibre_permutations": 719,
+        "h": null,
+        "homogeneous_fibres": 0,
+        "inhomogeneous_examples": [],
+        "population_fibres": 0,
+        "population_permutations": 0,
+        "verdict": "VACUOUS",
+        "w": null
+      },
+      "XI_B": {
+        "D_high": 0.0,
+        "D_low": 0.0,
+        "D_witness": null,
+        "excluded_singleton_fibres": 1,
+        "excluded_unavailable_fibre_permutations": 719,
+        "h": null,
+        "homogeneous_fibres": 0,
+        "inhomogeneous_examples": [],
+        "population_fibres": 0,
+        "population_permutations": 0,
+        "verdict": "VACUOUS",
+        "w": null
+      },
+      "XI_C": {
+        "D_high": 0.0,
+        "D_low": 0.0,
+        "D_witness": null,
+        "excluded_singleton_fibres": 1,
+        "excluded_unavailable_fibre_permutations": 719,
+        "h": null,
+        "homogeneous_fibres": 0,
+        "inhomogeneous_examples": [],
+        "population_fibres": 0,
+        "population_permutations": 0,
+        "verdict": "VACUOUS",
+        "w": null
+      },
+      "available_permutations": 1,
+      "degrees_of_freedom": 0,
+      "free_coefficients": [],
+      "n": 6,
+      "permutations": 720,
+      "unavailable_permutations": 719,
+      "validation": {
+        "h1_exhaustive_mask_checks": 200,
+        "q0_zero_checked": 1,
+        "q1_equals_r_orb_checked": 1,
+        "reranking_and_direct_sum_checks": 1
+      }
+    },
+    {
+      "XI_A": {
+        "D_high": 0.0,
+        "D_low": 0.0,
+        "D_witness": null,
+        "excluded_singleton_fibres": 1,
+        "excluded_unavailable_fibre_permutations": 5003,
+        "h": 1.0,
+        "homogeneous_fibres": 3,
+        "inhomogeneous_examples": [],
+        "population_fibres": 3,
+        "population_permutations": 36,
+        "verdict": "SUFFICIENT",
+        "w": 1.0
+      },
+      "XI_B": {
+        "D_high": 0.0,
+        "D_low": 0.0,
+        "D_witness": null,
+        "excluded_singleton_fibres": 1,
+        "excluded_unavailable_fibre_permutations": 5003,
+        "h": 1.0,
+        "homogeneous_fibres": 3,
+        "inhomogeneous_examples": [],
+        "population_fibres": 3,
+        "population_permutations": 36,
+        "verdict": "SUFFICIENT",
+        "w": 1.0
+      },
+      "XI_C": {
+        "D_high": 0.0,
+        "D_low": 0.0,
+        "D_witness": null,
+        "excluded_singleton_fibres": 1,
+        "excluded_unavailable_fibre_permutations": 5003,
+        "h": 1.0,
+        "homogeneous_fibres": 3,
+        "inhomogeneous_examples": [],
+        "population_fibres": 3,
+        "population_permutations": 36,
+        "verdict": "SUFFICIENT",
+        "w": 1.0
+      },
+      "available_permutations": 37,
+      "degrees_of_freedom": 1,
+      "free_coefficients": [
+        6
+      ],
+      "n": 7,
+      "permutations": 5040,
+      "unavailable_permutations": 5003,
+      "validation": {
+        "h1_exhaustive_mask_checks": 200,
+        "q0_zero_checked": 37,
+        "q1_equals_r_orb_checked": 37,
+        "reranking_and_direct_sum_checks": 37
+      }
+    },
+    {
+      "XI_A": {
+        "D_high": 0.23482587237963976,
+        "D_low": 0.23482587230688018,
+        "D_witness": {
+          "alpha_a": [
+            3,
+            3
+          ],
+          "alpha_b": [
+            8,
+            7
+          ],
+          "permutation_a": "01236547",
+          "permutation_b": "01235647",
+          "sup_high": 0.23482587237963976,
+          "sup_low": 0.23482587230688018,
+          "xi": [
+            1,
+            3,
+            8,
+            1,
+            1
+          ]
+        },
+        "excluded_singleton_fibres": 0,
+        "excluded_unavailable_fibre_permutations": 39429,
+        "h": 0.5833333333333334,
+        "homogeneous_fibres": 7,
+        "inhomogeneous_examples": [
+          {
+            "alpha_a": [
+              2,
+              3
+            ],
+            "alpha_b": [
+              2,
+              4
+            ],
+            "distinct_alpha": 2,
+            "permutation_a": "01235764",
+            "permutation_b": "01236745",
+            "xi": [
+              1,
+              3,
+              6,
+              2,
+              1
+            ]
+          },
+          {
+            "alpha_a": [
+              2,
+              3
+            ],
+            "alpha_b": [
+              3,
+              4
+            ],
+            "distinct_alpha": 2,
+            "permutation_a": "01236574",
+            "permutation_b": "01235746",
+            "xi": [
+              1,
+              3,
+              7,
+              1,
+              1
+            ]
+          },
+          {
+            "alpha_a": [
+              7,
+              7
+            ],
+            "alpha_b": [
+              8,
+              7
+            ],
+            "distinct_alpha": 2,
+            "permutation_a": "01235674",
+            "permutation_b": "01234675",
+            "xi": [
+              1,
+              3,
+              7,
+              2,
+              2
+            ]
+          },
+          {
+            "alpha_a": [
+              3,
+              3
+            ],
+            "alpha_b": [
+              13,
+              6
+            ],
+            "distinct_alpha": 3,
+            "permutation_a": "01236547",
+            "permutation_b": "01235467",
+            "xi": [
+              1,
+              3,
+              8,
+              1,
+              1
+            ]
+          },
+          {
+            "alpha_a": [
+              4,
+              4
+            ],
+            "alpha_b": [
+              28,
+              0
+            ],
+            "distinct_alpha": 3,
+            "permutation_a": "02134657",
+            "permutation_b": "01234567",
+            "xi": [
+              1,
+              4,
+              8,
+              1,
+              1
+            ]
+          }
+        ],
+        "population_fibres": 12,
+        "population_permutations": 891,
+        "verdict": "NOT_SUFFICIENT",
+        "w": 0.7138047138047138
+      },
+      "XI_B": {
+        "D_high": 0.04908698798590194,
+        "D_low": 0.04908698797225952,
+        "D_witness": {
+          "alpha_a": [
+            2,
+            3
+          ],
+          "alpha_b": [
+            2,
+            4
+          ],
+          "permutation_a": "01235764",
+          "permutation_b": "01236745",
+          "sup_high": 0.04908698798590194,
+          "sup_low": 0.04908698797225952,
+          "xi": [
+            1,
+            3,
+            6,
+            2,
+            1,
+            0,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "excluded_singleton_fibres": 2,
+        "excluded_unavailable_fibre_permutations": 39429,
+        "h": 0.9375,
+        "homogeneous_fibres": 15,
+        "inhomogeneous_examples": [
+          {
+            "alpha_a": [
+              2,
+              3
+            ],
+            "alpha_b": [
+              2,
+              4
+            ],
+            "distinct_alpha": 2,
+            "permutation_a": "01235764",
+            "permutation_b": "01236745",
+            "xi": [
+              1,
+              3,
+              6,
+              2,
+              1,
+              0,
+              null,
+              null,
+              null,
+              null
+            ]
+          }
+        ],
+        "population_fibres": 16,
+        "population_permutations": 889,
+        "verdict": "NOT_SUFFICIENT",
+        "w": 0.859392575928009
+      },
+      "XI_C": {
+        "D_high": 0.04908698798590194,
+        "D_low": 0.04908698797225952,
+        "D_witness": {
+          "alpha_a": [
+            2,
+            3
+          ],
+          "alpha_b": [
+            2,
+            4
+          ],
+          "permutation_a": "01235764",
+          "permutation_b": "01236745",
+          "sup_high": 0.04908698798590194,
+          "sup_low": 0.04908698797225952,
+          "xi": [
+            1,
+            3,
+            6,
+            2,
+            1,
+            0,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1,
+            2,
+            1
+          ]
+        },
+        "excluded_singleton_fibres": 2,
+        "excluded_unavailable_fibre_permutations": 39429,
+        "h": 0.9375,
+        "homogeneous_fibres": 15,
+        "inhomogeneous_examples": [
+          {
+            "alpha_a": [
+              2,
+              3
+            ],
+            "alpha_b": [
+              2,
+              4
+            ],
+            "distinct_alpha": 2,
+            "permutation_a": "01235764",
+            "permutation_b": "01236745",
+            "xi": [
+              1,
+              3,
+              6,
+              2,
+              1,
+              0,
+              null,
+              null,
+              null,
+              null,
+              0,
+              null,
+              null,
+              null,
+              null,
+              1,
+              2,
+              1
+            ]
+          }
+        ],
+        "population_fibres": 16,
+        "population_permutations": 889,
+        "verdict": "NOT_SUFFICIENT",
+        "w": 0.859392575928009
+      },
+      "available_permutations": 891,
+      "degrees_of_freedom": 2,
+      "free_coefficients": [
+        6,
+        7
+      ],
+      "n": 8,
+      "permutations": 40320,
+      "unavailable_permutations": 39429,
+      "validation": {
+        "h1_exhaustive_mask_checks": 200,
+        "q0_zero_checked": 891,
+        "q1_equals_r_orb_checked": 891,
+        "reranking_and_direct_sum_checks": 200
+      }
+    },
+    {
+      "XI_A": {
+        "D_high": 0.3488757650836901,
+        "D_low": 0.34887576492089056,
+        "D_witness": {
+          "alpha_a": [
+            4,
+            6,
+            4
+          ],
+          "alpha_b": [
+            14,
+            24,
+            9
+          ],
+          "permutation_a": "012376548",
+          "permutation_b": "012367458",
+          "sup_high": 0.3488757650836901,
+          "sup_low": 0.34887576492089056,
+          "xi": [
+            1,
+            3,
+            9,
+            1,
+            1
+          ]
+        },
+        "excluded_singleton_fibres": 1,
+        "excluded_unavailable_fibre_permutations": 344837,
+        "h": 0.45454545454545453,
+        "homogeneous_fibres": 15,
+        "inhomogeneous_examples": [
+          {
+            "alpha_a": [
+              2,
+              5,
+              2
+            ],
+            "alpha_b": [
+              2,
+              6,
+              6
+            ],
+            "distinct_alpha": 4,
+            "permutation_a": "012583674",
+            "permutation_b": "012573846",
+            "xi": [
+              1,
+              3,
+              6,
+              2,
+              1
+            ]
+          },
+          {
+            "alpha_a": [
+              2,
+              5,
+              2
+            ],
+            "alpha_b": [
+              2,
+              6,
+              6
+            ],
+            "distinct_alpha": 4,
+            "permutation_a": "012487356",
+            "permutation_b": "012578346",
+            "xi": [
+              1,
+              3,
+              6,
+              2,
+              2
+            ]
+          },
+          {
+            "alpha_a": [
+              3,
+              6,
+              2
+            ],
+            "alpha_b": [
+              3,
+              8,
+              5
+            ],
+            "distinct_alpha": 2,
+            "permutation_a": "012458376",
+            "permutation_b": "012368745",
+            "xi": [
+              1,
+              3,
+              6,
+              3,
+              2
+            ]
+          },
+          {
+            "alpha_a": [
+              3,
+              7,
+              2
+            ],
+            "alpha_b": [
+              3,
+              8,
+              5
+            ],
+            "distinct_alpha": 5,
+            "permutation_a": "013582467",
+            "permutation_b": "012473856",
+            "xi": [
+              1,
+              3,
+              6,
+              3,
+              3
+            ]
+          },
+          {
+            "alpha_a": [
+              4,
+              6,
+              4
+            ],
+            "alpha_b": [
+              4,
+              10,
+              6
+            ],
+            "distinct_alpha": 3,
+            "permutation_a": "012348765",
+            "permutation_b": "012437856",
+            "xi": [
+              1,
+              3,
+              6,
+              4,
+              1
+            ]
+          }
+        ],
+        "population_fibres": 33,
+        "population_permutations": 18042,
+        "verdict": "NOT_SUFFICIENT",
+        "w": 0.542068506817426
+      },
+      "XI_B": {
+        "D_high": 0.1866520606420829,
+        "D_low": 0.18665206031921228,
+        "D_witness": {
+          "alpha_a": [
+            19,
+            23,
+            9
+          ],
+          "alpha_b": [
+            29,
+            28,
+            4
+          ],
+          "permutation_a": "012357468",
+          "permutation_b": "012356748",
+          "sup_high": 0.1866520606420829,
+          "sup_low": 0.18665206031921228,
+          "xi": [
+            1,
+            4,
+            8,
+            1,
+            1,
+            1,
+            3,
+            9,
+            1,
+            1
+          ]
+        },
+        "excluded_singleton_fibres": 3,
+        "excluded_unavailable_fibre_permutations": 344837,
+        "h": 0.7123287671232876,
+        "homogeneous_fibres": 52,
+        "inhomogeneous_examples": [
+          {
+            "alpha_a": [
+              2,
+              5,
+              2
+            ],
+            "alpha_b": [
+              2,
+              6,
+              6
+            ],
+            "distinct_alpha": 4,
+            "permutation_a": "012583674",
+            "permutation_b": "012573846",
+            "xi": [
+              1,
+              3,
+              6,
+              2,
+              1,
+              0,
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          {
+            "alpha_a": [
+              2,
+              5,
+              2
+            ],
+            "alpha_b": [
+              2,
+              6,
+              6
+            ],
+            "distinct_alpha": 4,
+            "permutation_a": "012487356",
+            "permutation_b": "012578346",
+            "xi": [
+              1,
+              3,
+              6,
+              2,
+              2,
+              0,
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          {
+            "alpha_a": [
+              3,
+              6,
+              2
+            ],
+            "alpha_b": [
+              3,
+              8,
+              5
+            ],
+            "distinct_alpha": 2,
+            "permutation_a": "012458376",
+            "permutation_b": "012368745",
+            "xi": [
+              1,
+              3,
+              6,
+              3,
+              2,
+              0,
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          {
+            "alpha_a": [
+              3,
+              7,
+              2
+            ],
+            "alpha_b": [
+              3,
+              8,
+              5
+            ],
+            "distinct_alpha": 5,
+            "permutation_a": "013582467",
+            "permutation_b": "012473856",
+            "xi": [
+              1,
+              3,
+              6,
+              3,
+              3,
+              0,
+              null,
+              null,
+              null,
+              null
+            ]
+          },
+          {
+            "alpha_a": [
+              4,
+              6,
+              4
+            ],
+            "alpha_b": [
+              4,
+              10,
+              6
+            ],
+            "distinct_alpha": 3,
+            "permutation_a": "012348765",
+            "permutation_b": "012437856",
+            "xi": [
+              1,
+              3,
+              6,
+              4,
+              1,
+              0,
+              null,
+              null,
+              null,
+              null
+            ]
+          }
+        ],
+        "population_fibres": 73,
+        "population_permutations": 18040,
+        "verdict": "NOT_SUFFICIENT",
+        "w": 0.6906319290465632
+      },
+      "XI_C": {
+        "D_high": 0.17872742005284212,
+        "D_low": 0.17872742000736738,
+        "D_witness": {
+          "alpha_a": [
+            2,
+            5,
+            2
+          ],
+          "alpha_b": [
+            2,
+            6,
+            6
+          ],
+          "permutation_a": "012583674",
+          "permutation_b": "012573846",
+          "sup_high": 0.17872742005284212,
+          "sup_low": 0.17872742000736738,
+          "xi": [
+            1,
+            3,
+            6,
+            2,
+            1,
+            0,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1,
+            2,
+            1
+          ]
+        },
+        "excluded_singleton_fibres": 3,
+        "excluded_unavailable_fibre_permutations": 344837,
+        "h": 0.8586956521739131,
+        "homogeneous_fibres": 79,
+        "inhomogeneous_examples": [
+          {
+            "alpha_a": [
+              2,
+              5,
+              2
+            ],
+            "alpha_b": [
+              2,
+              6,
+              6
+            ],
+            "distinct_alpha": 4,
+            "permutation_a": "012583674",
+            "permutation_b": "012573846",
+            "xi": [
+              1,
+              3,
+              6,
+              2,
+              1,
+              0,
+              null,
+              null,
+              null,
+              null,
+              0,
+              null,
+              null,
+              null,
+              null,
+              1,
+              2,
+              1
+            ]
+          },
+          {
+            "alpha_a": [
+              2,
+              5,
+              2
+            ],
+            "alpha_b": [
+              2,
+              6,
+              6
+            ],
+            "distinct_alpha": 4,
+            "permutation_a": "012487356",
+            "permutation_b": "012578346",
+            "xi": [
+              1,
+              3,
+              6,
+              2,
+              2,
+              0,
+              null,
+              null,
+              null,
+              null,
+              0,
+              null,
+              null,
+              null,
+              null,
+              1,
+              2,
+              2
+            ]
+          },
+          {
+            "alpha_a": [
+              3,
+              6,
+              2
+            ],
+            "alpha_b": [
+              3,
+              8,
+              5
+            ],
+            "distinct_alpha": 2,
+            "permutation_a": "012458376",
+            "permutation_b": "012368745",
+            "xi": [
+              1,
+              3,
+              6,
+              3,
+              2,
+              0,
+              null,
+              null,
+              null,
+              null,
+              0,
+              null,
+              null,
+              null,
+              null,
+              1,
+              3,
+              2
+            ]
+          },
+          {
+            "alpha_a": [
+              3,
+              7,
+              2
+            ],
+            "alpha_b": [
+              3,
+              8,
+              5
+            ],
+            "distinct_alpha": 5,
+            "permutation_a": "013582467",
+            "permutation_b": "012473856",
+            "xi": [
+              1,
+              3,
+              6,
+              3,
+              3,
+              0,
+              null,
+              null,
+              null,
+              null,
+              0,
+              null,
+              null,
+              null,
+              null,
+              1,
+              3,
+              3
+            ]
+          },
+          {
+            "alpha_a": [
+              4,
+              6,
+              4
+            ],
+            "alpha_b": [
+              4,
+              10,
+              6
+            ],
+            "distinct_alpha": 3,
+            "permutation_a": "012348765",
+            "permutation_b": "012437856",
+            "xi": [
+              1,
+              3,
+              6,
+              4,
+              1,
+              0,
+              null,
+              null,
+              null,
+              null,
+              0,
+              null,
+              null,
+              null,
+              null,
+              1,
+              4,
+              1
+            ]
+          }
+        ],
+        "population_fibres": 92,
+        "population_permutations": 18040,
+        "verdict": "NOT_SUFFICIENT",
+        "w": 0.7135809312638581
+      },
+      "available_permutations": 18043,
+      "degrees_of_freedom": 3,
+      "free_coefficients": [
+        6,
+        7,
+        8
+      ],
+      "n": 9,
+      "permutations": 362880,
+      "unavailable_permutations": 344837,
+      "validation": {
+        "h1_exhaustive_mask_checks": 200,
+        "q0_zero_checked": 18043,
+        "q1_equals_r_orb_checked": 18043,
+        "reranking_and_direct_sum_checks": 200
+      }
+    }
+  ],
+  "result_status": "OBSERVED_REPRODUCIBLE_EXACT_FALSIFIER"
+}

@@ -1,0 +1,144 @@
+{
+  "archive_date": "2026-09-06",
+  "snapshot_utc": "2026-09-06T20:08:05.145501+00:00",
+  "repository": "https://github.com/nacho09021973/nachocausal",
+  "base_commit": "7ba3c04ccd50ea587c8d677d4709c7c27bfbe1ec",
+  "policy": "All scientific source files are byte-for-byte copies; no scientific content or legacy paths were edited. Bibliographic claims are preserved as received, not revalidated by this archival operation.",
+  "source_roots": [
+    "/home/adnac/analisis_kernel_conforme_2026-09-06.md",
+    "/home/adnac/radial_l2_2026-09-06",
+    "/home/adnac/radial_l2_global_2026-09-06",
+    "/home/adnac/radial_dominio_G_2026-09-06",
+    "/home/adnac/nachocausal/biblioteca/Estudio compass_artifact.md"
+  ],
+  "files": [
+    {
+      "source": "/home/adnac/analisis_kernel_conforme_2026-09-06.md",
+      "archived_path": "analisis_kernel_conforme_2026-09-06.md",
+      "bytes": 9276,
+      "sha256": "1c9eb3013e7d0a399596d26bbc7349dbda49cd2fd97a6005aa36cb427927cc45"
+    },
+    {
+      "source": "/home/adnac/radial_l2_2026-09-06/obstruccion_normal_y_sucesion_singular.md",
+      "archived_path": "radial_l2_2026-09-06/obstruccion_normal_y_sucesion_singular.md",
+      "bytes": 16701,
+      "sha256": "334b2e1da7aab99364d6ffbba7f59891ae2f9de2277b2e8f7b94ee15d420c47f"
+    },
+    {
+      "source": "/home/adnac/radial_l2_2026-09-06/verification.json",
+      "archived_path": "radial_l2_2026-09-06/verification.json",
+      "bytes": 1763,
+      "sha256": "214bade838dc3d8d2d0bfdd7624ceecbb4ad51e17596bafdfd7c4a30abebd7d6"
+    },
+    {
+      "source": "/home/adnac/radial_l2_2026-09-06/verify_edge_sequence.py",
+      "archived_path": "radial_l2_2026-09-06/verify_edge_sequence.py",
+      "bytes": 8971,
+      "sha256": "36d1bc3db001b03b441eb54fd8c8362f08ec37446ea068242f7ca47940d0ecb1"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/check_primitive_energy.py",
+      "archived_path": "radial_l2_global_2026-09-06/check_primitive_energy.py",
+      "bytes": 936,
+      "sha256": "b7a013d0d5878f7a561e0f0f3f215cb4409ac64ece160fd18d54d95efc721a69"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/energia_positiva_y_reduccion_de_borde.md",
+      "archived_path": "radial_l2_global_2026-09-06/energia_positiva_y_reduccion_de_borde.md",
+      "bytes": 18089,
+      "sha256": "79d67ef2d296f757fc506511e1e3b1a9f4069b2e3078985344614644e70c5291"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/explore_constrained_energy.py",
+      "archived_path": "radial_l2_global_2026-09-06/explore_constrained_energy.py",
+      "bytes": 1264,
+      "sha256": "2596ac510a4561b2dffaf18a4a1fdbe59d9e8499863afbacd0d62568187091f5"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/explore_diagonal_primitive.py",
+      "archived_path": "radial_l2_global_2026-09-06/explore_diagonal_primitive.py",
+      "bytes": 1032,
+      "sha256": "ddd4c6be6f2919b59570a5a9a7f659ac27b572ef10b82bdea800de6004220235"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/explore_energy.py",
+      "archived_path": "radial_l2_global_2026-09-06/explore_energy.py",
+      "bytes": 1334,
+      "sha256": "fbf15f18585429d7f6b0d09a209302890941b48cf56ee3a6b23e3a633d5aa316"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/explore_feedback.py",
+      "archived_path": "radial_l2_global_2026-09-06/explore_feedback.py",
+      "bytes": 2054,
+      "sha256": "50f5043f222731feef5740dadb02503895ac9763b2935f8379a4c55b5a20c0db"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/explore_fixed_boundary.py",
+      "archived_path": "radial_l2_global_2026-09-06/explore_fixed_boundary.py",
+      "bytes": 1406,
+      "sha256": "65adef03837189326112ca1ef4afc71e3c7976179c8696ce4d04b34fba5ca5f4"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/explore_markov_energy.py",
+      "archived_path": "radial_l2_global_2026-09-06/explore_markov_energy.py",
+      "bytes": 1231,
+      "sha256": "03abb3b95a5fa4862d307494989081c922bab33b8c38c66459f3c88c0356d182"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/fixed_boundary_exploration.json",
+      "archived_path": "radial_l2_global_2026-09-06/fixed_boundary_exploration.json",
+      "bytes": 7196,
+      "sha256": "2c70910ea9598acd5146045d496a30d7a384b9e019fd4381c8b4fcc5b496fd2d"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/verification_global_energy.json",
+      "archived_path": "radial_l2_global_2026-09-06/verification_global_energy.json",
+      "bytes": 1174,
+      "sha256": "1a9f73f2e79055929a98ebbf9a0c1145476ea8429b5c2ebd5b43ecfdd7baa958"
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/verify_global_energy.py",
+      "archived_path": "radial_l2_global_2026-09-06/verify_global_energy.py",
+      "bytes": 4082,
+      "sha256": "b0f6d0a9250a9e1cfcb95233270a488fcaab66d35b9c0dc8e129e87d163db443"
+    },
+    {
+      "source": "/home/adnac/radial_dominio_G_2026-09-06/dominio_G_por_momentos.md",
+      "archived_path": "radial_dominio_G_2026-09-06/dominio_G_por_momentos.md",
+      "bytes": 18258,
+      "sha256": "5c0f6f539ccdcc8e447959a4c629a026c74bd902368c627ebda04599283886da"
+    },
+    {
+      "source": "/home/adnac/radial_dominio_G_2026-09-06/verification_domain_moments.json",
+      "archived_path": "radial_dominio_G_2026-09-06/verification_domain_moments.json",
+      "bytes": 4193,
+      "sha256": "b18bea9b07687dfdbb860deb436015d41d3b164e6ca8829027871af49dd4ae44"
+    },
+    {
+      "source": "/home/adnac/radial_dominio_G_2026-09-06/verify_domain_moments.py",
+      "archived_path": "radial_dominio_G_2026-09-06/verify_domain_moments.py",
+      "bytes": 5706,
+      "sha256": "59d7d5458ad275745fd93b550d830a70c64ffec31007691d77464c02d73eae97"
+    },
+    {
+      "source": "/home/adnac/nachocausal/biblioteca/Estudio compass_artifact.md",
+      "archived_path": "bibliografia/Estudio compass_artifact.md",
+      "bytes": 21078,
+      "sha256": "68dd7313e43b19ce00c739cc441c1eb336322df0a129127ea6e7ae6529879712"
+    }
+  ],
+  "excluded": [
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/__pycache__/explore_fixed_boundary.cpython-312.pyc",
+      "reason": "Regenerable Python bytecode; scientific source is archived."
+    },
+    {
+      "source": "/home/adnac/radial_l2_global_2026-09-06/__pycache__/verify_global_energy.cpython-312.pyc",
+      "reason": "Regenerable Python bytecode; scientific source is archived."
+    },
+    {
+      "source": "/home/adnac/radial_dominio_G_2026-09-06/__pycache__/verify_domain_moments.cpython-312.pyc",
+      "reason": "Regenerable Python bytecode; scientific source is archived."
+    }
+  ]
+}

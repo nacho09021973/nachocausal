@@ -1,0 +1,48 @@
+{
+  "unit": "PUENTE-3P1/B1.2",
+  "formula": "Delta_max=min(pi,sup_U integral q(UV)*sqrt(U') dV)",
+  "deterministic_quadrature": true,
+  "no_runs": true,
+  "no_seeds": true,
+  "no_pair_search": true,
+  "algebra_max_abs_error": 2.7755575615628914e-17,
+  "q_strictly_decreases_with_s": true,
+  "rows": [
+    {
+      "points": [
+        -1.0,
+        0.5,
+        0.4,
+        1.0
+      ],
+      "lower": 0.5652792048630247,
+      "upper": 0.7373132604461875,
+      "lower_le_upper": true
+    },
+    {
+      "points": [
+        -0.4,
+        0.8,
+        0.2,
+        0.7
+      ],
+      "lower": 0.5031745688734904,
+      "upper": 0.6292227435547882,
+      "lower_le_upper": true
+    },
+    {
+      "points": [
+        -0.2,
+        0.3,
+        0.5,
+        0.9
+      ],
+      "lower": 0.2774655915526761,
+      "upper": 0.30409829462589905,
+      "lower_le_upper": true
+    }
+  ],
+  "degenerate_radial_case": true,
+  "reverse_coordinate_case": true,
+  "CONCLUSION": "ANGULAR_REACH_VARIATIONAL_FORMULA_AND_BOUNDS_VERIFIED"
+}

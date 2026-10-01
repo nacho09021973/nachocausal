@@ -1,0 +1,98 @@
+{
+  "PHASE": "POST_HOC_EXPLORATORY_K_ROBUSTNESS_OF_COMPETITION_PEAK",
+  "arms": {
+    "2": {
+      "argmax": [
+        20
+      ],
+      "censored_n": [],
+      "operational_plateau": [
+        20
+      ],
+      "verdict": "DESPLAZA"
+    },
+    "3": {
+      "argmax": [
+        24
+      ],
+      "censored_n": [],
+      "operational_plateau": [
+        22,
+        24
+      ],
+      "verdict": "MANTIENE"
+    },
+    "4": {
+      "argmax": [
+        32
+      ],
+      "censored_n": [],
+      "operational_plateau": [
+        30,
+        32,
+        34,
+        36
+      ],
+      "verdict": "DESPLAZA"
+    },
+    "5": {
+      "argmax": [
+        38
+      ],
+      "censored_n": [],
+      "operational_plateau": [
+        36,
+        38,
+        40
+      ],
+      "verdict": "DESPLAZA"
+    }
+  },
+  "caveats": "OPERATIONAL_PLATEAU is a plateau definition from overlapping marginal Wilson intervals; it is NOT a 95% confidence set for the argmax and carries no nominal coverage. n* is the observed grid extremum only. The 24/26 boundary of the reference window is operationally fragile (1.6e-4 in probability in the sealed campaign). No critical-scale, transition, RG, universality, asymptotic or physical-entropy claim.",
+  "contract": "P1a_contrato_robustez_en_K_d2.md",
+  "controls": {
+    "ANCHOR_SELECTOR_EQUIVALENCE_CHECKED": 400,
+    "BACKEND_FAILURES": 0,
+    "CONTRACT_SHA256": "830e04791bc027425601842c6daa5bf507e060928ed5bce0c612a4e7d665a233",
+    "K3_ARM_REPRODUCES_SEALED_CAMPAIGN": "PASS",
+    "LONG_RECOMPOSITION": "PASS",
+    "PAIRED_SAMPLE_IDENTITY": "PASS",
+    "SEALED_SELECTOR_UNTOUCHED": "71594620005e2b83c22874a9a554a254755a468fd1c63429309d2264f79bda2b"
+  },
+  "design": {
+    "K_ANCHOR": 3,
+    "K_VALUES": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "N_MC": 100000,
+    "N_VALUES": [
+      20,
+      22,
+      24,
+      26,
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40
+    ],
+    "min_nonempty_for_analysis": 1000,
+    "primary_observable": "P_R_ge_5_given_E",
+    "reference_window": [
+      22,
+      24
+    ],
+    "secondary_observables": [
+      "U_n_star",
+      "Sbar_n_tie",
+      "H_tie_n"
+    ],
+    "seed_formula": "260828000+n (independent of K)"
+  },
+  "result_status": "K_DEPENDENT_LOCATION"
+}

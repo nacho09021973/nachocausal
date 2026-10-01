@@ -1,0 +1,326 @@
+{
+  "aggregates": [
+    {
+      "automorphism_order_counts_nonempty": {
+        "1": 1
+      },
+      "diagnostic_probability_all_permutations": {
+        "UNIQUE": 0.001388888888888889
+      },
+      "diagnostic_probability_given_nonempty": {
+        "UNIQUE": 1.0
+      },
+      "diagnostic_state_counts": {
+        "UNIQUE": 1
+      },
+      "independent_crosschecks": 720,
+      "n": 6,
+      "n_maximizer_counts": {
+        "0": 719,
+        "1": 1
+      },
+      "optimized_state_counts": {
+        "EMPTY": 719,
+        "UNIQUE": 1
+      },
+      "permutations": 720,
+      "r_counts_all_permutations": {
+        "0": 719,
+        "1": 1
+      },
+      "r_counts_given_tie": {},
+      "r_probability_all_permutations": {
+        "0": 0.9986111111111111,
+        "1": 0.001388888888888889
+      },
+      "r_probability_given_tie": {},
+      "tie_decomposition_given_tie": {}
+    },
+    {
+      "automorphism_order_counts_nonempty": {
+        "1": 31,
+        "2": 6
+      },
+      "diagnostic_probability_all_permutations": {
+        "TIE_AUT_ONLY": 0.0007936507936507937,
+        "TIE_NONAUT": 0.0001984126984126984,
+        "UNIQUE": 0.006349206349206349
+      },
+      "diagnostic_probability_given_nonempty": {
+        "TIE_AUT_ONLY": 0.10810810810810811,
+        "TIE_NONAUT": 0.02702702702702703,
+        "UNIQUE": 0.8648648648648649
+      },
+      "diagnostic_state_counts": {
+        "TIE_AUT_ONLY": 4,
+        "TIE_NONAUT": 1,
+        "UNIQUE": 32
+      },
+      "independent_crosschecks": 5040,
+      "n": 7,
+      "n_maximizer_counts": {
+        "0": 5003,
+        "1": 32,
+        "2": 5
+      },
+      "optimized_state_counts": {
+        "EMPTY": 5003,
+        "TIE": 5,
+        "UNIQUE": 32
+      },
+      "permutations": 5040,
+      "r_counts_all_permutations": {
+        "0": 5003,
+        "1": 36,
+        "2": 1
+      },
+      "r_counts_given_tie": {
+        "1": 4,
+        "2": 1
+      },
+      "r_probability_all_permutations": {
+        "0": 0.9926587301587302,
+        "1": 0.007142857142857143,
+        "2": 0.0001984126984126984
+      },
+      "r_probability_given_tie": {
+        "1": 0.8,
+        "2": 0.2
+      },
+      "tie_decomposition_given_tie": {
+        "TIE_AUT_ONLY": 0.8,
+        "TIE_NONAUT": 0.2
+      }
+    },
+    {
+      "automorphism_order_counts_nonempty": {
+        "1": 633,
+        "2": 237,
+        "4": 15,
+        "6": 6
+      },
+      "diagnostic_probability_all_permutations": {
+        "TIE_AUT_ONLY": 0.003546626984126984,
+        "TIE_NONAUT": 0.0017609126984126984,
+        "UNIQUE": 0.016790674603174603
+      },
+      "diagnostic_probability_given_nonempty": {
+        "TIE_AUT_ONLY": 0.16049382716049382,
+        "TIE_NONAUT": 0.07968574635241302,
+        "UNIQUE": 0.7598204264870931
+      },
+      "diagnostic_state_counts": {
+        "TIE_AUT_ONLY": 143,
+        "TIE_NONAUT": 71,
+        "UNIQUE": 677
+      },
+      "independent_crosschecks": 0,
+      "n": 8,
+      "n_maximizer_counts": {
+        "0": 39429,
+        "1": 677,
+        "2": 199,
+        "3": 6,
+        "4": 9
+      },
+      "optimized_state_counts": {
+        "EMPTY": 39429,
+        "TIE": 214,
+        "UNIQUE": 677
+      },
+      "permutations": 40320,
+      "r_counts_all_permutations": {
+        "0": 39429,
+        "1": 820,
+        "2": 69,
+        "3": 2
+      },
+      "r_counts_given_tie": {
+        "1": 143,
+        "2": 69,
+        "3": 2
+      },
+      "r_probability_all_permutations": {
+        "0": 0.9779017857142858,
+        "1": 0.020337301587301588,
+        "2": 0.0017113095238095238,
+        "3": 4.96031746031746e-05
+      },
+      "r_probability_given_tie": {
+        "1": 0.6682242990654206,
+        "2": 0.32242990654205606,
+        "3": 0.009345794392523364
+      },
+      "tie_decomposition_given_tie": {
+        "TIE_AUT_ONLY": 0.6682242990654206,
+        "TIE_NONAUT": 0.3317757009345794
+      }
+    },
+    {
+      "automorphism_order_counts_nonempty": {
+        "1": 11435,
+        "12": 30,
+        "2": 5544,
+        "24": 6,
+        "4": 761,
+        "6": 247,
+        "8": 20
+      },
+      "diagnostic_probability_all_permutations": {
+        "TIE_AUT_ONLY": 0.008826609347442681,
+        "TIE_NONAUT": 0.007220017636684303,
+        "UNIQUE": 0.03367504409171076
+      },
+      "diagnostic_probability_given_nonempty": {
+        "TIE_AUT_ONLY": 0.1775203680097545,
+        "TIE_NONAUT": 0.14520866818156625,
+        "UNIQUE": 0.6772709638086792
+      },
+      "diagnostic_state_counts": {
+        "TIE_AUT_ONLY": 3203,
+        "TIE_NONAUT": 2620,
+        "UNIQUE": 12220
+      },
+      "independent_crosschecks": 0,
+      "n": 9,
+      "n_maximizer_counts": {
+        "0": 344837,
+        "1": 12220,
+        "2": 5032,
+        "3": 316,
+        "4": 445,
+        "5": 4,
+        "6": 19,
+        "8": 7
+      },
+      "optimized_state_counts": {
+        "EMPTY": 344837,
+        "TIE": 5823,
+        "UNIQUE": 12220
+      },
+      "permutations": 362880,
+      "r_counts_all_permutations": {
+        "0": 344837,
+        "1": 15423,
+        "2": 2466,
+        "3": 128,
+        "4": 26
+      },
+      "r_counts_given_tie": {
+        "1": 3203,
+        "2": 2466,
+        "3": 128,
+        "4": 26
+      },
+      "r_probability_all_permutations": {
+        "0": 0.9502783289241623,
+        "1": 0.042501653439153436,
+        "2": 0.006795634920634921,
+        "3": 0.0003527336860670194,
+        "4": 7.164902998236332e-05
+      },
+      "r_probability_given_tie": {
+        "1": 0.5500601064743259,
+        "2": 0.4234930448222566,
+        "3": 0.021981796324918427,
+        "4": 0.004465052378499056
+      },
+      "tie_decomposition_given_tie": {
+        "TIE_AUT_ONLY": 0.5500601064743259,
+        "TIE_NONAUT": 0.44993989352567404
+      }
+    }
+  ],
+  "artifact_schema": "P1A_TIE_AUT_EXACT_D2_V1",
+  "orbit_action": {
+    "automorphisms": "all exact relation-preserving element relabelings",
+    "candidate_invariance_checked": true,
+    "formula": "alpha.(a,b,c,d)=(alpha(a),alpha(b),alpha(c),alpha(d))"
+  },
+  "precommit": {
+    "interpretation": [
+      "If TIE is dominated by r=1, the existing selector is still not unique; an orbit-valued output may deserve study, with magnitude Pr(r=1).",
+      "If r>1 dominates, relevant ties survive the automorphism quotient and the global-rival problem is not explained by the fixed-point obstruction.",
+      "If both have appreciable weight, they remain distinct mechanisms."
+    ],
+    "prediction": {
+      "falsified_by_exact_result": true,
+      "n": 7,
+      "observed_count": 4,
+      "status": "conjectural finite-n prediction; intended to be falsified",
+      "tie_aut_only_count": 0,
+      "used_as_assert_or_terminal": false
+    }
+  },
+  "provenance": {
+    "base_head_before_tie_aut": "f6256b617d2234657992e2a1a32108667aeb1710",
+    "command": "python -m emergencia.p1a_tie_aut_diagnostic --n 6 7 8 9 --write-artifact",
+    "generator": "emergencia/p1a_tie_aut_diagnostic.py",
+    "generator_sha256": "5614a5f33da0611170aaf5e77f24f2f19b646ec3f3559191c21d74fed402b7b4",
+    "networkx_used": false,
+    "new_dependencies": [],
+    "origin_main_at_instrumentation": "256d9e76fbed186463770af666602f8e592debcc",
+    "randomness": null,
+    "tests": "tests/test_p1a_tie_aut_diagnostic.py"
+  },
+  "result_status": "OBSERVED_REPRODUCIBLE_FROZEN_FINITE_N",
+  "scientific_scope": {
+    "candidate": "ordered endpoint quadruple (a,b,c,d)",
+    "causal_set_construction": "product order of identity and permutation",
+    "claim_ceiling": "exact finite-n decomposition only; no asymptotic extrapolation, no THINNING-RG conclusion, and no temporal interpretation",
+    "dimension": 2,
+    "law": "uniform enumeration of all permutations in S_n",
+    "n": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "selector": "MIN_COVERAGE_LEX",
+    "selector_score": [
+      "min(m_minus,m_plus)",
+      "m_minus+m_plus"
+    ]
+  },
+  "state_semantics": {
+    "changed": false,
+    "definitions": {
+      "TIE_AUT_ONLY": "|M(C)| > 1 and |M(C)/Aut(C)| = 1",
+      "TIE_NONAUT": "|M(C)/Aut(C)| > 1",
+      "UNIQUE": "|M(C)| = 1"
+    },
+    "diagnostic_states": [
+      "UNIQUE",
+      "TIE_AUT_ONLY",
+      "TIE_NONAUT"
+    ],
+    "original_states_retained": [
+      "EMPTY",
+      "UNIQUE",
+      "TIE"
+    ]
+  },
+  "validation": {
+    "aggregate_guards_passed": true,
+    "independent_naive_M_crosscheck_n": [
+      6,
+      7
+    ],
+    "independent_naive_M_crosschecks": {
+      "6": 720,
+      "7": 5040,
+      "8": 0,
+      "9": 0
+    },
+    "per_permutation_guards": [
+      "diagnostic UNIQUE iff STATE_UNIQUE",
+      "TIE_AUT_ONLY implies STATE_TIE",
+      "TIE_NONAUT implies STATE_TIE",
+      "len(M) equals lex_nmax",
+      "materialized best score equals optimized lex score",
+      "orbit partition size equals len(M)",
+      "alpha(q) is in M for every exact automorphism and q in M",
+      "original UNIQUE candidate equals the sole element of M"
+    ]
+  }
+}

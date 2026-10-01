@@ -1,0 +1,1267 @@
+{
+  "artifact_schema": "P1A_TIE_AUT_RESISTANT_FIBRES_N8_V1",
+  "counts": {
+    "B_8": 71,
+    "B_8_isomorphism_fibres": 37,
+    "a_zero": 14,
+    "a_zero_isomorphism_fibres": 8,
+    "selector_ties": 214
+  },
+  "fibres": [
+    {
+      "a_distribution": {
+        "3": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "ef2865a100238e1710f40506cfbea18555ebc396821700a8d97dde10b8b2c3f4",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          0
+        ],
+        [
+          7,
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "0": 1,
+        "1": 1
+      },
+      "a_zero_members": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          0,
+          6
+        ]
+      ],
+      "canonical_id": "7d7064c37c772f991b93f42c3fca23323d025dd4e6dfa1768b50779d4e2b6294",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          0,
+          6
+        ],
+        [
+          6,
+          0,
+          1,
+          2,
+          3,
+          4,
+          7,
+          5
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "0f810834ace18eccf9f415d4d37ff683245c964cda41ea110ff9403948e6838d",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          0,
+          7
+        ],
+        [
+          6,
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 1,
+        "4": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "da02a0d757ebafceed8cbf2aab0df285bd17a468c210cbe8e63b7d52d87d4c95",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          0,
+          6,
+          7
+        ],
+        [
+          5,
+          0,
+          1,
+          2,
+          3,
+          4,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "2": 1,
+        "3": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "d310116119018969f74ef98baf2ea280c35668670bbb72b81c611135d42598b5",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          2,
+          3,
+          5,
+          0,
+          4,
+          6,
+          7
+        ],
+        [
+          4,
+          0,
+          1,
+          2,
+          5,
+          3,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 1,
+        "4": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "14b7209b95c25faa1cf661500a20215390d3d1efd576eec97a3feacbac22a29f",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          2,
+          3,
+          4,
+          0,
+          5,
+          6,
+          7
+        ],
+        [
+          4,
+          0,
+          1,
+          2,
+          3,
+          5,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "2": 1,
+        "3": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "bcf4220965859b5f2f63477c2d30cfeed40ef87ab7d967cc0e6d9e38cf7f0ac3",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          2,
+          4,
+          0,
+          3,
+          5,
+          6,
+          7
+        ],
+        [
+          3,
+          0,
+          1,
+          4,
+          2,
+          5,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "4": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "05292d6c5c5d17c196301761775ff4563a0fa8d320cde2a41fd29b7dc8daec2a",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          2,
+          3,
+          0,
+          4,
+          5,
+          6,
+          7
+        ],
+        [
+          3,
+          0,
+          1,
+          2,
+          4,
+          5,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "0": 1,
+        "1": 1
+      },
+      "a_zero_members": [
+        [
+          2,
+          0,
+          3,
+          4,
+          5,
+          6,
+          7,
+          1
+        ]
+      ],
+      "canonical_id": "cd2b64676658e3806e17ebfd3cc495e8f2c648eaa9b557dbf516712f573201ff",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          7,
+          0,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          2,
+          0,
+          3,
+          4,
+          5,
+          6,
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "0": 2
+      },
+      "a_zero_members": [
+        [
+          1,
+          6,
+          0,
+          2,
+          3,
+          4,
+          5,
+          7
+        ],
+        [
+          2,
+          0,
+          3,
+          4,
+          5,
+          6,
+          1,
+          7
+        ]
+      ],
+      "canonical_id": "fbefab0aec101a7d9b8bc4d731764be4a6b8d7f6c7c630b718b38e1a8410dacb",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          6,
+          0,
+          2,
+          3,
+          4,
+          5,
+          7
+        ],
+        [
+          2,
+          0,
+          3,
+          4,
+          5,
+          6,
+          1,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "0": 2
+      },
+      "a_zero_members": [
+        [
+          1,
+          5,
+          0,
+          2,
+          3,
+          4,
+          6,
+          7
+        ],
+        [
+          2,
+          0,
+          3,
+          4,
+          5,
+          1,
+          6,
+          7
+        ]
+      ],
+      "canonical_id": "4abf54c5071d1ed1449a14dc27a8a2c1b40eb0eeb093165257c22fa4ff8a6bb6",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          5,
+          0,
+          2,
+          3,
+          4,
+          6,
+          7
+        ],
+        [
+          2,
+          0,
+          3,
+          4,
+          5,
+          1,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "0": 2
+      },
+      "a_zero_members": [
+        [
+          1,
+          4,
+          0,
+          2,
+          3,
+          5,
+          6,
+          7
+        ],
+        [
+          2,
+          0,
+          3,
+          4,
+          1,
+          5,
+          6,
+          7
+        ]
+      ],
+      "canonical_id": "4d3d4f11c5040a172e13d396f90761b4e71e9adef48fa2648ed2bd3a04b36283",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          4,
+          0,
+          2,
+          3,
+          5,
+          6,
+          7
+        ],
+        [
+          2,
+          0,
+          3,
+          4,
+          1,
+          5,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "4": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "b04ecb05998aea2825ac68f91a31b2091199514f8d42a54e63ae7b7315edf8b7",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          1,
+          2,
+          0,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        [
+          2,
+          0,
+          1,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "4": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "76534a93ba01a53ea8f0f94bfc8791363b9371753e5cb6d021de38002cb2f5d4",
+      "fibre_size_in_B8": 1,
+      "members": [
+        [
+          1,
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "9e79488911c25e1c99ec7952d9fdfb58ad57a40dfd502d82d651201fab00cfa2",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          1
+        ],
+        [
+          0,
+          7,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "0": 2
+      },
+      "a_zero_members": [
+        [
+          0,
+          2,
+          3,
+          4,
+          5,
+          7,
+          1,
+          6
+        ],
+        [
+          0,
+          6,
+          1,
+          2,
+          3,
+          4,
+          7,
+          5
+        ]
+      ],
+      "canonical_id": "5dd8e2488e7d84c7a59dcfac67383f24de5dcf17dbaaf5708d011c5338877e44",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          2,
+          3,
+          4,
+          5,
+          7,
+          1,
+          6
+        ],
+        [
+          0,
+          6,
+          1,
+          2,
+          3,
+          4,
+          7,
+          5
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "b4abccb933583beed5657a1bc44d581a53dde6120bf2674e6211d96f2ff9cd05",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          1,
+          7
+        ],
+        [
+          0,
+          6,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "f5995bd792245fcb83257355edc272f54fb88d9144bd5051e3e077d6b2c9b5c5",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          2,
+          3,
+          4,
+          5,
+          1,
+          6,
+          7
+        ],
+        [
+          0,
+          5,
+          1,
+          2,
+          3,
+          4,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "2": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "9f8f26c476f3e65158a4ab60d5b1f40f55d0ed61b7352c574843a1f5c04b3ce2",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          2,
+          3,
+          5,
+          1,
+          4,
+          6,
+          7
+        ],
+        [
+          0,
+          4,
+          1,
+          2,
+          5,
+          3,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "ab8dda0d5b701c1bc172962ee444932d8f1a781f7aaa9b4c44a2506127897310",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          2,
+          3,
+          4,
+          1,
+          5,
+          6,
+          7
+        ],
+        [
+          0,
+          4,
+          1,
+          2,
+          3,
+          5,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 1,
+        "4": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "68b98fcc3d0c837205d64ce30a6a17e796cf3497c1906df7e48a476b4ee9595b",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          3,
+          4,
+          5,
+          6,
+          7,
+          2
+        ],
+        [
+          0,
+          1,
+          7,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "0": 2
+      },
+      "a_zero_members": [
+        [
+          0,
+          1,
+          3,
+          4,
+          5,
+          7,
+          2,
+          6
+        ],
+        [
+          0,
+          1,
+          6,
+          2,
+          3,
+          4,
+          7,
+          5
+        ]
+      ],
+      "canonical_id": "fd9e3575917fce119e92f95f497edf2891eb177e9ca9d2c03cdd93c27fff9c84",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          3,
+          4,
+          5,
+          7,
+          2,
+          6
+        ],
+        [
+          0,
+          1,
+          6,
+          2,
+          3,
+          4,
+          7,
+          5
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "e9fb0525995849abb644a7c6aea3451044f15dd32fe21fda46cd0f73416df7ef",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          3,
+          4,
+          5,
+          6,
+          2,
+          7
+        ],
+        [
+          0,
+          1,
+          6,
+          2,
+          3,
+          4,
+          5,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "b9351300493e33eed6a0fc9e9bdd957257a639bf8a4bf2583598c49f75d4c50b",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          3,
+          4,
+          5,
+          2,
+          6,
+          7
+        ],
+        [
+          0,
+          1,
+          5,
+          2,
+          3,
+          4,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "2": 1,
+        "3": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "43578f59f3a1ce55ba9bc47b6a894a2a69f81f12f509011512bf8fa5bdb14745",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          3,
+          7,
+          2,
+          4,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          4,
+          2,
+          5,
+          6,
+          7,
+          3
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "2": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "330af0830356b43303925721ff1450ba808f3bf774da69d13e884f512be9eab8",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          3,
+          6,
+          2,
+          4,
+          5,
+          7
+        ],
+        [
+          0,
+          1,
+          4,
+          2,
+          5,
+          6,
+          3,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "2": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "da5b980017dba6ef9b46d712953d73d95beecfbf81f50cf35d4654f3ba3aa9d2",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          3,
+          5,
+          2,
+          4,
+          6,
+          7
+        ],
+        [
+          0,
+          1,
+          4,
+          2,
+          5,
+          3,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "1": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "3d3f7969032853171bab2d3d9130f7d4ce6807804adaadcfede07fc8ab083ebd",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          3,
+          4,
+          2,
+          5,
+          6,
+          7
+        ],
+        [
+          0,
+          1,
+          4,
+          2,
+          3,
+          5,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 1,
+        "4": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "e03b5144e1b89ae66260ee0c82213e910ca31cac88f54538868f37cb79a884e1",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          2,
+          4,
+          5,
+          6,
+          7,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          7,
+          3,
+          4,
+          5,
+          6
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "0": 2
+      },
+      "a_zero_members": [
+        [
+          0,
+          1,
+          2,
+          4,
+          5,
+          7,
+          3,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          6,
+          3,
+          4,
+          7,
+          5
+        ]
+      ],
+      "canonical_id": "1d856c4bc1c6f42b5fc88d3562dcb4cb7d376bbf0de73f5e86bf2f73647c9020",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          2,
+          4,
+          5,
+          7,
+          3,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          6,
+          3,
+          4,
+          7,
+          5
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "3": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "0e1e2afabaa16ea1c1adba3ca260952482e196abfe1daa831bb69f55274b8b1a",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          2,
+          4,
+          5,
+          6,
+          3,
+          7
+        ],
+        [
+          0,
+          1,
+          2,
+          6,
+          3,
+          4,
+          5,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "2": 1,
+        "3": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "0567e0ef403f241b4e4c747be7460c93378816071d18856e9ab88593b962bdaf",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          2,
+          4,
+          7,
+          3,
+          5,
+          6
+        ],
+        [
+          0,
+          1,
+          2,
+          5,
+          3,
+          6,
+          7,
+          4
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "1": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "6ccc97b195e5a00384831abea201c0f3e511f2efef6c2fea3dd7b8581610bb77",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          2,
+          4,
+          5,
+          3,
+          6,
+          7
+        ],
+        [
+          0,
+          1,
+          2,
+          5,
+          3,
+          4,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "2": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "6589b5281562d2783d1b55a6a6707bc56b22afacdd1b09b6753ac8ed5ce46c3a",
+      "fibre_size_in_B8": 1,
+      "members": [
+        [
+          0,
+          1,
+          2,
+          4,
+          3,
+          5,
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "4": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "5d9056cb385191959eb72ce7290950daa9cc709401cd3b940bfb459997ad6d33",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          2,
+          3,
+          5,
+          6,
+          7,
+          4
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          7,
+          4,
+          5,
+          6
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "4": 2
+      },
+      "a_zero_members": [],
+      "canonical_id": "f8c6d9fed8901350d6b8a35e63bd54ca378bf01b5f3e23fced5cb8c26e62dfcd",
+      "fibre_size_in_B8": 2,
+      "members": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          5
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          7,
+          5,
+          6
+        ]
+      ]
+    },
+    {
+      "a_distribution": {
+        "4": 1
+      },
+      "a_zero_members": [],
+      "canonical_id": "8770b673a085f7b49558851d830bccec9db83339476ce2c9db39d2cfb9b59126",
+      "fibre_size_in_B8": 1,
+      "members": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          6
+        ]
+      ]
+    }
+  ],
+  "measure": "uniform labelled permutations in S_8",
+  "precommit": {
+    "claim_ceiling": "exact n=8 fibre decomposition only; no asymptotic inference",
+    "question": "How many poset-isomorphism fibres contain the 14 labelled B_8 cores with a(kappa)=0?"
+  },
+  "provenance": {
+    "canonicalization": "dev/r3_bridge_e_fibers.py",
+    "canonicalization_sha256": "bd0ffce83678c887932e244a8355eb89e2867985d8d0dd4880a28fca695917f8",
+    "command": "python -m emergencia.p1a_tie_aut_resistant_fibers_n8 --write-artifact",
+    "generic_cross_source_sha256": "1e3fb2362dfefb6059e7ad6eb1757fdd65c82ac6b4d16b25f29511849a28755f",
+    "new_dependencies": [],
+    "randomness": null,
+    "runner": "emergencia/p1a_tie_aut_resistant_fibers_n8.py",
+    "runner_sha256": "f1369eb74e0b1b86090e1c8e627bbd674d10e81a3bdcd7f150801b075519d614",
+    "tie_aut_source_sha256": "5614a5f33da0611170aaf5e77f24f2f19b646ec3f3559191c21d74fed402b7b4"
+  },
+  "result_status": "OBSERVED_REPRODUCIBLE_FINITE_N_NOT_ASYMPTOTIC"
+}

@@ -4,6 +4,55 @@
 > autoriza cambios en el camino sellado, y no convierte ninguna conjetura conceptual en resultado.
 > Su función es separar el objetivo científico general del estado actual de un estimador concreto.
 
+## Estado canónico vigente — 2026-09-12
+
+La rama Fisher cerró S1 y S2 y queda congelada como herramienta estructural.
+El puente físico a cardinalidad fija y el push-forward al observable futuro
+quedan cerrados analíticamente; no se establece positividad de Fisher para
+`O_n`. T19 queda cerrado como resultado autónomo de identificabilidad de
+segundo orden. La extensión Poisson permanece aparcada en una frontera
+`OPEN_REDUCED`, sin autorización de nuevas ejecuciones.
+
+```text
+GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
+S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY
+FISHER_BRANCH_ROLE = STRUCTURAL_TOOL
+FIXED_N_PHYSICAL_CHANNEL_BRIDGE = CLOSED
+FIXED_N_OBSERVABLE_QMD = PROVED
+T12_TO_POSET_FIRST_ORDER_FISHER_VISIBILITY = PROVED
+T12_TO_O_N_FIRST_ORDER_FISHER_POSITIVITY = NOT_IMPLIED
+T19_TO_O_2_SECOND_ORDER_VISIBILITY = PROVED
+T19_TO_PREREG002_FALSIFIABLE_TRANSFER = NOT_ESTABLISHED
+T19_STRUCTURAL_RESULT = CLOSED_AUTONOMOUSLY
+POISSON_QMD_BRANCH = PARKED_OPEN_REDUCED
+GLOBAL_WEIGHTED_ORDER_CELL_FLUX_BOUND = OPEN_REDUCED
+INTEGRATED_ADJACENT_GAP_HAZARD = OPEN_REDUCED
+SUBFACTORIAL_C_NK = NOT_PROVED
+RARE_CELL_OBSTRUCTION = NOT_PROVED
+POISSON_MIXTURE_QMD = OPEN_UNIFORM_BOUND
+PREREG_002 = UNCHANGED
+NEW_VALIDATION_RUNS = NOT_AUTHORIZED
+SCHWARZSCHILD_3P1_RUNS = NOT_AUTHORIZED
+PUENTE_3P1_BLOCK = OPEN_VIA_B_NEW_PROGRAM
+PHASE_0_R1 = UNCHANGED_IN_FORCE
+PUENTE_3P1_TARGET = PHI_LAMBDA_INTERIOR_VOLUME_FRACTION
+PUENTE_3P1_OBSERVABLE_PARAM = LAMBDA_PATCH_SHAPE
+DILATION_ORBIT_AT_FIXED_N = PURE_GAUGE_VERIFIED
+ABSOLUTE_M_AS_TARGET = EXCLUDED_ALL_CHANNELS
+PUENTE_3P1_L3_SEPARATION = OPEN
+B1_PHI_CLOSED_FORM = DERIVED_AND_VERIFIED
+B1_BOOST_GAUGE_ON_LAMBDA = IDENTIFIED_AND_VERIFIED
+EFFECTIVE_LAMBDA_DIMENSION = 3
+B1_LEMMA_FORCES_TV_ZERO = NOT_ESTABLISHED
+B1_BLOCKING_SUBPROBLEM = ANGULAR_REACH_DELTA_MAX
+NEXT_RUN_AUTHORIZED = NO
+```
+
+Fuente detallada: `docs/physical_channel_observable_bridge_2026-09.md`.
+Bloque 3+1D vigente: `docs/puente_schwarzschild_3p1_2026-09-12.md` (VÍA B, `PI_SIGN_OFF`
+2026-09-12; blanco `φ(λ)`; `PHASE_0_R1` intacto).
+Los checkpoints anteriores se conservan como registro histórico.
+
 ## Estructura de carpeta
 
 Esta carpeta existe para desacoplar el **programa de investigación** de:
@@ -363,13 +412,11 @@ Hasta nuevo aviso, el lenguaje recomendado es:
 - **no admisible todavía como resultado:** "reconstruction", "universal information limit",
   "gravitational uncertainty principle", "no-go theorem" salvo prueba explícita.
 
-## 10. Siguiente paso concreto
+## 10. Siguiente gate concreto
 
-El siguiente paso útil no es código nuevo. Es cerrar **WP1 + WP2**:
-
-1. redactar `research_program/taxonomy/identifiability_taxonomy.md`;
-2. extraer de `biblioteca/` la primera matriz bibliográfica centrada en identificabilidad;
-3. decidir, con esa base, cuál es la primera familia `P_n(theta)` que merece un ataque analítico.
-
-Esa secuencia mantiene el foco en el objetivo final: el límite de la indeterminación geométrica en
-general, no el rendimiento aislado del algoritmo actual.
+No hay siguiente run autorizado. Una continuación requiere una decisión nueva
+del PI sobre `DOMAIN_BRIDGE`. Si se autoriza más adelante, la primera
+bifurcación ya delimitada será demostrar o refutar, para el patch sellado, las
+premisas geométricas y de densidad necesarias para la cota Hellinger lineal.
+No se abre desde este README ningún cálculo, observable, semilla, S3, 2+1 ni
+3+1.

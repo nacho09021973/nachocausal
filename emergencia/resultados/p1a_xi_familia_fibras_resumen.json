@@ -1,0 +1,1610 @@
+{
+  "artifact_schema": "P1A_XI_FAMILIA_FIBRAS_D2_V1",
+  "condition_8_execution": {
+    "executed_before_any_target_access": true,
+    "fibre_size_distribution_documented": true,
+    "isomorphism_certificate_available_domain": "exact canonical form of the strict order relation (dev/r3_bridge_e_fibers.canonical_form)",
+    "isomorphism_certificate_unavailable_fibre": "differing order-invariant relation count; canonical_form is not affordable there because antichains defeat colour refinement",
+    "non_isomorphic_collisions_verified": true
+  },
+  "family": {
+    "all_members_reported": true,
+    "contract": "emergencia/P1a_contrato_resumen_Xi_familia_d2.md",
+    "coordinates": {
+      "XI_A": [
+        "avail_1",
+        "m_1",
+        "s_1",
+        "c_1",
+        "r_1"
+      ],
+      "XI_B": [
+        "...XI_A",
+        "avail_2",
+        "m_2",
+        "s_2",
+        "c_2",
+        "r_2"
+      ],
+      "XI_C": [
+        "...XI_B",
+        "avail_3",
+        "m_3",
+        "s_3",
+        "c_3",
+        "r_3",
+        "L",
+        "n_candidates",
+        "total_orbits"
+      ]
+    },
+    "dimensions": {
+      "XI_A": 5,
+      "XI_B": 10,
+      "XI_C": 18
+    },
+    "empty_policy": "AVAIL_FLAG_AND_NA_NEVER_ZERO",
+    "frozen_before_target": true,
+    "members": [
+      "XI_A",
+      "XI_B",
+      "XI_C"
+    ],
+    "metric": "EXACT_VECTOR_EQUALITY",
+    "nested": true,
+    "q1_is_tautological": true
+  },
+  "provenance": {
+    "frozen_instrument": "emergencia/p1a_tie_aut_diagnostic.py",
+    "frozen_instrument_modified": false,
+    "frozen_instrument_sha256": "5614a5f33da0611170aaf5e77f24f2f19b646ec3f3559191c21d74fed402b7b4",
+    "generator": "emergencia/p1a_xi_familia_fibras_d2.py",
+    "generator_sha256": "9e60420cf2e369f826b0f255b50d7fe2063e4257bd18b6e10c2eedf56f442d0e",
+    "isomorphism_backend": "dev/r3_bridge_e_fibers.py",
+    "k0": 3,
+    "landscape_csv": "p1a_paisaje_niveles_d2.csv",
+    "landscape_csv_sha256": "a02602fc8f08451c36324ae8818998be656a21a8a25929fd445a26c8a61529dd",
+    "landscape_generator": "emergencia/p1a_paisaje_niveles_d2.py",
+    "new_dependencies": [],
+    "randomness": null,
+    "selector": "MIN_COVERAGE_LEX"
+  },
+  "reports": [
+    {
+      "XI_A": {
+        "available_fibres": 1,
+        "available_fibres_with_several_isomorphism_classes": 0,
+        "dimension": 5,
+        "fibre_size_distribution": {
+          "1": 1,
+          "719": 1
+        },
+        "fraction_alone_in_their_fibre": 0.001388888888888889,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {},
+        "max_fibre_size": 719,
+        "n_fibres": 2,
+        "non_isomorphic_collision_witness_available_domain": null,
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (in/out-degree profile), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              5
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              5
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "012354",
+          "permutation_b": "012435",
+          "relation_count_a": 14,
+          "relation_count_b": 14,
+          "separated_by": "in/out-degree profile"
+        },
+        "permutations_alone_in_their_fibre": 1,
+        "singleton_fibres": 1
+      },
+      "XI_B": {
+        "available_fibres": 1,
+        "available_fibres_with_several_isomorphism_classes": 0,
+        "dimension": 10,
+        "fibre_size_distribution": {
+          "1": 1,
+          "719": 1
+        },
+        "fraction_alone_in_their_fibre": 0.001388888888888889,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {},
+        "max_fibre_size": 719,
+        "n_fibres": 2,
+        "non_isomorphic_collision_witness_available_domain": null,
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (in/out-degree profile), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              5
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              5
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "012354",
+          "permutation_b": "012435",
+          "relation_count_a": 14,
+          "relation_count_b": 14,
+          "separated_by": "in/out-degree profile"
+        },
+        "permutations_alone_in_their_fibre": 1,
+        "singleton_fibres": 1
+      },
+      "XI_C": {
+        "available_fibres": 1,
+        "available_fibres_with_several_isomorphism_classes": 0,
+        "dimension": 18,
+        "fibre_size_distribution": {
+          "1": 1,
+          "719": 1
+        },
+        "fraction_alone_in_their_fibre": 0.001388888888888889,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {},
+        "max_fibre_size": 719,
+        "n_fibres": 2,
+        "non_isomorphic_collision_witness_available_domain": null,
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (in/out-degree profile), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              5
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              5
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "012354",
+          "permutation_b": "012435",
+          "relation_count_a": 14,
+          "relation_count_b": 14,
+          "separated_by": "in/out-degree profile"
+        },
+        "permutations_alone_in_their_fibre": 1,
+        "singleton_fibres": 1
+      },
+      "independent_path_crosschecks": 720,
+      "n": 6,
+      "permutations": 720,
+      "permutations_available": 1,
+      "permutations_unavailable": 719
+    },
+    {
+      "XI_A": {
+        "available_fibres": 4,
+        "available_fibres_with_several_isomorphism_classes": 3,
+        "dimension": 5,
+        "fibre_size_distribution": {
+          "1": 1,
+          "2": 1,
+          "30": 1,
+          "4": 1,
+          "5003": 1
+        },
+        "fraction_alone_in_their_fibre": 0.0001984126984126984,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {
+          "15": 1,
+          "2": 1,
+          "4": 1
+        },
+        "max_fibre_size": 5003,
+        "n_fibres": 5,
+        "non_isomorphic_collision_witness_available_domain": {
+          "canonical_a": "ae2435eb2b4a9694",
+          "canonical_b": "5ab85913cbbb090a",
+          "certificate": "exact canonical form of the strict order relation",
+          "permutation_a": "0123564",
+          "permutation_b": "0124536",
+          "xi": [
+            1,
+            3,
+            6,
+            1,
+            1
+          ]
+        },
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (relation count), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "0123654",
+          "permutation_b": "0124365",
+          "relation_count_a": 18,
+          "relation_count_b": 19,
+          "separated_by": "relation count"
+        },
+        "permutations_alone_in_their_fibre": 1,
+        "singleton_fibres": 1
+      },
+      "XI_B": {
+        "available_fibres": 4,
+        "available_fibres_with_several_isomorphism_classes": 3,
+        "dimension": 10,
+        "fibre_size_distribution": {
+          "1": 1,
+          "2": 1,
+          "30": 1,
+          "4": 1,
+          "5003": 1
+        },
+        "fraction_alone_in_their_fibre": 0.0001984126984126984,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {
+          "15": 1,
+          "2": 1,
+          "4": 1
+        },
+        "max_fibre_size": 5003,
+        "n_fibres": 5,
+        "non_isomorphic_collision_witness_available_domain": {
+          "canonical_a": "ae2435eb2b4a9694",
+          "canonical_b": "5ab85913cbbb090a",
+          "certificate": "exact canonical form of the strict order relation",
+          "permutation_a": "0123564",
+          "permutation_b": "0124536",
+          "xi": [
+            1,
+            3,
+            6,
+            1,
+            1,
+            0,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (relation count), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "0123654",
+          "permutation_b": "0124365",
+          "relation_count_a": 18,
+          "relation_count_b": 19,
+          "separated_by": "relation count"
+        },
+        "permutations_alone_in_their_fibre": 1,
+        "singleton_fibres": 1
+      },
+      "XI_C": {
+        "available_fibres": 4,
+        "available_fibres_with_several_isomorphism_classes": 3,
+        "dimension": 18,
+        "fibre_size_distribution": {
+          "1": 1,
+          "2": 1,
+          "30": 1,
+          "4": 1,
+          "5003": 1
+        },
+        "fraction_alone_in_their_fibre": 0.0001984126984126984,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {
+          "15": 1,
+          "2": 1,
+          "4": 1
+        },
+        "max_fibre_size": 5003,
+        "n_fibres": 5,
+        "non_isomorphic_collision_witness_available_domain": {
+          "canonical_a": "ae2435eb2b4a9694",
+          "canonical_b": "5ab85913cbbb090a",
+          "certificate": "exact canonical form of the strict order relation",
+          "permutation_a": "0123564",
+          "permutation_b": "0124536",
+          "xi": [
+            1,
+            3,
+            6,
+            1,
+            1,
+            0,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1,
+            1,
+            1
+          ]
+        },
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (relation count), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "0123654",
+          "permutation_b": "0124365",
+          "relation_count_a": 18,
+          "relation_count_b": 19,
+          "separated_by": "relation count"
+        },
+        "permutations_alone_in_their_fibre": 1,
+        "singleton_fibres": 1
+      },
+      "independent_path_crosschecks": 5040,
+      "n": 7,
+      "permutations": 5040,
+      "permutations_available": 37,
+      "permutations_unavailable": 5003
+    },
+    {
+      "XI_A": {
+        "available_fibres": 12,
+        "available_fibres_with_several_isomorphism_classes": 11,
+        "dimension": 5,
+        "fibre_size_distribution": {
+          "125": 1,
+          "2": 1,
+          "28": 1,
+          "3": 1,
+          "38": 1,
+          "39429": 1,
+          "4": 2,
+          "585": 1,
+          "6": 1,
+          "8": 2,
+          "80": 1
+        },
+        "fraction_alone_in_their_fibre": 0.0,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {
+          "14": 1,
+          "19": 1,
+          "215": 1,
+          "3": 1,
+          "4": 2,
+          "40": 1,
+          "6": 2,
+          "65": 1,
+          "8": 1
+        },
+        "max_fibre_size": 39429,
+        "n_fibres": 13,
+        "non_isomorphic_collision_witness_available_domain": {
+          "canonical_a": "b1a0216cdee08e8e",
+          "canonical_b": "0679be01346f5b98",
+          "certificate": "exact canonical form of the strict order relation",
+          "permutation_a": "01236754",
+          "permutation_b": "01246375",
+          "xi": [
+            1,
+            3,
+            6,
+            1,
+            1
+          ]
+        },
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (relation count), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              7
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              7
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "01237654",
+          "permutation_b": "01243765",
+          "relation_count_a": 22,
+          "relation_count_b": 24,
+          "separated_by": "relation count"
+        },
+        "permutations_alone_in_their_fibre": 0,
+        "singleton_fibres": 0
+      },
+      "XI_B": {
+        "available_fibres": 18,
+        "available_fibres_with_several_isomorphism_classes": 15,
+        "dimension": 10,
+        "fibre_size_distribution": {
+          "1": 2,
+          "125": 1,
+          "2": 4,
+          "28": 1,
+          "3": 1,
+          "30": 1,
+          "39429": 1,
+          "4": 2,
+          "585": 1,
+          "6": 1,
+          "72": 1,
+          "8": 3
+        },
+        "fraction_alone_in_their_fibre": 4.96031746031746e-05,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {
+          "14": 1,
+          "15": 1,
+          "2": 4,
+          "215": 1,
+          "3": 1,
+          "36": 1,
+          "4": 3,
+          "6": 1,
+          "65": 1,
+          "8": 1
+        },
+        "max_fibre_size": 39429,
+        "n_fibres": 19,
+        "non_isomorphic_collision_witness_available_domain": {
+          "canonical_a": "b1a0216cdee08e8e",
+          "canonical_b": "0679be01346f5b98",
+          "certificate": "exact canonical form of the strict order relation",
+          "permutation_a": "01236754",
+          "permutation_b": "01246375",
+          "xi": [
+            1,
+            3,
+            6,
+            1,
+            1,
+            0,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (relation count), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              7
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              7
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "01237654",
+          "permutation_b": "01243765",
+          "relation_count_a": 22,
+          "relation_count_b": 24,
+          "separated_by": "relation count"
+        },
+        "permutations_alone_in_their_fibre": 2,
+        "singleton_fibres": 2
+      },
+      "XI_C": {
+        "available_fibres": 18,
+        "available_fibres_with_several_isomorphism_classes": 15,
+        "dimension": 18,
+        "fibre_size_distribution": {
+          "1": 2,
+          "125": 1,
+          "2": 4,
+          "28": 1,
+          "3": 1,
+          "30": 1,
+          "39429": 1,
+          "4": 2,
+          "585": 1,
+          "6": 1,
+          "72": 1,
+          "8": 3
+        },
+        "fraction_alone_in_their_fibre": 4.96031746031746e-05,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {
+          "14": 1,
+          "15": 1,
+          "2": 4,
+          "215": 1,
+          "3": 1,
+          "36": 1,
+          "4": 3,
+          "6": 1,
+          "65": 1,
+          "8": 1
+        },
+        "max_fibre_size": 39429,
+        "n_fibres": 19,
+        "non_isomorphic_collision_witness_available_domain": {
+          "canonical_a": "b1a0216cdee08e8e",
+          "canonical_b": "0679be01346f5b98",
+          "certificate": "exact canonical form of the strict order relation",
+          "permutation_a": "01236754",
+          "permutation_b": "01246375",
+          "xi": [
+            1,
+            3,
+            6,
+            1,
+            1,
+            0,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1,
+            1,
+            1
+          ]
+        },
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (relation count), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              7
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              7
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "01237654",
+          "permutation_b": "01243765",
+          "relation_count_a": 22,
+          "relation_count_b": 24,
+          "separated_by": "relation count"
+        },
+        "permutations_alone_in_their_fibre": 2,
+        "singleton_fibres": 2
+      },
+      "independent_path_crosschecks": 40320,
+      "n": 8,
+      "permutations": 40320,
+      "permutations_available": 891,
+      "permutations_unavailable": 39429
+    },
+    {
+      "XI_A": {
+        "available_fibres": 34,
+        "available_fibres_with_several_isomorphism_classes": 32,
+        "dimension": 5,
+        "fibre_size_distribution": {
+          "1": 1,
+          "104": 1,
+          "118": 1,
+          "12": 3,
+          "120": 1,
+          "1200": 1,
+          "16": 3,
+          "198": 1,
+          "20": 1,
+          "2020": 1,
+          "208": 1,
+          "2477": 1,
+          "26": 1,
+          "3": 2,
+          "330": 1,
+          "344837": 1,
+          "388": 1,
+          "4": 7,
+          "6": 1,
+          "68": 1,
+          "8": 1,
+          "86": 1,
+          "9572": 1,
+          "975": 1
+        },
+        "fraction_alone_in_their_fibre": 2.7557319223985893e-06,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {
+          "10": 2,
+          "104": 1,
+          "108": 1,
+          "12": 3,
+          "16": 1,
+          "166": 1,
+          "170": 1,
+          "2": 4,
+          "20": 1,
+          "3": 3,
+          "3242": 1,
+          "34": 1,
+          "367": 1,
+          "4": 2,
+          "41": 1,
+          "44": 1,
+          "486": 1,
+          "6": 1,
+          "60": 1,
+          "61": 1,
+          "770": 1,
+          "8": 1,
+          "937": 1
+        },
+        "max_fibre_size": 344837,
+        "n_fibres": 35,
+        "non_isomorphic_collision_witness_available_domain": {
+          "canonical_a": "9ae97224e222387e",
+          "canonical_b": "a0992211d947dbdb",
+          "certificate": "exact canonical form of the strict order relation",
+          "permutation_a": "012378654",
+          "permutation_b": "012473865",
+          "xi": [
+            1,
+            3,
+            6,
+            1,
+            1
+          ]
+        },
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (relation count), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              8
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              8
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "012387654",
+          "permutation_b": "012438765",
+          "relation_count_a": 26,
+          "relation_count_b": 29,
+          "separated_by": "relation count"
+        },
+        "permutations_alone_in_their_fibre": 1,
+        "singleton_fibres": 1
+      },
+      "XI_B": {
+        "available_fibres": 76,
+        "available_fibres_with_several_isomorphism_classes": 71,
+        "dimension": 10,
+        "fibre_size_distribution": {
+          "1": 3,
+          "104": 1,
+          "12": 5,
+          "120": 1,
+          "1200": 1,
+          "16": 3,
+          "1640": 1,
+          "184": 1,
+          "198": 1,
+          "2": 8,
+          "20": 1,
+          "24": 2,
+          "2477": 1,
+          "294": 1,
+          "298": 1,
+          "3": 2,
+          "30": 1,
+          "344837": 1,
+          "348": 1,
+          "4": 18,
+          "44": 2,
+          "573": 1,
+          "6": 4,
+          "60": 1,
+          "68": 1,
+          "72": 1,
+          "8": 8,
+          "84": 1,
+          "86": 1,
+          "90": 1,
+          "9572": 1,
+          "96": 1
+        },
+        "fraction_alone_in_their_fibre": 8.267195767195768e-06,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {
+          "10": 2,
+          "101": 1,
+          "108": 1,
+          "12": 4,
+          "130": 1,
+          "154": 1,
+          "2": 19,
+          "219": 1,
+          "22": 2,
+          "3": 3,
+          "30": 1,
+          "3242": 1,
+          "34": 1,
+          "36": 1,
+          "4": 14,
+          "41": 1,
+          "42": 1,
+          "44": 1,
+          "45": 1,
+          "48": 1,
+          "486": 1,
+          "6": 2,
+          "60": 1,
+          "622": 1,
+          "64": 1,
+          "8": 6,
+          "937": 1
+        },
+        "max_fibre_size": 344837,
+        "n_fibres": 77,
+        "non_isomorphic_collision_witness_available_domain": {
+          "canonical_a": "9ae97224e222387e",
+          "canonical_b": "a0992211d947dbdb",
+          "certificate": "exact canonical form of the strict order relation",
+          "permutation_a": "012378654",
+          "permutation_b": "012473865",
+          "xi": [
+            1,
+            3,
+            6,
+            1,
+            1,
+            0,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (relation count), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              8
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              8
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "012387654",
+          "permutation_b": "012438765",
+          "relation_count_a": 26,
+          "relation_count_b": 29,
+          "separated_by": "relation count"
+        },
+        "permutations_alone_in_their_fibre": 3,
+        "singleton_fibres": 3
+      },
+      "XI_C": {
+        "available_fibres": 95,
+        "available_fibres_with_several_isomorphism_classes": 90,
+        "dimension": 18,
+        "fibre_size_distribution": {
+          "1": 3,
+          "104": 1,
+          "12": 7,
+          "120": 1,
+          "1200": 1,
+          "140": 1,
+          "16": 3,
+          "1640": 1,
+          "198": 1,
+          "2": 14,
+          "20": 1,
+          "24": 1,
+          "2477": 1,
+          "294": 1,
+          "298": 1,
+          "3": 2,
+          "30": 2,
+          "344837": 1,
+          "348": 1,
+          "36": 1,
+          "4": 26,
+          "44": 1,
+          "573": 1,
+          "6": 3,
+          "60": 3,
+          "68": 1,
+          "8": 12,
+          "84": 1,
+          "86": 1,
+          "90": 1,
+          "9572": 1
+        },
+        "fraction_alone_in_their_fibre": 8.267195767195768e-06,
+        "injective": false,
+        "isomorphism_classes_per_mixed_available_fibre": {
+          "10": 2,
+          "101": 1,
+          "108": 1,
+          "12": 3,
+          "130": 1,
+          "14": 1,
+          "15": 1,
+          "154": 1,
+          "2": 34,
+          "219": 1,
+          "22": 1,
+          "3": 4,
+          "30": 3,
+          "3242": 1,
+          "34": 1,
+          "4": 16,
+          "41": 1,
+          "42": 1,
+          "44": 1,
+          "45": 1,
+          "46": 1,
+          "486": 1,
+          "6": 3,
+          "60": 1,
+          "622": 1,
+          "8": 6,
+          "937": 1
+        },
+        "max_fibre_size": 344837,
+        "n_fibres": 96,
+        "non_isomorphic_collision_witness_available_domain": {
+          "canonical_a": "9ae97224e222387e",
+          "canonical_b": "a0992211d947dbdb",
+          "certificate": "exact canonical form of the strict order relation",
+          "permutation_a": "012378654",
+          "permutation_b": "012473865",
+          "xi": [
+            1,
+            3,
+            6,
+            1,
+            1,
+            0,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null,
+            null,
+            1,
+            1,
+            1
+          ]
+        },
+        "non_isomorphic_collision_witness_unavailable_fibre": {
+          "certificate": "the two permutations differ in an order invariant (relation count), hence they are non-isomorphic",
+          "degree_profile_a": [
+            [
+              0,
+              8
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "degree_profile_b": [
+            [
+              0,
+              8
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ],
+            [
+              5,
+              0
+            ]
+          ],
+          "permutation_a": "012387654",
+          "permutation_b": "012438765",
+          "relation_count_a": 26,
+          "relation_count_b": 29,
+          "separated_by": "relation count"
+        },
+        "permutations_alone_in_their_fibre": 3,
+        "singleton_fibres": 3
+      },
+      "independent_path_crosschecks": 362880,
+      "n": 9,
+      "permutations": 362880,
+      "permutations_available": 18043,
+      "permutations_unavailable": 344837
+    }
+  ],
+  "result_status": "OBSERVED_REPRODUCIBLE_STATIC_FIBRE_STUDY",
+  "target_guard": {
+    "a_k_or_b_k_computed": false,
+    "e_p_computed": false,
+    "falsification_criterion_used": false,
+    "induced_subposets_evaluated": false,
+    "monte_carlo": false,
+    "pair_selection_rule_used": false,
+    "q_p_computed": false,
+    "q_p_star_computed": false,
+    "retention_used": false,
+    "thinning_masks_enumerated": false
+  },
+  "validation": {
+    "guards": [
+      "fibre sizes cover S_n exactly",
+      "fibre counts match the size histogram",
+      "a finer member never merges fibres of a coarser one",
+      "availability partition covers S_n"
+    ],
+    "independent_coordinate_paths": [
+      "live recomputation via p1a_paisaje_niveles_d2.score_landscape",
+      "reconstruction from the frozen landscape CSV"
+    ],
+    "paths_agree_on_every_permutation": true
+  }
+}

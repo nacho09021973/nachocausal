@@ -1,0 +1,17 @@
+{
+  "degree": 8,
+  "parity": "even",
+  "target": "B_star_a_squared",
+  "left_polynomial_null_mode": "2*(x + y - 1)*(2*x*y - x - y + 1)",
+  "K_star_1": "y - x",
+  "K_star_left_mode": "0",
+  "K_star_I_squared_equals_K_star_J_squared": "-(x - y)*(2*x**2*y**2 - 2*x**2*y + x**2 - 2*x*y**2 + 4*x*y - 2*x + y**2 - 2*y + 1)",
+  "interior_recurrence_checks": "passed",
+  "ansatz_dimension": 15,
+  "equations": 102,
+  "matrix_rank": 15,
+  "augmented_rank": 16,
+  "exact_polynomial_lift_exists": false,
+  "claim_ceiling": "No exact symmetric even polynomial preimage up to this degree; approximation remains undecided.",
+  "verifier_sha256": "80b1d5cbf9033451a32b99daa5ecc73cbe7128b19ca70616ff8b875c5be0c3ae"
+}

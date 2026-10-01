@@ -9,6 +9,12 @@ numpy==1.26.4
 # Test runner for `make test` (bit-exact regression + leak + seed invariants).
 pytest>=7,<9
 
+# Additional packages imported by the canonical `make test` suite.
+pandas==2.1.4
+networkx==3.6.1
+matplotlib==3.11.1
+threadpoolctl==3.6.0
+
 # CPU scientific tooling used by the reproducible research and dev scripts.
 # Keep GPU-only CuPy in requirements-gpu.txt: CuPy 14 requires NumPy 2.x and
 # therefore cannot share this sealed NumPy 1.26 environment.
