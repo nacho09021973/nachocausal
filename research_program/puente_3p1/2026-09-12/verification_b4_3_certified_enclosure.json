@@ -1,0 +1,19 @@
+{
+  "unit": "PUENTE-3P1/B4.3",
+  "same_point_chart_scaling": true,
+  "interval_backend": "mpmath.iv",
+  "pointwise_interval_backend_available": true,
+  "twelve_entry_enclosure": false,
+  "quadrature_remainder_certificate": false,
+  "shared_dependency_propagation_Z_F_P": false,
+  "no_finite_difference": true,
+  "no_rescaling": true,
+  "no_new_point": true,
+  "no_new_chart": true,
+  "no_search": true,
+  "no_seeds": true,
+  "no_monte_carlo": true,
+  "terminal": "B4.3_IMPLEMENTATION_FAILURE",
+  "scientific_status": "N3_RANK_UNRESOLVED",
+  "reason": "Pointwise interval arithmetic exists, but no formal interval quadrature/remainder layer certifies the nested F/P shape-derivative integrals."
+}
