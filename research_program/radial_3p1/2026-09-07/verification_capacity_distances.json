@@ -1,0 +1,128 @@
+{
+  "status": "all_exact_checks_passed",
+  "degrees": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "sympy_version": "1.14.0",
+  "verifier_sha256": "e6b257372bc7927a1673058f317a06c30cd50b3242f103ba0cb272b0bbf78531",
+  "frozen_manifest_sha256": "58d05d704a32e458deba35d2208678514bffec54cddf304532a375606a8ca908",
+  "frozen_inputs_verified_before_and_after": true,
+  "checks": [
+    {
+      "degree": 1,
+      "pair_generators": 5,
+      "moments": {
+        "0": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "259507/33926449410",
+          "eta_exact": "259507/33762960000",
+          "parity_and_first_component_cancellation": "passed"
+        },
+        "1": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "0",
+          "eta_exact": "0",
+          "parity_and_first_component_cancellation": "passed"
+        }
+      },
+      "aggregate_c_exact": "54370521/215406028"
+    },
+    {
+      "degree": 2,
+      "pair_generators": 8,
+      "moments": {
+        "0": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "340097577720105200159/46919547263094213706260570",
+          "eta_exact": "25480300110873/3498513564229868800",
+          "parity_and_first_component_cancellation": "passed"
+        },
+        "1": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "0",
+          "eta_exact": "0",
+          "parity_and_first_component_cancellation": "passed"
+        },
+        "2": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "130856091273737602007/609954114420224778181387410",
+          "eta_exact": "550728828204073/2550416388323574355200",
+          "parity_and_first_component_cancellation": "passed"
+        }
+      },
+      "aggregate_c_exact": "114473501737598125407851/893705662154175499166868"
+    },
+    {
+      "degree": 3,
+      "pair_generators": 11,
+      "moments": {
+        "0": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "340097577720105200159/46919547263094213706260570",
+          "eta_exact": "25480300110873/3498513564229868800",
+          "parity_and_first_component_cancellation": "passed"
+        },
+        "1": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "0",
+          "eta_exact": "0",
+          "parity_and_first_component_cancellation": "passed"
+        },
+        "2": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "130856091273737602007/609954114420224778181387410",
+          "eta_exact": "550728828204073/2550416388323574355200",
+          "parity_and_first_component_cancellation": "passed"
+        },
+        "3": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "133662403392887942/6620079939612330635942355",
+          "eta_exact": "66831201696443971/3290472295183459246592160",
+          "parity_and_first_component_cancellation": "passed"
+        }
+      },
+      "aggregate_c_exact": "241629311605324237546506108625313636630925467/3677639736407031610611993044802884417043402576"
+    },
+    {
+      "degree": 4,
+      "pair_generators": 15,
+      "moments": {
+        "0": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "62084815983482708558758211655008405160606059/9628084035259131107276301091656231035634349945170",
+          "eta_exact": "13458038368955764888378971843/2076603480446955728659263561673600",
+          "parity_and_first_component_cancellation": "passed"
+        },
+        "1": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "0",
+          "eta_exact": "0",
+          "parity_and_first_component_cancellation": "passed"
+        },
+        "2": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "1604543184276281251395945330209342181065519/9628084035259131107276301091656231035634349945170",
+          "eta_exact": "7252892914064356204992375251689/43295936605230758769108449702757555840",
+          "parity_and_first_component_cancellation": "passed"
+        },
+        "3": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "133662403392887942/6620079939612330635942355",
+          "eta_exact": "66831201696443971/3290472295183459246592160",
+          "parity_and_first_component_cancellation": "passed"
+        },
+        "4": {
+          "capacity_matches_frozen": true,
+          "distance_squared_exact": "538562958206738961173335874646720558067819/18186380955489469869299679839795103067309327674210",
+          "eta_exact": "82730842654076111146965435248210291/2773609858825424458013702468708153623036800",
+          "parity_and_first_component_cancellation": "passed"
+        }
+      },
+      "aggregate_c_exact": "180788443971636909005205724513904930791577776954689765463490319691049/5282667576583949304745287298296655533870360306930645007776503009626992"
+    }
+  ],
+  "claim_ceiling": "Finite dual identities only; density and zero limits remain unproved."
+}

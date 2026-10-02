@@ -1,0 +1,158 @@
+{
+  "adversarial_cases": [
+    {
+      "backend_status": "ORBITAL_UNIQUE",
+      "case": "AUT_TRIVIAL",
+      "expected_diagnostic": "UNIQUE",
+      "group_order": 1,
+      "match": true,
+      "n": 6,
+      "n_maximizers": 1,
+      "n_orbits_on_m": 1,
+      "permutation": "012345"
+    },
+    {
+      "backend_status": "ORBITAL_UNIQUE",
+      "case": "AUT_LARGE",
+      "expected_diagnostic": "TIE_AUT_ONLY",
+      "group_order": 24,
+      "match": true,
+      "n": 9,
+      "n_maximizers": 4,
+      "n_orbits_on_m": 1,
+      "permutation": "012348765"
+    },
+    {
+      "backend_status": "ORBITAL_UNIQUE",
+      "case": "TIE_AUT_ONLY",
+      "expected_diagnostic": "TIE_AUT_ONLY",
+      "group_order": 2,
+      "match": true,
+      "n": 7,
+      "n_maximizers": 2,
+      "n_orbits_on_m": 1,
+      "permutation": "0123465"
+    },
+    {
+      "backend_status": "ORBITAL_NONUNIQUE",
+      "case": "TIE_NONAUT",
+      "expected_diagnostic": "TIE_NONAUT",
+      "group_order": 1,
+      "match": true,
+      "n": 7,
+      "n_maximizers": 2,
+      "n_orbits_on_m": 2,
+      "permutation": "0123456"
+    },
+    {
+      "backend_status": "ORBITAL_NONUNIQUE",
+      "case": "MANY_MAXIMIZERS",
+      "expected_diagnostic": "TIE_NONAUT",
+      "group_order": 4,
+      "match": true,
+      "n": 9,
+      "n_maximizers": 8,
+      "n_orbits_on_m": 2,
+      "permutation": "012435687"
+    },
+    {
+      "backend_status": "ORBITAL_NONUNIQUE",
+      "case": "MANY_ORBITS",
+      "expected_diagnostic": "TIE_NONAUT",
+      "group_order": 1,
+      "match": true,
+      "n": 9,
+      "n_maximizers": 4,
+      "n_orbits_on_m": 4,
+      "permutation": "012456837"
+    }
+  ],
+  "artifact_schema": "P1A_ORBITAL_BACKEND_PREFLIGHT_D2_V1",
+  "backend": {
+    "automorphism_group_preserved": true,
+    "full_group_required_for_r_orb": false,
+    "installed_alternatives": [],
+    "name": "NetworkX DiGraphMatcher/VF2",
+    "poset_encoding": "directed graph of the complete strict-order relation",
+    "provenance": "Debian/Ubuntu package python3-networkx 2.8.8-1ubuntu1",
+    "route": "ORBITS",
+    "version": "2.8.8"
+  },
+  "benchmark": [
+    {
+      "backend_failure": 0,
+      "instances": 100,
+      "max_n_maximizers": 4,
+      "max_time": 0.0005095989999972517,
+      "median_n_maximizers": 0.0,
+      "median_time": 5.665599974236102e-05,
+      "n": 10,
+      "p95_time": 0.0002299200000379642,
+      "success": 100
+    },
+    {
+      "backend_failure": 0,
+      "instances": 100,
+      "max_n_maximizers": 2,
+      "max_time": 0.0012437479999789502,
+      "median_n_maximizers": 0.0,
+      "median_time": 9.196600012728595e-05,
+      "n": 12,
+      "p95_time": 0.0007075570001688902,
+      "success": 100
+    },
+    {
+      "backend_failure": 0,
+      "instances": 100,
+      "max_n_maximizers": 9,
+      "max_time": 0.0021518050002669042,
+      "median_n_maximizers": 1.0,
+      "median_time": 0.0005610745001831674,
+      "n": 16,
+      "p95_time": 0.0011899200003426813,
+      "success": 100
+    }
+  ],
+  "engineering_verdict": "READY",
+  "exhaustive_equivalence": {
+    "backend_equivalence": "PASS",
+    "counts": {
+      "6": 720,
+      "7": 5040,
+      "8": 40320,
+      "9": 362880
+    },
+    "expected_total": 408960,
+    "first_mismatch": null,
+    "total": 408960
+  },
+  "phase": "ORBITAL_BACKEND_PREFLIGHT",
+  "predeclared_benchmark": {
+    "instances_per_n": 100,
+    "n": [
+      10,
+      12,
+      16
+    ],
+    "promising_max_s": 5.0,
+    "promising_p95_s": 2.0,
+    "ready_max_s": 2.0,
+    "ready_p95_s": 0.25,
+    "seed": 260826,
+    "timeout_s": 5.0
+  },
+  "provenance": {
+    "frozen_instrument": "emergencia/p1a_tie_aut_diagnostic.py",
+    "frozen_instrument_sha256": "5614a5f33da0611170aaf5e77f24f2f19b646ec3f3559191c21d74fed402b7b4",
+    "generator": "emergencia/p1a_orbital_backend_preflight_d2.py",
+    "generator_sha256": "75cd907486eaff9e5be0f8ce213e0ce2bfb55254977d98560a386b512ebc2489",
+    "randomness": "benchmark only; fixed local PRNG seed"
+  },
+  "scientific_guard": {
+    "frozen_artifacts_overwritten": false,
+    "large_n_e_estimated": false,
+    "large_n_u_estimated": false,
+    "state_unique_used_as_proxy": false
+  },
+  "scientific_large_n_run": false
+}

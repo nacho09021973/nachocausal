@@ -17,9 +17,125 @@ separates exact fixed-\(n\) blindness to absolute scale, completion dependence o
 event horizon, and a matching \(n^{-1/2}\) minimax localization rate on one declared
 fixed-corner \(1{+}1\) family. Its claims are narrower than the historical program roadmap below.
 
-**Current program roadmap:** [post-N1–N5 limits-paper route](tarea_grok_2.md).
-The earlier [15 July operational plan](docs/plan_operativo_15_julio_2026.md) remains historical
-input where not superseded by the current roadmap.
+**Current program roadmap:** [September 2026 checkpoint](docs/hoja_de_ruta_septiembre_2026.md).
+The [post-N1–N5 limits-paper route](tarea_grok_2.md), the
+[15 July operational plan](docs/plan_operativo_15_julio_2026.md), and the
+[original horizon roadmap](docs/roadmap.md) remain historical input where not superseded by that
+checkpoint.
+
+## Current theory result — Fisher efficiency of unlabeled 2D posets
+
+The rank-to-poset branch now contains a finite-\(N\) theorem for the exact
+channel
+
+\[
+\Pi_N\longmapsto[P_{\Pi_N}],
+\]
+
+where `Pi_N` is uniform on `S_N` and `[P_Pi_N]` is the isomorphism class of the
+induced oriented two-dimensional poset. For symmetric separable scores
+
+\[
+S_N(\pi)=2\sum_{i=1}^N a_{i,N}a_{\pi(i)},
+\]
+
+assume
+
+\[
+\sup_N\max_i|a_{i,N}|<\infty,
+\qquad
+\sum_i a_{i,N}=0,
+\qquad
+\frac1N\sum_i a_{i,N}^2\longrightarrow c>0.
+\]
+
+Writing
+
+\[
+I_N^\Pi=\mathbb E[S_N(\Pi_N)^2],
+\qquad
+I_N^{[P]}=
+\mathbb E\!\left[\mathbb E[S_N(\Pi_N)\mid[P_{\Pi_N}]]^2\right],
+\]
+
+the proved result is
+
+\[
+\boxed{
+1-\frac{I_N^{[P]}}{I_N^\Pi}=O(N^{-1/2}),
+\qquad
+\frac{I_N^{[P]}}{I_N^\Pi}\longrightarrow1.
+}
+\]
+
+The argument does not require asymptotic uniqueness of the permutation
+representation. It combines exact zero conditional variance on the typical
+prime-root/leaf-or-twin sector, an `O(N^{-1})` exceptional-event probability,
+and the explicit uniform fourth-moment bound
+
+\[
+\mathbb E[S_N(\Pi_N)^4]\le240N^2M^8.
+\]
+
+For the frozen sinusoidal tangent
+\(a_{i,N}=\mathbb E[\sin(2\pi U_{(i)})]\), one has \(c=1/2\), hence
+
+\[
+I_N^\Pi=N+o(N),
+\qquad
+I_N^{[P]}=N-o(N).
+\]
+
+The complete definitions, finite falsifiers, source transport and proofs are in
+[`research_program/work_packages/wp6_d2_modular_fiber_score.md`](research_program/work_packages/wp6_d2_modular_fiber_score.md).
+The priority audit has passed only provisionally: the narrow theorem is
+potentially new, while the general framework of asymptotically sufficient
+quantizations is not claimed as new. No universality claim is made.
+
+The geometric branch is also closed through S2. S1 classifies exactly the
+symmetric rank-one conformal tangents on a fixed Minkowski null diamond, and
+S2 assembles that classification with the theorem above to prove relative
+Fisher retention for the same channel. S1/S2 are now frozen as a
+**structural tool**: they make no horizon claim and do not automatically
+transport to the sealed Schwarzschild benchmark. The physical re-entry audit
+finds exact transport only for the product-order/rank-permutation skeleton at
+fixed cardinality. The point experiment is now proved non-QMD, which rules out
+a common parameter-independent statistical isomorphism to the regular S1/S2
+experiment. The remaining `DOMAIN_BRIDGE` question is regularity after the
+finite rank/permutation or unlabeled-poset channel; it is open and not
+authorized. See
+[`wp6_d2_geometric_tangent_classification.md`](research_program/work_packages/wp6_d2_geometric_tangent_classification.md),
+[`wp6_d2_geometric_fisher_retention.md`](research_program/work_packages/wp6_d2_geometric_fisher_retention.md),
+and the [physical re-entry audit](docs/physical_reentry_audit_001_2026-08-28.md).
+
+```text
+FAMILY_FROZEN
+FINITE_N_POSET_LOSS_PROVED
+TYPICAL_FIBER_ZERO_LOSS = PROVED
+ASYMPTOTIC_POSET_FISHER_EFFICIENCY_FOR_BOUNDED_SEPARABLE_SCORES = PROVED
+THEOREM_PROVED_PRIORITY_AUDIT_PASSED_PROVISIONALLY
+POTENTIALLY_NOVEL_THEOREM_NOT_NOVEL_FRAMEWORK
+NO_UNIVERSALITY_CLAIM
+GEOMETRIC_TANGENT_CLASSIFICATION = PROVED
+S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY
+STOP_AFTER_S2 = SI
+FISHER_BRANCH_ROLE = STRUCTURAL_TOOL
+PHYSICAL_REENTRY = FIXED_N_CHANNEL_CLOSED_POISSON_OPEN_REDUCED
+COMMON_POINT_ISOMORPHISM = REFUTED
+MOVING_SUPPORT_QMD_STATUS = PROVED_NON_QMD_FOR_POINT_EXPERIMENT
+FIXED_N_PHYSICAL_CHANNEL_BRIDGE = CLOSED
+FIXED_N_OBSERVABLE_QMD = PROVED
+T12_TO_PREREG002_FALSIFIABLE_TRANSFER = NOT_ESTABLISHED
+T19_STRUCTURAL_RESULT = CLOSED_AUTONOMOUSLY
+POISSON_QMD_BRANCH = PARKED_OPEN_REDUCED
+POISSON_MIXTURE_QMD = OPEN_UNIFORM_BOUND
+PREREG_002 = UNCHANGED
+NEXT_RUN_AUTHORIZED = NO
+TARGET_SUBCLASS = SYMMETRIC_RANK_ONE_COPULA_TANGENTS
+GENERIC_BILINEAR_SEPARABLE_EXTENSION = OPEN_NOT_ASSUMED
+RATE_IMPROVEMENT = DEFERRED
+PRIORITY = PROVISIONAL_NOT_SEALED
+```
 
 The project starts deliberately narrow and disciplined: reproduce, blind to coordinates and
 under a success/failure criterion frozen in advance, the known-truth detection of a
@@ -264,14 +380,16 @@ floor, is separately frozen in `docs/preregistration_003.md`). The honest bounda
 
 ## Running / reproducing on a fresh machine
 
-The validation path is **pure numpy**. Anyone can reproduce everything under identical
-conditions with just this repo and the pinned environment:
+The sealed numeric core is **pure numpy**. The canonical repository validation path
+also imports the test-suite support packages pinned in `requirements.txt`. Anyone can
+reproduce everything under identical conditions with just this repo and that
+environment:
 
 ```bash
 git clone https://github.com/nacho09021973/nachocausal
 cd nachocausal
 python3 -m venv .venv && . .venv/bin/activate     # Python 3.12 (sealed: 3.12.3)
-pip install -r requirements.txt                    # numpy==1.26.4 (hard-pinned), pytest
+pip install -r requirements.txt                    # pinned canonical test/audit environment
 
 make test       # bit-exact regression vs the 64 audited O multisets + leak/seed guards
 make dry-run    # run the full frozen PASS/FAIL path on dev seeds (verdict discarded)

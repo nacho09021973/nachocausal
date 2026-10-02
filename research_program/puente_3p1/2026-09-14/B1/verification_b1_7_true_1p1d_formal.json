@@ -1,0 +1,62 @@
+{
+  "unit": "PUENTE-3P1/B1.7-formal",
+  "status": "FROZEN_PAIR / DIRECTED_ROUNDING_ENCLOSURE",
+  "frozen_pair": true,
+  "lambda_pair": [
+    [
+      0.5,
+      1.0,
+      1.0,
+      0.5,
+      0.1
+    ],
+    [
+      0.2,
+      0.8,
+      2.0,
+      0.9,
+      0.1
+    ]
+  ],
+  "cells": 160,
+  "radial_density": "H(UV)=exp(-s)/s, (1-s) exp(s)=UV",
+  "causal_predicate": "Ux < Uy and Vx < Vy",
+  "scalar_layer": {
+    "s_enclosure": "monotone scalar inequality with mpmath.iv",
+    "h_enclosure": "monotonicity of H in w=UV and corner extrema"
+  },
+  "arithmetic": {
+    "mode": "outward directed rounding",
+    "partition_nodes": "exact Fractions",
+    "sums": "directed pairwise trees",
+    "global_slack_constant": null
+  },
+  "lambda0": {
+    "cells": 160,
+    "rho_lower": 0.5075399616681603,
+    "rho_upper": 0.5198120043866058,
+    "Z_lower": 0.2553617258900858,
+    "Z_upper": 0.25686538684793014,
+    "ordered_pair_mass_lower": 0.01674369942321136,
+    "ordered_pair_mass_upper": 0.016948369312472223
+  },
+  "lambda1": {
+    "cells": 160,
+    "rho_lower": 0.521869256599942,
+    "rho_upper": 0.5412751165436316,
+    "Z_lower": 0.5809309656148102,
+    "Z_upper": 0.5860479442330307,
+    "ordered_pair_mass_lower": 0.08961857030354665,
+    "ordered_pair_mass_upper": 0.09133497610595172
+  },
+  "U0_1p1d": 0.5198120043866058,
+  "L1_1p1d": 0.521869256599942,
+  "formal_gap": 0.0020572522133361915,
+  "separated": true,
+  "no_search": true,
+  "no_seeds": true,
+  "no_monte_carlo": true,
+  "n": 2,
+  "terminal": "B1.7_TRUE_1P1D_FORMAL_SEPARATION_ESTABLISHED",
+  "claim_ceiling": "For the frozen pair at n=2, the natural 1+1D radial measure and product order have distinct non-labelled poset laws."
+}

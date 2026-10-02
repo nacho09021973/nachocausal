@@ -1,0 +1,12 @@
+{
+  "unit": "PUENTE-3P1/B0",
+  "source_chart": "research_program/synthesis/op11_spherical_dual_target.md#2",
+  "C1_f_prime": "Mul(Symbol('s', positive=True), exp(Symbol('s', positive=True)))",
+  "C1_f_prime_equals_s_exp_s": true,
+  "C1_s_determined_by_UV": true,
+  "C2_volume_element": "Mul(Integer(32), Pow(Symbol('M', real=True), Integer(4)), Symbol('s', positive=True), exp(Mul(Integer(-1), Symbol('s', positive=True))), Abs(sin(Symbol('theta', real=True))))",
+  "C2_matches_32_M4_s_exp_minus_s_sin_theta": true,
+  "C3_integrand_M_free": true,
+  "C3_normalized_measure_M_free": true,
+  "CONCLUSION": "DILATION_IS_PURE_GAUGE_AT_FIXED_N"
+}

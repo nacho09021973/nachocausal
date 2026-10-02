@@ -1,0 +1,424 @@
+{
+  "aggregates": [
+    {
+      "automorphism_order_counts_nonempty": {
+        "1": 1
+      },
+      "candidate_count_distribution_all_levels": {
+        "1": 1
+      },
+      "landscape_rows": 720,
+      "max_candidates": 1,
+      "max_score_levels": 1,
+      "n": 6,
+      "n_candidates_distribution": {
+        "0": 719,
+        "1": 1
+      },
+      "n_score_levels_distribution": {
+        "0": 719,
+        "1": 1
+      },
+      "orbit_count_distribution_all_levels": {
+        "1": 1
+      },
+      "orbit_count_distribution_by_level_index": {
+        "0": {
+          "1": 1
+        }
+      },
+      "permutations": 720,
+      "permutations_with_candidates": 1,
+      "permutations_with_empty_candidate_set": 719,
+      "top_level_candidate_count_distribution": {
+        "1": 1
+      },
+      "top_level_orbit_count_distribution": {
+        "1": 1
+      },
+      "top_level_primary_score_distribution": {
+        "3": 1
+      },
+      "top_level_secondary_score_distribution": {
+        "6": 1
+      }
+    },
+    {
+      "automorphism_order_counts_nonempty": {
+        "1": 31,
+        "2": 6
+      },
+      "candidate_count_distribution_all_levels": {
+        "1": 32,
+        "2": 5,
+        "3": 1
+      },
+      "landscape_rows": 5041,
+      "max_candidates": 5,
+      "max_score_levels": 2,
+      "n": 7,
+      "n_candidates_distribution": {
+        "0": 5003,
+        "1": 32,
+        "2": 4,
+        "5": 1
+      },
+      "n_score_levels_distribution": {
+        "0": 5003,
+        "1": 36,
+        "2": 1
+      },
+      "orbit_count_distribution_all_levels": {
+        "1": 36,
+        "2": 1,
+        "3": 1
+      },
+      "orbit_count_distribution_by_level_index": {
+        "0": {
+          "1": 36,
+          "2": 1
+        },
+        "1": {
+          "3": 1
+        }
+      },
+      "permutations": 5040,
+      "permutations_with_candidates": 37,
+      "permutations_with_empty_candidate_set": 5003,
+      "top_level_candidate_count_distribution": {
+        "1": 32,
+        "2": 5
+      },
+      "top_level_orbit_count_distribution": {
+        "1": 36,
+        "2": 1
+      },
+      "top_level_primary_score_distribution": {
+        "3": 37
+      },
+      "top_level_secondary_score_distribution": {
+        "6": 34,
+        "7": 3
+      }
+    },
+    {
+      "automorphism_order_counts_nonempty": {
+        "1": 633,
+        "2": 237,
+        "4": 15,
+        "6": 6
+      },
+      "candidate_count_distribution_all_levels": {
+        "1": 691,
+        "2": 204,
+        "3": 42,
+        "4": 19,
+        "5": 3,
+        "6": 2
+      },
+      "landscape_rows": 40390,
+      "max_candidates": 15,
+      "max_score_levels": 4,
+      "n": 8,
+      "n_candidates_distribution": {
+        "0": 39429,
+        "1": 660,
+        "15": 1,
+        "2": 169,
+        "3": 6,
+        "4": 6,
+        "5": 34,
+        "6": 10,
+        "8": 2,
+        "9": 3
+      },
+      "n_score_levels_distribution": {
+        "0": 39429,
+        "1": 833,
+        "2": 49,
+        "3": 6,
+        "4": 3
+      },
+      "orbit_count_distribution_all_levels": {
+        "1": 836,
+        "2": 76,
+        "3": 39,
+        "4": 8,
+        "6": 2
+      },
+      "orbit_count_distribution_by_level_index": {
+        "0": {
+          "1": 820,
+          "2": 69,
+          "3": 2
+        },
+        "1": {
+          "1": 14,
+          "2": 3,
+          "3": 33,
+          "4": 8
+        },
+        "2": {
+          "2": 4,
+          "3": 4,
+          "6": 1
+        },
+        "3": {
+          "1": 2,
+          "6": 1
+        }
+      },
+      "permutations": 40320,
+      "permutations_with_candidates": 891,
+      "permutations_with_empty_candidate_set": 39429,
+      "top_level_candidate_count_distribution": {
+        "1": 677,
+        "2": 199,
+        "3": 6,
+        "4": 9
+      },
+      "top_level_orbit_count_distribution": {
+        "1": 820,
+        "2": 69,
+        "3": 2
+      },
+      "top_level_primary_score_distribution": {
+        "3": 887,
+        "4": 4
+      },
+      "top_level_secondary_score_distribution": {
+        "6": 750,
+        "7": 129,
+        "8": 12
+      }
+    },
+    {
+      "automorphism_order_counts_nonempty": {
+        "1": 11435,
+        "12": 30,
+        "2": 5544,
+        "24": 6,
+        "4": 761,
+        "6": 247,
+        "8": 20
+      },
+      "candidate_count_distribution_all_levels": {
+        "1": 12931,
+        "10": 5,
+        "12": 1,
+        "2": 5353,
+        "3": 1198,
+        "4": 888,
+        "5": 198,
+        "6": 142,
+        "7": 33,
+        "8": 32,
+        "9": 2
+      },
+      "landscape_rows": 365620,
+      "max_candidates": 35,
+      "max_score_levels": 6,
+      "n": 9,
+      "n_candidates_distribution": {
+        "0": 344837,
+        "1": 11344,
+        "10": 28,
+        "11": 22,
+        "12": 5,
+        "13": 3,
+        "14": 4,
+        "15": 36,
+        "16": 15,
+        "18": 4,
+        "19": 8,
+        "2": 4419,
+        "22": 2,
+        "24": 2,
+        "25": 2,
+        "3": 344,
+        "35": 1,
+        "4": 334,
+        "5": 727,
+        "6": 442,
+        "7": 65,
+        "8": 82,
+        "9": 154
+      },
+      "n_score_levels_distribution": {
+        "0": 344837,
+        "1": 16025,
+        "2": 1507,
+        "3": 326,
+        "4": 164,
+        "5": 16,
+        "6": 5
+      },
+      "orbit_count_distribution_all_levels": {
+        "1": 16287,
+        "10": 1,
+        "12": 1,
+        "2": 2823,
+        "3": 1054,
+        "4": 422,
+        "5": 74,
+        "6": 93,
+        "7": 12,
+        "8": 16
+      },
+      "orbit_count_distribution_by_level_index": {
+        "0": {
+          "1": 15423,
+          "2": 2466,
+          "3": 128,
+          "4": 26
+        },
+        "1": {
+          "1": 759,
+          "2": 155,
+          "3": 718,
+          "4": 330,
+          "5": 54,
+          "6": 2
+        },
+        "2": {
+          "1": 13,
+          "2": 182,
+          "3": 198,
+          "4": 52,
+          "5": 16,
+          "6": 44,
+          "8": 6
+        },
+        "3": {
+          "1": 90,
+          "2": 20,
+          "3": 8,
+          "4": 10,
+          "6": 43,
+          "7": 8,
+          "8": 6
+        },
+        "4": {
+          "1": 2,
+          "12": 1,
+          "4": 2,
+          "5": 4,
+          "6": 4,
+          "7": 4,
+          "8": 4
+        },
+        "5": {
+          "10": 1,
+          "3": 2,
+          "4": 2
+        }
+      },
+      "permutations": 362880,
+      "permutations_with_candidates": 18043,
+      "permutations_with_empty_candidate_set": 344837,
+      "top_level_candidate_count_distribution": {
+        "1": 12220,
+        "2": 5032,
+        "3": 316,
+        "4": 445,
+        "5": 4,
+        "6": 19,
+        "8": 7
+      },
+      "top_level_orbit_count_distribution": {
+        "1": 15423,
+        "2": 2466,
+        "3": 128,
+        "4": 26
+      },
+      "top_level_primary_score_distribution": {
+        "3": 17799,
+        "4": 244
+      },
+      "top_level_secondary_score_distribution": {
+        "6": 13859,
+        "7": 3501,
+        "8": 647,
+        "9": 36
+      }
+    }
+  ],
+  "artifact_schema": "P1A_PAISAJE_NIVELES_D2_V1",
+  "choice_free_extraction": {
+    "coordinate_weighting_defined": false,
+    "epsilon_window_fixed": false,
+    "fixed_dimension_summary_defined": false,
+    "levels_defined_as": "every distinct value of S_C on Q(C), no truncation",
+    "primary_or_secondary_deficit_defined": false,
+    "scalar_gap_defined": false,
+    "top_k_fixed": false
+  },
+  "level_semantics": {
+    "empty_candidate_set": "Q(C) empty is reported as one row with candidates_available=0 and every level field NA; it is never silently coerced to zero",
+    "level_index_0": "the argmax level, equal to M(C)",
+    "levels_sorted": "descending lexicographic in (primary_score, secondary_score)",
+    "n_automorphisms_when_empty": "NA; Aut(C) is not enumerated when Q(C) is empty, mirroring the frozen diagnostic which also skips it",
+    "orbit_sizes": "hyphen-joined orbit cardinalities in descending order"
+  },
+  "permutation_encoding": "concatenated one-digit element images in index order; n<=9 so every image is 0..8",
+  "provenance": {
+    "frozen_instrument": "emergencia/p1a_tie_aut_diagnostic.py",
+    "frozen_instrument_modified": false,
+    "frozen_instrument_sha256": "5614a5f33da0611170aaf5e77f24f2f19b646ec3f3559191c21d74fed402b7b4",
+    "generator": "emergencia/p1a_paisaje_niveles_d2.py",
+    "generator_sha256": "4a5001f46c17df04de980ccf7748ded853ba060630f5b70510d1743c79e423a2",
+    "landscape_csv": "p1a_paisaje_niveles_d2.csv",
+    "landscape_csv_sha256": "a02602fc8f08451c36324ae8818998be656a21a8a25929fd445a26c8a61529dd",
+    "new_dependencies": [],
+    "randomness": null
+  },
+  "result_status": "OBSERVED_REPRODUCIBLE_STATIC_LANDSCAPE",
+  "scientific_scope": {
+    "candidate": "ordered endpoint quadruple (a,b,c,d)",
+    "causal_set_construction": "product order of identity and permutation",
+    "claim_ceiling": "exact finite-n static landscape only; no coordinate proposal, no metric, no near-maximizer window, no asymptotic extrapolation and no statement about any thinning target",
+    "dimension": 2,
+    "extraction": "complete list of distinct score levels over Q(C), with per-level candidate count and Aut(C)-orbit partition",
+    "k0": 3,
+    "law": "uniform enumeration of all permutations in S_n",
+    "n": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "score_order": "lexicographic, descending",
+    "selector": "MIN_COVERAGE_LEX",
+    "selector_score": [
+      "min(m_minus,m_plus)",
+      "m_minus+m_plus"
+    ]
+  },
+  "target_guard": {
+    "a_k_or_b_k_computed": false,
+    "e_p_computed": false,
+    "induced_subposets_evaluated": false,
+    "monte_carlo": false,
+    "q_p_computed": false,
+    "q_p_star_computed": false,
+    "retention_used": false,
+    "target_based_coordinate_selection": false,
+    "thinning_masks_enumerated": false,
+    "xi_n_defined": false
+  },
+  "validation": {
+    "exhaustive_over_all_permutations": true,
+    "per_permutation_guards": [
+      "levels partition Q(C) exactly once",
+      "score levels are distinct and descending",
+      "top level equals M(C) from the frozen materialize_lex_maximizers",
+      "top level score equals the frozen lexicographic score",
+      "orbit partition covers each level exactly once",
+      "orbit sizes sum to the level size",
+      "every level is closed under every exact automorphism",
+      "automorphism order equals the frozen diagnostic order",
+      "top-level orbit count equals the frozen n_orbits"
+    ],
+    "reference_instrument": "emergencia/p1a_tie_aut_diagnostic.py"
+  }
+}

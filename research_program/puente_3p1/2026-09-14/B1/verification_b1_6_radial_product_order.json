@@ -1,0 +1,85 @@
+{
+  "unit": "PUENTE-3P1/B1.6",
+  "status": "DETERMINISTIC_NUMERICAL_CONTROL",
+  "frozen_pair": true,
+  "lambda_pair": [
+    [
+      0.5,
+      1.0,
+      1.0,
+      0.5,
+      0.1
+    ],
+    [
+      0.2,
+      0.8,
+      2.0,
+      0.9,
+      0.1
+    ]
+  ],
+  "b1_5_commit": "6633ebd2da81188ecc492f59b44b75e0e2c59cd2",
+  "causal_predicate": "Ux < Uy and Vx < Vy",
+  "retained_radial_density": "G(UV)=s exp(-s), (1-s) exp(s)=UV",
+  "angular_kernel_used": false,
+  "q_true_used": false,
+  "orders": [
+    {
+      "order": 8,
+      "rho_rad_lambda0": 0.5002727389619507,
+      "rho_rad_lambda1": 0.5006052016335129,
+      "absolute_gap": 0.0003324626715621726,
+      "Z_lambda0": 0.2739771121024961,
+      "Z_lambda1": 0.6325926210571515
+    },
+    {
+      "order": 12,
+      "rho_rad_lambda0": 0.5002727388832193,
+      "rho_rad_lambda1": 0.5006051770935876,
+      "absolute_gap": 0.00033243821036832433,
+      "Z_lambda0": 0.27397711208805575,
+      "Z_lambda1": 0.6325926078948221
+    },
+    {
+      "order": 16,
+      "rho_rad_lambda0": 0.5002727388832144,
+      "rho_rad_lambda1": 0.5006051770525867,
+      "absolute_gap": 0.0003324381693722289,
+      "Z_lambda0": 0.27397711208805486,
+      "Z_lambda1": 0.6325926078730864
+    },
+    {
+      "order": 20,
+      "rho_rad_lambda0": 0.5002727388832143,
+      "rho_rad_lambda1": 0.5006051770524982,
+      "absolute_gap": 0.00033243816928385517,
+      "Z_lambda0": 0.27397711208805486,
+      "Z_lambda1": 0.6325926078730397
+    },
+    {
+      "order": 24,
+      "rho_rad_lambda0": 0.5002727388832147,
+      "rho_rad_lambda1": 0.5006051770524982,
+      "absolute_gap": 0.0003324381692835221,
+      "Z_lambda0": 0.27397711208805486,
+      "Z_lambda1": 0.6325926078730397
+    },
+    {
+      "order": 32,
+      "rho_rad_lambda0": 0.5002727388832142,
+      "rho_rad_lambda1": 0.5006051770524976,
+      "absolute_gap": 0.0003324381692834111,
+      "Z_lambda0": 0.2739771120880549,
+      "Z_lambda1": 0.6325926078730397
+    }
+  ],
+  "last_step_stability": 5.551115123125783e-16,
+  "radial_gap_at_finest_order": 0.0003324381692834111,
+  "b1_5_analytic_gap_reference": 0.002918225282557404,
+  "no_search": true,
+  "no_seeds": true,
+  "no_monte_carlo": true,
+  "n": 2,
+  "terminal": "B1.6_RADIAL_NUMERICALLY_SEPARATED",
+  "claim_ceiling": "The angular causal reach is not necessary for numerical separation of this frozen pair under the retained radial density. This is not a formal enclosure and does not isolate the 3+1D volume measure."
+}
