@@ -662,6 +662,14 @@ rho_obs        = 0.530-0.566
 > `0.532-0.568`, luego `rho_obs` está a `<=0.0007` del óptimo y **la brecha es de la
 > información, no del estimador**.
 
+> **Cualificación posterior (§22.4, auditoría 033).** El `<=0.0007` de este párrafo
+> **no** es la distancia exacta al óptimo `G`-medible sobre la muestra sellada. Ésa es
+> `Delta_A = rho_max - rho_obs = +0.0015 a +0.0026` (Bloque A, identidad exacta). El
+> `0.0007` corresponde a la versión con corrección intrabin,
+> `Delta_B = sqrt(1 - T_corr) - rho_obs`, y su cota sostenible con `T_corr` a cuatro
+> decimales es `|Delta_B| < 0.0008`. El párrafo se conserva como registro histórico;
+> la magnitud vigente está en §22.4.
+
 Resultado operativo: el ítem 2 (apretar `F_relax` con el hueco del lado opuesto)
 pasa de objetivo cualitativo a **objetivo numérico**: un factor `>=1.36` sobre `B_n`
 excluiría el gate en los seis estratos, `>=1.17` solo en `n=128` futuro. Si el
@@ -746,6 +754,14 @@ buscaba. CV-4.1 y CV-4.3 siguen siendo correctos y no quedan contradichos
 (`rho_max_ub_Bn`), y la lectura «la brecha es del estimador» es falsa
 en el sentido opuesto: `COUNT_VOLUME` está a `<=0.0007` en `rho` del óptimo
 `G`-medible. **La obstrucción es de la información, no del estimador.**
+
+> **Cualificación posterior (§22.4, auditoría 033).** El `<=0.0007` de este párrafo
+> **no** es la distancia exacta al óptimo `G`-medible sobre la muestra sellada. Ésa es
+> `Delta_A = rho_max - rho_obs = +0.0015 a +0.0026` (Bloque A, identidad exacta). El
+> `0.0007` corresponde a la versión con corrección intrabin,
+> `Delta_B = sqrt(1 - T_corr) - rho_obs`, y su cota sostenible con `T_corr` a cuatro
+> decimales es `|Delta_B| < 0.0008`. El párrafo se conserva como registro histórico;
+> la magnitud vigente está en §22.4.
 
 ```text
 CV4_AUDIT_ROUND_1 = FAIL_MATERIAL (T_oos presentado como cota; retractacion
@@ -1035,6 +1051,23 @@ Cifras impresas en los propios paneles:
   estrecha. Es el modo de fallo del ledger C1–C5, ahora con cifras propias.
 - `fig05` — `|r_s=1 − r_s=7|` máx = `0.0101` frente a desviación típica `0.0248`.
 
+> **Cualificación (auditoría 035, aplicada el 2026-08-07).** Las tres cifras se
+> reproducen exactamente, pero su presentación tenía tres defectos, ya corregidos; el
+> párrafo de arriba se conserva como registro de lo que se afirmó entonces:
+>
+> - `fig02`: `12×12 = 144` incluye las 12 entradas diagonales, forzadas a `False` en
+>   ambas matrices y que nunca pueden diferir. Lo comprobable son **132 pares
+>   ordenados**, que es lo que la figura dice ahora.
+> - `fig04`: el `91 %` es el `R^2` **lineal** de una relación curva (un ajuste
+>   cuadrático en `t` da `0.93`) y no se afirma ninguna descomposición de varianza. Y
+>   la correlación en banda `+0.465` sale de **`n = 22`** de 900 puntos, con IC 95 %
+>   `[+0.05, +0.74]`: la física reaparece, pero apenas, y la figura lo imprime.
+> - `fig05`: `0.0248` era la desviación típica de **una** realización, ~9× la
+>   incertidumbre de las medias dibujadas. La escala correcta para el hueco es el
+>   error estándar Monte Carlo de la **diferencia**: `0.0101 = 1.9 SE`. Y aun así eso
+>   **no** demuestra equivalencia — sólo que no se detecta diferencia; la igualdad la
+>   da el Teorema 3.1, no la simulación.
+
 ### 21.3 Trampa registrada para que no se reintroduzca
 
 El Teorema 3.1 es `TV = 0` entre **leyes**, no entre realizaciones. Dos sprinklings
@@ -1048,6 +1081,19 @@ que rechazarla**. Va escrito en `viz/README.md` para que sobreviva a esta sesió
 
 Las figuras no tocan el sello (`thresholds.py sha256 = 6e2c3888…` verificado intacto),
 no consumen la banda de semillas reservada y no afirman reconstrucción.
+
+**Estado tras la auditoría 035 (2026-08-07).** Un error y siete avisos, todos de
+presentación y ninguno de fondo: los cinco PNG reproducen byte a byte desde los
+scripts commiteados, cada número se recomputó, las citas formales existen y el sello
+está intacto. El error era `fig05`: barras de error sin rotular que eran la desviación
+típica de una realización, ~9× la incertidumbre de las medias dibujadas, más un
+criterio de aceptación (`"the gap must stay below the sd"`) que ningún código
+comprobaba y cuya escala era ~6× demasiado laxa. Corregido: barras = error estándar
+Monte Carlo de la media, rotuladas; hueco expresado en SE de la diferencia
+(`0.0101 = 1.9 SE`) como **diagnóstico**, no como contraste; y dicho explícitamente que
+la igualdad la demuestra el Teorema 3.1 y que coincidir dentro del error Monte Carlo
+no establece equivalencia. Los siete avisos, cerrados en el mismo commit
+(`docs/auditor/auditor_report_035_...md` §5 para el detalle de cada uno).
 
 Queda pendiente, y es lo único que separa el material de un entregable:
 
@@ -1081,4 +1127,285 @@ NOT_FOR_ARXIV_TOKEN = WITHDRAWN_2026-08-06_SEAL_VERIFIED_AT_CLEARANCE
 NO_PUBLIC_NOVELTY_CLAIM = STILL_IN_FORCE_NOT_SUPERSEDED
 CLOSURE_NOTE_CLAUSE_3 = SUPERSEDED_BY_PI_CLEARANCE
 WORK_LIVES_ON_BRANCH_NOT_MAIN = TRUE
+```
+
+## 22. Figuras del fracaso de P1a — LISTAS (2026-08-07)
+
+Contrapartida diagnóstica de §21. Aquéllas explican los teoremas del manuscrito a un
+estudiante; éstas explican **a nosotros** qué salió mal en esta línea y por qué se tardó
+en verlo. Seis figuras en `emergencia/viz/`, en español (como todo el corpus
+`emergencia/`), sobre los artefactos ya sellados de `emergencia/resultados/`.
+
+**Motivo.** Esta hoja de ruta cuenta la línea entera y es correcta, pero no se lee de un
+vistazo. Las tres preguntas que un lector —incluido el futuro yo— hace primero son
+*cuánto se falló*, *por qué es imposible y no sólo difícil*, y *por qué costó meses*.
+Las figuras 2, 3 y 4 las contestan en ese orden y son una cadena.
+
+### 22.1 Lo entregado
+
+| # | Fichero | Qué enseña | Cifra que la cierra |
+|---|---|---|---|
+| 1 | `fig01_disponibilidad.py` | Disponibilidad: de `1/720` a `0.697` | resuelta, y no medía lo que hacía falta |
+| 2 | `fig02_el_gate.py` | Tres representaciones × seis estratos; gate `0.80` y aparcamiento `0.50` | mejor `rho = 0.566`; `HEIGHT_WIDTH` aparcada, `COUNT_VOLUME` no |
+| 3 | `fig03_canal_sigma_m.py` | El canal es `sigma(m)`; ANOVA de un factor | `SSW/SST = 0.68–0.72` ⟹ `rho_max = 0.531–0.568` |
+| 4 | `fig04_anatomia_del_error.py` | Se navegó con `rho_max_ub(B_n) = 0.83–0.86` como si fuera el máximo | `0.83 > 0.80`: el gate parecía alcanzable |
+| 5 | `fig05_seleccion_y_estabilidad.py` | Target estable / endpoints no; scores que no coinciden; pared de la caja | coincidencia entre selectores `= 0` a `n >= 96` |
+| 6 | `fig06_mapa_del_fracaso.py` | El recorrido entero con el desvío marcado — 11 etapas, 7 fases y el ramal CV | `0.27 → 0.47 → 0.57`, nunca `0.80` |
+
+Ejecución: `PYTHONDONTWRITEBYTECODE=1 python3 emergencia/viz/hacer_figuras.py`. Dos
+ejecuciones dan ficheros byte a byte idénticos (verificado).
+
+### 22.2 Por qué esto no son ilustraciones
+
+Ningún número es nuevo: todos salen de `emergencia/resultados/*.csv` con su sidecar
+verificado, o se recalculan desde ellos y se contrastan contra un ejecutable ya
+auditado. Tres controles corren **antes** de dibujar y abortan la figura si fallan:
+
+1. `datos._verificar` compara el SHA-256 de cada CSV con su sidecar. **Comprobado que
+   salta**: alterando un byte de una copia, `leer()` lanza `ValueError` en vez de
+   producir figura. Un artefacto regenerado sin resellar no se dibuja.
+2. `datos.anova_sigma_m` recalcula `SST = SSB + SSW` sobre las observaciones —no la
+   impone— y exige que el `rho_max` resultante reproduzca el de
+   `p1a_count_volume_canal_sigma_m_d2.py` dentro de `1e-4`.
+3. `fig01` contrasta enumeración exacta contra Monte Carlo en `n = 6..9` —dos
+   implementaciones independientes del mismo estado, discrepancia máxima `0.0018`— y
+   `fig06` verifica que las tres representaciones siguen ordenadas de peor a mejor
+   antes de contar esa historia.
+4. **(añadido tras la auditoría 032)** `fig02` recomputa los terminales de
+   aparcamiento desde el CSV y aborta si dejan de reproducir el registro sellado
+   (`HEIGHT_WIDTH_STRONGLY_PARKED = TRUE`, `COUNT_VOLUME_STRONGLY_PARKED = FALSE`).
+   **Comprobado que salta.**
+5. **(añadido tras la auditoría 032)** `fig06` cuenta etapas y fases sobre su propia
+   lista y aborta si el recuento del título deja de describir el diagrama.
+   **Comprobado que salta.**
+
+### 22.3 Lo que las figuras dejan a la vista y el texto no
+
+- **El enriquecimiento en la pared de la caja crece con `n`**: `×1.52` a `n=32`,
+  `×2.47` a `n=128`, en los tres selectores. Subir `n` no lo diluye, lo empeora. Es el
+  mismo modo de fallo que el `91 %` de §21.2 y que el ledger C1–C5, ahora medido dentro
+  de esta línea y con la dependencia en `n` explícita. No estaba escrito en §4.
+- **La serie de representaciones mejoraba monótonamente sin acercarse al gate**
+  (`0.27 → 0.47 → 0.57`). Una serie que mejora y no llega es más peligrosa que una que
+  no mejora: invita a probar la siguiente. La figura 6 lo enseña como forma, no como
+  lista.
+- **La holgura real de `B_n` (`×2.26–2.55`) era mayor que el factor que se buscaba
+  (`×1.17`)**, y estaba entera en el paso `min` sobre `F_relax`. Se buscó apretando
+  cotas superiores, cuyo techo demostrado es `×1.000017`.
+
+### 22.4 Precisión que hay que mantener
+
+`rho_max = sqrt(SSB/SST)` es una **identidad finito-muestral** sobre la muestra sellada:
+sin iid, sin bootstrap, sin modelo. El enunciado poblacional sigue en
+`STRONGLY_SUPPORTED_UNDER_IID_NOT_CLOSED_FORM_THEOREM` y ninguna figura afirma más que
+lo primero.
+
+El panel A de la fig. 4 dibuja el hueco **exacto** del Bloque A,
+`Delta_A = rho_max - rho_obs = +0.0015 a +0.0026`. `P1a_count_volume_canal_sigma_m_d2.md`
+§6.2 da para la misma comparación `-0.0001` a `+0.0007` y **no dice cómo lo calcula**;
+por tanto aquí no se afirma, se **deriva y se comprueba**: con `T_corr` del Bloque B
+—el estimador con corrección intrabin, impreso por el ejecutable auditado—
+
+```text
+Delta_B = sqrt(1 - T_corr) - rho_obs = -0.000045 a +0.000703   (evaluacion puntual)
+|Delta_B| < 0.0008                                             (cota sostenible)
+```
+
+reproduce el intervalo del documento a la precisión con que está impreso, en los seis
+estratos. Los dos extremos son una evaluación puntual **a la precisión de la
+entrada**, no un intervalo certificado: `T_corr` solo está impreso con cuatro
+decimales y propagar ese redondeo (`±5e-5`) lleva `Delta_B` hasta `+0.000747` en
+`(64, PAST)`. Por eso la cota publicada es `0.0008` y no `0.00071` (auditoría 033,
+hallazgo 1). `Delta_A` es la identidad exacta; `Delta_B` es su versión corregida y
+dependiente de iid. Son dos magnitudes distintas, no una contradicción, y la figura
+dibuja la primera y lo dice.
+
+### 22.5 Corrección tras la auditoría 032 (2026-08-07)
+
+`docs/auditor/auditor_report_032_emergencia-viz-figuras-del-fracaso.md` emitió
+`AUDIT_FAIL` con **un** error y tres avisos manuales sobre este material. Aplicado
+íntegro; ni un dato ni un experimento se han tocado.
+
+- **Error 1 — reparado, no eliminado.** `fig02` dibujaba `0.30` sobre el eje de
+  correlación. En el contrato que gobierna
+  (`P1a_contrato_representaciones_alternativas_d2.md`) `0.30` acota la **mediana del
+  error relativo absoluto**; el umbral del eje de correlación es `0.50`, el de
+  **aparcamiento fuerte** (`bootstrap95_upper(rho) < 0.50`, `:156`). Sustituido por
+  `0.50`. La línea correcta **decide un terminal sellado real**: `HEIGHT_WIDTH`
+  (`sup IC95 = 0.4838 < 0.50`) queda aparcada y `COUNT_VOLUME` (`0.5824 > 0.50`) no
+  — la distinción que la versión anterior borraba.
+- **Aviso 2 — reparado.** `datos.py` citaba el contrato del gate de altura para
+  constantes del experimento de representaciones. Corregido, con los tres umbrales
+  tabulados por eje para que no vuelva a confundirse.
+- **Aviso 3 — reparado.** El `0.0007` ya no se afirma: se deriva y se comprueba
+  (§22.4), con fórmula, evaluación puntual `-0.000045` a `+0.000703` y cota
+  sostenible `|Delta_B| < 0.0008`.
+- **Aviso 4 — reparado.** El título de `fig06` pasa de «seis intentos», que no se
+  correspondía con nada, a un recuento que el propio código verifica.
+
+Regenerados sólo `fig02`, `fig04` (pie de figura) y `fig06`; `fig01`, `fig03` y
+`fig05` byte a byte intactas. Los 23 avisos mecánicos preexistentes, fuera de este
+alcance, **no se han tocado**. Reauditoría solicitada; hasta que se emita, el estado
+de este material sigue siendo `AUDIT_FAIL`.
+
+### 22.6 Segunda remediación, tras la reauditoría 033 (2026-08-07)
+
+`docs/auditor/auditor_report_033_...md` cerró el error de la 032
+(`AUDIT_PASS_WITH_WARNINGS`) y dejó tres avisos. Aplicados los tres antes de subir
+nada, en commit separado para no romper la cadena de auditoría.
+
+- **Aviso 1 — cota demasiado estrecha.** `|Delta_B| < 0.00071` no es sostenible con
+  `T_corr` impreso a cuatro decimales: propagando `±5e-5`, `Delta_B` llega a
+  `+0.000747` en `(64, PAST)`. Sustituida por `|Delta_B| < 0.0008` en README, §22.4 y
+  el pie de la fig. 4, y el intervalo se rotula ahora como **evaluación puntual a la
+  precisión de la entrada**, no como intervalo certificado.
+- **Aviso 2 — el guardarraíl no era el contrato.** `fig02` comprobaba
+  `max(sup IC95) < 0.50` sobre los seis estratos. Eso **implica** la regla del
+  contrato pero no equivale a ella: su negación podía certificar mal un «no
+  aparcado». Sustituido por `datos.aparcada_fuerte`, que implementa **los dos
+  disyuntos** de `:156-157` con sus cuantificadores («para todo `n`, al menos un
+  lado»). Sobre la muestra sellada ambos coinciden `3/3`, luego ningún terminal
+  cambia; lo que cambia es la validez lógica futura.
+- **Aviso 3 — precisión sin referencia cruzada.** §16 y §18 conservan su texto —son
+  registro histórico— y llevan ahora una nota que remite a la distinción
+  `Delta_A`/`Delta_B` de §22.4 y a la cota `0.0008`.
+
+**Pruebas nuevas: `tests/test_emergencia_viz.py`, 12 casos.** Prueban el predicado en
+las dos direcciones que la auditoría pedía: el caso de **falso negativo del atajo**
+(cada `n` con un lado por debajo de `0.50` pero `max(sup) = 0.70`, donde el atajo
+decía «no aparcada» y el contrato dice «aparcada»), el **segundo disyunto** solo
+(correlación alta aparcada por el error relativo, invisible para el atajo), el
+cuantificador «para todo `n`», el terminal sellado, el guardarraíl SHA-256, el ANOVA
+contra el ejecutable auditado y el recuento de `fig06`.
+
+### 22.7 Cierre del residuo, tras la reauditoría 034 (2026-08-07)
+
+`docs/auditor/auditor_report_034_...md` cerró los tres avisos de la 033
+(`AUDIT_PASS_WITH_WARNINGS`, 0 errores) y dejó **uno**, que era el residuo del que
+acababa de repararse: el código había dejado de cometer la inferencia inválida, pero
+el pie dibujado en `fig02` seguía imprimiéndola —«`0.582 > 0.50` ⟹ no aparcado»—, que
+no se sigue de `:152-157`. La conclusión era correcta con estos datos y el
+guardarraíl impedía dibujar una falsa, pero el motivo que daba el rótulo no era el
+del contrato.
+
+Reparado: el pie atribuye ahora los dos terminales **a la regla** y reporta
+`sup IC95` como cantidad, no como criterio; las dos claves devueltas pasan a
+`aparcada (regla :152-157)` —el booleano que decide— más `sup IC95 (cantidad, no
+criterio)`. Regenerado sólo `fig02.png`.
+
+Con esto el material queda sin hallazgos abiertos dentro de su alcance: un error y
+cuatro avisos localizados y cerrados en tres commits, con el rastro completo en
+`docs/auditor/` 032, 033 y 034.
+
+```text
+P1A_FAILURE_FIGURES = READY_SIX_FIGURES_SPANISH_COMMITTED
+FIGURES_SOURCE = SEALED_CSVS_ONLY_NO_NEW_STOCHASTIC_DATA
+FIGURES_SHA256_GUARD = VERIFIED_TO_ACTUALLY_FIRE
+FIGURES_REPRODUCIBLE = BYTE_IDENTICAL_ACROSS_RUNS
+RHO_MAX_RECOMPUTED_IN_FIGURE = MATCHES_AUDITED_EXECUTABLE_WITHIN_1e-4
+BOX_WALL_ENRICHMENT_GROWS_WITH_N = 1.52_AT_32_TO_2.47_AT_128
+FIG02_FIG03_FIG04 = A_CHAIN_READ_IN_THAT_ORDER
+SEAL = UNTOUCHED_6e2c3888
+VALIDATION_SEED_BAND = NOT_CONSUMED
+RECOVERABILITY_CLAIM = NONE
+AUDIT_032_VERDICT = AUDIT_FAIL (1 error, 3 avisos manuales)
+AUDIT_032_REMEDIATION = APPLIED_IN_FULL_NO_DATA_TOUCHED
+FIG02_CORRELATION_THRESHOLD = 0.50_STRONG_PARKING_NOT_0.30
+FIG02_SEALED_TERMINALS_RECOMPUTED = HEIGHT_WIDTH_PARKED_COUNT_VOLUME_NOT
+DELTA_B_DERIVED_NOT_ASSERTED = ABS_LT_0.0008
+FIG06_TITLE_COUNT = SELF_CHECKED_11_STAGES_7_PHASES
+PREEXISTING_23_WARNINGS = UNTOUCHED_OUT_OF_SCOPE
+AUDIT_033_VERDICT = AUDIT_PASS_WITH_WARNINGS (0 errores, 3 avisos)
+AUDIT_033_REMEDIATION = APPLIED_IN_FULL_SEPARATE_COMMIT
+PARKING_PREDICATE = CONTRACT_LITERAL_BOTH_DISJUNCTS_NOT_MAX_SHORTCUT
+PARKING_PREDICATE_TESTS = 12_CASES_INCLUDING_SHORTCUT_FALSE_NEGATIVE
+DELTA_B_BOUND = ABS_LT_0.0008_INPUT_PRECISION_LIMITED
+SECTIONS_16_18 = HISTORICAL_RECORD_ANNOTATED_NOT_REWRITTEN
+AUDIT_034_VERDICT = AUDIT_PASS_WITH_WARNINGS (0 errores, 1 aviso)
+AUDIT_034_REMEDIATION = APPLIED_CAPTION_ATTRIBUTES_THE_RULE_NOT_THE_PROXY
+AUDIT_CHAIN = 032_FAIL -> 033_PASS_W -> 034_PASS_W -> residuo cerrado
+```
+
+## 23. Resultado analítico: atenuación de ventana finita (2026-08-07)
+
+Sale de dibujar, no de simular, y es el primer resultado **positivo** que produce el
+tramo de figuras. Documento `emergencia/P1a_ventana_finita_atenuacion.md`, ejecutable
+`emergencia/p1a_ventana_finita_atenuacion_d2.py`, y sección propia en el manuscrito
+(`docs/manuscript_limits_draft.md` §5.4.1), donde convierte el punto 1 de §5.4 —«el
+techo del parche confundido con frontera física»— de lección cualitativa en
+proposición exacta.
+
+**Proposición.** Con `W` la ventana, `P = Vol(J^+(x)∩W)/Vol(W)` y `T = t(X)`:
+condicionado a la posición de `x` y a `N=n`, `K = |J^+(x)| ~ Binomial(n-1, P)`
+exactamente, y de ahí
+
+```text
+Var(K)    = (n-1)^2 Var(P) + (n-1) E[P(1-P)]
+Corr(K,P) = A(n)          Corr(K,T) = Corr(P,T) * A(n)
+A(n)      = (1 + E[P(1-P)]/((n-1) Var(P)))^(-1/2)
+```
+
+Ambas correlaciones llevan **el mismo** factor; `1 - A(n) = O(1/n)` aunque la
+fluctuación relativa condicional de `K` sea `O(n^{-1/2})`, porque una correlación es un
+cociente de momentos segundos.
+
+**Consecuencia para el manuscrito.** El `-0.951` de `fig04` es una correlación muestral
+que estima un objetivo geométrico calculable **por cuadratura sin sortear un punto**:
+`Corr(p(X),t(X)) = -0.951387` para esa ventana. Y ese objetivo es un **funcional de la
+ventana**, de `-0.907` a `-0.986` sobre razones de aspecto razonables: es un enunciado
+sobre el diseño del experimento, no una constante de los conjuntos causales, y por eso
+es falsable barato.
+
+### 23.1 Lo que corrige de la lectura inicial
+
+La primera lectura de las figuras fundió dos cosas en una: la pared de la caja de
+`fig04` y el enriquecimiento fronterizo de los endpoints del selector. **No son el
+mismo obstáculo.** Medido:
+
+- `fig04`, elemento genérico: `corr(|J^+|,t)` es **plana** en `n` (−0.948 a −0.951 sobre
+  un rango de 64× en `n`); su límite es la constante geométrica de arriba;
+- selector, elemento elegido por argmax: enriquecimiento **creciente**, ×1.52 (`n=32`) a
+  ×2.47 (`n=128`).
+
+Dependencia en `n` distinta, luego mecanismos distintos: truncamiento de un observable
+no local en un caso, estadística de extremos en el otro. Tras el argmax la ley binomial
+deja de aplicar. Esa diferencia es el criterio barato para clasificar cualquier
+candidato futuro, y fundir los dos fenómenos lo borra.
+
+### 23.2 Techo de afirmación y control
+
+`BINOMIAL_PREMISE_CONTROL = PASS` (falsable: compara `p(x)` de cuadratura con
+`E[K]/(n-1)` simulado; peor discrepancia `1.9e-03` frente a `3 SE = 4.3e-03`).
+Convergencia de malla `1.9e-06`.
+
+La tabla de correlaciones muestrales frente a `n` que motivó todo esto es **una sola
+realización por `n`**: no separa fluctuación de la dependencia intra-realización (los
+`K_i` de un mismo causet no son independientes) y queda como control cualitativo, no
+como contraste. No se asignan errores estándar iid a la correlación interna de un
+causet; la cuadratura evita el problema calculando el objetivo en vez de estimarlo.
+
+No se afirma nada sobre el régimen del selector, ni que su enriquecimiento crezca sin
+límite (cinco valores de `n`, evidencia monótona en el régimen medido, no ley
+asintótica), ni nada sobre `d >= 3`.
+
+### 23.3 Nota de rama
+
+`docs/manuscript_limits_draft.md` estaba en esta rama **desatrasado** respecto de
+`origin/main`: le faltaba la cabecera de aprobación arXiv de `69bf65c` (2026-08-06).
+Se sincronizó con la versión de `main` **antes** de insertar §5.4.1, para no escribir
+sobre una copia vieja ni perder esa decisión en un merge posterior.
+
+```text
+FINITE_WINDOW_PROPOSITION = PROVED_EXACT_NO_IID_BETWEEN_ELEMENTS_NEEDED
+FINITE_WINDOW_TARGET_fig04 = -0.951387 (cuadratura)
+TARGET_IS_WINDOW_FUNCTIONAL = YES (-0.907 a -0.986)
+ATTENUATION_ORDER = O(1/n)
+GENERIC_ELEMENT_VS_SELECTOR = DISTINCT_MECHANISMS_DISTINCT_N_DEPENDENCE
+SELECTOR_REGIME = OUT_OF_SCOPE_ARGMAX_BREAKS_THE_BINOMIAL_LAW
+MANUSCRIPT_SECTION = 5.4.1_INSERTED
+MANUSCRIPT_SYNCED_WITH_MAIN_BEFORE_EDIT = YES
+HKM_MALAMENT_BOMBELLI_NOLDUS_TAFOYA = UNVERIFIED_NOT_IN_BIBLIOTECA
+NEW_STOCHASTIC_DATA_WRITTEN = NO
+SEED_BAND_CONSUMED = NO
+SEAL_TOUCHED = NO
 ```

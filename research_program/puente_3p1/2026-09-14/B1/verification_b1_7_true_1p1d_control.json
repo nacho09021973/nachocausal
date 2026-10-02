@@ -1,0 +1,84 @@
+{
+  "unit": "PUENTE-3P1/B1.7",
+  "status": "DETERMINISTIC_NUMERICAL_CONTROL",
+  "frozen_pair": true,
+  "lambda_pair": [
+    [
+      0.5,
+      1.0,
+      1.0,
+      0.5,
+      0.1
+    ],
+    [
+      0.2,
+      0.8,
+      2.0,
+      0.9,
+      0.1
+    ]
+  ],
+  "causal_predicate": "Ux < Uy and Vx < Vy",
+  "radial_measure": "H(UV)=exp(-s)/s, (1-s) exp(s)=UV",
+  "measure_origin": "natural 1+1D Schwarzschild volume in Kruskal coordinates, up to constant",
+  "angular_kernel_used": false,
+  "q_true_used": false,
+  "orders": [
+    {
+      "order": 8,
+      "rho_1p1d_lambda0": 0.513640158063321,
+      "rho_1p1d_lambda1": 0.531482846652104,
+      "absolute_gap": 0.017842688588783018,
+      "Z_lambda0": 0.2561113820331459,
+      "Z_lambda1": 0.5834748257815394
+    },
+    {
+      "order": 12,
+      "rho_1p1d_lambda0": 0.5136401605484531,
+      "rho_1p1d_lambda1": 0.5314835191365469,
+      "absolute_gap": 0.017843358588093827,
+      "Z_lambda0": 0.25611138230504793,
+      "Z_lambda1": 0.5834750941327351
+    },
+    {
+      "order": 16,
+      "rho_1p1d_lambda0": 0.5136401605486701,
+      "rho_1p1d_lambda1": 0.5314835207479414,
+      "absolute_gap": 0.01784336019927124,
+      "Z_lambda0": 0.25611138230507124,
+      "Z_lambda1": 0.5834750947735466
+    },
+    {
+      "order": 20,
+      "rho_1p1d_lambda0": 0.5136401605486701,
+      "rho_1p1d_lambda1": 0.5314835207524831,
+      "absolute_gap": 0.01784336020381294,
+      "Z_lambda0": 0.25611138230507136,
+      "Z_lambda1": 0.5834750947753503
+    },
+    {
+      "order": 24,
+      "rho_1p1d_lambda0": 0.5136401605486698,
+      "rho_1p1d_lambda1": 0.5314835207524969,
+      "absolute_gap": 0.017843360203827152,
+      "Z_lambda0": 0.25611138230507136,
+      "Z_lambda1": 0.5834750947753558
+    },
+    {
+      "order": 32,
+      "rho_1p1d_lambda0": 0.5136401605486701,
+      "rho_1p1d_lambda1": 0.5314835207524967,
+      "absolute_gap": 0.017843360203826597,
+      "Z_lambda0": 0.25611138230507136,
+      "Z_lambda1": 0.5834750947753559
+    }
+  ],
+  "last_step_stability": 3.3306690738754696e-16,
+  "gap_at_finest_order": 0.017843360203826597,
+  "no_search": true,
+  "no_seeds": true,
+  "no_monte_carlo": true,
+  "n": 2,
+  "terminal": "B1.7_TRUE_1P1D_NUMERICALLY_SEPARATED",
+  "claim_ceiling": "The frozen pair remains numerically separated under the natural 1+1D radial measure and product order. This is not a formal enclosure."
+}

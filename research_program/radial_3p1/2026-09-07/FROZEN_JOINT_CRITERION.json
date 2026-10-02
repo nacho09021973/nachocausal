@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-07",
+  "repository_head_at_freeze": "5efd1875a61cc1921e1d133af27b64a9f94082f0",
+  "policy": "Content freeze requested by the user. These files remain working results, without independent adjudication or a radial uniqueness claim. Hashes, not repository HEAD, identify the frozen uncommitted files.",
+  "active_objective": "Prove kappa_N_k tends to zero for each fixed moment k, separating even and odd sectors.",
+  "files": [
+    {
+      "path": "criterio_conjunto_momentos.md",
+      "sha256": "66fbe9b633a59d0e215f7fbe0954461f58c96605f8841ea1ce90d3580b4fdfd4"
+    },
+    {
+      "path": "verify_joint_moments.py",
+      "sha256": "5eefb0eea970978ef38097e40b68627b2f556e5b3b0ebfdb2110f0e0ddbfda12"
+    },
+    {
+      "path": "verification_joint_moments.json",
+      "sha256": "b3681db2fc3572bbf5c8d5832ca02dfe0a218fdf4109f620c612f17e1dd26917"
+    }
+  ]
+}

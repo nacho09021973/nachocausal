@@ -1,0 +1,191 @@
+{
+  "aggregates": [
+    {
+      "a_distribution": {
+        "3": 1
+      },
+      "bad_cores": 1,
+      "first_minimum_core": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "first_zero_core": null,
+      "minimum_a": 3,
+      "minimum_count": 1,
+      "n": 7,
+      "permutations_scanned": 5040,
+      "repairable_index_counts": {
+        "0": 0,
+        "1": 0,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 0,
+        "6": 0
+      },
+      "selector_ties": 5,
+      "tie_aut_only": 4
+    },
+    {
+      "a_distribution": {
+        "0": 14,
+        "1": 6,
+        "2": 11,
+        "3": 26,
+        "4": 14
+      },
+      "bad_cores": 71,
+      "first_minimum_core": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        7,
+        3,
+        6
+      ],
+      "first_zero_core": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        7,
+        3,
+        6
+      ],
+      "minimum_a": 0,
+      "minimum_count": 14,
+      "n": 8,
+      "permutations_scanned": 40320,
+      "repairable_index_counts": {
+        "0": 10,
+        "1": 3,
+        "2": 29,
+        "3": 42,
+        "4": 41,
+        "5": 33,
+        "6": 4,
+        "7": 0
+      },
+      "selector_ties": 214,
+      "tie_aut_only": 143
+    },
+    {
+      "a_distribution": {
+        "0": 479,
+        "1": 387,
+        "2": 563,
+        "3": 607,
+        "4": 438,
+        "5": 146
+      },
+      "bad_cores": 2620,
+      "first_minimum_core": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        3,
+        5,
+        6,
+        7
+      ],
+      "first_zero_core": [
+        0,
+        1,
+        2,
+        4,
+        8,
+        3,
+        5,
+        6,
+        7
+      ],
+      "minimum_a": 0,
+      "minimum_count": 479,
+      "n": 9,
+      "permutations_scanned": 362880,
+      "repairable_index_counts": {
+        "0": 646,
+        "1": 243,
+        "2": 621,
+        "3": 1023,
+        "4": 1144,
+        "5": 1068,
+        "6": 817,
+        "7": 254,
+        "8": 0
+      },
+      "selector_ties": 5823,
+      "tie_aut_only": 3203
+    }
+  ],
+  "artifact_schema": "P1A_TIE_AUT_GENERIC_CROSS_EXACT_N7_N9_V1",
+  "outcome": {
+    "falsifier_observed": true,
+    "first_zero_witness": {
+      "core": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        7,
+        3,
+        6
+      ],
+      "n": 8
+    },
+    "global_minimum_a": 0
+  },
+  "precommit": {
+    "falsifier": "one TIE_NONAUT core with a(kappa)=0",
+    "if_positive_through_n9": "no zero-repairable core in the exact finite scan; no theorem, no uniform linear lower bound, and no asymptotic claim",
+    "if_zero": "candidate antichain-padding family with O(1) generic cross repairs; other transposition classes still require proof",
+    "question": "min_{kappa in B_m} a(kappa) = 0 for some m in {7,8,9}?",
+    "used_as_assert_or_pass_fail": false
+  },
+  "provenance": {
+    "command": "python -m emergencia.p1a_tie_aut_generic_cross_exact --write-artifact",
+    "frozen_tie_aut_artifact": "emergencia/resultados/p1a_tie_aut_exacto_d2.json",
+    "frozen_tie_aut_artifact_sha256": "1bd9d882337b0aec56ff1bf87b0dd8de2fa415dc50b494eddb3bcfa4cf5c68f3",
+    "generic_diagnostic": "emergencia/p1a_tie_aut_generic_cross.py",
+    "generic_diagnostic_sha256": "1e3fb2362dfefb6059e7ad6eb1757fdd65c82ac6b4d16b25f29511849a28755f",
+    "new_dependencies": [],
+    "randomness": null,
+    "runner": "emergencia/p1a_tie_aut_generic_cross_exact.py",
+    "runner_sha256": "c808d3d36351eb4c8a56237bb74941d57834d76592af3ababeb3745dcf1b8158",
+    "tie_aut_diagnostic": "emergencia/p1a_tie_aut_diagnostic.py",
+    "tie_aut_diagnostic_sha256": "5614a5f33da0611170aaf5e77f24f2f19b646ec3f3559191c21d74fed402b7b4"
+  },
+  "result_status": "OBSERVED_REPRODUCIBLE_FINITE_N_NOT_ASYMPTOTIC",
+  "scope": {
+    "a_definition": "#{x in [n] : |M(D_x(kappa))/Aut(D_x(kappa))| = 1}",
+    "asymptotic_claim": null,
+    "bad_core": "TIE_NONAUT, equivalently |M(C_kappa)/Aut(C_kappa)| >= 2",
+    "input_congestion_b_n_studied": false,
+    "measure": "uniform labelled permutations in S_n",
+    "n": [
+      7,
+      8,
+      9
+    ],
+    "other_transposition_classes_controlled": false,
+    "selector_changed": false,
+    "thinning_rg_studied": false
+  },
+  "validation": {
+    "all_guards_passed": true,
+    "automorphism_orbits_recomputed_after_each_D_x": true,
+    "bad_counts_reproduced_from_frozen_tie_aut": true,
+    "complete_global_M_recomputed_after_each_D_x": true
+  }
+}

@@ -10,6 +10,31 @@ Cada paquete debería fijar:
 - artefactos esperados;
 - criterio de cierre o de abandono.
 
+## Current S1/S2 and physical re-entry checkpoint
+
+- `wp6_d2_geometric_tangent_classification.md`:
+  `GEOMETRIC_TANGENT_CLASSIFICATION = PROVED`.
+- `wp6_d2_geometric_fisher_retention.md`:
+  `S2_GEOMETRIC_FISHER_RETENTION = PROVED_BY_ASSEMBLY`, with
+  `STOP_AFTER_S2 = SI`.
+- `wp6_domain_bridge_fixed_ef_box.md`:
+  `PHYSICAL_REENTRY = PARTIAL_TRANSPORT_WITH_POINT_QMD_OBSTRUCTION_PROVED`,
+  `COMMON_POINT_ISOMORPHISM = REFUTED`, and
+  `MOVING_SUPPORT_QMD_STATUS = PROVED_NON_QMD_FOR_POINT_EXPERIMENT`.
+  `FINITE_CHANNEL_QMD = PROVED_FOR_EACH_FIXED_N` and
+  `FINITE_POSET_CHANNEL_QMD = PROVED_ON_CHANNEL_IMAGE_FOR_EACH_FIXED_N`;
+  uniformity in \(N\) is not claimed there.
+- `wp6_poisson_order_number_bridge.md`:
+  `POISSON_ORDER_NUMBER_BRIDGE = PROVED_IN_CURRENT_SCOPE`. For normalized S1, \(N\)
+  is ancilar and the Poisson mixture is QMD unilaterally in
+  \(\theta=\varepsilon^2\); for a scale orbit with known \(\rho\), cardinality
+  exactly restores the scale signal.
+
+The Fisher branch remains a structural tool. The 2026-08-30 Poisson opening is
+limited to the analytical order+number bridge above: it authorizes no S3,
+dimensional extension, new observable, benchmark run, horizon claim, or
+simulation.
+
 ## Historical observable-design front (closed as program north)
 
 The paragraphs in this section preserve the pre-Phase-0 sequencing record. They

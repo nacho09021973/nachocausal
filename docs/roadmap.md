@@ -4,6 +4,11 @@ Status: ROADMAP (revisable planning, not a frozen result and not a pre-registrat
 It sets no thresholds and reports no verdict. Each numbered phase becomes its own FROZEN
 pre-registration before any of its validation data is generated.
 
+> **Historical roadmap (superseded for forward planning).** This document
+> preserves the 2026-06-18 plan. Resume work from the
+> [September 2026 checkpoint](hoja_de_ruta_septiembre_2026.md), whose current
+> gate is `NEXT_RUN_AUTHORIZED = NO` after the S1/S2 physical re-entry audit.
+
 Ultimate goal: recover Schwarzschild **horizon structure** from causal order alone, as a
 *recoverability benchmark* — never a reconstruction claim (`docs/preregistration.md:69-72`).
 

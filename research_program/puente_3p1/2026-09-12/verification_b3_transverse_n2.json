@@ -1,0 +1,57 @@
+{
+  "unit": "PUENTE-3P1/B3",
+  "frozen_lambda": [
+    0.35,
+    0.9,
+    1.5,
+    0.7,
+    0.1
+  ],
+  "gauge_quotiented_coordinates": [
+    2.5714285714285716,
+    0.4666666666666666,
+    0.63
+  ],
+  "dphi_dx": [
+    -9.427619350503284e-05,
+    0.4571623980404993,
+    -0.00018641977335110346
+  ],
+  "drho_dx_enclosures": [
+    [
+      -0.0160513678718909,
+      -0.0018291707018712067
+    ],
+    [
+      -0.020845114206742375,
+      0.005325119591759329
+    ],
+    [
+      -0.02714439605800441,
+      -0.016617851512339632
+    ]
+  ],
+  "cross_product_enclosures": [
+    [
+      0.000835726032487794,
+      0.007340047026164459
+    ],
+    [
+      -4.332220253114109e-07,
+      1.2256741971519245e-06
+    ],
+    [
+      -0.012413283136704272,
+      -0.00759606414007476
+    ]
+  ],
+  "chart_rank_three": true,
+  "drho_nonzero": true,
+  "dphi_wedge_drho_certified_nonzero": true,
+  "no_new_path": true,
+  "no_new_point": true,
+  "no_search": true,
+  "no_seeds": true,
+  "no_monte_carlo": true,
+  "terminal": "B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY"
+}
