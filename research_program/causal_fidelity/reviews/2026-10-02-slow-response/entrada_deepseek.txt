@@ -1,0 +1,684 @@
+Revisa críticamente los tres documentos adjuntos como una propuesta matemática
+en borrador. El primero es el contrato histórico; los otros dos proponen una
+ampliación operacional explícita. No presupongas que cumplen el blanco físico
+del contrato histórico ni que una ampliación sea un error por sí misma.
+
+Objetivo: determinar si la suficiencia para lecturas lineales lentas, la
+transferencia de respuesta en la familia creciente y el contraejemplo de misma
+llegada con respuesta distinta están correctamente definidos y demostrados.
+Deriva los pasos críticos desde las fórmulas; el texto adjunto no es evidencia
+independiente. No investigues nuevos modelos ni propongas experimentos.
+
+Comprueba especialmente:
+1. Orientación de la matriz de cobertura, inyección, retardación y transporte
+   bajo isomorfismos marcados.
+2. Espectro del Laplaciano temporal con sus condiciones de borde, corte y rango
+   de los proyectores; significado micro y macroscópico de la lentitud.
+3. Suficiencia de P K P para todas las lecturas declaradas y sus límites:
+   mediciones lineales, preparación temporal distribuida, ausencia de un sector
+   de energía de estados y de una interpretación física del reloj.
+4. Conteo de eventos y rutas de la familia, escalado exp(-gamma/n), reloj k/n,
+   ventana 4n y normalización de recursos. Busca normalizaciones implícitas o
+   cambios de protocolo que invaliden la comparación entre dinámicas.
+5. Isometría E_n, adjunto, transferencia K_gamma E_n=E_n K_(gamma,n), identidad
+   Ghat=Pi_n K_gamma Pi_n y prueba de Pi_n->I fuertemente. Distingue convergencia
+   fuerte de convergencia en norma y comprueba los cuantificadores.
+6. Mismo tiempo de llegada normalizado con theta=1/2 y discrepancia 93/256
+   para el protocolo constante, incluido n=1. Comprueba por una segunda vía.
+7. Si hay una afirmación que exceda lo demostrado o una dependencia circular
+   entre elegir el modelo y concluir insuficiencia de tau en la clase declarada.
+
+Resultado esperado: informe en español con veredicto REQUIERE_CORRECCION,
+SIN_ERROR_DETECTADO_EN_EL_ALCANCE o INDETERMINADO. Para cada objeción, indica
+documento y sección, afirmación precisa, derivación o contraejemplo, gravedad y
+corrección mínima. Distingue errores matemáticos de obligaciones físicas ya
+declaradas abiertas. Si no puedes verificar un paso, dilo; no inventes fuentes.
+El veredicto no autoriza promoción científica ni fusión del PR.
+
+Cierre: entregar un único informe sobre las afirmaciones acotadas. Las objeciones
+se contrastarán después con las definiciones y derivaciones originales; no se
+declaran resueltas por el hecho de haber recibido una respuesta del autor.
+
+=== DOCUMENT 1: CAUSAL_FIDELITY_MINIMAL_CONTRACT.md ===
+
+# Contrato mínimo de fidelidad causal
+
+> **Estado:** `NEW_FRONT / MINIMAL_CONTRACT / UNPROVED`
+> **Fecha:** 2026-09-18
+> **Rama:** `research/causal-fidelity-bridge`
+
+Este documento abre un frente nuevo y deliberadamente estrecho. No reutiliza los
+artefactos históricos de `research_program/puente_3p1/` ni los controles B1.6/B1.7.
+Aquellos quedan como controles negativos históricos: muestran que una separación
+estadística puede sobrevivir a un cambio de dimensión u orden sin certificar una
+estructura dinámica genuinamente `3+1D`.
+
+El objetivo aquí no es producir otra separación estática, sino comprobar si una
+propiedad dinámica inferida del orden causal tiene una relación estrictamente
+distinta con el límite infrarrojo.
+
+## 1. Claim ceiling
+
+El único resultado admisible de esta primera unidad será uno de:
+
+- `PASS`: existe una construcción explícita que satisface el test exacto de §6,
+  con todas las cuantificaciones y tolerancias fijadas antes de observar los
+  resultados;
+- `FAIL`: alguna obligación matemática del contrato es imposible o el test
+  falla;
+- `OPEN`: faltan una definición, una prueba o una verificación que el contrato
+  exige.
+
+No se autoriza inferir de un `PASS` que se haya reconstruido la geometría,
+demostrado una teoría física, identificado de forma única una dinámica, ni
+establecido una firma exclusiva de `3+1D`. Tampoco se autoriza una afirmación de
+novedad bibliográfica desde este documento.
+
+## 2. Objetos congelados
+
+### 2.1 Familia causal
+
+Para cada \(N\in\mathbb N\), sea
+
+\[
+C_N=(E_N,\prec_N,\mu_N)
+\]
+
+una familia de configuraciones causales finitas, donde \(E_N\) es el conjunto de
+eventos, \(\prec_N\) el orden causal y \(\mu_N\) la medida o pesos de muestreo
+cuando sean necesarios. El canal de entrada de ambos modelos es el mismo
+\(C_N\); ninguna coordenada de una realización, ni la verdad geométrica usada
+para generarla, puede entrar en el observable.
+
+La familia debe especificar antes de cualquier ejecución:
+
+1. el espacio de realizaciones y su ley de muestreo;
+2. el régimen de (N) y cualquier límite de escala;
+3. el soporte temporal de las fuentes y detectores;
+4. las invariancias de relabeling exigidas al observable;
+5. los casos de borde, empates y ausencia de respuesta.
+
+### 2.2 Dos dinámicas
+
+Sean (D_1,D_2) dos dinámicas definidas sobre la misma familia (C_N). Deben
+compartir la fuente (s), el protocolo de perturbación, la unidad temporal, el
+detector y todos los parámetros declarados comunes. Sólo pueden diferir en el
+ingrediente dinámico que el contrato pretende poner a prueba.
+
+No se permite cambiar simultáneamente la familia causal, el soporte, el
+muestreo y la dinámica: eso impediría atribuir una diferencia a (D_1\) frente a
+\(D_2\).
+
+### 2.3 Respuesta
+
+Para (D\in\{D_1,D_2\}), la respuesta observable es una función escalar
+
+\[
+\Delta_D(C_N;s,t),
+\]
+
+definida en el dominio temporal congelado. Deben fijarse explícitamente su
+normalización, signo, regularidad mínima, valor fuera del cono causal y regla
+para respuestas nulas o no finitas. La respuesta sólo puede depender de la
+información autorizada por el contrato; el código de evaluación no puede leer
+coordenadas ni etiquetas geométricas ocultas.
+
+## 3. Arrival time
+
+Fijados un umbral \(\theta\) y una convención de igualdad, el arrival time de
+una fuente \(s\) bajo \(D\) es
+
+\[
+\tau_D(C_N;s)
+ := \inf\{t\in I_s:\Delta_D(C_N;s,t)\geq\theta\},
+\]
+
+con el valor especial `\(\infty\)` si el conjunto es vacío. El intervalo
+\(I_s\), la malla o interpolación temporal, la resolución y la tolerancia
+numérica deben quedar fijados antes de evaluar \(D_1,D_2\). Si se usa una
+definición continua, la implementación deberá certificar cómo aproxima el
+ínfimo; si se usa una malla, el resultado sólo podrá llamarse arrival time
+discreto.
+
+El arrival time es una salida dinámica. No es, por sí mismo, una coordenada
+reconstruida ni una identificación de una superficie causal.
+
+## 4. Único escalar \(Q_s\)
+
+El contrato permite un único escalar IR asociado a la fuente (s):
+
+\[
+Q_s^D(C_N):=q\!\left(\tau_D(C_N;s),\Delta_D(C_N;s,\cdot)\right)\in\mathbb R\cup\{\infty\},
+\]
+
+donde (q) debe especificarse una sola vez antes de la ejecución. No se
+autoriza seleccionar entre varios (Q)'s después de inspeccionar los datos, ni
+combinar (Q_s) con un segundo score para decidir el resultado.
+
+La versión mínima recomendada es (q(\tau,\Delta)=\tau), de modo que
+
+\[
+Q_s^D(C_N)=\tau_D(C_N;s).
+\]
+
+Si se escoge otra (q), el contrato derivado deberá justificar por qué sigue
+siendo un único observable escalar y deberá conservar separadas la respuesta
+completa, el arrival time y el resumen (Q_s).
+
+## 5. Conjuntos de tiempos
+
+Sea (T_{\rm caus}(C_N;s)) el conjunto de tiempos causalmente admisibles bajo
+la convención fijada para (C_N), antes de aplicar la dinámica. Debe definirse
+por una regla puramente causal y auditable; no puede definirse a posteriori como
+la unión de resultados favorables.
+
+Para cada dinámica, sea
+
+\[
+T_{\rm IR}^{D}(C_N;s)
+ := \operatorname{IR}\!\left(Q_s^D(C_N),\tau_D(C_N;s);\,\mathcal R_{\rm IR}\right),
+\]
+
+donde \(\mathcal R_{\rm IR}\) es una única regla de paso al régimen infrarrojo,
+con escala, límite, tolerancia y tratamiento de \(\infty\) congelados antes de
+comparar (D_1) y (D_2). La misma regla debe usarse para ambas dinámicas.
+
+La notación (T_{\rm IR}^{D}) no significa automáticamente una propiedad
+geométrica ni una observable universal: esas interpretaciones quedan abiertas
+hasta una prueba independiente.
+
+## 6. Test exacto
+
+La hipótesis objetivo de este frente es la conjunción exacta
+
+\[
+\boxed{
+T_{\rm IR}^{D_1}(C_N;s)
+=T_{\rm IR}^{D_2}(C_N;s)
+\subsetneq
+T_{\rm caus}(C_N;s).
+}
+\]
+
+La evaluación debe separar las dos obligaciones:
+
+1. **igualdad dinámica en IR:** demostrar o certificar, con los cuantificadores
+   declarados, que ambos conjuntos son iguales;
+2. **pérdida estricta frente al causal:** exhibir al menos un tiempo causal
+   admisible que queda fuera del conjunto IR común, y probar la inclusión
+   correspondiente.
+
+Una coincidencia numérica en una escalera finita no es una demostración de
+igualdad. Una diferencia observada fuera de IR no refuta el test si no se había
+congelado que ese régimen pertenecía a la afirmación. Las tolerancias no podrán
+ser elegidas después de ver la separación.
+
+## 7. Obligaciones de validación
+
+Antes de cualquier resultado se deberá disponer de:
+
+- definiciones ejecutables de (C_N,D_1,D_2,\Delta,\tau,Q_s,T_{\rm caus}) y
+  (\mathcal R_{\rm IR});
+- una prueba o certificado de que no hay fuga de coordenadas, etiquetas o
+  ground truth en \(Q_s\) ni en la decisión;
+- un control de identidad que cambie sólo el ingrediente dinámico;
+- un análisis de estabilidad frente a la discretización temporal y los empates;
+- un registro de casos nulos, divergentes y fuera de soporte;
+- una tabla previa de cuantificadores, tolerancias, tamaños y criterio
+  `PASS/FAIL/OPEN`;
+- revisión adversarial del test antes de interpretar cualquier coincidencia.
+
+No se ejecuta un experimento confirmatorio ni se crea una segunda familia de
+observables hasta cerrar esta unidad mínima.
+
+## 8. Exclusiones explícitas
+
+Este contrato no incorpora:
+
+- `research_program/puente_3p1/` ni B1.5, B1.6 o B1.7;
+- los archivos históricos de control negativo;
+- `.webui_secret_key`;
+- una afirmación de que la igualdad IR sea ya cierta;
+- una afirmación de que la inclusión estricta sea universal;
+- promoción al estado canónico, publicación o novedad.
+
+El siguiente paso autorizado, una vez revisado este contrato, es formalizar sus
+definiciones y buscar un primer caso mínimo. El estado actual de ambas partes
+del test es `OPEN`.
+
+=== DOCUMENT 2: SLOW_PROTOCOL_RESPONSE_2026-10-02.md ===
+
+# Sector de protocolos lentos y respuesta conservada
+
+Fecha: 2026-10-02. Estado: `DRAFT / ANALYTICAL_PROPOSAL`.
+Base: `main @ d5567eb`. Desarrollo autorizado por el usuario tras discutir
+qué conservar además de la llegada. Sin revisión independiente ni promoción
+al contrato físico. Las demostraciones son algebraicas, sin código ejecutado.
+
+## 1. Alcance y cambio explícito de blanco
+
+Se propone conservar el operador de respuesta accesible a fuentes y detectores
+que varían lentamente en el reloj de actualizaciones. La primera llegada tau
+queda como diagnóstico adicional. Esto amplía expresamente el blanco de un
+único escalar del contrato histórico; no modifica ese documento ni afirma
+haber satisfecho su gate físico.
+
+Se parte de un poset finito marcado `(C;s,d)`, su matriz de cobertura A y
+la dinámica `B=alpha A` de `DEFINITION_REPAIR_2026-10-02.md`.
+Para esta nota se mantiene fijo C y alpha mientras crece la ventana T.
+No es el límite conjunto de posets crecientes del documento IR operativo.
+
+## 2. Fuentes, detector y respuesta retardada
+
+En la ventana k=0,...,T-1 se declara la inyección
+
+`x(0)=f(0)e_s`,
+`x(k)=B x(k-1)+f(k)e_s` para k>=1,
+`y(k)=e_d^dagger x(k)`.
+
+Por iteración,
+
+`y(t)=sum_{u=0}^t R(t-u) f(u)`,
+`R(l)=e_d^dagger B^l e_s` para l>=0.
+
+Así `K_T(t,u)=R(t-u)` si t>=u, y cero si t<u. Esta
+convención incluye la respuesta al impulso de los documentos anteriores:
+f(0)=1 y f(k)=0 para k>0. Las marcas son distintas, por lo que R(0)=0.
+Como B es nilpotente, R tiene soporte finito para cada C fijo.
+
+Una segunda derivación usa superposición: cada inyección en u contribuye
+`B^(t-u)e_s f(u)` en t>=u; la suma da exactamente la misma matriz.
+Los protocolos pueden ser complejos para tratar fase; con entradas y
+salidas reales, se restringen las mismas fórmulas a espacios reales.
+
+## 3. Sector lento común
+
+La norma de protocolos es la euclídea en C^T. Sea
+
+`(D_T f)(k)=f(k+1)-f(k)`, k=0,...,T-2,
+`L_T=D_T^dagger D_T`,
+`epsilon_T=T^(-1/2)`,
+`P_T=1_[0,epsilon_T^2](L_T)`, `S_T=ran P_T`.
+
+Para T=1, D_T es el operador vacío y P_T=I. La elección de corte
+es parte de esta propuesta, común a todas las dinámicas; no se ajusta
+tras comparar sus respuestas. No utiliza coordenadas del embedding.
+El reloj y las marcas siguen siendo datos declarados del modelo.
+
+Para f en S_T, el teorema espectral da
+
+`||D_T f||^2=<f,L_T f> <= epsilon_T^2 ||f||^2`.
+
+La lentitud se mide en diferencias internas a la ventana. No controla
+el salto al encender o apagar el protocolo fuera de ella. Si se exige
+una preparación suave fuera de la ventana, hay que declarar otra
+condición de borde y volver a comprobar el ejemplo de esta nota.
+
+Segunda vía: los autovectores de L_T son proporcionales a
+`cos(pi j (k+1/2)/T)`, j=0,...,T-1, con autovalores
+`lambda_j=4 sin^2(pi j/(2T))`.
+Sustituir en las filas interiores y en los dos extremos de L_T verifica
+la fórmula. Para T>=2, el número de modos conservados es
+
+`rank P_T = 1+floor((2T/pi) arcsin(1/(2 sqrt(T))))`.
+
+Por tanto `rank P_T ~ sqrt(T)/pi`, mientras `rank P_T/T -> 0`.
+Se conservan modos cada vez más numerosos, con frecuencia por actualización
+cada vez menor. La constante pertenece siempre al sector. Este control
+define protocolos lentos, sin atribuir energía física a L_T.
+
+## 4. Información conservada y suficiencia exacta
+
+Defínase, como operador sobre S_T,
+
+`G_T=(P_T K_T P_T)|_{S_T}`.
+
+Para toda fuente f y todo perfil de lectura g en S_T,
+
+`<g,K_T f>=<g,G_T f>`.
+
+La identidad sigue de P_T f=f, P_T g=g y P_T=P_T^dagger.
+Conserva exactamente todas las lecturas lineales de esos protocolos:
+amplitud, signo o fase y la dependencia temporal que detectan sus modos.
+No reconstruye necesariamente la historia completa del impulso ni tau.
+
+Esta representación es única para tales lecturas. Si H actúa sobre S_T
+y reproduce todas las mismas formas bilineales, entonces
+`<g,(H-G_T)f>=0` para todo f,g en S_T; tomando g=(H-G_T)f
+se obtiene H=G_T. Equivalentemente, las lecturas sobre pares de vectores
+de una base de S_T determinan todas las entradas de G_T.
+Ésta es una suficiencia operacional exacta, sin afirmar minimalidad de
+una codificación numérica ni suficiencia para mediciones no lineales.
+
+## 5. Comparación verificable entre dinámicas
+
+Sobre la misma entrada, ventana, normas y proyector, sea
+
+`Delta_T=||G_1,T-G_2,T||_op`.
+
+Por dualidad de la norma euclídea,
+
+`Delta_T=sup_{f,g in S_T; ||f||=||g||=1}
+ |<g,(K_1,T-K_2,T)f>|`.
+
+La cota superior es Cauchy–Schwarz. Para la igualdad se elige un vector
+singular derecho de la diferencia y el correspondiente vector izquierdo;
+si la diferencia es cero, ambos lados son cero.
+Así Delta_T mide la mayor discrepancia de lectura permitida. No se
+presupone igualdad ni convergencia de G_T por definir el sector.
+
+Se fija aquí normalización de amplitud igual a uno para ambas dinámicas,
+y protocolos de norma uno. No se divide cada respuesta por su propia
+masa ni se introduce un factor decreciente para hacer desaparecer Delta_T.
+En una futura familia creciente habrá que declarar normalización común
+y una respuesta límite no nula antes de examinar los resultados.
+
+## 6. Misma llegada, diferencia que permanece en el sector lento
+
+Úsese el poset con cadenas saturadas `s-a-d` y `s-b-c-d`,
+sin otras coberturas, de §12 del documento IR operativo.
+Con alpha_1=1, alpha_2=3/4 y theta=1/2:
+
+`R_1(2)=1`, `R_1(3)=1`,
+`R_2(2)=9/16`, `R_2(3)=27/64`,
+`tau_1=tau_2=2`.
+
+Para T>=4, sean f=g el vector constante de entradas 1/sqrt(T).
+Tiene norma uno y pertenece a S_T. Contando las T-l entradas de cada
+diagonal retardada de K_T se obtiene exactamente
+
+`<g,(G_1,T-G_2,T)f>
+ = (7/16)(T-2)/T + (37/64)(T-3)/T
+ = 65/64 - 167/(64T)`.
+
+Segunda comprobación: para cada t la salida constante es
+`T^(-1/2) sum_{l<=t} R(l)`; sumar la lectura en t cuenta cada
+retardo l exactamente T-l veces y reproduce la fórmula.
+En particular,
+
+`liminf_{T->infinity} Delta_T >= 65/64`.
+
+El sector lento distingue estas dos dinámicas aunque tau coincida.
+El límite de la lectura coincide con la diferencia de respuestas de
+frecuencia cero: `2-63/64=65/64`. Esto prueba no trivialidad de la
+comparación y la insuficiencia de tau para estas lecturas. No establece
+convergencia de operadores entre espacios de dimensión creciente.
+
+Control de borde: T=4 da 93/256, positivo; la corrección finita se
+anula al crecer T con el poset fijo. El impulso puntual usado para
+definir tau no es, en general, un protocolo del sector lento.
+
+## 7. Causalidad y obligaciones físicas pendientes
+
+K_T es retardado por definición. P_T mezcla tiempos de toda la ventana;
+el soporte de P_T K_T P_T no define un cono causal ni una primera llegada.
+La lectura con g se interpreta como procesamiento de un registro completo,
+disponible después de adquirir la ventana, no como detector instantáneo.
+La preparación de f es un protocolo temporal distribuido.
+
+La propuesta no produce un subespacio lento invariante de estados de B.
+Todos los autovalores de B son cero, lo que no suministra una separación
+de energías. Faltan una interpretación física del reloj, la familia de
+refinamiento, la identificación entre espacios y una aproximación dinámica
+controlada en esa familia. El límite T->infinity con C fijo no cubre esas
+obligaciones ni se intercambia con un límite C_n creciente.
+
+El antecedente QCA se comprobó en la fuente primaria local
+`/home/ignac/qca-causal-cones/biblioteca/1312.2852v1.pdf`, p.3,
+Farrelly–Short, Ecs.12–16, https://arxiv.org/abs/1312.2852.
+Allí el sector se define por momento y se controla la diferencia de
+evoluciones mediante una cota y un escalado conjunto. Ese resultado
+no se aplica a este B: sirve para precisar las obligaciones aún abiertas.
+Las identidades de §§2–6 se derivan aquí de las definiciones declaradas;
+los documentos del atlas no se usan como prueba de ellas.
+
+```text
+SLOW_PROTOCOL_SECTOR = DEFINED
+LINEAR_SLOW_READOUT_SUFFICIENCY = PROVED_ALGEBRAICALLY
+ARRIVAL_SUFFICIENCY_FOR_THOSE_READOUTS = REFUTED_IN_FINITE_EXAMPLE
+GROWING_POSET_RESPONSE_LIMIT = OPEN
+PHYSICAL_LOW_ENERGY_SECTOR = OPEN
+INDEPENDENT_REVIEW = NOT_PERFORMED
+```
+
+La unidad termina con esta definición y el contraejemplo. Antes de buscar
+un límite físico debe fijarse una única familia, su reloj, la escala de
+ventana y la normalización común, con un criterio de respuesta no trivial.
+
+## 8. Continuación: familia creciente fijada
+
+`GROWING_FAMILY_RESPONSE_2026-10-02.md` fija, a petición del usuario,
+el refinamiento de las dos rutas, reloj k/n, ventana 4n y normalización
+común. Identifica los protocolos en L2([0,4)) y deriva un límite fuerte
+no nulo de respuesta. La distinción entre las dinámicas persiste.
+Es un límite diferente al de §6, que mantiene fijo el poset, y no cierra
+la interpretación física ni la definición de un sector de energía.
+
+=== DOCUMENT 3: GROWING_FAMILY_RESPONSE_2026-10-02.md ===
+
+# Familia creciente, reloj y normalización de la respuesta
+
+Fecha: 2026-10-02. Estado: `DRAFT / ANALYTICAL_MODEL`.
+Base: `main @ d5567eb`. Continuación de `SLOW_PROTOCOL_RESPONSE_2026-10-02.md`.
+Encargo: fijar familia creciente, reloj, ventana y normalización común.
+Construcción explícita y derivaciones algebraicas; sin ejecución numérica
+ni revisión independiente. No es una preinscripción confirmatoria.
+
+## 1. Elecciones fijadas para esta construcción
+
+| Objeto | Elección común |
+| --- | --- |
+| Familia C_n | Dos cadenas saturadas de 2n y 3n coberturas, con extremos comunes |
+| Marcas | Fuente s y detector d, parte de la entrada |
+| Reloj | t=k/n; una actualización dura 1/n en unidades operativas |
+| Ventana | T_n=4n muestras k=0,...,4n-1; intervalo macroscópico [0,4) |
+| Sector | P_n=1_[0,1/(4n)](D_(4n)^dagger D_(4n)) |
+| Recursos | Norma euclídea uno para fuente y perfil de lectura discretos |
+| Amplitud | Factor de normalización de la respuesta a_n=1 |
+| Espacio común | H=L^2([0,4),dt), con interpolación isométrica E_n |
+| Comparación | gamma_1=0 y gamma_2=log(4/3), constantes en n |
+| Dinámica | B_(gamma,n)=exp(-gamma/n) A_n |
+| Llegada auxiliar | Umbral theta=1/2 sobre la respuesta a impulso unitario |
+
+Se elige esta familia para refinar exactamente el ejemplo finito anterior,
+sin multiplicar el número de rutas. Es un modelo analítico de dos rutas;
+no se postula que represente un sprinkling ni una geometría lorentziana.
+La ventana 4 deja tiempo de observación después del retardo máximo 3.
+Estas elecciones pertenecen a la construcción y no se presentan como
+selección ciega respecto del contraejemplo que la motivó.
+
+## 2. Familia y regla dinámica
+
+Para cada entero n>=1, se toman dos cadenas con 2n y 3n aristas dirigidas
+respectivamente; sólo comparten s y d. El orden es su clausura transitiva.
+Los elementos interiores de ramas distintas son incomparables. Entonces
+
+`N_n=5n`, `H_n=3n`, `L_n={2n,3n}`.
+
+Aquí H_n es la longitud máxima de cadena saturada entre las marcas, y L_n
+el conjunto de longitudes posibles. Para n=1 se recuperan los cinco eventos.
+Si m=rn, C_m se obtiene subdividiendo cada cobertura de C_n en r coberturas.
+No se necesita suponer inclusiones canónicas para n consecutivos.
+
+El valor n es recuperable dentro de esta familia por N_n/5 o H_n/3.
+El reloj t=k/n sigue siendo una elección de unidad operativa: esa fórmula
+no demuestra que sea tiempo propio ni reconstruye una escala física absoluta.
+Las etiquetas de los eventos no intervienen; un isomorfismo marcado
+conjuga A_n y deja la respuesta fuente-detector invariante.
+
+Para gamma>=0 se conserva la regla de inyección de la nota anterior:
+
+`x(0)=f(0)e_s`,
+`x(k)=B_(gamma,n)x(k-1)+f(k)e_s`,
+`y(k)=e_d^dagger x(k)`.
+
+Hay un único camino de cada longitud, por lo que la respuesta al impulso es
+
+`R_(gamma,n)(l)=exp(-2gamma) 1_{l=2n}
+                 +exp(-3gamma) 1_{l=3n}`.
+
+Verificación por otra vía: cada ruta multiplica el factor exp(-gamma/n)
+tantas veces como coberturas tiene, dando exp(-2gamma) y exp(-3gamma).
+Bajo subdivisión m=rn, r factores exp(-gamma/m) reproducen exp(-gamma/n).
+La ley de atenuación es así compatible con el refinamiento declarado.
+
+Escalar alpha con n es parte de la dinámica: mantener alpha=3/4 fijo
+haría tender ambas amplitudes a cero. No se corrige ese efecto dividiendo
+posteriormente por una amplitud medida.
+
+## 3. Ventana, recursos y unidades de la respuesta
+
+En C^(4n), K_(gamma,n) es la matriz retardada
+
+`(K_(gamma,n) f)(k)=exp(-2gamma) f(k-2n)
+                    +exp(-3gamma) f(k-3n)`,
+
+con f(j)=0 para j<0. No se usan índices fuera de la ventana por el futuro.
+Los perfiles f y g tienen norma euclídea uno y se lee <g,Kf>.
+
+Para comparar diferentes n, defínase
+
+`(E_n f)(t)=sqrt(n) f(k)` para t en [k/n,(k+1)/n),
+`(E_n^* h)(k)=sqrt(n) integral_[k/n,(k+1)/n) h(t) dt`.
+
+Entonces E_n^*E_n=I y ||E_n f||_(L2)=||f||_2.
+Q_n=E_n E_n^* es el promedio ortogonal por celdas. Así se fija un recurso
+integrado común: una fuente macroscópica constante de norma uno tiene
+amplitud 1/2, y su versión discreta tiene entradas 1/sqrt(4n).
+El factor sqrt(n) convierte unidades de protocolos; la respuesta no recibe
+ninguna normalización dependiente de gamma, de su masa ni de su máximo.
+
+Equivalentemente, la medida de respuesta sobre retardos es exactamente
+
+`mu_gamma=exp(-2gamma) delta_2 + exp(-3gamma) delta_3`.
+
+No se identifica R con una densidad regular ni se añade un factor 1/n
+a sus masas: la identidad isométrica del apartado siguiente fija esta
+convención sin ambigüedad. El impulso unitario que define tau es otro
+protocolo y no tiene un límite de norma uno como función delta en L2.
+
+## 4. Operador macroscópico y transferencia exacta
+
+Sobre H, con extensión por cero a tiempos negativos, defínase
+
+`(K_gamma h)(t)=exp(-2gamma) h(t-2) 1_{t>=2}
+                +exp(-3gamma) h(t-3) 1_{t>=3}`.
+
+Los desplazamientos son contracciones; por la desigualdad triangular,
+`||K_gamma|| <= exp(-2gamma)+exp(-3gamma) <= 2`.
+Como los retardos 2 y 3 son múltiplos exactos de 1/n,
+
+`K_gamma E_n = E_n K_(gamma,n)`.
+
+Se verifica celda a celda: t en la celda k implica que t-2 y t-3
+están en las celdas k-2n y k-3n, respectivamente. Es una transferencia
+exacta para funciones constantes por celdas; el error posterior procede
+de restringir los protocolos, no de aproximar la regla de retardo.
+
+## 5. Sector lento y sentido del límite
+
+Se mantiene sin reajuste la regla epsilon_T=T^(-1/2) de la nota anterior.
+Con T=4n, los modos discretos son cos(pi j(k+1/2)/(4n)), con
+
+`lambda_(j,n)=4 sin^2(pi j/(8n))`,
+`rank P_n = 1+floor((8n/pi) arcsin(1/(4 sqrt(n))))
+          ~ 2 sqrt(n)/pi`.
+
+Todo f en ran P_n satisface `||D_(4n) f|| <= (4n)^(-1/2)||f||`.
+En el reloj macroscópico, la frecuencia angular del modo j es pi j/4;
+el corte crece aproximadamente como sqrt(n)/2, frente a una escala
+microscópica de orden n. Cada frecuencia macroscópica fija entra finalmente
+en el sector. Por ello éste no es una banda física fija de baja energía.
+La lentitud se refiere a variación por actualización y conserva la misma
+convención de bordes: no controla encendido y apagado fuera de la ventana.
+
+Sobre el espacio común H sean
+
+`Pi_n=E_n P_n E_n^*`,
+`G_(gamma,n)=P_n K_(gamma,n) P_n`,
+`Ghat_(gamma,n)=E_n G_(gamma,n) E_n^*`.
+
+Pi_n es un proyector ortogonal y Pi_n -> I fuertemente. Para comprobarlo,
+considérese la base coseno normalizada de L2([0,4)): phi_0=1/2 y
+phi_j(t)=cos(pi j t/4)/sqrt(2), j>=1. Para j fijo y n suficientemente
+grande, su versión discreta muestreada en los centros de celda está
+retenida por P_n. Su interpolación isométrica converge en L2 a phi_j,
+por continuidad de phi_j. La distancia de phi_j a ran Pi_n tiende a cero.
+Por densidad de las combinaciones finitas de esa base y ||Pi_n||<=1,
+la convergencia se extiende a todo h en H. Esta prueba no exige que los
+subespacios sean anidados.
+
+La transferencia exacta implica
+
+`Ghat_(gamma,n)=Pi_n K_gamma Pi_n`.
+
+Para cada h fijo,
+
+`||Ghat_(gamma,n)h-K_gamma h||
+ <= ||K_gamma|| ||Pi_n h-h|| + ||(Pi_n-I)K_gamma h|| -> 0`.
+
+Se obtiene convergencia fuerte de la respuesta comprimida a K_gamma.
+Consecuentemente convergen las lecturas de cualquier par fijo h,q en H.
+No se afirma convergencia en norma de operador ni uniformidad sobre
+protocolos que cambian arbitrariamente con n. La suficiencia exacta entre
+protocolos retenidos sigue siendo válida a cada n finito.
+
+## 6. Comprobación de respuesta no trivial y misma llegada
+
+Con gamma_1=0 y gamma_2=log(4/3), las dos parejas de amplitudes son
+`(1,1)` y `(9/16,27/64)`, para todo n. Con theta=1/2 ambas llegan en
+`tau_n=2n`, o `tau_n/n=2` en el reloj declarado.
+
+El perfil constante c_n(k)=1/sqrt(4n) está retenido exactamente y tiene
+norma uno. Contar las diagonales retardadas da
+
+`<c_n,G_(gamma,n)c_n>
+ = (1-2n/(4n)) exp(-2gamma) + (1-3n/(4n)) exp(-3gamma)
+ = exp(-2gamma)/2 + exp(-3gamma)/4`.
+
+Por tanto las lecturas son 3/4 y 99/256, con diferencia **93/256**,
+independiente de n. En particular,
+
+`||G_(gamma_1,n)-G_(gamma_2,n)|| >= 93/256 > 0`.
+
+Segunda comprobación: E_n c_n es exactamente h(t)=1/2. Integrando
+<h,K_gamma h> sobre los tramos [2,4) y [3,4) se obtiene
+exp(-2gamma)/2+exp(-3gamma)/4. Esto verifica simultáneamente las unidades,
+la ventana y la ausencia de desaparición de la respuesta.
+
+La lectura de cada dinámica es positiva y su norma está acotada por 2.
+El caso n=1 reproduce la ventana T=4 del ejemplo previo, incluida la
+diferencia 93/256. Esta constante difiere del 65/64 de aquella nota porque
+allí la ventana crecía con el poset fijo; aquí el cociente ventana/retardo
+permanece fijo. Son límites distintos y sus factores de borde son explícitos.
+
+## 7. Resultado acotado y cierre de esta unidad
+
+Quedan definidos familia, reloj, ventana, recurso y normalización común,
+y se obtiene un operador límite retardado no nulo con una prueba de
+convergencia fuerte. La igualdad de llegada normalizada no determina
+su respuesta lineal lenta en esta familia. No se obtiene igualdad IR
+de ambas dinámicas: el test de igualdad de respuesta falla explícitamente.
+
+El soporte de Pi_n K_gamma Pi_n no se usa para inferir causalidad:
+Pi_n mezcla tiempos; el operador retardado previo a la proyección es K_gamma.
+Siguen abiertos el origen físico de la regla, la interpretación del reloj,
+un sector de energía de estados y una frontera intrínseca no tautológica.
+No se deduce invariancia Lorentz, velocidad física ni reconstrucción geométrica.
+
+```text
+GROWING_FAMILY = FIXED_TWO_ROUTE_SUBDIVISION
+CLOCK_WINDOW_COMMON_NORMALIZATION = DEFINED
+COMMON_RESPONSE_SPACE = L2_0_4
+RESPONSE_TRANSFER = EXACT_ON_CELL_SUBSPACES
+COMPRESSED_RESPONSE_LIMIT = STRONG_NONZERO_LIMIT_DERIVED
+EQUAL_NORMALIZED_ARRIVAL = YES_IN_DECLARED_PAIR
+EQUAL_SLOW_RESPONSE = NO_IN_DECLARED_PAIR
+PHYSICAL_IR_INTERPRETATION = OPEN
+INDEPENDENT_REVIEW = NOT_PERFORMED
+```
+
+Procedencia: las afirmaciones de esta nota se deducen de sus reglas
+explícitas mediante las comprobaciones indicadas; no se atribuyen a un paper
+ni se apoyan en un resumen generado por IA. El índice local de biblioteca
+se consultó antes de la construcción. No se ejecutaron generadores científicos.
