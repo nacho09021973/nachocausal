@@ -2,8 +2,10 @@
 
 Fecha: 2026-10-02. Estado: `DRAFT / ANALYTICAL_PROPOSAL`.
 Base: `main @ d5567eb`. Desarrollo autorizado por el usuario tras discutir
-qué conservar además de la llegada. Sin revisión independiente ni promoción
-al contrato físico. Las demostraciones son algebraicas, sin código ejecutado.
+qué conservar además de la llegada. Sin promoción al contrato físico.
+Versión 71a5adf revisada por DeepSeek; aclaraciones posteriores aún no
+revisadas externamente. Véase reviews/2026-10-02-slow-response-retry/.
+Las demostraciones son algebraicas, sin código ejecutado.
 
 ## 1. Alcance y cambio explícito de blanco
 
@@ -12,6 +14,10 @@ que varían lentamente en el reloj de actualizaciones. La primera llegada tau
 queda como diagnóstico adicional. Esto amplía expresamente el blanco de un
 único escalar del contrato histórico; no modifica ese documento ni afirma
 haber satisfecho su gate físico.
+
+Demostrar que tau no determina esas lecturas no refuta el test histórico
+de igualdad de llegada ni descarta otros escalares Q admitidos allí.
+La obstrucción se refiere exclusivamente al blanco ampliado y a Q=tau.
 
 Se parte de un poset finito marcado `(C;s,d)`, su matriz de cobertura A y
 la dinámica `B=alpha A` de `DEFINITION_REPAIR_2026-10-02.md`.
@@ -188,7 +194,8 @@ LINEAR_SLOW_READOUT_SUFFICIENCY = PROVED_ALGEBRAICALLY
 ARRIVAL_SUFFICIENCY_FOR_THOSE_READOUTS = REFUTED_IN_FINITE_EXAMPLE
 GROWING_POSET_RESPONSE_LIMIT = OPEN
 PHYSICAL_LOW_ENERGY_SECTOR = OPEN
-INDEPENDENT_REVIEW = NOT_PERFORMED
+INDEPENDENT_REVIEW = DEEPSEEK_REQUIRES_CORRECTION_ON_71A5ADF
+REVIEW_OBJECTIONS = RESPONDIDAS_NOT_INDEPENDENTLY_RESOLVED
 ```
 
 La unidad termina con esta definición y el contraejemplo. Antes de buscar

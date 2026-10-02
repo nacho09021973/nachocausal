@@ -49,6 +49,12 @@ la lectura constante las separa en 93/256 para todo n. Esta unidad analítica
 queda cerrada; la interpretación física del reloj y de la dinámica, el sector
 de energía de estados y la frontera intrínseca siguen pendientes.
 
+DeepSeek revisó la versión 71a5adf y emitió `REQUIERE_CORRECCION`.
+Se aclaró el alcance del contraejemplo y se detalló el lema de convergencia,
+corrigiendo dos errores de la sugerencia del revisor al contrastarla.
+Registro: `reviews/2026-10-02-slow-response-retry/comprobacion.md`.
+Las dos objeciones están respondidas, sin declararlas resueltas.
+
 ## 3. B4 — aparcado por condición técnica
 
 `research_program/puente_3p1/2026-09-12/B4_n3_local_identifiability_spec.md`
@@ -70,4 +76,5 @@ publicados por petición del usuario; conservan su estado de borrador.
 Cero experimentos nuevos, cero
 semillas y cero cambios al instrumento sellado. Los controles B1 históricos
 no se usan como evidencia dinámica. No se convoca comité ni se envían textos
-a servicios de revisión externos.
+a servicios de revisión externos salvo los dos intentos a DeepSeek
+expresamente autorizados y registrados; el primero no devolvió informe.

@@ -3,8 +3,10 @@
 Fecha: 2026-10-02. Estado: `DRAFT / ANALYTICAL_MODEL`.
 Base: `main @ d5567eb`. Continuación de `SLOW_PROTOCOL_RESPONSE_2026-10-02.md`.
 Encargo: fijar familia creciente, reloj, ventana y normalización común.
-Construcción explícita y derivaciones algebraicas; sin ejecución numérica
-ni revisión independiente. No es una preinscripción confirmatoria.
+Construcción explícita y derivaciones algebraicas; sin ejecución numérica.
+Versión 71a5adf revisada por DeepSeek; aclaraciones posteriores aún no
+revisadas externamente. Véase reviews/2026-10-02-slow-response-retry/.
+No es una preinscripción confirmatoria.
 
 ## 1. Elecciones fijadas para esta construcción
 
@@ -150,6 +152,32 @@ Por densidad de las combinaciones finitas de esa base y ||Pi_n||<=1,
 la convergencia se extiende a todo h en H. Esta prueba no exige que los
 subespacios sean anidados.
 
+Detalle del paso de retención y aproximación: defínase el vector discreto
+`v_(j,n)(k)=phi_j((k+1/2)/n)/sqrt(n)`. Para j>=1 fijo y
+`n >= max(1,ceil(pi^2 j^2/4))`, se tiene j<4n y
+
+`lambda_(j,n) <= pi^2 j^2/(16n^2) <= 1/(4n)`.
+
+La primera desigualdad usa sin(x)<=x para x>=0. El segundo miembro
+es epsilon_(4n)^2, no epsilon_(4n). v_(j,n) es proporcional al
+autovector coseno declarado; por ello P_n v_(j,n)=v_(j,n).
+El factor 1/sqrt(n) asegura que E_n v_(j,n) sea el valor de phi_j
+en el centro de cada celda, sin una amplitud artificial sqrt(n).
+Como `sup|phi_j'|<=pi j/(4sqrt(2))` y la distancia al centro es
+a lo sumo 1/(2n),
+
+`||E_n v_(j,n)-phi_j||_(L2) <= pi j/(4sqrt(2)n)`.
+
+Para j=0, v_(0,n)=c_n y E_n v_(0,n)=phi_0 exactamente.
+La propiedad de mejor aproximación del proyector implica que
+`||(I-Pi_n)phi_j||` no supera la cota anterior. Para una suma finita
+`p=sum_(j=0)^J a_j phi_j`, la cota es
+`||(I-Pi_n)p|| <= sum_(j=1)^J |a_j| pi j/(4sqrt(2)n)`
+cuando todos esos modos están retenidos. Finalmente, para h en H y
+tal suma p, `||(I-Pi_n)h|| <= ||h-p|| + ||(I-Pi_n)p||`.
+Se aproxima primero h por p y después se hace crecer n; esto completa
+los cuantificadores del argumento de convergencia fuerte.
+
 La transferencia exacta implica
 
 `Ghat_(gamma,n)=Pi_n K_gamma Pi_n`.
@@ -202,6 +230,11 @@ convergencia fuerte. La igualdad de llegada normalizada no determina
 su respuesta lineal lenta en esta familia. No se obtiene igualdad IR
 de ambas dinámicas: el test de igualdad de respuesta falla explícitamente.
 
+La insuficiencia aquí probada significa únicamente que tau no determina
+las lecturas lineales del blanco ampliado. No refuta el test histórico
+basado sólo en llegada, ni descarta todos los escalares Q permitidos por
+ese contrato. La igualdad de tau sigue siendo válida en su propio test.
+
 El soporte de Pi_n K_gamma Pi_n no se usa para inferir causalidad:
 Pi_n mezcla tiempos; el operador retardado previo a la proyección es K_gamma.
 Siguen abiertos el origen físico de la regla, la interpretación del reloj,
@@ -217,7 +250,8 @@ COMPRESSED_RESPONSE_LIMIT = STRONG_NONZERO_LIMIT_DERIVED
 EQUAL_NORMALIZED_ARRIVAL = YES_IN_DECLARED_PAIR
 EQUAL_SLOW_RESPONSE = NO_IN_DECLARED_PAIR
 PHYSICAL_IR_INTERPRETATION = OPEN
-INDEPENDENT_REVIEW = NOT_PERFORMED
+INDEPENDENT_REVIEW = DEEPSEEK_REQUIRES_CORRECTION_ON_71A5ADF
+REVIEW_OBJECTIONS = RESPONDIDAS_NOT_INDEPENDENTLY_RESOLVED
 ```
 
 Procedencia: las afirmaciones de esta nota se deducen de sus reglas
