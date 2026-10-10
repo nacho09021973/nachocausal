@@ -9,8 +9,49 @@
 
 ```text
 ANALYTIC_RESULT / NO_SIMULATION / NO_SEEDS / SEAL_UNTOUCHED
-REV 3 — ver el bloque de REVISION 3: el §2 contenia un error material, corregido
+REV 4 — el §2 tenia un error material (ver REVISION 3) y la prueba de W2 que este
+         documento hereda de Pfeiffer tiene un paso invalido (ver REVISION 4)
 ```
+
+---
+
+## REVISIÓN 4 — 2026-10-10, tras la revisión de Astra sobre R6″ q2
+
+**`B_W2` baja de `PASS_CONDITIONAL` a `PASS_CONDICIONADO_A_UNA_PRUEBA_QUE_FALTA`.**
+
+La tercera casa (`gpt-6-astra`, con el artículo de Wang delante) encontró que la prueba de
+`W2 = O(rho^{-1})` que este documento da por buena descansa en los pasos (3.15)–(3.22) de
+Pfeiffer, que **trasladan cotas de norma suprema a través de un operador diferencial**. Un
+operador diferencial no preserva desigualdades. Que `A_{lambda,l}` anule la integral de un
+monomio es correcto; que anule una cota obtenida sustituyendo funciones por sus normas
+supremas no se sigue, y la identidad (3.17) no lo legitima.
+
+Ejemplo funcional suyo: una amplitud acotada con `U^3 log U` y fase `V = U^2 f_0` da
+`int U^3 log U e^{-rho f_0 U^2} dU = -log(rho)/(4 f_0^2 rho^2) + cte/rho^2 + exp`, y la cuarta
+raíz convierte ese logaritmo en orden `rho^{-1/2}`. No es un contraejemplo geométrico suave,
+pero demuestra que las hipótesis de **mera acotación** no bastan.
+
+Consecuencia: **`F1` y `C0` vuelven a estar abiertos**, no por el motivo original —que era un
+cálculo que faltaba— sino por uno más profundo: falta una prueba en la literatura de la que
+cuelga el control de la región del cono. Haría falta una expansión transversal con regularidad
+suficiente, y hay que proporcionarla.
+
+Lo que **no** cambia: §2.3 (el factor `A` aniquila los monomios, y eso es exacto), §3 (el
+control del límite `□-R/2`), y el resultado local de R6″ q2, que no depende de `W2`.
+
+Dos correcciones menores de la misma revisión:
+
+- **El argumento de paridad de §1 es falso como está escrito.** La integración angular elimina
+  un número impar de componentes **espaciales**, no un grado total impar: un término `t^3`
+  sobrevive. No añade vías a orden `R^2` —por homogeneidad las dos tienen `alpha+beta=4`— pero
+  el argumento auxiliar no vale.
+- La uniformidad de los restos cerca de `u=0` no está establecida: el resto de Wang está
+  formulado para diamantes pequeños a orientación fija, y que las coordenadas sean compactas no
+  es lo mismo que acotar un resto en variables de boost cuando `U_y` tiende a nula.
+
+Detalle completo en `dev/S4W_R6PP_Q2_WEYL_COEFFICIENT_2026-10-10.md` §8.3.
+
+---
 ---
 
 ## REVISIÓN 3 — 2026-10-10, tras la revisión ciega de R6″
