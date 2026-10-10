@@ -7,7 +7,8 @@
 
 ```text
 ANALYTIC_RESULT / NO_SIMULATION / NO_SEEDS / SEAL_UNTOUCHED
-INDEPENDENT_REVIEW_REQUIRED — no tomar por firme hasta §7
+TRUNCACION: orden ALGEBRAICO R^2 — ∇Riem y ∇∇Riem fuera de orden (ver §7.3)
+BLIND-REVIEWED: grok-4.6 CONFIRMADO / deepseek-v4-pro REFUTADO — SIN UNANIMIDAD, ver §7
 ```
 
 ---
@@ -150,10 +151,81 @@ utilizable.
   verificó la auditoría §1.
 - Las fluctuaciones. Nada.
 
-## 7. Revisión ciega — PENDIENTE
 
-Este documento **no es firme**. Va a DeepSeek y a Grok por separado, como los tres anteriores.
-Récord del día: de tres rondas, las dos casas me corrigieron en las tres, y en una de ellas
-retiré un no-go completo. Un resultado positivo que confirma exactamente el número que el autor
-del candidato había escrito es precisamente el tipo de resultado que más conviene someter a
-otra familia antes de creérselo.
+
+---
+
+## 7. Revisión ciega — **las dos casas discrepan**
+
+`revisiones/2026-10-10-r6pp-q2/`. Entrada idéntica para las dos (302 KB): este documento, el
+no-go retirado, R6′, la auditoría y la tesis de Pfeiffer.
+
+| casa | P1 | P2 | P3 | P4 | veredicto |
+|---|---|---|---|---|---|
+| `grok-4.6` | CORRECTA | CORRECTA | CORRECTA | CORRECTA | **`CONFIRMADO`** |
+| `deepseek-v4-pro` | INCORRECTA | INCORRECTA | INCORRECTA | CORRECTA | **`REFUTADO`** |
+
+**Hay que decirlo así: no hay unanimidad.** Es la primera vez en las cuatro rondas del día.
+
+### 7.1 La objeción de DeepSeek, y por qué no se sostiene
+
+Sostiene que `C^{ga}_{mn} y^m y^n = 0` por antisimetría, luego la primera forma cuártica sería
+nula, y da como contraejemplo `u=v`.
+
+Es una **lectura equivocada de los índices**. En Wang, `C^{ga}_{mn}` significa
+`C^g{}_m{}^a{}_n = C_{gamma mu alpha nu}`: los pares antisimétricos son `(gamma mu)` y
+`(alpha nu)`, y las `y` contraen el **segundo** slot de cada par, no dentro de un par. Se ve en
+su propia ec. (6), de la que (76) sale contrayendo `alpha` con `beta`:
+`R^gamma_{mu alpha nu} R_{gamma rho beta sigma} x^mu x^nu x^rho x^sigma`. El cálculo usa esa
+estructura.
+
+Y su contraejemplo se refuta evaluándolo: en `u=v` el vector `y` es puramente temporal, luego
+`C_{gamma 0 alpha 0} = E_{gamma alpha}` y `Q = E^2 (y^0)^4 != 0`. Verificado:
+
+```
+evaluacion directa  4pi E^2 (y^0)^4 |_{u=v}  =  32 pi u^4 E^2
+el polinomio de §1  8pi W u^4 + pi K u^4     =  32 pi u^4 E^2        IDENTICOS
+```
+
+(porque `8pi(E^2+B^2) + 8pi(E^2-B^2) = 16 pi E^2`). El contraejemplo, bien evaluado,
+**confirma** la fórmula. Y Grok la rederiva por otra vía (§7.2), lo que la hace triplemente
+independiente: fuerza bruta, identidad de Bel–Robinson, y control en el eje.
+
+Lo que sí vale del informe de DeepSeek: confirma `P3` para la vía (ii′) de forma independiente,
+y descarta que el régimen de boost grande sea el problema —*"las integrales angulares
+convierten los `gamma^4` en polinomios finitos y `W1` es compacta"*—, que era una de las dudas
+declaradas en §6.
+
+### 7.2 La derivación de Grok, mejor que la mía
+
+```
+Q  =  (1/2) T(y^4)  +  (K/16) (y·y)^2          con  (y·y)^2 = (2uv)^2 = 4 u^2 v^2
+```
+
+De ahí, en dos líneas: `int dOmega Q = (8pi/5) W (u^4+...+v^4) + pi K u^2 v^2`. Y explica **por
+qué** la cancelación de §1 ocurre: la pieza uniforme *es* `T(y^4)`, y el único añadido no
+uniforme es `K (y·y)^2`, que es puro `u^2 v^2` y puro invariante. Toda cuártica isótropa
+construida con Weyl² es combinación de esas dos. Adoptada: es más comprobable a mano que mi
+contracción bruta.
+
+### 7.3 Defectos de Grok, incorporados
+
+1. **Truncación de Riemann congelado no declarada.** Todo el cálculo evalúa la curvatura en `x`
+   y descarta `∇Riem`, que es de otro orden. Queda declarado aquí: la línea entera trabaja a
+   orden **algebraico** `R^2`, con `∇Riem` y `∇∇Riem` fuera. Las ecs. (6) y (36) de Wang los
+   llevan explícitos y no se han usado.
+2. **Wang arXiv:1904.01034 no iba en el lote enviado.** Las ecs. (76)–(77) y (79) se heredan de
+   la transcripción ya auditada (auditoría §3.2, y `N1`/`N2` confirmadas por las dos casas en
+   la ronda de R6″), no de lectura directa en esta ronda. Es la misma laguna de higiene que la
+   auditoría §6.5 señaló: ninguna de las cinco fuentes del brief está en `biblioteca/`.
+3. La exhaustividad del recuento de vías a orden `R^2` **sigue siendo mía**. Grok la revisa y la
+   da por buena —`alpha+beta` impar muere por paridad, `l>=2` es `R^4`, `W2` está en
+   `O(rho^{-1})` con cinco capas— pero no la prueba.
+
+### 7.4 Cómo leer la discrepancia
+
+El desempate no es un voto: es que la objeción de DeepSeek es verificable y falla al
+verificarla, mientras la de Grok aporta una derivación independiente que coincide. Dicho eso,
+un resultado **positivo** que reproduce al dígito el número que el autor del candidato quería
+obtener, con una casa en contra, no debería promocionarse sobre dos revisiones. Si esto va a
+sostener algo, pide una tercera casa (`astra` o `gemini` en `revision-ciega`) — decisión del PI.
