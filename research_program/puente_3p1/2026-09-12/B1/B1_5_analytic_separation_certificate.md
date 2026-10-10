@@ -157,10 +157,10 @@ implausible. La versión certificada mantiene por tanto la dirección hacia afue
 | divisiones finales | `U0` divide por `Z_lo` redondeado hacia abajo; `L1` por `Z_hi` hacia arriba |
 
 No queda ninguna constante de holgura global: la comparación certificada es literalmente
-`U0_hi < L1_lo`. Tampoco queda ninguna dependencia de una garantía de biblioteca más fuerte que
-el redondeo correcto que exige IEEE-754 a las operaciones básicas. El coste de esta capa resultó
-ser nulo en la práctica —el error de redondeo real es de orden `1e-16` relativo— pero eso es
-ahora una **consecuencia medida**, no una hipótesis.
+`U0_hi < L1_lo`. Tampoco queda ninguna hipótesis de error en coma flotante **posterior** a la
+capa `mpmath.iv`: por debajo de ella, H4 sigue apoyándose explícitamente en esa biblioteca. El
+coste de esta capa resultó ser nulo en la práctica —el cambio observado al imponer redondeo
+dirigido es de orden `1e-16` relativo— y eso es una **magnitud medida**, no una cota asumida.
 
 ## 6. Guardarraíles y su sensibilidad medida
 
@@ -332,6 +332,26 @@ con fsum/Higham  : U0 = 0.019908535921312993   L1 = 0.022826761203854212
 totalmente dirigido: U0 = 0.01990853592131315    L1 = 0.022826761203870553
 gap 0.0029182252825  ->  0.0029182252826
 ```
+
+### Tercera ronda: veredicto
+
+```text
+delta auditado : 6633ebd (cierre de los tres huecos aritméticos) sobre e7e737a
+veredicto      : AUDIT_PASS_FORMAL
+```
+
+Aceptados `B1_FORMAL_CERTIFICATE = ESTABLISHED`,
+`B1 = FORMAL_3P1_ORDER_NONDEGENERACY_ON_FROZEN_PAIR` y
+`B1_ARITHMETIC_STATUS = DIRECTED_ROUNDING_ENCLOSURE`, con el claim máximo delimitado en §1
+y §7. La auditoría confirmó que las operaciones ordinarias que restan no comprometen ninguna
+desigualdad: los productos `U*t` se envuelven después con `dn/up`, los nodos *son* los binary64
+que definen la partición, `argmin` sólo localiza anclas ya insertadas literalmente en `U`, y
+`trapz`/trigonometría viven sólo en los guardarraíles diagnósticos, no en la cadena.
+
+Vale la pena que quede registrado un rasgo del proceso: el defecto `float(iv.endpoint)` **no lo
+detectó la primera auditoría**. Sólo se hizo visible al exigir dirección de extremo a extremo.
+Es el tipo de fallo que un margen amplio —aquí, `1.5e-1` relativo— oculta indefinidamente, y la
+razón por la que «robusto a float» y «enclosure con redondeo dirigido» no son intercambiables.
 
 ## 12. Fuentes
 

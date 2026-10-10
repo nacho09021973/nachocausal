@@ -1,0 +1,27 @@
+# Sanhedrin run log
+record:       2026-09-11--debate-continuacion-proyecto-v4.md
+started:      2026-09-11T17:57:52Z
+command:      sanedrin -r 4 --secuencial --detener-en-fallo -m fable,astra,ciro,abner -i es -R /home/adnac/sanedrin/reglas/codigo.md -c README.md -c INSTRUCCIONES.md -c docs/hoja_de_ruta_septiembre_2026.md -p 400 -t 600 -o /home/adnac/nachocausal/debates/2026-09-11--debate-continuacion-proyecto-v4.md ¿Cómo debería continuar nachocausal a partir del estado actual del repositorio? Debéis producir una recomendación operativa y priorizada, respetando estrictamente los contratos congelados, la separación exploración/confirmación, las preguntas abiertas y los límites de las afirmaciones. Evaluad qué trabajo debe hacerse a continuación, qué debe evitarse, qué artefacto mínimo verificable debe cerrarse primero y bajo qué criterio se autorizaría el siguiente salto hacia Schwarzschild 3+1D. Distinguid hechos documentados del repositorio, inferencias y propuestas.
+cwd:          /home/adnac/nachocausal
+project:      /home/adnac/nachocausal
+topic:        (tema en línea de órdenes)
+rules:        /home/adnac/sanedrin/reglas/codigo.md
+rounds:       4
+words/turn:   400
+timeout:      600s
+host:         OMENNACHO — Linux 6.6.87.2-microsoft-standard-WSL2
+claude:       2.1.234 (Claude Code)
+codex:        codex-cli 0.154.0
+grok:         grok 0.2.106 (bde89716f6) [stable]
+deepseek:     ollama/deepseek-coder:6.7b-instruct (respaldo local)
+attachment:   README.md (3710 words)
+attachment:   INSTRUCCIONES.md (1090 words)
+attachment:   docs/hoja_de_ruta_septiembre_2026.md (12585 words)
+
+# timestamps are UTC (ISO 8601)
+
+2026-09-11T17:57:52Z  round 1 | FABLE | send | context 17880 words
+2026-09-11T17:58:42Z  round 1 | FABLE | recv | 50s | 382 words | ok
+2026-09-11T17:58:42Z  round 1 | ASTRA | send | context 18270 words
+2026-09-11T17:58:43Z  round 1 | ASTRA | recv | 1s | 39 words | FAILED
+2026-09-11T17:58:43Z  ABORT | first non-ok turn: 1 | ASTRA | FAILED
