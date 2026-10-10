@@ -2,10 +2,12 @@
   "unit": "PUENTE-3P1/B1.2",
   "formula": "Delta_max=min(pi,sup_U integral q(UV)*sqrt(U') dV)",
   "deterministic_quadrature": true,
+  "pointwise_angular_bounds_rigorous": true,
+  "global_integration_error_formal": false,
   "no_runs": true,
   "no_seeds": true,
   "no_pair_search": true,
-  "algebra_max_abs_error": 2.7755575615628914e-17,
+  "algebra_max_abs_error": 5.684341886080802e-14,
   "q_strictly_decreases_with_s": true,
   "rows": [
     {
@@ -15,8 +17,8 @@
         0.4,
         1.0
       ],
-      "lower": 0.5652792048630247,
-      "upper": 0.7373132604461875,
+      "lower": 1.127015379083891,
+      "upper": 1.9199889987709509,
       "lower_le_upper": true
     },
     {
@@ -26,8 +28,8 @@
         0.2,
         0.7
       ],
-      "lower": 0.5031745688734904,
-      "upper": 0.6292227435547882,
+      "lower": 1.091459219553385,
+      "upper": 1.7234744563297781,
       "lower_le_upper": true
     },
     {
@@ -37,8 +39,8 @@
         0.5,
         0.9
       ],
-      "lower": 0.2774655915526761,
-      "upper": 0.30409829462589905,
+      "lower": 0.5690811260969787,
+      "upper": 0.6841252462145295,
       "lower_le_upper": true
     }
   ],

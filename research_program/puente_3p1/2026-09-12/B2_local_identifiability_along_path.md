@@ -1,5 +1,8 @@
 # B2 — Identificabilidad local a lo largo de una curva física congelada
 
+> **HISTÓRICO / SUPERSEDED BY CORRECTED-KERNEL B2.** Este artefacto usa el kernel angular
+> pre-corrección y no es evidencia para el resultado con el kernel físico actual.
+
 > **STATUS: `PATH_FROZEN / DETERMINISTIC_ANALYSIS / NO_SEARCH / NO_SEEDS`.**
 > **TARGET:** `LOCAL_IDENTIFIABILITY_ALONG_FROZEN_PHYSICAL_PATH`.
 
