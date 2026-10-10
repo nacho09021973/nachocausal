@@ -154,7 +154,7 @@ NO afirmar: convergencia realizacion-por-realizacion; varianza finita o controla
             Schwarzschild; emergencia del cono causal; prioridad sin auditoria bibliografica.
 ```
 
-Lo calculado es **el valor medio sobre sprinklings**, `E[B_* 1]`. Benincasa–Dowker–Dowker ya
+Lo calculado es **el valor medio sobre sprinklings**, `E[B_* 1]`. Belenchia–Benincasa–Dowker ya
 advierten que las fluctuaciones del operador minimal crecen con la densidad; nada aquí dice que
 las del de cinco capas no lo hagan. Un coeficiente correcto en la media no es un estimador
 utilizable.
