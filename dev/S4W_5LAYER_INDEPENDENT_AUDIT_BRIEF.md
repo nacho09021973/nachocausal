@@ -104,6 +104,21 @@ Suponiendo correctamente transcrita la ecuación (79) de Wang en `d=4`, la corre
 
 Sólo el primer término es proporcional a `K`. El segundo es la densidad de Bel–Robinson `T(U_y,U_y,U_y,U_y)` y depende de la dirección temporal `U_y` del par `(x,y)`.
 
+> **CORRECCIÓN del 2026-10-10 (R3 de la auditoría).** El split de arriba es **álgebra válida con
+> etiquetas falsas**. Con la `H` de Wang (tres índices) y `B^2 = H^2/2`, se tiene
+> `E^2 - H^2 = 3K/16 - W/2`, que **no** es proporcional a `K`; y `E^2 + H^2` **no** es `W`.
+> Ninguno de los dos trozos del split es el término invariante. La descomposición correcta es
+>
+> ```
+> 2032 E^2 + 360 H^2  =  82 K + 1376 W  =  1016 E^2 + 360 B^2       (definida positiva)
+> ```
+>
+> El aviso de fondo del §C0 —que la parte no invariante crece como `gamma^4` y que la rapidez no
+> se puede extender uniformemente— resultó **más pertinente** de lo que la auditoría le concedió:
+> la rapidez **no** está acotada en `W1` (`tanh eta = (v-u)/(v+u)`). Pero la conclusión que
+> temía no se cumple: la pieza dependiente del observador se cancela en el canal `rho^{-1/2}`
+> por el factor `(v-u)^{d-2}` de la medida. Ver `dev/S4W_NOTA_DE_CIERRE_2026-10-10.md` §1.
+
 A rapidez grande, la parte no invariante crece como `gamma^4 ~ e^{4 eta}`. A tiempo propio fijo, la medida del hiperboloide temporal en 4D crece como `sinh^2(eta) d eta ~ e^{2 eta} d eta`; si el peso depende sólo del volumen propio del intervalo, el integrando angular/rapidez crece formalmente como `e^{6 eta}`.
 
 **Límite lógico de esta observación:** para `eta` grande, `y` está lejos de `x` en coordenadas aunque el tiempo propio sea fijo, de modo que la expansión RNC local usada para obtener la corrección de Wang deja de ser válida. La divergencia formal NO demuestra que la integral exacta diverja. Sí demuestra que no se puede extender uniformemente la aproximación local sobre todo el hiperboloide sin un argumento adicional.
