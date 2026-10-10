@@ -1,0 +1,67 @@
+# Sanhedrin run log
+record:       2026-09-11--debate-continuacion-proyecto.md
+started:      2026-09-11T17:01:25Z
+command:      sanedrin -r 4 --secuencial -m fable,astra,ciro,abner -i es -R /home/adnac/sanedrin/reglas/codigo.md -c README.md -c INSTRUCCIONES.md -c docs/hoja_de_ruta_septiembre_2026.md -p 400 -t 600 -o /home/adnac/nachocausal/debates/2026-09-11--debate-continuacion-proyecto.md ¿Cómo debería continuar nachocausal a partir del estado actual del repositorio? Debéis producir una recomendación operativa y priorizada, respetando estrictamente los contratos congelados, la separación exploración/confirmación, las preguntas abiertas y los límites de las afirmaciones. Evaluad qué trabajo debe hacerse a continuación, qué debe evitarse, qué artefacto mínimo verificable debe cerrarse primero y bajo qué criterio se autorizaría el siguiente salto hacia Schwarzschild 3+1D. Distinguid hechos documentados del repositorio, inferencias y propuestas.
+cwd:          /home/adnac/nachocausal
+project:      /home/adnac/nachocausal
+topic:        (tema en línea de órdenes)
+rules:        /home/adnac/sanedrin/reglas/codigo.md
+rounds:       4
+words/turn:   400
+timeout:      600s
+host:         OMENNACHO — Linux 6.6.87.2-microsoft-standard-WSL2
+claude:       2.1.234 (Claude Code)
+codex:        codex-cli 0.154.0
+grok:         grok 0.2.106 (bde89716f6) [stable]
+deepseek:     ollama/deepseek-coder:6.7b-instruct (respaldo local)
+attachment:   README.md (3710 words)
+attachment:   INSTRUCCIONES.md (1090 words)
+attachment:   docs/hoja_de_ruta_septiembre_2026.md (12585 words)
+
+# timestamps are UTC (ISO 8601)
+
+2026-09-11T17:01:25Z  round 1 | FABLE | send | context 17880 words
+2026-09-11T17:02:21Z  round 1 | FABLE | recv | 56s | 350 words | ok
+2026-09-11T17:02:21Z  round 1 | ASTRA | send | context 18238 words
+2026-09-11T17:02:21Z  round 1 | ASTRA | recv | 0s | 24 words | SHORT
+2026-09-11T17:02:21Z  round 1 | CIRO | send | context 18267 words
+2026-09-11T17:02:21Z  round 1 | CIRO | recv | 0s | 18 words | SHORT
+2026-09-11T17:02:21Z  round 1 | ABNER | send | context 18290 words
+2026-09-11T17:02:24Z  round 1 | ABNER | recv | 3s | 18 words | SHORT
+2026-09-11T17:02:24Z  round 2 | FABLE | send | context 18312 words
+2026-09-11T17:03:05Z  round 2 | FABLE | recv | 41s | 334 words | ok
+2026-09-11T17:03:05Z  round 2 | ASTRA | send | context 18651 words
+2026-09-11T17:03:05Z  round 2 | ASTRA | recv | 0s | 24 words | SHORT
+2026-09-11T17:03:05Z  round 2 | CIRO | send | context 18680 words
+2026-09-11T17:03:05Z  round 2 | CIRO | recv | 0s | 18 words | SHORT
+2026-09-11T17:03:05Z  round 2 | ABNER | send | context 18703 words
+2026-09-11T17:03:08Z  round 2 | ABNER | recv | 3s | 18 words | SHORT
+2026-09-11T17:03:08Z  round 3 | FABLE | send | context 18726 words
+2026-09-11T17:03:54Z  round 3 | FABLE | recv | 46s | 353 words | ok
+2026-09-11T17:03:54Z  round 3 | ASTRA | send | context 19084 words
+2026-09-11T17:03:54Z  round 3 | ASTRA | recv | 0s | 24 words | SHORT
+2026-09-11T17:03:54Z  round 3 | CIRO | send | context 19113 words
+2026-09-11T17:03:54Z  round 3 | CIRO | recv | 0s | 18 words | SHORT
+2026-09-11T17:03:54Z  round 3 | ABNER | send | context 19136 words
+2026-09-11T17:03:57Z  round 3 | ABNER | recv | 3s | 18 words | SHORT
+2026-09-11T17:03:57Z  round 4 | FABLE | send | context 19158 words
+2026-09-11T17:04:31Z  round 4 | FABLE | recv | 34s | 298 words | ok
+2026-09-11T17:04:31Z  round 4 | ASTRA | send | context 19461 words
+2026-09-11T17:04:31Z  round 4 | ASTRA | recv | 0s | 24 words | SHORT
+2026-09-11T17:04:31Z  round 4 | CIRO | send | context 19490 words
+2026-09-11T17:04:31Z  round 4 | CIRO | recv | 0s | 18 words | SHORT
+2026-09-11T17:04:31Z  round 4 | ABNER | send | context 19513 words
+2026-09-11T17:04:34Z  round 4 | ABNER | recv | 3s | 18 words | SHORT
+2026-09-11T17:04:34Z  round Residuo | FABLE | send | context 19540 words
+2026-09-11T17:05:05Z  round Residuo | FABLE | recv | 31s | 166 words | ok
+2026-09-11T17:05:05Z  round Residuo | ASTRA | send | context 19711 words
+2026-09-11T17:05:05Z  round Residuo | ASTRA | recv | 0s | 24 words | SHORT
+2026-09-11T17:05:05Z  round Residuo | CIRO | send | context 19740 words
+2026-09-11T17:05:05Z  round Residuo | CIRO | recv | 0s | 18 words | SHORT
+2026-09-11T17:05:05Z  round Residuo | ABNER | send | context 19763 words
+2026-09-11T17:05:08Z  round Residuo | ABNER | recv | 3s | 18 words | SHORT
+2026-09-11T17:05:08Z  round Veredicto | FABLE | send | context 19827 words
+2026-09-11T17:06:01Z  round Veredicto | FABLE | recv | 53s | 329 words | ok
+2026-09-11T17:06:01Z  round Veredicto | FABLE | send | context 20136 words
+2026-09-11T17:06:22Z  round Veredicto | FABLE | recv | 21s | 317 words | ok
+2026-09-11T17:06:22Z  END | record: /home/adnac/nachocausal/debates/2026-09-11--debate-continuacion-proyecto.md | wall clock 297s
