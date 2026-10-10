@@ -9,8 +9,64 @@
 
 ```text
 ANALYTIC_RESULT / NO_SIMULATION / NO_SEEDS / SEAL_UNTOUCHED
-REV 2 — BLIND-REVIEWED BY TWO FAMILIES (deepseek-v4-pro, grok-4.6): CONFIRMADO_CON_CORRECCIONES
+REV 3 — ver el bloque de REVISION 3: el §2 contenia un error material, corregido
 ```
+---
+
+## REVISIÓN 3 — 2026-10-10, tras la revisión ciega de R6″
+
+**Este documento contiene un error material, y lo corrige aquí sin borrarlo.**
+
+Su §2 concluía que la cuarta raíz limpia **sólo** el sector `l=0` y que `l >= 1` queda
+contaminado con logaritmos. **Es falso.** La cuarta raíz limpia el canal diagonal `(3,3)`
+**entero, para todo `l`**.
+
+**El error:** apliqué `Ô_*` a `G_nu(s)` cuando el objeto físico es `Ô_*[rho^l G_nu(s)]`. El
+`rho^l` del desarrollo de la exponencial es función de `rho` y va **dentro** del operador —
+Pfeiffer (3.35) lo escribe así, y la `l` aparece dentro de `A_{kappa+1,l}(n)` y de `kappa`,
+lo que sería imposible si `rho^l` fuese un prefactor. Como `rho^l = (s/c)^l` cancela las
+`s^{-l}` de más de `G_{l+1}`, **todos** los sectores `l` del canal tienen potencia efectiva
+`s^{-2}`, y `Ô_*` la aniquila y convierte el logaritmo en potencia:
+
+```
+l=0: Ô_* = -1/(2s^2)   l=1: -1/(c s^2)   l=2: -3/(c^2 s^2)   l=3: -12/(c^3 s^2)    todos sin log
+```
+
+Equivalentemente, y más limpio: los logaritmos salen del primer término de (3.43), que
+multiplica `A_{kappa+1,l}(n) = prod 2(zeta-k) = 0  <=>  k <= n`, condición que **no involucra
+`l`**. El canal `(3,3)` tiene `k=3`: con cinco capas (`n=3`) aniquilado para todo `l`.
+
+**La contradicción estaba dentro de este mismo documento.** Su §1 demuestra que el orden en
+`B̄` **no depende de `l`** usando el `rho^{l-mu-1}` de (3.43) —con el `rho^l` dentro—, y su §2
+aplica el operador a `s^{-(2+l)}` —con el `rho^l` fuera—. La independencia en `l` del orden
+**es** el enunciado de que `rho^l G_{1+l} ~ (log s)/s^2`. Tenía el hecho correcto y lo
+contradije dos secciones después.
+
+**Qué cambia y qué no:**
+
+| | rev. 2 decía | rev. 3 |
+|---|---|---|
+| `l = 0` limpio | sí | **sí, sigue en pie** (y el apéndice §6 lo pincha numéricamente) |
+| `l >= 1` | contaminado con log | **limpio también** |
+| `F1` | abierta, decisiva | **RESUELTA** por la cuarta raíz |
+| `C0` | reparada sólo en `l=0` | reparada en todo el canal |
+| límite `□-R/2` (§3) | preservado | **sin cambio: el control sigue siendo válido** |
+| `F3`/`F4` | intactos | **intactos, y ahora son lo único que bloquea** |
+
+Lo que sobrevive a orden `rho^{-1/2}` es un resto **finito** proporcional a
+`41K + 688W = 1016 E^2 + 360 B^2`, definida positiva, luego imposible de anular punto a punto.
+Ésa es la única pregunta viva, y es `F3`/`F4`. Detalle completo en
+`dev/S4W_R6PRIMEPRIME_NOGO_2026-10-10.md` §0.
+
+`R6_PRIME` pasa de `PARTIAL` a:
+
+```text
+R6_PRIME = CONFIRMADO — la cuarta raiz limpia el canal (3,3) de logaritmo y de corte,
+           para todo l.  Lo que queda a rho^{-1/2} es un resto finito, y es F3/F4.
+```
+
+---
+
 
 Álgebra simbólica exacta (`sympy` 1.14.0, `.venv` del repo, solo lectura). Sin simulación, sin
 semillas, sin `make dry-run/gate/op21-terminal`. `thresholds.py` intacto
@@ -167,6 +223,10 @@ ese coeficiente es `a`-independiente.
 **Esto repara `C0` en el sector `l=0`:** la auditoría puso `C0 = REGULATED_ONLY` porque la
 dependencia de la prescripción no se había mostrado `o(rho^{-1/2})`. Aquí no es que sea
 `o(rho^{-1/2})`: es **exactamente cero**.
+
+> **rev.3: lo que sigue es el error.** La potencia del canal **no** es `s^{-(2+l)}`: es `s^{-2}`
+> para todo `l`, porque falta el `rho^l = (s/c)^l` dentro del operador. La tabla de abajo da la
+> acción de `Ô_*` sobre potencias que no son las del canal físico. Ver el bloque de REVISIÓN 3.
 
 Y para `l >= 1` la potencia del canal es `s^{-(2+l)}`, que `Ô_*` no aniquila:
 
