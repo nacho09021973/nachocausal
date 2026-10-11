@@ -123,3 +123,19 @@ Esto es un intervalo **ideal en coma flotante**, no una envolvente certificada. 
 
 Nada de esto está autorizado. Sí lo está —y es lo que esta nota registra— que la compuerta firmada
 deja de estar agotada: con esta representación, su intervalo ideal excluye cero.
+
+## 6. Adenda: la geodésica no hace falta
+
+Misma sonda, orden 16, con la banda `[recta, calibración]`, es decir, la cota inferior antigua de
+siempre y solo la superior nueva:
+
+```text
+rho in [0.019661, 0.020486]   B in [0.003816, 0.003976]   B' in [0.008886, 0.009925]
+S_ideal(t0) = [+0.002419, +0.003718]        EXCLUYE CERO
+```
+
+Esto disuelve el «punto difícil» de §5.3: la recta, que B1.5 ya certifica, basta como cota
+inferior. Además solo hace falta `S_lo > 0`, y eso pide la cota **inferior** de `Delta` únicamente
+en las tres caras con `v_n > 0` (integrales 3D, cara × volumen); en `B` (4D) y en la cara `V=v1`
+solo entra la **superior**, que es la separable. Presupuesto de ensanchamiento para un
+certificado: `~0.0024` en `S`, del orden de un 15 % combinado sobre `B` y `B'`.
