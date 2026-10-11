@@ -3,7 +3,15 @@
 **Fecha:** 2026-09-15  
 **Rama:** `s4w-5layer-candidate`  
 **Base:** `relatividad @ 008918b65d4e800b05ce8fec6908d8022e350482`  
-**Estado:** `DERIVATION_CANDIDATE_FROZEN / INDEPENDENT_AUDIT_REQUIRED / NO_PHYSICAL_CLAIM / NO_SIMULATION`
+**Estado:** `DERIVATION_CANDIDATE_FROZEN / AUDITED_2026-10-10 / NO_PHYSICAL_CLAIM / NO_SIMULATION`
+
+> **ENMENDADO EL 2026-10-10 tras la auditoría independiente.** El texto de 1 a 9 se conserva tal
+> como se congeló el 2026-09-15; las enmiendas van al final, en el §10, y afectan a **§3** (falta
+> una cita), **§6** (la conclusión es correcta pero la justificación no, y además no está
+> probada) y **§7** (las tres fórmulas con interrogación: la primera es **correcta como
+> coeficiente local**, el estimador no está establecido). Cadena de la auditoría:
+> `1e03a54` → `e4d9365` → `30f7fda` → `0c3f07f` → `38cfd39`, y nota de cierre en
+> `dev/S4W_NOTA_DE_CIERRE_2026-10-10.md`.
 
 Este documento congela una derivación candidata para auditoría. No establece un teorema, no reabre por sí solo el programa de saturación de `relatividad`, no localiza un horizonte y no autoriza simulaciones.
 
@@ -59,6 +67,10 @@ y una normalización digamma en el mismo exponente `3/2`. La ecuación restante 
 \[
 a+3\sum_n b_n\psi(n+1)=0.
 \]
+
+> **§3, enmienda R2.** Falta la cita que convierte todo este §3 y el §4 en un caso particular:
+> la ec. (13) de **Dowker–Glaser, arXiv:1305.2588**, `O_{2n} = (H+2)(H+4)...(H+2n+2)/[2^{n+1}(n+1)!]`
+> con `H = -l ∂/∂l`. Ver §10.1.
 
 El operador mínimo BD usa cuatro capas:
 
@@ -167,6 +179,13 @@ I_{2,*}=O(\rho^{-5/2}),
 
 Este paso NO se marca como probado aquí. La auditoría debe verificar uniformidad, regularidad, ausencia de términos logarítmicos relevantes y compatibilidad con la parametrización curva de `W2`.
 
+> **§6, enmienda R2′.** La auditoría lo verificó y el resultado tiene dos partes. La
+> justificación escrita arriba —«expansión uniforme de Laplace»— **no es el mecanismo**; el
+> mecanismo es el factor `A_{lambda,l}(n)` de Pfeiffer 2022 (3.28), que se anula si y sólo si
+> `k <= n`. Pero la conclusión **tampoco queda probada**: ese factor aniquila la integral de un
+> monomio, no una cota de norma suprema, y la vía de Pfeiffer (3.15)–(3.22) pasa cotas por un
+> operador diferencial. Ver §10.2.
+
 ## 7. Candidato local Weyl/Kretschmann — NO ESTABLECIDO
 
 Wang obtiene para un pequeño intervalo de Alexandrov 4D en vacío una corrección de volumen de orden curvatura-cuadrada. Para Schwarzschild, si el eje temporal del diamante coincide con el observador estático, su especialización da
@@ -203,6 +222,12 @@ En conteos de capas esto sería
 
 **Estas tres fórmulas llevan signo de interrogación de forma vinculante.** No son resultado del proyecto hasta que una auditoría independiente reproduzca el desarrollo tensorial completo.
 
+> **§7, enmienda R1.** Reproducido, y por tres casas. El **coeficiente local** es correcto:
+> `-73 sqrt6/(1575 pi)` por `C_abcd C^abcd`, a orden algebraico `R^2` en el canal `rho^{-1/2}`,
+> y la pieza dependiente del observador se cancela exactamente en ese canal. Pero la **primera**
+> fórmula, tal como está escrita —con `+ o(rho^{-1/2})`—, afirma más que eso: el control del
+> resto no está probado. Y las otras dos, el estimador, **no están establecidas**. Ver §10.3.
+
 ## 8. Claims prohibidos mientras el audit esté pendiente
 
 No afirmar:
@@ -233,3 +258,89 @@ S4W_PHYSICAL_ESTIMATOR = NOT_ESTABLISHED
 5. Separar prioridad bibliográfica de corrección matemática.
 
 **STOP:** no simulación ni merge antes de audit independiente.
+
+---
+
+## 10. Enmiendas de la auditoría independiente (2026-10-10)
+
+Añadidas tras la auditoría y cuatro rondas de revisión ciega a tres casas. El texto de 1 a 9 no
+se ha modificado salvo por los punteros marcados `>`. Detalle completo y procedencia en
+`dev/S4W_NOTA_DE_CIERRE_2026-10-10.md`.
+
+### 10.1 §3 y §4 — prioridad (`R2`)
+
+`Ô_*` **es** el operador `O_6` de la ec. (13) de Dowker–Glaser (arXiv:1305.2588), evaluado con
+la relación de `d = 4`, `H_DG = 4 rho ∂_rho`:
+
+```
+O_{2n} = (H_DG+2)(H_DG+4)...(H_DG+2n+2) / [2^{n+1}(n+1)!]        con  n = 3
+O_6 |_{H_DG = 4 theta}  =  (2/3)(theta+1/2)(theta+1)(theta+3/2)(theta+2)   ==  Ô_*
+y aplicado a e^{-w} devuelve exactamente (1,-14,41,-44,16)
+```
+
+Verificado, con control: la misma fórmula reproduce las filas `d=4` y `d=6` de su Tabla 1.
+Luego «añadir una quinta capa y ajustar `lambda_*`» es, término a término, **usar el siguiente
+operador de una torre publicada en 2013**. La quinta capa no es un hallazgo; el vector
+`(1,-14,41,-44,16)` en `d=4` no aparece en su Tabla 1, pero la construcción sí está.
+
+Y el **programa** está publicado: de Brito–Eichhorn–Pfeiffer (arXiv:2301.13525) lo enuncia como
+dirección abierta en sus conclusiones. No hay antecedente exacto del coeficiente —la tesis de
+Pfeiffer 2022, leída completa, no contiene Weyl, ni Kretschmann, ni la familia GCD no mínima—
+pero no cabe reclamar novedad conceptual.
+
+### 10.2 §6 — la mejora de `W2` (`R2'`)
+
+Sustituir la justificación por el mecanismo correcto, **y rebajar el estado**:
+
+```
+mecanismo:  A_{lambda,l}(n) = prod_{zeta=0}^{n} ( d(l-lambda) + 2 zeta + 2 ) = prod 2(zeta-k)
+            Pfeiffer 2022 (3.28);  se anula si y solo si k <= n, condicion que NO involucra l.
+            El canal (3,3) tiene k=3: con cinco capas (n=3) queda aniquilado para todo l.
+
+estado:     NO PROBADO.  Ese factor aniquila la integral exacta de un monomio.  La via de
+            Pfeiffer (3.15)-(3.22) lo aplica a una cantidad donde las funciones ya se han
+            sustituido por sus normas supremas, y un operador diferencial no preserva
+            desigualdades.  La cota VALIDA es la de BBD ec.(25) --que acota primero y luego
+            usa una identidad con el operador de signos invertidos, no con Ô-- y da
+            O(rho^{-2}), es decir O(rho^{-1/2}) en B_bar: el orden de la senal.
+```
+
+Es decir: `I_{2,*} = O(rho^{-5/2})` **no está establecido**, y el `F2` de la auditoría —`W2`
+vive en el orden de la señal— sigue en pie.
+
+### 10.3 §7 — el coeficiente (`R1`)
+
+```
+ESTABLECIDO (tres casas):
+    coeficiente local algebraico, orden R^2, canal rho^{-1/2}:
+        -(73 sqrt6 / (1575 pi)) · C_abcd C^abcd
+    con la pieza dependiente del observador EXACTAMENTE CERO en ese canal.
+
+NO ESTABLECIDO:
+    la primera formula del §7 tal como esta escrita, con "+ o(rho^{-1/2})": el control del
+    resto depende de §10.2 y no esta probado.
+    El estimador K_hat_rho y su version en conteos de capas: NO ESTABLECIDOS.
+```
+
+El mecanismo de la cancelación, que el candidato no tenía: las dos formas cuárticas reparten la
+densidad de Bel–Robinson con coeficiente **uniforme** sobre `u^4, u^3v, u^2v^2, uv^3, v^4`, y la
+medida `(v-u)^{d-2}` tiene coeficientes `1,-2,1` que suman cero. Sobrevive sólo el exceso no
+uniforme, que es puro invariante. Equivalente: `Q = T(y^4)/2 + K (y·y)^2/16`.
+
+### 10.4 §8 — los claims prohibidos siguen prohibidos
+
+La lista del §8 del candidato se mantiene **entera**. Nada de lo auditado toca las
+fluctuaciones, que no se han estudiado en absoluto, ni la varianza, ni la convergencia
+realización por realización, ni la localización de horizonte.
+
+Los tokens del §8 quedan así:
+
+```
+S4W_5LAYER_OPERATOR_ALGEBRA   = PASS_EXACT / INDEPENDENTLY_REPRODUCED / PRIOR_ART_DOWKER_GLASER
+S4W_W2_IMPROVEMENT            = NOT_PROVEN (mecanismo identificado, prueba invalida)
+S4W_LOCAL_C2_COEFFICIENT      = ESTABLISHED_LOCAL = -73 sqrt6/(1575 pi)
+S4W_GLOBAL_MEAN               = NOT_ESTABLISHED (falta el control del resto)
+S4W_PHYSICAL_ESTIMATOR        = NOT_ESTABLISHED
+MERGE_TO_RELATIVIDAD          = NOT_AUTHORIZED
+SIMULATION                    = NOT_AUTHORIZED
+```
