@@ -1,0 +1,49 @@
+→ /home/adnac/nachocausal/revisiones/2026-10-11-siguiente-paso/sanedrin.log
+2026-10-11T14:31:10Z  round 1 | CLAUDE OPUS | send | context 7433 words | access sellado
+2026-10-11T14:31:13Z  retry 1 | CLAUDE OPUS | intento 2/2
+2026-10-11T14:31:17Z  round 1 | CLAUDE OPUS | recv | 7s | 51 words | FAILED
+2026-10-11T14:31:17Z  round 1 | ASTRA | send | context 7492 words | access sellado
+2026-10-11T14:32:14Z  round 1 | ASTRA | recv | 57s | 465 words | ok
+2026-10-11T14:32:14Z  round 1 | CIRO | send | context 7962 words | access sellado
+2026-10-11T14:35:48Z  round 1 | CIRO | recv | 214s | 623 words | ok
+2026-10-11T14:35:48Z  round 1 | ABNER | send | context 8590 words | access sellado
+2026-10-11T14:37:12Z  round 1 | ABNER | recv | 84s | 406 words | ok
+2026-10-11T14:37:12Z  round 1 | GEMINI | send | context 9001 words | access sellado
+2026-10-11T14:38:56Z  round 1 | GEMINI | recv | 104s | 543 words | ok
+2026-10-11T14:38:56Z  round 2 | ASTRA | send | context 9548 words | access sellado
+2026-10-11T14:39:46Z  round 2 | ASTRA | recv | 50s | 453 words | ok
+2026-10-11T14:39:46Z  round 2 | CIRO | send | context 10006 words | access sellado
+2026-10-11T14:43:33Z  round 2 | CIRO | recv | 227s | 556 words | ok
+2026-10-11T14:43:33Z  round 2 | ABNER | send | context 10567 words | access sellado
+2026-10-11T14:44:37Z  round 2 | ABNER | recv | 64s | 338 words | ok
+2026-10-11T14:44:37Z  round 2 | GEMINI | send | context 10910 words | access sellado
+2026-10-11T14:45:16Z  round 2 | GEMINI | recv | 39s | 522 words | ok
+2026-10-11T14:45:16Z  round 2 | CLAUDE OPUS | send | context 11438 words | access sellado
+2026-10-11T14:45:19Z  retry 2 | CLAUDE OPUS | intento 2/2
+2026-10-11T14:45:23Z  round 2 | CLAUDE OPUS | recv | 7s | 51 words | FAILED
+2026-10-11T14:45:23Z  circuit-breaker | CLAUDE OPUS | disabled after 2 failures
+2026-10-11T14:45:23Z  round 3 | CIRO | send | context 11513 words | access sellado
+2026-10-11T14:47:57Z  round 3 | CIRO | recv | 154s | 371 words | ok
+2026-10-11T14:47:57Z  round 3 | ABNER | send | context 11889 words | access sellado
+2026-10-11T14:49:14Z  round 3 | ABNER | recv | 77s | 406 words | ok
+2026-10-11T14:49:14Z  round 3 | GEMINI | send | context 12300 words | access sellado
+2026-10-11T14:49:41Z  round 3 | GEMINI | recv | 27s | 529 words | ok
+2026-10-11T14:49:41Z  skip 3 | CLAUDE OPUS | circuit-breaker
+2026-10-11T14:49:41Z  round 3 | ASTRA | send | context 12834 words | access sellado
+2026-10-11T14:50:24Z  round 3 | ASTRA | recv | 43s | 469 words | ok
+2026-10-11T14:50:24Z  skip Residuo | CLAUDE OPUS | circuit-breaker
+2026-10-11T14:50:24Z  round Residuo | ASTRA | send | context 13312 words | access sellado
+2026-10-11T14:50:43Z  round Residuo | ASTRA | recv | 19s | 187 words | ok
+2026-10-11T14:50:43Z  round Residuo | CIRO | send | context 13504 words | access sellado
+2026-10-11T14:51:33Z  round Residuo | CIRO | recv | 50s | 208 words | ok
+2026-10-11T14:51:33Z  round Residuo | ABNER | send | context 13717 words | access sellado
+2026-10-11T14:51:57Z  round Residuo | ABNER | recv | 24s | 163 words | ok
+2026-10-11T14:51:57Z  round Residuo | GEMINI | send | context 13885 words | access sellado
+2026-10-11T14:52:13Z  round Residuo | GEMINI | recv | 16s | 188 words | ok
+2026-10-11T14:52:13Z  round Veredicto | ASTRA | send | context 14119 words | access sellado
+2026-10-11T14:52:49Z  round Veredicto | ASTRA | recv | 36s | 501 words | ok
+2026-10-11T14:52:49Z  round Veredicto | ASTRA | send | context 954 words | access sellado
+2026-10-11T14:53:14Z  round Veredicto | ASTRA | recv | 25s | 512 words | ok
+2026-10-11T14:53:15Z  END | record: /home/adnac/nachocausal/revisiones/2026-10-11-siguiente-paso/sanedrin.log | wall clock 1335s
+✓ Sanedrín terminado: /home/adnac/nachocausal/revisiones/2026-10-11-siguiente-paso/sanedrin.log
+  bitácora:           /home/adnac/nachocausal/revisiones/2026-10-11-siguiente-paso/sanedrin.log.log
