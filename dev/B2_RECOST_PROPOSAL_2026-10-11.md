@@ -1,7 +1,13 @@
 # B2 — propuesta de reevaluación de coste
 
 **Fecha:** 2026-10-11
-**Estado:** `PROPOSAL_AWAITING_PI` — no ejecutada, no autorizada
+**Estado:** `SUPERSEDED_NEGATIVE` — ejecutada y **refutada** el mismo dia.
+
+> **Resultado.** Paso 1 positivo (`dev/B2_STEP1_PAPER_ANALYSIS_2026-10-11.md`), paso 2
+> **negativo** (`dev/B2_STEP2_RESULT_2026-10-11.md`): la cadena de B1.5 no separa `lambda(0.45)`
+> de `lambda(0.55)` —faltan 8.6x— y ademas es ~14 % mas ancha que la cuadratura que B2.1 ya tenia.
+> Los factores de esta nota, corregidos a 27.3x / 6.9x tras regenerar los artefactos obsoletos,
+> **no son alcanzables por esta via**. Leer esta nota solo como registro de la hipotesis.
 **Alcance:** reevaluar si la ruta de certificación de B2 sigue siendo demasiado cara.
 No propone curva nueva, ni `t0` nuevo, ni puntos nuevos.
 
