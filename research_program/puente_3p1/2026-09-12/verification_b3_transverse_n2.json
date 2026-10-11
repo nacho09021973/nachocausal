@@ -19,39 +19,39 @@
   ],
   "drho_dx_enclosures": [
     [
-      -0.10612938219744499,
-      -0.02879235917857784
+      -0.09176497522401798,
+      0.11160125736918268
     ],
     [
-      -0.1325597816793564,
-      0.009929311395982764
+      -0.19404111200338225,
+      0.1325727687197793
     ],
     [
-      -0.12246316009001998,
-      -0.06527835338695995
+      -0.1257729559136192,
+      0.32110499416909927
     ]
   ],
   "cross_product_enclosures": [
     [
-      0.013161847869639486,
-      0.04853086009956921
+      -0.05103239689922782,
+      0.04196978958696223
     ],
     [
-      -8.23925479725579e-06,
-      7.867296032849075e-07
+      -4.73793624485495e-05,
+      3.266207663387353e-05
     ],
     [
-      -0.05601026370282724,
-      -0.029840957554537785
+      -0.05753483923423262,
+      0.14682184334262324
     ]
   ],
   "chart_rank_three": true,
-  "drho_nonzero": true,
-  "dphi_wedge_drho_certified_nonzero": true,
+  "drho_nonzero": false,
+  "dphi_wedge_drho_certified_nonzero": false,
   "no_new_path": true,
   "no_new_point": true,
   "no_search": true,
   "no_seeds": true,
   "no_monte_carlo": true,
-  "terminal": "B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY"
+  "terminal": "B3_INCONCLUSIVE_BY_BOUNDS"
 }

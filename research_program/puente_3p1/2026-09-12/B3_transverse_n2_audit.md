@@ -1,5 +1,7 @@
 # B3 — Auditoría transversal de identificabilidad a `n=2`
 
+> **CORRECCIÓN 2026-10-11 — terminal sin soporte.** Importaba el `evaluate` erróneo de B2.2 y combinaba los extremos del producto cruzado sin aritmética de intervalos. Corregido, ninguna derivada de `rho` ni componente del wedge excluye cero: `B3_INCONCLUSIVE_BY_BOUNDS`. La conclusión «`n=2` no reconstruye localmente `phi`» queda sin soporte (ni establecida ni refutada); las cifras de abajo son históricas. Ver `dev/B2_2_SIGN_BUG_2026-10-11.md`.
+
 > **STATUS: `FROZEN_POINT / GAUGE_QUOTIENTED_CHART / DIRECT_SHAPE_DERIVATIVES`.**
 > No se buscan curvas, puntos testigo ni nuevos parámetros.
 

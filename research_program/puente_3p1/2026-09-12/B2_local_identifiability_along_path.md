@@ -1,5 +1,7 @@
 # B2 — Identificabilidad local a lo largo de una curva física congelada
 
+> **CORRECCIÓN 2026-10-11 — terminal sin soporte.** El cierre «`B2 = POSITIVE_LOCAL_IDENTIFIABILITY_ON_FROZEN_PATH`» del final se apoya en B2.2, que tenía un error de signo; con el script corregido B2.2 es inconcluso. Ver `dev/B2_2_SIGN_BUG_2026-10-11.md`.
+
 > **HISTÓRICO / SUPERSEDED BY CORRECTED-KERNEL B2.** Este artefacto usa el kernel angular
 > pre-corrección y no es evidencia para el resultado con el kernel físico actual.
 

@@ -134,6 +134,8 @@ Esto no demuestra `rank Dm<3`; tampoco autoriza un terminal negativo. El artefac
 
 ## Terminal canónico
 
+> **Corrección 2026-10-11:** las líneas `B2` y `B3` de este bloque ya no tienen soporte; con B2.2 corregido ambos son `INCONCLUSIVE_BY_BOUNDS`. B4 no cambia: solo importa `q` de B2.2. Ver `dev/B2_2_SIGN_BUG_2026-10-11.md`.
+
 ```text
 B1 = POSITIVE_3P1_ORDER_NONDEGENERACY
 B2 = POSITIVE_LOCAL_IDENTIFIABILITY_ON_FROZEN_PATH

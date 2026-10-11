@@ -65,12 +65,15 @@ def evaluate(lam, order, parameter_speeds=None):
     z = float(np.sum(Wu[:, None] * Wv[None, :] * G(U[:, None] * V[None, :])))
 
     # Exact deterministic first variation of A from the four moving faces.
+    # Leibniz needs the normal velocity v_n = (face velocity) . (outward normal):
+    # the lower faces U=-u_out and V=v0 have outward normal -e, so
+    # v_n(U=-u_out) = +u_out' and v_n(V=v0) = -v0'.
     if parameter_speeds is None:
         parameter_speeds = L1 - L0
-    speeds = (-parameter_speeds[2], parameter_speeds[3],
-              parameter_speeds[0], parameter_speeds[1])
-    face_specs = ((ulo, speeds[0], V, Wv), (uhi, speeds[1], V, Wv),
-                  (None, speeds[2], U, Wu), (None, speeds[3], U, Wu))
+    speeds = (parameter_speeds[2], parameter_speeds[3],
+              -parameter_speeds[0], parameter_speeds[1])
+    face_specs = (("U", ulo, speeds[0], V, Wv), ("U", uhi, speeds[1], V, Wv),
+                  ("V", v0, speeds[2], U, Wu), ("V", v1, speeds[3], U, Wu))
     a_prime = (speeds[0] * np.sum(Wv * G(ulo * V)) +
                speeds[1] * np.sum(Wv * G(uhi * V)) +
                speeds[2] * np.sum(Wu * G(U * v0)) +
@@ -78,17 +81,12 @@ def evaluate(lam, order, parameter_speeds=None):
 
     # Boundary contributions to B'. For signed face speed, select h lower/upper accordingly.
     b_ranges = []
-    for face, speed, other, other_w in face_specs:
-        if face is not None:
-            fx, fy = np.meshgrid(np.array([face]), other, indexing="ij")
-            xU, xV = fx.ravel(), fy.ravel()
-            xW = other_w
+    for axis, face, speed, other, other_w in face_specs:
+        if axis == "U":
+            xU, xV = np.full_like(other, face), other
         else:
-            fx, fy = np.meshgrid(other, np.array([face if face is not None else 0.0]), indexing="ij")
-            # For V faces, the sentinel is replaced below by the actual face coordinate.
-            face_v = v0 if speed == speeds[2] else v1
-            xU, xV = fx[:, 0], np.full_like(fx[:, 0], face_v)
-            xW = Wu
+            xU, xV = other, np.full_like(other, face)
+        xW = other_w
         # Integrate over y=K with a tensor grid.
         yu, yv = np.meshgrid(U, V, indexing="ij")
         yw = Wu[:, None] * Wv[None, :] * G(yu * yv)
@@ -111,7 +109,7 @@ def evaluate(lam, order, parameter_speeds=None):
     B_lo, B_hi = float(np.sum(weight * blo)), float(np.sum(weight * bhi))
     # Conservative interval propagation for rho'.
     rho_lo, rho_hi = B_lo / z**2, B_hi / z**2
-    candidates = [b_lo / z**2 - 2 * rho * a_prime / z for b in (b_lo, b_hi)
+    candidates = [b / z**2 - 2 * rho * a_prime / z for b in (b_lo, b_hi)
                   for rho in (rho_lo, rho_hi)]
     return min(candidates), max(candidates), z, (a_prime, B_lo, B_hi)
 

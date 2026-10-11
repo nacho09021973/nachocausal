@@ -1,5 +1,7 @@
 # B2.2 — Derivada de forma directa de `rho` en `t0=0.5`
 
+> **CORRECCIÓN 2026-10-11 — terminal sin soporte.** Las caras inferiores entraban sin la normal exterior (§1 lista velocidades, no `v_n`) y el script no usaba `b_hi`. Corregido: `drho/dt(t0) in [-0.125718, +0.203481]`, `B2.2_INCONCLUSIVE_BY_BOUNDS`. Las cifras de §4 son históricas. Ver `dev/B2_2_SIGN_BUG_2026-10-11.md`.
+
 > **HISTÓRICO / SUPERSEDED BY CORRECTED-KERNEL B2.** Este artefacto usa el kernel angular
 > pre-corrección y no es evidencia para el resultado con el kernel físico actual.
 

@@ -53,9 +53,11 @@ def main():
                                      drho_orders[1][:, 1] + margin))
     cross_intervals = []
     for i, j in ((0, 1), (0, 2), (1, 2)):
-        vals = [dphi[i] * drho_interval[j, k] - dphi[j] * drho_interval[i, k]
-                for k in (0, 1)]
-        cross_intervals.append([min(vals), max(vals)])
+        # drho_i and drho_j vary independently: enclose each product separately
+        # and add the intervals, rather than pairing lower with lower endpoints.
+        term_j = [dphi[i] * drho_interval[j, k] for k in (0, 1)]
+        term_i = [-dphi[j] * drho_interval[i, k] for k in (0, 1)]
+        cross_intervals.append([min(term_j) + min(term_i), max(term_j) + max(term_i)])
     # One certified nonzero wedge component is sufficient for non-proportionality.
     wedge_nonzero = any(a > 0 or b < 0 for a, b in cross_intervals)
     chart_rank_three = np.linalg.matrix_rank(J[1:4, :]) == 3
