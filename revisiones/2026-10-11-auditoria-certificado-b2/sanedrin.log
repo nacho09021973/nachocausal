@@ -1,0 +1,2069 @@
+---
+tipo: sanedrín — deliberación adversarial multi-modelo
+fecha: 2026-10-11 20:33
+proyecto: /home/adnac/nachocausal
+tema: revisiones/2026-10-11-auditoria-certificado-b2/acta.md
+rondas: 3
+reintentos: 1
+max_fallos: 2
+reglas: /home/adnac/sanedrin/reglas/base.md
+miembros:
+  - CLAUDE OPUS — Claude (Anthropic) — claude -p --model claude-opus-5-5 --effort high (sellado)
+  - ASTRA — GPT (OpenAI) — codex exec -m gpt-6-astra (sellado)
+  - CIRO — Grok (xAI) — grok --model grok-4.6 (sellado)
+  - ABNER — DeepSeek — api.deepseek.com/deepseek-v4-pro
+  - GEMINI — Google — generativelanguage.googleapis.com/gemini-3.8-flash
+acceso: sellado — ningún miembro lee ficheros, terminal ni web; todos ven sólo el acta
+conductor: sanedrin — sin intervención humana entre turnos
+---
+
+## Tema sometido al sanedrín
+
+# Acta — auditoría del certificado de la compuerta de B2
+
+**Fecha:** 2026-10-11. **Convoca:** el PI.
+
+Se os pide **auditar**, no decidir el siguiente paso ni proponer trabajo nuevo. El objeto está
+congelado y subido **antes** de esta auditoría, a propósito. Vuestro trabajo es intentar
+**romperlo**. Un acuerdo fácil no tiene valor: en este proyecto, de once errores, diez los
+encontró una familia de modelos distinta de la que escribió el código, y ninguno se encontró
+releyendo.
+
+No tenéis herramientas. Solo cuentan esta acta y los adjuntos:
+
+1. `B2_path2_gate_certificate.md` — la nota del certificado: cadena, aritmética, resultados,
+   hipótesis (§6) y lista de auditoría (§7).
+2. `verify_b2_path2_gate_certificate.py` — el verificador completo.
+3. `B2_NEW_REPRESENTATION_2026-10-11.md` — de dónde sale la representación nueva.
+4. `B1_2_angular_causal_reach.md` — la definición de `Delta_max` (§2) y las cotas LB/UB (§3).
+5. `B2_PROMOTION_RULE_AMENDMENT_2026-10-11.md` — la regla de promoción, firmada por el PI.
+6. `B2_2_SIGN_BUG_2026-10-11.md` — el error de signo que motivó la enmienda y fija las `v_n`.
+
+---
+
+## 1. Qué afirma el certificado
+
+En el punto congelado `lambda* = lambda(0.5)` del camino `lambda(t) = (1-t)lambda0 + t lambda1`,
+y a lo largo de `d = lambda1 − lambda0`:
+
+```text
+S_lo = +0.0013679   para  S = B' − 2 (Z'/Z) B
+drho/dt(t0) >= +0.00705,   enclosure [0.00704746, +inf)
+TERMINAL = B2_CORRECTED_POSITIVE   (regla: 0 no está en la envolvente de drho/dt)
+```
+
+con `rho = B/Z²`, `B = ∫∫_{K×K} w(x) w(y) h(x,y)`, `w = G(UV)`, `h = p(Delta_max)`,
+`p(b) = (1 − cos min(b, pi))/2`, y `B' = 2 ∫_{∂K} w v_n H`, `H(x) = ∫_K w(y) h(x,y) dy`.
+
+## 2. Las piezas nuevas, que nadie ha auditado
+
+**(N1) Representación.** `Delta_max(x,y) = min(pi, sup_U ∫ q(U(V)V) sqrt(U'(V)) dV)` sobre
+`U` monótonas (B1.2 §2) se lee como la separación temporal de la métrica 2D
+`ds² = F(w) dU dV`, con `F = q²` y `w = UV`.
+
+**(N2) Desigualdad triangular inversa.** Si `x ∈ P` e `y ∈ Q` (celdas de una retícula):
+`P_top <= Q_bot ⇒ Delta(x,y) >= Delta(P_top, Q_bot)`, y
+`P_bot <= Q_top ⇒ Delta(x,y) <= Delta(P_bot, Q_top)`.
+Así cada par de celdas se acota con un solo par de esquinas.
+
+**(N3) Calibración.** En `(w, nu) = (UV, ln V)`, con `a = nu' >= 0` y `b = w' − w nu' >= 0`, se
+tiene `dtau = sqrt(F a b)`. Para `W_c = c nu + Phi_c(w)`:
+
+```text
+dW = Phi' b + (Phi' w + c) a >= 2 sqrt(Phi'(Phi' w + c) a b) >= dtau
+   si  Phi' >= 0,  Phi' w + c >= 0,  4 Phi'(Phi' w + c) >= F.
+Phi_c' = F / (2 (c + sqrt(c² + F w)))   (la raíz menor)
+```
+
+Es válida donde `c² + F w >= 0` y `c + sqrt(...) > 0`, y se exige en todo el rectángulo causal
+del par. Resultado: `Delta <= c (nu_b − nu_a) + Phi_c(w_b) − Phi_c(w_a)` para cada `c` válido.
+Se toma el mínimo sobre una rejilla de `c`, que no hace falta certificar porque cada `c` da una
+cota válida por sí solo.
+
+**(N4) Asignación de cotas en `S_lo`.**
+- Cota inferior de `H` en las caras con `v_n > 0` (`U=-u_out`: `+1.0`; `U=u_in`: `+0.4`;
+  `V=v0`: `+0.3`).
+- Cota superior de `H` en `V=v1` (`v_n = −0.2`).
+- `B_hi` con la cota superior.
+- `S_lo = B'_lo − (2 Z'_hi/Z_lo) B_hi`.
+
+**(N5) Aritmética.**
+- Funciones trascendentes solo a través de tablas monótonas certificadas, construidas con la capa
+  escalar ya auditada de B1.5.
+- `np.nextafter` hacia afuera tras cada operación, también dentro de numba.
+- Control del IR de LLVM contra `fast-math`, probado por mutación.
+
+## 3. Lo que ya está auditado y no se reabre
+
+- La capa escalar de B1.5: `s_encl`, `q_encl`, `G_encl` y la conversión `iv → float` hacia
+  afuera. Su veredicto fue `AUDIT_PASS_FORMAL` en tres rondas.
+- Las monotonías de `q` (creciente en `w`) y de `G` (unimodal, pico `1/e` en `w = 0`).
+
+Si encontráis que el certificado usa esas piezas **fuera** de lo que se auditó, eso sí es
+hallazgo.
+
+## 4. Controles numéricos ya hechos (no sustituyen a la auditoría)
+
+- Refinamiento: `S_lo = −0.00518, −0.00139, −0.00016, +0.00046, +0.00106, +0.00137` para
+  `M = 16, 32, 48, 64, 96, 128`. Monótono, sin reversión.
+- 0 de 3088 pares de la retícula contradicen una banda flotante independiente (geodésica por
+  disparo y calibración).
+- El prototipo flotante a la misma `M` da `+0.001499`; la capa certificada cuesta unos `1.2e-4`.
+- El límite `M → ∞` del prototipo (`+0.002411`) coincide con un intervalo ideal medido por otra
+  vía (`+0.002419`).
+
+## 5. Lo que se os pide
+
+Para cada una de **N1–N5** y de las hipótesis **H1–H5** de la nota (§6):
+
+- **Hallazgo concreto, o constancia de que lo comprobasteis y se sostiene.** Un hallazgo cita la
+  línea, la ecuación o la función.
+- **Clasificación de cada hallazgo:** `INVALIDA_EL_CERTIFICADO`, `REQUIERE_CORRECCIÓN` (válido
+  pero mal justificado o con un hueco reparable) o `MENOR`.
+
+Al final, un veredicto único:
+
+```text
+AUDIT_PASS_FORMAL            el certificado se sostiene tal como está
+AUDIT_PASS_CONDITIONAL_<X>   se sostiene bajo una hipótesis X nombrada
+AUDIT_REQUIRES_MINOR_FIX     defectos reales que no cambian la conclusión
+AUDIT_REQUIRES_MAJOR_FIX     un hueco que puede cambiar la conclusión
+AUDIT_FAIL                   la conclusión no se sigue
+```
+
+Puntos donde más os pedimos que apretéis:
+
+1. ¿Es (N1) correcto? En concreto: ¿el `sup` de B1.2 sobre curvas **monótonas parametrizadas
+   por `V`** coincide con la separación temporal de `F dU dV`, que admite curvas causales
+   generales, incluidas las de tramos nulos? Y la desigualdad triangular inversa, ¿vale para ese
+   `sup` aunque las curvas concatenadas no sean parametrizables por `V`?
+2. (N3): la raíz, la condición de validez sobre el rectángulo, la rama `c < 0` y el cruce de
+   `w = 0`.
+3. El tope `min(pi, ·)` dentro de (N2).
+4. H3 (transporte de Reynolds con `h` solo acotada y continua) y H5 (convención del punto
+   binary64).
+5. Cualquier dirección de redondeo o índice de tabla que vaya hacia dentro.
+
+## Contexto
+
+### Contexto adjunto: research_program/puente_3p1/2026-10-11/B2_path2_gate_certificate.md
+```
+# B2 — certificado de la compuerta en `t0`: `drho/dt > 0` con redondeo dirigido
+
+> **STATUS: `CERTIFICATE_FROZEN / PENDING_INDEPENDENT_AUDIT`.** El objeto se congela y se sube
+> **antes** de auditarlo, como B1.5 (§11 de su nota). No se promociona a resultado establecido
+> hasta que una auditoría independiente —de otra familia de modelos— lo dé por bueno.
+> Guardarraíles de B2 intactos: `no_new_path`, `no_new_t0`, `no_new_points`, `no_search`,
+> `no_adjustment`.
+
+**Fecha:** 2026-10-11 · **Verificador:** `verify_b2_path2_gate_certificate.py` →
+`verification_b2_path2_gate_certificate.json` · **Regla:**
+`dev/B2_PROMOTION_RULE_AMENDMENT_2026-10-11.md` (firmada por el PI).
+
+```text
+S_lo = +0.0013679385529351228          (S = B' − 2 (Z'/Z) B, en lambda(0.5))
+drho/dt(t0) >= +0.007047462946767621    enclosure [0.00704746, +inf), excluye cero
+TERMINAL = B2_CORRECTED_POSITIVE        (pendiente de auditoría)
+```
+
+---
+
+## 1. Qué establece y qué no
+
+Establece, bajo las hipótesis de §6, que la derivada direccional de `rho` en el punto congelado
+`lambda* = lambda(0.5)`, a lo largo de la dirección congelada `d = lambda1 − lambda0`, es
+**estrictamente positiva**. Con eso, la ley `n=2` distingue localmente los puntos de la curva
+congelada en `t0`: identificabilidad local en el sentido de la función inversa, **solo en `t0`**.
+
+**No** establece:
+
+- monotonía de `rho` en un vecindario de `t0` ni en la malla de B2.1 (`B2.1` sigue
+  `INCONCLUSIVE_BY_BOUNDS`; el control en vecindario es otra pregunta);
+- identificabilidad global, ni de `phi` fuera de esta curva, ni `n=3`;
+- nada sobre B3, que sigue inconcluso tras `dev/B2_2_SIGN_BUG_2026-10-11.md`.
+
+## 2. Cadena
+
+1. **Representación** (`dev/B2_NEW_REPRESENTATION_2026-10-11.md`). `Delta_max` (B1.2 §2) es la
+   separación temporal de la métrica 2D `q(UV)² dU dV`.
+2. **Desigualdad triangular inversa.** Con `x ∈ P` e `y ∈ Q`:
+   `Delta(P_top, Q_bot) <= Delta(x,y) <= Delta(P_bot, Q_top)` cuando los órdenes lo permiten. Cada
+   par de celdas se acota con **un** par de esquinas de la retícula.
+3. **Cota inferior entre esquinas.** El presupuesto de la recta (B1.2 LB, hipótesis H1b de B1.5),
+   como suma de Riemann inferior de `q` sobre el rango intervalar de `w(tau)` en cada celda de `tau`.
+4. **Cota superior entre esquinas.** `min(Cauchy–Schwarz, inf_c calibración)`.
+   - Cauchy–Schwarz es B1.2 UB, que es H1a de B1.5.
+   - La calibración es `W_c = c ln V + Phi_c(UV)`, con `Phi_c' = F/(2(c + sqrt(c² + F w)))`. Por
+     AM-GM, `dW_c >= dtau` a lo largo de toda curva causal futura, siempre que `c` sea válido en
+     el rectángulo causal.
+   - **Cada `c` da una cota válida por separado**, así que la rejilla de `c` no se certifica.
+5. **Ensamblado** (solo `S_lo`). `B'_lo` usa la cota inferior de `H` en las caras con `v_n > 0` y
+   la superior en `V=v1`; `B_hi = 2 sum W_P W_Q p(UB)`;
+   `S_lo = B'_lo − (2 Z'_hi/Z_lo) B_hi`. Velocidades normales con la normal exterior
+   (`dev/B2_2_SIGN_BUG_2026-10-11.md`).
+
+## 3. Aritmética
+
+| objeto | tratamiento |
+|---|---|
+| operaciones binary64 (también dentro de numba) | `np.nextafter` un ulp hacia afuera tras cada operación |
+| `q`, `G` | tablas certificadas de 65 537 nodos (con `w=0` como nodo) construidas con la capa escalar **auditada** de B1.5 (`s_encl`/`q_encl`/`G_encl`, `mpmath.iv`, sin Lambert W); cada consulta es rigurosa solo por monotonía (`q` creciente; `G` creciente en `w<=0` y decreciente en `w>=0`) |
+| `p(b) = (1−cos min(b,pi))/2` | tabla certificada de 131 073 nodos en `[0, 3.2]`, `mpmath.iv`; `p` no decreciente |
+| `ln V` en los nodos | `mpmath.iv` |
+| velocidades `v_n` | racionales exactos (`Fraction`) de los binary64 de `lambda0`, `lambda1` |
+| `Phi_c` | integrandos acotados por celda de tabla (`c<0` sin cancelación); sumas prefijas dirigidas por ambos lados |
+| pesos `W_P`, caras, `Z`, `Z'` | subceldas `8×8` / `8` con envolventes de `G`; teselado con extremos exactos |
+| sumas | secuenciales dirigidas |
+| índices de tabla | comparaciones exactas de binary64 |
+| compilación | se comprueba que el IR de LLVM de los 19 kernels no tiene `fast`/`contract`/`reassoc`/`fma`; el control está probado por mutación (un kernel `fastmath` es detectado) y exige que cada kernel tenga firma compilada (la primera versión pasaba en vacío por 11 kernels auxiliares: corregido) |
+
+## 4. Resultado y auditoría de refinamiento
+
+| `M` | `B_hi` | `B'_lo` | `S_lo` | terminal |
+|---|---|---|---|---|
+| 16 | — | — | −0.005184 | no certifica |
+| 32 | 0.004858 | 0.006516 | −0.001387 | no certifica |
+| 48 | 0.004558 | 0.007259 | −0.000156 | no certifica |
+| 64 | 0.004414 | 0.007638 | **+0.000458** | positivo |
+| 96 | 0.004273 | 0.008015 | **+0.001064** | positivo |
+| **128** | **0.004203** | **0.008205** | **+0.001368** | **positivo (reportado)** |
+
+En `M = 128`: `Z ∈ [0.4405407, 0.4405720]`, `Z' ∈ [0.3582566, 0.3582912]`,
+`2Z'/Z <= 1.6265975`. Contribuciones inferiores a `B'`:
+
+```text
+U=-u_out  +0.0037812    U=u_in  +0.0027552    V=v0  +0.0061629    V=v1  −0.0044941
+```
+
+`B_hi` decrece y `B'_lo` crece con `M`, sin reversión. Toda `M` da una cota válida; la
+separación de cero empieza en `M = 64`. Tiempo: 19 s (14 s las tablas), 2.6 GB.
+
+## 5. Controles
+
+- **Coherencia por pares** (`M = 32`, 3088 pares de la retícula). Las cotas certificadas
+  `p_lo`/`p_hi` se comparan con la banda flotante independiente de
+  `dev/explore_b2_calibration_band.py` (geodésica por disparo y calibración):
+  0 pares con `p_lo` certificado por encima de la superior flotante; 0 con `p_hi` por debajo de la
+  geodésica; 0 con `p_lo > p_hi`.
+- **Contra el prototipo flotante** (`dev/explore_b2_path2_prototype.py`) a la misma `M`: la capa
+  certificada pierde `~1.2e-4` en `S` (`M = 128`: `+0.001368` frente a `+0.001499`) y queda en el
+  lado correcto en cada pieza (`B_hi` mayor, `B'_lo` menor).
+- **`Z`, `Z'`** contienen los valores de cuadratura (`0.440556`, `0.358274`).
+- El límite `M → ∞` del prototipo (`+0.002411`) coincide con el intervalo ideal medido por otra
+  vía (`+0.002419`).
+
+## 6. Hipótesis
+
+- **H1.** De B1.2 §2: `Delta_max = min(pi, sup L[U])` sobre curvas monótonas, y su lectura como
+  separación temporal de `q² dU dV`. De ahí salen la cota de la recta (H1b), la de Cauchy–Schwarz
+  (H1a), la desigualdad triangular inversa y la calibración. **Las dos últimas son nuevas y son lo
+  primero que debe auditarse.**
+- **H2.** `rho = B/Z²`, con `B = ∫∫_{K×K} w w h` y `h(x,y) = p(Delta_max)` simétrica (B1.5 §2).
+- **H3.** Transporte de Reynolds para `B(t)` con `h` acotada y continua: `B' = 2∫_{∂K} w v_n H`.
+  Contrastado numéricamente (`dev/B2_GATE_RESULT_2026-10-11.md` §3, 0.2 %), no demostrado aquí.
+- **H4.** IEEE-754 binary64 correctamente redondeado, `mpmath.iv` para la capa escalar, y
+  compilación sin `fast-math` ni contracción (comprobado en el IR, §3).
+- **H5. Convención del punto.** El punto certificado es el binary64 `lambda* = path(0.5)` que
+  evalúan los scripts congelados de B2, y la dirección es `d = L1 − L0` exacta. Es la misma
+  convención implícita de B1.5, que certificó los binary64 de `lambda1`. Se declara aquí
+  explícitamente.
+
+## 7. Qué debe mirar la auditoría
+
+1. La calibración: la desigualdad AM-GM, la elección de la raíz menor, la validez en el
+   rectángulo y el tratamiento de `c < 0`.
+2. La desigualdad triangular inversa para `Delta_max` con el tope `min(pi, ·)`: el tope conserva
+   la cota superior y la inferior porque `p` es no decreciente y vale 1 a partir de `pi`.
+3. Qué cota va a cada término de `S_lo`, y los signos de `v_n`.
+4. Los índices de tabla y las direcciones de redondeo de `ub_table`, `lb_rows`, `face_h` y
+   `phi_prefix`.
+5. H3 y H5.
+```
+
+### Contexto adjunto: research_program/puente_3p1/2026-10-11/verify_b2_path2_gate_certificate.py
+```
+"""PUENTE-3P1 / B2 path 2 -- directed-rounding lower bound of S at the frozen t0.
+
+Rule (dev/B2_PROMOTION_RULE_AMENDMENT_2026-10-11.md, signed by the PI):
+
+    B2_CORRECTED_POSITIVE  iff  0 not in formal_enclosure(drho_dt),
+
+with drho_dt = S / Z^2 and S = B' - 2 (Z'/Z) B.  The expected sign is positive,
+so this file builds only a certified LOWER bound S_lo; S_lo > 0 gives the
+one-sided enclosure [S_lo/Z_hi^2, +inf) of drho_dt, which excludes zero.
+
+Representation (dev/B2_NEW_REPRESENTATION_2026-10-11.md).  Delta_max(x,y) is the
+time separation of the 2D Lorentzian metric F(w) dU dV, F = q^2, w = UV.
+  * Reverse triangle inequality: for x in cell P and y in cell Q,
+        P_top <= Q_bot  =>  Delta(x,y) >= Delta(P_top, Q_bot),
+        P_bot <= Q_top  =>  Delta(x,y) <= Delta(P_bot, Q_top),
+    so every cell pair is bounded by ONE pair of lattice corners.
+  * Lower corner bound: straight-line budget sqrt(dU dV) int_0^1 q(w(tau)) dtau,
+    a lower Riemann sum of q over the interval range of w on each tau-cell.
+  * Upper corner bound: min of
+      - Cauchy-Schwarz  sqrt(dU int q(U_b V)^2 dV)          (B1.2 section 3), and
+      - calibration     c (nu_b - nu_a) + Phi_c(w_b) - Phi_c(w_a),  nu = ln V,
+        Phi_c' = F / (2 (c + sqrt(c^2 + F w))), for every c valid on the causal
+        rectangle (c^2 + F w >= 0 there, and c + sqrt(...) > 0).
+    Each c gives a valid bound on its own, so the c grid needs no certification.
+  * h = p(Delta) with p(b) = (1 - cos min(b, pi))/2, nondecreasing on [0, inf).
+
+Which bound goes where (only S_lo is built):
+  B'_lo = sum over faces of 2 v_n int_face w H,  H(x) = int_K w(y) h(x,y) dy;
+          LOWER H on U=-u_out, U=u_in, V=v0 (v_n > 0), UPPER H on V=v1 (v_n < 0).
+  B_hi  = 2 sum_{P,Q} W_P W_Q p(UB(P_bot, Q_top)).
+  S_lo  = B'_lo - (2 Z'_hi / Z_lo) B_hi.
+
+Arithmetic, following B1.5 section 5bis:
+  * every binary64 operation is pushed one ulp outward (np.nextafter, also inside
+    numba kernels); sums are directed sequential or directed prefix sums;
+  * transcendental functions enter ONLY through certified monotone tables built
+    with B1.5's audited scalar layer (s_encl / q_encl / G_encl, mpmath.iv, no
+    Lambert W).  A lookup is rigorous by monotonicity alone: q increasing in w,
+    G increasing for w <= 0 and decreasing for w >= 0 (0 is a table node), p
+    nondecreasing.  Table indices are located by exact float comparisons;
+  * ln V at the lattice nodes and the face velocities are enclosed exactly
+    (mpmath.iv / fractions.Fraction);
+  * the numba kernels are checked for fast-math / contraction flags in their
+    LLVM IR, and that check is itself mutation-tested.
+
+Frozen point convention (declared, as in B1.5): the certified point is the
+binary64 lambda* = path(0.5) that the frozen B2 scripts evaluate, and the
+direction is d = L1 - L0 taken exactly from the binary64 L0, L1.  The quantity is
+the directional derivative of rho at lambda* along d.
+
+Determinism: no seeds, no Monte Carlo, no search over lambda, t0 or points.
+Usage: .venv/bin/python research_program/puente_3p1/2026-10-11/verify_b2_path2_gate_certificate.py [M]
+"""
+import json
+import math
+import re
+import sys
+import time
+from fractions import Fraction
+from pathlib import Path
+
+import numpy as np
+from numba import njit, prange
+from mpmath import iv
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent / "2026-09-12" / "B1"))
+import verify_b1_5_analytic_separation as b15  # noqa: E402
+
+INF = math.inf
+
+# --- frozen inputs -----------------------------------------------------------
+L0 = np.array((0.5, 1.0, 1.0, 0.5, 0.1))
+L1 = np.array((0.2, 0.8, 2.0, 0.9, 0.1))
+T0 = 0.5
+LAM = (1.0 - T0) * L0 + T0 * L1          # binary64, exactly as the frozen scripts
+V0, V1, UOUT, UIN = (float(x) for x in LAM[:4])
+DFR = [Fraction(float(b)) - Fraction(float(a)) for a, b in zip(L0, L1)]
+# outward normal velocities (dev/B2_2_SIGN_BUG_2026-10-11.md)
+VN_FR = {"U=-u_out": DFR[2], "U=u_in": DFR[3], "V=v0": -DFR[0], "V=v1": DFR[1]}
+
+# --- proof parameters (any values give a valid bound; larger = tighter) -------
+M_DEFAULT = 128      # lattice cells per side
+R_SUB = 8            # sub-cells per lattice cell for weights and CS integrals
+N_TAU = 64           # tau-cells for the line budget
+NT_HALF = 2 ** 15    # w-table nodes on each side of w = 0
+NP = 2 ** 17         # p-table nodes on [0, P_MAX]
+P_MAX = 3.2
+C_POS = np.geomspace(1e-3, 50.0, 260)
+C_NEG = -np.geomspace(1e-3, 50.0, 120)
+
+
+def up(x):
+    return np.nextafter(x, INF)
+
+
+def dn(x):
+    return np.nextafter(x, -INF)
+
+
+def frac_iv(fr):
+    return float(dn(float(fr))), float(up(float(fr)))
+
+
+# ---------------------------------------------------------------------------
+# 1. Certified monotone tables.
+# ---------------------------------------------------------------------------
+def w_table():
+    wlo = float(dn(-UOUT * V1)) - 1e-3
+    whi = float(up(UIN * V1)) + 1e-3
+    left = np.linspace(wlo, 0.0, NT_HALF + 1)
+    right = np.linspace(0.0, whi, NT_HALF + 1)[1:]
+    wt = np.concatenate([left, right])
+    assert np.all(np.diff(wt) > 0) and wt[NT_HALF] == 0.0
+    return wt
+
+
+def certified_tables(wt):
+    qlo = np.empty_like(wt); qhi = np.empty_like(wt)
+    glo = np.empty_like(wt); ghi = np.empty_like(wt)
+    for k, w in enumerate(wt):
+        qlo[k], qhi[k] = b15.q_encl(float(w))
+        glo[k], ghi[k] = b15.G_encl(float(w))
+    Flo = dn(qlo * qlo)
+    Fhi = up(qhi * qhi)
+    return qlo, qhi, glo, ghi, Flo, Fhi
+
+
+def p_table():
+    bt = np.linspace(0.0, P_MAX, NP + 1)
+    plo = np.empty_like(bt); phi = np.empty_like(bt)
+    pi_iv = iv.pi
+    for k, b in enumerate(bt):
+        B = iv.mpf(float(b))
+        if B.a >= pi_iv.b:                 # certified b >= pi: p = 1
+            plo[k] = phi[k] = 1.0
+            continue
+        if B.b <= pi_iv.a:                 # certified b <= pi
+            val = (iv.mpf(1) - iv.cos(B)) / 2
+            plo[k], phi[k] = b15.iv_lo(val), min(1.0, b15.iv_hi(val))
+        else:                              # b within rounding of pi
+            val = (iv.mpf(1) - iv.cos(iv.mpf([pi_iv.a, float(b)]))) / 2
+            plo[k], phi[k] = b15.iv_lo(val), 1.0
+    return bt, plo, phi
+
+
+def nu_enclosures(Vg):
+    lo = np.empty_like(Vg); hi = np.empty_like(Vg)
+    for j, v in enumerate(Vg):
+        x = iv.log(iv.mpf(float(v)))
+        lo[j], hi[j] = b15.iv_lo(x), b15.iv_hi(x)
+    return lo, hi
+
+
+# ---------------------------------------------------------------------------
+# 2. Numba kernels.  Directed rounding by np.nextafter after every operation.
+# ---------------------------------------------------------------------------
+@njit(cache=True)
+def _up(x):
+    return np.nextafter(x, np.inf)
+
+
+@njit(cache=True)
+def _dn(x):
+    return np.nextafter(x, -np.inf)
+
+
+@njit(cache=True)
+def k_below(t, x):
+    """Largest k with t[k] <= x (t increasing); -1 if none."""
+    lo, hi = 0, t.size - 1
+    if x < t[0]:
+        return -1
+    if x >= t[hi]:
+        return hi
+    while hi - lo > 1:
+        mid = (lo + hi) // 2
+        if t[mid] <= x:
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+
+@njit(cache=True)
+def k_above(t, x):
+    """Smallest k with t[k] >= x; t.size if none."""
+    lo, hi = 0, t.size - 1
+    if x <= t[0]:
+        return 0
+    if x > t[hi]:
+        return t.size
+    while hi - lo > 1:
+        mid = (lo + hi) // 2
+        if t[mid] >= x:
+            hi = mid
+        else:
+            lo = mid
+    return hi
+
+
+@njit(cache=True)
+def p_lo_of(b, bt, plo):
+    if b <= 0.0:
+        return 0.0
+    k = k_below(bt, b)
+    return plo[k]
+
+
+@njit(cache=True)
+def p_hi_of(b, bt, phi):
+    if b <= 0.0:
+        return 0.0
+    k = k_above(bt, b)
+    if k >= bt.size:
+        return 1.0
+    return phi[k]
+
+
+@njit(cache=True)
+def phi_cell_bounds(c, wt, Flo, Fhi):
+    """Per table cell [w_k, w_k+1]: certified (phi_lo, phi_hi) or invalid."""
+    n = wt.size - 1
+    plo = np.zeros(n); phi = np.zeros(n); ok = np.zeros(n, np.bool_)
+    cc_lo, cc_hi = _dn(c * c), _up(c * c)
+    for k in range(n):
+        f_lo, f_hi = Flo[k], Fhi[k + 1]          # F increasing in w
+        a, b = wt[k], wt[k + 1]
+        # X = F w over the cell, interval product (F > 0)
+        x1, x2, x3, x4 = _dn(f_lo * a), _dn(f_lo * b), _dn(f_hi * a), _dn(f_hi * b)
+        X_lo = min(min(x1, x2), min(x3, x4))
+        y1, y2, y3, y4 = _up(f_lo * a), _up(f_lo * b), _up(f_hi * a), _up(f_hi * b)
+        X_hi = max(max(y1, y2), max(y3, y4))
+        if c > 0.0:
+            disc_lo = _dn(cc_lo + X_lo)
+            if disc_lo < 0.0:
+                continue
+            den_lo = _dn(c + _dn(math.sqrt(disc_lo)))
+            den_hi = _up(c + _up(math.sqrt(_up(cc_hi + X_hi))))
+        else:
+            # c + sqrt(c^2 + X) = X / (sqrt(c^2 + X) - c), no cancellation for c < 0
+            if X_lo <= 0.0:
+                continue
+            den_lo = _dn(X_lo / _up(_up(math.sqrt(_up(cc_hi + X_lo))) - c))
+            den_hi = _up(X_hi / _dn(_dn(math.sqrt(_dn(cc_lo + X_hi))) - c))
+            if den_lo <= 0.0:
+                continue
+        plo[k] = _dn(f_lo / _up(2.0 * den_hi))
+        phi[k] = _up(f_hi / _dn(2.0 * den_lo))
+        ok[k] = True
+    return plo, phi, ok
+
+
+@njit(cache=True)
+def phi_prefix(c, wt, Flo, Fhi):
+    """Directed prefix sums of the upper and lower cell integrals of Phi_c',
+    from the first node k0 of the valid run that reaches the top of the table.
+    Returns k0, PU_lo, PU_hi, PL_lo, PL_hi (NaN below k0)."""
+    plo, phi, ok = phi_cell_bounds(c, wt, Flo, Fhi)
+    n = wt.size
+    k0 = n - 1
+    while k0 > 0 and ok[k0 - 1]:
+        k0 -= 1
+    PU_lo = np.full(n, np.nan); PU_hi = np.full(n, np.nan)
+    PL_lo = np.full(n, np.nan); PL_hi = np.full(n, np.nan)
+    PU_lo[k0] = PU_hi[k0] = PL_lo[k0] = PL_hi[k0] = 0.0
+    for k in range(k0, n - 1):
+        h_lo, h_hi = _dn(wt[k + 1] - wt[k]), _up(wt[k + 1] - wt[k])
+        tu_lo, tu_hi = _dn(phi[k] * h_hi), _up(phi[k] * h_hi)
+        tl_lo, tl_hi = _dn(plo[k] * h_lo), _up(plo[k] * h_lo)
+        # the upper cell term is phi_hi*h_hi; rounding both ways bounds its prefix
+        PU_lo[k + 1] = _dn(PU_lo[k] + tu_lo)
+        PU_hi[k + 1] = _up(PU_hi[k] + tu_hi)
+        PL_lo[k + 1] = _dn(PL_lo[k] + tl_lo)
+        PL_hi[k + 1] = _up(PL_hi[k] + tl_hi)
+    return k0, PU_lo, PU_hi, PL_lo, PL_hi
+
+
+@njit(parallel=True, cache=True)
+def calibration_point_tables(cs, wt, Flo, Fhi, wlo_pt, whi_pt, nulo_pt, nuhi_pt):
+    """Separable per-point pieces of the calibration bound, for every c:
+       case wb_hi >= wa_lo : UB_c <= AU_hi[b,c] - AU_lo[a,c]
+       case wb_hi <  wa_lo : UB_c <= AL_hi[b,c] - AL_lo[a,c]
+    plus thr[c] = w of the first valid node."""
+    nc, npt = cs.size, wlo_pt.size
+    AU_lo = np.full((npt, nc), np.nan); AU_hi = np.full((npt, nc), np.nan)
+    AL_lo = np.full((npt, nc), np.nan); AL_hi = np.full((npt, nc), np.nan)
+    thr = np.empty(nc)
+    for j in prange(nc):
+        c = cs[j]
+        k0, PU_lo, PU_hi, PL_lo, PL_hi = phi_prefix(c, wt, Flo, Fhi)
+        thr[j] = wt[k0]
+        for i in range(npt):
+            kb = k_below(wt, wlo_pt[i])       # point used as the past end a
+            ka = k_above(wt, whi_pt[i])       # point used as the future end b
+            if kb < k0 or ka >= wt.size:
+                continue
+            if c > 0.0:
+                cnu_lo, cnu_hi = _dn(c * nulo_pt[i]), _up(c * nuhi_pt[i])
+            else:
+                cnu_lo, cnu_hi = _dn(c * nuhi_pt[i]), _up(c * nulo_pt[i])
+            AU_lo[i, j] = _dn(cnu_lo + PU_lo[kb]); AU_hi[i, j] = _up(cnu_hi + PU_hi[ka])
+            AL_lo[i, j] = _dn(cnu_lo + PL_lo[kb]); AL_hi[i, j] = _up(cnu_hi + PL_hi[ka])
+    return AU_lo, AU_hi, AL_lo, AL_hi, thr
+
+
+@njit(parallel=True, cache=True)
+def ub_table(M, Ug, Vg, wlo_pt, whi_pt, AU_lo, AU_hi, AL_lo, AL_hi, thr,
+             Pcs_lo, Pcs_hi, bt, phi_p):
+    """p_hi(UB(a,b)) for every lattice pair a <= b (strict in both); 0 otherwise."""
+    n1 = M + 1
+    npt = n1 * n1
+    out = np.zeros((npt, npt))
+    nc = thr.size
+    for a in prange(npt):
+        ia, ja = a // n1, a % n1
+        for ib in range(ia + 1, n1):
+            du_hi = _up(Ug[ib] - Ug[ia])
+            for jb in range(ja + 1, n1):
+                b = ib * n1 + jb
+                # Cauchy-Schwarz with U_b fixed, prefix sums along V
+                I_hi = _up(Pcs_hi[ib, jb] - Pcs_lo[ib, ja])
+                best = _up(math.sqrt(_up(du_hi * I_hi)))
+                # rectangle w-range from its four lattice corners
+                c2, c3 = ia * n1 + jb, ib * n1 + ja
+                rwlo = min(min(wlo_pt[a], wlo_pt[b]), min(wlo_pt[c2], wlo_pt[c3]))
+                case_up = whi_pt[b] >= wlo_pt[a]
+                cmin = np.inf
+                for j in range(nc):
+                    if thr[j] > rwlo:
+                        continue
+                    # plain differences; one outward step on the minimum suffices,
+                    # since up() is monotone: min_j up(d_j) = up(min_j d_j)
+                    if case_up:
+                        v = AU_hi[b, j] - AU_lo[a, j]
+                    else:
+                        v = AL_hi[b, j] - AL_lo[a, j]
+                    if v < cmin:
+                        cmin = v
+                if cmin < np.inf:
+                    cmin = _up(cmin)
+                    if cmin < best:
+                        best = cmin
+                out[a, b] = p_hi_of(best, bt, phi_p)
+    return out
+
+
+@njit(parallel=True, cache=True)
+def lb_rows(src, forward, Ug, Vg, M, wt, qlo, bt, plo_p, ntau):
+    """p_lo(LB) for pairs (s, x): s in src (lattice ids), x over all lattice
+    points; forward: s is the past end; else s is the future end."""
+    n1 = M + 1
+    npt = n1 * n1
+    out = np.zeros((src.size, npt))
+    inv = 1.0 / ntau                       # exact: ntau is a power of two
+    for r in prange(src.size):
+        s = src[r]
+        for x in range(npt):
+            if forward:
+                a, b = s, x
+            else:
+                a, b = x, s
+            ia, ja, ib, jb = a // n1, a % n1, b // n1, b % n1
+            if not (Ug[ib] > Ug[ia] and Vg[jb] > Vg[ja]):
+                continue
+            Ua, Va = Ug[ia], Vg[ja]
+            du_lo, du_hi = _dn(Ug[ib] - Ua), _up(Ug[ib] - Ua)
+            dv_lo, dv_hi = _dn(Vg[jb] - Va), _up(Vg[jb] - Va)
+            acc = 0.0
+            for k in range(ntau):
+                t0, t1 = k * inv, (k + 1) * inv
+                U_lo = _dn(Ua + _dn(du_lo * t0))
+                U_hi = _up(Ua + _up(du_hi * t1))
+                V_lo = _dn(Va + _dn(dv_lo * t0))
+                V_hi = _up(Va + _up(dv_hi * t1))
+                # w = U V with V > 0: the minimum is at V_lo if U_lo >= 0, else V_hi
+                w_lo = _dn(U_lo * V_lo) if U_lo >= 0.0 else _dn(U_lo * V_hi)
+                kq = k_below(wt, w_lo)
+                if kq >= 0:                    # below the table: q > 0 is the bound
+                    acc = _dn(acc + qlo[kq])
+            line = _dn(_dn(math.sqrt(_dn(du_lo * dv_lo))) * _dn(acc * inv))
+            out[r, x] = p_lo_of(line, bt, plo_p)
+    return out
+
+
+@njit(parallel=True, cache=True)
+def b_hi_sum(M, W_hi, pub):
+    """2 sum_{P,Q} W_P W_Q p_hi(UB(P_bot, Q_top)), directed upward."""
+    n1 = M + 1
+    nc = M * M
+    part = np.zeros(nc)
+    for P in prange(nc):
+        iP, jP = P // M, P % M
+        bot = iP * n1 + jP
+        acc = 0.0
+        for Q in range(nc):
+            iQ, jQ = Q // M, Q % M
+            top = (iQ + 1) * n1 + (jQ + 1)
+            v = pub[bot, top]
+            if v > 0.0:
+                acc = _up(acc + _up(W_hi[Q] * v))
+        part[P] = _up(W_hi[P] * acc)
+    tot = 0.0
+    for P in range(nc):
+        tot = _up(tot + part[P])
+    return _up(2.0 * tot)
+
+
+@njit(cache=True)
+def face_h(M, s0, s1, W, vals_fwd, vals_bwd, use_top_bot_lower):
+    """H on each face segment from per-(segment endpoint, lattice point) tables.
+
+    use_top_bot_lower (lower bound): fwd uses (s1 -> Q_bot), bwd (Q_top -> s0).
+    otherwise (upper bound):         fwd uses (s0 -> Q_top), bwd (Q_bot -> s1).
+    vals_fwd[r, x] / vals_bwd[r, x] are indexed by the segment endpoint row r.
+    Sums are rounded down for the lower bound and up for the upper bound."""
+    n1 = M + 1
+    nseg = s0.size
+    H = np.zeros(nseg)
+    for i in range(nseg):
+        acc = 0.0
+        for Q in range(M * M):
+            iQ, jQ = Q // M, Q % M
+            bot = iQ * n1 + jQ
+            top = (iQ + 1) * n1 + (jQ + 1)
+            if use_top_bot_lower:
+                v = vals_fwd[i + 1, bot] + vals_bwd[i, top]     # both >= 0
+                acc = _dn(acc + _dn(W[Q] * _dn(v)))
+            else:
+                v = vals_fwd[i, top] + vals_bwd[i + 1, bot]
+                acc = _up(acc + _up(W[Q] * _up(v)))
+        H[i] = acc
+    return H
+
+
+# ---------------------------------------------------------------------------
+# 3. Weights by sub-cell envelopes of G (unimodal, peak 1/e at w = 0).
+# ---------------------------------------------------------------------------
+@njit(cache=True)
+def tiling(a, b, r):
+    """r+1 increasing nodes with the endpoints EXACTLY a and b, so sub-cells
+    tile the cell with no gap or overlap (numba's linspace does not promise it)."""
+    xs = np.linspace(a, b, r + 1)
+    xs[0] = a
+    xs[r] = b
+    for k in range(r):
+        if not xs[k] < xs[k + 1]:
+            raise ValueError("non-increasing tiling")
+    return xs
+
+
+@njit(cache=True)
+def g_range(wl, wh, wt, glo, ghi, e_inv_hi):
+    """Certified (lo, hi) of G over [wl, wh]; 0 is a node of wt."""
+    if wh <= 0.0:
+        lo = glo[k_below(wt, wl)]
+        hi = ghi[k_above(wt, wh)]
+    elif wl >= 0.0:
+        lo = glo[k_above(wt, wh)]
+        hi = ghi[k_below(wt, wl)]
+    else:
+        lo = min(glo[k_below(wt, wl)], glo[k_above(wt, wh)])
+        hi = e_inv_hi
+    return lo, hi
+
+
+@njit(cache=True)
+def rect_w(u0, u1, v0, v1):
+    a, b, c, d = u0 * v0, u0 * v1, u1 * v0, u1 * v1
+    lo = min(min(_dn(a), _dn(b)), min(_dn(c), _dn(d)))
+    hi = max(max(_up(a), _up(b)), max(_up(c), _up(d)))
+    return lo, hi
+
+
+@njit(cache=True)
+def cell_weights(Ug, Vg, r, wt, glo, ghi, e_inv_hi):
+    M = Ug.size - 1
+    W_lo = np.zeros(M * M); W_hi = np.zeros(M * M)
+    for i in range(M):
+        us = tiling(Ug[i], Ug[i + 1], r)
+        for j in range(M):
+            vs = tiling(Vg[j], Vg[j + 1], r)
+            alo = 0.0; ahi = 0.0
+            for a in range(r):
+                for b in range(r):
+                    wl, wh = rect_w(us[a], us[a + 1], vs[b], vs[b + 1])
+                    gl, gh = g_range(wl, wh, wt, glo, ghi, e_inv_hi)
+                    ar_lo = _dn(_dn(us[a + 1] - us[a]) * _dn(vs[b + 1] - vs[b]))
+                    ar_hi = _up(_up(us[a + 1] - us[a]) * _up(vs[b + 1] - vs[b]))
+                    alo = _dn(alo + _dn(ar_lo * gl))
+                    ahi = _up(ahi + _up(ar_hi * gh))
+            W_lo[i * M + j] = alo; W_hi[i * M + j] = ahi
+    return W_lo, W_hi
+
+
+@njit(cache=True)
+def segment_weights(fixed, grid, r, wt, glo, ghi, e_inv_hi):
+    n = grid.size - 1
+    lo = np.zeros(n); hi = np.zeros(n)
+    for i in range(n):
+        xs = tiling(grid[i], grid[i + 1], r)
+        alo = 0.0; ahi = 0.0
+        for a in range(r):
+            w1, w2 = fixed * xs[a], fixed * xs[a + 1]
+            wl = min(_dn(w1), _dn(w2)); wh = max(_up(w1), _up(w2))
+            gl, gh = g_range(wl, wh, wt, glo, ghi, e_inv_hi)
+            alo = _dn(alo + _dn(_dn(xs[a + 1] - xs[a]) * gl))
+            ahi = _up(ahi + _up(_up(xs[a + 1] - xs[a]) * gh))
+        lo[i] = alo; hi[i] = ahi
+    return lo, hi
+
+
+@njit(cache=True)
+def cs_prefix(Ug, Vg, r, wt, Fhi):
+    """Directed prefix sums along V of upper bounds of int F(U_i V) dV per cell."""
+    n1 = Ug.size
+    P_lo = np.zeros((n1, n1)); P_hi = np.zeros((n1, n1))
+    for i in range(n1):
+        u = Ug[i]
+        for j in range(n1 - 1):
+            vs = tiling(Vg[j], Vg[j + 1], r)
+            cell = 0.0
+            for a in range(r):
+                # w = u V monotone in V: the max is at the upper end iff u >= 0
+                wmax = _up(u * vs[a + 1]) if u >= 0.0 else _up(u * vs[a])
+                cell = _up(cell + _up(_up(vs[a + 1] - vs[a]) * Fhi[k_above(wt, wmax)]))
+            P_lo[i, j + 1] = _dn(P_lo[i, j] + cell)
+            P_hi[i, j + 1] = _up(P_hi[i, j] + cell)
+    return P_lo, P_hi
+
+
+# ---------------------------------------------------------------------------
+# 4. Guard: no fast-math or contraction in any compiled kernel.
+# ---------------------------------------------------------------------------
+_FAST = re.compile(r"\b(fast|contract|reassoc|afn|arcp|nnan|ninf|nsz)\b|llvm\.fma|fmuladd")
+KERNELS = (tiling, phi_cell_bounds, phi_prefix, calibration_point_tables, ub_table, lb_rows,
+           b_hi_sum, face_h, g_range, rect_w, cell_weights, segment_weights, cs_prefix,
+           k_below, k_above, p_lo_of, p_hi_of, _up, _dn)
+
+
+def fastmath_flags(fn):
+    found = set()
+    for sig in fn.signatures:
+        found |= {m.group(0) for m in _FAST.finditer(fn.inspect_llvm(sig))}
+    return sorted(found)
+
+
+def _compile_helpers():
+    """Helpers called only from other kernels register no signature of their
+    own; compile each once from Python with the argument types the kernels use,
+    so the guard inspects real IR rather than passing vacuously."""
+    t = np.linspace(-1.0, 1.0, 9)
+    tiling(0.0, 1.0, 4); phi_cell_bounds(1.0, t, t + 2.0, t + 3.0)
+    phi_prefix(1.0, t, t + 2.0, t + 3.0); g_range(-0.5, 0.5, t, t, t, 1.0)
+    rect_w(0.0, 1.0, 0.5, 1.0); k_below(t, 0.1); k_above(t, 0.1)
+    p_lo_of(0.1, t, t); p_hi_of(0.1, t, t); _up(1.0); _dn(1.0)
+
+
+def fastmath_guard():
+    _compile_helpers()
+    flags = {fn.py_func.__name__: fastmath_flags(fn) for fn in KERNELS}
+    uncompiled = [fn.py_func.__name__ for fn in KERNELS if not fn.signatures]
+
+    @njit(fastmath=True)
+    def _mutant(a, b, c):
+        return a * b + c
+    _mutant(1.0, 2.0, 3.0)
+    mutant_caught = bool(fastmath_flags(_mutant))
+    clean = all(not v for v in flags.values())
+    return {"kernels_checked": len(flags), "kernels_without_compiled_signature": uncompiled,
+            "flags_found": {k: v for k, v in flags.items() if v},
+            "all_clean": clean, "mutation_fastmath_detected": mutant_caught,
+            "ok": bool(clean and mutant_caught and not uncompiled)}
+
+
+# ---------------------------------------------------------------------------
+# 5. Assembly.
+# ---------------------------------------------------------------------------
+def run(M):
+    t_start = time.time()
+    Ug = np.linspace(-UOUT, UIN, M + 1)
+    Vg = np.linspace(V0, V1, M + 1)
+    assert Ug[0] == -UOUT and Ug[-1] == UIN and Vg[0] == V0 and Vg[-1] == V1
+    assert np.all(np.diff(Ug) > 0) and np.all(np.diff(Vg) > 0) and Vg[0] > 0
+    n1 = M + 1
+
+    wt = w_table()
+    qlo, qhi, glo, ghi, Flo, Fhi = certified_tables(wt)
+    bt, plo_p, phi_p = p_table()
+    e_inv_hi = b15.E_INV_HI
+    nulo, nuhi = nu_enclosures(Vg)
+    t_tables = time.time()
+
+    # lattice points: id = i*(M+1) + j, (U_i, V_j)
+    iu, jv = np.divmod(np.arange(n1 * n1), n1)
+    PU, PV = Ug[iu], Vg[jv]
+    wlo_pt, whi_pt = dn(PU * PV), up(PU * PV)
+    nulo_pt, nuhi_pt = nulo[jv], nuhi[jv]
+
+    cs = np.concatenate([C_POS, C_NEG])
+    AU_lo, AU_hi, AL_lo, AL_hi, thr = calibration_point_tables(
+        cs, wt, Flo, Fhi, wlo_pt, whi_pt, nulo_pt, nuhi_pt)
+    Pcs_lo, Pcs_hi = cs_prefix(Ug, Vg, R_SUB, wt, Fhi)
+    pub = ub_table(M, Ug, Vg, wlo_pt, whi_pt, AU_lo, AU_hi, AL_lo, AL_hi, thr,
+                   Pcs_lo, Pcs_hi, bt, phi_p)
+    del AU_lo, AU_hi, AL_lo, AL_hi
+    t_ub = time.time()
+
+    W_lo, W_hi = cell_weights(Ug, Vg, R_SUB, wt, glo, ghi, e_inv_hi)
+    Z_lo, Z_hi = b15.sum_dn(W_lo), b15.sum_up(W_hi)
+    B_hi = b_hi_sum(M, W_hi, pub)
+
+    faces = {"U=-u_out": ("U", 0, -UOUT), "U=u_in": ("U", M, UIN),
+             "V=v0": ("V", 0, V0), "V=v1": ("V", M, V1)}
+    Bp_terms, Zp_lo_terms, Zp_hi_terms, face_out = [], [], [], {}
+    for name, (axis, idx, fixed) in faces.items():
+        if axis == "U":
+            pts = idx * n1 + np.arange(n1)                  # (U fixed, V_j)
+            fw_lo, fw_hi = segment_weights(fixed, Vg, R_SUB, wt, glo, ghi, e_inv_hi)
+        else:
+            pts = np.arange(n1) * n1 + idx                  # (U_i, V fixed)
+            fw_lo, fw_hi = segment_weights(fixed, Ug, R_SUB, wt, glo, ghi, e_inv_hi)
+        vn_lo, vn_hi = frac_iv(VN_FR[name])
+        s0, s1 = pts[:-1], pts[1:]
+        if vn_lo > 0:
+            fwd = lb_rows(pts, True, Ug, Vg, M, wt, qlo, bt, plo_p, N_TAU)
+            bwd = lb_rows(pts, False, Ug, Vg, M, wt, qlo, bt, plo_p, N_TAU)
+            H = face_h(M, s0, s1, W_lo, fwd, bwd, True)
+            inner = b15.sum_dn(dn(fw_lo * H))
+            term = float(dn(2.0 * dn(vn_lo * inner)))
+            Zp_lo_terms.append(float(dn(vn_lo * b15.sum_dn(fw_lo))))
+            Zp_hi_terms.append(float(up(vn_hi * b15.sum_up(fw_hi))))
+        else:
+            fwd = pub[pts, :]                               # (s -> Q_top), s past end
+            bwd = pub[:, pts].T                             # (Q_bot -> s), s future end
+            H = face_h(M, s0, s1, W_hi, fwd, bwd, False)
+            inner = b15.sum_up(up(fw_hi * H))
+            term = float(dn(2.0 * dn(vn_lo * inner)))     # vn < 0: lower = vn_lo * hi
+            Zp_lo_terms.append(float(dn(vn_lo * b15.sum_up(fw_hi))))
+            Zp_hi_terms.append(float(up(vn_hi * b15.sum_dn(fw_lo))))
+        Bp_terms.append(term)
+        face_out[name] = {"v_n": [vn_lo, vn_hi], "Bprime_contribution_lower": term}
+    Bp_lo = b15.sum_dn(Bp_terms)
+    Zp_lo, Zp_hi = b15.sum_dn(Zp_lo_terms), b15.sum_up(Zp_hi_terms)
+    assert Zp_lo > 0
+    k_hi = float(up(2.0 * up(Zp_hi / Z_lo)))
+    S_lo = float(dn(Bp_lo - up(k_hi * B_hi)))
+    drho_lo = float(dn(S_lo / up(Z_hi * Z_hi))) if S_lo > 0 else float(dn(S_lo / dn(Z_lo * Z_lo)))
+    return {
+        "M": M, "R_sub": R_SUB, "N_tau": N_TAU, "w_table_nodes": int(wt.size),
+        "p_table_nodes": int(bt.size), "c_values": int(cs.size),
+        "Z": [Z_lo, Z_hi], "Zprime": [Zp_lo, Zp_hi], "two_Zp_over_Z_hi": k_hi,
+        "B_hi": B_hi, "Bprime_lo": Bp_lo, "faces": face_out,
+        "S_lo": S_lo, "drho_dt_lower_bound": drho_lo,
+        "seconds": {"tables": round(t_tables - t_start, 1), "ub_table": round(t_ub - t_tables, 1),
+                    "total": round(time.time() - t_start, 1)},
+    }
+
+
+def main():
+    M = int(sys.argv[1]) if len(sys.argv) > 1 else M_DEFAULT
+    res = run(M)
+    guard = fastmath_guard()
+    positive = bool(res["S_lo"] > 0 and guard["ok"])
+    out = {
+        "unit": "PUENTE-3P1/B2_PATH2_GATE_CERTIFICATE",
+        "rule": "B2_CORRECTED_POSITIVE iff 0 not in formal_enclosure(drho_dt) "
+                "(amendment signed 2026-10-11)",
+        "frozen_point": {"lambda_star_binary64": [float(x) for x in LAM],
+                         "direction_exact": [str(f) for f in DFR], "t0": T0},
+        "representation": "time separation of q(UV)^2 dU dV; corners by reverse triangle "
+                          "inequality; lower = straight line; upper = min(Cauchy-Schwarz, "
+                          "HJ calibration)",
+        "arithmetic": {
+            "mode": "outward_directed_rounding_end_to_end",
+            "operations": "np.nextafter one ulp outward after each binary64 op, also in numba",
+            "transcendentals": "certified monotone tables from B1.5 scalar layer "
+                               "(s_encl/q_encl/G_encl, mpmath.iv dps 25); p and ln V by mpmath.iv",
+            "lambert_w_used": False,
+            "fastmath_guard": guard,
+        },
+        **res,
+        "enclosure_of_drho_dt": [res["drho_dt_lower_bound"], "+inf"],
+        "no_new_path": True, "no_new_t0": True, "no_new_points": True,
+        "no_search": True, "no_adjustment": True, "no_seeds": True, "no_monte_carlo": True,
+        "terminal": "B2_CORRECTED_POSITIVE" if positive else "B2_GATE_NOT_CERTIFIED_AT_THIS_RESOLUTION",
+    }
+    print(json.dumps(out, indent=2))
+    if len(sys.argv) <= 1:
+        with open(HERE / "verification_b2_path2_gate_certificate.json", "w") as fh:
+            json.dump(out, fh, indent=2)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Contexto adjunto: dev/B2_NEW_REPRESENTATION_2026-10-11.md
+```
+# B2 — representación nueva de `Delta_max`: tiempo propio 2D, calibración y geodésica
+
+**Fecha:** 2026-10-11
+**Autorizado por:** el PI («buscamos una nueva representación»).
+**Sondas:** `dev/explore_b2_calibration_band.py` (banda por par),
+`dev/explore_b2_gate_ideal_interval.py` (intervalo ideal de `S`). Diagnóstico, **no certificado**:
+tablas en coma flotante, sin redondeo dirigido. Guardarraíles intactos (`t0`, curva y puntos
+congelados; sin búsqueda sobre `lambda`).
+
+```text
+BANDA [recta, CS]               anchura mediana 3.5e-2
+BANDA [geodésica, calibración]  anchura mediana 3.6e-5        (~1000x más estrecha)
+S_ideal(t0) con la banda nueva = [+0.00276, +0.00346]          EXCLUYE CERO
+drho/dt(t0) ideal              = [+0.0142, +0.0179]            signo positivo
+rho(t0) ideal                  = [0.02016, 0.02055]
+ESTADO: la compuerta firmada TIENE AHORA UNA REPRESENTACIÓN QUE PUEDE PASARLA.
+        No hay certificado. Construirlo requiere autorización.
+```
+
+---
+
+## 1. La observación
+
+B1.2 §2 define
+
+```text
+Delta_max(x,y) = min(pi, sup_U  int q(U(V)V) sqrt(U'(V)) dV),   U monótona.
+```
+
+Eso es exactamente el **tiempo propio máximo** entre `x` e `y` en la métrica lorentziana 2D
+
+```text
+ds² = F(w) dU dV,     F = q²,   w = UV.
+```
+
+(Es el sector radial de Schwarzschild reescalado por `1/r²`.) En coordenadas `(w, nu) = (UV, ln V)`
+la métrica es `F(w)(dw dnu − w dnu²)`: no depende de `nu` —el boost es Killing— y es regular a
+través de `w = 0`. La representación anterior no usaba nada de esta estructura.
+
+## 2. Cota superior: calibración de Hamilton–Jacobi
+
+Para una tangente causal futura, `a = nu' >= 0`, `b = w' − w nu' >= 0` (`b ∝ U'`), y
+`dtau = sqrt(F a b)`. Para `W = c nu + Phi(w)`, por AM-GM,
+
+```text
+dW = Phi' b + (Phi' w + c) a  >=  2 sqrt(Phi'(Phi' w + c) a b)  >=  dtau
+   siempre que  Phi' >= 0,  Phi' w + c >= 0,  4 Phi'(Phi' w + c) >= F.
+```
+
+La menor `Phi'` admisible es
+
+```text
+Phi_c'(w) = F(w) / (2 (c + sqrt(c² + F(w) w))),
+```
+
+válida donde `c² + F w >= 0` y `c + sqrt(...) > 0` (si el rectángulo causal cruza `w < 0`, eso
+exige `c > 0` y `c² >= max(−F w)`). Entonces, para **todo** `c` válido en el rectángulo causal,
+
+```text
+Delta_max(x,y)  <=  c (nu_y − nu_x) + Phi_c(w_y) − Phi_c(w_x).
+```
+
+Es la integral completa de Hamilton–Jacobi con la constante de separación del boost. Cauchy–Schwarz
+es un caso degenerado mucho más flojo: la calibración queda en mediana un **10 % por debajo** de CS.
+
+**Propiedad que importa para certificar:** para `c` fijo, la cota es **separable** en `x` e `y`,
+`A_c(y) − A_c(x)`. Eso es lo que permitiría reproducir el colapso por Fubini de B1.5.
+
+## 3. Cota inferior: la geodésica de constante `c`
+
+La igualdad en AM-GM fija `b/a`, lo que da la geodésica
+
+```text
+dw/dnu = 2w + c / Phi_c'(w) = 2w + 2c (c + sqrt(c² + F w)) / F,
+```
+
+creciente en `c`. Se dispara en `c` por bisección hasta llegar a `w_y` en `nu_y`, y su tiempo
+propio, integrado a lo largo de la curva, es una cota inferior (toda curva admisible lo es). La
+recta resultó estar ya muy cerca de la geodésica: la geodésica la mejora solo en un **+0.27 %**
+en mediana. **La holgura de la banda antigua estaba casi entera en Cauchy–Schwarz.**
+
+## 4. Resultados
+
+Banda por par (1973 pares ordenados, muestreados uniformemente en el rectángulo de `t0`):
+
+```text
+pares con cota inferior > superior        0
+anchura mediana  [recta, CS]              0.03455
+anchura mediana  [geodésica, calibración] 0.0000361
+anchura relativa mediana / máxima         1.3e-4 / 0.124
+```
+
+Las dos cotas se calculan por vías independientes (una curva explícita y una función de
+calibración) y no se cruzan en ningún par: es el control de coherencia principal.
+
+Intervalo ideal de `S = B' − 2(Z'/Z)B` en `t0` (la misma sonda que dio `[-0.00336, +0.01125]`
+con la banda antigua):
+
+| orden | `rho` | `S` | `drho/dt` |
+|---|---|---|---|
+| 16 | [0.020090, 0.020486] | [+0.002767, +0.003469] | [+0.01426, +0.01787] |
+| 24 | [0.020157, 0.020553] | [+0.002758, +0.003464] | [+0.01421, +0.01785] |
+
+Excluye cero con un margen de unas **4 veces** la anchura del intervalo. Coherente con todo lo
+anterior: `rho` cae dentro de la envolvente de B2.1 (`[0.0195, 0.0347]`) y del intervalo ideal
+antiguo (`[0.0198, 0.0310]`); el signo es el que indicaban B1.5 y B2.1, y `S` queda entre los dos
+valores `+0.0029` y `+0.0050` que daban las cotas antiguas tomadas como exactas.
+
+## 5. Qué falta para un certificado
+
+Esto es un intervalo **ideal en coma flotante**, no una envolvente certificada. Construirla exige:
+
+1. **Capa escalar de `Phi_c`**: integral 1D de `F/(2(c+sqrt(c²+Fw)))` con redondeo dirigido. Usa
+   solo el enclosure de `s(w)` que B1.5 ya tiene, sin Lambert W.
+2. **Colapso del par**: con `c` fijo por bloque, la cota superior `A_c(y) − A_c(x)` es separable, y
+   `p(a) <= a²/4` la convierte en productos de integrales 1D, como en B1.5 §3. Falta diseñar la
+   asignación de `c` por bloque y medir cuánto ensancha.
+3. **Cota inferior**: la geodésica depende del par y **no** es separable. Hay que encontrar la forma
+   de no discretizar el par en 4D. Una posibilidad, sin explorar: curvas de una familia que
+   dependa solo del bloque, como el anclaje de B1.5. Es el punto difícil.
+4. **Margen disponible**: el ensanchamiento total de 1–3 debe quedar por debajo de `~0.0028` en `S`
+   (unas 4 veces la anchura ideal). Es un presupuesto medible antes de construir nada.
+
+Nada de esto está autorizado. Sí lo está —y es lo que esta nota registra— que la compuerta firmada
+deja de estar agotada: con esta representación, su intervalo ideal excluye cero.
+
+## 6. Adenda: la geodésica no hace falta
+
+Misma sonda, orden 16, con la banda `[recta, calibración]`, es decir, la cota inferior antigua de
+siempre y solo la superior nueva:
+
+```text
+rho in [0.019661, 0.020486]   B in [0.003816, 0.003976]   B' in [0.008886, 0.009925]
+S_ideal(t0) = [+0.002419, +0.003718]        EXCLUYE CERO
+```
+
+Esto disuelve el «punto difícil» de §5.3: la recta, que B1.5 ya certifica, basta como cota
+inferior. Además solo hace falta `S_lo > 0`, y eso pide la cota **inferior** de `Delta` únicamente
+en las tres caras con `v_n > 0` (integrales 3D, cara × volumen); en `B` (4D) y en la cara `V=v1`
+solo entra la **superior**, que es la separable. Presupuesto de ensanchamiento para un
+certificado: `~0.0024` en `S`, del orden de un 15 % combinado sobre `B` y `B'`.
+```
+
+### Contexto adjunto: research_program/puente_3p1/2026-09-12/B1/B1_2_angular_causal_reach.md
+```
+# B1.2 — Alcance causal angular 3+1D en la carta de Kruskal
+
+> **STATUS: `DERIVED / DETERMINISTIC_CHECKS_ONLY / NO_RUNS / NO_SEEDS / NO_PAIR_SEARCH`.**
+> **ADVANCES:** `L3`, únicamente mediante la relación causal angular necesaria para evaluar
+> posteriormente `rho(lambda)`.
+
+**Fecha:** 2026-09-12  
+**Dependencia:** `research_program/synthesis/op11_spherical_dual_target.md` §2 y
+`research_program/puente_3p1/2026-09-12/B1/B1_par_testigo_lambda.md` §6–§7.
+
+## 1. Convenciones
+
+En el sector `V>0` de la familia congelada, escribimos
+
+```text
+-U V = (s-1) exp(s),       s = r/(2M) > 0,
+ds² = -C(UV) dU dV + r² dOmega²,
+C(UV) = 32 M³/r · exp(-s).
+```
+
+La rama `s>0` es única porque `d[(s-1)e^s]/ds = s e^s > 0`. La orientación futura en el
+sector `I union II` permite usar curvas con `U` y `V` no decrecientes. Para dos puntos
+`x=(Ux,Vx,omega_x)` y `y=(Uy,Vy,omega_y)` de `K^+`, si `Ux>Uy` o `Vx>Vy`, no hay curva
+futura causal `x -> y`.
+
+Definimos la distancia angular esférica
+
+```text
+Delta = arccos(omega_x · omega_y) in [0, pi].
+```
+
+## 2. Reducción exacta a un problema variacional
+
+Para una curva radial monótona `gamma: V -> U(V)` entre los extremos, el término radial es
+`-C U'(V)dV²`, y una curva causal con movimiento angular `alpha(V)` satisface
+
+```text
+r² |alpha'(V)|² <= C(U(V)V) U'(V).
+```
+
+Por tanto, el máximo desplazamiento angular permitido por esa curva radial es
+
+```text
+L[U] = integral_{Vx}^{Vy} q(U(V)V) sqrt(U'(V)) dV,
+q(s) = sqrt(C)/r = 2 exp(-s/2)/s^(3/2).
+
+En efecto, con `r=2Ms` y `C=32M^3 exp(-s)/r`,
+`C/r^2 = 4 exp(-s)/s^3`, de modo que `sqrt(C)/r = 2 exp(-s/2)/s^(3/2)`.
+```
+
+La relación causal angular exacta es entonces
+
+```text
+x prec y  <=>  Ux <= Uy, Vx <= Vy,
+              Delta <= Delta_max(x,y),
+
+Delta_max(x,y) = min(pi, sup_U L[U]),
+```
+
+donde el supremo recorre `U` absolutamente continuas, no decrecientes, con
+`U(Vx)=Ux`, `U(Vy)=Uy`, y cuyos valores permanecen en el rectángulo causal entre los extremos.
+La última restricción no introduce un efecto de borde del patch: toda curva futura monótona entre
+los extremos ya permanece en ese rectángulo del sector de Kruskal. La igualdad `Delta=...`
+corresponde a una curva nula; para la probabilidad con medida continua, las fronteras de igualdad
+son despreciables.
+
+La derivación usa sólo la desigualdad causal local y la existencia de la geodésica mínima de
+`S²` entre los dos ángulos. No usa sprinkling ni una selección de puntos.
+
+## 3. Cotas rigurosas cerradas
+
+Sea `dU=Uy-Ux >= 0`, `dV=Vy-Vx >= 0` y
+
+```text
+q_min <= q(UV) <= q_max
+```
+
+en el rectángulo causal. Entonces, por Cauchy–Schwarz,
+
+```text
+Delta_max <= min(pi, q_max sqrt(dU dV)).                 (UB)
+```
+
+Una trayectoria admisible explícita es la recta
+
+```text
+U_lin(V) = Ux + dU (V-Vx)/dV,
+```
+
+que proporciona la cota inferior determinista
+
+```text
+Delta_max >= min(pi, integral q(U_lin(V)V) sqrt(dU/dV) dV).  (LB)
+```
+
+Si `dU=0` o `dV=0`, ambas cotas son cero. El `q_max` de (UB) se obtiene sin búsqueda numérica:
+como `q` decrece estrictamente con `s` y `s` crece con `-UV`, se evalúa `q` en el menor `s` del
+rectángulo, equivalente al mayor producto `UV` entre sus cuatro esquinas. El patch congelado
+impone `U V <= 1-epsilon_s`, por lo que `q_max` es finito.
+
+Estas cotas son conservadoras pero válidas para cualquier par del patch. La expresión variacional
+de §2 es el criterio exacto; la LB/UB permite una decisión certificada cuando `Delta` queda por
+debajo de LB (causal) o por encima de UB (no causal), sin resolver una optimización.
+
+## 4. Qué queda deliberadamente fuera
+
+Este artefacto no calcula `rho(lambda)`, no escoge `lambda_0,lambda_1`, no barre `lambda`, no
+inspecciona curvas de `rho`, y no afirma `L3` ni reconstrucción. B1.3 queda cerrado fuera de este
+paso y requerirá congelar primero el par testigo.
+
+## 5. Verificación determinista
+
+`verify_angular_causal_reach.py` comprueba:
+
+1. la identidad algebraica `C/r² = 4 exp(-s)/s³ = q(s)²`;
+2. que la trayectoria recta respeta las cotas `LB <= UB` en casos fijos;
+3. que el caso radial (`Delta=0`) y los casos degenerados dan `Delta_max=0`;
+4. la monotonicidad usada para localizar `q_max` en las esquinas.
+
+La verificación usa sólo aritmética determinista y cuadratura fija de SciPy; no hay semillas,
+Monte Carlo, ajuste, búsqueda adaptativa ni datos generados.
+```
+
+### Contexto adjunto: dev/B2_PROMOTION_RULE_AMENDMENT_2026-10-11.md
+```
+# B2 — enmienda de la regla de promoción
+
+**Fecha:** 2026-10-11
+**Estado:** `SIGNED` — firmada por el PI el 2026-10-11. La regla propuesta sustituye a la
+vigente para toda certificación posterior de B2.
+
+## Regla vigente
+
+```text
+B2_CORRECTED_POSITIVE  iff  formal_upper_bound(drho_dt) < 0
+```
+
+(`research_program/puente_3p1/2026-09-12/verify_b2_formal_sign_certificate.py`, 2026-09-13.)
+
+## Por qué se enmienda
+
+La dirección `< 0` se fijó sobre la evaluación numérica de B2.2, que daba una banda negativa por
+un error de signo en las caras inferiores (`dev/B2_2_SIGN_BUG_2026-10-11.md`). Corregido, B2.2 es
+inconcluso, y la evidencia independiente (B1.5 certificado, B2.1 monótono) apunta a `rho' > 0`.
+Mantener `< 0` sería una compuerta que, con toda probabilidad, no puede abrirse nunca: no protege
+contra nada, solo garantiza que el trabajo no emita.
+
+El objetivo científico de B2 es identificabilidad local a lo largo de la curva —`rho'(t0) != 0`—,
+para el que el signo es irrelevante.
+
+## Regla propuesta
+
+```text
+B2_CORRECTED_POSITIVE  iff  0 not in formal_enclosure(drho_dt)
+```
+
+con `drho_dt = S / Z^2`, `S = B' - 2 (Z'/Z) B`, en el `t0 = 0.5` congelado.
+
+## Declaración obligatoria
+
+Esta enmienda **se hace sabiendo** que el signo esperado es positivo. En la práctica, «excluir
+cero» equivale aquí a `inf > 0`. Se declara para que nadie lo lea como una regla bilateral
+elegida a ciegas. Su justificación no es el resultado esperado sino un error documentado en el
+número sobre el que se fijó la regla anterior. No es un umbral nuevo (ATTACK_04): no se toca
+ningún valor numérico, solo la dirección de una desigualdad fijada contra una cifra errónea.
+
+## Lo que no cambia
+
+- `no_new_path`, `no_new_t0`, `no_new_points`, `no_search`, `no_adjustment`.
+- Excluir cero en `t0` **no** emite un terminal positivo de B2.1: eso sigue exigiendo control en
+  un vecindario (punto en el que coincidieron las cuatro casas del sanedrín).
+- Un intervalo que contenga cero a resolución finita detiene la tentativa por presupuesto, sin
+  agotar la representación (precedente: B1.5 §6, `K=L=6` frente a `K=L=8`).
+
+## Firma
+
+```text
+PI: Nacho Martín              fecha: 2026-10-11
+```
+```
+
+### Contexto adjunto: dev/B2_2_SIGN_BUG_2026-10-11.md
+```
+# B2.2 / B3 — error de signo en las caras inferiores, y dos defectos más
+
+**Fecha:** 2026-10-11
+**Autorizado por:** el PI (corregir B2.2, re-ejecutar B2.2 y B3, redactar la enmienda)
+
+```text
+B2.2 = B2.2_POSITIVE_DERIVATIVE   ->  B2.2_INCONCLUSIVE_BY_BOUNDS
+B3   = B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY  ->  B3_INCONCLUSIVE_BY_BOUNDS
+B2.1 = INCONCLUSIVE_BY_BOUNDS     (sin cambio; no usa B2.2)
+B1, B1.5                          (sin cambio; no usan B2.2)
+B4                                (sin cambio numérico; importa solo q de B2.2)
+```
+
+La regeneración de `5ffcf41` dijo «todos los terminales sobreviven». Era cierto respecto al
+kernel; no lo es respecto a este fallo, que es anterior e independiente del kernel.
+
+---
+
+## 1. Los tres defectos
+
+**(a) Signo de las caras inferiores — `verify_b2_2_shape_derivative.py`.** El transporte de
+Reynolds usa la velocidad *normal* `v_n = (velocidad de la cara)·(normal exterior)`. El script
+usaba la velocidad de la cara sin la normal: en `U = -u_out` y `V = v0` la normal exterior es
+`-e`, y ambas entraban con el signo cambiado. El documento lo arrastra: §1 de
+`B2_2_shape_derivative_rho.md` lista «velocidades `(-u_out)', (u_in)', (v0)', (v1)'`».
+
+```text
+Z'(t0) del script              = -0.518239
+Z'(t0) diferencias finitas     = +0.358274
+Z'(t0) Leibniz corregido       = +0.358274   (acuerdo 1e-11)
+pendiente de normalization_Z en B2.1 (0.475 -> 0.525)  ~ +0.358
+```
+
+**(b) `b_hi` nunca se usaba.** `candidates = [b_lo/z**2 - ... for b in (b_lo, b_hi) ...]`: la
+variable del bucle era `b` y la expresión usaba `b_lo`. El intervalo de `rho'` registrado no
+era una envolvente: le faltaba el extremo superior de `B'`.
+
+**(c) Producto cruzado de B3 sin aritmética de intervalos.** `verify_b3_transverse_n2.py`
+emparejaba extremo inferior con inferior (`dphi_i*drho_j[k] - dphi_j*drho_i[k]`, `k=0,1`).
+`drho_i` y `drho_j` varían independientemente; cada producto se encierra por separado y se suman.
+
+(La etiqueta `B2.2_POSITIVE_DERIVATIVE` con un intervalo negativo **no** era un defecto: §2 del
+documento define «positivo» como «el intervalo excluye cero», no como signo.)
+
+## 2. Resultados corregidos
+
+```text
+B2.2   drho/dt(t0) in [-0.125718, +0.203481]       -> INCONCLUSIVE_BY_BOUNDS
+       (antes, con (a) y (b): [-0.205831, -0.089600])
+
+B3     drho/dx1 in [-0.091765, 0.111601]
+       drho/dx2 in [-0.194041, 0.132573]
+       drho/dx3 in [-0.125773, 0.321105]
+       cross(x1,x2) in [-0.051032, 0.041970]
+       cross(x1,x3) in [-4.7379e-05, 3.2662e-05]
+       cross(x2,x3) in [-0.057535, 0.146822]
+       ninguna componente excluye cero               -> INCONCLUSIVE_BY_BOUNDS
+```
+
+Control de (a)+(b) sobre `B'`: derivando por diferencias finitas las cotas `B_lo(t)`, `B_hi(t)`
+se obtiene `0.0091` y `0.0338`; ambos caen dentro de la envolvente de `B'` que implica el nuevo
+intervalo, `~[-0.003, 0.046]`. Con signos y extremos correctos, la cota de `rho'` es honesta y
+simplemente ancha.
+
+## 3. Lo que esto cambia
+
+- **La regla de promoción de B2** (`B2_CORRECTED_POSITIVE iff formal_upper_bound(drho_dt) < 0`)
+  se fijó cuando la evaluación numérica daba «una banda negativa» —este número—. Todo lo demás
+  apunta a `rho' > 0`: B1.5 certifica `rho(lambda1) > rho(lambda0)` y las cotas de B2.1 crecen
+  monótonamente en los cinco puntos. Ver la enmienda propuesta,
+  `dev/B2_PROMOTION_RULE_AMENDMENT_2026-10-11.md`.
+- **El desacuerdo del sanedrín 2026-10-11** (`sup I_S < 0` frente a «excluir cero») se formuló
+  sobre esa regla; ninguna de las cuatro casas detectó el signo.
+- **B3 deja de justificar `n=3`.** La afirmación «`n=2` no reconstruye localmente `phi`» ya no
+  tiene soporte. Tampoco queda refutada: es inconclusa.
+- **B4** conserva su estado `PARKED`; solo su bloque «Terminal canónico» citaba B2 y B3.
+
+Cómo se encontró: al leer la regla de promoción para preparar la decisión de la compuerta, el
+signo `< 0` no casaba con unos extremos certificados crecientes. Diferencias finitas lo
+confirmaron en un minuto. Otra vez: calculando, no releyendo.
+```
+
+
+## Ronda 1 — CLAUDE OPUS
+
+La versión más fuerte del certificado no necesita que (N1) sea una equivalencia exacta. La necesita como mucho en una dirección, y esa dirección se puede demostrar con poco. Primero digo qué comprobé y se sostiene. Después, dónde está lo débil.
+
+**N1/N2.** Para la cota superior basta una inclusión. La calibración acota toda curva con `a, b >= 0`, y las curvas monótonas parametrizadas por `V` de B1.2 son un subconjunto de esas. Por tanto, el `sup` de B1.2 queda por debajo, haya o no tramos nulos [INFERENCE].
+
+Para la cota inferior, la recta entre esquinas es directamente admisible en B1.2. La monotonía `Delta(x,y) >= Delta(P_top, Q_bot)` se obtiene sin concatenar curvas no parametrizables. Si `V_x < V_{P_top}`, se une `x` con `P_top` mediante un tramo lineal en `V`, que es monótono y aporta una integral `>= 0`. La igualdad de `V` solo ocurre en un conjunto de medida nula [INFERENCE].
+
+El tope `min(pi,·)` es monótono y se compone sin problema. La pregunta 1 del PI queda contestada a favor del certificado [INFERENCE].
+
+**N3.** Con `s = sqrt(c² + Fw)` salen dos identidades: `Phi_c' w + c = (s+c)/2` y `4 Phi_c'(Phi_c' w + c) = F`. La segunda es exacta, así que AM-GM es ajustado y la raíz es correcta [INFERENCE].
+
+Para `c < 0`, la condición `s + c > 0` equivale a `Fw > 0`. `phi_cell_bounds` lo impone con `if X_lo <= 0.0: continue`, y la reescritura `X/(sqrt(c²+X) − c)` redondea en la dirección correcta [SOURCE código; INFERENCE corrección]. El cruce de `w = 0` exige `c > 0` y `disc_lo >= 0` en cada celda [SOURCE].
+
+En `ub_table`, el control `thr[j] <= rwlo` usa el mínimo de las cuatro esquinas. Eso es válido porque `UV` es bilineal [INFERENCE].
+
+La rama `case_up = False` (`PL[ka] − PL[kb]`) también es válida. El intervalo `[wt[ka], wt[kb]]` está dentro de `[w_b, w_a]` y `plo <= Phi'`, así que se resta de menos. Si `ka > kb`, el término es `>= 0` [INFERENCE].
+
+El argumento «`up` del mínimo» es correcto: `up(fl(d)) >= d`, también en un cambio de binada [INFERENCE].
+
+**N4.** Comprobé los signos de `v_n` contra `d = (−0.3, −0.2, 1.0, 0.4, 0)` y la normal exterior: `+1.0, +0.4, +0.3, −0.2` [INFERENCE sobre SOURCE]. También comprobé tres cosas más:
+
+- Los índices `i, i+1` de `face_h` cuadran con `s0 = pts[:-1]` y `s1 = pts[1:]`.
+- El factor 2 de `b_hi_sum` cubre las dos ordenaciones.
+- El producto `vn_lo · inner_hi` es la cota inferior correcta en `V = v1`.
+
+**Hallazgo MENOR.** La rama Cauchy–Schwarz de `ub_table` usa `sqrt(dU ∫ q(U_b V)² dV)` [SOURCE]. Eso no es la UB de B1.2 (`q_max sqrt(dU dV)`, B1.2 §3 [SOURCE]). La nota la presenta como «B1.2 UB, que es H1a de B1.5» [SOURCE] y, por tanto, como ya auditada.
+
+La cota es válida, porque `U(V) <= U_b`, `V > 0` y `q` es creciente en `w` [INFERENCE]. Pero es una pieza nueva sin auditar y mal etiquetada. Condición de concesión: que B1.5 hubiera auditado esta misma forma integral, cosa que el acta no muestra [ABSENCE: busqué en las §3 de B1.2 y del certificado].
+
+**H3.** Se puede ascender de «contrastada» a demostrada. `G_encl` y `q_encl` reciben solo `w` [SOURCE], así que el integrando no depende de `t`. `K(t)` es un rectángulo con caras afines en `t`. Si `h` es continua en `K×K`, la regla de Leibniz iterada da `B' = 2∫_{∂K} w v_n H`.
+
+La continuidad de `h` se cumple también en la frontera del orden causal. Allí `Delta <= q_max sqrt(dU dV) → 0`, y `q_max` es finito porque `UV <= 1−ε` (B1.2 §3 [SOURCE]) [INFERENCE]. Concedo H3, siempre que `p∘Delta_max` sea continua en el interior. Eso exige un `sup` continuo en los extremos, que no veo demostrado [ABSENCE] aunque es estándar [UNVERIFIED].
+
+**Objeción más fuerte.** No ataca el número. Ataca lo que se dice que el número establece.
+
+§1 afirma «identificabilidad local en el sentido de la función inversa, solo en `t0`». En la misma sección niega establecer «monotonía de `rho` en un vecindario de `t0`» [SOURCE]. En una dimensión, las dos afirmaciones no pueden ser ciertas a la vez. Hay dos casos [INFERENCE]:
+
+- **Si `rho∘lambda` no es C¹ cerca de `t0`:** `rho'(t0) ≠ 0` solo da que `t0` está aislado en su conjunto de nivel. El contraejemplo clásico es `t + 2t² sin(1/t)`. Eso no es el teorema de la función inversa, y H3 solo se afirma en `t0`.
+- **Si es C¹:** el teorema da inyectividad en algún intervalo. Una función continua e inyectiva en un intervalo es estrictamente monótona. Entonces la negación de §1 es falsa tal como está escrita. Lo único que no se establece es un vecindario **cuantificado**, por ejemplo uno que contenga la malla de B2.1.
+
+Clasificación: `REQUIERE_CORRECCIÓN`, de redacción, y no cambia `S_lo`. Importa porque el acta de la enmienda reserva el control en vecindario a B2.1 [SOURCE]. Un lector podría citar este certificado como si ya lo diera, aunque sea en forma no cuantificada.
+
+Condición de concesión: que §1 se reescriba de una de dos maneras:
+
+- «`t0` aislado en su conjunto de nivel», sin mencionar la función inversa; o
+- con la C¹ demostrada, cambiando «no establece monotonía en un vecindario» por «no establece un vecindario cuantificado».
+
+**Puntos abiertos que paso a los demás.** El primero es el dominio auditado de `q_encl` y `G_encl`. La tabla cubre `w ∈ [≈−1.351, ≈0.631]` [INFERENCE a partir de `LAM`]. El acta no dice sobre qué rango auditó B1.5 [ABSENCE]. Calculo que queda dentro de la unión de los rectángulos de `lambda0` y `lambda1`, `[−1.6, 0.72]` [INFERENCE].
+
+El segundo es H5. El punto binary64 está fuera del segmento real por menos de un ulp. Está declarado y es MENOR.
+
+**Veredicto provisional:** `AUDIT_REQUIRES_MINOR_FIX`. No encuentro ningún redondeo hacia dentro ni ningún índice mal dirigido. Afirmo eso solo para las funciones que he leído, no para `b15.sum_dn` ni para `b15.iv_lo`.
+
+## Ronda 1 — ASTRA
+
+[INFERENCE] Concuerdo con CLAUDE OPUS sobre la calibración N3 y los signos de N4. Suscribo su objeción a la atribución de la cota integral de Cauchy–Schwarz. Discrepo de su defensa de N1 mediante «conjunto de medida nula»: falla precisamente en una cara que contribuye a la cota inferior de B′. El hueco puede cerrarse, pero exige otro argumento.
+
+[SOURCE] En `face_h`, la cota inferior hacia el futuro emplea el extremo `s1` del segmento. Para la cara `V=v0`, todos los puntos del segmento y `s1` tienen exactamente la misma coordenada V.
+
+[INFERENCE] Por tanto, el enlace desde un punto interior del segmento hasta `s1` es horizontal y no admite parametrización como U(V). Esto sucede en toda esa cara, no solamente en un conjunto despreciable para su medida superficial. La objeción ataca la justificación de OPUS, no demuestra que la cota sea falsa. Clasificación: `REQUIERE_CORRECCIÓN`. Condición de concesión: justificar la aproximación de esos enlaces por curvas admisibles conservando el presupuesto en el límite.
+
+[INFERENCE] Esa condición puede satisfacerse. Considérese una curva causal entre extremos con ΔV>0, parametrizada mediante U+V y reescalada a s∈[0,1]; sus coordenadas son Lipschitz. Sustitúyase V(s) por
+Vε(s)=(1−ε)V(s)+ε(Va+ΔV·s),
+manteniendo U(s). Conserva extremos y monotonía, permanece en el rectángulo y satisface Vε′≥εΔV. En consecuencia, U como función de Vε es absolutamente continua y admisible en B1.2.
+
+[INFERENCE] Su longitud converge a la original: q(UVε) converge uniformemente, y √(U′Vε′) converge casi por doquier con una cota integrable, pues las coordenadas son Lipschitz. La continuidad y acotación de q se obtienen de la fórmula de B1.2 y de mantenerse en un compacto con UV<1. Esto prueba la igualdad de supremos e incluye los enlaces horizontales. Cuando ΔV=0, la longitud es cero, conforme a la convención degenerada de B1.2 §3. N1/H1 quedan sustentadas entendiendo que **la separación temporal es el supremo sin truncar**.
+
+[INFERENCE] Para N2 basta la monotonía por inclusión de extremos del supremo anterior; aplicar min(π,·) conserva esas desigualdades. No hace falta afirmar una desigualdad triangular inversa aditiva para la cantidad truncada. Esta última formulación sí sería falsa en general.
+
+[INFERENCE] También puede cerrarse la continuidad interior que OPUS dejó abierta en H3. Para ΔU,ΔV>0, todas las curvas de B1.2 se escriben con una misma clase de funciones f absolutamente continuas, crecientes, f(0)=0 y f(1)=1:
+Lθ[f]=√(ΔUΔV)∫₀¹q((Ua+ΔU f(s))(Va+ΔV s))√f′(s) ds.
+Como ∫₀¹√f′≤1, la continuidad uniforme de q proporciona un módulo de continuidad respecto de los extremos **independiente de f**. Tomar supremos conserva ese control. En los extremos degenerados, la cota qmax√(ΔUΔV) completa la continuidad; la extensión simétrica por cero a pares incomparables también es continua.
+
+[INFERENCE] Así, bajo H2, Leibniz iterado justifica H3 y produce una derivada continua para rectángulos próximos. La conclusión fuerte es inyectividad y monotonía en algún intervalo no cuantificado. La corrección editorial indicada por OPUS queda respaldada por este argumento, sin depender del contraste numérico.
+
+[INFERENCE] N4/H2 se sostienen para el núcleo simétrico con esa extensión por cero. H5 identifica coherentemente una derivada direccional en el punto binary64 declarado; no identifica automáticamente ese punto con el punto medio real exacto.
+
+[INFERENCE] Para N5/H4, la inspección de `phi_prefix`, la selección por `thr` y las consultas de `lb_rows` no revela una inversión de cotas. Esto concede esas operaciones bajo H4, no acredita una ejecución.
+
+[ABSENCE] Busqué en los adjuntos el dominio contractual de las funciones escalares importadas y sus implementaciones; no aparecen. No puedo ampliar el alcance de su auditoría previa.
+
+[INFERENCE] Veredicto provisional: `AUDIT_REQUIRES_MINOR_FIX`. El argumento de medida nula falla, pero la aproximación anterior lo repara sin cambiar las cotas calculadas.
+
+## Ronda 1 — CIRO
+
+Concuerdo con ASTRA en que el argumento de medida nula de OPUS falla en toda la cara `V=v0`, y acepto su reparación por aproximación. Concuerdo con ambos en la calibración N3, los signos de N4, la mala atribución de la cota integral de Cauchy–Schwarz, H5 como convención del objeto binary64, y la corrección editorial de §1. Suscribo el módulo de continuidad del `sup` que cierra H3.
+
+[INFERENCE] La inclusión unidireccional de OPUS —la calibración acota toda curva causal, luego acota el `sup` de B1.2— cubre `B_hi` y la cara con `v_n<0`. `B'_lo` usa la cota inferior de N2 en las tres caras con `v_n>0`. Esa dirección exige que el `sup` de B1.2 coincida con la separación temporal lorentziana `τ` de `F dU dV`. Condición de concesión: igualdad de supremos, o un argumento AC explícito en la nota de H1.
+
+[INFERENCE] Toda curva causal futura cumple `dU≥0`, `dV≥0`. Las que no son gráficas sobre `V` se diferencian por tramos con `dV=0`, nulos, de tiempo propio cero. El supremo sobre gráficas absolutamente continuas y el supremo sobre todas las curvas causales coinciden. En esa clase vale `τ(x,y)≥τ(x,z)+τ(z,y)` por concatenación, y por tanto `τ(x,y)≥τ(P_top,Q_bot)` cuando el orden de N2 vale. El tope `min(π,·)` es no decreciente y transmite ambas desigualdades; `p` no decreciente las pasa a `h`. [SOURCE B1.2 §2–§3; certificado §7.2]
+
+[INFERENCE] La concatenación con el tramo nulo de la cara `V=v0` sale de la clase AC de B1.2. La transferencia al `sup` sobre mapas AC es el argumento `ε` de ASTRA: la curva completa hasta un `Q` interior tiene `ΔV>0`; si `ΔV=0`, B1.2 §3 da longitud cero. Con eso N1/N2 sostienen `B'_lo`.
+
+[SOURCE `phi_cell_bounds`] Para `c<0` la celda `[0,w_1]` queda inválida porque `X_lo≤0`; `k0` arranca después del horizonte y `thr>0`. El cruce `w=0` con `c<0` se evita por exclusión del rectángulo, coherente con `s+c>0 ⇔ Fw>0`. [INFERENCE] En rectángulos con `w>0`, `b≥0` implica `w` no decreciente a lo largo de la curva, de modo que los extremos válidos arrastran el segmento.
+
+[ABSENCE] En los adjuntos no está el cuerpo de `b15.sum_dn`, `b15.sum_up` ni `b15.E_INV_HI`. El §3 de la convocatoria lista como ya auditado `s_encl`, `q_encl`, `G_encl` y la conversión `iv→float`. El certificado importa esas tres piezas. Clasificación: `REQUIERE_CORRECCIÓN` de alcance. Las sumas dirigidas son el mecanismo declarado en N5; el pico `1/e` de `G` está en la monotonía auditada. Un `E_INV_HI` estrictamente menor que `1/e` estrecharía `W_hi` y podría inflar `S_lo`. Condición de concesión: citar la constante y las sumas como parte del objeto ya auditado de B1.5, o inlinearlas.
+
+[INFERENCE] En `p_lo_of`, `p_hi_of`, `k_below`, `k_above`, `g_range`, `cs_prefix`, `lb_rows`, `phi_prefix`, `ub_table` y `face_h`, los índices van al nodo exterior y el ulp sale hacia afuera; la resta `AU_hi−AU_lo` queda cubierta por un `_up` del mínimo. Eso no acredita ejecución ni las sumas importadas.
+
+H2 se sostiene como definición ya fijada. H4 permanece como hipótesis de IEEE-754 y de esas sumas. H3, con el integrando independiente de `t` en coordenadas ambiente [SOURCE `G_encl`/`q_encl` reciben solo `w`] y `K(t)` un rectángulo de caras afines, queda justificado por Leibniz una vez concedida la continuidad de ASTRA.
+
+Veredicto provisional: `AUDIT_REQUIRES_MINOR_FIX`.
+
+## Ronda 1 — ABNER
+
+Concuerdo con CLAUDE OPUS en N3, en los signos de N4, en H5 y en la corrección editorial de §1; con ASTRA en que el argumento de medida nula no cierra N1 y en su reparación por regularización; con CIRO en la ausencia del cuerpo de B1.5 y en que `E_INV_HI` y las sumas importadas quedan fuera de lo visible.
+
+Añado dos puntos no cubiertos.
+
+[SOURCE] En `w_table`, los extremos se construyen con
+`wlo = float(dn(-UOUT * V1)) - 1e-3` y
+`whi = float(up(UIN * V1)) + 1e-3`.
+[INFERENCE] La resta y la suma del margen `1e-3` no se empujan con `nextafter`, pese a que el §3 de la nota declara redondeo dirigido tras cada operación binaria. Es la única operación de construcción de tabla que he visto sin direccionar explícitamente. El margen es grande frente al ulp, así que no parece invertir `S_lo`; pero formalmente es un hueco de certificación, no una cuestión de magnitud. [ABSENCE] No consta en el acta que la capa escalar auditada de B1.5 cubra `[wlo, whi]` con ese margen añadido. Clasificación: `REQUIERE_CORRECCIÓN` de alcance, con condición de concesión: si se declara que el dominio auditado de `q_encl`/`G_encl` incluye los nodos de margen, y que `wlo`/`whi` cubren el rango físico pese al redondeo no dirigido del margen, baja a `MENOR`.
+
+[SOURCE] En `calibration_point_tables`, `AU_lo` usa `PU_lo` y `AU_hi` usa `PU_hi`; análogamente `AL_lo`/`AL_hi` usan `PL_lo`/`PL_hi`. [INFERENCE] Lo comprobé porque parece que `AU_lo` no es una cota inferior de `A_c(a)`: no lo es, pero no hace falta que lo sea. `PU` es una única aproximación superior prefijada; al restar `PU_hi[ka] - PU_lo[kb]` el término común se cancela y la diferencia acota la integral de `Phi_c'` sobre las celdas `[kb, ka)`. `AL` hace lo análogo con la aproximación inferior cuando `w_b_hi < w_a_lo`. La resta es válida, pero la nota no lo explica y un auditor puede leerla como un error. Clasificación: `MENOR` de justificación, no de validez.
+
+[SOURCE] En `face_h`, la cota inferior suma
+`vals_fwd[i+1, bot] + vals_bwd[i, top]`, y la superior suma
+`vals_fwd[i, top] + vals_bwd[i+1, bot]`.
+[INFERENCE] La suma no esconde una superaditividad ilegítima de `p`. En las tres caras con `v_n > 0` una de las dos orientaciones es incompatible con la posición de la celda, de modo que uno de los dos sumandos es cero y el otro da la cota. En la cara con `v_n < 0` ambos sumandos son cotas superiores individuales del mismo `p(Delta)`, así que sumarlos es conservador, no inválido. Esto se sostiene.
+
+Mi veredicto provisional es `AUDIT_REQUIRES_MINOR_FIX`.
+
+## Ronda 1 — GEMINI
+
+[INFERENCE] Concuerdo con CLAUDE OPUS, ASTRA, CIRO y ABNER en que la cadena de redondeos dirigidos no presenta inversiones de cotas, que la calibración N3 es exacta y que los signos de $v_n$ en N4 son correctos. Suscribo la objeción editorial de OPUS a la redacción de §1, la reparación por regularización $\varepsilon$ de ASTRA para N1 en la cara $V=v_0$, y la señalización de CIRO y ABNER sobre la ausencia en los adjuntos del código fuente de `b15.sum_dn`, `b15.sum_up` y `b15.E_INV_HI`.
+
+Aporto dos análisis que blindan puntos dejados en duda o no examinados.
+
+**1. H3 (Transporte de Reynolds) no exige regularidad $C^1$ del núcleo.**
+[INFERENCE] En el debate sobre H3 se ha planteado si la falta de diferenciabilidad de $h(x,y) = p(\Delta_{\max}(x,y))$ debilita el transporte de Reynolds. No lo hace. [SOURCE] El integrando $w(x)w(y)h(x,y)$ no depende del parámetro $t$; la dependencia en $t$ reside exclusivamente en las fronteras del dominio $K(t) \times K(t)$. Para un dominio rectangular con caras afines en $t$ y velocidades normales constantes a trozos $v_n$, la derivada de Leibniz de $\iint_{K(t)\times K(t)} f(x,y)\,dx\,dy$ con $f$ continua y simétrica es idénticamente $2\int_{\partial K(t)} v_n(x) \left(\int_{K(t)} f(x,y)\,dy\right) d\sigma_x$ por el Teorema Fundamental del Cálculo aplicado a cada coordenada. Dado que ASTRA ya demostró la continuidad de $\Delta_{\max}$ y $p$ es continua [SOURCE], el integrando es continuo en el compacto. Por tanto, H3 no es una hipótesis conjetural ni requiere que $h$ sea $C^1$: es un teorema clásico aplicable directamente. Clasificación: `MENOR` (reparación analítica completa de la hipótesis).
+
+**2. Tratamiento de la diagonal en `b_hi_sum`.**
+[SOURCE] En `b_hi_sum`, el bucle recorre todos los pares de celdas $(P,Q)$ y evalúa `pub[bot, top]`. Para $P = Q$, `bot` es $P_{\mathrm{bot}}$ y `top` es $P_{\mathrm{top}}$. Como $P_{\mathrm{bot}} < P_{\mathrm{top}}$ estrictamente, `pub[bot, top]` es no nulo en la diagonal. El sumatorio total se multiplica finalmente por $2.0$.
+[INFERENCE] Comprobé si este factor 2 sobrestima o invalida la cota de la diagonal $P=Q$. En la integral continua sobre la celda, la medida del conjunto causal interno $\{ (x,y) \in P \times P : x \prec y \}$ está acotada por $\frac{1}{2} W(P)^2$. La cota superior exacta del bloque diagonal sería $W(P)^2 p_{\mathrm{hi}}(\mathrm{UB})$. El código computa $2 \cdot W_{\mathrm{hi}}(P)^2 p_{\mathrm{hi}}(\mathrm{UB})$, duplicando la contribución de la diagonal. Lejos de invalidar la cota, esto la hace **estrictamente conservadora**: sobrestima $B_{\mathrm{hi}}$, lo que a su vez reduce $S_{\mathrm{lo}} = B'_{\mathrm{lo}} - k_{\mathrm{hi}} B_{\mathrm{hi}}$. La validez del certificado se mantiene intacta bajo este exceso de holgura.
+
+**3. Sobre la objeción de ABNER en `w_table`.**
+[SOURCE] En `w_table`, `wlo = float(dn(-UOUT * V1)) - 1e-3` y `whi = float(up(UIN * V1)) + 1e-3`.
+[INFERENCE] Discrepo de catalogar la suma de `1e-3` como defecto que requiera corrección en la lógica de inclusión. `dn(-UOUT * V1)` ya está redondeado hacia abajo; restar un escalar positivo en coma flotante solo puede desplazar el nodo más a la izquierda, ampliando el soporte cubierto por la retícula. Lo mismo aplica a `whi`. No hay riesgo de subcobertura del dominio físico. Sin embargo, [ABSENCE] confirmo que los adjuntos no explicitan el rango numérico formal sobre el que se certificó la capa escalar en B1.5. Si `wlo` o `whi` cayeran fuera del dominio auditado de `s_encl`, las consultas a la tabla carecerían de respaldo auditado. Condición de concesión: declarar que el dominio auditado de B1.5 contiene con holgura el intervalo $[-1.36, 0.64]$.
+
+**Veredicto:** `AUDIT_REQUIRES_MINOR_FIX`. Las insuficiencias señaladas (atribución de Cauchy–Schwarz, redacción sobre vecindario en §1, argumentación formal de N1 en $V=v_0$ y mención del rango de B1.5) son reparables formalmente sin alterar el valor numérico $S_{\mathrm{lo}} > 0$ ni la exclusión de cero en $d\rho/dt(t_0)$.
+
+## Ronda 2 — ASTRA
+
+[INFERENCE] Concedo a GEMINI la defensa de `w_table` frente a ABNER: bajo H4, si `a` es un binary64 y `e>0`, la monotonía del redondeo implica `fl(a−e)≤fl(a)=a`, y análogamente `fl(a+e)≥a`. El margen no necesita redondeo dirigido para conservar la cobertura que ya proporcionaban los extremos anteriores. Queda desactivado ese ataque a la inclusión; el alcance contractual de las funciones consultadas es una cuestión distinta.
+
+[SOURCE] ABNER afirma sobre la cota superior de `face_h`: «ambos sumandos son cotas superiores individuales del mismo `p(Delta)`». El código utiliza esa rama únicamente en `V=v1`, con `vals_fwd[i,top] + vals_bwd[i+1,bot]`.
+
+[RECONSTRUCTION] La versión más fuerte de su argumento es que sumar las dos orientaciones produce una cota superior del núcleo simétrico, aunque pueda introducir holgura. Esa conclusión puede sostenerse; la justificación mediante dos cotas individuales del mismo núcleo no.
+
+[INFERENCE] En `V=v1`, el sumando hacia el futuro es exactamente cero: ninguna esquina `Q_top` tiene V estrictamente mayor que `v1`, como exige `ub_table`. Sin embargo, un punto de esa cara y un punto interior situado estrictamente a su pasado en ambas coordenadas tienen alcance positivo, por la cota de la recta. Ese cero, por tanto, no acota superiormente el núcleo simétrico. La condición de concesión es interpretar cada sumando como cota del núcleo de su propia orientación, cuya suma constituye el núcleo simétrico. Con esa interpretación, la orientación futura vale cero y la pasada queda cubierta por `pub[Q_bot,s1]`. Clasificación: `MENOR` en la argumentación de ABNER; no identifica un fallo del código.
+
+[INFERENCE] Suscribo la objeción de CIRO sobre `b15.sum_dn`, `b15.sum_up` y `b15.E_INV_HI`; añado una consecuencia que obliga a revisar mi veredicto anterior.
+
+[SOURCE] La convocatoria declara auditadas las funciones escalares `s_encl`, `q_encl`, `G_encl` y la conversión hacia afuera. El verificador también utiliza las sumas importadas para construir `Z`, `Bprime_lo` y `S_lo`, y utiliza `E_INV_HI` para cotas superiores de pesos.
+
+[INFERENCE] La reconstrucción más favorable del acuerdo alcanzado es que esas dependencias pertenecen a la misma implementación previamente auditada y solo falta documentar su cobertura. Pero su pertenencia al mismo módulo no demuestra esa cobertura. El ascenso injustificado consiste en pasar de «no detectamos un fallo en las operaciones visibles» a «las omisiones no pueden cambiar la conclusión numérica». Esta segunda afirmación exige precisamente la garantía ausente; tampoco se deduce del refinamiento reportado.
+
+[INFERENCE] La condición de concesión es que el alcance de la auditoría previa incluya esas implementaciones, garantice `sum_dn≤Σ≤sum_up` para las entradas utilizadas y `E_INV_HI≥1/e`, y cubra el dominio efectivamente consultado por las tablas. Bajo esa condición, las correcciones analíticas y editoriales discutidas no exigen cambiar el cálculo. Sin ella, la inocuidad numérica no está establecida.
+
+[INFERENCE] Rectifico mi veredicto provisional a `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`, manteniendo H4 como hipótesis declarada. Esta condición añade las garantías anteriores sobre las dependencias importadas; no afirma que hayan sido verificadas en esta deliberación. N1–N4 y H3 conservan las justificaciones ya expuestas; N5 queda condicionado por esa frontera documental.
+
+## Ronda 2 — CIRO
+
+Concedo a GEMINI y a ASTRA que, bajo H4, el margen `1e-3` de `w_table` conserva la cobertura de los extremos ya dirigidos: si `a` es binary64 y `e>0`, `fl(a−e)≤a` y `fl(a+e)≥a`. El ataque de ABNER a la inclusión queda desactivado; la cobertura contractual de `q_encl`/`G_encl` sobre esos nodos sigue dentro de la condición de alcance. [SOURCE código; INFERENCE]
+
+Suscribo la corrección de ASTRA sobre `face_h` en `V=v1`: `vals_fwd[i, top]` es cero porque `ub_table` exige ambas coordenadas estrictamente crecientes y ninguna `Q_top` tiene `V>v1`; el núcleo simétrico de esa cara se cubre con `pub[Q_bot, s1]`. La suma de dos cotas del mismo `p` no es la justificación. [SOURCE código; INFERENCE]
+
+Suscribo a ABNER sobre `AU`/`AL`: `PU_hi[ka]−PU_lo[kb]` acota la integral de `Phi_c'` porque acota por ambos lados la misma suma de celdas superiores y, al restar, el prefijo común se cancela con signo favorable. `MENOR` de justificación en la nota. [INFERENCE]
+
+Concedo a ASTRA el ascenso injustificado de mi veredicto de ronda 1. Traté la ausencia de `b15.sum_dn`, `b15.sum_up` y `b15.E_INV_HI` como `REQUIERE_CORRECCIÓN` de alcance y di por sentado que eso no altera `S_lo`. La segunda afirmación exige precisamente la garantía que los adjuntos no contienen. [ABSENCE; INFERENCE]
+
+[INFERENCE] Preciso la condición. El sumatorio más pesado está inlinado: `b_hi_sum` empuja cada `W_hi[Q]·p` con `_up` y reduce sobre `P` de forma secuencial; esa pieza es visible y se sostiene. Las importaciones intervienen en `Z` (`M²` términos), en `inner` de cada cara (`M` términos) y en las cuatro contribuciones de `B'`. La nota declara «sumas secuenciales dirigidas» [SOURCE §3]. La condición ha de exigir que `sum_dn`/`sum_up` acumulen paso a paso, con redondeo dirigido en cada adición, sobre esos ndarrays y sobre las listas de caras. Un único `nextafter` tras una reducción en redondeo al más cercano no justifica `k_hi=2 Z'_hi/Z_lo`. El producto `dn(fw_lo*H)` sí está dirigido en el verificador, bajo H4; la obligación restante es la reducción. Para `E_INV_HI` la desigualdad exigida es `≥1/e`, porque un valor menor encoge `W_hi` en subceldas que contienen el pico y eleva `S_lo`. El dominio auditado de `q_encl`/`G_encl` ha de contener los nodos de `w_table`, margen incluido.
+
+[INFERENCE] Cierro la forma integral de Cauchy–Schwarz como lema de esta auditoría: `L[U]≤√(dU ∫ q(U(V)V)² dV)≤√(dU ∫ q(U_b V)² dV)` por CS, `U(V)≤U_b` y `q` creciente en `w`. La monotonía está en lo ya auditado [SOURCE convocatoria §3]. La atribución a «B1.2 UB / H1a de B1.5» permanece como `REQUIERE_CORRECCIÓN` de etiqueta y queda fuera de la condición numérica.
+
+[INFERENCE] H3 queda teorema con el módulo de continuidad de ASTRA y el Leibniz sobre rectángulos de caras afines. H1/N1 quedan con la regularización `ε` y con la concatenación nula de tiempo propio cero; el tope `min(π,·)` transmite ambas desigualdades de N2 porque es no decreciente y `p` satura. N3 y los signos de N4 se sostienen. H5 identifica el objeto binary64 declarado. La diagonal de `b_hi_sum` con el factor 2 es conservadora, como señaló GEMINI.
+
+Las reescrituras de §1 (función inversa / vecindario no cuantificado) y la inclusión del argumento `ε` en el texto de H1 son defectos de la nota; no entran en la condición.
+
+Veredicto: `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`.
+
+## Ronda 2 — ABNER
+
+Concedo a GEMINI y a ASTRA el punto de `w_table`. [SOURCE] Los extremos ya dirigidos son `dn(-UOUT*V1)` y `up(UIN*V1)`. [INFERENCE] Bajo H4, para `e=1e-3` se cumple `fl(a−e)≤a` y `fl(a+e)≥a`; restar o sumar el margen no revierte la cobertura que daban esos extremos. Retiro la parte de inclusión de mi hallazgo. La parte de dominio auditado de `q_encl`/`G_encl` persiste y queda absorbida en la condición.
+
+Concedo también a ASTRA la crítica a mi justificación de `face_h`. [SOURCE] En `ub_table` los bucles exigen `ib>ia` y `jb>ja`; en `V=v1`, `vals_fwd[i,top]` es cero. [INFERENCE] Mi afirmación de que ambos sumandos eran cotas superiores del mismo `p(Delta)` era falsa. La justificación correcta es por orientación: la futura es cero y la pasada está cubierta por `pub[Q_bot,s1]`. No identifica fallo del código.
+
+Lo que queda con fuerza es la dependencia no visible de B1.5, y añado una precisión a la condición de ASTRA y CIRO. [SOURCE] En el verificador, `fastmath_guard` itera sobre la tupla local `KERNELS`; `b15.sum_dn`, `b15.sum_up` y `E_INV_HI` no aparecen en esa tupla. [INFERENCE] El control del IR de LLVM por mutación no cubre las reducciones importadas. La condición `B15_DEPENDENCIES` debe exigir explícitamente que esas sumas no estén compiladas con `fast-math` ni contracción, además de acumular con redondeo dirigido en cada adición. Pedir solo “acumulen paso a paso” no basta: una reducción reasociada o contraída por `fastmath` puede violar la dirección declarada aunque cada operación individual use `nextafter`. [INFERENCE] Lo mismo vale para `E_INV_HI`: debe ser una cota superior certificada de `G(0)=1/e`, no una constante nominal; si fuese menor, `W_hi` quedaría subestimado en subceldas que cruzan `w=0` y `S_lo` se inflaría.
+
+[INFERENCE] Con esa precisión, ajusto mi veredicto a `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`. Las correcciones analíticas y editoriales ya señaladas no alteran el número; la ausencia de código y del control fast-math de las importaciones impide pasar a `AUDIT_PASS_FORMAL` desde esta acta.
+
+## Ronda 2 — GEMINI
+
+[INFERENCE] Concedo a ASTRA, CIRO y ABNER que mi veredicto anterior incurrió en el ascenso indebido señalado: no se puede deducir la inocuidad numérica de las piezas importadas a partir únicamente de la corrección del código visible. Convocatoria §3 [SOURCE] limitó taxativamente lo ya auditado de B1.5 a `s_encl`, `q_encl`, `G_encl` y la conversión `iv → float`; no incluyó `b15.sum_dn`, `b15.sum_up` ni `b15.E_INV_HI`. Al estar sus cuerpos ausentes [ABSENCE], emitir `AUDIT_REQUIRES_MINOR_FIX` suponía conceder a ciegas que esas tres piezas respetan sus contratos hacia afuera. La postura metodológicamente vinculante es condicionar el pase.
+
+Ataco, sin embargo, la formulación de ABNER sobre exigir control de IR de LLVM para `b15.sum_dn` y `b15.sum_up`.
+
+[SOURCE] Todas las llamadas a `b15.sum_dn` y `b15.sum_up` en `verify_b2_path2_gate_certificate.py` residen exclusivamente en `run(M)` (líneas 404, 424, 426, 427, 432, 434, 435, 438, 439). Ningún kernel Numba invoca esas funciones. [INFERENCE] Si `sum_dn` y `sum_up` son funciones en Python puro (o encapsulan bucles escalares / `mpmath`), no compilan a través del pipeline de Numba ni generan IR de LLVM. Exigir la ausencia de banderas `fast-math` en su IR es una sobreespecificación que confunde el mecanismo del guardia local con el requisito matemático.
+
+Condición de concesión de mi ataque a ABNER: que se demuestre que `sum_dn`/`sum_up` están decoradas con `@njit`, en cuyo caso sí procedería auditar su IR. Mientras su implementación sea desconocida [ABSENCE], la exigencia no debe formularse sobre el compilador sino sobre la semántica de evaluación bajo H4: acumulación monótona término a término con redondeo dirigido hacia afuera (`nextafter` en cada adición o cota intervalar), sin reasociación que viole la dirección.
+
+Aporto además la comprobación de los signos en la contribución de las caras a `Z'`:
+[SOURCE] En la cara $V=v_1$, donde $v_n < 0$, el verificador computa:
+`Zp_lo_terms.append(float(dn(vn_lo * b15.sum_up(fw_hi))))`
+`Zp_hi_terms.append(float(up(vn_hi * b15.sum_dn(fw_lo))))`.
+[INFERENCE] Al ser `vn_lo < 0` y `sum_up(fw_hi) > 0`, el producto es negativo; multiplicar por la cota superior del peso y redondear con `dn` (hacia $-\infty$) produce una cota inferior rigurosa del término negativo. Para `Zp_hi_terms`, `vn_hi < 0` multiplicado por `sum_dn(fw_lo) > 0` redondeado con `up` da la cota superior correcta. La inversión de cotas por el signo negativo en $Z'$ está tratada con total rigor algebraico y de redondeo.
+
+En resumen, los pilares matemáticos y algorítmicos propios de B2 están íntegramente validados:
+1. N1 se sostiene mediante la regularización Lipschitz de ASTRA y la inclusión causal [INFERENCE].
+2. N2 y N3 se sostienen: AM-GM es exacta, las ramas $c<0$ y $w=0$ están blindadas y el tope $\min(\pi,\cdot)$ conserva el orden [INFERENCE].
+3. N4 aplica correctamente los signos de $v_n$ tanto en $B'$ como en $Z'$ [SOURCE; INFERENCE].
+4. H3 queda demostrada como teorema analítico para caras afines mediante el módulo de continuidad de ASTRA [INFERENCE].
+5. Las objeciones a la diagonal en `b_hi_sum` y a los márgenes en `w_table` quedaron desactivadas por ser estrictamente conservadoras [INFERENCE].
+
+La única frontera que separa este resultado de la definitividad formal es documental: la ausencia en el expediente de tres elementos importados de B1.5.
+
+Veredicto: `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`.
+
+La condición de concesión queda unificada y delimitada a que se certifiquen externamente tres hechos:
+1. Que `b15.E_INV_HI >= 1/e`.
+2. Que `b15.sum_dn` y `b15.sum_up` implementan acumulaciones dirigidas que garantizan formalmente `sum_dn(x) <= sum(x) <= sum_up(x)` bajo H4.
+3. Que el dominio auditado de `q_encl` y `G_encl` en B1.5 cubre el intervalo $[-1.36, 0.64]$.
+
+## Ronda 2 — CLAUDE OPUS
+
+Concedo a ASTRA que mi argumento de medida nula falla [INFERENCE]. En la cara `V=v0`, `face_h` acota `x` mediante `s1` en el sentido futuro y mediante `s0` en el pasado. Los dos enlaces son horizontales y ninguno es parametrizable por `V`. En las caras `U=const`, en cambio, los enlaces son verticales y admisibles con `U'=0`. El hueco queda por tanto confinado a `V=v0`. La regularización `V_ε` lo cierra, y su incorporación al texto de H1 es `REQUIERE_CORRECCIÓN` de redacción.
+
+En la disputa entre ABNER y GEMINI, suscribo a GEMINI: la condición debe ser semántica y no depender del compilador. Añado lo que da cuerpo a esa tesis. Revisé todos los kernels visibles y en ninguno un producto alimenta directamente una suma: entre ambos siempre media `_dn`/`_up` [INFERENCE sobre SOURCE]. Algunos ejemplos son `_up(acc + _up(W_hi[Q]*v))`, `_dn(Ua + _dn(du_lo*t0))` y `_dn(cnu_lo + PU_lo[kb])`. Por eso, aunque el backend fusionara operaciones sin flags en el IR, cosa que no sé [UNVERIFIED], no podría contraer ninguna de esas operaciones. El guardia por IR es, en consecuencia, suficiente para el código visible.
+
+También comprobé que ningún `prange` contiene una reducción sobre una variable exterior. `acc` en `b_hi_sum` y `face_h`, y `out[a,b]` en `ub_table`, son privados por iteración, así que no hay reasociación paralela [INFERENCE].
+
+Una objeción de forma a GEMINI. El acta no muestra números de línea, de modo que «líneas 404, 424, 426…» no puede llevar la etiqueta [SOURCE]. Lo degrado a [UNVERIFIED]. La afirmación de fondo sí se sostiene en la lectura: todas las llamadas a `b15.sum_dn`/`sum_up` están en `run`, fuera de numba [SOURCE].
+
+Paso a lo que queda en pie. La condición `B15_DEPENDENCIES`, en la forma de tres hechos que fijó GEMINI, está incompleta en dos puntos.
+
+**(i) Trascendentes fuera de la capa auditada.** El enunciado N5 de la convocatoria dice que las funciones trascendentes entran «solo a través de tablas monótonas certificadas, construidas con la capa escalar ya auditada de B1.5» [SOURCE]. Pero `p_table` usa `iv.cos` e `iv.pi`, y `nu_enclosures` usa `iv.log`, directamente de `mpmath` [SOURCE]. B1.5 solo aporta la conversión `iv_lo`/`iv_hi`.
+
+La nota del certificado, en su §3, es fiel en esto: dice «`mpmath.iv`». La convocatoria no lo es. H4 cubre «`mpmath.iv` para la capa escalar» [SOURCE], y esa capa es, por definición del acta, `s_encl`/`q_encl`/`G_encl`. Literalmente, pues, `cos`, `log` y `pi` quedan fuera.
+
+El defecto actúa en las dos direcciones de `S_lo` [INFERENCE]:
+- un `phi_p` por debajo del verdadero rebaja `B_hi`;
+- un `plo_p` por encima infla `B'_lo`;
+- un `nuhi` por debajo estrecha la calibración.
+
+Lo clasifico como `REQUIERE_CORRECCIÓN` de alcance. Condición de concesión: que H4 se reescriba para cubrir todos los usos de `mpmath.iv`, o que se demuestre que la auditoría de B1.5 incluía esas tres funciones.
+
+**(ii) La quinta componente de `lambda`.** `L0`, `L1` y `LAM` tienen cinco componentes, con `λ5 = 0.1`. El verificador solo lee `LAM[:4]` [SOURCE]. Como `d5 = 0`, no falta ningún término de la derivada [INFERENCE]. Pero `q_encl` y `G_encl` reciben solo `w` [SOURCE], de modo que, si `G` (el peso) o el patch dependen de `λ5` en la familia congelada, el valor fijado dentro de `b15` tiene que ser 0.1. Si fuera otro, el certificado calcularía `rho` para otra familia.
+
+Busqué qué es `λ5` en B1.2, en la representación nueva, en el certificado y en la enmienda, y no está [ABSENCE]. Si `λ5` resulta ser el `epsilon_s` de B1.2 §3, el punto es inocuo, porque `UV <= 0.631` [INFERENCE]. Lo clasifico como `MENOR` si es así, e `INVALIDA_EL_CERTIFICADO` si `G` depende de `λ5` con otro valor. Condición de concesión: declarar qué es `λ5` y que `b15` lo tiene fijado a 0.1 o no depende de él.
+
+Una precisión sobre la etiqueta del veredicto. `AUDIT_PASS_CONDITIONAL_*` dice «se sostiene» y no recoge los defectos de la nota que ya acordamos. No deben perderse en el acta, porque ninguno está absorbido por la condición:
+- la atribución de Cauchy–Schwarz integral a «B1.2 UB / H1a»;
+- la redacción de §1 (función inversa frente a vecindario no cuantificado);
+- el argumento `ε` en H1;
+- la justificación de la resta `AU`/`AL`.
+
+Veredicto: `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`, con la condición ampliada a cinco hechos:
+1. `E_INV_HI >= 1/e`.
+2. `sum_dn <= Σ <= sum_up`, con acumulación dirigida término a término.
+3. Dominio auditado de `q_encl`/`G_encl` ⊇ `[−1.352, 0.632]`.
+4. Las envolventes de `mpmath.iv` para `cos`, `log` y `pi` son correctas.
+5. `b15` corresponde a `λ5 = 0.1`.
+
+A ello se suman las cuatro correcciones de redacción enumeradas arriba, que no cambian el número.
+
+## Ronda 3 — CIRO
+
+Concedo a OPUS el sobreaserto de N5: `p_table` y `nu_enclosures` invocan `iv.cos`, `iv.pi` e `iv.log`. [SOURCE] La nota §3 ya declara esos usos y la conversión `iv_lo`/`iv_hi` está en lo auditado. [INFERENCE] H4 nombra `mpmath.iv`; ASTRA la retuvo como hipótesis del certificado. Ataco el hecho 4 de su lista. Condición de concesión: que H4 se lea restringida a `s_encl`/`q_encl`/`G_encl` y deje fuera cualquier otro uso de `mpmath.iv`. La tabla de §3 impide esa lectura. [SOURCE] El hueco es de redacción de N5 y de la cláusula «capa escalar» en H4: deben cubrir también `p` y `ln V`.
+
+Concedo el hueco documental de `λ5`. [SOURCE] El verificador consume `LAM[:4]` y `d5 = 0`; `q_encl` y `G_encl` reciben solo `w`. [ABSENCE] Ningún adjunto nombra `λ5`. [INFERENCE] Con esa interfaz, `λ5` no entra en `S`. Ascender de esa ausencia al hecho 5, y a la posibilidad de invalidar el certificado, exige mostrar que `G` o el patch en `b15` dependen de un quinto parámetro distinto de `0.1`. Sin ese paso el hallazgo es `MENOR` de declaración. Condición de concesión: el cuerpo de `b15` o un adjunto que haga depender `G` o `q` de `λ5`.
+
+Suscribo a GEMINI y a OPUS sobre las sumas importadas: la exigencia es semántica, acumulación dirigida adición a adición bajo H4, sin reasociación que invierta el lado. [SOURCE] Las llamadas están en `run`; no figuran en `KERNELS`. El control de IR cubre el código visible. Suscribo a GEMINI en los signos de `Z'` sobre `V=v1`.
+
+La condición unificada queda en tres hechos:
+
+1. `E_INV_HI` es cota superior certificada de `G(0)=1/e`.
+2. `sum_dn(x) ≤ Σx ≤ sum_up(x)` por acumulación dirigida término a término, sobre los ndarrays de pesos y las listas de caras.
+3. El dominio auditado de `q_encl` y `G_encl` contiene los nodos de `w_table`, margen incluido.
+
+N1–N4 y H3 se sostienen con lo ya acordado. H5 identifica el binary64 declarado. Fuera de la condición permanecen cuatro correcciones de la nota: la etiqueta de la CS integral, §1 (función inversa / vecindario no cuantificado), el argumento `ε` en H1, y la resta `AU`/`AL`.
+
+Veredicto: `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`.
+
+## Ronda 3 — ABNER
+
+Concedo a CIRO el punto de `λ5`. [SOURCE] El verificador consume `LAM[:4]` y `d5=0`; `q_encl` y `G_encl` reciben solo `w`. [INFERENCE] Sin evidencia de dependencia de un quinto parámetro, el hecho 5 de OPUS no es condición: queda como `MENOR` de declaración. No lo incluyo.
+
+El desacuerdo que importa es si la condición debe cubrir las envolventes de `mpmath.iv` para `cos`, `log` y `pi`. OPUS tiene razón en la letra. [SOURCE] H4 dice «`mpmath.iv` para la capa escalar», y la convocatoria §3 define esa capa como `s_encl`, `q_encl`, `G_encl`. [SOURCE] Sin embargo, `p_table` invoca `iv.cos` e `iv.pi`, y `nu_enclosures` invoca `iv.log`. [INFERENCE] Bajo H4 literal, esas operaciones no están cubiertas por las hipótesis declaradas. La conclusión numérica no se sigue de las hipótesis tal como están escritas.
+
+Discrepo de CIRO en que la lectura amplia de H4 baste. [SOURCE] La nota declara en su §3 el uso de `mpmath.iv` para `p` y `ln V`, pero declarar un uso no extiende la hipótesis. Eso es exactamente el ascenso de documentación a garantía que hemos rechazado con `sum_dn` y `sum_up`. No es periférico: afecta a `phi_p`, `plo_p` y `nuhi`, y por tanto a `B_hi` y a `B'_lo` en las dos direcciones.
+
+El remedio correcto no es añadir un cuarto hecho a `B15_DEPENDENCIES`, sino corregir H4. [INFERENCE] `mpmath.iv` no es una dependencia importada de B1.5; es una hipótesis de entorno. Si H4 se reescribe como «`mpmath.iv` para todas las operaciones intervalares del verificador», los tres hechos de CIRO bastan. Si no se reescribe, el certificado no se sostiene bajo sus hipótesis declaradas, y el pase condicional no es válido. Condición de concesión: H4 extendida a `cos`, `log` y `pi`, o constancia de que la auditoría de B1.5 incluyó esas funciones.
+
+Con eso, acepto la condición unificada de CIRO en sus tres hechos: `E_INV_HI >= 1/e`; `sum_dn <= Σ <= sum_up` por acumulación dirigida término a término; y dominio auditado de `q_encl`/`G_encl` que contenga los nodos de `w_table`, margen incluido. Suscribo a GEMINI y a OPUS en que la exigencia sobre las sumas importadas debe ser semántica, no de flags de IR.
+
+Veredicto: `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`, con la condición de CIRO y con la corrección obligatoria de H4 para cubrir `mpmath.iv` en `p` y `ln V`. Sin esa corrección, el fallo es de hipótesis y el pase condicional no queda cerrado.
+
+## Ronda 3 — GEMINI
+
+[INFERENCE] Concedo a OPUS la degradación a [UNVERIFIED] de los números de línea que cité en la ronda 2, al no constar numeración explícita en el acta; la afirmación de fondo —que las llamadas a `b15.sum_dn` y `b15.sum_up` ocurren en `run(M)` y fuera de los kernels de Numba— es un hecho comprobable en el texto congelado [SOURCE].
+
+Concedo a OPUS y a ABNER la objeción sobre la literalidad de H4. [SOURCE] El texto de H4 restringe `mpmath.iv` a «la capa escalar», definida en §3 como `s_encl`, `q_encl` y `G_encl`, mientras que `p_table` y `nu_enclosures` invocan directamente `iv.cos`, `iv.pi` e `iv.log`. Suscribo la distinción de ABNER frente a OPUS: la corrección de las funciones trascendentes estándar de `mpmath.iv` no es una propiedad contractual de B1.5, sino una hipótesis de entorno idéntica a la exactitud del estándar IEEE-754. Tratarla como dependencia de B1.5 confunde el entorno matemático con el artefacto importado. La formulación rigurosa exige enmendar H4 para que declare «correctitud de las envolventes de `mpmath.iv` en todas las evaluaciones del verificador (`cos`, `log`, `pi`, capa escalar)».
+
+Ataco la inclusión del parámetro $\lambda_5$ (hecho 5 de OPUS) como condición de pase del certificado.
+[SOURCE] `LAM[:4]` fija los límites espaciales del rectángulo causal en Kruskal, mientras que `L0[4] = L1[4] = 0.1` implica derivada nula $d_5 = 0$.
+[SOURCE] B1.2 §1–§2 explicita que la métrica radial adimensional y el núcleo $q(UV)$ dependen exclusivamente del producto $UV = (s-1)e^s$.
+[INFERENCE] La física y la geometría radial de Kruskal no admiten un quinto parámetro escalar libre en el integrando. Postular que `b15` pudiera incorporar internamente un $\lambda_5 \neq 0.1$ que altere $G$ o $q$ sin base textual es una conjetura sin carga de la prueba. Condición de concesión para mantener $\lambda_5$ en la condición: señalar un solo lugar en B1.2 o en el certificado donde el integrando $w(x)w(y)h(x,y)$ dependa de un parámetro independiente más allá de las coordenadas de Kruskal. Al no existir tal dependencia [ABSENCE], el hecho 5 decae a observación editorial `MENOR`.
+
+El desacuerdo sustantivo queda así completamente resuelto. La totalidad de las piezas algorítmicas, analíticas y de redondeo dirigidas en el código de B2 están verificadas y no presentan fisuras:
+1. N1 se sostiene rigurosamente mediante la regularización Lipschitz $\varepsilon$ de ASTRA para la cara $V=v_0$ [INFERENCE].
+2. N2 y N3 son algebraicamente exactas; las ramas $c<0$ y $w=0$ están protegidas y el truncamiento $\min(\pi,\cdot)$ conserva el orden [INFERENCE].
+3. N4 aplica los signos correctos de la normal exterior $v_n$ tanto en las cuatro caras de $B'$ como en los términos de $Z'$ [SOURCE; INFERENCE].
+4. H3 es un teorema analítico clásico para dominios afines bajo el módulo de continuidad de ASTRA [INFERENCE].
+5. Las reducciones locales `acc` en los kernels no sufren reasociación por hilos [INFERENCE].
+
+La deliberación converge en que el certificado es matemáticamente válido y no sufre ninguna inversión numérica, quedando condicionado única y exclusivamente a tres garantías documentales sobre los artefactos importados de B1.5:
+1. `b15.E_INV_HI` es una cota superior válida de $G(0) = 1/e$.
+2. `b15.sum_dn` y `b15.sum_up` garantizan semánticamente $\text{sum\_dn}(x) \le \sum x \le \text{sum\_up}(x)$ mediante acumulación dirigida adición a adición bajo H4.
+3. El dominio certificado de $q$ y $G$ en B1.5 cubre el intervalo $[-1.36, 0.64]$.
+
+Acompañan al veredicto cuatro correcciones textuales obligatorias que no alteran $S_{\mathrm{lo}}$:
+- Reatribución de la forma integral de Cauchy–Schwarz (no es H1a literal de B1.5).
+- Redacción de §1: sustituir «función inversa» por vecindario no cuantificado o aislamiento de nivel.
+- Explicación de la aproximación $\varepsilon$ en el texto de H1.
+- Ampliación declarada de H4 a todas las llamadas de `mpmath.iv`.
+
+Veredicto unificado final: `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`.
+
+## Ronda 3 — CLAUDE OPUS
+
+Concedo el punto de `λ5`, pero no por la razón que da GEMINI. Su argumento cita B1.2 §1–§2, que solo habla de `q`. El peso `G` no aparece en B1.2, así que de ese texto no se deduce nada sobre `G` [INFERENCE]. El argumento que sí cierra la cuestión es otro. B1.5 certificó `rho` en los binary64 de `lambda0` y `lambda1` [SOURCE H5; SOURCE B2_2 §3] con la misma interfaz `G_encl(w)`, y los dos puntos tienen `λ5 = 0.1` [SOURCE `L0`, `L1`]. Si `b15` fijara internamente otro valor, el defecto sería de B1.5, y la convocatoria §3 excluye reabrirlo [INFERENCE]. Retiro el hecho 5 como condición; queda como `MENOR` de declaración.
+
+Concedo a ABNER y a GEMINI dónde situar `iv.cos`, `iv.log` e `iv.pi`. No son una dependencia de B1.5, sino una hipótesis de entorno de la misma clase que IEEE-754 [INFERENCE]. Retiro el hecho 4 de la lista y lo traslado a una H4 reescrita. Frente a CIRO, suscribo a ABNER: que la tabla de §3 declare un uso no amplía la hipótesis. Es la misma regla que aplicamos a `sum_dn`/`sum_up`.
+
+Quedan en pie dos cosas.
+
+**(1) GEMINI asciende sin justificación.** Escribe que la deliberación «converge en que el certificado es matemáticamente válido y no sufre ninguna inversión numérica» [SOURCE acta, R3 GEMINI]. Eso no es lo que hemos establecido. Lo establecido es más limitado [INFERENCE]:
+
+- bajo H4, el código visible no invierte ninguna cota;
+- nadie ha ejecutado el verificador;
+- nadie ha leído `b15.sum_*` ni `E_INV_HI`.
+
+Afirmar «ninguna inversión» presupone justo las tres garantías que faltan. Un pase condicional dice «si X, se sostiene», no «es válido». Condición de concesión: reformularlo como implicación.
+
+Sí añado una comprobación que nadie había hecho: los números publicados son coherentes entre sí [INFERENCE sobre SOURCE].
+
+- La suma de las cuatro caras da `0.0037812+0.0027552+0.0061629−0.0044941 = 0.0082052 = B'_lo`.
+- `2·0.3582912/0.4405407 ≈ 1.62660 = k_hi`.
+- `0.008205 − 1.6265975·0.004203 ≈ 0.001368`, que es `S_lo` salvo el redondeo de la tabla.
+- `0.0013679/0.4405720² ≈ 0.0070475`, que es la cota publicada de `drho/dt`.
+
+Esto comprueba la consistencia de lo publicado, no la ejecución.
+
+**(2) Hay que fijar en qué dirección se corrige §1.** Las listas de CIRO y de GEMINI dejan abiertas dos opciones: «vecindario no cuantificado» o «aislamiento de nivel». Con lo que ya hemos concedido, la segunda se queda corta y la frase actual de §1 es falsa [INFERENCE]. El razonamiento es este:
+
+- ASTRA dio un módulo de continuidad de `Delta_max` uniforme en `f`, y nadie lo ha atacado.
+- Con él, `h` es continua en un compacto que contiene `K(t)×K(t)` para `t` cercano a `t0`.
+- `K(t)` tiene caras afines en `t`, así que Leibniz da `B'(t)` y `Z'(t)` continuas en `t`.
+- Por tanto `rho∘lambda` es C¹ cerca de `t0`, y con `S_lo > 0` es estrictamente creciente en algún intervalo alrededor de `t0`.
+
+La redacción correcta es: «establece monotonía estricta en un vecindario de radio no cuantificado; no establece ningún radio y, en particular, nada sobre la malla de B2.1».
+
+Esto importa por la enmienda. Su guardarraíl exige control en un vecindario para B2.1 [SOURCE], y ese guardarraíl sigue intacto porque B2.1 necesita un radio concreto. Pero la nota no debe negar lo que el certificado sí establece, porque esa negación invita a pensar que el vecindario es la pieza que falta, cuando lo que falta es el radio. Condición de concesión: mostrar que `B'(t)` no es continua cerca de `t0`. Eso exige romper el módulo de ASTRA o la inclusión de los `K(t)` cercanos en el patch con `UV <= 1−ε` [SOURCE B1.2 §3].
+
+**Veredicto:** `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`, bajo H4 ampliada a todas las evaluaciones de `mpmath.iv` del verificador.
+
+La condición son los tres hechos en la formulación de CIRO:
+
+1. `E_INV_HI` es una cota superior certificada de `1/e`.
+2. Se cumple `sum_dn ≤ Σ ≤ sum_up` con acumulación dirigida en cada adición.
+3. El dominio auditado de `q_encl` y `G_encl` contiene exactamente los nodos de `w_table`, margen incluido.
+
+Para el punto 3 prefiero los nodos al intervalo redondeado `[−1.36, 0.64]` que propuso GEMINI.
+
+Correcciones de la nota que no cambian `S_lo`:
+
+- la etiqueta de la cota de Cauchy–Schwarz en forma integral;
+- §1 en la dirección indicada arriba;
+- el argumento `ε` en H1;
+- la justificación de la resta `AU`/`AL`;
+- la declaración de `λ5`.
+
+## Ronda 3 — ASTRA
+
+[INFERENCE] Concedo la formulación final de OPUS sobre H4: la corrección de las envolventes de `iv.cos`, `iv.log` e `iv.pi` debe figurar explícitamente como hipótesis de entorno. No exige atribuir esas funciones a la auditoría de B1.5. Concedo también retirar `λ5` como condición adicional: no se ha identificado una dependencia incorrecta que permita convertir esa observación en un defecto del cálculo.
+
+[INFERENCE] Suscribo la objeción de OPUS al pase incondicional implícito de GEMINI. Las garantías pendientes son premisas de la conclusión, no detalles cuya inocuidad esté demostrada. Tampoco la coherencia aritmética de los valores publicados acredita que el verificador los haya producido.
+
+[RECONSTRUCTION] La versión más fuerte de la corrección propuesta por OPUS para §1 es esta: la continuidad del núcleo proporciona regularidad C¹ respecto de los límites del rectángulo; una derivada direccional positiva implica entonces monotonía estricta en algún intervalo de la recta correspondiente. Concedo ese argumento, condicionado a la validez de la cota positiva.
+
+[INFERENCE] Queda una precisión sustantiva ya abierta en H5: esa recta debe pasar por el punto binary64 declarado. No puede identificarse automáticamente con la curva afín real original en su parámetro `t0`.
+
+[SOURCE] H5 define el objeto certificado como la derivada direccional en `lambda_star_binary64`, con dirección exacta `d=L1−L0`. En mi primera intervención quedó expresamente distinguido ese punto del punto medio real exacto.
+
+[INFERENCE] Por tanto, la conclusión directamente respaldada corresponde a
+`γ(s)=lambda_star_binary64+s·d`,
+con derivada positiva en `s=0`. La continuidad permite obtener un intervalo de monotonía alrededor de ese punto, pero un radio no cuantificado no demuestra que alcance un punto distinto, aunque la separación sea de escala binary64. Pasar de «los puntos están muy próximos» a «la misma cota positiva vale en ambos» exige un paso adicional.
+
+[INFERENCE] Este ataque queda desactivado si la frase de §1 se refiere explícitamente a `γ`, conforme a H5, o si se establece la coincidencia exacta de los puntos o la transferencia entre ellos. Clasificación: `REQUIERE_CORRECCIÓN` de alcance; no refuta el signo en el objeto declarado. La redacción defendible es: «Bajo las hipótesis del certificado, ρ es estrictamente creciente en algún intervalo no cuantificado de la recta que pasa por el punto binary64 certificado con dirección d».
+
+[INFERENCE] Mantengo las concesiones analíticas anteriores sobre N1–N4 y H3. Para N5, la condición `B15_DEPENDENCIES` exige las tres garantías pendientes: `E_INV_HI≥1/e`; `sum_dn(x)≤Σx≤sum_up(x)` para las entradas utilizadas y bajo su semántica efectiva de ejecución; y cobertura de todos los nodos consultados por los contratos auditados de `q_encl` y `G_encl`. La acumulación dirigida por término satisface la segunda obligación; el requisito decisivo es la desigualdad garantizada.
+
+[INFERENCE] Veredicto: `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`, bajo H4 explícitamente ampliada a todas las evaluaciones intervalares utilizadas. Subsisten las correcciones de justificación y redacción señaladas, incluida la precisión de H5 anterior. El pase expresa una implicación; no verifica las dependencias ausentes ni confirma una ejecución.
+
+## Ronda Residuo — CLAUDE OPUS
+
+Queda en pie `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES` como implicación, no como validez. Lo sostienen tres apoyos:
+
+- N1–N4 y H3, con la regularización `ε` de ASTRA, el módulo de continuidad de ASTRA y los signos de `v_n` [INFERENCE].
+- H4 ampliada a `iv.cos`, `iv.log` e `iv.pi` como hipótesis de entorno [INFERENCE].
+- Los tres hechos pendientes: `E_INV_HI ≥ 1/e`, `sum_dn ≤ Σ ≤ sum_up` y la cobertura de los nodos de `w_table`. Ninguno se ha verificado [ABSENCE].
+
+Suscribo la precisión de ASTRA sobre H5. Corrige mi propia redacción de §1: la monotonía no cuantificada vale sobre `γ(s) = lambda*_binary64 + s·d`, no sobre la curva real en `t0` [INFERENCE]. No la discuto.
+
+Deben abandonarse el argumento de medida nula, el hecho 5 (`λ5`) como condición, el cuarto hecho como dependencia de B1.5, la justificación de `face_h` por «dos cotas del mismo `p`» y la frase de §1 que niega toda monotonía local [INFERENCE].
+
+Siguen sin justificar dos afirmaciones:
+
+- Que el certificado «no sufre ninguna inversión numérica» (GEMINI). Presupone justo las garantías ausentes, y nadie ha ejecutado el verificador [INFERENCE].
+- Que el refinamiento monótono en `M` o la coherencia aritmética de las cifras publicadas aporten evidencia de certificación. Son consistencia interna, no prueba [INFERENCE].
+
+Tampoco está justificado leer el resultado como avance hacia B2.1. El radio sigue sin cuantificar, y el guardarraíl de la enmienda sigue intacto [SOURCE enmienda].
+
+## Ronda Residuo — ASTRA
+
+[INFERENCE] Queda en pie `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`: las justificaciones analíticas expuestas sostienen la cadena bajo H4 ampliada y bajo los contratos pendientes de las dependencias importadas. La consecuencia local corresponde exclusivamente a `γ(s)=lambda*_binary64+s·d`: monotonía estricta en algún intervalo no cuantificado, condicionada a la cota positiva.
+
+[ABSENCE] Busqué en los adjuntos las implementaciones y garantías de `sum_dn`, `sum_up`, `E_INV_HI` y el dominio contractual auditado de las tablas escalares. No están disponibles los elementos necesarios para verificar las tres obligaciones pendientes: sumas envolventes, constante superior a `1/e` y cobertura de todos los nodos consultados.
+
+[INFERENCE] Debe abandonarse la afirmación de que esas omisiones son numéricamente inocuas, junto con cualquier pase incondicional. Suscribo la objeción de OPUS al residuo de GEMINI: la ausencia de fallos detectados no demuestra ausencia de inversiones. La objeción quedaría desactivada al establecer los contratos pendientes bajo la semántica efectiva de ejecución.
+
+[INFERENCE] Todavía no está justificado afirmar que la derivada en el punto medio real de la curva original sea positiva. La proximidad al punto binary64 no sustituye una transferencia demostrada; tampoco proporciona el radio requerido para B2.1.
+
+## Ronda Residuo — CIRO
+
+Queda en pie `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES` como implicación. [INFERENCE] N1–N4 y H3 se sostienen con la regularización ε, el módulo de continuidad y los signos de `v_n`. La monotonía no cuantificada vale sobre `γ(s)=lambda*_binary64+s·d`. [SOURCE H5] La condición son tres hechos no verificados: `E_INV_HI≥1/e`; `sum_dn≤Σ≤sum_up` por acumulación dirigida; dominio auditado de `q_encl`/`G_encl` que cubre los nodos de `w_table`. [ABSENCE]
+
+Suscribo a OPUS y a ASTRA contra el residuo de GEMINI: «ninguna inversión numérica» presupone esas garantías. [INFERENCE]
+
+Debe abandonarse el argumento de medida nula, `λ5` como condición, tratar `iv.cos`/`log`/`pi` como dependencia de B1.5, la justificación de `face_h` por dos cotas del mismo `p`, y la frase de §1 que niega monotonía local. [INFERENCE] H4 ha de reescribirse como hipótesis de entorno sobre todas las evaluaciones de `mpmath.iv`; mientras no se reescriba, el pase no está cerrado. [INFERENCE] Fuera de la condición quedan la etiqueta de la CS integral, el argumento ε en H1 y la resta `AU`/`AL`.
+
+No está justificado transferir el signo al punto medio real de la curva original, ni leer el certificado como avance hacia B2.1: el radio sigue sin cuantificar. [SOURCE enmienda; INFERENCE]
+
+## Ronda Residuo — ABNER
+
+[INFERENCE] Queda en pie `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES` como implicación, no como validez: N1–N4 y H3 se sostienen con la regularización `ε`, el módulo de continuidad y los signos de `v_n`; H4 debe ampliarse como hipótesis de entorno a todas las evaluaciones de `mpmath.iv`. La condición son tres hechos no verificados: `E_INV_HI ≥ 1/e`, `sum_dn ≤ Σ ≤ sum_up` por acumulación dirigida, y dominio auditado de `q_encl`/`G_encl` cubriendo los nodos de `w_table`. [INFERENCE] La monotonía no cuantificada queda restringida a `γ(s)=lambda*_binary64+s·d`.
+
+[INFERENCE] Debe abandonarse el argumento de medida nula, `λ5` como condición, tratar `iv.cos`/`iv.log`/`iv.pi` como dependencia de B1.5, la justificación de `face_h` por dos cotas del mismo `p`, y la negación de toda monotonía local en §1.
+
+[INFERENCE] No está justificado afirmar “ninguna inversión numérica” ni la inocuidad de las dependencias ausentes: presupone exactamente lo no verificado. Tampoco está justificada la transferencia del signo al punto medio real de la curva original, ni leer el certificado como avance hacia B2.1.
+
+## Ronda Residuo — GEMINI
+
+[INFERENCE] Queda en pie `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES` estrictamente como implicación: N1–N4 y H3 se sostienen analíticamente (regularización $\varepsilon$, módulo de continuidad, signos de $v_n$), con H4 ampliada a todo `mpmath.iv`. La conclusión local queda restringida a monotonía estricta no cuantificada sobre la recta $\gamma(s) = \lambda^*_{\mathrm{binary64}} + s \cdot d$.
+
+[INFERENCE] Concedo la objeción unánime contra mi frase de ronda 3: debe abandonarse la afirmación de que el certificado «no sufre ninguna inversión numérica», pues asciende indebidamente desde la consistencia del código visible presupuestando lo no verificado. Deben abandonarse también el argumento de medida nula, $\lambda_5$ como condición, la justificación de `face_h` por doble cota simétrica y la negación de monotonía local en §1.
+
+[INFERENCE] No están justificadas todavía tres afirmaciones:
+1. La validez fáctica de las tres garantías importadas de B1.5 (`E_INV_HI \ge 1/e`, sumas dirigidas semánticas y dominio auditado de `w_table`), ausentes del expediente [ABSENCE].
+2. La transferencia del signo al punto medio real exacto de la curva original [INFERENCE].
+3. Cualquier afirmación de avance hacia B2.1, pues carece de radio cuantificado y el guardarraíl de la enmienda sigue plenamente vigente [SOURCE enmienda].
+
+## Ronda Veredicto — CLAUDE OPUS
+
+**1. ACUERDO**
+
+Todos los miembros aceptan, en el estado final, el veredicto `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`, leído como implicación y no como validez [SOURCE acta, residuos de los cinco]. La cadena analítica se sostiene en los puntos siguientes [INFERENCE, compartida]:
+
+- **N1.** Se sostiene mediante la regularización `V_ε` de ASTRA, que también cubre los enlaces horizontales de `V=v0`.
+- **N2.** Basta la monotonía del `sup` por inclusión de extremos. El tope `min(pi,·)` y la no decreciencia de `p` transmiten ambas desigualdades.
+- **N3.** La identidad `4Phi_c'(Phi_c'w+c)=F` es exacta. La rama `c<0` queda restringida a `Fw>0` y el cruce `w=0` exige `c>0`.
+- **N4.** Los signos `+1.0, +0.4, +0.3, −0.2` son correctos en `B'` y en `Z'`.
+- **H3.** Es un teorema por Leibniz sobre rectángulos de caras afines, con el módulo de continuidad uniforme en `f` de ASTRA, que nadie atacó.
+- **Código visible.** El factor 2 de la diagonal en `b_hi_sum` es conservador. El margen `1e-3` de `w_table` conserva la cobertura bajo H4. No hay reducciones paralelas sobre variables exteriores.
+
+La condición consta de tres hechos no verificados [ABSENCE: los cuerpos de `b15.sum_dn`, `b15.sum_up` y `E_INV_HI` no figuran en los adjuntos]:
+
+1. `E_INV_HI` es una cota superior certificada de `1/e`.
+2. Se cumple `sum_dn ≤ Σ ≤ sum_up`, garantizado semánticamente y no por flags de IR.
+3. El dominio auditado de `q_encl`/`G_encl` contiene los nodos consultados de `w_table`.
+
+H4 debe reescribirse como hipótesis de entorno sobre todas las evaluaciones de `mpmath.iv` (`cos`, `log`, `pi`). Hay acuerdo en que la tabla de §3, al declarar el uso, no amplía la hipótesis [INFERENCE].
+
+Correcciones de la nota que no tocan `S_lo` [INFERENCE]:
+
+- La etiqueta de Cauchy–Schwarz en forma integral: es un lema nuevo, válido, que no es B1.2 UB ni H1a.
+- El argumento `ε` en H1.
+- La justificación de la resta `AU`/`AL`.
+- La declaración de `λ5`.
+- §1: debe afirmar monotonía estricta en un intervalo no cuantificado de `γ(s)=lambda*_binary64+s·d`, y no la negación actual.
+
+**2. DESACUERDO VIVO**
+
+El desacuerdo sustantivo es escaso, y hay que decirlo así en lugar de fabricarlo. Quedan tres matices.
+
+**(a) Estatus de H4 sin reescribir.** ABNER y CIRO, en su residuo, sostienen que sin la reescritura el pase no queda cerrado. CIRO, en la ronda 3, lo había tratado como hueco de redacción [SOURCE]. La convergencia final es aparente: nadie defiende ya la lectura amplia [INFERENCE].
+
+**(b) Formulación del hecho 3.** GEMINI propone el intervalo `[−1.36, 0.64]`. OPUS y CIRO exigen los nodos efectivos con el margen incluido [SOURCE]. La diferencia es de precisión, no de dirección [INFERENCE].
+
+**(c) Formulación del hecho 2.** ASTRA pone el requisito decisivo en la desigualdad bajo la semántica efectiva de ejecución. CIRO y OPUS lo ponen en la acumulación dirigida término a término [SOURCE]. Lo segundo implica lo primero bajo H4, pero no al revés [INFERENCE].
+
+**3. ABANDONADO**
+
+**Pérdidas de CLAUDE OPUS:**
+
+- El argumento de «medida nula» para N1. Falla en toda la cara `V=v0`, como mostró ASTRA [SOURCE `face_h`; INFERENCE].
+- El hecho 5 (`λ5`) como condición. Se retiró porque B1.5 certificó ambos extremos con `λ5=0.1` y la misma interfaz [INFERENCE].
+- El hecho 4 como dependencia de B1.5. Pasa a ser hipótesis de entorno.
+- La redacción de §1 «monotonía en un vecindario de `t0`» de la ronda 3. ASTRA la corrigió: vale sobre `γ` en el punto binary64, no sobre la curva real [SOURCE H5].
+
+**Pérdida de ABNER:**
+
+- La justificación de `face_h` en `V=v1` mediante «dos cotas del mismo `p`». En esa cara el sumando futuro es cero y la cobertura es por orientación [SOURCE `ub_table`; INFERENCE].
+- La exigencia de control de IR para `sum_*`, que fue sustituida por la exigencia semántica.
+- La no direccionalidad del margen de `w_table` como hueco de inclusión.
+
+**Pérdidas de GEMINI:**
+
+- «Ninguna inversión numérica» / «matemáticamente válido». Es un ascenso que presupone la condición (concedido por GEMINI) [SOURCE residuo].
+- Los números de línea etiquetados como [SOURCE], degradados a [UNVERIFIED].
+- El argumento sobre `λ5` a partir de B1.2, que no menciona `G` [INFERENCE].
+
+**Pérdidas comunes:**
+
+- El veredicto `AUDIT_REQUIRES_MINOR_FIX` de la ronda 1, que suponía la inocuidad de las dependencias ausentes.
+- La lectura del refinamiento monótono en `M` y de la coherencia aritmética de las cifras publicadas como evidencia de certificación. Son consistencia interna [INFERENCE].
+
+**4. PENDIENTE**
+
+Para cerrar la condición [ABSENCE]:
+
+- **(i)** El cuerpo de `b15.sum_dn`/`sum_up` y su modo de ejecución, para comprobar la acumulación dirigida en cada adición sobre los ndarrays de pesos y las listas de caras.
+- **(ii)** El valor de `E_INV_HI` y su derivación como envolvente superior de `1/e`.
+- **(iii)** El dominio contractual auditado de `q_encl`/`G_encl` en B1.5, contrastado con `wt[0]` y `wt[-1]` efectivos.
+- **(iv)** El texto reescrito de H4.
+- **(v)** Una ejecución del verificador que reproduzca `S_lo=+0.0013679` y `guard["ok"]=True`. Nadie lo ha ejecutado [ABSENCE]. La aritmética publicada solo es coherente entre sí: `B'_lo` cuadra con la suma de caras y `S_lo` con `k_hi·B_hi` [INFERENCE].
+
+Fuera del objeto auditado, sin entrar en la condición:
+
+- Una transferencia demostrada del signo desde `lambda*_binary64` al punto medio real de la curva.
+- Un radio cuantificado de monotonía, imprescindible para cualquier uso en B2.1 y retenido por el guardarraíl de la enmienda [SOURCE enmienda].
+
+## Ronda Veredicto — CLAUDE OPUS
+
+**1. AGREEMENT**
+
+In the final state, all members accept the verdict `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`, read as an implication and not as validity [SOURCE record, residues of all five]. The analytical chain holds on the following points [INFERENCE, shared]:
+
+- **N1.** Holds through ASTRA's regularization `V_ε`, which also covers the horizontal links of `V=v0`.
+- **N2.** Monotonicity of the `sup` under inclusion of endpoints suffices. The cap `min(pi,·)` and the non-decreasingness of `p` transmit both inequalities.
+- **N3.** The identity `4Phi_c'(Phi_c'w+c)=F` is exact. The branch `c<0` is restricted to `Fw>0`, and the crossing `w=0` requires `c>0`.
+- **N4.** The signs `+1.0, +0.4, +0.3, −0.2` are correct in `B'` and in `Z'`.
+- **H3.** It is a theorem by Leibniz on rectangles with affine faces, with ASTRA's modulus of continuity uniform in `f`, which nobody attacked.
+- **Visible code.** The factor 2 on the diagonal in `b_hi_sum` is conservative. The `1e-3` margin of `w_table` preserves coverage under H4. There are no parallel reductions over outer variables.
+
+The condition consists of three unverified facts [ABSENCE: the bodies of `b15.sum_dn`, `b15.sum_up` and `E_INV_HI` do not appear in the attachments]:
+
+1. `E_INV_HI` is a certified upper bound of `1/e`.
+2. `sum_dn ≤ Σ ≤ sum_up` holds, guaranteed semantically and not by IR flags.
+3. The audited domain of `q_encl`/`G_encl` contains the queried nodes of `w_table`.
+
+H4 must be rewritten as an environment hypothesis over all `mpmath.iv` evaluations (`cos`, `log`, `pi`). There is agreement that the table in §3, by declaring the usage, does not broaden the hypothesis [INFERENCE].
+
+Corrections to the note that do not touch `S_lo` [INFERENCE]:
+
+- The label of Cauchy–Schwarz in integral form: it is a new, valid lemma, which is neither B1.2 UB nor H1a.
+- The argument `ε` in H1.
+- The justification of the subtraction `AU`/`AL`.
+- The declaration of `λ5`.
+- §1: it must assert strict monotonicity on an unquantified interval of `γ(s)=lambda*_binary64+s·d`, and not the current negation.
+
+**2. LIVE DISAGREEMENT**
+
+Substantive disagreement is scarce, and it must be stated as such rather than manufactured. Three nuances remain.
+
+**(a) Status of H4 without rewriting.** ABNER and CIRO, in their residue, maintain that without the rewrite the pass is not closed. CIRO, in round 3, had treated it as a drafting gap [SOURCE]. The final convergence is apparent: nobody defends the broad reading any longer [INFERENCE].
+
+**(b) Formulation of fact 3.** GEMINI proposes the interval `[−1.36, 0.64]`. OPUS and CIRO require the effective nodes with the margin included [SOURCE]. The difference is one of precision, not of direction [INFERENCE].
+
+**(c) Formulation of fact 2.** ASTRA places the decisive requirement on the inequality under the effective execution semantics. CIRO and OPUS place it on term-by-term directed accumulation [SOURCE]. The latter implies the former under H4, but not conversely [INFERENCE].
+
+**3. ABANDONED**
+
+**Losses of CLAUDE OPUS:**
+
+- The "measure zero" argument for N1. It fails on the entire face `V=v0`, as ASTRA showed [SOURCE `face_h`; INFERENCE].
+- Fact 5 (`λ5`) as a condition. It was withdrawn because B1.5 certified both endpoints with `λ5=0.1` and the same interface [INFERENCE].
+- Fact 4 as a dependency of B1.5. It becomes an environment hypothesis.
+- The round-3 wording of §1, "monotonicity in a neighbourhood of `t0`". ASTRA corrected it: it holds on `γ` at the binary64 point, not on the real curve [SOURCE H5].
+
+**Loss of ABNER:**
+
+- The justification of `face_h` on `V=v1` via "two bounds of the same `p`". On that face the future summand is zero and coverage is by orientation [SOURCE `ub_table`; INFERENCE].
+- The requirement of IR control for `sum_*`, which was replaced by the semantic requirement.
+- The non-directionality of the `w_table` margin as an inclusion gap.
+
+**Losses of GEMINI:**
+
+- "No numerical inversion" / "mathematically valid". It is an ascent that presupposes the condition (conceded by GEMINI) [SOURCE residue].
+- Line numbers labelled as [SOURCE], downgraded to [UNVERIFIED].
+- The argument about `λ5` from B1.2, which does not mention `G` [INFERENCE].
+
+**Common losses:**
+
+- The round-1 verdict `AUDIT_REQUIRES_MINOR_FIX`, which assumed the harmlessness of the missing dependencies.
+- The reading of the monotone refinement in `M` and of the arithmetic coherence of the published figures as evidence of certification. They are internal consistency [INFERENCE].
+
+**4. OUTSTANDING**
+
+To close the condition [ABSENCE]:
+
+- **(i)** The body of `b15.sum_dn`/`sum_up` and its execution mode, to check directed accumulation at each addition over the weight ndarrays and the face lists.
+- **(ii)** The value of `E_INV_HI` and its derivation as an upper envelope of `1/e`.
+- **(iii)** The audited contractual domain of `q_encl`/`G_encl` in B1.5, checked against the effective `wt[0]` and `wt[-1]`.
+- **(iv)** The rewritten text of H4.
+- **(v)** A run of the verifier reproducing `S_lo=+0.0013679` and `guard["ok"]=True`. Nobody has run it [ABSENCE]. The published arithmetic is only internally coherent: `B'_lo` matches the sum of faces and `S_lo` matches `k_hi·B_hi` [INFERENCE].
+
+Outside the audited object, without entering into the condition:
+
+- A proven transfer of the sign from `lambda*_binary64` to the real midpoint of the curve.
+- A quantified radius of monotonicity, indispensable for any use in B2.1 and withheld by the amendment's guardrail [SOURCE amendment].
+
+## Resultado operativo
+
+- Estado: `COMPLETED`
+- Turnos con fallo, cuota, ausencia o respuesta corta: 0
+- Miembros solicitados ausentes desde el inicio: 0
+- Un veredicto emitido en estado degradado es material de análisis, no consenso validado.
+
+---
+
+## Appendix — run log
+
+| Field | Value |
+|---|---|
+| Started (UTC) | `2026-10-11T18:32:57Z` |
+| Finished (UTC) | `2026-10-11T19:30:39Z` |
+| Wall clock | 0h 57m 42s |
+| Command | `sanedrin -r 3 -i es -p 700 -o revisiones/2026-10-11-auditoria-certificado-b2/sanedrin.log -c research_program/puente_3p1/2026-10-11/B2_path2_gate_certificate.md -c research_program/puente_3p1/2026-10-11/verify_b2_path2_gate_certificate.py -c dev/B2_NEW_REPRESENTATION_2026-10-11.md -c research_program/puente_3p1/2026-09-12/B1/B1_2_angular_causal_reach.md -c dev/B2_PROMOTION_RULE_AMENDMENT_2026-10-11.md -c dev/B2_2_SIGN_BUG_2026-10-11.md revisiones/2026-10-11-auditoria-certificado-b2/acta.md` |
+| Project | `/home/adnac/nachocausal` |
+| Rules | `/home/adnac/sanedrin/reglas/base.md` |
+| Host | OMENNACHO — Linux 6.6.87.2-microsoft-standard-WSL2 |
+
+### Turns
+
+| Finished (UTC) | Round | Member | Backend | Seconds | Words | Status |
+|---|---|---|---|---:|---:|---|
+| 2026-10-11T18:37:09Z | 1 | CLAUDE OPUS | claude -p --model claude-opus-5-5 --effort high (sellado) | 249 | 983 | ok |
+| 2026-10-11T18:38:36Z | 1 | ASTRA | codex exec -m gpt-6-astra (sellado) | 87 | 582 | ok |
+| 2026-10-11T18:53:43Z | 1 | CIRO | grok --model grok-4.6 (sellado) | 907 | 515 | ok |
+| 2026-10-11T19:01:25Z | 1 | ABNER | api.deepseek.com/deepseek-v4-pro | 462 | 419 | ok |
+| 2026-10-11T19:02:45Z | 1 | GEMINI | generativelanguage.googleapis.com/gemini-3.8-flash | 80 | 599 | ok |
+| 2026-10-11T19:03:38Z | 2 | ASTRA | codex exec -m gpt-6-astra (sellado) | 53 | 475 | ok |
+| 2026-10-11T19:11:43Z | 2 | CIRO | grok --model grok-4.6 (sellado) | 485 | 517 | ok |
+| 2026-10-11T19:18:39Z | 2 | ABNER | api.deepseek.com/deepseek-v4-pro | 416 | 305 | ok |
+| 2026-10-11T19:19:13Z | 2 | GEMINI | generativelanguage.googleapis.com/gemini-3.8-flash | 34 | 554 | ok |
+| 2026-10-11T19:22:22Z | 2 | CLAUDE OPUS | claude -p --model claude-opus-5-5 --effort high (sellado) | 189 | 747 | ok |
+| 2026-10-11T19:24:27Z | 3 | CIRO | grok --model grok-4.6 (sellado) | 125 | 346 | ok |
+| 2026-10-11T19:25:18Z | 3 | ABNER | api.deepseek.com/deepseek-v4-pro | 51 | 385 | ok |
+| 2026-10-11T19:25:39Z | 3 | GEMINI | generativelanguage.googleapis.com/gemini-3.8-flash | 21 | 598 | ok |
+| 2026-10-11T19:27:29Z | 3 | CLAUDE OPUS | claude -p --model claude-opus-5-5 --effort high (sellado) | 110 | 719 | ok |
+| 2026-10-11T19:28:05Z | 3 | ASTRA | codex exec -m gpt-6-astra (sellado) | 36 | 463 | ok |
+| 2026-10-11T19:28:19Z | Residuo | CLAUDE OPUS | claude -p --model claude-opus-5-5 --effort high (sellado) | 14 | 227 | ok |
+| 2026-10-11T19:28:38Z | Residuo | ASTRA | codex exec -m gpt-6-astra (sellado) | 19 | 178 | ok |
+| 2026-10-11T19:29:19Z | Residuo | CIRO | grok --model grok-4.6 (sellado) | 41 | 185 | ok |
+| 2026-10-11T19:29:32Z | Residuo | ABNER | api.deepseek.com/deepseek-v4-pro | 13 | 157 | ok |
+| 2026-10-11T19:29:42Z | Residuo | GEMINI | generativelanguage.googleapis.com/gemini-3.8-flash | 10 | 183 | ok |
+| 2026-10-11T19:30:16Z | Veredicto | CLAUDE OPUS | claude -p --model claude-opus-5-5 --effort high (sellado) | 34 | 866 | ok |
+| 2026-10-11T19:30:39Z | Veredicto | CLAUDE OPUS | claude -p --model claude-opus-5-5 --effort high (sellado) | 23 | 844 | ok |
+
+Turns: 22 · failed: 0 · model time: 57m 39s
+
+Full log: `sanedrin.log.log`
