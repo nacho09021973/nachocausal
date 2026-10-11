@@ -1,8 +1,8 @@
 # B2 — enmienda de la regla de promoción
 
 **Fecha:** 2026-10-11
-**Estado:** `DRAFT_AWAITING_PI_SIGNATURE` — no se calcula ninguna envolvente certificada de `S`
-hasta que esté firmada.
+**Estado:** `SIGNED` — firmada por el PI el 2026-10-11. La regla propuesta sustituye a la
+vigente para toda certificación posterior de B2.
 
 ## Regla vigente
 
@@ -50,5 +50,5 @@ ningún valor numérico, solo la dirección de una desigualdad fijada contra una
 ## Firma
 
 ```text
-PI: ______________________    fecha: __________
+PI: Nacho Martín              fecha: 2026-10-11
 ```

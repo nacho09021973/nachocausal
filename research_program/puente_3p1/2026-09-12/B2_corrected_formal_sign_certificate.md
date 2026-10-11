@@ -10,7 +10,7 @@ TERMINAL = B2_CORRECTED_CERTIFICATION_ROUTE_TOO_COSTLY
 
 La evaluación corregida sigue dando una banda numérica negativa, pero no se promueve a prueba.
 
-> **Corrección 2026-10-11:** esa «banda negativa» era producto de un error de signo en B2.2; corregido, el intervalo numérico contiene cero y la evidencia independiente apunta a `rho' > 0`. La dirección `< 0` de la regla de promoción está en revisión: `dev/B2_PROMOTION_RULE_AMENDMENT_2026-10-11.md`.
+> **Corrección 2026-10-11:** esa «banda negativa» era producto de un error de signo en B2.2; corregido, el intervalo numérico contiene cero y la evidencia independiente apunta a `rho' > 0`. La regla de promoción se enmendó a «el intervalo excluye cero» (firmada por el PI el 2026-10-11): `dev/B2_PROMOTION_RULE_AMENDMENT_2026-10-11.md`.
 
 ## Qué se intentó certificar
 
