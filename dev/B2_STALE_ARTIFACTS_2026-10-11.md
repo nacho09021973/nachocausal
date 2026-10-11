@@ -82,11 +82,11 @@ calculados sobre el JSON obsoleto. Los correctos son **peores**:
 
 | objetivo | reportado | **real** |
 |---|---:|---:|
-| separar puntos adyacentes | 15.1x | **26.4x** |
-| separar extremos `0.45`–`0.55` | 3.8x | **6.7x** |
+| separar puntos adyacentes | 15.1x | **27.3x** |
+| separar extremos `0.45`–`0.55` | 3.8x | **6.9x** |
 
 La descomposición en dos objetivos sigue en pie y el barato sigue siendo ~4 veces más barato que
-el caro. Pero **el «3.8x» no existe**: son 6.7x.
+el caro. Pero **el «3.8x» no existe**: son 6.9x sobre los numeros oficiales regenerados.
 
 ## 4. Lo que NO cambia
 

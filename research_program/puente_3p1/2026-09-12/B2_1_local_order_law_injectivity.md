@@ -45,11 +45,11 @@ isomorfismo entre puntos cercanos de la curva.
 En la malla fija `t={0.45,0.475,0.5,0.525,0.55}`, las envolventes de `rho` fueron:
 
 ```text
-t=0.45: [0.00516753, 0.00697562]
-t=0.475: [0.00527167, 0.00713325]
-t=0.50: [0.00537664, 0.00729216]
-t=0.525: [0.00548242, 0.00745234]
-t=0.55: [0.00558905, 0.00761378]
+t=0.45: [0.01880969, 0.03311921]
+t=0.475: [0.01917781, 0.03389783]
+t=0.50: [0.01954878, 0.03468095]
+t=0.525: [0.01992260, 0.03546824]
+t=0.55: [0.02029930, 0.03625938]
 ```
 
 Las bandas muestran una tendencia creciente, pero se solapan entre puntos adyacentes. No permiten
@@ -64,3 +64,9 @@ autoriza, debe estrechar la certificación de la misma curva y del mismo `t0`, n
 alternativa.
 
 **Artefacto:** `verification_b2_1_local_injectivity.json`.
+
+> **Regenerado el 2026-10-11.** Estas envolventes son ~4.7x mayores que las que esta nota
+> registraba. Las anteriores se calcularon el 2026-09-12 con el kernel angular **previo** a la
+> correccion de `6f866a2` (`q`: de `exp(-s/2)/sqrt(s)` a `2exp(-s/2)/s^1.5`), y el artefacto no
+> se regenero entonces. **El terminal no cambia:** las bandas adyacentes siguen solapando y
+> `B2.1_INCONCLUSIVE_BY_BOUNDS` se mantiene. Ver `dev/B2_STALE_ARTIFACTS_2026-10-11.md`.
