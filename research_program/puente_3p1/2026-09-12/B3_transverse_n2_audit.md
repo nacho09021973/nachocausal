@@ -75,3 +75,8 @@ Como el chart tiene rango 3 y `drho != 0`, existe una dirección física `v` con
 familia física tridimensional. Esto justifica proponer el paso a `n=3`, pero no lo autoriza.
 
 **Artefacto:** `verification_b3_transverse_n2.json`.
+
+> **Actualización 2026-10-12.** Con la maquinaria certificada de la compuerta, B3 es
+> `B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY`: la componente `(x2, x3)` del producto
+> `dphi ∧ drho` es `>= +0.0077379`. El resultado está congelado y pendiente de auditoría. Ver
+> `research_program/puente_3p1/2026-10-12/B3_certificate.md`.
