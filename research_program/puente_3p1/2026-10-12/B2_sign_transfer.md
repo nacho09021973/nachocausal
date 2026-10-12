@@ -1,11 +1,11 @@
 # B2 — transferencia del signo de la compuerta al punto medio real
 
-> **STATUS: `FROZEN / AUDITED — AUDIT_PASS` (dos casas, a ciegas) — NO promocionado: decide
-> el PI.** Se congeló y se subió **antes** de auditarlo (`7bcc087`). Lo auditaron CIRO (Grok) y
-> ABNER (DeepSeek, por la web): `revisiones/2026-10-12-auditoria-transferencia-signo/RESUMEN.md`.
-> El único hallazgo, MENOR y documental, está corregido: el redondeo de las constantes de §2. Es
-> una auditoría más ligera que la de la compuerta: dos casas en vez de cinco y una sola ronda,
-> sin cruce entre ellas.
+> **STATUS: `B2_SIGN_TRANSFERRED_TO_REAL_MIDPOINT`** (`AUDIT_PASS`, dos casas a ciegas;
+> promocionado por el PI el 2026-10-12, §6). Se congeló y se subió **antes** de auditarlo
+> (`7bcc087`). Lo auditaron CIRO (Grok) y ABNER (DeepSeek, por la web):
+> `revisiones/2026-10-12-auditoria-transferencia-signo/RESUMEN.md`. El único hallazgo, MENOR y
+> documental, está corregido: el redondeo de las constantes de §2. Fue una auditoría más ligera
+> que la de la compuerta: dos casas en vez de cinco y una sola ronda, sin cruce entre ellas.
 > Guardarraíles de B2 intactos: `no_new_path`, `no_new_t0`, `no_search`, `no_adjustment`.
 > La enmienda sigue vigente: nada de esto emite un terminal de B2.1.
 
@@ -20,7 +20,7 @@ pérdida por desplazar el punto  (DELTA = 1e-16)      <=  2.5435e-08
 pérdida por cambiar la dirección (EPS = 1e-16)       <=  1.8215e-16
 S en el punto medio real, dirección real             >= +0.0013679131178324765
 drho/dt en el punto medio real                       >= +0.0070473319080282945
-TERMINAL = B2_SIGN_TRANSFERRED_TO_REAL_MIDPOINT      (AUDIT_PASS, dos casas; sin promocionar)
+TERMINAL = B2_SIGN_TRANSFERRED_TO_REAL_MIDPOINT      (AUDIT_PASS, dos casas; promocionado, §6)
 ```
 
 ## 1. Qué cierra
@@ -138,3 +138,24 @@ diagnóstica y no entra en el terminal.
 4. Que leer las cotas de `lambda*` del JSON, en lugar de recalcularlas, es legítimo, dado que el
    verificador de la compuerta lo reproduce bit a bit.
 5. Que ningún término usa `S`, `Z` o `B` en `m` como si fueran conocidos: solo sus cotas.
+
+## 6. Promoción
+
+Decisión del PI del 2026-10-12, sobre el `AUDIT_PASS` de dos casas a ciegas (`57e62eb`), y
+sabiendo que es una auditoría más ligera que la de la compuerta.
+
+```text
+B2_GATE             = CERTIFIED_POSITIVE_AT_T0               (sin cambio)
+B2_GATE_REAL_POINT  = B2_SIGN_TRANSFERRED_TO_REAL_MIDPOINT   (nuevo)
+B2.1                = INCONCLUSIVE_BY_BOUNDS                 (sin cambio)
+B3                  = INCONCLUSIVE_BY_BOUNDS                 (sin cambio)
+```
+
+Alcance: `drho/dt >= +0.0070473` en el punto medio real, tanto en el decimal como en el exacto
+de los extremos binary64, a lo largo de la dirección real. Como diagnóstico, `rho∘γ` es
+estrictamente creciente en `|s| <= 1e-7`. **No** da nada para la malla de B2.1, y la enmienda
+sigue vigente.
+
+```text
+PI: Nacho Martín              fecha: 2026-10-12
+```

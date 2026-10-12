@@ -26,7 +26,7 @@ La enmienda firmada sigue vigente: excluir cero en `t0` **no** emite un terminal
 insistió en que no la da.
 
 **How to apply:** para avanzar en B2.1 hace falta otro certificado, una cota inferior de `rho'`
-en un intervalo. Transferencia del signo al punto medio real: HECHA 2026-10-12 (`7bcc087`, `2026-10-12/B2_sign_transfer.md`), FROZEN/PENDING_AUDIT; pérdida 2.5e-8 frente a S_lo 1.37e-3. Da de paso un radio de 1e-7 en γ, pero el módulo sqrt(δ) de h impide llegar a B2.1 (necesita 0.05). La consulta a
+en un intervalo. Transferencia del signo al punto medio real: PROMOCIONADA 2026-10-12 como B2_SIGN_TRANSFERRED_TO_REAL_MIDPOINT (`2026-10-12/B2_sign_transfer.md`; AUDIT_PASS de CIRO+ABNER a ciegas, auditoría ligera pedida por el PI; ABNER por la web porque la API agotó el timeout); pérdida 2.5e-8 frente a S_lo 1.37e-3. Da de paso un radio de 1e-7 en γ, pero el módulo sqrt(δ) de h impide llegar a B2.1 (necesita 0.05). La consulta a
 Pfeiffer no se ha enviado (decide el PI). Lean: lema 1 (calibración AM-GM) HECHO el 2026-10-12 en `formal/` (`7fa9c66`), sin sorry y
 con solo los 3 axiomas estándar; el lema 2 (monotonía del `sup`) NO está autorizado. Orden y frentes: `docs/hoja_de_ruta_12_oct_2026.md`.
 
