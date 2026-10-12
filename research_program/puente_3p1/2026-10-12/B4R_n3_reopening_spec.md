@@ -1,7 +1,11 @@
 # B4-R — Reapertura de `n=3`: especificación
 
-> **STATUS: `SIGNED` (§8.1 y §8.2, 2026-10-12): reapertura aceptada; fase 0 autorizada;
-> fase 1 pendiente de la compuerta y de una firma nueva.** Es la
+> **STATUS: `CLOSED — GATE_FAILED`.** Firmada (§8.1 y §8.2, 2026-10-12). La fase 0 se ejecutó y la
+> compuerta de §5 **falló**: `σ_pred(128) ≈ −7.84`. B4 vuelve a `PARKED` con
+> `N3_RANK_UNRESOLVED_BY_RESOLUTION`, y la fase 1 no procede
+> (`dev/B4R_PHASE0_RESULT_2026-10-12.md`). Además, el control del paso 1 destapó que los números
+> antiguos de B4 no corresponden a la ley `n=3` (`dev/B4_EXECUTION_WRONG_MOMENTS_2026-10-12.md`).
+> Es la
 > especificación de la **reapertura** de B4, que está aparcado
 > (`research_program/puente_3p1/2026-09-12/B4_n3_local_identifiability_spec.md`). **No** es una
 > especificación nueva de `n=3`: el objeto, el punto, la carta, el escalado, el criterio y los
@@ -110,7 +114,9 @@ en `M` para sortear la compuerta, ni se busca otro escalado, menor o fila.
 `σ_min(R·Dm) ≈ 0.038` frente a `σ_max ≈ 148`. Para pasar la compuerta, las filas de momentos
 tendrían que estar encerradas con un error relativo de `~1e-3`–`1e-2`. La maquinaria actual
 tiene, con `M = 128`, un error relativo de `~40 %` en `S` (`S_lo = 0.00137` frente al ideal
-`0.0024`). **Lo más probable es que la compuerta falle.** La fase 0 sirve para medirlo con
+`0.0024`). **Lo más probable es que la compuerta falle.** *(Anotación posterior: los valores regenerados de
+B4 resultaron no ser la ley `n=3`, como explica `dev/B4_EXECUTION_WRONG_MOMENTS_2026-10-12.md`. La
+fase 0 midió `σ_min(R·Dm_centro) ≈ 7e-4`, y la compuerta falló igualmente.)* La fase 0 sirve para medirlo con
 coste bajo, no para forzarlo.
 
 ## 6. Fase 1 — certificado (solo si la fase 0 pasa y el PI firma)

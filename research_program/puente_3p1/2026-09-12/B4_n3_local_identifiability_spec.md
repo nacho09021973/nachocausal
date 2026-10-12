@@ -147,3 +147,12 @@ B4_REOPEN_ONLY_IF = CERTIFIED_QUADRATURE_WITH_FORMAL_REMAINDER
 
 No se construirá una biblioteca general de cuadratura intervalar ni se abrirán `n=4`, nuevos
 puntos, charts, escalados, rescates por diferencias finitas o Monte Carlo.
+
+> **Hallazgo 2026-10-12.** El script `verify_b4_execution.py`, del que salen todos los números
+> de esta nota, **no calcula los momentos de la ley `n=3`**. Su `h_bounds` es simétrica, de modo
+> que `f` y `p` acaban siendo cotas superior e inferior de la masa comparable total, y no masas
+> de futuro y de pasado; la cota inferior usa `q` en el punto medio, y el jacobiano se obtiene
+> por diferencias finitas. Por eso sus momentos, menores y valores singulares no corresponden a
+> la ley `n=3`. Ningún terminal cambia, porque todos eran `INCONCLUSIVE`. Ver
+> `dev/B4_EXECUTION_WRONG_MOMENTS_2026-10-12.md` y la reapertura B4-R
+> (`research_program/puente_3p1/2026-10-12/B4R_n3_reopening_spec.md`).

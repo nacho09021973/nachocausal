@@ -48,3 +48,12 @@ La positividad de `sigma_min` aquí es sólo central/numerical; no se eleva a ce
 envolvente rigurosa.
 
 **Artefacto:** `verification_b4_1_rank_certification.json`.
+
+> **Hallazgo 2026-10-12.** El script `verify_b4_execution.py`, del que salen todos los números
+> de esta nota, **no calcula los momentos de la ley `n=3`**. Su `h_bounds` es simétrica, de modo
+> que `f` y `p` acaban siendo cotas superior e inferior de la masa comparable total, y no masas
+> de futuro y de pasado; la cota inferior usa `q` en el punto medio, y el jacobiano se obtiene
+> por diferencias finitas. Por eso sus momentos, menores y valores singulares no corresponden a
+> la ley `n=3`. Ningún terminal cambia, porque todos eran `INCONCLUSIVE`. Ver
+> `dev/B4_EXECUTION_WRONG_MOMENTS_2026-10-12.md` y la reapertura B4-R
+> (`research_program/puente_3p1/2026-10-12/B4R_n3_reopening_spec.md`).
