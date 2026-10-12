@@ -1,9 +1,10 @@
 # B3 — certificado: `n=2` no recupera `phi` localmente en el punto congelado
 
-> **STATUS: `FROZEN / AUDITED — AUDIT_PASS_CONDITIONAL_IR_COMPLETENESS` (ASTRA, tres rondas),
-> con la condición respondida con evidencia (§6). NO promocionado: decide el PI.** Se congeló y
-> se subió **antes** de auditarlo (`1f7286d`). Guardarraíles de B3 intactos: punto congelado,
-> carta congelada, sin búsqueda de curvas, puntos ni parámetros.
+> **STATUS: `B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY`** (ASTRA, tres rondas:
+> `AUDIT_PASS_CONDITIONAL_IR_COMPLETENESS`, condición respondida con evidencia; promocionado por
+> el PI el 2026-10-12, §7). Se congeló y se subió **antes** de auditarlo (`1f7286d`).
+> Guardarraíles de B3 intactos: punto congelado, carta congelada, sin búsqueda de curvas, puntos
+> ni parámetros.
 
 **Fecha:** 2026-10-12 · **Verificador:** `verify_b3_certificate.py` →
 `verification_b3_certificate.json` · **Especificación:**
@@ -22,7 +23,7 @@ drho/dx3            >= +0.0183232        (S_lo(e3) >= +0.0035566)
 W23 = dphi_2 drho_3 − dphi_3 drho_2  >=  +0.0077379  > 0
 carta: det(dv1, du_out, du_in / dx) = −10133099161583616/8106479329266893 ≠ 0  → rango 3
 fastmath_guard: 19 kernels, IR ejecutado y clausurado por sobrecarga (§6), sin flags, ok
-TERMINAL = B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY   (ASTRA: pase condicional, §6; sin promocionar)
+TERMINAL = B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY   (ASTRA: pase condicional, §6; promocionado, §7)
 ```
 
 Con `M = 64` el resultado es el mismo, con menos margen: `drho/dx3 >= +0.0121942` y
@@ -147,3 +148,24 @@ y un cuerpo `prange` se llama directamente sin declararse. La prueba negativa (2
 - El vínculo entre el módulo importado y la compuerta congelada se declara con `git log`, que
   muestra un único commit, `7909c0e`.
 - Es una sola casa.
+
+## 7. Promoción
+
+Decisión del PI del 2026-10-12, sobre el pase condicional de ASTRA en tres rondas, con la
+condición respondida con evidencia (`18a86b3`) y **sin** una cuarta ronda ni una segunda casa.
+
+```text
+B2_GATE             = CERTIFIED_POSITIVE_AT_T0               (sin cambio)
+B2_GATE_REAL_POINT  = B2_SIGN_TRANSFERRED_TO_REAL_MIDPOINT   (sin cambio)
+B2.1                = B2.1_POSITIVE_DERIVATIVE               (sin cambio)
+B3                  = B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY   (antes INCONCLUSIVE_BY_BOUNDS)
+```
+
+Alcance: en el punto congelado `lambda*` y en la carta de B3, `dphi` no es paralelo a `drho`,
+de modo que la ley `n=2` sola no recupera `phi` localmente. Según la especificación de B3, esto
+**justifica proponer** el paso a la ley `n=3`. **No lo autoriza**: `n=3` es un frente nuevo,
+con su propia decisión.
+
+```text
+PI: Nacho Martín              fecha: 2026-10-12
+```

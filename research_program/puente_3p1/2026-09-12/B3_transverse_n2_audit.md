@@ -78,5 +78,5 @@ familia física tridimensional. Esto justifica proponer el paso a `n=3`, pero no
 
 > **Actualización 2026-10-12.** Con la maquinaria certificada de la compuerta, B3 es
 > `B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY`: la componente `(x2, x3)` del producto
-> `dphi ∧ drho` es `>= +0.0077379`. El resultado está congelado y pendiente de auditoría. Ver
+> `dphi ∧ drho` es `>= +0.0077379`. Auditado por ASTRA y promocionado por el PI el 2026-10-12. Ver
 > `research_program/puente_3p1/2026-10-12/B3_certificate.md`.
