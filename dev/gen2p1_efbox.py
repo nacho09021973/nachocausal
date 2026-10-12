@@ -316,9 +316,9 @@ def bh_order(t, r, phi, rng=None, audit=20000):
     if ii.size:
         d = np.abs(phi[jj] - phi[ii]); d = np.minimum(d, 2 * math.pi - d)
         Lc, mc = shoot_pairs_fast(U[ii], V[ii], U[jj], V[jj], *COARSE)
-        assert np.all(mc < 1e-9), "coarse shooting missed on %d pairs" % int((mc >= 1e-9).sum())
         dmax = np.minimum(Lc, math.pi)
-        far = np.abs(d - dmax) > COARSE_MARGIN
+        # a coarse miss is never trusted: those pairs go to the fine shot (which must hit)
+        far = (np.abs(d - dmax) > COARSE_MARGIN) & (mc < 1e-9)
         coarse_mask = far
         rel[ii[far], jj[far]] = (d[far] <= dmax[far]).astype(np.int8)
         k = np.nonzero(~far)[0]
