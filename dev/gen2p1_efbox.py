@@ -111,7 +111,7 @@ def sprinkle(n_mean, rng):
     return t, r, phi
 
 
-@njit(cache=True)
+@njit(cache=False)
 def _tab(T, w):
     z = math.log(1.0 - w)
     x = (z - ZMIN) / DZ
@@ -124,17 +124,17 @@ def _tab(T, w):
     return T[k] * (1.0 - a) + T[k + 1] * a
 
 
-@njit(cache=True)
+@njit(cache=False)
 def qi(w):
     return _tab(QT, w)
 
 
-@njit(cache=True)
+@njit(cache=False)
 def dlnf(w):
     return _tab(DLNF, w)
 
 
-@njit(parallel=True, cache=True)
+@njit(parallel=True, cache=False)
 def stage1(U, V, phi, A, cwlo, cwhi):
     n = U.size
     rel = np.zeros((n, n), np.int8)
@@ -188,7 +188,7 @@ def stage1(U, V, phi, A, cwlo, cwhi):
     return rel
 
 
-@njit(cache=True)
+@njit(cache=False)
 def _shoot(ua, va, vb, p0, steps):
     h = (vb - va) / steps
     U, p, v, L = ua, p0, va, 0.0
@@ -215,7 +215,7 @@ def _shoot(ua, va, vb, p0, steps):
     return U, L
 
 
-@njit(cache=True)
+@njit(cache=False)
 def _shoot_y(ua, va, vb, P0, steps):
     """V-parametrised geodesic in y = ln V:  U' = P,  P' = P + (F'/F)(UV) V P (U - P),
     L = int q(UV) sqrt(P V) dy.  Returns (U at vb, L)."""
@@ -246,7 +246,7 @@ def _shoot_y(ua, va, vb, P0, steps):
     return U, L
 
 
-@njit(parallel=True, cache=True)
+@njit(parallel=True, cache=False)
 def shoot_pairs_fast(ua, va, ub, vb, steps_y, steps_u):
     """As shoot_pairs, but V-parametrised pairs integrate in ln V (steps_y), U-parametrised
     ones linearly (steps_u); bisection stops once the endpoint is hit to 1e-12."""
@@ -279,7 +279,7 @@ def shoot_pairs_fast(ua, va, ub, vb, steps_y, steps_u):
     return L, miss
 
 
-@njit(parallel=True, cache=True)
+@njit(parallel=True, cache=False)
 def shoot_pairs(ua, va, ub, vb, steps):
     n = ua.size
     L = np.zeros(n); miss = np.zeros(n)

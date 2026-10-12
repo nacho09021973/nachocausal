@@ -21,6 +21,10 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "dev"))
 import gen2p1_efbox as gen  # noqa: E402
+import os  # noqa: E402
+DEVICE = os.environ.get("NC2P1_DEVICE", "cpu")
+if DEVICE == "gpu":
+    import gen2p1_gpu as gpu  # noqa: E402  (run in .venv-gpu)
 from nachocausal import estimator, thresholds  # noqa: E402
 from nachocausal import gate as sealed_gate  # noqa: E402
 
@@ -64,9 +68,9 @@ def run(n_mean, seed):
     assert gen.EXPLORE_BAND[0] <= seed <= gen.EXPLORE_BAND[1]
     rng = np.random.default_rng(seed)
     t, r, phi = gen.sprinkle(n_mean, rng)
-    bh, st = gen.bh_order(t, r, phi, rng=None)
+    bh, st = gpu.bh_order(t, r, phi) if DEVICE == "gpu" else gen.bh_order(t, r, phi, rng=None)
     mk = gen.mink_order(t, r, phi)
-    out = {"seed": seed, "n": int(t.size), "gen_seconds": st["seconds_total"]}
+    out = {"seed": seed, "n": int(t.size), "gen_seconds": st["seconds_total"], "device": DEVICE}
     for name, order in (("BH", bh), ("MINK", mk)):
         e = estimate(order)
         out[name] = {"n_minimal": int(e["minimal"].size), "improvement": round(e["improvement"], 4),
