@@ -1,0 +1,8 @@
+→ revisiones/2026-10-12-auditoria-transferencia-signo/sanedrin.log
+2026-10-12T07:26:38Z  round 1 | CIRO | send | context 7322 words | access sellado
+2026-10-12T07:41:39Z  retry 1 | CIRO | intento 2/2
+2026-10-12T07:56:41Z  round 1 | CIRO | recv | 1803s | 34 words | FAILED
+2026-10-12T07:56:41Z  round 1 | ABNER | send | context 7364 words | access sellado
+2026-10-12T08:11:42Z  retry 1 | ABNER | intento 2/2
+2026-10-12T08:26:44Z  round 1 | ABNER | recv | 1803s | 29 words | FAILED
+2026-10-12T08:26:44Z  round 2 | ABNER | send | context 7396 words | access sellado

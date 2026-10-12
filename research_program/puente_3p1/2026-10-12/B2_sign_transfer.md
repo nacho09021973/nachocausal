@@ -1,9 +1,13 @@
 # B2 — transferencia del signo de la compuerta al punto medio real
 
-> **STATUS: `FROZEN / PENDING_INDEPENDENT_AUDIT`.** Como el certificado de la compuerta, se
-> congela y se sube **antes** de auditarlo, y no se promociona hasta que lo revise otra familia
-> de modelos. Guardarraíles de B2 intactos: `no_new_path`, `no_new_t0`, `no_search`,
-> `no_adjustment`. La enmienda sigue vigente: nada de esto emite un terminal de B2.1.
+> **STATUS: `FROZEN / AUDITED — AUDIT_PASS` (dos casas, a ciegas) — NO promocionado: decide
+> el PI.** Se congeló y se subió **antes** de auditarlo (`7bcc087`). Lo auditaron CIRO (Grok) y
+> ABNER (DeepSeek, por la web): `revisiones/2026-10-12-auditoria-transferencia-signo/RESUMEN.md`.
+> El único hallazgo, MENOR y documental, está corregido: el redondeo de las constantes de §2. Es
+> una auditoría más ligera que la de la compuerta: dos casas en vez de cinco y una sola ronda,
+> sin cruce entre ellas.
+> Guardarraíles de B2 intactos: `no_new_path`, `no_new_t0`, `no_search`, `no_adjustment`.
+> La enmienda sigue vigente: nada de esto emite un terminal de B2.1.
 
 **Fecha:** 2026-10-12 · **Verificador:** `verify_b2_sign_transfer.py` →
 `verification_b2_sign_transfer.json` (determinista, < 1 s) · **Parte de:** el certificado
@@ -16,7 +20,7 @@ pérdida por desplazar el punto  (DELTA = 1e-16)      <=  2.5435e-08
 pérdida por cambiar la dirección (EPS = 1e-16)       <=  1.8215e-16
 S en el punto medio real, dirección real             >= +0.0013679131178324765
 drho/dt en el punto medio real                       >= +0.0070473319080282945
-TERMINAL = B2_SIGN_TRANSFERRED_TO_REAL_MIDPOINT      (pendiente de auditoría)
+TERMINAL = B2_SIGN_TRANSFERRED_TO_REAL_MIDPOINT      (AUDIT_PASS, dos casas; sin promocionar)
 ```
 
 ## 1. Qué cierra
@@ -84,20 +88,23 @@ Además `h = p(T_fut) + p(T_past)`, con a lo sumo uno no nulo. Por tanto
 módulo sea `sqrt(δ)` y no `δ` refleja el cono de luz: cerca de él, `Delta ~ sqrt(dU dV)`.
 
 **Constantes**, todas con la capa escalar auditada de B1.5 y `mpmath.iv`, en el rango de `w`
-del rectángulo agrandado, `[−1.3500000000000005, 0.6300000000000002]`:
+del rectángulo agrandado, `[−1.3500000000000005, 0.6300000000000002]`. Los valores de la tabla
+están redondeados **hacia arriba** a 8 cifras; los exactos, que son los que usa el cálculo,
+están en el JSON:
 
 | constante | cota | por qué |
 |---|---|---|
 | `g_max` | `E_INV_HI = 0.36787944117144233` | pico de `G` en `1/e` |
 | `s` | `[0.68122, 1.34998]` | `s_encl` en los extremos; `s` es decreciente en `w` |
-| `q_max` | `2.5303063` | `q_encl(w_cap)`; `q` es creciente en `w` |
-| `L_q` | `5.0781904` | `q'(w) = q(1/2 + 3/(2s))/(s e^s)`, con todos los factores decrecientes en `s` |
-| `L_G` | `0.1315394` | `|G'(w)| = |1−s| e^{−2s}/s <= max|1−s| · e^{−2 s_min}/s_min` |
+| `q_max` | `2.53030635` | `q_encl(w_cap)`; `q` es creciente en `w` |
+| `L_q` | `5.07819039` | `q'(w) = q(1/2 + 3/(2s))/(s e^s)`, con todos los factores decrecientes en `s` |
+| `L_G` | `0.13153943` | `|G'(w)| = |1−s| e^{−2s}/s <= max|1−s| · e^{−2 s_min}/s_min` |
 
 ## 3. Diagnóstico: el radio que da este módulo
 
 La misma cota, con la dirección fija y el punto en cualquier lugar de la bola sup de radio `r`.
-La lista de radios está fijada de antemano y no se busca nada:
+La lista de radios está fijada de antemano y no se busca nada. La tabla muestra 6 de los 8
+radios de `DIAG_RADII`; el JSON los tiene todos:
 
 | `r` | `1e-16` | `1e-12` | `1e-9` | `1e-8` | `1e-7` | `1e-6` |
 |---|---|---|---|---|---|---|

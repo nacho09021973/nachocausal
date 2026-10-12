@@ -1,0 +1,43 @@
+# Sanhedrin run log
+script-commit: 7e011a4fed1b8162b58e6981c420cfd10756e3ea
+script-sha256: 13a5c79e9533e5c12006ad71411c4ca60d1aaa7720587d0c403c72b8d067d300
+record:       sanedrin.log
+started:      2026-10-12T07:26:37Z
+command:      sanedrin -r 2 -m ciro,abner -i es -R /home/adnac/sanedrin/reglas/base.md -p 700 -o revisiones/2026-10-12-auditoria-transferencia-signo/sanedrin.log -c research_program/puente_3p1/2026-10-12/B2_sign_transfer.md -c research_program/puente_3p1/2026-10-12/verify_b2_sign_transfer.py -c research_program/puente_3p1/2026-10-12/verification_b2_sign_transfer.json -c research_program/puente_3p1/2026-10-11/B2_path2_gate_certificate.md revisiones/2026-10-12-auditoria-transferencia-signo/acta.md
+cwd:          /home/adnac/nachocausal
+project:      /home/adnac/nachocausal
+topic:        revisiones/2026-10-12-auditoria-transferencia-signo/acta.md
+rules:        /home/adnac/sanedrin/reglas/base.md
+rounds:       2
+words/turn:   700
+timeout:      900s
+retries:      1
+retry-delay:  2s
+max-failures: 2
+claude-model: claude-opus-5-5
+astra-model:  gpt-6-astra
+ciro-model:   grok-4.6
+gemini-model: gemini-3.8-flash
+protocol:     classic (2 rounds)
+access:       sealed (no files, shell, web or MCP; record only)
+host:         OMENNACHO — Linux 6.6.87.2-microsoft-standard-WSL2
+claude:       2.1.296 (Claude Code)
+codex:        codex-cli 0.162.1
+grok:         grok 1.0.41 (4220f3b224a6) [stable]
+deepseek:     api.deepseek.com/deepseek-v4-pro
+attachment:   research_program/puente_3p1/2026-10-12/B2_sign_transfer.md (1290 words)
+attachment:   research_program/puente_3p1/2026-10-12/verify_b2_sign_transfer.py (1503 words)
+attachment:   research_program/puente_3p1/2026-10-12/verification_b2_sign_transfer.json (153 words)
+attachment:   research_program/puente_3p1/2026-10-11/B2_path2_gate_certificate.md (3337 words)
+
+# timestamps are UTC (ISO 8601)
+
+2026-10-12T07:26:38Z  round 1 | CIRO | send | context 7322 words | access sellado
+2026-10-12T07:41:39Z  retry 1 | CIRO | intento 2/2
+2026-10-12T07:56:41Z  round 1 | CIRO | recv | 1803s | 34 words | FAILED
+2026-10-12T07:56:41Z  round 1 | ABNER | send | context 7364 words | access sellado
+2026-10-12T08:11:42Z  retry 1 | ABNER | intento 2/2
+2026-10-12T08:26:44Z  round 1 | ABNER | recv | 1803s | 29 words | FAILED
+2026-10-12T08:26:44Z  round 2 | ABNER | send | context 7396 words | access sellado
+
+2026-10-12T08:33:59Z  ABORTED by PI request: DeepSeek audit moved to the web interface (abner_prompt_web.md); CIRO done directly (ciro_directo.md)
