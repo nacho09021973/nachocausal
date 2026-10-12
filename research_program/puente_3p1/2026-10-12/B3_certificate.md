@@ -1,8 +1,9 @@
 # B3 — certificado: `n=2` no recupera `phi` localmente en el punto congelado
 
-> **STATUS: `FROZEN / PENDING_INDEPENDENT_AUDIT`.** Se congela y se sube **antes** de
-> auditarlo. No se promociona hasta que lo revise otra familia de modelos. Guardarraíles de B3
-> intactos: punto congelado, carta congelada, sin búsqueda de curvas, puntos ni parámetros.
+> **STATUS: `FROZEN / AUDITED — AUDIT_PASS_CONDITIONAL_IR_COMPLETENESS` (ASTRA, tres rondas),
+> con la condición respondida con evidencia (§6). NO promocionado: decide el PI.** Se congeló y
+> se subió **antes** de auditarlo (`1f7286d`). Guardarraíles de B3 intactos: punto congelado,
+> carta congelada, sin búsqueda de curvas, puntos ni parámetros.
 
 **Fecha:** 2026-10-12 · **Verificador:** `verify_b3_certificate.py` →
 `verification_b3_certificate.json` · **Especificación:**
@@ -20,8 +21,8 @@ drho/dx3            >= +0.0183232        (S_lo(e3) >= +0.0035566)
 |drho/dx2|          <= 2.9271            (cota burda: H <= Z)
 W23 = dphi_2 drho_3 − dphi_3 drho_2  >=  +0.0077379  > 0
 carta: det(dv1, du_out, du_in / dx) = −10133099161583616/8106479329266893 ≠ 0  → rango 3
-fastmath_guard: 19 kernels, IR ejecutado (caché vacía), sin flags, mutante detectado, ok
-TERMINAL = B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY   (pendiente de auditoría)
+fastmath_guard: 19 kernels, IR ejecutado y clausurado por sobrecarga (§6), sin flags, ok
+TERMINAL = B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY   (ASTRA: pase condicional, §6; sin promocionar)
 ```
 
 Con `M = 64` el resultado es el mismo, con menos margen: `drho/dx3 >= +0.0121942` y
@@ -112,3 +113,37 @@ La definición de `phi` es la de B3 (`verify_b3_transverse_n2.py`, `phi_shape_de
    `drho ≠ 0`, implique la existencia de `v` con `drho(v) = 0` y `dphi(v) ≠ 0`.
 5. El jacobiano de la carta, y que la convención H5 (punto binary64) sea la de la especificación
    de B3.
+
+## 6. Auditoría
+
+**ASTRA** (`gpt-6-astra`, esfuerzo alto, sellada; llamada directa a `codex exec`), en tres rondas:
+`revisiones/2026-10-12-auditoria-b3/`.
+
+| ronda | veredicto | qué se atendió |
+|---|---|---|
+| 1 | `AUDIT_PASS_CONDITIONAL_B21_BINDING_AND_EXECUTED_IR` | §5.1–5.5 se sostienen. Da un testigo explícito: `v = ρ3·∂x2 − ρ2·∂x3`, con `dρ(v) = 0` y `dφ(v) = W23 > 0`. Señala un MENOR de serialización: los extremos se escribían con `float(...)` y ahora se escriben con `iv_lo`/`iv_hi`. Además, `W23` se calcula ahora en `mpmath.iv`; antes se hacía con escalares `mpf` |
+| 2 | `AUDIT_PASS_CONDITIONAL_IR_COMPLETENESS` | La vinculación con la compuerta se sostiene: el único parche es `VN_FR`. El control de IR presenta cuatro huecos: B3 no exigía cuerpos `prange`, `getattr` toleraba sin avisar que faltara `_linking_libraries`, se comprobaba la presencia de cuerpos y no su exhaustividad, y la `define` se identificaba por nombre aproximado |
+| 3 | `AUDIT_PASS_CONDITIONAL_IR_COMPLETENESS` | La clausura cierra los cuatro huecos **para las dependencias simbólicas**. Quedan las llamadas indirectas por puntero, la comprobación sobre la unión de firmas y unas pruebas negativas que no fallaban automáticamente |
+
+**Respuesta a la ronda 3, con evidencia y sin ronda 4:**
+- **Llamadas indirectas.** En el IR ejecutado hay 87, y **todas** están en envoltorios
+  (`_ZN7cpython…`, `cfunc.*`, `__gufunc__.*`) o en la reserva de arrays de numba (`np.empty`,
+  `np.zeros`, `linspace`, que llaman al asignador NRT por puntero). **Ninguna está en un cuerpo
+  numérico**, sean los kernels o sus cuerpos `parfor`, y los envoltorios no contienen ninguna
+  operación en coma flotante. El control lo **exige** ahora (`indirect_calls_in_numeric_bodies`).
+- **Firma a firma.** La clausura y la regla anterior se comprueban por sobrecarga, no sobre la
+  unión de firmas.
+- **Pruebas negativas.** `dev/explore_ir_guard_negative_tests.py` termina con error si alguna no
+  se detecta. Son cuatro: kernel cargado de caché (con la etiqueta corregida: es la caché privada
+  heredada del proceso padre, no la de por defecto), cuerpo `prange` eliminado, símbolo exacto
+  ausente y llamada indirecta en un cuerpo numérico. Las cuatro se detectan y el caso positivo
+  pasa.
+
+**Al implementar la clausura salió un error mío:** la primera versión solo miraba los `declare`,
+y un cuerpo `prange` se llama directamente sin declararse. La prueba negativa (2) lo destapó.
+
+**Límites.**
+- El control clasifica por nombres, siguiendo las convenciones de numba, no por tipos LLVM.
+- El vínculo entre el módulo importado y la compuerta congelada se declara con `git log`, que
+  muestra un único commit, `7909c0e`.
+- Es una sola casa.

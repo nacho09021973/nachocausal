@@ -16,7 +16,7 @@ t ∈ [9/20, 11/20]   N = 100 cajas contiguas de ancho 1/1000,  M = 128
 min_k S_lo            = +0.0012174762052819036   (caja t ∈ [9/20, 451/1000])
 max_k S_lo            = +0.0013992726582646622   (caja t ∈ [549/1000, 11/20])
 min_k drho/dt lower   = +0.006648095518840022
-fastmath_guard        : 19 kernels, código ejecutado compilado en el proceso (caché vacía, IR >= 8801 caracteres, cuerpos prange incluidos), sin flags, mutante detectado, ok = True
+fastmath_guard        : 19 kernels, IR ejecutado y clausurado por sobrecarga (§4), sin flags, mutante detectado, ok = True
 TERMINAL = B2.1_POSITIVE_DERIVATIVE   (ASTRA: pase condicional, condiciones atendidas en §8; promocionado, §9)
 ```
 
@@ -99,18 +99,23 @@ El control cubre los 16 que este verificador usa, más los 3 nuevos (`lb_rows_xy
 `strip_weights`, `face_h_cells`): 19 en total. Los otros tres de la compuerta (`lb_rows`,
 `face_h`, `segment_weights`) no se ejecutan aquí.
 
-**El control inspecciona el código que se ejecutó** (corrección pedida por ASTRA, §8):
+**El control inspecciona el código que se ejecutó, completo** (`guard_kernels`, el mismo para
+B3; afinado en las rondas 2 y 3 de ASTRA sobre B3, adenda de §8):
 - la ejecución usa una caché de numba privada y vacía (`NUMBA_CACHE_DIR` temporal, fijada antes
   de importar numba), así que todo kernel se compila en el propio proceso, y se exige
   `stats.cache_hits == 0`;
-- se inspecciona la librería de cada sobrecarga **ejecutada** junto con todas las que enlaza,
-  porque ahí viven los cuerpos `prange` (`__numba_parfor_gufunc_*`), y se exige que cada kernel
-  paralelo tenga al menos uno;
-- se exige la `define` del nombre mangled de la propia función;
-- el mutante `fastmath` se detecta por esa misma vía.
+- **por sobrecarga** ejecutada: se recorren todas las librerías que enlaza (`_linking_libraries`,
+  leído sin `getattr`, de modo que si falta falla), se exige la `define` de su nombre mangled
+  exacto (`fndesc.mangled_name`) y se comprueba la **clausura**: todo símbolo de código de numba
+  que se **referencia** tiene que estar definido en el conjunto inspeccionado;
+- ningún cuerpo numérico (kernels y cuerpos `parfor`) puede llamar por puntero, que es lo único
+  que la clausura no ve; en numba esas llamadas solo aparecen en envoltorios y en el asignador;
+- cada kernel paralelo tiene que tener cuerpos `prange` reales definidos, y el mutante
+  `fastmath` se detecta por la misma vía.
 
-Una prueba negativa confirma que un kernel cargado de la caché por defecto hace fallar el
-control («loaded from a numba cache»). La
+`dev/explore_ir_guard_negative_tests.py` termina con error si no detecta alguno de estos cuatro
+casos: kernel cargado de caché, cuerpo `prange` eliminado, símbolo exacto ausente y llamada
+indirecta en un cuerpo numérico. La
 tabla de `w` es una sola para todas las cajas y cubre `K_out` en todo el intervalo, con el
 margen de `1e-3`.
 
@@ -141,8 +146,8 @@ kernels.
 - **Contra la compuerta.** Las cajas que bordean `t0` dan `+0.0013072` (`[0.499, 0.5]`) y
   `+0.0013090` (`[0.5, 0.501]`), frente a `+0.0013679` del punto aislado con la misma `M`. Una caja
   de ancho `1e-3` cuesta `~6e-5` en `S`.
-- **Determinismo.** Tres ejecuciones completas, con las tres versiones del control de fast-math,
-  dan las mismas `S_lo` bit a bit. Tiempo: 591 s en cajas y 13.5 s en tablas.
+- **Determinismo.** Cuatro ejecuciones completas, con las cuatro versiones del control de fast-math,
+  dan las mismas `S_lo` bit a bit. Tiempo (cuarta ejecución): 582 s en cajas y 13.3 s en tablas.
 - **Control de fast-math** (historia). La primera ejecución dio `ok = False`, y estaba bien que lo diera.
   Exigía firma compilada en tres kernels de la compuerta que este verificador no usa
   (`lb_rows`, `face_h`, `segment_weights`); ahora se excluyen por nombre. Al corregirlo
@@ -234,3 +239,14 @@ ni sobre B3.
 ```text
 PI: Nacho Martín              fecha: 2026-10-12
 ```
+
+### Adenda 2026-10-12 — el control de IR, auditado en B3
+
+El `executed_ir` de este verificador se escribió **después** de la auditoría de B2.1, para
+atender su condición, y por tanto ningún auditor lo había visto. ASTRA lo revisó en las rondas
+2 y 3 de la auditoría de B3 (`revisiones/2026-10-12-auditoria-b3/`):
+- encontró cuatro huecos de cobertura y, después, el de las llamadas indirectas;
+- se corrigieron con la clausura por sobrecarga y la regla de llamadas indirectas (§4);
+- la evidencia es la de la nota de B3, §6.
+
+La cuarta ejecución completa con el control final da las mismas `S_lo` bit a bit.

@@ -32,12 +32,10 @@ sys.path.insert(0, str(HERE))
 import verify_b2_1_box_certificate as b21  # noqa: E402  (sets the private numba cache first)
 
 import json  # noqa: E402
-import re  # noqa: E402
 from fractions import Fraction as Fr  # noqa: E402
 
 import numpy as np  # noqa: E402
 from mpmath import iv  # noqa: E402
-from numba import njit  # noqa: E402
 
 gate, b15 = b21.gate, b21.b15
 iv.dps = 30
@@ -74,24 +72,9 @@ def F(lo, hi):
 
 
 def guard_all_gate_kernels():
+    """B2.1's guard (executed IR, symbol closure, prange bodies) over all 19 gate kernels."""
     gate._compile_helpers()
-    flags, chars = {}, {}
-    uncompiled = [fn.py_func.__name__ for fn in gate.KERNELS if not fn.signatures]
-    for fn in gate.KERNELS:
-        irs = b21.executed_ir(fn)
-        flags[fn.py_func.__name__] = sorted({m.group(0) for ir in irs for m in gate._FAST.finditer(ir)})
-        chars[fn.py_func.__name__] = sum(len(i) for i in irs)
-
-    @njit(fastmath=True)
-    def _mutant(a, b, c):
-        return a * b + c
-    _mutant(1.0, 2.0, 3.0)
-    mutant = bool(gate._FAST.search("".join(b21.executed_ir(_mutant))))
-    clean = all(not v for v in flags.values())
-    return {"kernels_checked": len(flags), "inspection": "executed overloads, private empty cache",
-            "min_ir_chars": min(chars.values()), "kernels_without_compiled_signature": uncompiled,
-            "flags_found": {k: v for k, v in flags.items() if v}, "all_clean": clean,
-            "mutation_fastmath_detected": mutant, "ok": bool(clean and mutant and not uncompiled)}
+    return b21.guard_kernels(gate.KERNELS)
 
 
 def phi_pieces(M):
@@ -151,24 +134,26 @@ def main():
 
     dphis = [dphi(pc, c) for c in cols]
     d2, d3 = dphis[1], dphis[2]
-    W23_lo = d2.a * drho3_lo.a - max(abs(d3.a), abs(d3.b)) * drho2_abs.b
-    W23_lo = iv.mpf(W23_lo).a
+    # every factor is positive here: W23 >= lo(dphi_2) lo(drho_3) - hi|dphi_3| hi|drho_2|, in iv
+    abs3 = iv.mpf(max(abs(d3.a), abs(d3.b)))
+    W23 = iv.mpf(d2.a) * iv.mpf(drho3_lo.a) - abs3 * iv.mpf(drho2_abs.b)
+    W23_lo = W23.a
     wedge_nonzero = bool(d2.a > 0 and drho3_lo.a > 0 and W23_lo > 0)
     guard = guard_all_gate_kernels()
     terminal = ("B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY"
                 if (wedge_nonzero and chart_rank3 and guard["ok"]) else "B3_INCONCLUSIVE_BY_BOUNDS")
-    f = lambda x: [float(x.a), float(x.b)]  # noqa: E731
+    f = lambda x: [b15.iv_lo(x), b15.iv_hi(x)]  # noqa: E731   outward into binary64
     out = {
         "unit": "PUENTE-3P1/B3_CERTIFICATE", "M": M,
         "frozen_lambda_binary64": [float(x) for x in gate.LAM],
         "chart_x": [str(x) for x in X], "chart_jacobian_columns": [[str(v) for v in c] for c in cols],
         "chart_det_rows_v1_uout_uin": str(det), "chart_rank_three": chart_rank3,
         "drho_dx3": {"S_lo_e3": r3["S_lo"], "Z": r3["Z"], "B_hi": r3["B_hi"],
-                     "Bprime_lo_e3": r3["Bprime_lo"], "lower_bound": float(drho3_lo.a)},
-        "drho_dx2_abs_upper": float(drho2_abs.b),
+                     "Bprime_lo_e3": r3["Bprime_lo"], "lower_bound": b15.iv_lo(drho3_lo)},
+        "drho_dx2_abs_upper": b15.iv_hi(drho2_abs),
         "phi_pieces": {k: f(v) for k, v in pc.items()},
         "dphi_dx": [f(x) for x in dphis],
-        "wedge_x2x3_lower_bound": float(W23_lo),
+        "wedge_x2x3_lower_bound": b15.iv_lo(W23),
         "dphi_wedge_drho_certified_nonzero": wedge_nonzero,
         "fastmath_guard": guard,
         "no_new_path": True, "no_new_point": True, "no_search": True, "no_seeds": True,

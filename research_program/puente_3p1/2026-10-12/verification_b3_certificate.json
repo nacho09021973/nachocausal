@@ -43,63 +43,70 @@
     ],
     "B_hi": 0.004203439539650638,
     "Bprime_lo_e3": 0.016656259402041157,
-    "lower_bound": 0.018323283533122254
+    "lower_bound": 0.01832328353312225
   },
-  "drho_dx2_abs_upper": 2.927099935487002,
+  "drho_dx2_abs_upper": 2.9270999354870026,
   "phi_pieces": {
     "Z_in": [
-      0.14060974862899192,
-      0.1406155109432403
+      0.1406097486289919,
+      0.14061551094324032
     ],
     "Z_out": [
-      0.29993685068542414,
-      0.299950621762525
+      0.2999368506854241,
+      0.29995062176252507
     ],
     "J_uin": [
-      0.1971015597072508,
-      0.19711354905943865
+      0.19710155970725077,
+      0.19711354905943868
     ],
     "J_uout": [
-      0.19631624930250563,
-      0.19632385353923282
+      0.1963162493025056,
+      0.19632385353923285
     ],
     "J_v1_in": [
-      0.25327762676204474,
-      0.25329397086776434
+      0.2532776267620447,
+      0.2532939708677644
     ],
     "J_v1_out": [
-      0.5408276317482059,
-      0.54085467728044
+      0.5408276317482058,
+      0.5408546772804401
     ],
     "J_v0_in": [
-      0.25709052250100234,
-      0.25709196207503443
+      0.2570905225010023,
+      0.2570919620750345
     ],
     "J_v0_out": [
-      0.5493592460664208,
-      0.5493662646588399
+      0.5493592460664207,
+      0.54936626465884
     ]
   },
   "dphi_dx": [
     [
-      -0.00010861124690337548,
-      -7.994461832225411e-05
+      -0.00010861124690337549,
+      -7.99446183222541e-05
     ],
     [
-      0.4571239125441492,
-      0.45720089409969633
+      0.45712391254414914,
+      0.4572008940996964
     ],
     [
-      -0.00021798837350369034,
-      -0.00015485165745401006
+      -0.00021798837350369037,
+      -0.00015485165745401003
     ]
   ],
-  "wedge_x2x3_lower_bound": 0.007737937305297059,
+  "wedge_x2x3_lower_bound": 0.007737937305297058,
   "dphi_wedge_drho_certified_nonzero": true,
   "fastmath_guard": {
     "kernels_checked": 19,
-    "inspection": "executed overloads, private empty cache",
+    "inspection": "executed overloads, compiled in-process (private empty numba cache, cache_hits == 0); per overload: linked libraries walked, exact mangled name defined, every referenced numba function defined (closure), no indirect call in numeric bodies",
     "min_ir_chars": 8801,
+    "parfor_bodies_defined": {
+      "calibration_point_tables": 1,
+      "ub_table": 2,
+      "lb_rows": 2,
+      "b_hi_sum": 2
+    },
+    "parallel_kernels_have_bodies": true,
     "kernels_without_compiled_signature": [],
     "flags_found": {},
     "all_clean": true,

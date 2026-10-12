@@ -1,0 +1,4 @@
+positive: ok = True | parfor bodies {'calibration_point_tables': 1, 'ub_table': 2, 'b_hi_sum': 2, 'lb_rows_xy': 2}
+(2) body removed : caught -- IR closure fails: referenced-not-defined ['_ZN13_3cdynamic_3e36__numba_parfor_gufunc_0x7ea
+(3) required absent : caught -- IR closure fails: referenced-not-defined [], required-not-defined ['_ZN3fooB3v1E']
+(1) cached kernel : caught -- k_below was loaded from a numba cache (1 hits)
