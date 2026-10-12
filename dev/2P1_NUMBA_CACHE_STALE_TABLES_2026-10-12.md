@@ -52,3 +52,19 @@ fast-math, que pasaba en vacío (`dev/B2_FASTMATH_GUARD_CACHE_FINDING_2026-10-12
 
 `594e6bb` (`t_min = 8` con `ρ = 32` y `t_min = 10` con `ρ = 63`) queda **en suspenso** hasta
 comparar con los barridos v2.
+
+## Resultado de la repetición (barrido de `ρ = 32, 63`)
+
+`python3 dev/compare_2p1_sweeps_v1_v2.py dev/2p1_sweep_T_2026-10-12.jsonl dev/2p1_sweep_T_v2_2026-10-12.jsonl`:
+en las **120 de 120** realizaciones, v1 (CPU con tablas posiblemente viejas) y v2 (GPU con tablas
+correctas) dan el mismo `N`, los mismos cuartiles de `O`, la misma horquilla, la misma cobertura
+y la misma puerta de Minkowski. `dev/analyze_2p1_tmin.py` sobre v2
+(`dev/2p1_tmin_analysis_v2_2026-10-12.json`) da **las mismas celdas** y
+**`t_min = 8` con `ρ = 32` y `t_min = 10` con `ρ = 63`**. El resultado de `594e6bb` se sostiene.
+
+**Lectura.** Las tablas viejas solo cambiaban `q` en `w` muy negativos, más allá del rango de la
+tabla compilada. Esos `w` aparecen en pares con alcance `≫ π`, cuya decisión no depende de esa
+cifra. No es una garantía para cualquier configuración, así que el generador de CPU queda
+corregido igualmente.
+
+El barrido de `ρ = 126` se repite entero en v2 (`dev/2p1_sweep_T_rho126_v2_2026-10-12.jsonl`).
