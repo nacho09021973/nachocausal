@@ -20,6 +20,7 @@ falla la compuerta de viabilidad. Es un banco **intermedio** hacia 3+1D, no un s
   transitividad, auditoría frente al disparo exacto y mutación.
 - **Fase B en curso (2026-10-12):** generador sobre la caja EF alta (`6e19328`, coincide exactamente con la relación sellada de 1+1D en pares con el mismo ángulo). Estimador-v2 portado (`e1ea1f5`): con T=6 la horquilla queda sesgada hacia fuera (r≈0.53, horizonte efectivo por el corrimiento al rojo finito) y cubre 0/5; con T=12 cubre 3/3; Minkowski se abstiene siempre. T tiene que fijarse por una regla de principio en prereg-004. Bandas 2+1D: exploración 7_000_000..7_000_999 y virgen 8_000_000..8_999_999.
 - **Barrido de T (`594e6bb`, 120 realizaciones):** el agujero negro localiza 120/120 y Minkowski se abstiene 120/120. Con la regla heredada, t_min=8 (ρ=32) y t_min=10 (ρ=63); no es robusta frente a la densidad (crece con ρ). θ_loc=2ρ^(-1/3)/2M≈1 es casi vacío frente a anchuras de 0.05–0.13·2M: hay que llevarlo a /comite antes de prereg-004.
+- **ρ=126 (2026-10-13, `10d3ebe`):** t_min=10, así que t_min queda en 8/10/10 para ρ=32/63/126 y deja de crecer; el agujero negro localiza 180/180 y Minkowski se abstiene 180/180. Repetido en GPU tras el fallo de la caché de numba, con resultados idénticos. Siguiente paso: /comite sobre el diseño de prereg-004.
 - **Semillas de la fase A, quemadas:** 1, 2, 3, 4, 7, 99 y 12345.
 
 **Why:** «encontrar el horizonte» exige un estimador con `N` finito fuera de 1+1D, y el puente
