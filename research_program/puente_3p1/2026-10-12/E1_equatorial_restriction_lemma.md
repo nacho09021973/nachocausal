@@ -1,6 +1,7 @@
 # E1 — Lema ecuatorial: el orden causal de Schwarzschild 3+1D restringido al ecuador es el de la métrica 2+1D inducida
 
-> **STATUS: `PROOF_WRITTEN / PENDING_AUDIT`.** Unidad teórica. **No** abre ningún frente 2+1D:
+> **STATUS: `PROOF_WRITTEN / AUDITED — AUDIT_PASS_CONDITIONAL_DOMINIO_ALCANZABILIDAD_Y_DEGENERADOS`
+> (ASTRA), condición atendida en §3 (§6).** Unidad teórica. **No** abre ningún frente 2+1D:
 > eso necesita un acta aprobada por el PI. Es el primer paso que el PI autorizó el 2026-10-12
 > («¿Empiezo por el lema ecuatorial?» — «sí»).
 
@@ -79,21 +80,40 @@ Entonces:
 
 ## 3. Consecuencia: qué se hereda y qué cambia en un banco 2+1D ecuatorial
 
-**Se hereda exactamente.** La relación causal entre dos puntos `(U_x, V_x, φ_x)` y
-`(U_y, V_y, φ_y)` es
+**Se hereda exactamente**, con una precisión pedida por la auditoría (§6). E1 es una
+equivalencia entre **existencias de curvas**. Traducirla al criterio con el supremo de B1.2
+exige un dominio adecuado y tratar aparte los casos degenerados. Para un **parche rectangular**
+`K = [U_a, U_b] × [V_a, V_b]` con `C, r > 0`, que es el caso del puente y del banco 2+1D, y para
+`x, y ∈ K` con `U_x <= U_y` y `V_x <= V_y`:
 
 ```text
-x ≺ y   ⟺   distancia angular ecuatorial(φ_x, φ_y)  <=  Delta_max(U_x, V_x; U_y, V_y),
+ΔU > 0 y ΔV > 0 :   x ≺ y   ⟺   dist_φ(x, y) <= Delta_max(x, y) = min(π, sup L[U])
+ΔU = 0 o ΔV = 0 :   x ≺ y   ⟺   dist_φ(x, y) = 0          (curva nula radial; sin giro angular)
 ```
 
-con **el mismo** `Delta_max = min(π, sup L[U])` de B1.2. Por E1, el `sup` de las longitudes
-angulares alcanzables es el mismo en `S²` y en `S¹`. Toda la maquinaria certificada de
-`Delta_max` se aplica sin cambios:
+- **Caso no degenerado.** El rectángulo causal `[U_x, U_y] × [V_x, V_y]` del par está contenido
+  en `K`. La métrica auxiliar `−q² dU dV` admite en él una curva temporal maximizadora, con `V`
+  estrictamente creciente, que es una gráfica `U(V)` admisible. Por tanto el `sup` se alcanza y
+  vale la igualdad. Es un argumento estándar de existencia de maximizadoras en un diamante
+  causal compacto (ASTRA, §6) `[INFERENCE, no formalizado aquí]`. Con `sup L >= π` cualquier
+  separación angular es alcanzable, y el tope `min(π, ·)` no identifica una frontera nula.
+- **Caso degenerado.** Si `ΔV = 0`, la familia de gráficas de B1.2 está vacía, pero la curva nula
+  radial con `V` constante existe. Cualquier giro angular violaría la causalidad. Es la
+  convención «longitud cero» de B1.2 §3 y de H1 de la compuerta, escrita aquí como regla
+  explícita.
+- **Para dominios no rectangulares, la fórmula puede fallar.** Por ejemplo, si a un diamante
+  causal se le quita un punto de su maximizadora, el criterio aceptaría pares que no están
+  unidos por ninguna curva. E1 sigue valiendo en ese caso, porque en ninguna de las dos
+  dimensiones hay curva. Ni el banco ni el puente usan dominios de ese tipo.
+
+Con esa regla, la maquinaria certificada de `Delta_max` se aplica sin cambios:
 - la representación como separación temporal de `q² dU dV`;
 - la monotonía respecto a los extremos;
 - la cota de la recta;
 - Cauchy–Schwarz integral;
 - la calibración.
+
+Los casos de igualdad tienen medida cero, y no afectan a `ρ`, `φ` ni a la ley de un sembrado.
 
 **Cambia:**
 
@@ -130,3 +150,25 @@ normalización.
 3. Que la orientación temporal y el dominio `D × S²` (o el parche) se conserven al no tocar
    `(U, V)`.
 4. Que la ley `p_2` y el peso `G_2` de §3 sean correctos.
+
+## 6. Auditoría
+
+**ASTRA** (`gpt-6-astra`, sellada), en `revisiones/2026-10-12-auditoria-e1/`:
+`AUDIT_PASS_CONDITIONAL_DOMINIO_ALCANZABILIDAD_Y_DEGENERADOS`.
+
+- **El lema E1 se sostiene en los puntos 1–4.**
+  - Antípodas: cualquiera de los dos sentidos sirve.
+  - Regularidad: `ℓ` es absolutamente continua y `min(·, Δ)` es Lipschitz. El ángulo debe
+    leerse como un punto de `S¹`, sin una coordenada `φ` global.
+  - Dominio: se conservan `U(λ)` y `V(λ)`, sin necesidad de convexidad.
+  - Ley `p_2` y peso `e^{−s}`: correctos.
+- **Condición (punto 5): el paso del lema al criterio con el supremo de B1.2.** ASTRA aporta dos
+  contraejemplos válidos. Uno es el caso degenerado `ΔV = 0`, en que la familia de gráficas está
+  vacía y sin embargo existe la curva radial. El otro es un `sup` no alcanzado en un dominio con
+  un agujero.
+
+  Se atendió en §3: la fórmula se restringe a parches rectangulares, se añade la regla explícita
+  para `ΔU = 0` o `ΔV = 0`, y la alcanzabilidad se apoya en la existencia de maximizadoras en el
+  rectángulo causal. Esa existencia queda marcada `[INFERENCE]`, sin formalizar.
+
+**Límite:** una sola casa y una sola ronda. La corrección de §3 no ha vuelto a auditarse.
