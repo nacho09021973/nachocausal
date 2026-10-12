@@ -1,6 +1,6 @@
 # Acta — frente 2+1D ecuatorial: banco de localización del horizonte a partir del orden
 
-> **STATUS: `DRAFT_FOR_PI_SIGNATURE`.** Propone abrir un frente. **No** fija umbrales, semillas
+> **STATUS: `SIGNED` (§9.1 y §9.2, 2026-10-12): frente abierto; fase A autorizada.** Abre un frente. **No** fija umbrales, semillas
 > ni estimador: eso lo hará un preregistro (prereg-004) después de la exploración en `dev`, como
 > en 1+1D. Nada de §4 en adelante se ejecuta sin la firma de §9.
 
@@ -122,10 +122,10 @@ Antes de cerrar la fase C conviene un `/comite`, como se hizo con prereg-002.
 
 ## 9. Firma del PI
 
-1. Abrir el frente 2+1D ecuatorial con el alcance de §1–§3. `[SÍ / NO]`
-2. Fase A (generador) autorizada, con su parada. `[SÍ / NO]`
+1. Abrir el frente 2+1D ecuatorial con el alcance de §1–§3. **SÍ** (PI, 2026-10-12)
+2. Fase A (generador) autorizada, con su parada. **SÍ** (PI, 2026-10-12)
 3. Las fases B, C y D se firman cuando lleguen. `[se firma después]`
 
 ```text
-PI: ____________________          fecha: __________
+PI: Nacho Martín                  fecha: 2026-10-12   (§9.1 y §9.2)
 ```
