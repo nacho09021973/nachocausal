@@ -26,7 +26,9 @@ from scipy.special import lambertw, roots_legendre
 
 ROOT = Path(__file__).resolve().parents[1]
 
-T_EDGE, R_LO, R_HI, TWO_M = 6.0, 0.1, 1.3, 0.5
+import os
+T_EDGE = float(os.environ.get("NC2P1_T_EDGE", "6.0"))   # dev knob for the T-dependence probe
+R_LO, R_HI, TWO_M = 0.1, 1.3, 0.5
 FOUR_M = 2.0 * TWO_M
 EXPLORE_BAND = (7_000_000, 7_000_999)          # 2+1 exploration seeds (phase B)
 VIRGIN_BAND = (8_000_000, 8_999_999)           # reserved for prereg-004; never used here
@@ -37,7 +39,10 @@ FINE = (2048, 8192)         # converged to ~1e-7 (1024 vs 2048 differ by 1.7e-6)
 COARSE_MARGIN = 0.05        # > 10x the measured coarse error
 N_HYP = 48
 
-ZMIN, ZMAX, NZ = -4.0, 10.5, 400001
+# z range: w_min ~ (1 - s_max) e^{s_max} * e^{T + R_HI - R_LO}; margin of 1 in z
+ZMIN = -4.0
+ZMAX = math.log(1.0 + 21.6 * math.exp(T_EDGE + 1.2)) + 1.0
+NZ = int(round((ZMAX - ZMIN) / 3.6e-5)) + 1
 ZT = np.linspace(ZMIN, ZMAX, NZ)
 _W = 1.0 - np.exp(ZT)
 _S = 1.0 + lambertw(-_W / math.e, 0).real
