@@ -1,6 +1,7 @@
 # B4-R — Reapertura de `n=3`: especificación
 
-> **STATUS: `DRAFT_FOR_PI_SIGNATURE`.** Nada de esto se ejecuta hasta que el PI firme §8. Es la
+> **STATUS: `SIGNED` (§8.1 y §8.2, 2026-10-12): reapertura aceptada; fase 0 autorizada;
+> fase 1 pendiente de la compuerta y de una firma nueva.** Es la
 > especificación de la **reapertura** de B4, que está aparcado
 > (`research_program/puente_3p1/2026-09-12/B4_n3_local_identifiability_spec.md`). **No** es una
 > especificación nueva de `n=3`: el objeto, el punto, la carta, el escalado, el criterio y los
@@ -138,13 +139,13 @@ La fase 0 no emite ningún terminal de B4. Una fase 0 favorable **no** es eviden
 ## 8. Firma del PI
 
 1. **Condición de reapertura.** ¿Cumple la maquinaria de envolventes de la compuerta
-   `B4_REOPEN_ONLY_IF`? `[SÍ / NO]`
-2. **Fase 0** autorizada, con la compuerta de §5 tal como está escrita. `[SÍ / NO]`
+   `B4_REOPEN_ONLY_IF`? **SÍ** (PI, 2026-10-12)
+2. **Fase 0** autorizada, con la compuerta de §5 tal como está escrita. **SÍ** (PI, 2026-10-12)
 3. **Fase 1** solo si la fase 0 pasa la compuerta, y con una firma nueva en ese momento.
    `[se firma después]`
 
 ```text
-PI: ____________________          fecha: __________
+PI: Nacho Martín                  fecha: 2026-10-12   (§8.1 y §8.2)
 ```
 
 ## 9. Nota sobre B4.1
