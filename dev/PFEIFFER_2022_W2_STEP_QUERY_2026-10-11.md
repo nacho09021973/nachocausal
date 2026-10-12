@@ -1,7 +1,7 @@
 # Query on the light-cone-region estimate in Pfeiffer (2022), §3.3
 
 **Date:** 2026-10-11
-**Status:** `DRAFT_FOR_PI_REVIEW` — not sent
+**Status:** `SENT` by the PI on 2026-10-12 (draft text as reviewed; recipients chosen by the PI)
 **Scope:** one step in one section of one thesis. Independent of any work of ours.
 
 **Reference, verified against the source and the public record:**

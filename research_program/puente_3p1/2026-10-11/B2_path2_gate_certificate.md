@@ -306,3 +306,14 @@ medio real. La enmienda sigue vigente: excluir cero en `t0` **no** emite un term
 ```text
 PI: Nacho Martín              fecha: 2026-10-12
 ```
+
+## Adenda 2026-10-12 — el control de fast-math pasa en vacío con la caché
+
+El `fastmath_guard` de este verificador lee el IR con `inspect_llvm`. Cuando los kernels se
+cargan desde la caché de numba (`cache=True`), ese IR es un módulo vacío, y el control da
+`ok = True` sin haber inspeccionado nada. Esto afecta a las reejecuciones de §8: la
+reproducción bit a bit y probablemente la condición (v). Se comprobó aparte recompilando los
+19 kernels sin caché: **ninguno tiene flags** (`dev/explore_gate_fastmath_fresh_ir.py`). El
+número y el terminal no cambian; solo cambia la evidencia del control. Detalle en
+`dev/B2_FASTMATH_GUARD_CACHE_FINDING_2026-10-12.md`. Este verificador no se edita, porque es el
+objeto auditado.
