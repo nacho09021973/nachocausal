@@ -16,7 +16,7 @@ promocionado `research_program/puente_3p1/2026-10-11/B2_path2_gate_certificate.m
 
 ```text
 S_lo (compuerta, en lambda*_binary64, dirección d)   = +0.0013679385529351228
-pérdida por desplazar el punto  (DELTA = 1e-16)      <=  2.5435e-08
+pérdida por desplazar el punto  (DELTA = 1e-16)      <=  2.5436e-08
 pérdida por cambiar la dirección (EPS = 1e-16)       <=  1.8215e-16
 S en el punto medio real, dirección real             >= +0.0013679131178324765
 drho/dt en el punto medio real                       >= +0.0070473319080282945
@@ -104,11 +104,11 @@ están en el JSON:
 
 La misma cota, con la dirección fija y el punto en cualquier lugar de la bola sup de radio `r`.
 La lista de radios está fijada de antemano y no se busca nada. La tabla muestra 6 de los 8
-radios de `DIAG_RADII`; el JSON los tiene todos:
+radios de `DIAG_RADII`, truncados hacia abajo a 7 decimales; el JSON los tiene todos:
 
 | `r` | `1e-16` | `1e-12` | `1e-9` | `1e-8` | `1e-7` | `1e-6` |
 |---|---|---|---|---|---|---|
-| cota inferior de `S` | `+0.0013679` | `+0.0013654` | `+0.0012875` | `+0.0011134` | `+0.0005621` | `−0.0011910` |
+| cota inferior de `S` | `+0.0013679` | `+0.0013653` | `+0.0012874` | `+0.0011134` | `+0.0005620` | `−0.0011911` |
 
 Como `max|d_i| = 1`, los puntos `γ(s)` con `|s| <= 1e-7` caen en la bola de radio `1e-7`. Por
 tanto `rho∘γ` es **estrictamente creciente en `|s| <= 1e-7`**. Es un radio cuantificado, pero

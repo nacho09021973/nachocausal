@@ -1,8 +1,9 @@
 # B2.1 — certificado por cajas: `drho/dt > 0` en todo `t ∈ [0.45, 0.55]`
 
-> **STATUS: `FROZEN / PENDING_INDEPENDENT_AUDIT`.** Como la compuerta y la transferencia del
-> signo, se congela y se sube **antes** de auditarlo, y no se promociona hasta que lo revise
-> otra familia de modelos. Guardarraíles de B2 intactos: `no_new_path`, `no_new_t0`,
+> **STATUS: `FROZEN / AUDITED — AUDIT_PASS_CONDITIONAL_IR_EJECUTADO_Y_COTA_DECIMAL` (ASTRA),
+> con las dos condiciones atendidas (§8). NO promocionado: decide el PI.** Se congeló y se subió
+> **antes** de auditarlo (`f1e030f`), como la compuerta y la transferencia del signo.
+> Guardarraíles de B2 intactos: `no_new_path`, `no_new_t0`,
 > `no_new_points`, `no_search`, `no_adjustment`.
 
 **Fecha:** 2026-10-12 · **Verificador:** `verify_b2_1_box_certificate.py` →
@@ -15,8 +16,8 @@ t ∈ [9/20, 11/20]   N = 100 cajas contiguas de ancho 1/1000,  M = 128
 min_k S_lo            = +0.0012174762052819036   (caja t ∈ [9/20, 451/1000])
 max_k S_lo            = +0.0013992726582646622   (caja t ∈ [549/1000, 11/20])
 min_k drho/dt lower   = +0.006648095518840022
-fastmath_guard        : 19 kernels, IR recompilado sin caché (>= 4556 caracteres), sin flags, mutante detectado, ok = True
-TERMINAL = B2.1_POSITIVE_DERIVATIVE   (pendiente de auditoría)
+fastmath_guard        : 19 kernels, código ejecutado compilado en el proceso (caché vacía, IR >= 8801 caracteres, cuerpos prange incluidos), sin flags, mutante detectado, ok = True
+TERMINAL = B2.1_POSITIVE_DERIVATIVE   (ASTRA: pase condicional, condiciones atendidas en §8; sin promocionar)
 ```
 
 ---
@@ -95,8 +96,21 @@ La misma de la compuerta (§3 de su nota): un ulp hacia afuera tras cada operaci
 tablas monótonas certificadas con la capa escalar de B1.5, sumas por el árbol dirigido de B1.5 y
 control de fast-math en el IR de LLVM. Los kernels de la compuerta se importan **sin cambios**.
 El control cubre los 16 que este verificador usa, más los 3 nuevos (`lb_rows_xy`,
-`strip_weights`, `face_h_cells`): 19 en total. Inspecciona IR **recompilado sin caché** (§6).
-Los otros tres de la compuerta (`lb_rows`, `face_h`, `segment_weights`) no se ejecutan aquí. La
+`strip_weights`, `face_h_cells`): 19 en total. Los otros tres de la compuerta (`lb_rows`,
+`face_h`, `segment_weights`) no se ejecutan aquí.
+
+**El control inspecciona el código que se ejecutó** (corrección pedida por ASTRA, §8):
+- la ejecución usa una caché de numba privada y vacía (`NUMBA_CACHE_DIR` temporal, fijada antes
+  de importar numba), así que todo kernel se compila en el propio proceso, y se exige
+  `stats.cache_hits == 0`;
+- se inspecciona la librería de cada sobrecarga **ejecutada** junto con todas las que enlaza,
+  porque ahí viven los cuerpos `prange` (`__numba_parfor_gufunc_*`), y se exige que cada kernel
+  paralelo tenga al menos uno;
+- se exige la `define` del nombre mangled de la propia función;
+- el mutante `fastmath` se detecta por esa misma vía.
+
+Una prueba negativa confirma que un kernel cargado de la caché por defecto hace fallar el
+control («loaded from a numba cache»). La
 tabla de `w` es una sola para todas las cajas y cubre `K_out` en todo el intervalo, con el
 margen de `1e-3`.
 
@@ -123,30 +137,32 @@ kernels.
   **lo mismo bit a bit** que el `lb_rows` auditado de la compuerta en los dos sentidos
   (`M = 32`, 1 de cada 7 fuentes; 40 142 y 39 822 entradas no nulas) (`dev/explore_b2_1_box_controls.py`).
 - **Control negativo.** Una sola caja sobre todo `[0.45, 0.55]` con `M = 64` da
-  `S_lo = −0.005916`. La cota **sí** depende del ancho de la caja, así que no es vacía.
+  `S_lo ≈ −0.0059`. La cota **sí** depende del ancho de la caja, así que no es vacía.
 - **Contra la compuerta.** Las cajas que bordean `t0` dan `+0.0013072` (`[0.499, 0.5]`) y
-  `+0.0013091` (`[0.5, 0.501]`), frente a `+0.0013679` del punto aislado con la misma `M`. Una caja
+  `+0.0013090` (`[0.5, 0.501]`), frente a `+0.0013679` del punto aislado con la misma `M`. Una caja
   de ancho `1e-3` cuesta `~6e-5` en `S`.
-- **Determinismo.** Dos ejecuciones completas (antes y después de corregir el control de
-  fast-math) dan las mismas `S_lo` bit a bit. Tiempo: 591 s en cajas y 13.5 s en tablas.
-- **Control de fast-math.** La primera ejecución dio `ok = False`, y estaba bien que lo diera.
+- **Determinismo.** Tres ejecuciones completas, con las tres versiones del control de fast-math,
+  dan las mismas `S_lo` bit a bit. Tiempo: 591 s en cajas y 13.5 s en tablas.
+- **Control de fast-math** (historia). La primera ejecución dio `ok = False`, y estaba bien que lo diera.
   Exigía firma compilada en tres kernels de la compuerta que este verificador no usa
   (`lb_rows`, `face_h`, `segment_weights`); ahora se excluyen por nombre. Al corregirlo
   apareció un fallo más serio: con `cache=True`, `inspect_llvm` devuelve un módulo vacío y el
-  control pasaba en vacío. Ahora recompila sin caché y exige la `define` de cada función. Afecta
+  control pasaba en vacío. La segunda versión recompilaba sin caché. ASTRA objetó que eso no
+  inspecciona el código ejecutado; la versión final es la de §4. Afecta
   también al control de la compuerta, cuyos 19 kernels se comprobaron aparte, limpios
   (`dev/B2_FASTMATH_GUARD_CACHE_FINDING_2026-10-12.md`).
 
-Muestra de cajas (todas en el JSON):
+Muestra de cajas (todas en el JSON). Las cotas inferiores (`S_lo`, `drho/dt`, `B'_lo`) están
+truncadas hacia abajo y `B_hi` redondeada hacia arriba:
 
 | caja `t` | `S_lo` | `drho/dt >=` | `B_hi` | `B'_lo` |
 |---|---|---|---|---|
-| `[9/20, 451/1000]` | `+0.0012175` | `+0.0067949` | `0.003731` | `0.007460` |
-| `[19/40, 119/250]` | `+0.0012626` | `+0.0067608` | `0.003969` | `0.007813` |
+| `[9/20, 451/1000]` | `+0.0012174` | `+0.0067948` | `0.003732` | `0.007459` |
+| `[19/40, 119/250]` | `+0.0012626` | `+0.0067607` | `0.003969` | `0.007813` |
 | `[499/1000, 1/2]` | `+0.0013072` | `+0.0067297` | `0.004209` | `0.008165` |
-| `[1/2, 501/1000]` | `+0.0013091` | `+0.0067285` | `0.004219` | `0.008180` |
-| `[21/40, 263/500]` | `+0.0013543` | `+0.0066854` | `0.004482` | `0.008558` |
-| `[549/1000, 11/20]` | `+0.0013993` | `+0.0066481` | `0.004746` | `0.008934` |
+| `[1/2, 501/1000]` | `+0.0013090` | `+0.0067285` | `0.004219` | `0.008180` |
+| `[21/40, 263/500]` | `+0.0013543` | `+0.0066854` | `0.004482` | `0.008557` |
+| `[549/1000, 11/20]` | `+0.0013992` | `+0.0066480` | `0.004747` | `0.008933` |
 
 
 ## 7. Qué debe mirar la auditoría
@@ -163,3 +179,36 @@ Muestra de cajas (todas en el JSON):
    `v_n^hi · J^lo`.
 5. Que `v_n` encierre las direcciones de ambas curvas, y que `coord_range` recorra las dos
    curvas y los dos extremos de cada caja.
+
+## 8. Auditoría
+
+**ASTRA** (`gpt-6-astra`, esfuerzo alto, sellada; llamada directa a `codex exec` con las
+banderas de sanedrín) auditó `f1e030f`: `revisiones/2026-10-12-auditoria-b2_1-cajas/`
+(`acta.md`, `astra_prompt.md`, `astra.md`).
+
+```text
+AUDIT_PASS_CONDITIONAL_IR_EJECUTADO_Y_COTA_DECIMAL
+```
+
+**Se sostiene:**
+- §7.1, las inclusiones, las franjas y las extensiones;
+- §7.2, los vértices y las orientaciones;
+- §7.3, la retícula exterior con la fila delgada;
+- §7.4, `Z'` y el ensamblado. Advierte además que exigir `Z'_hi > 0` en lugar de `Z'_lo > 0`
+  es una relajación válida;
+- §7.5, las dos curvas y las velocidades;
+- la uniformidad: ninguna pieza de `run_box` usa un valor de una `lambda` concreta.
+
+No encontró ningún contraejemplo al signo.
+
+**Condiciones y cómo se atendieron:**
+
+| condición | atendida |
+|---|---|
+| **IR ejecutado.** `fresh_ir` inspeccionaba un dispatcher recompilado, no el ejecutado, y la búsqueda de texto admitía la `define` de otra función | el control final se describe en §4: caché privada vacía, `cache_hits == 0`, librerías enlazadas con los cuerpos `prange`, `define` del nombre mangled propio y prueba negativa con un kernel de caché. Tercera ejecución completa, idéntica bit a bit, con `ok = True` |
+| **Cota decimal.** El acta decía `drho/dt >= 0.0066481`, por encima del valor certificado `0.006648095…` | la nota muestra las cotas inferiores truncadas hacia abajo y las superiores redondeadas hacia arriba (§6). El mismo error, redondear cotas hacia el lado equivocado, apareció en la compuerta (`+0.00705`), en la tabla diagnóstica de la transferencia y en una cota superior de la transferencia. Se corrigió en las notas; las actas cerradas y los mensajes de commit quedan como estaban |
+
+Precisión de ASTRA que se adopta: «cualquier `M` y `N`» significa cualquier par que permita
+construir la retícula y superar sus comprobaciones.
+
+**Límites:** una sola casa y una sola ronda, no un sanedrín. ASTRA no ejecutó nada.

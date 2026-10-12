@@ -15,7 +15,7 @@
 | Representación antigua `[recta, CS]` | agotada en `t0`; opción (B) `M=16` muerta | `41918aa`, `dev/B2_GATE_RESULT_2026-10-11.md` |
 | Representación nueva: tiempo propio 2D + calibración de Hamilton–Jacobi | intervalo ideal de `S` excluye cero | `339540b`, `9563807`, `dev/B2_NEW_REPRESENTATION_2026-10-11.md` |
 | Camino 2: prototipo flotante | `S_lo > 0` desde `M=64` | `b040ec1`, `dev/B2_PATH2_PROTOTYPE_2026-10-11.md` |
-| **Certificado con redondeo dirigido** | `S_lo = +0.0013679`, `drho/dt(t0) >= +0.00705`, terminal `B2_CORRECTED_POSITIVE` | `7909c0e`, `research_program/puente_3p1/2026-10-11/` |
+| **Certificado con redondeo dirigido** | `S_lo = +0.0013679`, `drho/dt(t0) >= +0.0070474`, terminal `B2_CORRECTED_POSITIVE` | `7909c0e`, `research_program/puente_3p1/2026-10-11/` |
 | **Auditoría del sanedrín** (5 casas, 0 fallos) | `AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`, unánime; condición comprobada después y reejecución idéntica bit a bit | `beaf6af`, `revisiones/2026-10-11-auditoria-certificado-b2/RESUMEN.md` |
 
 El certificado **no** está promocionado todavía. Lo bloquean solo los pasos 1 y 2 de abajo.

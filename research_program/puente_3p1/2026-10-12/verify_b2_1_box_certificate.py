@@ -40,8 +40,17 @@ Usage: .venv/bin/python research_program/puente_3p1/2026-10-12/verify_b2_1_box_c
 """
 import json
 import math
+import os
+import re
 import sys
+import tempfile
 import time
+
+# Every kernel is compiled IN THIS PROCESS: an empty, private numba cache directory, set before
+# numba is imported.  A dispatcher loaded from a cache returns an EMPTY module from inspect_llvm,
+# so the fast-math guard must inspect code that was compiled here (dev/B2_FASTMATH_GUARD_CACHE_
+# FINDING_2026-10-12.md).  The guard also checks stats.cache_hits == 0 for every kernel.
+os.environ["NUMBA_CACHE_DIR"] = tempfile.mkdtemp(prefix="b2_1_numba_cache_")
 from fractions import Fraction as Fr
 from pathlib import Path
 
@@ -186,22 +195,29 @@ NEW_KERNELS = (lb_rows_xy, strip_weights, face_h_cells)
 GATE_UNUSED = ("lb_rows", "face_h", "segment_weights")
 
 
-def fresh_ir(fn):
-    """LLVM IR of `fn` recompiled WITHOUT the on-disk cache, for every signature it has run with.
-
-    A dispatcher loaded from numba's cache returns an EMPTY module from inspect_llvm (numba warns
-    "Inspection disabled for cached code"), so a guard reading it passes vacuously.  Recompiling
-    the same py_func with the same options minus `cache` gives the IR that is actually inspected;
-    each module must contain the function's definition, so an empty one fails."""
-    opts = {k: v for k, v in fn.targetoptions.items() if k not in ("cache", "nopython")}
-    fresh = njit(**opts)(fn.py_func)
+def executed_ir(fn):
+    """LLVM IR of every overload of `fn` that ran in this process, with every library it links
+    (the prange bodies, __numba_parfor_gufunc_*, live in linked libraries).  Fails if any
+    overload came from a cache, or if a module lacks the definition of fn's own mangled name."""
+    hits = sum(fn.stats.cache_hits.values())
+    if hits:
+        raise RuntimeError("%s was loaded from a numba cache (%d hits)" % (fn.py_func.__name__, hits))
+    name = fn.py_func.__name__
+    own = re.compile(r"^define [^\n]*@_ZN\d+\w*?%d%sB" % (len(name), re.escape(name)), re.M)
     out = []
     for sig in fn.signatures:
-        fresh.compile(sig)
-        ir = fresh.inspect_llvm(sig)
-        if "define " not in ir or fn.py_func.__name__ not in ir:
-            raise RuntimeError("empty or foreign IR for %s" % fn.py_func.__name__)
-        out.append(ir)
+        lib = fn.overloads[sig].library
+        seen, stack = {}, [lib]
+        while stack:
+            cur = stack.pop()
+            if id(cur) in seen:
+                continue
+            seen[id(cur)] = cur
+            stack.extend(getattr(cur, "_linking_libraries", ()))
+        top = lib.get_llvm_str()
+        if not own.search(top):
+            raise RuntimeError("no definition of %s in its own module" % name)
+        out.extend(c.get_llvm_str() for c in seen.values())
     return out
 
 
@@ -210,27 +226,35 @@ def fastmath_guard():
     used = tuple(fn for fn in gate.KERNELS if fn.py_func.__name__ not in GATE_UNUSED) + NEW_KERNELS
     assert len(used) == len(gate.KERNELS) - len(GATE_UNUSED) + len(NEW_KERNELS)
     uncompiled = [fn.py_func.__name__ for fn in used if not fn.signatures]
-    flags, ir_chars = {}, {}
+    flags, ir_chars, parfor_bodies = {}, {}, {}
     for fn in used:
-        irs = fresh_ir(fn)
-        flags[fn.py_func.__name__] = sorted({m.group(0) for ir in irs for m in gate._FAST.finditer(ir)})
-        ir_chars[fn.py_func.__name__] = sum(len(ir) for ir in irs)
+        irs = executed_ir(fn)
+        name = fn.py_func.__name__
+        flags[name] = sorted({m.group(0) for ir in irs for m in gate._FAST.finditer(ir)})
+        ir_chars[name] = sum(len(ir) for ir in irs)
+        parfor_bodies[name] = len({m.group(0) for ir in irs for m in re.finditer(
+            r"^define [^\n]*@_ZN\w*?__numba_parfor_gufunc_0x[0-9a-f]+", ir, re.M)})
+    parallel_ok = all(parfor_bodies[fn.py_func.__name__] > 0 for fn in used
+                      if fn.targetoptions.get("parallel"))
 
     @njit(fastmath=True)
     def _mutant(a, b, c):
         return a * b + c
     _mutant(1.0, 2.0, 3.0)
-    mutant_caught = bool(gate.fastmath_flags(_mutant))
-    # the mutant must also be caught THROUGH fresh_ir, the path the kernels go through
-    mutant_fresh = bool(gate._FAST.search(fresh_ir(_mutant)[0]))
+    mutant_caught = bool(gate._FAST.search("".join(executed_ir(_mutant))))
     clean = all(not v for v in flags.values())
-    return {"kernels_checked": len(flags), "inspection": "fresh recompilation without cache",
+    return {"kernels_checked": len(flags),
+            "inspection": "executed overloads, compiled in-process (private empty numba cache, "
+                          "cache_hits == 0), own mangled definition required, linked libraries "
+                          "included",
             "min_ir_chars": min(ir_chars.values()),
+            "parfor_bodies_found": {k: v for k, v in parfor_bodies.items() if v},
+            "parallel_kernels_have_bodies": parallel_ok,
             "gate_kernels_excluded_as_unused": list(GATE_UNUSED),
             "kernels_without_compiled_signature": uncompiled,
             "flags_found": {k: v for k, v in flags.items() if v}, "all_clean": clean,
-            "mutation_fastmath_detected": bool(mutant_caught and mutant_fresh),
-            "ok": bool(clean and mutant_caught and mutant_fresh and not uncompiled)}
+            "mutation_fastmath_detected": mutant_caught,
+            "ok": bool(clean and mutant_caught and parallel_ok and not uncompiled)}
 
 
 # ---------------------------------------------------------------------------------------------
