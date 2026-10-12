@@ -1,11 +1,12 @@
 # B2 — certificado de la compuerta en `t0`: `drho/dt > 0` con redondeo dirigido
 
-> **STATUS: `CERTIFICATE_FROZEN / AUDITED — AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`, con la
-> condición comprobada después (§8). NO promocionado: la promoción la decide el PI.** El objeto se
-> congeló y se subió **antes** de auditarlo, como B1.5 (§11 de su nota). Lo auditó el sanedrín
-> del 2026-10-11 (cinco casas de cinco familias de modelos), que no encontró ningún fallo en
-> el número. Esta revisión de la nota solo corrige el texto según su veredicto; el verificador y
-> el JSON son los de `7909c0e`.
+> **STATUS: `B2_GATE = CERTIFIED_POSITIVE_AT_T0`** (`AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES`,
+> condición verificada; promocionado por el PI el 2026-10-12, §9). `B2.1` y `B3` siguen en
+> `INCONCLUSIVE_BY_BOUNDS`. El objeto se congeló y se subió **antes** de auditarlo, como B1.5
+> (§11 de su nota). Lo auditó el sanedrín del 2026-10-11 (cinco casas de cinco familias de
+> modelos), que no encontró ningún fallo en el número. La revisión del 2026-10-12 solo corrige
+> el texto según su veredicto; el verificador y el JSON son
+> los de `7909c0e`.
 > Guardarraíles de B2 intactos: `no_new_path`, `no_new_t0`, `no_new_points`, `no_search`,
 > `no_adjustment`. La enmienda sigue vigente: excluir cero en `t0` **no** emite un terminal de
 > B2.1.
@@ -17,7 +18,7 @@
 ```text
 S_lo = +0.0013679385529351228          (S = B' − 2 (Z'/Z) B, en lambda(0.5))
 drho/dt(t0) >= +0.007047462946767621    enclosure [0.00704746, +inf), excluye cero
-TERMINAL = B2_CORRECTED_POSITIVE        (auditado con pase condicional; sin promocionar)
+TERMINAL = B2_CORRECTED_POSITIVE        (auditado con pase condicional; promocionado, §9)
 ```
 
 ---
@@ -285,3 +286,23 @@ comprobaron fuera del sanedrín el mismo 2026-10-11:
 **Diferencia con B1.5.** B1.5 llegó a `AUDIT_PASS_FORMAL` en su tercera ronda. Este certificado
 tiene un pase **condicional**, y la condición se comprobó fuera del sanedrín, no en una segunda
 ronda. Si eso basta para promocionarlo lo decide el PI (`docs/hoja_de_ruta_12_oct_2026.md` §2).
+
+## 9. Promoción
+
+Decisión del PI del 2026-10-12, tomada después de la revisión de texto `a671493` y **sin**
+segunda ronda del sanedrín. El PI dio por suficiente el pase condicional unánime, porque la
+condición está comprobada fuera del sanedrín (§8).
+
+```text
+B2_GATE = CERTIFIED_POSITIVE_AT_T0   (AUDIT_PASS_CONDITIONAL_B15_DEPENDENCIES, condición verificada)
+B2.1    = INCONCLUSIVE_BY_BOUNDS     (sin cambio)
+B3      = INCONCLUSIVE_BY_BOUNDS     (sin cambio)
+```
+
+El alcance es el de §1: el signo en `lambda*_binary64` a lo largo de `d`, y monotonía en un
+intervalo no cuantificado de `γ`. **No** da el radio que pide B2.1 ni el signo en el punto
+medio real. La enmienda sigue vigente: excluir cero en `t0` **no** emite un terminal de B2.1.
+
+```text
+PI: Nacho Martín              fecha: 2026-10-12
+```

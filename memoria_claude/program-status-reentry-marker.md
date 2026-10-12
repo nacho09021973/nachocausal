@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: ba8e0f66-5e67-49f8-a0fa-d7165b974d41
-  modified: 2026-08-16T09:21:13.337Z
+  modified: 2026-08-19T08:02:47.601Z
 ---
 
 Sustituye al marcador de pausa del 2026-07-19 (pausa → cierre → reapertura acotada).
@@ -89,6 +89,82 @@ cierre, C6 se cerró y se promovió a **teorema de manuscrito** (`141cccc` cierr
 `861d5e5` lo promueve), con teorema de separación *dimension-free* a fixed-n y auditoría de
 prioridad sobre C6/Teorema 3.9. Aun así, la **línea de localizadores sigue clausurada** por §3 de
 la nota de reapertura: C6 es resultado escrito, no vía viva.
+
+**Cadena NC (rama `agent/nc2d-selected-second-moment`, 2026-08-17/18).** Serie de notas de
+alcance firmadas una a una por el PI (`docs/program_reopening_note_2026-08-1{6,7,8}_*`), cada una
+con terminal precomprometido y un único documento científico en `emergencia/`: NC-0 (auditoría) →
+NC-1 (preflight asintótico) → NC-2A (`b_n(m)` escala interior, PROVED) → NC-2B (ley seleccionada
+existe, PROVED) → NC-2C (masa interior uniforme + `Pr(S)>=½n^(-(2n^(4/5)+4))`, PROVED) → NC-2D
+(segundo momento seleccionado: `Var(sqrt(K L)|S)<=2800 n^(9/5)log n`, PARCIAL) → **NC-2E**
+(2026-08-18, `NC2E_PARTIAL_RELATIVE_VARIANCE_REDUCTION`). Objetivo vivo `NC2E-O3`:
+`Var_{nu_n}(sqrt(K_h L_h))<=C_q n` (⇒ `Var(ell_h|S)=O(1/n)` ⇒ `liminf T_n^h>0` en el canal
+`sigma(M_h)`, fixed-n, d=2). NC-2E probó
+`Var <= 10^6 n[log(n!/|S_n|)+4log n]` y **redujo todo el problema a una sola obligación**:
+`sum_{pi in S_n}(R+Delta_n)^2 <= (C/n)|S_n|` (discrepancia rectangular media cuadrática bajo la
+medida seleccionada). Techo calculado: la familia «cola incondicional ÷ Pr(S)» no baja de
+`n log n` ni con `Pr(S)=1`, así que **mejorar `Pr(S)` no cierra O3 por sí solo**. `NC2E_O3 = OPEN`.
+**`NC-2F`** (2026-08-18, autorizado por instrucción general del PI «vamos con 1», no por firma
+conforme a borrador — **conviene refrendo**): (a) `rho=ceil(20 sqrt(n log n))` en la familia
+prescrita de NC-2C §4.1 pasa las cinco desigualdades de margen ⇒
+`Pr(S) >= ½ n^(-(40 sqrt(n log n)+5))` ⇒ **exponente de varianza 9/5 → 3/2**
+(`Var(q|S) <= 4.2e7 n^(3/2)(log n)^(3/2)`, `Var(ell|S) <= 4.3e7 (log n)^(3/2)/sqrt(n)`);
+(b) cota **incondicional** autocontenida `E[Delta_n^2] <= 4.2e4/n` (reducción a esquinas +
+proceso empírico iid + encadenamiento diádico + Doob), que cierra el objeto (B) de NC-2E.
+Consecuencia **condicional** (hipótesis NO demostrada): si `Pr(S) >= c > 0` entonces `NC2E.1` con
+`C_q = 3.4e9/c`, para `n>=10^40`. Ojo: `Pr(S)>=c` está **abierta en ambos sentidos** — sólo hay
+cota inferior que decae, ninguna cota superior incondicional en el repo. **La obligación que queda
+para cerrar O3 por la ruta del Thm 8.1 de NC-2E es selectiva y afecta a LOS DOS términos**:
+`sum_{pi in S_n} (R + Delta_n)^2 <= (C/n)|S_n|`. NC-2F(b) aporta **una mitad** (el término
+`Delta_n`, sólo incondicionalmente); `R` está igual desde NC-2E Lema 6.1, y su única cota
+*relativa* (Lema 6.3) da `O((log n)^1.5/sqrt n)`, insuficiente. **No contabilizar lo que falta
+usando sólo `Delta_n`** — ese error se commiteó el 2026-08-18 y lo cazó el foro-002.
+NC-2C/2D/2E no se modifican (append-only).
+
+**Auditoría adversarial foro-002** (`docs/foro/foro_decision_002_nc2fb-auditoria-adversarial.md`,
+`REVISE_AND_RECONVENE`): el Teorema 1.1 de NC-2F(b) PASA con recómputo independiente; se
+corrigieron una desigualdad publicada falsa (razón de la cola `0.7270292`, no `<0.72`), la omisión
+de `R`, y la falta de etiqueta CONDICIONAL en el Cor 8.1. **BLOCK del guardián** contra declarar
+«cerrada de forma definitiva la parte incondicional»: ese objeto no está definido en el repo
+(`grep -rl "parte incondicional"` → 0 ficheros), ningún criterio se fijó antes, y la práctica
+del repo son 11 reaperturas acotadas tras un cierre. Si se cierra, con cláusula de reapertura.
+
+**Actualización 2026-08-21 — ledger del teorema normalizado (`cc6f216`, rama
+`agent/nc2fb-lemma-2-1-lean`).** Nota **firmada** por el PI:
+`docs/status_note_2026-08-21_normalized_theorem_ledger.md`. Corrige una atribución errónea que
+circulaba en deliberación: **`V_n^h>0` NO es resultado de NC-2B**. Lo que NC-2B Thm 3.1 prueba
+para todo `n>=6` es `Pr_n(S)>=1/n!>0`, es decir la **existencia del condicionamiento**
+(`D_h ⊇ {n>=6}`). La positividad del denominador es de **NC-0 ronda 4 §10.3**
+(`emergencia/P1a_count_volume_canal_sigma_m_d2.md:368`), donde el objeto se llama `B_n^h` y es
+**literalmente** `Var(ell|n,h,S)` = el `V_n^h` de NC-1 = el `Var(ell_h|n,h,S)` de NC-2B/2D: un
+único objeto con tres nombres. La conjunción de ambos cierra `V_n^h>0` para toda la cola, luego
+`T_n^h` está bien definido para todo `n>=6` y ambos lados. `DENOMINATOR_POSITIVITY =
+PROVED_ALL_N_GE_6_BOTH_SIDES`: **deja de ser deuda, no volver a abrirla por parecido de
+notación.** Hereda la dependencia del lema de soporte `2<=K,L<=n-4`
+(`emergencia/P1a_count_volume_lema_kl_d2.md:84`) — **cambiar el selector la invalida sin aviso**.
+
+**Frente vivo reducido a tres, todas de escala y ninguna de no-degeneración:**
+- `DENOMINATOR_SCALE_COUNTS_PROXY` — `NC2E-O3`, `Var_{nu_n}(q_{n,h})<=C_q n`;
+- `DENOMINATOR_SCALE_REAL_OBJECT` — `Var(ell_h|n,h,S)=O(1/n)`. **NC-2E los lista por separado**
+  (`emergencia/P1a_count_volume_selected_variance_clt_scale_d2.md:794-795`): no colapsarlos en un
+  solo token, porque el puente entre ellos es justo lo que falta;
+- `SELECTION_MASS_UNIFORM` — `Pr_n(S)>=c>0`, `OPEN_NOT_REFUTED`. `1/n!` **no** sirve aquí: basta
+  para definir el condicionamiento y no para la hipótesis del Cor 8.1 de NC-2F(b).
+
+Puente entre las dos primeras: `sum_{pi in S_n}(R+Delta_n)^2 <= (C/n)|S_n|`, con **sólo la mitad
+`Delta_n` suministrada y sólo incondicionalmente**. **Advertencia metodológica congelada en §4 de
+la nota:** el objetivo no puede degenerar en una cota absoluta de `E[Delta_n^2]`; hay que
+demostrar que el control **sobrevive al condicionamiento** y tiene la escala correcta respecto de
+`Var(ell|n,h,S)`.
+
+Objeto principal, sin ambigüedad (§2 de la nota):
+`T_n^h = inf_f E[(ell-f(M))^2|n,h,S] / Var(ell|n,h,S)`, ínfimo alcanzado en
+`f*(M)=E[ell|M,n,h,S]` por proyección ortogonal en `L^2`. `liminf T_n^h>0` significa
+exactamente: **todo predictor basado sólo en `M` conserva asintóticamente una fracción `c_h>0`
+del riesgo de Bayes normalizado**. No es reconstrucción, no es insuficiencia para toda pérdida,
+no es información mutua. Enunciado objetivo registrado (NO probado): *uniform asymptotic
+`L^2`-insufficiency of the count-volume channel for `ell`*. `NOVELTY_CERTIFIED = NO`;
+`BRAUN_OVERLAP = COMPLEMENTARY_NOT_EQUIVALENT` (Braun asume `d>=3`, matrices etiquetadas, sin
+estimador ni tasa).
 
 Relacionado: [[prereg002-pass-artifact-gap]] (el PASS sellado de 1+1D sigue siendo el activo
 positivo), [[pr003-fase3-lecam]], [[estimator-v2-exploration]], [[memoria-claude-sync]].

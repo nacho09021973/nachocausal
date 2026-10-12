@@ -1,6 +1,6 @@
 # Memory index
 
-- [ESTADO DEL PROGRAMA — marcador de reentrada](program-status-reentry-marker.md) — cerrado 2026-07-30 (deóntico, tag `program-closed-2026-07-30`) y REABIERTO ACOTADO 2026-07-31 sólo para R1 (paper de límites) y R2 (derivar λ⁶); caja de 6 semanas, R2 tope 2; C6 ya es teorema, no BLOCKED; 2026-08-16: R2 cerrado como abierto y tricotomía EF-4.3 REFUTADA en n=24; LEER PRIMERO
+- [ESTADO DEL PROGRAMA — marcador de reentrada](program-status-reentry-marker.md) — cerrado 2026-07-30 (deóntico, tag `program-closed-2026-07-30`) y REABIERTO ACOTADO 2026-07-31 sólo para R1 (paper de límites) y R2 (derivar λ⁶); caja de 6 semanas, R2 tope 2; C6 ya es teorema, no BLOCKED; 2026-08-16: R2 cerrado como abierto y tricotomía EF-4.3 REFUTADA en n=24; 2026-08-21: positividad de `V_n^h` CERRADA (es de NC-0 §10.3, no de NC-2B) y frente vivo reducido a tres deudas de escala; LEER PRIMERO
 - [GPU exploration backend](gpu-exploration-backend.md) — optional CuPy GPU path in dev/ only; sealed validation stays CPU numpy 1.26.4, two-venv setup, WSL libcuda gotcha
 - [Next step: blind validation](next-step-blind-validation.md) — step #5 EXECUTED 2026-06-21 → verdict FAIL (coverage 0.30, fp 0.10); seeds burned; next is estimator-v2 dev work
 - [Estimator-v2 exploration](estimator-v2-exploration.md) — post-FAIL dev work: volume observable fixes coverage (ii), false-positive (iv) axis still open; dev scripts + seed hygiene (EXPLORE_POOL / reserved 002 band)
@@ -10,3 +10,5 @@
 - [Todo número sale del script commiteado](numbers-must-come-from-committed-script.md) — fallo real cazado por /auditor 2026-07-25 (AUDIT_FAIL): números de comandos ad-hoc en una nota; emitirlos desde el script + assert + barrido verbatim
 - [Protocolo /foro standalone](foro-protocol-standalone.md) — foro adversarial genérico extraído de /comite; vive en ~/foro (fuera de todo repo, sin git) y se carga por symlink desde ~/.claude/skills/foro
 - [Memoria sync entre máquinas](memoria-claude-sync.md) — snapshot commiteado en memoria_claude/; re-copiar+commitear al final de toda sesión que cambie la memoria; restaurar al empezar en máquina nueva
+- [V1 bilingüe congelada](manuscript-v1-frozen.md) — manuscrito/manuscrito_v1_{en,es}.{md,pdf} inmutables en 046b377; cambios científicos → v2, nunca sobrescribir
+- [Puente 3+1D / B2 compuerta](puente-3p1-b2-gate.md) — 2026-10-12 PROMOCIONADA CERTIFIED_POSITIVE_AT_T0 (pase condicional verificado); B2.1/B3 inconclusos; no da radio ni signo en el punto medio real; Lean solo lema 1
