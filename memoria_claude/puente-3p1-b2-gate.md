@@ -27,8 +27,7 @@ insistió en que no la da.
 
 **How to apply:** para avanzar en B2.1 hace falta otro certificado, una cota inferior de `rho'`
 en un intervalo. La transferencia del signo al punto medio real está sin hacer. La consulta a
-Pfeiffer no se ha enviado (decide el PI). Lean: el PI autorizó el 2026-10-12 **solo el lema 1**
-(calibración AM-GM) en `nachocausal/formal/`, sin tocar `qca-causal-cones`; el lema 2 no está
-autorizado. Orden y frentes: `docs/hoja_de_ruta_12_oct_2026.md`.
+Pfeiffer no se ha enviado (decide el PI). Lean: lema 1 (calibración AM-GM) HECHO el 2026-10-12 en `formal/` (`7fa9c66`), sin sorry y
+con solo los 3 axiomas estándar; el lema 2 (monotonía del `sup`) NO está autorizado. Orden y frentes: `docs/hoja_de_ruta_12_oct_2026.md`.
 
 Relacionado: [[program-status-reentry-marker]], [[numbers-must-come-from-committed-script]].
