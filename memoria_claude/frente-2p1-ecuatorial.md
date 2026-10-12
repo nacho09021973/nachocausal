@@ -18,6 +18,7 @@ falla la compuerta de viabilidad. Es un banco **intermedio** hacia 3+1D, no un s
   ~15 s con `N = 2e4`. La etapa 3 es la geodésica por disparo en `(U, V)`, parametrizada por la
   coordenada que más avanza; la de `c` constante falla fuera del horizonte. Controles:
   transitividad, auditoría frente al disparo exacto y mutación.
+- **Fase B en curso (2026-10-12):** generador sobre la caja EF alta (`6e19328`, coincide exactamente con la relación sellada de 1+1D en pares con el mismo ángulo). Estimador-v2 portado (`e1ea1f5`): con T=6 la horquilla queda sesgada hacia fuera (r≈0.53, horizonte efectivo por el corrimiento al rojo finito) y cubre 0/5; con T=12 cubre 3/3; Minkowski se abstiene siempre. T tiene que fijarse por una regla de principio en prereg-004. Bandas 2+1D: exploración 7_000_000..7_000_999 y virgen 8_000_000..8_999_999.
 - **Semillas de la fase A, quemadas:** 1, 2, 3, 4, 7, 99 y 12345.
 
 **Why:** «encontrar el horizonte» exige un estimador con `N` finito fuera de 1+1D, y el puente
