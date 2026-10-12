@@ -25,7 +25,16 @@ VOL_PER_T = math.pi * (1.3 ** 2 - 0.1 ** 2)
 
 
 def main():
+    global T_LIST, RHO_LIST
     out = Path(sys.argv[1])
+    # optional overrides: rho=..., T=a,b,c  (second pass, 2026-10-12: rho = 126 with
+    # T in {8, 10, 12, 16, 20, 24}, declared before running; 24 = 2 x 12 for the plateau)
+    for arg in sys.argv[2:]:
+        k, v = arg.split("=")
+        if k == "rho":
+            RHO_LIST = tuple(float(x) for x in v.split(","))
+        elif k == "T":
+            T_LIST = tuple(float(x) for x in v.split(","))
     done = set()
     if out.exists():
         for l in out.read_text().splitlines():
