@@ -1,8 +1,8 @@
 # B2.1 — certificado por cajas: `drho/dt > 0` en todo `t ∈ [0.45, 0.55]`
 
-> **STATUS: `FROZEN / AUDITED — AUDIT_PASS_CONDITIONAL_IR_EJECUTADO_Y_COTA_DECIMAL` (ASTRA),
-> con las dos condiciones atendidas (§8). NO promocionado: decide el PI.** Se congeló y se subió
-> **antes** de auditarlo (`f1e030f`), como la compuerta y la transferencia del signo.
+> **STATUS: `B2.1_POSITIVE_DERIVATIVE`** (ASTRA: `AUDIT_PASS_CONDITIONAL_IR_EJECUTADO_Y_COTA_DECIMAL`,
+> con las dos condiciones atendidas; promocionado por el PI el 2026-10-12, §9). Se congeló y se
+> subió **antes** de auditarlo (`f1e030f`), como la compuerta y la transferencia del signo.
 > Guardarraíles de B2 intactos: `no_new_path`, `no_new_t0`,
 > `no_new_points`, `no_search`, `no_adjustment`.
 
@@ -17,7 +17,7 @@ min_k S_lo            = +0.0012174762052819036   (caja t ∈ [9/20, 451/1000])
 max_k S_lo            = +0.0013992726582646622   (caja t ∈ [549/1000, 11/20])
 min_k drho/dt lower   = +0.006648095518840022
 fastmath_guard        : 19 kernels, código ejecutado compilado en el proceso (caché vacía, IR >= 8801 caracteres, cuerpos prange incluidos), sin flags, mutante detectado, ok = True
-TERMINAL = B2.1_POSITIVE_DERIVATIVE   (ASTRA: pase condicional, condiciones atendidas en §8; sin promocionar)
+TERMINAL = B2.1_POSITIVE_DERIVATIVE   (ASTRA: pase condicional, condiciones atendidas en §8; promocionado, §9)
 ```
 
 ---
@@ -212,3 +212,25 @@ Precisión de ASTRA que se adopta: «cualquier `M` y `N`» significa cualquier p
 construir la retícula y superar sus comprobaciones.
 
 **Límites:** una sola casa y una sola ronda, no un sanedrín. ASTRA no ejecutó nada.
+
+## 9. Promoción
+
+Decisión del PI del 2026-10-12, sobre el pase condicional de ASTRA con las dos condiciones
+atendidas (`998811d`), y **sin** segunda casa. El PI sabe que es una auditoría más ligera que la
+de la compuerta: una sola casa y una sola ronda.
+
+```text
+B2_GATE             = CERTIFIED_POSITIVE_AT_T0               (sin cambio)
+B2_GATE_REAL_POINT  = B2_SIGN_TRANSFERRED_TO_REAL_MIDPOINT   (sin cambio)
+B2.1                = B2.1_POSITIVE_DERIVATIVE               (antes INCONCLUSIVE_BY_BOUNDS)
+B3                  = INCONCLUSIVE_BY_BOUNDS                 (sin cambio)
+```
+
+Alcance: `drho/dt >= +0.0066480` en todo `t ∈ [0.45, 0.55]`, en las dos lecturas de la curva.
+`rho∘lambda` es estrictamente creciente en ese intervalo, y la malla congelada de B2.1 queda
+ordenada estrictamente. **No** dice nada fuera de `[0.45, 0.55]`, ni sobre `phi`, ni sobre `n=3`,
+ni sobre B3.
+
+```text
+PI: Nacho Martín              fecha: 2026-10-12
+```

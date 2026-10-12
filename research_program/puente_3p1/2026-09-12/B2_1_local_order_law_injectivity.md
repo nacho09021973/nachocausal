@@ -70,3 +70,8 @@ alternativa.
 > correccion de `6f866a2` (`q`: de `exp(-s/2)/sqrt(s)` a `2exp(-s/2)/s^1.5`), y el artefacto no
 > se regenero entonces. **El terminal no cambia:** las bandas adyacentes siguen solapando y
 > `B2.1_INCONCLUSIVE_BY_BOUNDS` se mantiene. Ver `dev/B2_STALE_ARTIFACTS_2026-10-11.md`.
+
+> **Actualización 2026-10-12.** Esta nota usa el kernel anterior a la corrección y su terminal es
+> histórico. B2.1 con el kernel físico y la maquinaria de la compuerta es
+> `B2.1_POSITIVE_DERIVATIVE`: `drho/dt > 0` en todo `[0.45, 0.55]`, por cajas, auditado por ASTRA
+> y promocionado por el PI. Ver `research_program/puente_3p1/2026-10-12/B2_1_box_certificate.md`.
