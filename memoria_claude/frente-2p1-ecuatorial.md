@@ -37,3 +37,4 @@ falla la compuerta de viabilidad. Es un banco **intermedio** hacia 3+1D, no un s
 - No afirmar nada de 3+1D ni de Einstein en 2+1D.
 
 Relacionado: [[puente-3p1-b2-gate]], [[prereg002-pass-artifact-gap]], [[gpu-exploration-backend]].
+- **Pasos 5 y 6 (2026-10-13):** paso 5 declarado (`dev/preflight_2p1.py`); el primer intento lo paró el PI (este PC: Intel UHD 770 sin CUDA, WSL limitado a 4 hilos por `.wslconfig`), se hará en otro ordenador. Paso 6: auditor 043 FAIL (Guard-v apagable, sin guardia de semillas), corregido en `c16fb12`; auditor 044 PASS. Siguiente: paso 5, luego el comité (paso 7).

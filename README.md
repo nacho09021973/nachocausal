@@ -285,8 +285,13 @@ induced 2+1D metric. So a 2+1D benchmark is an exact slice of the 3+1D problem.
 - **Step 4 done** (`dev/PREREG004_STEP_4_2026-10-13.md`): `tests/test_004_criteria_can_fail.py`.
   The three comité cases (a), (b) and (c) each FAIL, a synthetic all-good grid PASSes, and
   each tested criterion caught a deliberate mutation of `validate.py`.
-- **Next, step 5.** Pre-flight (CPU/GPU parity, CPU time, thread determinism); then `/auditor`
-  and the committee.
+- **Step 5 declared, not run** (`dev/PREREG004_STEP_5_2026-10-13.md`; `dev/preflight_2p1.py`):
+  the CPU pre-flight on burned seeds; the first attempt was stopped by the PI.
+- **Step 6 done** (`dev/PREREG004_STEP_6_2026-10-13.md`):
+  - `/auditor` report 043 was `AUDIT_FAIL` (Guard-v could be switched off; no runnable seed guard);
+  - both errors are fixed;
+  - report 044 is `AUDIT_PASS`.
+- **Next:** run step 5, then step 7 (reconvene the committee).
 - **Nothing is frozen or validated yet**, and the virgin band `8_000_000..8_999_999` is untouched.
 
 ## Program-level question
