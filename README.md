@@ -232,6 +232,55 @@ paired sign-flip p-values were `1.1920928955078125e-07`. This is a **new scienti
 it does not localise a horizon, does not reconstruct geometry, and does not repair or supersede
 the previous R-VAR closure, which remains `CLOSED_NEGATIVE_RESULT [GEOMETRY_SPECIFIC]`.
 
+## Toward 3+1D — current fronts (state on 2026-10-13)
+
+The program's goal is the black-hole boundary in Schwarzschild 3+1D (objective 1 above). Two
+fronts are open. Both carry **no 3+1D horizon claim** yet.
+
+**3+1D bridge — local order law at a frozen point** (`research_program/puente_3p1/`).
+These are directed-rounding certificates, each frozen and pushed *before* its audit and then
+promoted by the PI:
+
+| unit | status | file |
+|---|---|---|
+| B2 gate | `CERTIFIED_POSITIVE_AT_T0` (`drho/dt(t0) ≥ +0.0070474`) | `2026-10-11/B2_path2_gate_certificate.md` |
+| B2 sign transfer | `B2_SIGN_TRANSFERRED_TO_REAL_MIDPOINT` | `2026-10-12/B2_sign_transfer.md` |
+| B2.1 | `B2.1_POSITIVE_DERIVATIVE` on `t ∈ [0.45, 0.55]` | `2026-10-12/B2_1_box_certificate.md` |
+| B3 | `B3_NEGATIVE_FOR_N2_FULL_LOCAL_IDENTIFIABILITY` | `2026-10-12/B3_certificate.md` |
+| B4-R (`n=3`) | `CLOSED — GATE_FAILED`; B4 back to `PARKED` | `2026-10-12/B4R_n3_reopening_spec.md` |
+
+Lemma 1 of the calibration bound is formalised in Lean as `formal/NachoFormal/Calibration.lean`,
+with no `sorry`. Lemma 2 is briefed for a separate agent in `formal/TAREA_LEMA2_CODEX.md`.
+
+**2+1D equatorial front** (charter: `docs/acta_frente_2p1_ecuatorial_2026-10-12.md`, signed).
+Lemma E1 (`research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md`, audited)
+shows that the 3+1D Schwarzschild causal order restricted to the equator equals the order of the
+induced 2+1D metric. So a 2+1D benchmark is an exact slice of the 3+1D problem.
+
+- **Generator.** Ingoing-EF box (`t* ∈ [0, T]`, `r ∈ [0.1, 1.3]`, `2M = 0.5`, `φ ∈ S¹`). The
+  CPU version is `dev/gen2p1_efbox.py`; the GPU version is `dev/gen2p1_gpu.py`, validated
+  against the CPU one by `dev/validate_gen2p1_gpu.py`. Phase A:
+  `dev/2P1_PHASE_A_RESULT_2026-10-12.md`.
+- **Estimator.** The sealed estimator-v2 logic (future volume of minimal elements, 2-means,
+  `τ(n)` gate), ported in `dev/explore_2p1_estimator.py`.
+- **Dev results** (exploration seeds only):
+  - in tall boxes the BH patch localises in 180/180 runs and the flat 2+1D control abstains in
+    180/180;
+  - the minimum box height grows from `T = 8` to `10` to `10` at `ρ = 32 / 63 / 126`, so it
+    stops growing;
+  - see `dev/2P1_TMIN_SWEEP_RESULT_2026-10-12.md` and `dev/2P1_TMIN_RHO126_RESULT_2026-10-13.md`.
+- **Prereg-004 design.** Comité 052 returned `REVISE_AND_RECONVENE`
+  (`docs/comite/comite_decision_052_prereg004-2p1-design.md`). The PI decisions, in §11:
+  - `T = 16`;
+  - a blind `θ` anchor;
+  - `≥ 3` BH abstentions mean FAIL.
+- **Steps 1–2 done** (`dev/PREREG004_STEPS_1_2_2026-10-13.md`):
+  - the `τ` table was regenerated to `n = 256` by the sealed procedure; it is bit-equal to the
+    sealed table for `n ≤ 128`;
+  - ASTRA derived the `θ` anchor blind (`revisiones/2026-10-13-anclaje-theta-ciego/`).
+- **Next, step 3.** Port to a sealed 2+1D sub-package.
+- **Nothing is frozen or validated yet**, and the virgin band `8_000_000..8_999_999` is untouched.
+
 ## Program-level question
 
 The deeper program is narrower and more defensible than a generic "geometry from order" slogan:
@@ -400,6 +449,21 @@ numpy is hard-pinned because the frozen poset/estimator are guaranteed bit-for-b
 only under the version the instrument was sealed against; the package hard-fails on any other
 numpy.
 
+**Exact environments.** To reproduce the dev numbers exactly, including the 3+1D bridge
+certificates and the numba-based 2+1D generator, install from the lockfiles. They are `pip
+freeze` outputs of the main dev machine (Python 3.12.3). The 2+1D work showed that numba and
+scipy versions matter.
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements-lock.txt
+# optional, CUDA machine only (dev/ GPU exploration; CuPy needs numpy 2.x, so keep it separate):
+python3 -m venv .venv-gpu && .venv-gpu/bin/pip install -r requirements-gpu-lock.txt
+```
+
+GPU code is exploration only and never gives a verdict (`dev/README-gpu.md`). Run the 2+1D
+scripts with the numba cache off: a stale cache froze `T`-dependent tables across runs once
+(`dev/2P1_NUMBA_CACHE_STALE_TABLES_2026-10-12.md`).
+
 ### Optional Lean formalisation track
 
 The order-theoretic formalisation lives under `formal/HorizonFormal/`. It is independent of the
@@ -416,6 +480,10 @@ cd formal/HorizonFormal
 lake update
 lake build
 ```
+
+The 3+1D bridge lemmas (`NachoFormal`, Lean v4.31.0) are a separate Lake project at `formal/`,
+with its own pins in `formal/lean-toolchain` and `formal/lake-manifest.json`. See
+`formal/README.md`. Build it with `cd formal && lake exe cache get && lake build`.
 
 The optional Minz admissibility cross-check (`make gate`) is **not** on the validation path and
 **not** required to run the benchmark. It needs the external clone
