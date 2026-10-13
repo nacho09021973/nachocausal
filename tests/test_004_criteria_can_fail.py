@@ -10,6 +10,7 @@ does not FAIL, that criterion is decoration and prereg-004 must not be frozen.
   (b)       synthetic flat control with 2 of 20 escapes -> iv false (control: 1 of 20 passes).
   (c)       the dev rho=126, T=20 widths scaled so the median is theta_loc*(1+eps) -> loc_pass
             false (control: (1-eps) -> true).
+  (v)       Guard-v not run -> v_order_only false (auditor report 043, finding 1).
 
 Only already-used exploration seeds (7_000_100..7_000_109, sweep 88a25f6) and synthetic rows are
 used. The dev cells have 10 seeds, so (a) and (c) lower MIN_VALID_SEEDS to 10 in the test only
@@ -99,7 +100,7 @@ def test_dev_sweep_is_pinned():
 
 # --- baseline: the verdict CAN pass ----------------------------------------------------------
 def test_synthetic_baseline_passes():
-    out = validate.verdict_from_levels(_levels(dict(_synthetic_level(PRIM))))
+    out = validate.verdict_from_levels(_levels(dict(_synthetic_level(PRIM))), guard_ran=True)
     assert out["verdict"] == "PASS", out["checks"]
 
 
@@ -112,7 +113,7 @@ def test_a_rho126_T8_fails_localisation(monkeypatch):
     assert prim["status"] == "scored"
     assert prim["coverage_frac"] == pytest.approx(0.2)
     assert prim["coverage_frac"] < thresholds.COVERAGE_FLOOR
-    out = validate.verdict_from_levels(_levels(prim))
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
     assert out["checks"]["ii_localisation_primary"] is False
     assert out["verdict"] == "FAIL"
 
@@ -121,7 +122,7 @@ def test_a_rho126_T8_fails_localisation(monkeypatch):
 def test_b_two_flat_escapes_fail_iv():
     prim = dict(_synthetic_level(PRIM, escapes=2))
     assert prim["n_escape_MINK"] == 2
-    out = validate.verdict_from_levels(_levels(prim))
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
     assert out["checks"]["iv_flat_escapes_primary"] is False
     assert [k for k, v in out["checks"].items() if not v] == ["iv_flat_escapes_primary"]
     assert out["verdict"] == "FAIL"
@@ -129,7 +130,7 @@ def test_b_two_flat_escapes_fail_iv():
 
 def test_b_control_one_flat_escape_passes():
     prim = dict(_synthetic_level(PRIM, escapes=1))
-    out = validate.verdict_from_levels(_levels(prim))
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
     assert out["checks"]["iv_flat_escapes_primary"] is True
     assert out["verdict"] == "PASS"
 
@@ -151,7 +152,7 @@ def test_c_widths_just_above_theta_fail_loc(monkeypatch):
     prim = validate.summarise_level(rows, PRIM)
     assert prim["status"] == "scored"
     assert prim["loc_pass"] is False
-    out = validate.verdict_from_levels(_levels(prim))
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
     assert out["checks"]["ii_localisation_primary"] is False
     assert out["verdict"] == "FAIL"
 
@@ -168,6 +169,13 @@ def test_a_synthetic_coverage_below_floor_fails_ii_only():
     for r in rows[:11]:                                   # 9/20 = 0.45 < 0.5
         r["covers"] = False
     prim = validate.summarise_level(rows, PRIM)
-    out = validate.verdict_from_levels(_levels(prim))
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
     assert [k for k, v in out["checks"].items() if not v] == ["ii_localisation_primary"]
+    assert out["verdict"] == "FAIL"
+
+
+# --- (v) Guard-v not run -> (v) false (auditor report 043, finding 1) ------------------------
+def test_v_guard_off_fails_v_only():
+    out = validate.verdict_from_levels(_levels(dict(_synthetic_level(PRIM))), guard_ran=False)
+    assert [k for k, v in out["checks"].items() if not v] == ["v_order_only"]
     assert out["verdict"] == "FAIL"

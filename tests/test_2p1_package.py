@@ -186,3 +186,70 @@ def test_environment_assertion_can_fail(monkeypatch):
     monkeypatch.setenv("NC2P1_DEVICE", "gpu")
     with pytest.raises(RuntimeError):
         thresholds.assert_environment()
+
+
+# --- 6. seed guard and Guard-v enforcement (auditor report 043, findings 1-2) --------------
+VIRGIN_20 = tuple(range(8_000_000, 8_000_020))
+
+
+def _no_generation(*a, **k):
+    raise AssertionError("generation must not be reached")
+
+
+def test_seed_guard_can_fail(monkeypatch):
+    validate.check_seed(thresholds.DRY_RUN_SEEDS[0])
+    for bad in (8_000_001, 12345, 6_999_999, 7_001_000):
+        with pytest.raises(RuntimeError):
+            validate.check_seed(bad)
+    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    with pytest.raises(RuntimeError):                    # drawn but not frozen
+        validate.check_seed(VIRGIN_20[0])
+    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
+    validate.check_seed(VIRGIN_20[0])                    # frozen and drawn: allowed
+    with pytest.raises(RuntimeError):
+        validate.check_seed(VIRGIN_20[0] + 100)          # virgin but not drawn
+
+
+def test_run_refuses_bad_seeds_before_generation(monkeypatch):
+    monkeypatch.setattr(validate, "generate", _no_generation)
+    with pytest.raises(RuntimeError, match="virgin"):
+        validate.run(seeds=[8_000_001], label="probe", write=False)
+    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
+    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    with pytest.raises(RuntimeError, match="validation label"):
+        validate.run(seeds=[VIRGIN_20[0]], label="probe", write=False)
+
+
+def test_validation_label_requires_guard(monkeypatch, tmp_path):
+    monkeypatch.setattr(validate, "generate", _no_generation)
+    monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
+    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
+    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    with pytest.raises(RuntimeError, match="Guard-v"):
+        validate.run(seeds=None, label=validate.VALIDATION_LABEL, guard=False, write=False)
+
+
+def test_check_validation_seeds_can_fail():
+    thresholds.check_validation_seeds(())
+    thresholds.check_validation_seeds(VIRGIN_20)
+    for bad in (VIRGIN_20[:19], VIRGIN_20[:19] + (VIRGIN_20[0],),
+                VIRGIN_20[:19] + (7_000_500,), VIRGIN_20[:19] + (12345,)):
+        with pytest.raises(ValueError):
+            thresholds.check_validation_seeds(bad)
+
+
+def test_port_relation_count_and_T_discrimination():
+    # Counts recorded in dev/PREREG004_STEP_3_2026-10-13.md (auditor report 043, warning 5).
+    t, r, phi = _small_cloud()
+    order, _ = generator.bh_order(t, r, phi, rng=None)
+    assert int(order.sum()) == 8652
+    code = (
+        "import sys,numpy as np;"
+        f"sys.path.insert(0,{os.path.join(ROOT, 'dev')!r});"
+        "import gen2p1_efbox as g;"
+        f"rng=np.random.default_rng({SEED});t,r,phi=g.sprinkle({SMALL_N},rng);"
+        "o,_=g.bh_order(t,r,phi,rng=None);print(int(o.sum()))")
+    env = dict(os.environ, NC2P1_T_EDGE="6.0")
+    out = subprocess.run([sys.executable, "-c", code], env=env, capture_output=True,
+                         text=True, check=True).stdout.strip().splitlines()[-1]
+    assert int(out) == 5125

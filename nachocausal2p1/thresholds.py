@@ -95,9 +95,29 @@ DRY_RUN_SEEDS = tuple(range(7_000_100, 7_000_110))
 # Not drawn yet: step C2 draws 20 seeds ONCE and BLIND from VIRGIN_BAND, after C1.
 VALIDATION_DRAW_SEED = None
 VALIDATION_SEEDS: tuple = ()
+# Burned Phase-A seeds (comité 052:20, dev/2P1_PHASE_A_RESULT_2026-10-12.md): never reusable.
+BURNED_PHASE_A_SEEDS = (1, 2, 3, 4, 7, 99, 12345)
+
+
+def check_validation_seeds(seeds) -> None:
+    """Runnable disjointness guard (comité 052:353; auditor report 043, finding 2). Empty = not
+    drawn yet. Once drawn: exactly ENSEMBLE distinct seeds, all in VIRGIN_BAND, none in
+    EXPLORE_BAND or among the burned Phase-A seeds. RAISES otherwise."""
+    seeds = tuple(int(s) for s in seeds)
+    if not seeds:
+        return
+    if len(seeds) != ENSEMBLE or len(set(seeds)) != ENSEMBLE:
+        raise ValueError(f"VALIDATION_SEEDS must be {ENSEMBLE} distinct seeds.")
+    if not all(VIRGIN_BAND[0] <= s <= VIRGIN_BAND[1] for s in seeds):
+        raise ValueError("VALIDATION_SEEDS must lie in VIRGIN_BAND.")
+    if any(EXPLORE_BAND[0] <= s <= EXPLORE_BAND[1] for s in seeds) \
+            or set(seeds) & set(BURNED_PHASE_A_SEEDS):
+        raise ValueError("VALIDATION_SEEDS overlap the exploration band or burned seeds.")
+
+
 assert all(EXPLORE_BAND[0] <= s <= EXPLORE_BAND[1] for s in DRY_RUN_SEEDS)
-assert all(VIRGIN_BAND[0] <= s <= VIRGIN_BAND[1] for s in VALIDATION_SEEDS)
-assert set(VALIDATION_SEEDS).isdisjoint(DRY_RUN_SEEDS)
+assert not set(DRY_RUN_SEEDS) & set(BURNED_PHASE_A_SEEDS)
+check_validation_seeds(VALIDATION_SEEDS)
 
 # --- Generator numerics (frozen with the generator; C052-1, mathematician brief) --------------
 TOL, REL_MARGIN = 1e-6, 1e-3       # [GEN]

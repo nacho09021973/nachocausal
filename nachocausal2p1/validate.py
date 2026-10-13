@@ -69,7 +69,24 @@ def _iqr(x) -> float:
 # =============================================================================
 # Generation with validity checks (an invalid seed is counted, never replaced).
 # =============================================================================
+def check_seed(seed: int) -> None:
+    """Runnable seed guard (comité 052:353; auditor report 043, finding 2). RAISES unless the seed
+    is in the 2+1 exploration band, or is one of the drawn VALIDATION_SEEDS after the freeze.
+    Virgin-band seeds can therefore never be generated before C1/C2, and burned Phase-A seeds
+    (outside the band) never at all."""
+    s = int(seed)
+    if s in thresholds.BURNED_PHASE_A_SEEDS:
+        raise RuntimeError(f"seed {s} is a burned Phase-A seed.")
+    if thresholds.EXPLORE_BAND[0] <= s <= thresholds.EXPLORE_BAND[1]:
+        return
+    if thresholds.STATUS == "FROZEN" and s in thresholds.VALIDATION_SEEDS:
+        return
+    raise RuntimeError(f"seed {s} is outside the exploration band and not a frozen validation "
+                       f"seed; virgin seeds {thresholds.VIRGIN_BAND} are reserved for C3.")
+
+
 def generate(seed: int, rho: float) -> dict:
+    check_seed(seed)
     rng = np.random.default_rng(seed)
     t, r, phi = generator.sprinkle(thresholds.n_mean(rho), rng)
     reasons: List[str] = []
@@ -175,7 +192,7 @@ def run_level(seeds, rho: float, guard: bool = True) -> dict:
     return res
 
 
-def verdict_from_levels(levels: Dict[float, dict]) -> dict:
+def verdict_from_levels(levels: Dict[float, dict], *, guard_ran: bool) -> dict:
     """Frozen-form verdict from level summaries (pure; exercised by the can-fail test)."""
     prim = levels[thresholds.PRIMARY_RHO]
     if prim.get("status") != "scored":
@@ -200,8 +217,9 @@ def verdict_from_levels(levels: Dict[float, dict]) -> dict:
         "ii_convergence_slack": bool(slack_ok),
         "iii_stability_primary": bool(prim["stab_pass"]),
         "iv_flat_escapes_primary": bool(prim["escape_pass"]),
-        # (v) Guard-v: no verify_order_only raised during the run.
-        "v_order_only": True,
+        # (v) Guard-v ran on every causet (it RAISES on failure, aborting the run); a run with
+        # the guard off can never pass (v) (auditor report 043, finding 1).
+        "v_order_only": bool(guard_ran),
     }
     return {"verdict": "PASS" if all(checks.values()) else "FAIL", "checks": checks}
 
@@ -215,7 +233,13 @@ def run(seeds=None, label: str = VALIDATION_LABEL, guard: bool = True, write: bo
     seeds = list(thresholds.VALIDATION_SEEDS if seeds is None else seeds)
     if not seeds:
         raise RuntimeError("no seeds: VALIDATION_SEEDS are not drawn (step C2 of comité 052).")
+    for s in seeds:
+        check_seed(s)
+    if label != VALIDATION_LABEL and set(seeds) & set(thresholds.VALIDATION_SEEDS):
+        raise RuntimeError("validation seeds may only be run under the validation label.")
     if label == VALIDATION_LABEL:
+        if not guard:
+            raise RuntimeError("the validation run requires Guard-v (guard=True).")
         if thresholds.STATUS != "FROZEN" or tuple(seeds) != tuple(thresholds.VALIDATION_SEEDS):
             raise RuntimeError("the validation label is reserved for the single blind run on the "
                                "frozen VALIDATION_SEEDS after C1/C2.")
@@ -232,7 +256,8 @@ def run(seeds=None, label: str = VALIDATION_LABEL, guard: bool = True, write: bo
         raise RuntimeError("t_edge must equal the generator's literal T_EDGE (no T knob).")
     levels = {rho: run_level(seeds, rho, guard) for rho in thresholds.RHO_GRID}
     out = {"label": label, "status_of_thresholds": thresholds.STATUS, "seeds": seeds,
-           "t_edge": t_edge, "levels": levels, **verdict_from_levels(levels)}
+           "t_edge": t_edge, "guard": bool(guard), "levels": levels,
+           **verdict_from_levels(levels, guard_ran=guard)}
     if write:
         write_atomic(out, label)
     return out
