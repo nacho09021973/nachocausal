@@ -278,7 +278,11 @@ induced 2+1D metric. So a 2+1D benchmark is an exact slice of the 3+1D problem.
   - the `τ` table was regenerated to `n = 256` by the sealed procedure; it is bit-equal to the
     sealed table for `n ≤ 128`;
   - ASTRA derived the `θ` anchor blind (`revisiones/2026-10-13-anclaje-theta-ciego/`).
-- **Next, step 3.** Port to a sealed 2+1D sub-package.
+- **Step 3 done (candidate, not frozen)** (`dev/PREREG004_STEP_3_2026-10-13.md`): the
+  `nachocausal2p1/` sub-package. Its generator is bit-equal to the dev one at `T = 16`. It has
+  a literal `T`, a split estimator/scorer, separate invalid, abstain and escape counters,
+  atomic writing and a one-shot validation label. Tests are in `tests/test_2p1_package.py`.
+- **Next, step 4.** `test_004_criteria_can_fail`; then pre-flight, `/auditor` and the committee.
 - **Nothing is frozen or validated yet**, and the virgin band `8_000_000..8_999_999` is untouched.
 
 ## Program-level question

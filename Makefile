@@ -5,7 +5,7 @@
 
 PY ?= python
 
-.PHONY: test dry-run gate verify-seal audit verify-comite verify-audit op21-bench op21-terminal
+.PHONY: test dry-run gate verify-seal verify-2p1 audit verify-comite verify-audit op21-bench op21-terminal
 
 test:                ## bit-exact regression + leak + seed-invariant tests
 	$(PY) -m pytest -q tests/
@@ -16,6 +16,10 @@ dry-run:             ## run the sealed PASS/FAIL path on DEV seeds (verdict disc
 verify-seal:         ## print the SHA256 of the frozen thresholds (compare to addendum)
 	@$(PY) -c "import hashlib,pathlib; p=pathlib.Path('nachocausal/thresholds.py'); \
 print('thresholds.py sha256:', hashlib.sha256(p.read_bytes()).hexdigest())"
+
+verify-2p1:          ## SHA256 of the 2+1 CANDIDATE thresholds and tau fixture (not a seal yet)
+	@$(PY) -c "import hashlib,pathlib; [print(p, hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()) \
+for p in ('nachocausal2p1/thresholds.py','nachocausal2p1/fixtures/tau_table_2p1.json')]"
 
 gate:                ## re-run the Minz admissibility cross-check (needs Minz venv)
 	$(PY) -c "from nachocausal import generator as g; \
