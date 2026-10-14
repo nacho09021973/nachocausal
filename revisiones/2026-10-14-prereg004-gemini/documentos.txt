@@ -1,0 +1,1 @@
+docs/preregistration_004_draft.md nachocausal2p1/thresholds.py nachocausal2p1/validate.py nachocausal2p1/estimator.py nachocausal2p1/gate.py nachocausal2p1/scoring/scorer.py nachocausal2p1/generator.py tests/test_004_criteria_can_fail.py tests/test_2p1_package.py
