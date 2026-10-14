@@ -15,7 +15,12 @@ Differences from 1+1 (all from comité 052 §8 and the PI decisions in §11):
   * (iv) as an explicit count of flat-control non-abstentions;
   * tau(n) for n > 256 aborts the run (gate RAISES);
   * results are written atomically (temp file + fsync + rename) and the validation label is
-    one-shot: an existing results/validation_004.json is never overwritten.
+    one-shot: an existing results/validation_004.json is never overwritten;
+  * with write=True, one progress line per seed and level is appended (and fsynced) to
+    results/<label>.progress.jsonl, with blind fields only (PROGRESS_FIELDS), plus a start line
+    per launch, so a crash leaves a record and a relaunch is logged (comité 052 reproducibility
+    brief; prereg-004 draft O4);
+  * the validation label requires NUMBA_NUM_THREADS = 20 (thresholds.assert_blind_threads, O3).
 """
 
 from __future__ import annotations
@@ -33,6 +38,8 @@ from .scoring import blind_bracket
 
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "results")
 VALIDATION_LABEL = "validation_004"
+# Fields of a per-seed progress line. Blind only: no width, bracket, midpoint, coverage, sep or d.
+PROGRESS_FIELDS = ("seed", "rho", "invalid", "abstained_BH", "abstained_MINK", "seconds")
 
 
 # =============================================================================
@@ -185,8 +192,27 @@ def summarise_level(rows: List[dict], rho: float) -> dict:
     return res
 
 
-def run_level(seeds, rho: float, guard: bool = True) -> dict:
-    rows = [per_seed(s, rho, guard) for s in seeds]
+def progress_line(row: dict) -> dict:
+    """The blind subset of a per-seed row that goes to the progress log (pure)."""
+    return {k: row.get(k) for k in PROGRESS_FIELDS}
+
+
+def append_progress(path: str, obj: dict) -> None:
+    """Append one JSON line to the progress log and fsync it, so it survives a crash."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "a") as f:
+        f.write(json.dumps(obj, default=_json_default) + "\n")
+        f.flush()
+        os.fsync(f.fileno())
+
+
+def run_level(seeds, rho: float, guard: bool = True, progress: Optional[str] = None) -> dict:
+    rows = []
+    for s in seeds:
+        row = per_seed(s, rho, guard)
+        rows.append(row)
+        if progress is not None:
+            append_progress(progress, progress_line(row))
     res = summarise_level(rows, rho)
     res["rows"] = rows
     return res
@@ -245,6 +271,7 @@ def run(seeds=None, label: str = VALIDATION_LABEL, guard: bool = True, write: bo
                                "frozen VALIDATION_SEEDS after C1/C2.")
         if os.path.exists(_result_path(label)):
             raise RuntimeError(f"{_result_path(label)} exists: the blind run is one-shot.")
+        thresholds.assert_blind_threads()
     t_edge = thresholds.T_EDGE if t_edge is None else float(t_edge)
     if t_edge < thresholds.T_EDGE_MIN:
         out = {"label": label, "seeds": seeds, "t_edge": t_edge, "verdict": "OUT_OF_DOMAIN",
@@ -254,7 +281,11 @@ def run(seeds=None, label: str = VALIDATION_LABEL, guard: bool = True, write: bo
         return out
     if t_edge != generator.T_EDGE:
         raise RuntimeError("t_edge must equal the generator's literal T_EDGE (no T knob).")
-    levels = {rho: run_level(seeds, rho, guard) for rho in thresholds.RHO_GRID}
+    progress = _progress_path(label) if write else None
+    if progress is not None:
+        append_progress(progress, {"event": "start", "label": label, "seeds": seeds,
+                                   "time": time.strftime("%Y-%m-%dT%H:%M:%S%z")})
+    levels = {rho: run_level(seeds, rho, guard, progress) for rho in thresholds.RHO_GRID}
     out = {"label": label, "status_of_thresholds": thresholds.STATUS, "seeds": seeds,
            "t_edge": t_edge, "guard": bool(guard), "levels": levels,
            **verdict_from_levels(levels, guard_ran=guard)}
@@ -265,6 +296,10 @@ def run(seeds=None, label: str = VALIDATION_LABEL, guard: bool = True, write: bo
 
 def _result_path(label: str) -> str:
     return os.path.join(RESULTS_DIR, f"{label}.json")
+
+
+def _progress_path(label: str) -> str:
+    return os.path.join(RESULTS_DIR, f"{label}.progress.jsonl")
 
 
 def write_atomic(obj: dict, label: str) -> str:

@@ -133,7 +133,9 @@ reused.
   `MIN_VALID_SEEDS = 18` generator-valid seeds per level.
 - **Recipe** (mirrors `docs/preregistration_002.md:20-24`):
   `numpy(1.26.4).default_rng(VALIDATION_DRAW_SEED_004).choice(arange(8_000_000, 9_000_000), size=20, replace=False) -> sorted`.
-- **`VALIDATION_DRAW_SEED_004`: to be fixed in the frozen text before drawing** (open item O1).
+- **`VALIDATION_DRAW_SEED_004 = 20261014`** (`nachocausal2p1/thresholds.py`, name
+  `VALIDATION_DRAW_SEED`), fixed by the PI on 2026-10-14 before any draw (O1, §10). Like
+  prereg-002's `20260622`, it is the date of the decision.
 - **Runnable guard** (`thresholds.check_validation_seeds`, at import): exactly 20 distinct seeds,
   all in `VIRGIN_BAND`, none in `EXPLORE_BAND = 7_000_000..7_000_999`, none among the burned
   Phase-A seeds `1, 2, 3, 4, 7, 99, 12345`. `validate.check_seed` refuses any virgin seed before
@@ -209,8 +211,10 @@ coverage, (ii) via width, (iv) and (v) can each produce FAIL; `dev/mutation_chec
 - **CPU/GPU parity, seed `7_000_100`, ρ = 126, T = 16** (20 numba threads): all 15 compared
   fields match the GPU dev record (`dev/preflight_2p1_2026-10-13.jsonl`, sha256 `6838b4ac…`,
   commit `2fe277f`). Valid seed; audit 0/0/0/0; radial 0; transitivity 0. **Seeds
-  `7_000_101..7_000_109` not yet run** (open item O2).
-- **Thread determinism** (`NUMBA_NUM_THREADS=1` vs default): **not yet run** (open item O2).
+  `7_000_101..7_000_109` not run:** the PI accepted the partial parity on 2026-10-14 (O2, §10).
+- **Thread determinism** (`NUMBA_NUM_THREADS=1` vs default): **not run** (O2). In its place the
+  blind run is fixed to 20 numba threads, the only measured configuration, and
+  `thresholds.assert_blind_threads()` aborts the validation run otherwise (O3, §10).
 - **Measured CPU time, ρ = 126:** 591.9 s per seed (588.7 s generation with checks, 3.2 s
   estimation), 20 numba threads, i7-13700 under WSL2 (10 cores / 20 threads visible).
 - **Expected runtime of the blind run** `[UNVERIFIED — extrapolated, not measured]`: ρ = 32 and 63
@@ -233,9 +237,14 @@ coverage, (ii) via width, (iv) and (v) can each produce FAIL; `dev/mutation_chec
 - **Invalid seeds** (§3) count toward the < 18/20 INCONCLUSIVE rule and never trigger
   replacement seeds.
 - **Crash rule:** a crash is relaunched on the **same** seeds, environment and commit, **only if
-  no scoring output was produced**, and the relaunch is logged with timestamps.
+  no scoring output was produced**, and the relaunch is logged with timestamps. The progress log
+  below records each launch (a `start` line with its time) and carries no scoring field.
 - **Writing:** `results/validation_004.json` is written atomically and committed immediately with
   its SHA (lesson of prereg-002 `PRIMARY_ARTIFACT_LOST`, `docs/preregistration_002_result.md`).
+- **Progress log** (O4, §10): `results/validation_004.progress.jsonl`, one fsynced line per seed
+  and level with only `seed, rho, invalid, abstained_BH, abstained_MINK, seconds`
+  (`validate.PROGRESS_FIELDS`), appended as the run goes. It is committed together with the
+  result, or alone after a crash.
 - **Provenance launch file** `results/validation_004_provenance_launch.txt` records: start/end
   UTC; HEAD SHA and branch; both thresholds SHAs, the τ fixture SHA and the imported 1+1 module
   SHAs (§3); `git diff <seal> -- nachocausal/ nachocausal2p1/ docs/preregistration_004.md` line
@@ -253,37 +262,29 @@ The auditor is the same model family that wrote the code and is **not** an indep
 (global rule 5). The 1+1 precedent is PASS with caveats `PRIMARY_ARTIFACT_LOST;
 TRANSCRIPTION_REVERIFIED; BLINDNESS_DOCUMENTARY_ONLY` (`docs/preregistration_002_result.md:1`).
 
-## 10. Open items for step 7 (not settled by this draft)
+## 10. Open items O1-O8: resolution (2026-10-14)
 
-- **O1. Draw seed** `VALIDATION_DRAW_SEED_004`: not chosen. It must be fixed in the frozen text
-  before drawing; any fixed value is admissible as long as it is chosen before C2.
-- **O2. Step 5 incomplete.** Parity on 1 of 10 seeds; thread-determinism check not run; and the
-  committee's pairwise CPU/GPU relation parity with the sealed package is substituted by the dev
-  pairwise parity at T = 16 (`dev/2P1_NUMBA_CACHE_STALE_TABLES_2026-10-12.md:41`, 0
-  disagreements) plus port = dev bit-equality on CPU (`tests/test_2p1_package.py`). The committee
-  must either accept the substitution and the partial parity or require completion before C1.
-  Comité 052 §6 lists a green pre-flight as a condition to lift the BLOCK.
-- **O3. Thread count of the blind run.** Not fixed. Until O2's determinism check passes, the
-  frozen text should fix `NUMBA_NUM_THREADS` to one value and record it; 20 threads is the only
-  configuration with a measured runtime.
-- **O4. No per-seed heartbeat or partial log in `validate.run()`.** The committee
-  (reproducibility brief) asked for a log to a committed path with one line per seed;
-  the candidate runner writes only at the end, so a crash after hours leaves nothing. Whether to
-  add it before C1 (a code change, re-audit of the delta) is open.
-- **O5. Step-3 interpretations made by an AI, to be confirmed:** (1) the ≥ 3 BH-abstention rule
-  applies at every level where (i) is required, not only the primary; (2) `p_perm` is computed
-  over generator-valid seeds with an abstained BH entering as sep = 0; (3) coverage is over
-  bracket-valid seeds, its count reported separately; (4) any audit failure or disagreement
-  invalidates the seed.
-- **O6. Step-4 deviations, to be accepted or not:** 10 dev seeds per cell instead of 20, with
-  `MIN_VALID_SEEDS` lowered to 10 inside the test only; global FAIL in (a) and (c)
-  over-determined by (i); the domain gate not bypassed because the tested functions are pure;
-  criterion (iv) named `iv_flat_escapes_primary`.
-- **O7. Committee recommendations still unsigned** (comité 052 §8, transcribed in
-  `thresholds.py` as `[C052-n]`): ρ grid and primary, ENSEMBLE/MIN_VALID_SEEDS, coverage floor
-  0.5, (iv) as a count, `T_EDGE_MIN = 10`, exact pins, CPU-only path. The PI chose in chat the
-  two 2+1 clauses with no 1+1 definition (convergence slack F; significance at every ρ ≥ 63).
-- **O8. Independent review.** The falsifier's independent-falsification gate (comité 052 §5) asked
-  for an independent θ derivation (done: ASTRA, another model family) and `/auditor` (done, same
-  family). No independent review of the code or of this text by another family or a person has
-  been done; `revision-ciega` would need explicit PI permission.
+The PI settled the eight items on 2026-10-14, in a Claude Code session, one by one; Claude
+transcribed the decisions. The same decisions are recorded in comité 052 §11.
+
+| item | decision | where |
+|---|---|---|
+| O1 draw seed | `VALIDATION_DRAW_SEED_004 = 20261014` | `thresholds.py`, §6 |
+| O2 step 5 partial | **accepted as partial**: parity on 1 of 10 seeds plus the dev pairwise parity at T = 16 and port = dev bit-equality; the 9 remaining seeds and the thread probe are not run | §8 |
+| O3 thread count | **20**, enforced in code: `thresholds.assert_blind_threads()` (environment `NUMBA_NUM_THREADS=20` and `numba.get_num_threads() == 20`), called by `validate.run` under the validation label before any generation | `thresholds.py`, `validate.py`; tests `test_blind_threads_can_fail`, `test_validation_run_checks_threads_before_generation` |
+| O4 progress log | **added before C1**: `results/<label>.progress.jsonl`, blind fields only | `validate.py`; tests `test_progress_line_is_blind`, `test_progress_log_written_per_seed_before_the_verdict` |
+| O5.1 | confirmed: ≥ 3 BH abstentions FAIL (i) at every required ρ (63 and 126) | `validate.py` `summarise_level`, `verdict_from_levels` |
+| O5.2 | confirmed: `p_perm` over generator-valid seeds, an abstained BH enters with `sep = 0`. **Deviation from 1+1**, where such a seed is excluded from `p_perm` and from the valid count (`nachocausal/validate.py:117`); the 2+1 rule is the more conservative one | `estimator.py:42-43`, `validate.py` |
+| O5.3 | confirmed: coverage over bracket-valid seeds, count reported (as 1+1, `nachocausal/validate.py:142`) | `validate.py` |
+| O5.4 | confirmed: 20 000-pair fine-shot audit; any failure or disagreement invalidates the seed | `validate.py` `generate` |
+| O6.1-O6.4 | accepted: 10-seed dev cells with the test-only `MIN_VALID_SEEDS` bypass; (i) also failing in (a) and (c), with the synthetic (ii)-only case; no domain-gate bypass needed (pure functions); (iv) named `iv_flat_escapes_primary`, measured at the primary | `tests/test_004_criteria_can_fail.py` |
+| O7 | signed: ρ grid {32, 63, 126} with primary 126; 20 seeds / 18 valid; coverage floor 0.5; (iv) ≤ 1 escape; `T_EDGE_MIN = 10`; exact pins; CPU-only path; and the two `[PI-S3]` clauses (slack F, significance at every ρ ≥ 63) | `thresholds.py` |
+| O8 independent review | **authorised**: `revision-ciega gemini` on this draft and the 2+1 package, after the O3/O4 delta is committed. **Pending** | `revisiones/` (to be prepared) |
+
+**Consequences still open before C1:**
+
+- O3 and O4 change `nachocausal2p1/validate.py` and `thresholds.py` after auditor report 044. The
+  delta needs a `/auditor` re-audit in a separate session (PI audit protocol: freeze and push
+  first, then the auditor reads only the delta).
+- O8: the blind review has to run and be evaluated.
+- Step 7: reconvene `/comite` on this draft, and the PI signs the comité 052 verdict.

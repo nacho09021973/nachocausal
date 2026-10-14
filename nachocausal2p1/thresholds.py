@@ -7,10 +7,12 @@ Until then any value may change; after C1, a change is a new pre-registration.
 
 Every value carries its source. Sources:
   [PI-052]  PI decisions transcribed in comité 052 §11 (2026-10-13);
-  [C052-n]  comité 052 §8 synthesis item n (recommendation, not yet signed);
+  [C052-n]  comité 052 §8 synthesis item n (recommendation; signed by the PI on 2026-10-14,
+            prereg-004 draft O7);
   [ASTRA]   blind theta anchor, revisiones/2026-10-13-anclaje-theta-ciego/astra.md;
   [PI-S3]   PI choices made in chat on 2026-10-13 for the step-3 port (the two 1+1 clauses
-            with no 2+1 definition, comité 052 §5 item 3 / §8 item 8);
+            with no 2+1 definition, comité 052 §5 item 3 / §8 item 8; signed 2026-10-14);
+  [PI-O1], [PI-O3]  PI decisions of 2026-10-14 on the prereg-004 draft open items O1 and O3;
   [GEN]     values copied from dev/gen2p1_efbox.py (frozen with the generator, C052-1).
 Nothing here is reverse-engineered from a dev outcome. The theta values have NOT been compared
 with dev widths and must not be before the freeze (comité 052 falsifier, leakage (c)).
@@ -59,6 +61,25 @@ def assert_environment() -> None:
         raise RuntimeError("NC2P1_DEVICE must be unset or 'cpu' on the 2+1 blind path.")
 
 
+# Thread count of the blind run [PI-O3, 2026-10-14]. The thread-determinism probe of comité 052
+# step 5 was not run (the PI accepted the partial pre-flight), so the blind run is fixed to the
+# only configuration with a measured parity: seed 7_000_100 on 20 numba threads
+# (dev/PREREG004_STEP_5_2026-10-13.md, attempt 2).
+BLIND_NUMBA_THREADS = 20
+
+
+def assert_blind_threads() -> None:
+    """Hard-fail the validation run unless numba runs on exactly BLIND_NUMBA_THREADS threads,
+    set through the environment (NUMBA_NUM_THREADS) before numba is imported."""
+    import numba
+
+    env = os.environ.get("NUMBA_NUM_THREADS")
+    got = numba.get_num_threads()
+    if env != str(BLIND_NUMBA_THREADS) or got != BLIND_NUMBA_THREADS:
+        raise RuntimeError(f"the blind run needs NUMBA_NUM_THREADS={BLIND_NUMBA_THREADS} "
+                           f"(environment: {env!r}, numba: {got}).")
+
+
 # --- Geometry -------------------------------------------------------------------------------
 # Ingoing-EF box t* in [0, T_EDGE], r in [R_LO, R_HI], phi in S^1; 2M = 0.5 (mirrors 1+1).
 T_EDGE = 16.0                  # [PI-052] a MARGIN above t_min = 10 (max over the grid); not a
@@ -92,8 +113,11 @@ VIRGIN_BAND = (8_000_000, 8_999_999)    # reserved for the single prereg-004 bli
 # Burned dev seeds used for the T sweeps at rho = 32/63/126; dry runs and the step-4
 # can-fail test may reuse them (comité 052 §9 step 4), never virgin seeds.
 DRY_RUN_SEEDS = tuple(range(7_000_100, 7_000_110))
-# Not drawn yet: step C2 draws 20 seeds ONCE and BLIND from VIRGIN_BAND, after C1.
-VALIDATION_DRAW_SEED = None
+# Not drawn yet: step C2 draws 20 seeds ONCE and BLIND from VIRGIN_BAND, after C1, with
+# numpy(1.26.4).default_rng(VALIDATION_DRAW_SEED).choice(arange(8_000_000, 9_000_000), 20,
+# replace=False), sorted. [PI-O1] fixed on 2026-10-14 (the date, as prereg-002's 20260622),
+# before any draw.
+VALIDATION_DRAW_SEED = 20261014
 VALIDATION_SEEDS: tuple = ()
 # Burned Phase-A seeds (comité 052:20, dev/2P1_PHASE_A_RESULT_2026-10-12.md): never reusable.
 BURNED_PHASE_A_SEEDS = (1, 2, 3, 4, 7, 99, 12345)

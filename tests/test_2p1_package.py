@@ -253,3 +253,67 @@ def test_port_relation_count_and_T_discrimination():
     out = subprocess.run([sys.executable, "-c", code], env=env, capture_output=True,
                          text=True, check=True).stdout.strip().splitlines()[-1]
     assert int(out) == 5125
+
+
+# --- 7. blind-run thread count (O3) and per-seed progress log (O4), 2026-10-14 ---------------
+def test_blind_threads_can_fail(monkeypatch):
+    import numba
+    monkeypatch.delenv("NUMBA_NUM_THREADS", raising=False)
+    with pytest.raises(RuntimeError, match="NUMBA_NUM_THREADS"):
+        thresholds.assert_blind_threads()
+    monkeypatch.setenv("NUMBA_NUM_THREADS", "20")
+    monkeypatch.setattr(numba, "get_num_threads", lambda: 4)
+    with pytest.raises(RuntimeError, match="NUMBA_NUM_THREADS"):
+        thresholds.assert_blind_threads()           # env says 20, numba runs on 4
+    monkeypatch.setattr(numba, "get_num_threads", lambda: 20)
+    thresholds.assert_blind_threads()               # both 20: allowed
+    monkeypatch.setenv("NUMBA_NUM_THREADS", "4")
+    with pytest.raises(RuntimeError, match="NUMBA_NUM_THREADS"):
+        thresholds.assert_blind_threads()
+
+
+def test_validation_run_checks_threads_before_generation(monkeypatch, tmp_path):
+    import numba
+    monkeypatch.setattr(validate, "generate", _no_generation)
+    monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
+    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
+    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    monkeypatch.setenv("NUMBA_NUM_THREADS", "4")
+    monkeypatch.setattr(numba, "get_num_threads", lambda: 4)
+    with pytest.raises(RuntimeError, match="NUMBA_NUM_THREADS"):
+        validate.run(seeds=None, label=validate.VALIDATION_LABEL, write=False)
+    assert os.listdir(tmp_path) == []
+
+
+def test_progress_line_is_blind():
+    row = dict(_row(), seed=7_000_100, rho=126.0, seconds=1.0, r_lo=0.2, r_hi=0.3, width=0.1,
+               midpoint=0.25, covers=True, clean=True, sep_BH=1.0, sep_MINK=0.0, d=1.0)
+    line = validate.progress_line(row)
+    assert tuple(line) == validate.PROGRESS_FIELDS
+    leaky = {"r_lo", "r_hi", "width", "midpoint", "covers", "clean", "valid", "sep_BH",
+             "sep_MINK", "d", "theta_loc", "theta_stab"}
+    assert not leaky & set(validate.PROGRESS_FIELDS)
+    assert not leaky & set(line)
+
+
+def test_progress_log_written_per_seed_before_the_verdict(monkeypatch, tmp_path):
+    monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
+    calls = []
+
+    def fake_per_seed(seed, rho, guard=True):
+        path = validate._progress_path("probe")
+        n_before = sum(1 for _ in open(path)) if os.path.exists(path) else 0
+        calls.append(n_before)
+        return dict(_row(), seed=seed, rho=rho, seconds=0.0)
+
+    monkeypatch.setattr(validate, "per_seed", fake_per_seed)
+    seeds = list(thresholds.DRY_RUN_SEEDS[:3])
+    validate.run(seeds=seeds, label="probe", write=True)
+    lines = [json.loads(x) for x in open(validate._progress_path("probe"))]
+    assert lines[0]["event"] == "start"
+    body = lines[1:]
+    assert len(body) == len(seeds) * len(thresholds.RHO_GRID)
+    assert all(set(x) == set(validate.PROGRESS_FIELDS) for x in body)
+    assert calls == list(range(1, 1 + len(body)))   # each line is on disk before the next seed
+    validate.run(seeds=seeds, label="probe", write=False)
+    assert sum(1 for _ in open(validate._progress_path("probe"))) == len(lines)  # write=False: none
