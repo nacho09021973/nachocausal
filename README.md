@@ -252,8 +252,25 @@ promoted by the PI:
 Lemma 1 of the calibration bound is formalised in Lean as `formal/NachoFormal/Calibration.lean`,
 with no `sorry`. Lemma 2, the monotonicity of the time separation `τ` in the endpoints, is in
 `formal/NachoFormal/Monotonicity.lean`, also with no `sorry` (brief: `formal/TAREA_LEMA2_CODEX.md`).
-Its `BddAbove` bounds are explicit hypotheses, and whether the Lean statements match the
-certificate's §2.2 has not been checked by an independent reader.
+Its `BddAbove` bounds are explicit hypotheses. A blind review of the statements against the
+certificate's §2.2 (gpt-6-astra, one round; evaluated by Claude, which wrote the Lean file, so the
+evaluation is not independent) found them faithful to the brief, with caveats:
+`revisiones/2026-10-14-lema2-lean-fidelidad/evaluacion.md`. No human has read them yet.
+
+Still missing, outside `Monotonicity.lean`, before the Lean covers §2.2 in full:
+
+1. the upper corner bound for causally unrelated pairs, where Lean's `tau` is `0` by convention
+   and no theorem states the inequality;
+2. a `tau_nonneg` lemma and the `BddAbove` bounds (Cauchy–Schwarz);
+3. extending `q` from its domain `UV < 1` to a continuous, non-negative function on all of `ℝ`
+   (the review gives the argument; not formalised);
+4. lemma 3, the equivalence with the `U(V)` graphs of B1.2, i.e. `Delta_max = τ`.
+
+**Erratum in the certificate, not yet corrected.** `B2_path2_gate_certificate.md:55-56` states
+`τ(x,y) >= τ(x,z) + τ(z,y)` for `z` in the causal future of `x`; it also needs `z ≤ y`
+(counterexample with `q ≡ 1`: `x=(0,0)`, `y=(1/4,1/4)`, `z=(1/2,1/2)` gives `1/4 >= 1/2`). The
+certified number is unaffected: both corner bounds that use the step have `z` between the
+endpoints. The certificate is promoted, so correcting its text is the PI's decision.
 
 **2+1D equatorial front** (charter: `docs/acta_frente_2p1_ecuatorial_2026-10-12.md`, signed).
 Lemma E1 (`research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md`, audited)
