@@ -54,6 +54,11 @@ Se aclaró el alcance del contraejemplo y se detalló el lema de convergencia,
 corrigiendo dos errores de la sugerencia del revisor al contrastarla.
 Registro: `reviews/2026-10-02-slow-response-retry/comprobacion.md`.
 Las dos objeciones están respondidas, sin declararlas resueltas.
+`reviews/2026-10-02-slow-response-retry/verificacion_autor.md` reúne su
+comprobación matemática autocontenida, incluida una segunda vía exacta
+para la aproximación de cada modo. Esta evidencia permite razonar sobre
+el modelo con estado provisional sin depender de otra ronda general;
+el cierre externo sigue pendiente y la interpretación física sigue abierta.
 
 ## 3. B4 — aparcado por condición técnica
 

@@ -178,6 +178,10 @@ tal suma p, `||(I-Pi_n)h|| <= ||h-p|| + ||(I-Pi_n)p||`.
 Se aproxima primero h por p y después se hace crecer n; esto completa
 los cuantificadores del argumento de convergencia fuerte.
 
+La comprobación autocontenida, con una segunda vía mediante promedios exactos
+por celda, está en `reviews/2026-10-02-slow-response-retry/verificacion_autor.md`.
+Es comprobación del autor; el cierre externo de O2 permanece pendiente.
+
 La transferencia exacta implica
 
 `Ghat_(gamma,n)=Pi_n K_gamma Pi_n`.
