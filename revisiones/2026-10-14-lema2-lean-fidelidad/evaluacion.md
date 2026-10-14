@@ -22,7 +22,7 @@ vacíos los teoremas en sus usos causales.
 
 ## Objeción no prevista, válida: el paso 2 del certificado es falso tal como está escrito
 
-El certificado (`B2_path2_gate_certificate.md`, líneas 54-55) dice: «si `z` está en el futuro causal
+El certificado (`B2_path2_gate_certificate.md`, líneas 55-56) dice: «si `z` está en el futuro causal
 de `x`, la concatenación da `τ(x,y) >= τ(x,z) + τ(z,y) >= τ(z,y)`». Falta la hipótesis `z ≤ y`.
 Contraejemplo del revisor con `q ≡ 1`: `x=(0,0)`, `y=(1/4,1/4)`, `z=(1/2,1/2)`. Con `q ≡ 1`,
 `τ(a,b) = sqrt(ΔU ΔV)` para `a ≤ b` (Cauchy–Schwarz, alcanzada por el segmento), así que
