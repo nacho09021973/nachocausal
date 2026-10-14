@@ -266,11 +266,11 @@ Still missing, outside `Monotonicity.lean`, before the Lean covers §2.2 in full
    (the review gives the argument; not formalised);
 4. lemma 3, the equivalence with the `U(V)` graphs of B1.2, i.e. `Delta_max = τ`.
 
-**Erratum in the certificate, not yet corrected.** `B2_path2_gate_certificate.md:55-56` states
-`τ(x,y) >= τ(x,z) + τ(z,y)` for `z` in the causal future of `x`; it also needs `z ≤ y`
+**Erratum in the certificate, corrected on 2026-10-14.** `B2_path2_gate_certificate.md` §2.2
+stated `τ(x,y) >= τ(x,z) + τ(z,y)` for `z` in the causal future of `x`; it also needs `z ≤ y`
 (counterexample with `q ≡ 1`: `x=(0,0)`, `y=(1/4,1/4)`, `z=(1/2,1/2)` gives `1/4 >= 1/2`). The
-certified number is unaffected: both corner bounds that use the step have `z` between the
-endpoints. The certificate is promoted, so correcting its text is the PI's decision.
+PI authorised the text fix, recorded in the certificate's 2026-10-14 addendum. The certified
+number is unaffected: both corner bounds that use the step have `z` between the endpoints.
 
 **2+1D equatorial front** (charter: `docs/acta_frente_2p1_ecuatorial_2026-10-12.md`, signed).
 Lemma E1 (`research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md`, audited)
