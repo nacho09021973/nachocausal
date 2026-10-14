@@ -37,6 +37,12 @@ No se ejecuta otra ronda.
 Respondida significa que el texto contesta. Ninguna fila se declara
 resuelta por esta comprobación del autor.
 
+Comprobación técnica posterior, autorizada por el usuario para evitar otra
+ronda general: `verificacion_autor.md`. Reúne el enunciado exacto de O1,
+la prueba completa de O2 y dos vías de comprobación del error de proyección.
+Estado técnico: respuesta demostrada y comprobada por el autor dentro del
+alcance declarado. Estado externo: ambas filas siguen como respondidas.
+
 ## 3. O1: contraste de alcance
 
 El documento revisado SLOW_PROTOCOL_RESPONSE §1 ya declaraba ampliación
