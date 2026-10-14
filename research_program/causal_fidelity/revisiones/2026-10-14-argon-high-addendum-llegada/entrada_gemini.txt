@@ -1,0 +1,757 @@
+IMPORTANT: you have no tools in this session: no code execution, no terminal, no files, no file search, no web. Do not emit tool calls of any kind and do not look for further files: everything you will receive is in this message. Write your answer directly.
+
+Eres un revisor matemático adversarial. Te adjunto tres documentos: (1) un addendum, "Test de llegada: contenido de la inclusión estricta y cláusulas de no trivialidad"; (2) la definición operativa a la que se refiere (IR_OPERATIONAL_DEFINITION, abreviada IROD); (3) el documento del que procede la familia de dos rutas (GROWING_FAMILY_RESPONSE). Revisa el addendum; los otros dos son contexto.
+
+Tareas, en este orden:
+
+1. ¿Es correcto el Lema 1 del addendum (§1)? Comprueba cada paso de la prueba con las definiciones exactas de IROD (espacio X con ⊥, métrica, convergencia de Hausdorff, mapa de bloques g_n). Si hay un hueco, da un contraejemplo explícito.
+2. ¿Es correcta la aplicación a la familia de dos rutas (§2): K = {2/3, 1}, τ_1,n = τ_2,n = 2n con θ = 1/2, y la división por casos de θ? Recalcula.
+3. Las cláusulas NT-θ, NT-Q y la admisibilidad (§3): ¿cierran los PASS triviales señalados? ¿Queda algún PASS trivial más, aparte del retraso de O(1) que el propio addendum declara? Da una construcción explícita si lo hay.
+4. §4 deja abierto si la clase de dinámicas lineales sobre coberturas de IROD admite alguna construcción que cumpla NT-Q e igualdad de llegadas límite. Intenta resolverlo: da una construcción o un argumento de imposibilidad, distinguiendo lo demostrado de lo conjeturado.
+
+Reglas: distingue lo que demuestras de lo que conjeturas. No cites literatura que no puedas identificar con precisión. Sé conciso: máximo 1500 palabras.
+
+=== DOCUMENT 1: ARRIVAL_TEST_NONTRIVIALITY_2026-10-14.md ===
+
+# Test de llegada: contenido de la inclusión estricta y cláusulas de no trivialidad
+
+Fecha: 2026-10-14. Estado: `DRAFT / ADDENDUM / NOT_CANONICAL / NO_EXECUTION`.
+Base: `main @ 1dbae26`. Addendum a `IR_OPERATIONAL_DEFINITION_2026-10-02.md` (IROD).
+No modifica el contrato histórico ni IROD. Autor: Claude Opus 5.5; sin revisión independiente.
+Derivaciones algebraicas, sin código ejecutado.
+
+Procedencia: cláusulas extraídas del borrador v2.1 del contrato (rama
+`research/causal-fidelity-bridge` @ `e5a5476`, no fusionado) y de las revisiones ciegas en
+`revisiones/2026-10-13-*` y `revisiones/2026-10-14-argon-high-delta-v2/`. La conciliación con
+IROD está en `CONCILIACION_v2.1_vs_main_2026-10-14.md`.
+
+## 1. La inclusión estricta de IROD no depende de la dinámica
+
+Notación de IROD §§2–6: `K_n`, `K` (límite de Hausdorff en `X=[0,1]⊔{⊥}`),
+`J_D,n={g_n(τ_D,n)}` o `{⊥}`, `J_D` su límite, `PASS_FORMAL` si `J_D1=J_D2 ⊊ K`.
+
+**Lema 1.** Supóngase que existen `K`, `J_D1`, `J_D2`. Entonces
+
+`PASS_FORMAL  ⟺  J_D1 = J_D2 = {q} con q ≠ ⊥, y |K| ≥ 2.`
+
+*Prueba.* (i) Si `J_D={⊥}`, no está incluido en `K ⊆ [0,1]` (los `K_n` lo están y `[0,1]`
+es cerrado y aislado de ⊥ en X); falla. (ii) Si `J_D={q}` con `q∈[0,1]`, entonces
+`J_D,n={q_n}` con `q_n→q` y `q_n∈K_n`. Para todo n,
+`dist(q,K) ≤ |q−q_n| + dist(q_n,K) ≤ |q−q_n| + d_H(K_n,K) → 0`, y K es cerrado; luego
+`q∈K`. (iii) Para `{q}⊆K`, `{q}⊊K` si y sólo si K contiene otro punto. ∎
+
+Segunda vía de (ii): IROD §5 ya da `J_D,n ⊆ K_n` por retardación; la inclusión pasa al
+límite de Hausdorff por el mismo argumento de distancia, así que la única obligación que la
+dinámica aporta a la inclusión es llegar (`q≠⊥`).
+
+**Consecuencia.** En IROD, la obligación 2 del test («pérdida estricta frente al causal»)
+equivale a `|K| ≥ 2`, que es una propiedad de la familia marcada `(C_n;s_n,d_n)` y del mapa de
+bloques, **no de las dinámicas**. Todo el contenido dinámico del test está en la obligación 1:
+`q_D1 = q_D2`. Es la construcción 2.2 de la revisión `2026-10-13-argon-high-contrato`
+(«PASS por cardinalidad»), aquí probada para IROD. IROD §7 («techo lógico») lo anticipa; el
+lema lo convierte en una equivalencia.
+
+Comprobación en el caso de IROD §8 (cadena): `L_n={n}`, `K={1}`, `|K|=1`; el lema da `FAIL`,
+como IROD.
+
+## 2. Aplicación a la familia de dos rutas
+
+Familia de `GROWING_FAMILY_RESPONSE_2026-10-02.md` §§1–2: dos cadenas de `2n` y `3n`
+coberturas, `L_n={2n,3n}`, `H_n=3n`, `B_γ,n=e^{-γ/n}A_n`, `γ_1=0`, `γ_2=log(4/3)`.
+Respuesta al impulso: `R_γ,n(2n)=e^{-2γ}`, `R_γ,n(3n)=e^{-3γ}`, cero en otro caso:
+`(1,1)` y `(9/16,27/64)`. Lo que sigue aplica el mapa de IROD a esa familia; no está en
+ninguno de los dos documentos.
+
+- `K_n={g_n(2n),g_n(3n)}`. Por la cota de IROD §3, `g_n(2n)→2/3` y `g_n(3n)→1`; `K={2/3,1}`,
+  `|K|=2`.
+- Con `θ=1/2` (el de GROWING §1): `τ_1,n=τ_2,n=2n` para todo n, `J_1=J_2={2/3}`.
+
+Por el lema 1, **el par de GROWING es `PASS_FORMAL` del test de llegada de IROD.** Pero las
+llegadas coinciden a todo n: el límite no hace ningún trabajo, y la pérdida estricta sólo dice
+que hay dos rutas. Es exactamente el patrón trivial que motivó las cláusulas siguientes.
+
+Dependencia del umbral (segunda comprobación, por casos de θ):
+- `θ ≤ 27/64`: ambos llegan en `2n`; igualdad.
+- `27/64 < θ ≤ 9/16`: ambos llegan en `2n` (D2 por su ruta corta); igualdad.
+- `9/16 < θ ≤ 1`: D1 llega en `2n`; D2 nunca alcanza θ, `J_2={⊥}`; falla.
+
+## 3. Cláusulas propuestas
+
+Para una familia admisible y dos dinámicas, además de IROD §7:
+
+- **NT-θ (uniformidad en el umbral).** Se fija antes un intervalo `Θ=[θ_-,θ_+]` con
+  `θ_-<θ_+`, y `PASS_FORMAL` se exige para todo `θ∈Θ`. Impide que la igualdad dependa de un
+  umbral escogido. En §2, cualquier Θ que entre en `(9/16,1]` da `FAIL`; un Θ dentro de
+  `(0,9/16]` no lo impide, así que NT-θ sola no basta.
+- **NT-Q (no identidad del escalar a N finito).** Existe `θ∈Θ` tal que `τ_D1,n(θ) ≠ τ_D2,n(θ)`
+  para todo n suficientemente grande, con prueba. La igualdad `q_D1=q_D2` debe ser un efecto
+  del límite y no una identidad a todo n. En §2, NT-Q falla para todo θ: el par queda excluido.
+- **Admisibilidad de la familia.** `H_n→∞`, existencia de K y `|K|≥2` se tratan como
+  precondiciones de la familia, comprobables antes de declarar dinámicas. Si fallan, la familia
+  es `INADMISSIBLE`, no `FAIL` de las dinámicas. Con esto la cadena de IROD §8 pasaría de
+  `FAIL_STRICT_INCLUSION` a `INADMISSIBLE`; **esta reclasificación es una propuesta y no se
+  aplica a IROD**.
+
+Con el lema 1 y la admisibilidad, el test de llegada se reduce a: **para todo θ∈Θ, las llegadas
+normalizadas de D1 y D2 convergen al mismo punto, siendo distintas a todo n grande.**
+
+## 4. Lo que queda abierto
+
+- No se sabe si la clase de dinámicas lineales sobre coberturas de IROD admite **alguna**
+  construcción que cumpla NT-Q e igualdad a la vez (`[OPEN]`). Si no la admite, el test de
+  llegada no tiene casos con contenido en esa clase.
+- Hueco conocido: un retraso fijo de `O(1)` actualizaciones entre D1 y D2 cumple NT-Q y da
+  igualdad tras normalizar por `H_n`, sin contenido. NT-Q no lo excluye.
+- La elección entre test de llegada y respuesta lenta (`SLOW_PROTOCOL_RESPONSE`), y la
+  relevancia de este frente para 3+1D, son decisiones del PI.
+
+```text
+STRICT_INCLUSION_IN_IROD = EQUIVALENT_TO_|K|>=2 (LEMMA_1, DYNAMICS_FREE)
+TWO_ROUTE_PAIR_IN_IROD_ARRIVAL_TEST = PASS_FORMAL_TRIVIAL (TAU_EQUAL_AT_ALL_N)
+NT_THETA = PROPOSED
+NT_Q = PROPOSED
+FAMILY_ADMISSIBILITY = PROPOSED_NOT_APPLIED_TO_IROD
+NONTRIVIAL_CONSTRUCTION_IN_IROD_CLASS = OPEN
+O1_DELAY_HOLE = OPEN
+INDEPENDENT_REVIEW = NOT_PERFORMED
+CANONICAL_PROMOTION = NONE
+```
+
+=== DOCUMENT 2: IR_OPERATIONAL_DEFINITION_2026-10-02.md ===
+
+# Fidelidad causal — definición mesoscópica de tiempos y prueba mínima
+
+Fecha: 2026-10-02. Estado: `DRAFT / OPERATIONAL_DEFINITION / NOT_CANONICAL`.
+Continuación de `DEFINITION_REPAIR_2026-10-02.md`.
+Resultado del caso mínimo: `FAIL_STRICT_INCLUSION`.
+No se ejecutan simulaciones, código científico ni nuevos experimentos.
+
+**Lectura posterior del atlas QCA:** §§11–12 distinguen esta definición
+operativa de un límite de baja energía y localizan una obstrucción al uso
+de `Q=tau` como entrada suficiente. Esta propuesta no cierra el IR físico
+del contrato original.
+
+## 1. Qué se define y qué no
+
+Se completa una interpretación **operativa** del test
+
+`T_IR^D1 = T_IR^D2 subsetneq T_caus`.
+
+El único escalar dinámico sigue siendo `Q=tau`, la primera llegada a un umbral
+declarado. La regla común pierde resolución temporal mediante bloques de
+actualizaciones. No añade un segundo score dinámico, ni obtiene las escalas
+de la salida de una dinámica.
+
+Esta definición describe coarse-graining temporal y un límite mesoscópico
+del reloj de actualización. No demuestra que ese reloj sea tiempo físico,
+que el límite sea un RG de campos, ni que la llegada determine una característica.
+La denominación `IR` del test original se interpreta aquí exclusivamente
+como este coarse-graining operativo. Su lectura física permanece OPEN.
+
+La elección del esquema siguiente es una propuesta nueva de contrato, no
+una definición canónica que ya estuviera en el repositorio. No se afirma que
+sea única. Debe revisarse antes de usarla en un resultado confirmatorio.
+
+## 2. Familia y reloj comunes
+
+Antes de evaluar el test se declara una sucesión determinista de posets
+finitos con marcas `(C_n;s_n,d_n)`. Se exige `s_n prec d_n`.
+Se usa la relación de cobertura y el reloj de una cobertura por actualización
+del addendum anterior, con impulso inicial y detector puntual comunes.
+
+Sea
+
+`L_n = {k>=1: exists a saturated chain of k covers from s_n to d_n}`,
+`H_n = max L_n`.
+
+La escala de referencia se obtiene sólo de la entrada causal marcada y
+se exige `H_n -> infinity`. Un crecimiento de N sin crecimiento de H no
+satisface este régimen. Se normaliza por el mismo H para ambas dinámicas.
+H no es una longitud física y no utiliza coordenadas de un embedding.
+
+Los conjuntos L_n son el objeto causal temporal **de esta regla de actualización**.
+No se identifican con todos los tiempos admisibles de una teoría física.
+
+## 3. Escala de bloques y mapa común
+
+Se fija una sola vez
+
+`b_n = max(1, floor(sqrt(H_n)))`.
+
+Para el paso k se define
+
+`B_n(k) = b_n floor(k/b_n)`,
+`g_n(k) = B_n(k)/H_n`.
+
+Todos los pasos de un mismo bloque tienen la misma imagen. El bloque de la
+primera llegada se representa por su extremo izquierdo; esa convención no
+puede modificarse después de comparar dinámicas. La imagen cero significa
+primer bloque, no una respuesta anterior al impulso.
+
+Esta elección satisface `b_n -> infinity` y `b_n/H_n -> 0`: se descarta el
+detalle de pocos pasos sin colapsar de antemano toda la escala H a un punto.
+El motivo de esta separación de escalas es independiente de la igualdad
+buscada. No se calibra b con las respuestas.
+
+La cota uniforme
+
+`0 <= k/H_n - g_n(k) < b_n/H_n`
+
+vale para todos los k admisibles. Elegir otra sucesión entera de bloques con
+esas dos propiedades produciría los mismos límites de tiempos normalizados,
+si éstos existen. Esto es una estabilidad de este esquema, no una licencia
+para seleccionar a posteriori el mejor bloque en una ejecución.
+
+## 4. Respuesta, llegada y ausencia de respuesta
+
+Cada dinámica debe declarar una respuesta real finita `R_D,n(k)` y su
+normalización antes de evaluar. Se exige retardación respecto del modelo
+de cobertura:
+
+`R_D,n(k)=0 for k not in L_n`,
+
+incluyendo k=0 para marcas distintas y k>H_n. En el candidato lineal del
+addendum esto se cumple por construcción. Para otra dinámica sería una
+obligación adicional, no un hecho heredado automáticamente.
+
+Se fija `theta>0`, común a las dinámicas, y
+
+`tau_D,n = min {k in {1,...,H_n}: R_D,n(k)>=theta}`,
+
+con valor infinito si no hay llegada. La igualdad con theta cuenta como
+llegada. No hay interpolación ni tolerancia numérica; el test es exacto.
+Para respuesta no finita, el contrato de evaluación falla antes de emitir
+un resultado de igualdad IR.
+
+La entrada dinámica al coarse-graining es sólo `Q_D,n=tau_D,n`.
+No se cambia el umbral con n salvo que otro contrato se formule previamente.
+
+## 5. Espacio ambiente y conjuntos finitos
+
+Se usa el espacio compacto
+
+`X = [0,1] disjoint_union {bottom}`,
+
+con distancia euclídea dentro de [0,1], distancia 2 entre bottom y cualquier
+punto de [0,1], y distancia cero de bottom a sí mismo. Bottom representa
+ausencia de llegada; no es un tiempo causal admisible.
+
+Los objetos comparables son
+
+`K_n = {g_n(k): k in L_n}`,
+`J_D,n = {g_n(tau_D,n)}` if tau_D,n is finite,
+`J_D,n = {bottom}` otherwise.
+
+No se sustituye ausencia de respuesta por conjunto vacío: eso permitiría
+que dos respuestas nulas aparentasen una igualdad e inclusión vacuas.
+
+Si hay llegada, `J_D,n subseteq K_n` porque theta es positivo y la respuesta
+es cero fuera de L_n. No se presupone inclusión estricta.
+Esta inclusión es consecuencia de la hipótesis de retardación declarada.
+
+## 6. Límite: cuantificadores y orden
+
+El único límite es `n -> infinity` en la familia previamente declarada;
+b_n está fijado como función de H_n. No se toma un segundo límite independiente
+de bloque o resolución después de inspeccionar datos. Se distingue en el
+contrato si el crecimiento de H representa refinamiento, expansión del
+dominio u otra construcción: el significado no lo determina N por sí solo.
+
+Se exige convergencia Hausdorff
+
+`K_n -> K` and `J_D,n -> J_D`,
+
+en los subconjuntos compactos no vacíos de X. Hausdorff se calcula con la
+métrica de §5: es el máximo de las dos distancias dirigidas entre conjuntos.
+K existe sólo si se demuestra su convergencia. La compacidad da subsucesiones,
+no permite reemplazar la sucesión por una subsucesión favorable.
+
+Cada J_D,n es un singleton. Si converge, su límite también es un singleton:
+`J_D={q_D}`. Una sucesión con infinitas llegadas y ausencias de llegada no
+converge en X; no se promedian esos casos para simular una llegada.
+
+La notación **propuesta para la variante operativa**, sin sustituir el
+contrato original, es
+
+`T_caus := K`,
+`T_IR^D := J_D`.
+
+Ambos son conjuntos del mismo espacio límite. No se compara directamente
+J_D con el L_n de una realización finita ni con parejas de eventos.
+
+## 7. Regla exacta PASS / FAIL / OPEN
+
+Para la familia y las dos dinámicas declaradas:
+
+- `PASS_FORMAL`: existen los tres límites, `J_D1=J_D2` y el conjunto común
+  es un subconjunto propio de K. Se prueba cada obligación por separado.
+- `FAIL`: una obligación del test se refuta en esa familia. Incluye límites
+  diferentes, inclusión no válida o igualdad con todo K.
+- `OPEN`: falta especificación, prueba de existencia de límite, igualdad,
+  inclusión o testigo de estrictitud.
+
+La no existencia demostrada de un límite es FAIL para este contrato;
+no disponer aún de una demostración de existencia es OPEN.
+
+Una igualdad exacta no se certifica por proximidad numérica. Un testigo de
+estrictitud es un `z in K` con `z not in J_D`, acompañado de su prueba.
+Si J_D contiene bottom, no está incluido en K y el test falla.
+
+**Techo lógico:** dado Q=tau, un límite no nulo sólo devuelve un tiempo.
+PASS_FORMAL equivale aquí a un tiempo límite común que no agota K. Esa
+pérdida puede venir de resumir la historia por su primera llegada; no prueba
+que la dinámica haya perdido acceso causal, que las respuestas completas
+coincidan en IR, ni que exista una velocidad o frontera universal.
+G0–G4 del gate original deben evaluarse además; PASS_FORMAL no certifica
+automáticamente esas obligaciones ni su interpretación física.
+
+## 8. Primer caso fijo: refinamiento de una cadena
+
+Se declara la familia `C_n` formada por la cadena de n+1 eventos, con fuente
+en el mínimo y detector en el máximo. Es refinamiento del mismo trayecto
+operativo con paso normalizado 1/n; no se afirma refinamiento de una métrica.
+No hay muestreo ni semillas. `L_n={n}`, `H_n=n`.
+
+Sobre la matriz A_n de cobertura se usa
+
+`X_i,n(0;epsilon)=epsilon e_s`,
+`X_i,n(k+1;epsilon)=alpha_i,n A_n X_i,n(k;epsilon)`.
+
+Se fija `theta=1/2`, y las dos especies
+
+`alpha_1,n=1`,
+`alpha_2,n=2^(-1/n)`.
+
+El escalado de alpha_2 mantiene la atenuación total a lo largo del trayecto:
+`alpha_2,n^n=1/2` para todo n. Cambian sólo los pesos dinámicos, conservando
+entrada, fuente, detector, unidad de actualización y normalización de amplitud.
+La motivación del escalado es mantener una atenuación finita al refinar.
+
+En el detector la respuesta sólo existe en k=n y vale 1 para D1 y 1/2
+para D2. Ambas alcanzan theta exactamente según la convención congelada,
+por lo que `tau_1,n=tau_2,n=n`. Las dinámicas tienen respuestas diferentes,
+pero el resumen de llegada ya coincide antes del coarse-graining.
+
+Sea `q_n=b_n floor(n/b_n)/n`. Por la cota de §3, `q_n -> 1`. Luego
+
+`K_n=J_1,n=J_2,n={q_n}`,
+`K=J_1=J_2={1}`.
+
+**Resultado por deducción:** igualdad de los límites, pero ninguna inclusión
+estricta. El test falla en esta familia: `FAIL_STRICT_INCLUSION`.
+No es un no-go para otras familias o dinámicas.
+
+## 9. Segunda vía y controles límite
+
+Sin matrices: en una cadena el impulso tarda exactamente n coberturas en
+alcanzar el detector. Sólo hay un camino. Su amplitud es el producto de n
+pesos, respectivamente 1 y `2^(-n/n)=1/2`. El conjunto causal temporal y
+ambas llegadas contienen el mismo único paso. Aplicarles el mismo mapa de
+bloques mantiene la igualdad a todo n; cualquier límite existente conserva
+esa igualdad. Esto verifica el fallo sin usar una aproximación de amplitudes.
+
+Control de ausencia de respuesta: si se declarara otra especie
+`alpha_3,n=4^(-1/n)`, su amplitud final sería 1/4<theta. Entonces
+`J_3,n={bottom}`, la inclusión en K falla y no se obtiene un PASS vacío.
+Este control es una deducción de borde, no una tercera especie añadida al
+test principal después de ver un resultado.
+
+La comparación con D2 también depende del detector/umbral: elevar theta por
+encima de 1/2 haría desaparecer su llegada. El umbral no se reajusta; ese
+hecho muestra por qué la salida no puede llamarse frente canónico.
+
+## 10. Estado resultante
+
+```text
+COMMON_AMBIENT_SPACE = DEFINED
+MESOSCOPIC_TIME_MAP = DEFINED
+SCALE_PATH = H_TO_INFINITY_B_EQUAL_FLOOR_SQRT_H
+LIMIT_MODE = FULL_SEQUENCE_HAUSDORFF
+NULL_ARRIVAL = ISOLATED_BOTTOM
+SINGLE_DYNAMIC_SCALAR = TAU
+FIRST_CHAIN_FAMILY = FAIL_STRICT_INCLUSION_BY_EXACT_DERIVATION
+PHYSICAL_IR_INTERPRETATION = OPEN
+GENERAL_EQUALITY_AND_STRICTNESS = OPEN
+INDEPENDENT_REVIEW = NOT_PERFORMED
+CANONICAL_PROMOTION = NONE
+```
+
+La definición elimina la ambigüedad de tipos y del orden de límites en esta
+propuesta. El caso mínimo la somete a un resultado negativo explícito.
+No se elige otra familia para fabricar un PASS ni se modifica el test.
+Para investigar una pérdida dinámica genuina, sigue siendo necesario
+justificar por qué un único arrival time sería suficiente para ese claim;
+el contrato original no contiene esa justificación.
+
+## 11. Qué aporta el atlas QCA y qué puede trasladarse
+
+Repositorio leído sin cambios: `/home/ignac/qca-causal-cones`, commit
+`0a4606c61a3f75e5516a245f3837ed009b0a56b4`.
+Se consultaron AGENTS, PROJECT_INSTRUCTIONS, el estado canónico en las
+secciones aplicables, el índice bibliográfico, FAMILY_BIBLE, PROJECT_NAVIGATION,
+F13, THREE_VELOCITIES, SCALED_IR_SIGNALING_GATE y el contrato C2a.
+
+El atlas localiza el antecedente; la afirmación sobre el límite se comprobó
+en la fuente primaria `biblioteca/1312.2852v1.pdf`, Farrelly–Short, p.3,
+Ecs.12–16. Allí se comparan evoluciones unitaria discreta y continua sobre
+estados de momento acotado, con una cota de error que tiende a cero bajo
+un escalado declarado de a, delta t y el corte de momento. No es una
+comparación de primeras llegadas ni una partición de tiempos.
+El corte físico puede crecer mientras el momento respecto de la escala
+de red permanece pequeño: no debe copiarse literalmente como un corte
+Lambda decreciente sin traducir unidades y régimen.
+
+El contrato propio de QCA `theory/SCALED_IR_SIGNALING_GATE.md` §§1–4
+declara conjuntamente corte de momentos, tiempos, regiones, recurso,
+encoder y detector. Su versión C2a exige controlar el error dentro del
+funcional de respuesta completo. Estos son contratos de otro modelo;
+se usa su disciplina de definición, no se transfiere su resultado al poset.
+
+En la propuesta actual faltan un sector de baja energía intrínsecamente
+definido y una transferencia controlada de la respuesta a ese sector.
+La matriz de cobertura es nilpotente: A^N=0 implica que todos sus
+autovalores son cero. Sus autovalores no distinguen por sí solos modos
+de baja y alta energía. Tampoco es legítimo introducir Fourier espacial
+sin homogeneidad, coordenadas autorizadas o una estructura alternativa
+especificada. Un operador de modos adicional sería una nueva obligación.
+
+Conclusión acotada: el atlas no suministra automáticamente esa estructura
+para causal sets; ayuda a detectar que §§2–7 sólo definen coarse-graining
+del resumen de llegada. `PHYSICAL_IR_INTERPRETATION` permanece OPEN.
+
+## 12. Obstrucción exacta: el arrival time no determina la respuesta espectral
+
+La pérdida no es sólo una advertencia verbal. Considérese el poset de cinco
+eventos con dos cadenas saturadas disjuntas salvo extremos:
+
+`s lessdot a lessdot d`,
+`s lessdot b lessdot c lessdot d`.
+
+El orden es la clausura transitiva de esas coberturas. Sólo hay un camino
+de longitud 2 y uno de longitud 3 entre las marcas.
+Con la dinámica ya declarada `X(k+1)=alpha A X(k)`, las únicas respuestas
+del detector son
+
+`R_alpha(2)=alpha^2`, `R_alpha(3)=alpha^3`.
+
+Fíjense theta=1/2, alpha_1=1 y alpha_2=3/4. Entonces
+
+`tau_1=tau_2=2`,
+
+pero las respuestas completas son `(1,1)` y `(9/16,27/64)`.
+La transformada temporal finita
+
+`F_alpha(omega)=sum_k R_alpha(k) exp(-i omega k)`
+
+tiene en frecuencia cero los valores
+
+`F_1(0)=2`, `F_2(0)=63/64`.
+
+Ninguna función sólo de tau, aplicada con los mismos datos causales y
+parámetros comunes, puede recuperar ambos valores: recibe exactamente
+la misma entrada. Incluir alpha como dato extra eludiría la obstrucción,
+pero dejaría de ser una regla aplicada únicamente al escalar Q y a los
+datos comunes. Un filtro que conserve la componente de frecuencia cero
+no puede reproducirla universalmente a partir de tau en esta clase.
+
+Segunda vía, incluso normalizando cada historia a masa total uno:
+las medias temporales son `5/2` y `17/7`. Por tanto las derivadas en cero
+de sus transformadas normalizadas son distintas, aunque tau coincide.
+Eliminar la amplitud global no convierte tau en historia espectral suficiente.
+
+Estas son dos deducciones algebraicas exactas de la regla declarada, sin
+ejecutar código. La transformada es temporal en el reloj operativo:
+no se presenta como espectro de energía físico ni como velocidad de grupo.
+La obstrucción se refiere a **Q=tau** y a la reconstrucción universal de
+esas respuestas. No afirma que cualquier escalar imaginable sea insuficiente,
+ni refuta la igualdad de llegadas para una familia más estrecha.
+
+```text
+OPERATIONAL_TIME_LIMIT = DEFINED
+PHYSICAL_LOW_ENERGY_SECTOR = NOT_SPECIFIED
+RESPONSE_TRANSFER_TO_IR = NOT_SPECIFIED
+TAU_SUFFICIENCY_FOR_DC_RESPONSE = REFUTED_IN_DECLARED_FINITE_CLASS
+TAU_SUFFICIENCY_FOR_NORMALIZED_FIRST_MOMENT = REFUTED_IN_SAME_CLASS
+PHYSICAL_IR_CONTRACT = OPEN
+```
+
+Si el objetivo es sólo igualdad de primeras llegadas normalizadas, la variante
+operativa queda bien tipada y tiene su primer caso negativo. Si el objetivo
+es igualdad de respuestas dinámicas en IR, el contrato debe decidir qué
+información de la respuesta conserva y definir su sector lento. Esa ampliación
+no se introduce silenciosamente: afecta a la restricción de un único escalar
+Q=tau y se registra como decisión de alcance pendiente.
+
+## 13. Continuación autorizada: protocolos lentos
+
+Tras discutir la ampliación, el usuario autorizó su desarrollo con «adelante».
+`SLOW_PROTOCOL_RESPONSE_2026-10-02.md` define un sector temporal común
+de fuentes y perfiles de lectura y conserva su operador de respuesta lineal.
+Demuestra suficiencia exacta para esas lecturas y que el ejemplo de §12
+sigue distinguiéndose en el sector lento. El límite de ventana allí mantiene
+el poset fijo; no reemplaza el límite de familia de este documento.
+La ampliación se propone en un addendum; el contrato histórico permanece
+intacto y el sector físico de baja energía sigue abierto.
+
+=== DOCUMENT 3: GROWING_FAMILY_RESPONSE_2026-10-02.md ===
+
+# Familia creciente, reloj y normalización de la respuesta
+
+Fecha: 2026-10-02. Estado: `DRAFT / ANALYTICAL_MODEL`.
+Base: `main @ d5567eb`. Continuación de `SLOW_PROTOCOL_RESPONSE_2026-10-02.md`.
+Encargo: fijar familia creciente, reloj, ventana y normalización común.
+Construcción explícita y derivaciones algebraicas; sin ejecución numérica.
+Versión 71a5adf revisada por DeepSeek; aclaraciones posteriores aún no
+revisadas externamente. Véase reviews/2026-10-02-slow-response-retry/.
+No es una preinscripción confirmatoria.
+
+## 1. Elecciones fijadas para esta construcción
+
+| Objeto | Elección común |
+| --- | --- |
+| Familia C_n | Dos cadenas saturadas de 2n y 3n coberturas, con extremos comunes |
+| Marcas | Fuente s y detector d, parte de la entrada |
+| Reloj | t=k/n; una actualización dura 1/n en unidades operativas |
+| Ventana | T_n=4n muestras k=0,...,4n-1; intervalo macroscópico [0,4) |
+| Sector | P_n=1_[0,1/(4n)](D_(4n)^dagger D_(4n)) |
+| Recursos | Norma euclídea uno para fuente y perfil de lectura discretos |
+| Amplitud | Factor de normalización de la respuesta a_n=1 |
+| Espacio común | H=L^2([0,4),dt), con interpolación isométrica E_n |
+| Comparación | gamma_1=0 y gamma_2=log(4/3), constantes en n |
+| Dinámica | B_(gamma,n)=exp(-gamma/n) A_n |
+| Llegada auxiliar | Umbral theta=1/2 sobre la respuesta a impulso unitario |
+
+Se elige esta familia para refinar exactamente el ejemplo finito anterior,
+sin multiplicar el número de rutas. Es un modelo analítico de dos rutas;
+no se postula que represente un sprinkling ni una geometría lorentziana.
+La ventana 4 deja tiempo de observación después del retardo máximo 3.
+Estas elecciones pertenecen a la construcción y no se presentan como
+selección ciega respecto del contraejemplo que la motivó.
+
+## 2. Familia y regla dinámica
+
+Para cada entero n>=1, se toman dos cadenas con 2n y 3n aristas dirigidas
+respectivamente; sólo comparten s y d. El orden es su clausura transitiva.
+Los elementos interiores de ramas distintas son incomparables. Entonces
+
+`N_n=5n`, `H_n=3n`, `L_n={2n,3n}`.
+
+Aquí H_n es la longitud máxima de cadena saturada entre las marcas, y L_n
+el conjunto de longitudes posibles. Para n=1 se recuperan los cinco eventos.
+Si m=rn, C_m se obtiene subdividiendo cada cobertura de C_n en r coberturas.
+No se necesita suponer inclusiones canónicas para n consecutivos.
+
+El valor n es recuperable dentro de esta familia por N_n/5 o H_n/3.
+El reloj t=k/n sigue siendo una elección de unidad operativa: esa fórmula
+no demuestra que sea tiempo propio ni reconstruye una escala física absoluta.
+Las etiquetas de los eventos no intervienen; un isomorfismo marcado
+conjuga A_n y deja la respuesta fuente-detector invariante.
+
+Para gamma>=0 se conserva la regla de inyección de la nota anterior:
+
+`x(0)=f(0)e_s`,
+`x(k)=B_(gamma,n)x(k-1)+f(k)e_s`,
+`y(k)=e_d^dagger x(k)`.
+
+Hay un único camino de cada longitud, por lo que la respuesta al impulso es
+
+`R_(gamma,n)(l)=exp(-2gamma) 1_{l=2n}
+                 +exp(-3gamma) 1_{l=3n}`.
+
+Verificación por otra vía: cada ruta multiplica el factor exp(-gamma/n)
+tantas veces como coberturas tiene, dando exp(-2gamma) y exp(-3gamma).
+Bajo subdivisión m=rn, r factores exp(-gamma/m) reproducen exp(-gamma/n).
+La ley de atenuación es así compatible con el refinamiento declarado.
+
+Escalar alpha con n es parte de la dinámica: mantener alpha=3/4 fijo
+haría tender ambas amplitudes a cero. No se corrige ese efecto dividiendo
+posteriormente por una amplitud medida.
+
+## 3. Ventana, recursos y unidades de la respuesta
+
+En C^(4n), K_(gamma,n) es la matriz retardada
+
+`(K_(gamma,n) f)(k)=exp(-2gamma) f(k-2n)
+                    +exp(-3gamma) f(k-3n)`,
+
+con f(j)=0 para j<0. No se usan índices fuera de la ventana por el futuro.
+Los perfiles f y g tienen norma euclídea uno y se lee <g,Kf>.
+
+Para comparar diferentes n, defínase
+
+`(E_n f)(t)=sqrt(n) f(k)` para t en [k/n,(k+1)/n),
+`(E_n^* h)(k)=sqrt(n) integral_[k/n,(k+1)/n) h(t) dt`.
+
+Entonces E_n^*E_n=I y ||E_n f||_(L2)=||f||_2.
+Q_n=E_n E_n^* es el promedio ortogonal por celdas. Así se fija un recurso
+integrado común: una fuente macroscópica constante de norma uno tiene
+amplitud 1/2, y su versión discreta tiene entradas 1/sqrt(4n).
+El factor sqrt(n) convierte unidades de protocolos; la respuesta no recibe
+ninguna normalización dependiente de gamma, de su masa ni de su máximo.
+
+Equivalentemente, la medida de respuesta sobre retardos es exactamente
+
+`mu_gamma=exp(-2gamma) delta_2 + exp(-3gamma) delta_3`.
+
+No se identifica R con una densidad regular ni se añade un factor 1/n
+a sus masas: la identidad isométrica del apartado siguiente fija esta
+convención sin ambigüedad. El impulso unitario que define tau es otro
+protocolo y no tiene un límite de norma uno como función delta en L2.
+
+## 4. Operador macroscópico y transferencia exacta
+
+Sobre H, con extensión por cero a tiempos negativos, defínase
+
+`(K_gamma h)(t)=exp(-2gamma) h(t-2) 1_{t>=2}
+                +exp(-3gamma) h(t-3) 1_{t>=3}`.
+
+Los desplazamientos son contracciones; por la desigualdad triangular,
+`||K_gamma|| <= exp(-2gamma)+exp(-3gamma) <= 2`.
+Como los retardos 2 y 3 son múltiplos exactos de 1/n,
+
+`K_gamma E_n = E_n K_(gamma,n)`.
+
+Se verifica celda a celda: t en la celda k implica que t-2 y t-3
+están en las celdas k-2n y k-3n, respectivamente. Es una transferencia
+exacta para funciones constantes por celdas; el error posterior procede
+de restringir los protocolos, no de aproximar la regla de retardo.
+
+## 5. Sector lento y sentido del límite
+
+Se mantiene sin reajuste la regla epsilon_T=T^(-1/2) de la nota anterior.
+Con T=4n, los modos discretos son cos(pi j(k+1/2)/(4n)), con
+
+`lambda_(j,n)=4 sin^2(pi j/(8n))`,
+`rank P_n = 1+floor((8n/pi) arcsin(1/(4 sqrt(n))))
+          ~ 2 sqrt(n)/pi`.
+
+Todo f en ran P_n satisface `||D_(4n) f|| <= (4n)^(-1/2)||f||`.
+En el reloj macroscópico, la frecuencia angular del modo j es pi j/4;
+el corte crece aproximadamente como sqrt(n)/2, frente a una escala
+microscópica de orden n. Cada frecuencia macroscópica fija entra finalmente
+en el sector. Por ello éste no es una banda física fija de baja energía.
+La lentitud se refiere a variación por actualización y conserva la misma
+convención de bordes: no controla encendido y apagado fuera de la ventana.
+
+Sobre el espacio común H sean
+
+`Pi_n=E_n P_n E_n^*`,
+`G_(gamma,n)=P_n K_(gamma,n) P_n`,
+`Ghat_(gamma,n)=E_n G_(gamma,n) E_n^*`.
+
+Pi_n es un proyector ortogonal y Pi_n -> I fuertemente. Para comprobarlo,
+considérese la base coseno normalizada de L2([0,4)): phi_0=1/2 y
+phi_j(t)=cos(pi j t/4)/sqrt(2), j>=1. Para j fijo y n suficientemente
+grande, su versión discreta muestreada en los centros de celda está
+retenida por P_n. Su interpolación isométrica converge en L2 a phi_j,
+por continuidad de phi_j. La distancia de phi_j a ran Pi_n tiende a cero.
+Por densidad de las combinaciones finitas de esa base y ||Pi_n||<=1,
+la convergencia se extiende a todo h en H. Esta prueba no exige que los
+subespacios sean anidados.
+
+Detalle del paso de retención y aproximación: defínase el vector discreto
+`v_(j,n)(k)=phi_j((k+1/2)/n)/sqrt(n)`. Para j>=1 fijo y
+`n >= max(1,ceil(pi^2 j^2/4))`, se tiene j<4n y
+
+`lambda_(j,n) <= pi^2 j^2/(16n^2) <= 1/(4n)`.
+
+La primera desigualdad usa sin(x)<=x para x>=0. El segundo miembro
+es epsilon_(4n)^2, no epsilon_(4n). v_(j,n) es proporcional al
+autovector coseno declarado; por ello P_n v_(j,n)=v_(j,n).
+El factor 1/sqrt(n) asegura que E_n v_(j,n) sea el valor de phi_j
+en el centro de cada celda, sin una amplitud artificial sqrt(n).
+Como `sup|phi_j'|<=pi j/(4sqrt(2))` y la distancia al centro es
+a lo sumo 1/(2n),
+
+`||E_n v_(j,n)-phi_j||_(L2) <= pi j/(4sqrt(2)n)`.
+
+Para j=0, v_(0,n)=c_n y E_n v_(0,n)=phi_0 exactamente.
+La propiedad de mejor aproximación del proyector implica que
+`||(I-Pi_n)phi_j||` no supera la cota anterior. Para una suma finita
+`p=sum_(j=0)^J a_j phi_j`, la cota es
+`||(I-Pi_n)p|| <= sum_(j=1)^J |a_j| pi j/(4sqrt(2)n)`
+cuando todos esos modos están retenidos. Finalmente, para h en H y
+tal suma p, `||(I-Pi_n)h|| <= ||h-p|| + ||(I-Pi_n)p||`.
+Se aproxima primero h por p y después se hace crecer n; esto completa
+los cuantificadores del argumento de convergencia fuerte.
+
+La transferencia exacta implica
+
+`Ghat_(gamma,n)=Pi_n K_gamma Pi_n`.
+
+Para cada h fijo,
+
+`||Ghat_(gamma,n)h-K_gamma h||
+ <= ||K_gamma|| ||Pi_n h-h|| + ||(Pi_n-I)K_gamma h|| -> 0`.
+
+Se obtiene convergencia fuerte de la respuesta comprimida a K_gamma.
+Consecuentemente convergen las lecturas de cualquier par fijo h,q en H.
+No se afirma convergencia en norma de operador ni uniformidad sobre
+protocolos que cambian arbitrariamente con n. La suficiencia exacta entre
+protocolos retenidos sigue siendo válida a cada n finito.
+
+## 6. Comprobación de respuesta no trivial y misma llegada
+
+Con gamma_1=0 y gamma_2=log(4/3), las dos parejas de amplitudes son
+`(1,1)` y `(9/16,27/64)`, para todo n. Con theta=1/2 ambas llegan en
+`tau_n=2n`, o `tau_n/n=2` en el reloj declarado.
+
+El perfil constante c_n(k)=1/sqrt(4n) está retenido exactamente y tiene
+norma uno. Contar las diagonales retardadas da
+
+`<c_n,G_(gamma,n)c_n>
+ = (1-2n/(4n)) exp(-2gamma) + (1-3n/(4n)) exp(-3gamma)
+ = exp(-2gamma)/2 + exp(-3gamma)/4`.
+
+Por tanto las lecturas son 3/4 y 99/256, con diferencia **93/256**,
+independiente de n. En particular,
+
+`||G_(gamma_1,n)-G_(gamma_2,n)|| >= 93/256 > 0`.
+
+Segunda comprobación: E_n c_n es exactamente h(t)=1/2. Integrando
+<h,K_gamma h> sobre los tramos [2,4) y [3,4) se obtiene
+exp(-2gamma)/2+exp(-3gamma)/4. Esto verifica simultáneamente las unidades,
+la ventana y la ausencia de desaparición de la respuesta.
+
+La lectura de cada dinámica es positiva y su norma está acotada por 2.
+El caso n=1 reproduce la ventana T=4 del ejemplo previo, incluida la
+diferencia 93/256. Esta constante difiere del 65/64 de aquella nota porque
+allí la ventana crecía con el poset fijo; aquí el cociente ventana/retardo
+permanece fijo. Son límites distintos y sus factores de borde son explícitos.
+
+## 7. Resultado acotado y cierre de esta unidad
+
+Quedan definidos familia, reloj, ventana, recurso y normalización común,
+y se obtiene un operador límite retardado no nulo con una prueba de
+convergencia fuerte. La igualdad de llegada normalizada no determina
+su respuesta lineal lenta en esta familia. No se obtiene igualdad IR
+de ambas dinámicas: el test de igualdad de respuesta falla explícitamente.
+
+La insuficiencia aquí probada significa únicamente que tau no determina
+las lecturas lineales del blanco ampliado. No refuta el test histórico
+basado sólo en llegada, ni descarta todos los escalares Q permitidos por
+ese contrato. La igualdad de tau sigue siendo válida en su propio test.
+
+El soporte de Pi_n K_gamma Pi_n no se usa para inferir causalidad:
+Pi_n mezcla tiempos; el operador retardado previo a la proyección es K_gamma.
+Siguen abiertos el origen físico de la regla, la interpretación del reloj,
+un sector de energía de estados y una frontera intrínseca no tautológica.
+No se deduce invariancia Lorentz, velocidad física ni reconstrucción geométrica.
+
+```text
+GROWING_FAMILY = FIXED_TWO_ROUTE_SUBDIVISION
+CLOCK_WINDOW_COMMON_NORMALIZATION = DEFINED
+COMMON_RESPONSE_SPACE = L2_0_4
+RESPONSE_TRANSFER = EXACT_ON_CELL_SUBSPACES
+COMPRESSED_RESPONSE_LIMIT = STRONG_NONZERO_LIMIT_DERIVED
+EQUAL_NORMALIZED_ARRIVAL = YES_IN_DECLARED_PAIR
+EQUAL_SLOW_RESPONSE = NO_IN_DECLARED_PAIR
+PHYSICAL_IR_INTERPRETATION = OPEN
+INDEPENDENT_REVIEW = DEEPSEEK_REQUIRES_CORRECTION_ON_71A5ADF
+REVIEW_OBJECTIONS = RESPONDIDAS_NOT_INDEPENDENTLY_RESOLVED
+```
+
+Procedencia: las afirmaciones de esta nota se deducen de sus reglas
+explícitas mediante las comprobaciones indicadas; no se atribuyen a un paper
+ni se apoyan en un resumen generado por IA. El índice local de biblioteca
+se consultó antes de la construcción. No se ejecutaron generadores científicos.
