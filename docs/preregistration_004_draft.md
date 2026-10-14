@@ -133,9 +133,12 @@ reused.
   `MIN_VALID_SEEDS = 18` generator-valid seeds per level.
 - **Recipe** (mirrors `docs/preregistration_002.md:20-24`):
   `numpy(1.26.4).default_rng(VALIDATION_DRAW_SEED_004).choice(arange(8_000_000, 9_000_000), size=20, replace=False) -> sorted`.
-- **`VALIDATION_DRAW_SEED_004 = 20261014`** (`nachocausal2p1/thresholds.py`, name
-  `VALIDATION_DRAW_SEED`), fixed by the PI on 2026-10-14 before any draw (O1, §10). Like
-  prereg-002's `20260622`, it is the date of the decision.
+- **`VALIDATION_DRAW_SEED_004 = draw_seed_from_commit(SHA of the C1 freeze commit)`**: the first
+  8 hex digits of the full SHA of the C1 commit, as an integer (`nachocausal2p1/thresholds.py`,
+  `draw_seed_from_commit`). The frozen text fixes the rule, not a number: the number does not
+  exist until C1 is committed, so nobody can compute the virgin seeds before the freeze. C2
+  records the SHA, the seed and the 20 seeds. (PI, 2026-10-14: O1 first fixed `20261014`, then
+  revised after the O8 review, D5.)
 - **Runnable guard** (`thresholds.check_validation_seeds`, at import): exactly 20 distinct seeds,
   all in `VIRGIN_BAND`, none in `EXPLORE_BAND = 7_000_000..7_000_999`, none among the burned
   Phase-A seeds `1, 2, 3, 4, 7, 99, 12345`. `validate.check_seed` refuses any virgin seed before
@@ -179,19 +182,37 @@ is reported as a FAIL, not repaired.
 |---|---|
 | (i) significance | at every ρ ≥ 63: sign-flip `p_perm ≤ 1e-4` on `d = sep_BH − sep_MINK` over generator-valid seeds (exact for n ≤ 20; a BH abstention enters with sep = 0), **and** BH abstentions < 3 at that level |
 | (ii) localisation | at ρ\*: median clean width/2M ≤ θ_loc(ρ\*), **and** IQR of widths/2M ≤ θ_loc (else inconclusive ⇒ not passed), **and** coverage ≥ 0.5 over bracket-valid seeds |
-| (ii) convergence F | for consecutive grid levels: `m(ρ_{k+1}) ≤ m(ρ_k) + slack(ρ_k)`, m = median width/2M; any unscored level fails it |
+| (ii) convergence F | for consecutive grid levels: `m(ρ_{k+1}) ≤ m(ρ_k) + slack(ρ_k)`, m = median clean width/2M; a NaN median (no clean bracket at a level) fails it |
 | (iii) stability | at ρ\*: std of clean bracket midpoints ≤ θ_stab(ρ\*) |
 | (iv) flat escapes | at ρ\*: flat-control non-abstentions ≤ 1 of the generator-valid seeds |
 | (v) order-only | Guard-v ran on every causet (`guard=True`) |
 
-- **INCONCLUSIVE** iff the primary level has < 18 generator-valid seeds. It is reserved for
-  generator-invalid seeds; ≥ 3 BH abstentions is a **FAIL** of (i), never INCONCLUSIVE (PI
-  decision, comité 052 §11).
+- **INCONCLUSIVE** iff **any** level of the grid has < 18 generator-valid seeds (PI decision of
+  2026-10-14 after the O8 review, D2; before, only the primary level counted and a short
+  secondary level gave FAIL). It is reserved for generator-invalid seeds; ≥ 3 BH abstentions is
+  a **FAIL** of (i), never INCONCLUSIVE (PI decision, comité 052 §11).
+- **Every pass test is written as `x ≤ bound`**, so a NaN (empty or one-element sample) never
+  passes it (O8 review, D1).
 - **OUT_OF_DOMAIN** iff `T < T_EDGE_MIN = 10`. At the frozen T = 16 this gate cannot fire and is
   **not** counted as a safeguard (comité 052 §5 "Verdict coercion").
-- **(i) and (iv) are gate-derived.** With the flat control abstaining, (i) reduces to "no BH
-  seed abstained" and (iv) to "≤ 1 flat seed escaped the gate". Neither is independent
-  confirmation; the discriminating content is (ii), (iii) and coverage (comité 052 §8 item 7).
+- **(i) and (iv) are gate-derived.** With the flat control abstaining, `d ≥ 0` on every seed and
+  the exact sign-flip test gives `p = 2^-m`, with m the number of seeds where the BH passes the
+  gate, whatever the size of `sep_BH`. So (i) reduces to "fewer than 3 BH seeds abstained" at
+  each required level, and (iv) to "≤ 1 flat seed escaped the gate". Neither is independent
+  confirmation; the discriminating content is (ii), (iii) and coverage (comité 052 §8 item 7;
+  O8 review, D10 and D12).
+- **Declared dependence between levels** (O8 review, D7; inherited from 1+1,
+  `nachocausal/generator.py:46`). The three ρ levels use the same 20 seeds, and each seed seeds
+  `numpy.random.default_rng(seed)` with no ρ. The levels therefore share their random stream:
+  the first `n(32)` values of `t` at ρ = 63 are the `t` of ρ = 32, and the next ones are the
+  uniforms behind `r` at ρ = 32 (checked on seed 7_000_100). Each level is a correct Poisson
+  sprinkle, but the levels are **not independent**, and the convergence clause F compares
+  correlated medians. This is declared, not changed (PI decision, 2026-10-14), so that the dev
+  parity records stay valid.
+- **Declared selection on clean brackets** (O8 review, D8; as 1+1, `nachocausal/validate.py:136`).
+  The median and IQR of widths and the midpoint std use only clean brackets (`width ≥ 0`);
+  inverted brackets (`r_lo > r_hi`) are left out of them, and only coverage, over all
+  bracket-valid seeds, sees them. `n_clean` is reported per level.
 - **Reported verbatim and separately, whatever the verdict:** per level, generator-invalid count
   and reasons, BH-abstain count, flat-escape count, bracket-valid and clean counts, coverage count
   (not only the fraction), median and IQR width/2M, midpoint std, p_perm.
@@ -200,8 +221,11 @@ is reported as a FAIL, not repaired.
   0.5 up to 9 of 20 non-covering seeds still PASS. The coverage floor 0.5 is a deliberately weak
   floor, not nominal coverage, and is neither raised nor lowered.
 
-**Can-fail evidence (step 4):** `tests/test_004_criteria_can_fail.py` (9 tests) shows (ii) via
-coverage, (ii) via width, (iv) and (v) can each produce FAIL; `dev/mutation_check_004.py` catches
+**Can-fail evidence (step 4):** `tests/test_004_criteria_can_fail.py` (18 tests) shows (ii) via
+coverage, (ii) via width, (iv) and (v) can each produce FAIL; since the O8 review (D9) it also
+shows, each failing alone, (i) by 3 BH abstentions at ρ = 63, the convergence clause F, (iii),
+the IQR clause of (ii), a NaN median failing F, a NaN IQR never passing, and a short secondary
+level giving INCONCLUSIVE; `dev/mutation_check_004.py` catches
 5/5 mutations (`dev/PREREG004_STEP_4_2026-10-13.md`).
 
 ## 8. Pre-flight (step 5) and expected runtime
@@ -242,9 +266,18 @@ coverage, (ii) via width, (iv) and (v) can each produce FAIL; `dev/mutation_chec
 - **Writing:** `results/validation_004.json` is written atomically and committed immediately with
   its SHA (lesson of prereg-002 `PRIMARY_ARTIFACT_LOST`, `docs/preregistration_002_result.md`).
 - **Progress log** (O4, §10): `results/validation_004.progress.jsonl`, one fsynced line per seed
-  and level with only `seed, rho, invalid, abstained_BH, abstained_MINK, seconds`
-  (`validate.PROGRESS_FIELDS`), appended as the run goes. It is committed together with the
-  result, or alone after a crash.
+  and level with only `seed, rho, seconds` (`validate.PROGRESS_FIELDS`), appended as the run
+  goes. It says nothing about the outcome: abstentions and invalid seeds would reveal a FAIL of
+  (i) or (iv) hours before the end (O8 review, D6). It is committed together with the result, or
+  alone after a crash.
+- **Deterministic aborts are not crashes** (O8 review, D11). A Guard-v failure or a seed with
+  `n_minimal > 256` (outside the τ table) raises and stops the run without a result. Rerunning
+  the same seeds, environment and commit would stop in the same place, so such an abort is not
+  relaunched: it is reported as `ABORTED_GUARD_V` or `ABORTED_TAU_RANGE`, with the progress log
+  and the traceback, and it is not a PASS.
+- **Entry point:** `python -m nachocausal2p1.validate` runs `validate.run()` with its defaults
+  (frozen seeds, `guard=True`, `write=True`) and prints the verdict and the result path. The
+  validation label refuses `write=False` (O8 review, D3 and D4).
 - **Provenance launch file** `results/validation_004_provenance_launch.txt` records: start/end
   UTC; HEAD SHA and branch; both thresholds SHAs, the τ fixture SHA and the imported 1+1 module
   SHAs (§3); `git diff <seal> -- nachocausal/ nachocausal2p1/ docs/preregistration_004.md` line
@@ -269,22 +302,27 @@ transcribed the decisions. The same decisions are recorded in comité 052 §11.
 
 | item | decision | where |
 |---|---|---|
-| O1 draw seed | `VALIDATION_DRAW_SEED_004 = 20261014` | `thresholds.py`, §6 |
+| O1 draw seed | first `20261014`; **revised** after the O8 review (D5): derived at C2 from the SHA of the C1 commit, `draw_seed_from_commit` | `thresholds.py`, §6 |
 | O2 step 5 partial | **accepted as partial**: parity on 1 of 10 seeds plus the dev pairwise parity at T = 16 and port = dev bit-equality; the 9 remaining seeds and the thread probe are not run | §8 |
 | O3 thread count | **20**, enforced in code: `thresholds.assert_blind_threads()` (environment `NUMBA_NUM_THREADS=20` and `numba.get_num_threads() == 20`), called by `validate.run` under the validation label before any generation | `thresholds.py`, `validate.py`; tests `test_blind_threads_can_fail`, `test_validation_run_checks_threads_before_generation` |
-| O4 progress log | **added before C1**: `results/<label>.progress.jsonl`, blind fields only | `validate.py`; tests `test_progress_line_is_blind`, `test_progress_log_written_per_seed_before_the_verdict` |
+| O4 progress log | **added before C1**: `results/<label>.progress.jsonl`; **reduced** after the O8 review (D6) to `seed, rho, seconds` | `validate.py`; tests `test_progress_line_is_blind`, `test_progress_log_written_per_seed_before_the_verdict` |
 | O5.1 | confirmed: ≥ 3 BH abstentions FAIL (i) at every required ρ (63 and 126) | `validate.py` `summarise_level`, `verdict_from_levels` |
 | O5.2 | confirmed: `p_perm` over generator-valid seeds, an abstained BH enters with `sep = 0`. **Deviation from 1+1**, where such a seed is excluded from `p_perm` and from the valid count (`nachocausal/validate.py:117`); the 2+1 rule is the more conservative one | `estimator.py:42-43`, `validate.py` |
 | O5.3 | confirmed: coverage over bracket-valid seeds, count reported (as 1+1, `nachocausal/validate.py:142`) | `validate.py` |
 | O5.4 | confirmed: 20 000-pair fine-shot audit; any failure or disagreement invalidates the seed | `validate.py` `generate` |
 | O6.1-O6.4 | accepted: 10-seed dev cells with the test-only `MIN_VALID_SEEDS` bypass; (i) also failing in (a) and (c), with the synthetic (ii)-only case; no domain-gate bypass needed (pure functions); (iv) named `iv_flat_escapes_primary`, measured at the primary | `tests/test_004_criteria_can_fail.py` |
 | O7 | signed: ρ grid {32, 63, 126} with primary 126; 20 seeds / 18 valid; coverage floor 0.5; (iv) ≤ 1 escape; `T_EDGE_MIN = 10`; exact pins; CPU-only path; and the two `[PI-S3]` clauses (slack F, significance at every ρ ≥ 63) | `thresholds.py` |
-| O8 independent review | **authorised**: `revision-ciega gemini` on this draft and the 2+1 package, after the O3/O4 delta is committed. **Pending** | `revisiones/` (to be prepared) |
+| O8 independent review | **done**: `revision-ciega gemini` (gemini-4-argon, high) on 5afb33d. Verdict NOT READY; 12 defects confirmed against the code (D1-D12), 5 claims partial or unsupported. Fixed or declared on 2026-10-14 (below) | `revisiones/2026-10-14-prereg004-gemini/evaluacion.md` |
+
+**What the O8 review changed (2026-10-14).** Code fixes with no decision needed: D1 (NaN never
+passes), D3 (`write=False` refused under the validation label), D4 (`__main__`), D9 (isolated
+can-fail tests), D10 (§7 wording), D11 (deterministic aborts written down). PI decisions: D2
+(any short level ⇒ INCONCLUSIVE), D5 (draw seed from the C1 commit), D6 (progress log reduced),
+D7 and D8 (declared in §7, not changed). D12 is stated in §7.
 
 **Consequences still open before C1:**
 
-- O3 and O4 change `nachocausal2p1/validate.py` and `thresholds.py` after auditor report 044. The
-  delta needs a `/auditor` re-audit in a separate session (PI audit protocol: freeze and push
-  first, then the auditor reads only the delta).
-- O8: the blind review has to run and be evaluated.
+- The O3/O4 and O8 changes touch `nachocausal2p1/validate.py` and `thresholds.py` after auditor
+  report 044. The delta needs a `/auditor` re-audit in a separate session (PI audit protocol:
+  freeze and push first, then the auditor reads only the delta).
 - Step 7: reconvene `/comite` on this draft, and the PI signs the comité 052 verdict.

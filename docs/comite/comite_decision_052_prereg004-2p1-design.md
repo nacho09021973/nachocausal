@@ -493,14 +493,14 @@ _(left blank for the user — decision, date, and any overriding notes)_
 - **BH abstention rule:** **≥ 3 BH abstentions out of 20 = FAIL** of criterion (i), not INCONCLUSIVE. INCONCLUSIVE stays reserved for generator-invalid seeds.
 
 **Decisions the PI took on the prereg-004 draft open items O1-O8 (2026-10-14, one by one in a Claude Code session, transcribed by Claude):**
-- **O1.** `VALIDATION_DRAW_SEED_004 = 20261014`.
+- **O1.** `VALIDATION_DRAW_SEED_004 = 20261014` (revised under O8, D5).
 - **O2.** Step 5 accepted as partial (parity on 1 of 10 seeds; the dev pairwise parity at T = 16 and port = dev bit-equality stand in for the rest; no thread probe).
 - **O3.** The blind run uses 20 numba threads, enforced in code.
 - **O4.** A per-seed progress log with blind fields only is added before C1.
 - **O5.** The four step-3 interpretations confirmed, including `p_perm` with an abstained BH as `sep = 0`, knowing that 1+1 excludes such seeds.
 - **O6.** The four step-4 deviations accepted.
 - **O7.** The §8 recommendations as transcribed in `nachocausal2p1/thresholds.py` (`[C052-n]`) signed, and the two `[PI-S3]` clauses signed.
-- **O8.** Blind review by `revision-ciega gemini` authorised; not yet run.
+- **O8.** Blind review by `revision-ciega gemini` authorised and run: NOT READY, 12 defects confirmed (`revisiones/2026-10-14-prereg004-gemini/evaluacion.md`). PI decisions on it: any level short of valid seeds ⇒ INCONCLUSIVE (D2); the draw seed is derived from the C1 commit SHA, replacing 20261014 (D5, revises O1); the progress log keeps only seed, ρ and seconds (D6, revises O4); the shared random stream across ρ and the clean-bracket selection are declared, not changed (D7, D8).
 
 Detail and pointers: `docs/preregistration_004_draft.md` §10.
 

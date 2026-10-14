@@ -12,7 +12,8 @@ Every value carries its source. Sources:
   [ASTRA]   blind theta anchor, revisiones/2026-10-13-anclaje-theta-ciego/astra.md;
   [PI-S3]   PI choices made in chat on 2026-10-13 for the step-3 port (the two 1+1 clauses
             with no 2+1 definition, comité 052 §5 item 3 / §8 item 8; signed 2026-10-14);
-  [PI-O1], [PI-O3]  PI decisions of 2026-10-14 on the prereg-004 draft open items O1 and O3;
+  [PI-O1], [PI-O3]  PI decisions of 2026-10-14 on the prereg-004 draft open items O1 and O3
+            (O1 revised the same day after the O8 review, D5);
   [GEN]     values copied from dev/gen2p1_efbox.py (frozen with the generator, C052-1).
 Nothing here is reverse-engineered from a dev outcome. The theta values have NOT been compared
 with dev widths and must not be before the freeze (comité 052 falsifier, leakage (c)).
@@ -115,9 +116,19 @@ VIRGIN_BAND = (8_000_000, 8_999_999)    # reserved for the single prereg-004 bli
 DRY_RUN_SEEDS = tuple(range(7_000_100, 7_000_110))
 # Not drawn yet: step C2 draws 20 seeds ONCE and BLIND from VIRGIN_BAND, after C1, with
 # numpy(1.26.4).default_rng(VALIDATION_DRAW_SEED).choice(arange(8_000_000, 9_000_000), 20,
-# replace=False), sorted. [PI-O1] fixed on 2026-10-14 (the date, as prereg-002's 20260622),
-# before any draw.
-VALIDATION_DRAW_SEED = 20261014
+# replace=False), sorted. [PI-O1, revised 2026-10-14 after the O8 review, D5] The draw seed is
+# not a number fixed in advance (that would let anyone compute the virgin seeds before the
+# freeze): it is draw_seed_from_commit(<SHA of the C1 freeze commit>), which does not exist
+# until C1 is committed. C2 records the SHA and the resulting seed here.
+VALIDATION_DRAW_SEED = None
+
+
+def draw_seed_from_commit(sha: str) -> int:
+    """The C2 draw seed: the first 8 hex digits of the full SHA-1 of the C1 freeze commit, as
+    an integer (0 .. 2**32 - 1)."""
+    if len(sha) != 40 or any(c not in "0123456789abcdef" for c in sha):
+        raise ValueError("draw_seed_from_commit needs the full 40-hex lowercase commit SHA.")
+    return int(sha[:8], 16)
 VALIDATION_SEEDS: tuple = ()
 # Burned Phase-A seeds (comité 052:20, dev/2P1_PHASE_A_RESULT_2026-10-12.md): never reusable.
 BURNED_PHASE_A_SEEDS = (1, 2, 3, 4, 7, 99, 12345)

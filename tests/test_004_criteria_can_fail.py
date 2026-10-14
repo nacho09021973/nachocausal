@@ -179,3 +179,98 @@ def test_v_guard_off_fails_v_only():
     out = validate.verdict_from_levels(_levels(dict(_synthetic_level(PRIM))), guard_ran=False)
     assert [k for k, v in out["checks"].items() if not v] == ["v_order_only"]
     assert out["verdict"] == "FAIL"
+
+
+# --- isolated failures of (i), slack F, (iii) and the IQR clause; NaN never passes -----------
+# (O8 review 2026-10-14, D1, D2 and D9). Each case changes one level and asserts that exactly
+# the targeted check goes false.
+def _failing(out):
+    return [k for k, v in out["checks"].items() if not v]
+
+
+def test_i_three_bh_abstentions_at_rho63_fail_i_only():
+    rows = _synthetic_rows(63.0)
+    for r in rows[:3]:
+        r.update(abstained_BH=True, d=0.0, valid=False, clean=False, covers=False)
+    lv = _levels(dict(_synthetic_level(PRIM)))
+    lv[63.0] = validate.summarise_level(rows, 63.0)
+    assert lv[63.0]["n_abstain_BH"] == 3 and lv[63.0]["significant"] is False
+    out = validate.verdict_from_levels(lv, guard_ran=True)
+    assert _failing(out) == ["i_significant_every_rho_ge_min"] and out["verdict"] == "FAIL"
+
+
+def test_i_two_bh_abstentions_still_pass():
+    rows = _synthetic_rows(63.0)
+    for r in rows[:2]:
+        r.update(abstained_BH=True, d=0.0, valid=False, clean=False, covers=False)
+    lv = _levels(dict(_synthetic_level(PRIM)))
+    lv[63.0] = validate.summarise_level(rows, 63.0)
+    assert validate.verdict_from_levels(lv, guard_ran=True)["verdict"] == "PASS"
+
+
+def _level_with_width(rho, factor):
+    rows = _synthetic_rows(rho)
+    for r in rows:
+        r["width"] = factor * thresholds.theta_loc(rho) * thresholds.TWO_M
+    return validate.summarise_level(rows, rho)
+
+
+def test_slack_violation_between_low_levels_fails_slack_only():
+    lv = _levels(dict(_synthetic_level(PRIM)))
+    a = lv[32.0]
+    factor = (1.0 + EPS) * (a["median_width_over_2M"] + a["slack_over_2M"]) \
+        / thresholds.theta_loc(63.0)
+    lv[63.0] = _level_with_width(63.0, factor)
+    out = validate.verdict_from_levels(lv, guard_ran=True)
+    assert _failing(out) == ["ii_convergence_slack"] and out["verdict"] == "FAIL"
+
+
+def test_nan_median_fails_slack():
+    lv = _levels(dict(_synthetic_level(PRIM)))
+    rows = _synthetic_rows(32.0)
+    for r in rows:
+        r.update(clean=False)                       # no clean bracket: median and IQR are NaN
+    lv[32.0] = validate.summarise_level(rows, 32.0)
+    assert lv[32.0]["status"] == "scored" and np.isnan(lv[32.0]["median_width_over_2M"])
+    out = validate.verdict_from_levels(lv, guard_ran=True)
+    assert out["checks"]["ii_convergence_slack"] is False and out["verdict"] == "FAIL"
+
+
+def test_iqr_above_theta_fails_ii_only():
+    rows = _synthetic_rows(PRIM)
+    th = thresholds.theta_loc(PRIM) * thresholds.TWO_M
+    for i, r in enumerate(rows):                    # 6 x 0, 8 x th/2, 6 x 3th: median th/2,
+        r["width"] = 0.0 if i < 6 else (0.5 * th if i < 14 else 3.0 * th)   # IQR 3th > th
+    prim = validate.summarise_level(rows, PRIM)
+    assert prim["loc_pass"] is True and prim["loc_inconclusive"] is True
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
+    assert _failing(out) == ["ii_localisation_primary"]
+
+
+def test_nan_iqr_is_inconclusive_not_pass():
+    rows = _synthetic_rows(PRIM)
+    for r in rows[1:]:
+        r.update(clean=False)                       # one clean bracket: IQR is NaN
+    prim = validate.summarise_level(rows, PRIM)
+    assert np.isnan(prim["iqr_width_over_2M"]) and prim["loc_inconclusive"] is True
+
+
+def test_iii_spread_midpoints_fail_iii_only():
+    rows = _synthetic_rows(PRIM)
+    s = thresholds.theta_stab(PRIM)
+    for i, r in enumerate(rows):
+        r["midpoint"] = thresholds.TWO_M + (2.0 * s if i % 2 else -2.0 * s)
+    prim = validate.summarise_level(rows, PRIM)
+    assert prim["stab_pass"] is False
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
+    assert _failing(out) == ["iii_stability_primary"]
+
+
+def test_non_primary_level_short_of_valid_seeds_is_inconclusive():
+    lv = _levels(dict(_synthetic_level(PRIM)))
+    rows = _synthetic_rows(32.0)
+    for r in rows[:3]:
+        r.update(invalid=True)                      # 17 < 18 generator-valid seeds
+    lv[32.0] = validate.summarise_level(rows, 32.0)
+    assert lv[32.0]["status"] == "inconclusive"
+    assert validate.verdict_from_levels(lv, guard_ran=True)["verdict"] == "INCONCLUSIVE"

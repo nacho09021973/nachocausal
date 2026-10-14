@@ -17,9 +17,14 @@ Differences from 1+1 (all from comité 052 §8 and the PI decisions in §11):
   * results are written atomically (temp file + fsync + rename) and the validation label is
     one-shot: an existing results/validation_004.json is never overwritten;
   * with write=True, one progress line per seed and level is appended (and fsynced) to
-    results/<label>.progress.jsonl, with blind fields only (PROGRESS_FIELDS), plus a start line
-    per launch, so a crash leaves a record and a relaunch is logged (comité 052 reproducibility
-    brief; prereg-004 draft O4);
+    results/<label>.progress.jsonl, with seed, rho and seconds only (PROGRESS_FIELDS), plus a
+    start line per launch, so a crash leaves a record and a relaunch is logged (comité 052
+    reproducibility brief; draft O4). It carries nothing about the outcome: abstentions and
+    invalid seeds would reveal a FAIL of (i) or (iv) before the end (O8 review, D6);
+  * any level with < MIN_VALID_SEEDS generator-valid seeds makes the verdict INCONCLUSIVE, not
+    only the primary (O8 review, D2);
+  * every pass test is written as `x <= bound`, so a NaN fails it (O8 review, D1);
+  * the validation label refuses write=False (O8 review, D3);
   * the validation label requires NUMBA_NUM_THREADS = 20 (thresholds.assert_blind_threads, O3).
 """
 
@@ -38,8 +43,9 @@ from .scoring import blind_bracket
 
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "results")
 VALIDATION_LABEL = "validation_004"
-# Fields of a per-seed progress line. Blind only: no width, bracket, midpoint, coverage, sep or d.
-PROGRESS_FIELDS = ("seed", "rho", "invalid", "abstained_BH", "abstained_MINK", "seconds")
+# Fields of a per-seed progress line: a heartbeat with nothing about the outcome (no abstention,
+# invalidity, width, bracket, midpoint, coverage, sep or d). [PI, 2026-10-14, O8 review D6]
+PROGRESS_FIELDS = ("seed", "rho", "seconds")
 
 
 # =============================================================================
@@ -181,7 +187,7 @@ def summarise_level(rows: List[dict], rho: float) -> dict:
     res["median_width_over_2M"] = float(np.median(widths)) if widths.size else float("nan")
     res["iqr_width_over_2M"] = _iqr(widths)
     res["loc_pass"] = bool(res["median_width_over_2M"] <= res["theta_loc"])
-    res["loc_inconclusive"] = bool(res["iqr_width_over_2M"] > res["theta_loc"])
+    res["loc_inconclusive"] = not bool(res["iqr_width_over_2M"] <= res["theta_loc"])
     res["coverage_count"] = int(sum(bool(r["covers"]) for r in brk))
     res["coverage_frac"] = res["coverage_count"] / len(brk) if brk else float("nan")
     mids = np.array([r["midpoint"] for r in clean])
@@ -221,10 +227,11 @@ def run_level(seeds, rho: float, guard: bool = True, progress: Optional[str] = N
 def verdict_from_levels(levels: Dict[float, dict], *, guard_ran: bool) -> dict:
     """Frozen-form verdict from level summaries (pure; exercised by the can-fail test)."""
     prim = levels[thresholds.PRIMARY_RHO]
-    if prim.get("status") != "scored":
+    short = [rho for rho in thresholds.RHO_GRID if levels[rho].get("status") != "scored"]
+    if short:
         return {"verdict": "INCONCLUSIVE",
-                "reason": f"primary rho={thresholds.PRIMARY_RHO} has fewer than "
-                          f"{thresholds.MIN_VALID_SEEDS} generator-valid seeds"}
+                "reason": f"rho={short} have fewer than {thresholds.MIN_VALID_SEEDS} "
+                          f"generator-valid seeds"}
     required = [rho for rho in thresholds.RHO_GRID if rho >= thresholds.SIGNIFICANCE_MIN_RHO]
     sig_ok = all(levels[rho].get("significant", False) for rho in required)
     slack_ok = True
@@ -234,7 +241,7 @@ def verdict_from_levels(levels: Dict[float, dict], *, guard_ran: bool) -> dict:
         if a.get("status") != "scored" or b.get("status") != "scored":
             slack_ok = False
             break
-        if b["median_width_over_2M"] > a["median_width_over_2M"] + a["slack_over_2M"]:
+        if not (b["median_width_over_2M"] <= a["median_width_over_2M"] + a["slack_over_2M"]):
             slack_ok = False
     checks = {
         "i_significant_every_rho_ge_min": bool(sig_ok and prim["significant"]),
@@ -264,6 +271,8 @@ def run(seeds=None, label: str = VALIDATION_LABEL, guard: bool = True, write: bo
     if label != VALIDATION_LABEL and set(seeds) & set(thresholds.VALIDATION_SEEDS):
         raise RuntimeError("validation seeds may only be run under the validation label.")
     if label == VALIDATION_LABEL:
+        if not write:
+            raise RuntimeError("the validation run must write its result (write=True).")
         if not guard:
             raise RuntimeError("the validation run requires Guard-v (guard=True).")
         if thresholds.STATUS != "FROZEN" or tuple(seeds) != tuple(thresholds.VALIDATION_SEEDS):
@@ -328,3 +337,9 @@ def _json_default(x):
     if isinstance(x, np.ndarray):
         return x.tolist()
     return str(x)
+
+
+if __name__ == "__main__":
+    # The single blind run (prereg-004 §9): frozen VALIDATION_SEEDS, guard on, result written.
+    _out = run()
+    print(json.dumps({"verdict": _out["verdict"], "result": _result_path(VALIDATION_LABEL)}))

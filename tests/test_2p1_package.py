@@ -226,7 +226,7 @@ def test_validation_label_requires_guard(monkeypatch, tmp_path):
     monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
     monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
     with pytest.raises(RuntimeError, match="Guard-v"):
-        validate.run(seeds=None, label=validate.VALIDATION_LABEL, guard=False, write=False)
+        validate.run(seeds=None, label=validate.VALIDATION_LABEL, guard=False, write=True)
 
 
 def test_check_validation_seeds_can_fail():
@@ -281,7 +281,7 @@ def test_validation_run_checks_threads_before_generation(monkeypatch, tmp_path):
     monkeypatch.setenv("NUMBA_NUM_THREADS", "4")
     monkeypatch.setattr(numba, "get_num_threads", lambda: 4)
     with pytest.raises(RuntimeError, match="NUMBA_NUM_THREADS"):
-        validate.run(seeds=None, label=validate.VALIDATION_LABEL, write=False)
+        validate.run(seeds=None, label=validate.VALIDATION_LABEL, write=True)
     assert os.listdir(tmp_path) == []
 
 
@@ -291,7 +291,8 @@ def test_progress_line_is_blind():
     line = validate.progress_line(row)
     assert tuple(line) == validate.PROGRESS_FIELDS
     leaky = {"r_lo", "r_hi", "width", "midpoint", "covers", "clean", "valid", "sep_BH",
-             "sep_MINK", "d", "theta_loc", "theta_stab"}
+             "sep_MINK", "d", "theta_loc", "theta_stab", "invalid", "abstained_BH",
+             "abstained_MINK", "invalid_reasons", "N", "n_minimal_BH", "n_minimal_MINK"}
     assert not leaky & set(validate.PROGRESS_FIELDS)
     assert not leaky & set(line)
 
@@ -317,3 +318,25 @@ def test_progress_log_written_per_seed_before_the_verdict(monkeypatch, tmp_path)
     assert calls == list(range(1, 1 + len(body)))   # each line is on disk before the next seed
     validate.run(seeds=seeds, label="probe", write=False)
     assert sum(1 for _ in open(validate._progress_path("probe"))) == len(lines)  # write=False: none
+
+
+# --- O8 review (2026-10-14): D3 write=False refused, D5 draw seed from the C1 commit ---------
+def test_validation_run_refuses_write_false(monkeypatch, tmp_path):
+    monkeypatch.setattr(validate, "generate", _no_generation)
+    monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
+    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
+    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    with pytest.raises(RuntimeError, match="write=True"):
+        validate.run(seeds=None, label=validate.VALIDATION_LABEL, write=False)
+
+
+def test_draw_seed_is_not_fixed_before_c1():
+    assert thresholds.VALIDATION_DRAW_SEED is None
+
+
+def test_draw_seed_from_commit_can_fail():
+    sha = "0123456789abcdef0123456789abcdef01234567"
+    assert thresholds.draw_seed_from_commit(sha) == 0x01234567
+    for bad in (sha[:8], sha.upper(), sha[:-1] + "g", sha + "0"):
+        with pytest.raises(ValueError):
+            thresholds.draw_seed_from_commit(bad)
