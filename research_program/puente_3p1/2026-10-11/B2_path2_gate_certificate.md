@@ -53,7 +53,8 @@ más.
    antes del tope `min(pi, ·)`, la separación temporal `τ` de la métrica 2D `q(UV)² dU dV`. La
    justificación, incluida la regularización `V_ε`, está en H1 (§6).
 2. **Monotonía respecto a los extremos.** Para `τ` sin tope, si `z` está en el futuro causal de
-   `x`, la concatenación da `τ(x,y) >= τ(x,z) + τ(z,y) >= τ(z,y)`. Con `x ∈ P` e `y ∈ Q`:
+   `x` y en el pasado causal de `y`, la concatenación da `τ(x,y) >= τ(x,z) + τ(z,y) >= τ(z,y)`
+   (corregido el 2026-10-14; ver la adenda de esa fecha). Con `x ∈ P` e `y ∈ Q`:
    `τ(P_top, Q_bot) <= τ(x,y)` si `P_top <= Q_bot`, y `τ(x,y) <= τ(P_bot, Q_top)`. El tope
    `min(pi, ·)` y `p` son no decrecientes, así que ambas desigualdades pasan a `Delta_max` y a
    `h`. **No** se usa ninguna desigualdad triangular inversa aditiva para la cantidad con tope,
@@ -317,3 +318,18 @@ reproducción bit a bit y probablemente la condición (v). Se comprobó aparte r
 número y el terminal no cambian; solo cambia la evidencia del control. Detalle en
 `dev/B2_FASTMATH_GUARD_CACHE_FINDING_2026-10-12.md`. Este verificador no se edita, porque es el
 objeto auditado.
+
+## Adenda 2026-10-14 — errata en el enunciado de §2.2
+
+El texto promocionado decía «si `z` está en el futuro causal de `x`, la concatenación da
+`τ(x,y) >= τ(x,z) + τ(z,y) >= τ(z,y)`». Le faltaba la hipótesis `z ≤ y`. Contraejemplo con
+`q ≡ 1`, para el que `τ(a,b) = sqrt(ΔU ΔV)` si `a ≤ b`: `x=(0,0)`, `y=(1/4,1/4)` y
+`z=(1/2,1/2)` dan `τ(x,y) = 1/4`, `τ(x,z) = 1/2` y `τ(z,y) = 0`, y la desigualdad diría
+`1/4 >= 1/2`. Lo encontró la revisión ciega del lema 2 en Lean
+(`revisiones/2026-10-14-lema2-lean-fidelidad/informe_astra.md` §4; comprobado a mano en
+`evaluacion.md` de esa carpeta). Se añade «y en el pasado causal de `y`».
+
+El número y el terminal no cambian. Los dos usos del paso, las cotas por esquinas, tienen
+siempre el punto intermedio entre los extremos: `x ≤ P_top ≤ Q_bot ≤ y` en la inferior y
+`P_bot ≤ x ≤ y ≤ Q_top` en la superior cuando `x ≤ y`. El verificador y el JSON no se tocan.
+La corrección es solo de texto. La autorizó el PI en sesión el 2026-10-14; la redactó Claude.
