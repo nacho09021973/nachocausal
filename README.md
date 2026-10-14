@@ -250,7 +250,10 @@ promoted by the PI:
 | B4-R (`n=3`) | `CLOSED — GATE_FAILED`; B4 back to `PARKED` | `2026-10-12/B4R_n3_reopening_spec.md` |
 
 Lemma 1 of the calibration bound is formalised in Lean as `formal/NachoFormal/Calibration.lean`,
-with no `sorry`. Lemma 2 is briefed for a separate agent in `formal/TAREA_LEMA2_CODEX.md`.
+with no `sorry`. Lemma 2, the monotonicity of the time separation `τ` in the endpoints, is in
+`formal/NachoFormal/Monotonicity.lean`, also with no `sorry` (brief: `formal/TAREA_LEMA2_CODEX.md`).
+Its `BddAbove` bounds are explicit hypotheses, and whether the Lean statements match the
+certificate's §2.2 has not been checked by an independent reader.
 
 **2+1D equatorial front** (charter: `docs/acta_frente_2p1_ecuatorial_2026-10-12.md`, signed).
 Lemma E1 (`research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md`, audited)
