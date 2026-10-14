@@ -1,0 +1,1856 @@
+IMPORTANT: you have no tools in this session: no code execution, no terminal, no files, no file search, no web. Do not emit tool calls of any kind and do not look for further files: everything you will receive is in this message. Write your answer directly.
+
+Eres un revisor adversarial de diseño experimental y de código científico. Te adjunto el borrador de un pre-registro (todavía no congelado) y el código que lo ejecutará. El proyecto prueba si el orden causal de un conjunto causal sembrado (sin coordenadas) basta para localizar el horizonte de Schwarzschild en un banco 2+1D ecuatorial. Un estimador ve solo el orden; después, un módulo aislado de puntuación compara su frontera con la verdad (`r`). Habrá una única corrida ciega sobre 20 semillas vírgenes, sin repetición.
+
+No se adjunta el paquete 1+1 sellado del que se reutilizan algunas primitivas (`two_means_split`, la regla de abstención por `τ(n)`, la prueba de permutación con cambio de signo); trátalo como auditado y di cuándo una conclusión tuya depende de él.
+
+Tareas, en este orden:
+
+1. **Criterios que no pueden fallar.** Para cada criterio del veredicto (`i_significant_every_rho_ge_min`, `ii_localisation_primary`, `ii_convergence_slack`, `iii_stability_primary`, `iv_flat_escapes_primary`, `v_order_only`), ¿puede pasar de forma vacía o casi garantizada por construcción, o fallar de forma trivial? Si sí, da el mecanismo concreto (fichero y función) y la cláusula que lo evitaría.
+2. **Fugas.** ¿Puede llegar al estimador, o a una decisión humana durante la corrida, alguna información de la verdad (`r`, la horquilla, las anchuras, la cobertura) antes de que el umbral quede fijado o antes del veredicto? Revisa en particular el registro de progreso por semilla (`progress_line`, `PROGRESS_FIELDS`) y la regla de caídas y relanzamiento.
+3. **Texto frente a código.** ¿Coinciden los valores y reglas del borrador (§6-§10) con `thresholds.py` y `validate.py`? Enumera cada discrepancia.
+4. **Diseño estadístico.** Evalúa: `p_perm` sobre las semillas válidas del generador con `sep = 0` para un agujero negro que se abstiene; la regla «≥ 3 abstenciones = FAIL de (i)» en cada ρ exigido; la cobertura sobre las horquillas válidas; la holgura de convergencia entre niveles de ρ que comparten las mismas 20 semillas; la mediana de anchuras sobre las horquillas «limpias». ¿Hay algún sesgo de selección o de dependencia que el texto no declare?
+5. **Corrida única y reproducibilidad.** ¿Hay algún resquicio por el que la corrida ciega pueda repetirse, elegirse entre varias o depender del entorno (hilos, versiones, caché)? Ten en cuenta que no se ha comprobado el determinismo entre distintos números de hilos y que el número de hilos se fija en 20.
+6. **Veredicto global:** «listo para congelar», «listo con cambios menores enumerados» o «no listo», con los defectos ordenados por gravedad.
+
+Reglas: distingue lo que demuestras con el código adjunto de lo que conjeturas. Cita fichero y función. No cites literatura que no puedas identificar con precisión. Sé conciso: máximo 2000 palabras.
+
+=== DOCUMENT 1: preregistration_004_draft.md ===
+
+# Pre-registration 004 — DRAFT (2+1D equatorial patch localisation)
+
+> ## ⚠ DRAFT — NOT FROZEN, NOT YET A PRE-REGISTRATION
+>
+> This file is the reversible draft of what `docs/preregistration_004.md` *would* register. It
+> freezes nothing, seals nothing, draws no seed and touches **no** seed of the virgin band
+> `8_000_000..8_999_999`. It is the input to step 7 of
+> `docs/comite/comite_decision_052_prereg004-2p1-design.md` §9 ("reconvene `/comite` on the
+> concrete prereg-004 draft"). Freezing is a separate committing step (C1, §9 below) that needs
+> steps 1-7 green and explicit PI authorisation; only then is the non-draft
+> `docs/preregistration_004.md` created and `nachocausal2p1/thresholds.py` set to `FROZEN`.
+>
+> Sealed 1+1 instrument unchanged: `nachocausal/thresholds.py` SHA256 =
+> `6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4` (`make verify-seal`).
+> Draft written 2026-10-13 on branch `prereg004/step3-port`, base commit `2fe277f`.
+>
+> Every value below is a pointer to a committed artefact. Items still open are listed in §10 and
+> must be settled (or explicitly accepted as open) by the committee and the PI before C1.
+
+## 1. Claim to be registered (and its boundary)
+
+**Claim form.** On the frozen 2+1 equatorial Schwarzschild bench (§2), an embedding-blind
+estimator that sees only the causal order and its cardinalities (§4) places a bracket on the
+minimal-element antichain that, at the primary density, has median width ≤ θ_loc·2M, covers
+r = 2M in at least half of the bracket-valid seeds, is stable across seeds within θ_stab, and is
+significant against the same-cloud flat control — all on 20 seeds drawn once and blind (§6).
+
+Allowed wording of any result: **"finite 2+1 equatorial patch localisation within frozen θ on
+the frozen ρ grid"** (comité 052 §8 item 10, §5 "Premature / over-broad claims").
+
+**Not claimed** (comité 052 §6 "Forbidden moves", acta `docs/acta_frente_2p1_ecuatorial_2026-10-12.md:107`
+`no_3p1_claim_from_2p1, no_einstein_2p1_claim, gpu_dev_only`):
+- no event-horizon claim: the target is the coordinate locus r = 2M in a finite box, and the
+  estimator is known to track a T-dependent effective boundary at small T
+  (`dev/2P1_PHASE_B_INTERIM_2026-10-12.md`);
+- no 3+1 result: lemma E1 transfers the *order* on the equator only, not any estimator property;
+- no 2+1 gravity result: the bench metric is not an Einstein solution in 2+1;
+- no metric reconstruction; no statement about regular black holes (EGS l.195, comité 052 §7);
+- no "for all ρ": every statement is for the frozen grid {32, 63, 126} only.
+
+**Assumptions stated, not proved** (comité 052 §6 "E1 and order definition"):
+- A1. The poset is the **ambient** causal order of the equatorial Schwarzschild patch restricted
+  to the sprinkled points, not the intrinsic order of the EF box.
+- A2. Lemma E1's computable `Delta_max` criterion relies on a maximiser step self-marked
+  `[INFERENCE]` (`research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md` §3).
+- A3. Its application to the EF box (r ≥ 0.1 on every causal rectangle of two box points) is the
+  committee physicist's own inference, not written in E1.
+- A4. The order is decided numerically by geodesic shooting with frozen tolerances (§3); it is
+  checked empirically per seed (audit, transitivity, radial closed form), not analytically.
+
+## 2. Bench (geometry, sprinkling, control)
+
+| Item | Value | Source |
+|---|---|---|
+| Metric | ingoing EF, equatorial: `-(1-2M/r)dv² + 2dv dr + r²dφ²`, `v = t* + r` | comité 052 physicist brief; `nachocausal2p1/generator.py` |
+| 2M | 0.5 (scoring unit only) | `nachocausal2p1/thresholds.py` `TWO_M` |
+| Box | `t* ∈ [0, T]`, `r ∈ [0.1, 1.3]`, `φ ∈ S¹` (r-range = sealed 1+1, never varied) | `thresholds.py` `R_LO, R_HI` |
+| T | **16.0**, hard-coded literal, no environment knob | `thresholds.py` `T_EDGE`; PI decision, comité 052 §11 |
+| Volume | `π(1.3² − 0.1²)·T = 5.278·T` (√−g = r) | `thresholds.py` `VOL_PER_T, BOX_VOLUME` |
+| Sprinkling | Poisson, mean `n_mean(ρ) = round(ρ·BOX_VOLUME)` | `thresholds.py` `n_mean` |
+| Flat control | Minkowski order (`dt ≥ |x−y|`) on the **same** cloud | comité 052 physicist brief |
+
+**T = 16 is a margin above t_min, not a Decision-2 pass.** Measured dev t_min = 8 / 10 / 10 at
+ρ = 32 / 63 / 126 (`dev/2P1_TMIN_SWEEP_RESULT_2026-10-12.md`,
+`dev/2P1_TMIN_RHO126_RESULT_2026-10-13.md`). The plateau clause [T, 2T] is unmeasured at T = 16
+([16, 32]). No decay law for the finite-T bias enters this pre-registration (comité 052 §8 item 5;
+literature verdict §7: the e^{−T/4M} argument is unanchored). T was chosen using dev bias and
+coverage scored against r = 2M: **T is not chosen ground-truth-free** (comité 052 logic brief).
+
+## 3. Instrument
+
+Sub-package `nachocausal2p1/` (step 3, `dev/PREREG004_STEP_3_2026-10-13.md`); `nachocausal/` is
+not edited.
+
+- **Generator** `nachocausal2p1/generator.py`: numerical core copied literally from
+  `dev/gen2p1_efbox.py`; T literal; numba cache off. Frozen numerics (`thresholds.py`):
+  `TOL = 1e-6`, `REL_MARGIN = 1e-3`, `COARSE = (128, 512)`, `FINE = (2048, 8192)`,
+  `COARSE_MARGIN = 0.05`, `N_HYP = 48`, `AUDIT_PAIRS = 20000`.
+- **Per-seed validity** (any failure ⇒ seed **INVALID**, never replaced): generator assertion;
+  any endpoint failure or disagreement in the 20 000-pair re-shoot audit (stage-1/2 and coarse
+  shot vs fine); a transitivity violation; a radial-check mismatch vs the closed form
+  `nachocausal.generator.past_matrix_fast`.
+- **Estimator** `nachocausal2p1/estimator.py`: thin wrapper over the sealed 1+1 primitives
+  (`estimate_O_volume`, `two_means_split`, `improvement`, `verify_order_only`), unchanged.
+- **Gate** `nachocausal2p1/gate.py`: τ(n) from `nachocausal2p1/fixtures/tau_table_2p1.json`
+  (§5); `n > 256` **aborts the run** (never extrapolates).
+- **Scoring** `nachocausal2p1/scoring/`: the only place r is read, after the threshold is fixed
+  from O.
+- **Runner** `nachocausal2p1/validate.py`: Guard-v → estimate → gate → bracket; atomic write;
+  the label `validation_004` is one-shot and refused unless `STATUS == "FROZEN"`, the seeds are
+  the drawn ones, `guard=True`, and `results/validation_004.json` does not exist.
+- **Environment** (`thresholds.assert_environment`, hard-fail): Python 3.12.3, numpy 1.26.4,
+  numba 0.66.0, llvmlite 0.48.0, scipy 1.17.1; CPU only (CuPy not loaded, `NC2P1_DEVICE` unset
+  or `cpu`).
+
+**SHAs at drafting time** (to be re-taken and recorded at C1; `make verify-2p1`, `sha256sum`):
+
+| File | SHA256 |
+|---|---|
+| `nachocausal2p1/thresholds.py` (candidate) | `e7a69934dff0219f4d3560e1f892eeb9ecf8accb5fa72996e1e0cf73f7e326eb` |
+| `nachocausal2p1/fixtures/tau_table_2p1.json` | `4bc4aec839257af7fed210030c0afa9041c265cacf43802bb735fb99df367a28` |
+| `nachocausal/thresholds.py` (1+1 seal) | `6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4` |
+| `nachocausal/estimator.py` (imported) | `aa4411c3d095230e0f6dde78e4a8de11240c0cb42ad14353453848d70cdf1680` |
+| `nachocausal/generator.py` (imported, radial check) | `d6f09fdc21b76f6cf329c33580342a068135f7ece7ed11c304552f0848216f9f` |
+| `nachocausal/__init__.py` (imported) | `f1ec7306ced3e1f948b3a147b4e8c69f201c2bb803a1cb2525b5602239a2c7b7` |
+
+The thresholds SHA will change at C1 (`STATUS`, `VALIDATION_DRAW_SEED`, `VALIDATION_SEEDS`).
+
+## 4. Observable and estimator
+
+- **Observable:** for each minimal element i of the order, `O(i) = |future(i)|` (future
+  cardinality). Counting is legitimate (`Order + Number`); the estimator sees only the order.
+- **Split:** sealed 1-D 2-means on O; `improvement` is the split's variance reduction.
+- **Gate:** abstain (`sep → 0`, no boundary claimed) iff `improvement < τ(n)`, n = number of
+  minimal elements.
+- **Bracket (scoring only):** `[max r over low-O minimals, min r over high-O minimals]`;
+  `covers` iff `r_lo ≤ 2M ≤ r_hi`; `clean` iff width ≥ 0; point estimate = midpoint.
+- **Guard-v:** `verify_order_only` on every causet; it raises on failure (aborting the run).
+
+## 5. Gate table τ(n) (step 1)
+
+Generated by `dev/gen_tau_table_2p1.py` with the **sealed** procedure unchanged
+(`scripts/gen_tau_table.build_tau`: one stream `default_rng(20260621)`, n ascending and
+contiguous from 2, 40 000 reps, α = 0.01 → p99, uniform null) up to `n_max = 256`. Bit-equal to
+`nachocausal/fixtures/tau_table.json` for n ≤ 128 (asserted). Largest dev `n_minimal` = 184
+(ρ = 126). Re-gating all 360 dev decisions with it flips none; minimum margin 0.0358
+(`dev/regate_2p1_sweeps.py`; `dev/PREREG004_STEPS_1_2_2026-10-13.md`). Dev τ values are not
+reused.
+
+## 6. Seeds — to be drawn once, blind, at C2 (not drawn)
+
+- **Ensemble:** `ENSEMBLE = 20` per ρ level (the same 20 seeds at every ρ);
+  `MIN_VALID_SEEDS = 18` generator-valid seeds per level.
+- **Recipe** (mirrors `docs/preregistration_002.md:20-24`):
+  `numpy(1.26.4).default_rng(VALIDATION_DRAW_SEED_004).choice(arange(8_000_000, 9_000_000), size=20, replace=False) -> sorted`.
+- **`VALIDATION_DRAW_SEED_004 = 20261014`** (`nachocausal2p1/thresholds.py`, name
+  `VALIDATION_DRAW_SEED`), fixed by the PI on 2026-10-14 before any draw (O1, §10). Like
+  prereg-002's `20260622`, it is the date of the decision.
+- **Runnable guard** (`thresholds.check_validation_seeds`, at import): exactly 20 distinct seeds,
+  all in `VIRGIN_BAND`, none in `EXPLORE_BAND = 7_000_000..7_000_999`, none among the burned
+  Phase-A seeds `1, 2, 3, 4, 7, 99, 12345`. `validate.check_seed` refuses any virgin seed before
+  `STATUS == "FROZEN"`.
+- Burned and never reusable: the whole exploration band, the Phase-A seeds, and the prereg-001
+  and prereg-002 seeds. Dry runs use only `DRY_RUN_SEEDS = 7_000_100..7_000_109`.
+
+## 7. Frozen analysis
+
+Grid `RHO_GRID = (32, 63, 126)`, **primary endpoint ρ\* = 126** (comité 052 §8 item 4). Every
+threshold is a function of (ρ, T, box geometry) only, never of realised N or n_min.
+
+**θ anchor (c1), derived blind** (`revisiones/2026-10-13-anclaje-theta-ciego/astra.md`, commit
+`bab6fef`): radial order-statistic spacing of the minimal-element layer, evaluated at the mean box
+perimeter `P* = π(R_LO + R_HI) = 1.4π` (box ends only, no ground truth); K_LOC = 2 inherited
+unchanged.
+
+```text
+ell_rad(ρ)    = ρ^(-2/3) / (1.4π)
+theta_loc(ρ)  = K_LOC·ell_rad/(2M)
+theta_stab(ρ) = K_LOC·ell_rad
+slack(ρ)      = ell_rad/(2M)            (convergence clause F)
+
+ρ       theta_loc   theta_stab
+32      0.09023     0.04511
+63      0.05744     0.02872
+126     0.03619     0.01809
+```
+
+**Disclosure (required by comité 052 §6):** the anchor was commissioned when the chair already
+knew the dev bracket widths; the deriver (ASTRA) did not see them. The conservative alternative
+(c2), the dimensional transfer `2ρ^{-1/3}/2M` with an explicit "(ii) and (iii) are weak in 2+1"
+note, was recorded and not chosen (PI decision, comité 052 §11). These θ have **not** been
+compared with dev widths and will not be before the freeze. A low-ρ cell failing under this anchor
+is reported as a FAIL, not repaired.
+
+**Criteria** (`nachocausal2p1/validate.py` `summarise_level`, `verdict_from_levels`). The run is
+**PASS iff all six hold**; otherwise FAIL, except for the two statuses below.
+
+| Check | Definition |
+|---|---|
+| (i) significance | at every ρ ≥ 63: sign-flip `p_perm ≤ 1e-4` on `d = sep_BH − sep_MINK` over generator-valid seeds (exact for n ≤ 20; a BH abstention enters with sep = 0), **and** BH abstentions < 3 at that level |
+| (ii) localisation | at ρ\*: median clean width/2M ≤ θ_loc(ρ\*), **and** IQR of widths/2M ≤ θ_loc (else inconclusive ⇒ not passed), **and** coverage ≥ 0.5 over bracket-valid seeds |
+| (ii) convergence F | for consecutive grid levels: `m(ρ_{k+1}) ≤ m(ρ_k) + slack(ρ_k)`, m = median width/2M; any unscored level fails it |
+| (iii) stability | at ρ\*: std of clean bracket midpoints ≤ θ_stab(ρ\*) |
+| (iv) flat escapes | at ρ\*: flat-control non-abstentions ≤ 1 of the generator-valid seeds |
+| (v) order-only | Guard-v ran on every causet (`guard=True`) |
+
+- **INCONCLUSIVE** iff the primary level has < 18 generator-valid seeds. It is reserved for
+  generator-invalid seeds; ≥ 3 BH abstentions is a **FAIL** of (i), never INCONCLUSIVE (PI
+  decision, comité 052 §11).
+- **OUT_OF_DOMAIN** iff `T < T_EDGE_MIN = 10`. At the frozen T = 16 this gate cannot fire and is
+  **not** counted as a safeguard (comité 052 §5 "Verdict coercion").
+- **(i) and (iv) are gate-derived.** With the flat control abstaining, (i) reduces to "no BH
+  seed abstained" and (iv) to "≤ 1 flat seed escaped the gate". Neither is independent
+  confirmation; the discriminating content is (ii), (iii) and coverage (comité 052 §8 item 7).
+- **Reported verbatim and separately, whatever the verdict:** per level, generator-invalid count
+  and reasons, BH-abstain count, flat-escape count, bracket-valid and clean counts, coverage count
+  (not only the fraction), median and IQR width/2M, midpoint std, p_perm.
+- **Known weakness, stated in advance** (comité 052 §5 item 5; ASTRA risks): a narrow, reproducible
+  but mislocated bracket can pass (ii)-width and (iii); only coverage catches it, and with floor
+  0.5 up to 9 of 20 non-covering seeds still PASS. The coverage floor 0.5 is a deliberately weak
+  floor, not nominal coverage, and is neither raised nor lowered.
+
+**Can-fail evidence (step 4):** `tests/test_004_criteria_can_fail.py` (9 tests) shows (ii) via
+coverage, (ii) via width, (iv) and (v) can each produce FAIL; `dev/mutation_check_004.py` catches
+5/5 mutations (`dev/PREREG004_STEP_4_2026-10-13.md`).
+
+## 8. Pre-flight (step 5) and expected runtime
+
+`dev/PREREG004_STEP_5_2026-10-13.md`, script `dev/preflight_2p1.py` (commit `5902843`):
+
+- **CPU/GPU parity, seed `7_000_100`, ρ = 126, T = 16** (20 numba threads): all 15 compared
+  fields match the GPU dev record (`dev/preflight_2p1_2026-10-13.jsonl`, sha256 `6838b4ac…`,
+  commit `2fe277f`). Valid seed; audit 0/0/0/0; radial 0; transitivity 0. **Seeds
+  `7_000_101..7_000_109` not run:** the PI accepted the partial parity on 2026-10-14 (O2, §10).
+- **Thread determinism** (`NUMBA_NUM_THREADS=1` vs default): **not run** (O2). In its place the
+  blind run is fixed to 20 numba threads, the only measured configuration, and
+  `thresholds.assert_blind_threads()` aborts the validation run otherwise (O3, §10).
+- **Measured CPU time, ρ = 126:** 591.9 s per seed (588.7 s generation with checks, 3.2 s
+  estimation), 20 numba threads, i7-13700 under WSL2 (10 cores / 20 threads visible).
+- **Expected runtime of the blind run** `[UNVERIFIED — extrapolated, not measured]`: ρ = 32 and 63
+  are scaled from the measured ρ = 126 CPU time in proportion to the GPU dev means at T = 16
+  (15.5 s, 51.1 s, 194.6 s at ρ = 32/63/126, `gen_seconds` in the v2 sweep JSONLs): ≈ 47 s + 155 s + 592 s ≈ 13 min per seed, **≈ 4.4 h for
+  20 seeds × 3 levels at 20 threads**. At 4 threads it is unmeasured; attempt 1 did not finish one
+  ρ = 126 seed in 22.5 min, so ≥ 7.5 h for the primary level alone.
+- **This duration is stated so that it can never justify changing the grid or the seeds after
+  launch.**
+
+## 9. Binding rules and sequence
+
+- **One-way:** the single blind `python -m nachocausal2p1.validate` on the drawn seeds, with
+  `guard=True`, is the only evaluation. It has not been run. It is launched once, as an explicit
+  step, only after explicit PI authorisation.
+- **Report alike:** PASS, FAIL, INCONCLUSIVE or OUT_OF_DOMAIN is recorded and reported regardless
+  of which it is. No post-hoc tuning, no re-running on fresh seeds after a result, no loosening of
+  a frozen threshold. An unmet principled threshold is informative, never a licence to retune
+  (`docs/preregistration.md:55-57`).
+- **Invalid seeds** (§3) count toward the < 18/20 INCONCLUSIVE rule and never trigger
+  replacement seeds.
+- **Crash rule:** a crash is relaunched on the **same** seeds, environment and commit, **only if
+  no scoring output was produced**, and the relaunch is logged with timestamps. The progress log
+  below records each launch (a `start` line with its time) and carries no scoring field.
+- **Writing:** `results/validation_004.json` is written atomically and committed immediately with
+  its SHA (lesson of prereg-002 `PRIMARY_ARTIFACT_LOST`, `docs/preregistration_002_result.md`).
+- **Progress log** (O4, §10): `results/validation_004.progress.jsonl`, one fsynced line per seed
+  and level with only `seed, rho, invalid, abstained_BH, abstained_MINK, seconds`
+  (`validate.PROGRESS_FIELDS`), appended as the run goes. It is committed together with the
+  result, or alone after a crash.
+- **Provenance launch file** `results/validation_004_provenance_launch.txt` records: start/end
+  UTC; HEAD SHA and branch; both thresholds SHAs, the τ fixture SHA and the imported 1+1 module
+  SHAs (§3); `git diff <seal> -- nachocausal/ nachocausal2p1/ docs/preregistration_004.md` line
+  count (must be 0); `git status --porcelain` (must be empty); `uname -a`, `python -V`, full
+  `pip freeze`; `NUMBA_NUM_THREADS`, OMP/MKL thread env, numba cache setting; `T_EDGE` as read by
+  the generator at runtime; the 20 seeds and draw recipe; test pass count.
+- **Sequence:** comité 052 §9 steps 1-6 (done, §5-§8 above; step 5 partial) → **step 7: `/comite`
+  on this draft** → C1 freeze (`docs/preregistration_004.md` + `STATUS = "FROZEN"` + fixture,
+  SHAs recorded, `make verify-seal` unchanged, tree clean, `make verify-comite` passing) → C2 blind
+  draw → C3 single blind CPU run.
+
+**Audit trail:** `/auditor` on the candidate package: report 043 `AUDIT_FAIL` → fixes `c16fb12`
+→ report 044 `AUDIT_PASS` (`docs/auditor/auditor_report_044_prereg004-2p1-remediation-reaudit.md`).
+The auditor is the same model family that wrote the code and is **not** an independent review
+(global rule 5). The 1+1 precedent is PASS with caveats `PRIMARY_ARTIFACT_LOST;
+TRANSCRIPTION_REVERIFIED; BLINDNESS_DOCUMENTARY_ONLY` (`docs/preregistration_002_result.md:1`).
+
+## 10. Open items O1-O8: resolution (2026-10-14)
+
+The PI settled the eight items on 2026-10-14, in a Claude Code session, one by one; Claude
+transcribed the decisions. The same decisions are recorded in comité 052 §11.
+
+| item | decision | where |
+|---|---|---|
+| O1 draw seed | `VALIDATION_DRAW_SEED_004 = 20261014` | `thresholds.py`, §6 |
+| O2 step 5 partial | **accepted as partial**: parity on 1 of 10 seeds plus the dev pairwise parity at T = 16 and port = dev bit-equality; the 9 remaining seeds and the thread probe are not run | §8 |
+| O3 thread count | **20**, enforced in code: `thresholds.assert_blind_threads()` (environment `NUMBA_NUM_THREADS=20` and `numba.get_num_threads() == 20`), called by `validate.run` under the validation label before any generation | `thresholds.py`, `validate.py`; tests `test_blind_threads_can_fail`, `test_validation_run_checks_threads_before_generation` |
+| O4 progress log | **added before C1**: `results/<label>.progress.jsonl`, blind fields only | `validate.py`; tests `test_progress_line_is_blind`, `test_progress_log_written_per_seed_before_the_verdict` |
+| O5.1 | confirmed: ≥ 3 BH abstentions FAIL (i) at every required ρ (63 and 126) | `validate.py` `summarise_level`, `verdict_from_levels` |
+| O5.2 | confirmed: `p_perm` over generator-valid seeds, an abstained BH enters with `sep = 0`. **Deviation from 1+1**, where such a seed is excluded from `p_perm` and from the valid count (`nachocausal/validate.py:117`); the 2+1 rule is the more conservative one | `estimator.py:42-43`, `validate.py` |
+| O5.3 | confirmed: coverage over bracket-valid seeds, count reported (as 1+1, `nachocausal/validate.py:142`) | `validate.py` |
+| O5.4 | confirmed: 20 000-pair fine-shot audit; any failure or disagreement invalidates the seed | `validate.py` `generate` |
+| O6.1-O6.4 | accepted: 10-seed dev cells with the test-only `MIN_VALID_SEEDS` bypass; (i) also failing in (a) and (c), with the synthetic (ii)-only case; no domain-gate bypass needed (pure functions); (iv) named `iv_flat_escapes_primary`, measured at the primary | `tests/test_004_criteria_can_fail.py` |
+| O7 | signed: ρ grid {32, 63, 126} with primary 126; 20 seeds / 18 valid; coverage floor 0.5; (iv) ≤ 1 escape; `T_EDGE_MIN = 10`; exact pins; CPU-only path; and the two `[PI-S3]` clauses (slack F, significance at every ρ ≥ 63) | `thresholds.py` |
+| O8 independent review | **authorised**: `revision-ciega gemini` on this draft and the 2+1 package, after the O3/O4 delta is committed. **Pending** | `revisiones/` (to be prepared) |
+
+**Consequences still open before C1:**
+
+- O3 and O4 change `nachocausal2p1/validate.py` and `thresholds.py` after auditor report 044. The
+  delta needs a `/auditor` re-audit in a separate session (PI audit protocol: freeze and push
+  first, then the auditor reads only the delta).
+- O8: the blind review has to run and be evaluated.
+- Step 7: reconvene `/comite` on this draft, and the PI signs the comité 052 verdict.
+
+=== DOCUMENT 2: thresholds.py ===
+
+"""prereg-004 CANDIDATE thresholds and protocol constants for the 2+1D equatorial bench.
+
+STATUS: CANDIDATE — NOT FROZEN. This file becomes the prereg-004 seal only at step C1 of
+committee 052 (docs/comite/comite_decision_052_prereg004-2p1-design.md §9), committed together
+with docs/preregistration_004.md, after steps 3-7 are green and with explicit PI authorisation.
+Until then any value may change; after C1, a change is a new pre-registration.
+
+Every value carries its source. Sources:
+  [PI-052]  PI decisions transcribed in comité 052 §11 (2026-10-13);
+  [C052-n]  comité 052 §8 synthesis item n (recommendation; signed by the PI on 2026-10-14,
+            prereg-004 draft O7);
+  [ASTRA]   blind theta anchor, revisiones/2026-10-13-anclaje-theta-ciego/astra.md;
+  [PI-S3]   PI choices made in chat on 2026-10-13 for the step-3 port (the two 1+1 clauses
+            with no 2+1 definition, comité 052 §5 item 3 / §8 item 8; signed 2026-10-14);
+  [PI-O1], [PI-O3]  PI decisions of 2026-10-14 on the prereg-004 draft open items O1 and O3;
+  [GEN]     values copied from dev/gen2p1_efbox.py (frozen with the generator, C052-1).
+Nothing here is reverse-engineered from a dev outcome. The theta values have NOT been compared
+with dev widths and must not be before the freeze (comité 052 falsifier, leakage (c)).
+
+The sealed 1+1 package (nachocausal/thresholds.py, SHA 6e2c3888...) is NOT edited or imported
+for any threshold; only its frozen estimator primitives and tau procedure are reused.
+"""
+
+from __future__ import annotations
+
+import math
+import os
+import sys
+
+STATUS = "CANDIDATE_NOT_FROZEN"
+
+# --- Pinned numeric environment (C052-1: hard-pin numba, llvmlite, scipy) -------------------
+# Versions of the sealed CPU .venv (requirements-lock.txt, Python 3.12.3).
+PINNED_NUMPY = "1.26.4"
+PINNED_NUMBA = "0.66.0"
+PINNED_LLVMLITE = "0.48.0"
+PINNED_SCIPY = "1.17.1"
+PINNED_PYTHON = "3.12.3"
+
+
+def assert_environment() -> None:
+    """Hard-fail outside the pinned CPU environment. The blind run is CPU-only (acta
+    gpu_dev_only): CuPy must not be loaded and NC2P1_DEVICE must be unset or 'cpu'.
+    Called by validate.run and dry_run (not at import)."""
+    import llvmlite
+    import numba
+    import numpy as np
+    import scipy
+
+    found = {"python": sys.version.split()[0], "numpy": np.__version__,
+             "numba": numba.__version__, "llvmlite": llvmlite.__version__,
+             "scipy": scipy.__version__}
+    want = {"python": PINNED_PYTHON, "numpy": PINNED_NUMPY, "numba": PINNED_NUMBA,
+            "llvmlite": PINNED_LLVMLITE, "scipy": PINNED_SCIPY}
+    bad = {k: (found[k], want[k]) for k in want if found[k] != want[k]}
+    if bad:
+        raise RuntimeError(f"nachocausal2p1 environment differs from the pins: {bad}")
+    if any(m == "cupy" or m.startswith("cupy.") for m in sys.modules):
+        raise RuntimeError("CuPy is loaded: the 2+1 blind path is CPU-only (gpu_dev_only).")
+    if os.environ.get("NC2P1_DEVICE", "cpu") != "cpu":
+        raise RuntimeError("NC2P1_DEVICE must be unset or 'cpu' on the 2+1 blind path.")
+
+
+# Thread count of the blind run [PI-O3, 2026-10-14]. The thread-determinism probe of comité 052
+# step 5 was not run (the PI accepted the partial pre-flight), so the blind run is fixed to the
+# only configuration with a measured parity: seed 7_000_100 on 20 numba threads
+# (dev/PREREG004_STEP_5_2026-10-13.md, attempt 2).
+BLIND_NUMBA_THREADS = 20
+
+
+def assert_blind_threads() -> None:
+    """Hard-fail the validation run unless numba runs on exactly BLIND_NUMBA_THREADS threads,
+    set through the environment (NUMBA_NUM_THREADS) before numba is imported."""
+    import numba
+
+    env = os.environ.get("NUMBA_NUM_THREADS")
+    got = numba.get_num_threads()
+    if env != str(BLIND_NUMBA_THREADS) or got != BLIND_NUMBA_THREADS:
+        raise RuntimeError(f"the blind run needs NUMBA_NUM_THREADS={BLIND_NUMBA_THREADS} "
+                           f"(environment: {env!r}, numba: {got}).")
+
+
+# --- Geometry -------------------------------------------------------------------------------
+# Ingoing-EF box t* in [0, T_EDGE], r in [R_LO, R_HI], phi in S^1; 2M = 0.5 (mirrors 1+1).
+T_EDGE = 16.0                  # [PI-052] a MARGIN above t_min = 10 (max over the grid); not a
+                               # Decision-2 pass; the plateau [T, 2T] is unmeasured at T = 16.
+R_LO, R_HI = 0.1, 1.3          # [GEN] = sealed 1+1 r-range (C052: do not vary it)
+TWO_M = 0.5                    # 2M; used ONLY as a scoring unit
+VOL_PER_T = math.pi * (R_HI ** 2 - R_LO ** 2)   # 2+1 volume per unit t* (sqrt(-g) = r)
+BOX_VOLUME = T_EDGE * VOL_PER_T
+
+# Domain gate: T_EDGE < T_EDGE_MIN -> OUT_OF_DOMAIN (never a physical FAIL). [C052-9]
+# Re-pinned at the max measured t_min over the grid (8/10/10). Non-firing at T = 16: it is
+# NOT counted as a safeguard.
+T_EDGE_MIN = 10.0
+
+# --- Density grid and ensemble ------------------------------------------------------------------
+# Thresholds are keyed by rho (points per unit 2+1 volume) at the frozen T, never by realised N.
+RHO_GRID = (32.0, 63.0, 126.0)     # [C052-4] ascending
+PRIMARY_RHO = 126.0                # [C052-4] highest rho with measured t_min
+ENSEMBLE = 20                      # [C052-3] (i) needs >= 14 valid seeds to be passable
+MIN_VALID_SEEDS = 18               # [C052-3] fewer generator-valid seeds -> INCONCLUSIVE
+
+
+def n_mean(rho: float) -> int:
+    """Poisson mean of the sprinkle at density rho (as dev/sweep_2p1_T.py)."""
+    return int(round(rho * BOX_VOLUME))
+
+
+# --- Seeds -------------------------------------------------------------------------------------
+EXPLORE_BAND = (7_000_000, 7_000_999)   # 2+1 exploration band (dev)
+VIRGIN_BAND = (8_000_000, 8_999_999)    # reserved for the single prereg-004 blind draw
+# Burned dev seeds used for the T sweeps at rho = 32/63/126; dry runs and the step-4
+# can-fail test may reuse them (comité 052 §9 step 4), never virgin seeds.
+DRY_RUN_SEEDS = tuple(range(7_000_100, 7_000_110))
+# Not drawn yet: step C2 draws 20 seeds ONCE and BLIND from VIRGIN_BAND, after C1, with
+# numpy(1.26.4).default_rng(VALIDATION_DRAW_SEED).choice(arange(8_000_000, 9_000_000), 20,
+# replace=False), sorted. [PI-O1] fixed on 2026-10-14 (the date, as prereg-002's 20260622),
+# before any draw.
+VALIDATION_DRAW_SEED = 20261014
+VALIDATION_SEEDS: tuple = ()
+# Burned Phase-A seeds (comité 052:20, dev/2P1_PHASE_A_RESULT_2026-10-12.md): never reusable.
+BURNED_PHASE_A_SEEDS = (1, 2, 3, 4, 7, 99, 12345)
+
+
+def check_validation_seeds(seeds) -> None:
+    """Runnable disjointness guard (comité 052:353; auditor report 043, finding 2). Empty = not
+    drawn yet. Once drawn: exactly ENSEMBLE distinct seeds, all in VIRGIN_BAND, none in
+    EXPLORE_BAND or among the burned Phase-A seeds. RAISES otherwise."""
+    seeds = tuple(int(s) for s in seeds)
+    if not seeds:
+        return
+    if len(seeds) != ENSEMBLE or len(set(seeds)) != ENSEMBLE:
+        raise ValueError(f"VALIDATION_SEEDS must be {ENSEMBLE} distinct seeds.")
+    if not all(VIRGIN_BAND[0] <= s <= VIRGIN_BAND[1] for s in seeds):
+        raise ValueError("VALIDATION_SEEDS must lie in VIRGIN_BAND.")
+    if any(EXPLORE_BAND[0] <= s <= EXPLORE_BAND[1] for s in seeds) \
+            or set(seeds) & set(BURNED_PHASE_A_SEEDS):
+        raise ValueError("VALIDATION_SEEDS overlap the exploration band or burned seeds.")
+
+
+assert all(EXPLORE_BAND[0] <= s <= EXPLORE_BAND[1] for s in DRY_RUN_SEEDS)
+assert not set(DRY_RUN_SEEDS) & set(BURNED_PHASE_A_SEEDS)
+check_validation_seeds(VALIDATION_SEEDS)
+
+# --- Generator numerics (frozen with the generator; C052-1, mathematician brief) --------------
+TOL, REL_MARGIN = 1e-6, 1e-3       # [GEN]
+COARSE = (128, 512)                # [GEN] (steps in ln V, steps in U)
+FINE = (2048, 8192)                # [GEN]
+COARSE_MARGIN = 0.05               # [GEN]
+N_HYP = 48                         # [GEN]
+AUDIT_PAIRS = 20000                # [GEN default] stage-1/2 and coarse-shot pairs re-shot FINE;
+                                   # any endpoint failure or disagreement -> seed INVALID
+
+# --- Gate (estimator-v2 tau(n), extended by the sealed procedure; step 1) ----------------------
+GATE_ALPHA = 0.01
+GATE_NULL_MC_SEED = 20260621
+GATE_NULL_MC_REPS = 40000
+GATE_TAU_N_MAX = 256               # n > 256 ABORTS the run (never extrapolate)
+TAU_FIXTURE_SHA256 = "4bc4aec839257af7fed210030c0afa9041c265cacf43802bb735fb99df367a28"
+
+# --- Criteria ----------------------------------------------------------------------------------
+POOLED_SD_FLOOR = 0.5              # inherited (sealed two_means_split uses the 1+1 constant)
+PERM_EXACT_MAX_N = 20
+PERM_RANDOM_SAMPLES = 1_000_000
+P_PERM_THRESHOLD = 1e-4            # (i) per required level
+SIGNIFICANCE_MIN_RHO = 63.0        # [PI-S3] (i) required at every rho >= 63 (all but the lowest),
+                                   # the literal analogue of the 1+1 "every N >= 3000"
+BH_ABSTAIN_FAIL = 3                # [PI-052] >= 3 BH abstentions at a required level FAIL (i)
+MAX_MINK_ESCAPES = 1               # [C052-7] (iv) as a count: flat-control non-abstentions <= 1
+COVERAGE_FLOOR = 0.5               # [C052-6] deliberately weak floor; never raised or lowered
+
+# Localisation / stability anchor (c1) [PI-052 + ASTRA]: radial order-statistic spacing of the
+# minimal-element layer, evaluated at the mean box perimeter P* = pi (R_LO + R_HI) = 1.4 pi
+# (box ends only, no ground truth). K_LOC unchanged from 1+1.
+K_LOC = 2
+PERIMETER_EVAL = math.pi * (R_LO + R_HI)
+
+
+def ell_rad(rho: float) -> float:
+    """Radial discreteness scale rho^(-2/3) / (1.4 pi) [ASTRA]."""
+    return rho ** (-2.0 / 3.0) / PERIMETER_EVAL
+
+
+def theta_loc(rho: float) -> float:
+    """(ii) bound on the median bracket width over 2M: K_LOC * ell_rad / 2M."""
+    return K_LOC * ell_rad(rho) / TWO_M
+
+
+def theta_stab(rho: float) -> float:
+    """(iii) bound on the std of the blind boundary r-location: K_LOC * ell_rad."""
+    return K_LOC * ell_rad(rho)
+
+
+def convergence_slack(rho: float) -> float:
+    """(ii) clause F in 2+1 [PI-S3]: m(rho_{k+1}) <= m(rho_k) + ell_rad(rho_k)/2M, the 1+1 form
+    m_{k+1} <= m_k + ell_k/2M with the 2+1 scale (= theta_loc/K_LOC, as in 1+1)."""
+    return ell_rad(rho) / TWO_M
+
+=== DOCUMENT 3: validate.py ===
+
+"""validate — the BLIND 2+1 runner and its PASS/FAIL verdict (CANDIDATE, not frozen).
+
+Port of nachocausal/validate.py to the 2+1 equatorial bench (comité 052 §9 step 3). Order of
+operations per seed: GENERATE (validity checks) -> per kind: Guard-v -> ESTIMATE (order only)
+-> GATE; the blind threshold is frozen from O; ONLY THEN is r revealed to the isolated scoring
+subpackage. The estimator never receives r (split record: blind dict, then score dict).
+
+Differences from 1+1 (all from comité 052 §8 and the PI decisions in §11):
+  * thresholds keyed by rho at the frozen T, never by realised N;
+  * separate counters: generator-INVALID seeds (assertion, audit disagreement, transitivity
+    violation, radial-check mismatch) vs BH abstentions vs flat-control escapes;
+  * INCONCLUSIVE is reserved for < MIN_VALID_SEEDS generator-valid seeds;
+  * (i) at every rho >= SIGNIFICANCE_MIN_RHO, and >= BH_ABSTAIN_FAIL BH abstentions FAIL (i);
+  * (ii) convergence slack restated over the rho grid with ell_rad;
+  * (iv) as an explicit count of flat-control non-abstentions;
+  * tau(n) for n > 256 aborts the run (gate RAISES);
+  * results are written atomically (temp file + fsync + rename) and the validation label is
+    one-shot: an existing results/validation_004.json is never overwritten;
+  * with write=True, one progress line per seed and level is appended (and fsynced) to
+    results/<label>.progress.jsonl, with blind fields only (PROGRESS_FIELDS), plus a start line
+    per launch, so a crash leaves a record and a relaunch is logged (comité 052 reproducibility
+    brief; prereg-004 draft O4);
+  * the validation label requires NUMBA_NUM_THREADS = 20 (thresholds.assert_blind_threads, O3).
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import tempfile
+import time
+from typing import Dict, List, Optional
+
+import numpy as np
+
+from . import estimator, generator, thresholds
+from .scoring import blind_bracket
+
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "results")
+VALIDATION_LABEL = "validation_004"
+# Fields of a per-seed progress line. Blind only: no width, bracket, midpoint, coverage, sep or d.
+PROGRESS_FIELDS = ("seed", "rho", "invalid", "abstained_BH", "abstained_MINK", "seconds")
+
+
+# =============================================================================
+# Frozen statistical primitives (as 1+1, with the 2+1 constants).
+# =============================================================================
+def signflip_perm_p(d) -> float:
+    """One-sided exact paired sign-flip p-value for mean(d) > 0 (as nachocausal.validate)."""
+    d = np.asarray(d, float)
+    d = d[np.isfinite(d)]
+    n = d.size
+    if n == 0:
+        return float("nan")
+    obs = d.mean()
+    if n <= thresholds.PERM_EXACT_MAX_N:
+        idx = np.arange(1 << n)
+        bits = (idx[:, None] >> np.arange(n)[None, :]) & 1
+        means = ((1 - 2 * bits) * d[None, :]).mean(axis=1)
+    else:
+        rng = np.random.default_rng(0)
+        signs = 1 - 2 * rng.integers(0, 2, size=(thresholds.PERM_RANDOM_SAMPLES, n))
+        means = (signs * d[None, :]).mean(axis=1)
+    return float(np.mean(means >= obs - 1e-12))
+
+
+def _iqr(x) -> float:
+    x = np.asarray(x, float)
+    x = x[np.isfinite(x)]
+    if x.size < 2:
+        return float("nan")
+    q75, q25 = np.percentile(x, [75, 25])
+    return float(q75 - q25)
+
+
+# =============================================================================
+# Generation with validity checks (an invalid seed is counted, never replaced).
+# =============================================================================
+def check_seed(seed: int) -> None:
+    """Runnable seed guard (comité 052:353; auditor report 043, finding 2). RAISES unless the seed
+    is in the 2+1 exploration band, or is one of the drawn VALIDATION_SEEDS after the freeze.
+    Virgin-band seeds can therefore never be generated before C1/C2, and burned Phase-A seeds
+    (outside the band) never at all."""
+    s = int(seed)
+    if s in thresholds.BURNED_PHASE_A_SEEDS:
+        raise RuntimeError(f"seed {s} is a burned Phase-A seed.")
+    if thresholds.EXPLORE_BAND[0] <= s <= thresholds.EXPLORE_BAND[1]:
+        return
+    if thresholds.STATUS == "FROZEN" and s in thresholds.VALIDATION_SEEDS:
+        return
+    raise RuntimeError(f"seed {s} is outside the exploration band and not a frozen validation "
+                       f"seed; virgin seeds {thresholds.VIRGIN_BAND} are reserved for C3.")
+
+
+def generate(seed: int, rho: float) -> dict:
+    check_seed(seed)
+    rng = np.random.default_rng(seed)
+    t, r, phi = generator.sprinkle(thresholds.n_mean(rho), rng)
+    reasons: List[str] = []
+    stats: dict = {}
+    try:
+        bh, stats = generator.bh_order(t, r, phi, rng=rng, audit=thresholds.AUDIT_PAIRS)
+    except AssertionError as exc:            # fine shooting missed
+        return {"t": t, "r": r, "phi": phi, "bh": None, "mk": None, "stats": {},
+                "invalid": True, "reasons": [f"generator_assertion: {exc}"]}
+    mk = generator.mink_order(t, r, phi)
+    for part, a in stats.get("audit_vs_fine", {}).items():
+        if a["endpoint_failures"] or a["disagreements_among_hit"]:
+            reasons.append(f"audit_{part}: {a}")
+    tv_bh = generator.transitivity_violations(bh)
+    tv_mk = generator.transitivity_violations(mk)
+    mism, _ = generator.radial_check(t, r)
+    stats.update(transitivity_violations_BH=tv_bh, transitivity_violations_MINK=tv_mk,
+                 radial_check_mismatches=mism)
+    if tv_bh:
+        reasons.append(f"transitivity_BH={tv_bh}")
+    if tv_mk:
+        reasons.append(f"transitivity_MINK={tv_mk}")
+    if mism:
+        reasons.append(f"radial_check_mismatches={mism}")
+    return {"t": t, "r": r, "phi": phi, "bh": bh, "mk": mk, "stats": stats,
+            "invalid": bool(reasons), "reasons": reasons}
+
+
+# =============================================================================
+# Per-seed blind phase (order only) -> then reveal r to score.
+# =============================================================================
+def per_seed(seed: int, rho: float, guard: bool = True) -> dict:
+    t0 = time.time()
+    g = generate(seed, rho)
+    row: Dict[str, object] = {"seed": int(seed), "rho": float(rho), "N": int(g["t"].size),
+                              "invalid": g["invalid"], "invalid_reasons": g["reasons"],
+                              "generator_stats": g["stats"]}
+    if g["invalid"]:
+        row["seconds"] = round(time.time() - t0, 1)
+        return row
+    blind = {kind: estimator.estimate(order, guard=guard, guard_seed=int(seed))
+             for kind, order in (("BH", g["bh"]), ("MINK", g["mk"]))}
+    # thr is frozen from O alone for both kinds; ONLY NOW is r revealed (BH only).
+    bh, mk = blind["BH"], blind["MINK"]
+    if bh["abstained"]:
+        br = dict(valid=False, r_lo=float("nan"), r_hi=float("nan"), width=float("nan"),
+                  midpoint=float("nan"), covers=False, clean=False)
+    else:
+        br = blind_bracket(bh["O_by_min"], bh["min_idx"], bh["thr"], g["r"])
+    row.update(sep_BH=bh["sep"], sep_MINK=mk["sep"], d=bh["sep"] - mk["sep"],
+               abstained_BH=bh["abstained"], abstained_MINK=mk["abstained"],
+               n_minimal_BH=bh["n_minimal"], n_minimal_MINK=mk["n_minimal"],
+               improvement_BH=bh["improvement"], improvement_MINK=mk["improvement"], **br)
+    row["seconds"] = round(time.time() - t0, 1)
+    return row
+
+
+def summarise_level(rows: List[dict], rho: float) -> dict:
+    """Level statistics from per-seed rows (pure function: used by run_level and by the
+    step-4 can-fail test on synthetic rows)."""
+    ok = [r for r in rows if not r["invalid"]]
+    res = {
+        "rho": float(rho),
+        "n_mean": thresholds.n_mean(rho),
+        "n_seeds": len(rows),
+        "n_invalid": len(rows) - len(ok),
+        "n_generator_valid": len(ok),
+        "n_abstain_BH": int(sum(bool(r["abstained_BH"]) for r in ok)),
+        "n_escape_MINK": int(sum(not r["abstained_MINK"] for r in ok)),
+        "theta_loc": thresholds.theta_loc(rho),
+        "theta_stab": thresholds.theta_stab(rho),
+        "slack_over_2M": thresholds.convergence_slack(rho),
+    }
+    if len(ok) < thresholds.MIN_VALID_SEEDS:
+        res["status"] = "inconclusive"
+        return res
+    res["p_perm"] = signflip_perm_p([r["d"] for r in ok])
+    res["significant"] = bool(res["p_perm"] <= thresholds.P_PERM_THRESHOLD
+                              and res["n_abstain_BH"] < thresholds.BH_ABSTAIN_FAIL)
+    brk = [r for r in ok if r["valid"]]
+    clean = [r for r in brk if r["clean"]]
+    widths = np.array([r["width"] / thresholds.TWO_M for r in clean])
+    res["n_bracket_valid"] = len(brk)
+    res["n_clean"] = len(clean)
+    res["median_width_over_2M"] = float(np.median(widths)) if widths.size else float("nan")
+    res["iqr_width_over_2M"] = _iqr(widths)
+    res["loc_pass"] = bool(res["median_width_over_2M"] <= res["theta_loc"])
+    res["loc_inconclusive"] = bool(res["iqr_width_over_2M"] > res["theta_loc"])
+    res["coverage_count"] = int(sum(bool(r["covers"]) for r in brk))
+    res["coverage_frac"] = res["coverage_count"] / len(brk) if brk else float("nan")
+    mids = np.array([r["midpoint"] for r in clean])
+    res["boundary_r_std"] = float(np.std(mids)) if mids.size else float("nan")
+    res["stab_pass"] = bool(res["boundary_r_std"] <= res["theta_stab"])
+    res["escape_pass"] = bool(res["n_escape_MINK"] <= thresholds.MAX_MINK_ESCAPES)
+    res["status"] = "scored"
+    return res
+
+
+def progress_line(row: dict) -> dict:
+    """The blind subset of a per-seed row that goes to the progress log (pure)."""
+    return {k: row.get(k) for k in PROGRESS_FIELDS}
+
+
+def append_progress(path: str, obj: dict) -> None:
+    """Append one JSON line to the progress log and fsync it, so it survives a crash."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "a") as f:
+        f.write(json.dumps(obj, default=_json_default) + "\n")
+        f.flush()
+        os.fsync(f.fileno())
+
+
+def run_level(seeds, rho: float, guard: bool = True, progress: Optional[str] = None) -> dict:
+    rows = []
+    for s in seeds:
+        row = per_seed(s, rho, guard)
+        rows.append(row)
+        if progress is not None:
+            append_progress(progress, progress_line(row))
+    res = summarise_level(rows, rho)
+    res["rows"] = rows
+    return res
+
+
+def verdict_from_levels(levels: Dict[float, dict], *, guard_ran: bool) -> dict:
+    """Frozen-form verdict from level summaries (pure; exercised by the can-fail test)."""
+    prim = levels[thresholds.PRIMARY_RHO]
+    if prim.get("status") != "scored":
+        return {"verdict": "INCONCLUSIVE",
+                "reason": f"primary rho={thresholds.PRIMARY_RHO} has fewer than "
+                          f"{thresholds.MIN_VALID_SEEDS} generator-valid seeds"}
+    required = [rho for rho in thresholds.RHO_GRID if rho >= thresholds.SIGNIFICANCE_MIN_RHO]
+    sig_ok = all(levels[rho].get("significant", False) for rho in required)
+    slack_ok = True
+    grid = list(thresholds.RHO_GRID)
+    for a_rho, b_rho in zip(grid[:-1], grid[1:]):
+        a, b = levels[a_rho], levels[b_rho]
+        if a.get("status") != "scored" or b.get("status") != "scored":
+            slack_ok = False
+            break
+        if b["median_width_over_2M"] > a["median_width_over_2M"] + a["slack_over_2M"]:
+            slack_ok = False
+    checks = {
+        "i_significant_every_rho_ge_min": bool(sig_ok and prim["significant"]),
+        "ii_localisation_primary": bool(prim["loc_pass"] and not prim["loc_inconclusive"]
+                                        and prim["coverage_frac"] >= thresholds.COVERAGE_FLOOR),
+        "ii_convergence_slack": bool(slack_ok),
+        "iii_stability_primary": bool(prim["stab_pass"]),
+        "iv_flat_escapes_primary": bool(prim["escape_pass"]),
+        # (v) Guard-v ran on every causet (it RAISES on failure, aborting the run); a run with
+        # the guard off can never pass (v) (auditor report 043, finding 1).
+        "v_order_only": bool(guard_ran),
+    }
+    return {"verdict": "PASS" if all(checks.values()) else "FAIL", "checks": checks}
+
+
+# =============================================================================
+# Full run -> verdict.
+# =============================================================================
+def run(seeds=None, label: str = VALIDATION_LABEL, guard: bool = True, write: bool = True,
+        t_edge: Optional[float] = None) -> dict:
+    thresholds.assert_environment()
+    seeds = list(thresholds.VALIDATION_SEEDS if seeds is None else seeds)
+    if not seeds:
+        raise RuntimeError("no seeds: VALIDATION_SEEDS are not drawn (step C2 of comité 052).")
+    for s in seeds:
+        check_seed(s)
+    if label != VALIDATION_LABEL and set(seeds) & set(thresholds.VALIDATION_SEEDS):
+        raise RuntimeError("validation seeds may only be run under the validation label.")
+    if label == VALIDATION_LABEL:
+        if not guard:
+            raise RuntimeError("the validation run requires Guard-v (guard=True).")
+        if thresholds.STATUS != "FROZEN" or tuple(seeds) != tuple(thresholds.VALIDATION_SEEDS):
+            raise RuntimeError("the validation label is reserved for the single blind run on the "
+                               "frozen VALIDATION_SEEDS after C1/C2.")
+        if os.path.exists(_result_path(label)):
+            raise RuntimeError(f"{_result_path(label)} exists: the blind run is one-shot.")
+        thresholds.assert_blind_threads()
+    t_edge = thresholds.T_EDGE if t_edge is None else float(t_edge)
+    if t_edge < thresholds.T_EDGE_MIN:
+        out = {"label": label, "seeds": seeds, "t_edge": t_edge, "verdict": "OUT_OF_DOMAIN",
+               "reason": f"t_edge={t_edge} < T_EDGE_MIN={thresholds.T_EDGE_MIN} (not a FAIL)"}
+        if write:
+            write_atomic(out, label)
+        return out
+    if t_edge != generator.T_EDGE:
+        raise RuntimeError("t_edge must equal the generator's literal T_EDGE (no T knob).")
+    progress = _progress_path(label) if write else None
+    if progress is not None:
+        append_progress(progress, {"event": "start", "label": label, "seeds": seeds,
+                                   "time": time.strftime("%Y-%m-%dT%H:%M:%S%z")})
+    levels = {rho: run_level(seeds, rho, guard, progress) for rho in thresholds.RHO_GRID}
+    out = {"label": label, "status_of_thresholds": thresholds.STATUS, "seeds": seeds,
+           "t_edge": t_edge, "guard": bool(guard), "levels": levels,
+           **verdict_from_levels(levels, guard_ran=guard)}
+    if write:
+        write_atomic(out, label)
+    return out
+
+
+def _result_path(label: str) -> str:
+    return os.path.join(RESULTS_DIR, f"{label}.json")
+
+
+def _progress_path(label: str) -> str:
+    return os.path.join(RESULTS_DIR, f"{label}.progress.jsonl")
+
+
+def write_atomic(obj: dict, label: str) -> str:
+    """Write results/<label>.json atomically: temp file in the same dir, fsync, rename."""
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    path = _result_path(label)
+    fd, tmp = tempfile.mkstemp(prefix=f".{label}.", suffix=".tmp", dir=RESULTS_DIR)
+    try:
+        with os.fdopen(fd, "w") as f:
+            json.dump(obj, f, indent=2, default=_json_default)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, path)
+    except BaseException:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+        raise
+    return path
+
+
+def _json_default(x):
+    if isinstance(x, (np.integer,)):
+        return int(x)
+    if isinstance(x, (np.floating,)):
+        return float(x)
+    if isinstance(x, np.ndarray):
+        return x.tolist()
+    return str(x)
+
+=== DOCUMENT 4: estimator.py ===
+
+"""ESTIMATOR — order-only, 2+1 bench (CANDIDATE, not frozen).
+
+A thin wrapper around the SEALED estimator-v2 primitives of the 1+1 package, imported UNCHANGED
+(comité 052, reproducibility brief): estimate_O_volume (O(i) = |future(i)| over the minimal
+elements), two_means_split, improvement, verify_order_only (Guard-v). The 2+1 generator returns
+order[i, j] = "i precedes j"; the sealed primitives take the past matrix C[i, j] = "j precedes i",
+so C = order.T. Same observable and split as dev/explore_2p1_estimator.py.
+
+Input: the boolean order matrix ONLY. This module imports nothing from nachocausal2p1.scoring
+and never sees coordinates (tests/test_2p1_package.py enforces both).
+"""
+
+from __future__ import annotations
+
+from typing import Dict, List
+
+import numpy as np
+
+from nachocausal import estimator as sealed
+
+from . import gate
+
+
+def past_matrix(order: np.ndarray) -> np.ndarray:
+    """C[i, j] = j precedes i, from order[i, j] = i precedes j."""
+    return np.ascontiguousarray(np.asarray(order, dtype=bool).T)
+
+
+def estimate(order: np.ndarray, guard: bool = True, guard_seed: int = 0) -> Dict[str, object]:
+    """Order-only estimate. Guard-v (sealed verify_order_only on the production observable)
+    RAISES if O is not invariant under a pure relabelling. Returns the minimal elements, O,
+    the frozen blind threshold, sep, improvement, n and the gate decision."""
+    C = past_matrix(order)
+    if guard:
+        sealed.verify_order_only(C, seed=guard_seed)
+    O_by_min, min_idx = sealed.estimate_O_volume(C)
+    vals: List[int] = [O_by_min[i] for i in min_idx]
+    n = len(min_idx)
+    imp = sealed.improvement(vals) if n >= 2 else 0.0
+    thr, sep = sealed.two_means_split(vals)
+    abstained = gate.abstains(imp, n)
+    if abstained:
+        sep = 0.0                      # no boundary claimed
+    return {"O_by_min": O_by_min, "min_idx": min_idx, "thr": thr, "sep": float(sep),
+            "improvement": float(imp), "n_minimal": n, "abstained": bool(abstained)}
+
+=== DOCUMENT 5: gate.py ===
+
+"""GATE — estimator-v2 tau(n) abstaining gate for the 2+1 bench (CANDIDATE, not frozen).
+
+Same semantics as the sealed nachocausal.gate: abstain (no boundary claimed) iff
+improvement(O_min) < tau(n), n = number of minimal elements; n < 2 abstains.
+The table is fixtures/tau_table_2p1.json: scripts/gen_tau_table.build_tau UNCHANGED, one shared
+rng, n ascending from 2 to 256, 40000 reps; n <= 128 is bit-equal to the sealed 1+1 table
+(comité 052 §9 step 1; dev/PREREG004_STEPS_1_2_2026-10-13.md). The file's SHA256 must equal
+thresholds.TAU_FIXTURE_SHA256. n > 256 RAISES: the run aborts, it never extrapolates.
+Order-only; imports nothing from the scoring subpackage.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+from functools import lru_cache
+from typing import Dict
+
+from . import thresholds
+
+TAU_PATH = os.path.join(os.path.dirname(__file__), "fixtures", "tau_table_2p1.json")
+
+
+@lru_cache(maxsize=1)
+def _tau_table() -> Dict[int, float]:
+    with open(TAU_PATH, "rb") as f:
+        raw = f.read()
+    sha = hashlib.sha256(raw).hexdigest()
+    if sha != thresholds.TAU_FIXTURE_SHA256:
+        raise RuntimeError(f"tau_table_2p1.json SHA256 {sha} != {thresholds.TAU_FIXTURE_SHA256}")
+    doc = json.loads(raw)
+    p = doc["params"]
+    if not (p["alpha"] == thresholds.GATE_ALPHA
+            and p["mc_seed"] == thresholds.GATE_NULL_MC_SEED
+            and p["mc_reps"] == thresholds.GATE_NULL_MC_REPS
+            and p["n_max"] == thresholds.GATE_TAU_N_MAX):
+        raise RuntimeError(f"tau_table_2p1.json params {p} drifted from thresholds")
+    return {int(k): float(v) for k, v in doc["tau"].items()}
+
+
+def tau(n: int) -> float:
+    """tau(n) for n in [2, 256]; RAISES outside (abort, never extrapolate)."""
+    table = _tau_table()
+    if n in table:
+        return table[n]
+    raise ValueError(f"tau(n) requested for n={n} outside [2, {thresholds.GATE_TAU_N_MAX}]: "
+                     "the 2+1 run must ABORT (comité 052 step 1).")
+
+
+def abstains(improvement_value: float, n: int) -> bool:
+    if n < 2:
+        return True
+    return improvement_value < tau(n)
+
+=== DOCUMENT 6: scorer.py ===
+
+"""scorer — reveals r to MEASURE where the blind 2+1 boundary fell. Never feeds back.
+
+Same bracket as the sealed 1+1 scorer (nachocausal/scoring/scorer.py), with 2M from the 2+1
+thresholds: r_lo = max r over low-O minimal elements, r_hi = min r over high-O ones.
+valid: both classes non-empty; clean: width >= 0; covers: r_lo <= 2M <= r_hi.
+"""
+
+from __future__ import annotations
+
+from typing import Dict, List
+
+import numpy as np
+
+from .. import thresholds
+
+
+def blind_bracket(O_by_min: Dict[int, int], min_idx: List[int], thr: float,
+                  r: np.ndarray) -> dict:
+    lo_r = [float(r[i]) for i in min_idx if O_by_min[i] < thr]
+    hi_r = [float(r[i]) for i in min_idx if O_by_min[i] >= thr]
+    if not lo_r or not hi_r:
+        return dict(valid=False, r_lo=float("nan"), r_hi=float("nan"), width=float("nan"),
+                    midpoint=float("nan"), covers=False, clean=False)
+    r_lo, r_hi = max(lo_r), min(hi_r)
+    width = r_hi - r_lo
+    return dict(valid=True, r_lo=r_lo, r_hi=r_hi, width=width, midpoint=0.5 * (r_lo + r_hi),
+                covers=bool(r_lo <= thresholds.TWO_M <= r_hi), clean=bool(width >= 0.0))
+
+=== DOCUMENT 7: generator.py ===
+
+"""2+1D equatorial Schwarzschild GENERATOR — prereg-004 candidate sub-package (NOT FROZEN).
+
+Promoted from dev/gen2p1_efbox.py (committee 052 §9 step 3). The numerical core below the
+"z range" marker is copied VERBATIM from the dev generator; the only changes are:
+  * T is the literal thresholds.T_EDGE (no NC2P1_T_EDGE env knob: the dev knob silently
+    defaulted to T=6, a mis-localising regime; comité 052 falsifier item 8);
+  * geometry, TOL and REL_MARGIN come from thresholds (frozen with the package);
+  * numba cache stays OFF everywhere (dev/2P1_NUMBA_CACHE_STALE_TABLES_2026-10-12.md);
+  * the dev CLI is removed; radial_check/transitivity_violations are kept as validity checks.
+tests/test_2p1_package.py asserts bit-equality with the dev generator at the same T.
+
+Order (lemma E1 §3; prereg-004 states it as the DEFINITION of the order): the ambient
+Schwarzschild order restricted to the box, x < y <=> U_x < U_y, V_x < V_y and
+dist_phi <= min(pi, sup L).  MINK control: the same cloud with the flat 2+1 order.
+"""
+import math
+import time
+
+import numpy as np
+from numba import njit, prange
+from scipy.special import lambertw, roots_legendre
+
+from . import thresholds as _th
+
+T_EDGE = _th.T_EDGE
+R_LO, R_HI, TWO_M = _th.R_LO, _th.R_HI, _th.TWO_M
+FOUR_M = 2.0 * TWO_M
+TOL, REL_MARGIN = _th.TOL, _th.REL_MARGIN
+SHOOT_STEPS = 4096          # legacy linear integrator (kept for reference only)
+COARSE = _th.COARSE         # (steps in ln V, steps in U)
+FINE = _th.FINE
+COARSE_MARGIN = _th.COARSE_MARGIN
+N_HYP = _th.N_HYP
+
+# z range: w_min ~ (1 - s_max) e^{s_max} * e^{T + R_HI - R_LO}; margin of 1 in z
+ZMIN = -4.0
+ZMAX = math.log(1.0 + 21.6 * math.exp(T_EDGE + 1.2)) + 1.0
+NZ = int(round((ZMAX - ZMIN) / 3.6e-5)) + 1
+ZT = np.linspace(ZMIN, ZMAX, NZ)
+_W = 1.0 - np.exp(ZT)
+_S = 1.0 + lambertw(-_W / math.e, 0).real
+QT = 2.0 * np.exp(-_S / 2.0) / _S ** 1.5
+DLNF = (1.0 + 3.0 / _S) / (_S * np.exp(_S))
+DZ = (ZMAX - ZMIN) / (NZ - 1)
+# calibration W_c = c ln V + Phi_c(w), Phi_c' = F / (2 (c + sqrt(c^2 + F w))), on a z grid
+NZC = 20001
+ZC = np.linspace(ZMIN, ZMAX, NZC)
+WC = 1.0 - np.exp(ZC)                                     # decreasing in z
+_SC = 1.0 + lambertw(-WC / math.e, 0).real
+FC = (2.0 * np.exp(-_SC / 2.0) / _SC ** 1.5) ** 2
+C_LIST = np.concatenate([np.geomspace(1e-4, 1e3, 400), -np.geomspace(1e-4, 1e3, 200)])
+
+
+def _phi_table(c):
+    """Phi_c(w) on WC (NaN where c is invalid); valid set = one w-interval."""
+    disc = c * c + FC * WC
+    den = c + np.sqrt(np.maximum(disc, 0.0))
+    ok = (disc >= 0.0) & (den > 0.0) & ((c >= 0.0) | (WC > 0.0))
+    fp = FC / (2.0 * np.where(ok, den, 1.0))
+    out = np.full(WC.shape, np.nan)
+    idx = np.nonzero(ok)[0]
+    if idx.size < 2 or np.any(np.diff(idx) != 1):
+        return out, (np.nan, np.nan)
+    i0, i1 = idx[0], idx[-1]
+    # integrate in w (WC decreases with index): Phi(w) relative to the largest valid w
+    seg = 0.5 * (fp[i0 + 1:i1 + 1] + fp[i0:i1]) * (WC[i0 + 1:i1 + 1] - WC[i0:i1])
+    out[i0:i1 + 1] = np.concatenate([[0.0], np.cumsum(seg)])
+    return out, (WC[i1], WC[i0])
+
+
+_PT = [_phi_table(c) for c in C_LIST]
+PHI_TAB = np.stack([x[0] for x in _PT])
+C_WLO = np.array([x[1][0] for x in _PT]); C_WHI = np.array([x[1][1] for x in _PT])
+_keep = np.isfinite(C_WLO)
+C_LIST, PHI_TAB, C_WLO, C_WHI = C_LIST[_keep], PHI_TAB[_keep], C_WLO[_keep], C_WHI[_keep]
+
+
+def point_tables(U, V):
+    """A[c, i] = c ln V_i + Phi_c(w_i); interpolation in z (WC is decreasing)."""
+    z = np.log(1.0 - U * V)
+    A = np.empty((C_LIST.size, U.size))
+    for k, c in enumerate(C_LIST):
+        A[k] = c * np.log(V) + np.interp(z, ZC, PHI_TAB[k])
+    return A
+
+
+GN, GW = roots_legendre(64)
+GN, GW = (GN + 1.0) / 2.0, GW / 2.0
+
+
+def to_kruskal(t, r):
+    s = r / TWO_M
+    V = np.exp((t + r) / FOUR_M)
+    w = (1.0 - s) * np.exp(s)
+    return w / V, V
+
+
+def sprinkle(n_mean, rng):
+    """Poisson with density ~ r on [0,T] x [R_LO,R_HI] x S^1 (sqrt(-g) = r)."""
+    n = rng.poisson(n_mean)
+    t = rng.uniform(0.0, T_EDGE, n)
+    r = np.sqrt(rng.uniform(R_LO ** 2, R_HI ** 2, n))      # density ~ r
+    phi = rng.uniform(0.0, 2.0 * math.pi, n)
+    return t, r, phi
+
+
+@njit(cache=False)
+def _tab(T, w):
+    z = math.log(1.0 - w)
+    x = (z - ZMIN) / DZ
+    k = int(x)
+    if k < 0:
+        k = 0
+    if k >= T.size - 1:
+        k = T.size - 2
+    a = x - k
+    return T[k] * (1.0 - a) + T[k + 1] * a
+
+
+@njit(cache=False)
+def qi(w):
+    return _tab(QT, w)
+
+
+@njit(cache=False)
+def dlnf(w):
+    return _tab(DLNF, w)
+
+
+@njit(parallel=True, cache=False)
+def stage1(U, V, phi, A, cwlo, cwhi):
+    n = U.size
+    rel = np.zeros((n, n), np.int8)
+    for i in prange(n):
+        for j in range(n):
+            du, dv = U[j] - U[i], V[j] - V[i]
+            if not (du > 0.0 and dv > 0.0):
+                continue
+            d = abs(phi[j] - phi[i])
+            if d > math.pi:
+                d = 2.0 * math.pi - d
+            line = 0.0
+            for k in range(GN.size):
+                line += GW[k] * qi((U[i] + du * GN[k]) * (V[i] + dv * GN[k]))
+            line *= math.sqrt(du * dv)
+            # orbit curve: move in U to the hyperbola w = wm < 0, follow it from V_i to V_j,
+            # move in U to y; admissible for wm in [w_i, w_j], wm < 0.  Exact angular reach
+            # q(wm) sqrt(-wm) ln(V_j / V_i).  Max over N_HYP points of the interval.
+            wa, wb = U[i] * V[i], min(U[j] * V[j], -1e-12)
+            if wa < wb:
+                lnr = math.log(V[j] / V[i])
+                for k in range(N_HYP + 1):
+                    wm = wa + (wb - wa) * k / N_HYP
+                    val = qi(wm) * math.sqrt(-wm) * lnr
+                    if val > line:
+                        line = val
+            if d <= min(line * (1.0 - REL_MARGIN), math.pi) - TOL:
+                rel[i, j] = 1
+                continue
+            # Cauchy-Schwarz with U_b fixed, integrated in y = ln V
+            ya, yb = math.log(V[i]), math.log(V[j])
+            cs = 0.0
+            for k in range(GN.size):
+                vv = math.exp(ya + (yb - ya) * GN[k])
+                qq = qi(U[j] * vv)
+                cs += GW[k] * qq * qq * vv
+            ub = math.sqrt(du * cs * (yb - ya))
+            if d > min(ub * (1.0 + REL_MARGIN), math.pi) + TOL:
+                continue
+            # calibration over the c grid valid on the causal rectangle
+            w1, w2, w3, w4 = U[i] * V[i], U[i] * V[j], U[j] * V[i], U[j] * V[j]
+            wlo = min(min(w1, w2), min(w3, w4)); whi = max(max(w1, w2), max(w3, w4))
+            for c in range(cwlo.size):
+                if wlo >= cwlo[c] and whi <= cwhi[c]:
+                    val = A[c, j] - A[c, i]
+                    if val < ub:
+                        ub = val
+            if d > min(ub * (1.0 + REL_MARGIN), math.pi) + TOL:
+                continue
+            rel[i, j] = -1
+    return rel
+
+
+@njit(cache=False)
+def _shoot(ua, va, vb, p0, steps):
+    h = (vb - va) / steps
+    U, p, v, L = ua, p0, va, 0.0
+    for _ in range(steps):
+        k1u = p;                        k1p = dlnf(U * v) * p * (U - v * p)
+        u2 = U + 0.5 * h * k1u;         p2 = p + 0.5 * h * k1p;   v2 = v + 0.5 * h
+        k2u = p2;                       k2p = dlnf(u2 * v2) * p2 * (u2 - v2 * p2)
+        u3 = U + 0.5 * h * k2u;         p3 = p + 0.5 * h * k2p
+        k3u = p3;                       k3p = dlnf(u3 * v2) * p3 * (u3 - v2 * p3)
+        u4 = U + h * k3u;               p4 = p + h * k3p;         v4 = v + h
+        k4u = p4;                       k4p = dlnf(u4 * v4) * p4 * (u4 - v4 * p4)
+        if u2 * v2 >= 0.999 or u3 * v2 >= 0.999 or u4 * v4 >= 0.999:
+            return math.inf, 0.0
+        l1 = qi(U * v) * math.sqrt(max(p, 0.0))
+        l2 = qi(u2 * v2) * math.sqrt(max(p2, 0.0))
+        l3 = qi(u3 * v2) * math.sqrt(max(p3, 0.0))
+        l4 = qi(u4 * v4) * math.sqrt(max(p4, 0.0))
+        L += h * (l1 + 2.0 * l2 + 2.0 * l3 + l4) / 6.0
+        U += h * (k1u + 2.0 * k2u + 2.0 * k3u + k4u) / 6.0
+        p += h * (k1p + 2.0 * k2p + 2.0 * k3p + k4p) / 6.0
+        v = v4
+        if p <= 0.0 or not math.isfinite(U) or not math.isfinite(p):
+            return math.inf, 0.0
+    return U, L
+
+
+@njit(cache=False)
+def _shoot_y(ua, va, vb, P0, steps):
+    """V-parametrised geodesic in y = ln V:  U' = P,  P' = P + (F'/F)(UV) V P (U - P),
+    L = int q(UV) sqrt(P V) dy.  Returns (U at vb, L)."""
+    ya, yb = math.log(va), math.log(vb)
+    h = (yb - ya) / steps
+    U, P, y, L = ua, P0, ya, 0.0
+    for _ in range(steps):
+        v1 = math.exp(y); v2 = math.exp(y + 0.5 * h); v4 = math.exp(y + h)
+        k1u = P;                 k1p = P + dlnf(U * v1) * v1 * P * (U - P)
+        u2 = U + 0.5 * h * k1u;  p2 = P + 0.5 * h * k1p
+        k2u = p2;                k2p = p2 + dlnf(u2 * v2) * v2 * p2 * (u2 - p2)
+        u3 = U + 0.5 * h * k2u;  p3 = P + 0.5 * h * k2p
+        k3u = p3;                k3p = p3 + dlnf(u3 * v2) * v2 * p3 * (u3 - p3)
+        u4 = U + h * k3u;        p4 = P + h * k3p
+        k4u = p4;                k4p = p4 + dlnf(u4 * v4) * v4 * p4 * (u4 - p4)
+        if u2 * v2 >= 0.999 or u3 * v2 >= 0.999 or u4 * v4 >= 0.999:
+            return math.inf, 0.0
+        l1 = qi(U * v1) * math.sqrt(max(P * v1, 0.0))
+        l2 = qi(u2 * v2) * math.sqrt(max(p2 * v2, 0.0))
+        l3 = qi(u3 * v2) * math.sqrt(max(p3 * v2, 0.0))
+        l4 = qi(u4 * v4) * math.sqrt(max(p4 * v4, 0.0))
+        L += h * (l1 + 2.0 * l2 + 2.0 * l3 + l4) / 6.0
+        U += h * (k1u + 2.0 * k2u + 2.0 * k3u + k4u) / 6.0
+        P += h * (k1p + 2.0 * k2p + 2.0 * k3p + k4p) / 6.0
+        y += h
+        if P <= 0.0 or not math.isfinite(U) or not math.isfinite(P):
+            return math.inf, 0.0
+    return U, L
+
+
+@njit(parallel=True, cache=False)
+def shoot_pairs_fast(ua, va, ub, vb, steps_y, steps_u):
+    """As shoot_pairs, but V-parametrised pairs integrate in ln V (steps_y), U-parametrised
+    ones linearly (steps_u); bisection stops once the endpoint is hit to 1e-12."""
+    n = ua.size
+    L = np.zeros(n); miss = np.zeros(n)
+    for k in prange(n):
+        useU = (ub[k] - ua[k]) > (vb[k] - va[k])
+        if useU:
+            x0, y0, y1, target = va[k], ua[k], ub[k], vb[k]
+            slope = (target - x0) / (y1 - y0)
+        else:
+            x0, y0, y1, target = ua[k], va[k], vb[k], ub[k]
+            slope = (target - x0) / (math.log(y1) - math.log(y0))      # dU/dy guess
+        lo, hi = math.log(slope) - 30.0, math.log(slope) + 30.0
+        Xe = math.inf; Lk = 0.0
+        for _ in range(90):
+            mid = 0.5 * (lo + hi)
+            if useU:
+                Xe, Lk = _shoot(x0, y0, y1, math.exp(mid), steps_u)
+            else:
+                Xe, Lk = _shoot_y(x0, y0, y1, math.exp(mid), steps_y)
+            if math.isfinite(Xe) and abs(Xe - target) < 1e-12:
+                break
+            if Xe > target:
+                hi = mid
+            else:
+                lo = mid
+        L[k] = Lk
+        miss[k] = abs(Xe - target) if math.isfinite(Xe) else math.inf
+    return L, miss
+
+
+@njit(parallel=True, cache=False)
+def shoot_pairs(ua, va, ub, vb, steps):
+    n = ua.size
+    L = np.zeros(n); miss = np.zeros(n)
+    for k in prange(n):
+        if (ub[k] - ua[k]) > (vb[k] - va[k]):
+            x0, y0, y1, target = va[k], ua[k], ub[k], vb[k]
+        else:
+            x0, y0, y1, target = ua[k], va[k], vb[k], ub[k]
+        slope = (target - x0) / (y1 - y0)
+        lo, hi = math.log(slope) - 30.0, math.log(slope) + 30.0
+        for _ in range(90):
+            mid = 0.5 * (lo + hi)
+            Xe, _ = _shoot(x0, y0, y1, math.exp(mid), steps)
+            if Xe > target:
+                hi = mid
+            else:
+                lo = mid
+        Xe, Lk = _shoot(x0, y0, y1, math.exp(0.5 * (lo + hi)), steps)
+        L[k] = Lk
+        miss[k] = abs(Xe - target) if math.isfinite(Xe) else math.inf
+    return L, miss
+
+
+def bh_order(t, r, phi, rng=None, audit=20000):
+    U, V = to_kruskal(t, r)
+    t0 = time.time()
+    A = point_tables(U, V)
+    rel = stage1(U, V, phi, A, C_WLO, C_WHI)
+    t1 = time.time() - t0
+    amb = rel == -1
+    ii, jj = np.nonzero(amb)
+    near, n_fine = 0, 0
+    coarse_mask = np.zeros(ii.size, bool)
+    if ii.size:
+        d = np.abs(phi[jj] - phi[ii]); d = np.minimum(d, 2 * math.pi - d)
+        Lc, mc = shoot_pairs_fast(U[ii], V[ii], U[jj], V[jj], *COARSE)
+        dmax = np.minimum(Lc, math.pi)
+        # a coarse miss is never trusted: those pairs go to the fine shot (which must hit)
+        far = (np.abs(d - dmax) > COARSE_MARGIN) & (mc < 1e-9)
+        coarse_mask = far
+        rel[ii[far], jj[far]] = (d[far] <= dmax[far]).astype(np.int8)
+        k = np.nonzero(~far)[0]
+        n_fine = int(k.size)
+        if k.size:
+            Lf, mf = shoot_pairs_fast(U[ii[k]], V[ii[k]], U[jj[k]], V[jj[k]], *FINE)
+            assert np.all(mf < 1e-9), "fine shooting missed on %d pairs" % int((mf >= 1e-9).sum())
+            dm = np.minimum(Lf, math.pi)
+            near = int((np.abs(d[k] - dm) < TOL).sum())
+            rel[ii[k], jj[k]] = (d[k] <= dm).astype(np.int8)
+    order = rel.astype(bool)
+    stats = {"n": int(t.size), "relations": int(order.sum()), "stage3_pairs": int(ii.size),
+             "stage3_fine_pairs": n_fine, "near_boundary_pairs_tol": near,
+             "seconds_stage12": round(t1, 1), "seconds_total": round(time.time() - t0, 1)}
+    if rng is not None and audit:
+        # (a) pairs decided by stages 1-2; (b) pairs decided by the coarse shot: both vs FINE
+        si, sj = np.nonzero((U[None, :] > U[:, None]) & (V[None, :] > V[:, None]) & ~amb)
+        ci, cj = ii[coarse_mask], jj[coarse_mask]
+        out = {}
+        for name, (xi, xj) in (("stage12", (si, sj)), ("coarse_shot", (ci, cj))):
+            if xi.size == 0:
+                continue
+            pick = rng.choice(xi.size, size=min(audit, xi.size), replace=False)
+            a, b = xi[pick], xj[pick]
+            La, ma = shoot_pairs_fast(U[a], V[a], U[b], V[b], *FINE)
+            da = np.abs(phi[b] - phi[a]); da = np.minimum(da, 2 * math.pi - da)
+            hit = ma < 1e-9
+            ex = da <= np.minimum(La, math.pi)
+            out[name] = {"sample": int(pick.size), "endpoint_failures": int((~hit).sum()),
+                         "disagreements_among_hit": int((ex[hit] != order[a, b][hit]).sum())}
+        stats["audit_vs_fine"] = out
+    return order, stats
+
+
+def mink_order(t, r, phi):
+    x, y = r * np.cos(phi), r * np.sin(phi)
+    dt = t[None, :] - t[:, None]
+    dist = np.hypot(x[None, :] - x[:, None], y[None, :] - y[:, None])
+    return (dt > 0.0) & (dt >= dist)
+
+
+def radial_check(t, r):
+    """Same-angle pairs: the 2+1 order must equal the sealed 1+1D EF closed form.
+    Returns (mismatches, kruskal_ordered_pairs). A mismatch makes the seed INVALID."""
+    from nachocausal.generator import past_matrix_fast
+    C = past_matrix_fast(np.c_[t, r], "BH", r_S=TWO_M)          # C[i,j]: j precedes i
+    U, V = to_kruskal(t, r)
+    K = (U[None, :] > U[:, None]) & (V[None, :] > V[:, None])     # K[i,j]: i precedes j
+    return int((K != C.T).sum()), int(K.sum())
+
+
+def transitivity_violations(order):
+    """Number of pairs i<k<j with not i<j. Any violation makes the seed INVALID."""
+    A = order.astype(np.float32)
+    return int((((A @ A) > 0.5) & ~order).sum())
+
+=== DOCUMENT 8: test_004_criteria_can_fail.py ===
+
+"""test_004_criteria_can_fail — comité 052 §5 / §9 step 4 (pre-freeze; verdicts discarded).
+
+Feeds known-bad inputs to the CANDIDATE 2+1 verdict (nachocausal2p1.validate.summarise_level and
+verdict_from_levels) and asserts each criterion goes FALSE and the verdict is FAIL. If a case
+does not FAIL, that criterion is decoration and prereg-004 must not be frozen.
+
+  baseline  a synthetic all-good grid gives PASS, so FAIL below is not guaranteed by construction.
+  (a)       the dev rho=126, T=8 cell (coverage 0.20, dev/2P1_TMIN_RHO126_RESULT_2026-10-13.md)
+            -> ii_localisation_primary false.
+  (b)       synthetic flat control with 2 of 20 escapes -> iv false (control: 1 of 20 passes).
+  (c)       the dev rho=126, T=20 widths scaled so the median is theta_loc*(1+eps) -> loc_pass
+            false (control: (1-eps) -> true).
+  (v)       Guard-v not run -> v_order_only false (auditor report 043, finding 1).
+
+Only already-used exploration seeds (7_000_100..7_000_109, sweep 88a25f6) and synthetic rows are
+used. The dev cells have 10 seeds, so (a) and (c) lower MIN_VALID_SEEDS to 10 in the test only
+(as the comité bypasses the domain gate in the test only); without it the cell is INCONCLUSIVE,
+which is asserted too. With 10 seeds (i) also fails (p >= 2^-10), so for (a) and (c) the
+informative assertion is the specific check, not the overall FAIL. Nothing here prints or
+asserts a comparison of theta with the dev widths (comité 052, leakage (c)).
+"""
+
+import functools
+import hashlib
+import json
+import os
+
+import numpy as np
+import pytest
+
+from nachocausal2p1 import thresholds, validate
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEV_SWEEP = os.path.join(ROOT, "dev", "2p1_sweep_T_rho126_v2_2026-10-12.jsonl")
+# committed in 10d3ebe; the (a) and (c) inputs must not change silently
+DEV_SWEEP_SHA256 = "13256b2925091f9e2d6c2a5f0eb4cd3410014a60f54a0477875ad018e2948e8d"
+EPS = 1e-3
+PRIM = thresholds.PRIMARY_RHO
+
+pytestmark = pytest.mark.skipif(
+    np.__version__ != thresholds.PINNED_NUMPY,
+    reason=f"2+1 package pinned to numpy=={thresholds.PINNED_NUMPY}")
+
+
+# --- inputs ----------------------------------------------------------------------------------
+def _dev_cell(t_edge):
+    """Dev rows at rho=126 and T=t_edge, converted to the port's per-seed row format
+    (sep -> 0 when the gate abstains, as nachocausal2p1.estimator does)."""
+    rows = []
+    for line in open(DEV_SWEEP):
+        rec = json.loads(line)
+        if rec["T_EDGE"] != t_edge or rec["rho"] != float(PRIM):
+            continue
+        bh, mk = rec["BH"], rec["MINK"]
+        sep_bh = 0.0 if bh["abstain"] else bh["sep"]
+        sep_mk = 0.0 if mk["abstain"] else mk["sep"]
+        row = {"seed": rec["seed"], "invalid": False, "abstained_BH": bh["abstain"],
+               "abstained_MINK": mk["abstain"], "d": sep_bh - sep_mk, "valid": bh["claimed"]}
+        if bh["claimed"]:
+            w = bh["width_over_2M"] * thresholds.TWO_M
+            row.update(width=w, clean=bool(w >= 0.0), midpoint=bh["mid"],
+                       covers=bh["covers_2M"])
+        rows.append(row)
+    return rows
+
+
+def _synthetic_rows(rho, escapes=0, n=thresholds.ENSEMBLE):
+    """An all-good level: every seed claims, d > 0, bracket of width theta_loc/2 centred on 2M,
+    flat control abstains except on the first `escapes` seeds."""
+    w = 0.5 * thresholds.theta_loc(rho) * thresholds.TWO_M
+    return [{"seed": i, "invalid": False, "abstained_BH": False, "abstained_MINK": i >= escapes,
+             "d": 1.0 + 0.01 * i, "valid": True, "clean": True, "width": w,
+             "midpoint": thresholds.TWO_M, "covers": True} for i in range(n)]
+
+
+@functools.lru_cache(maxsize=None)
+def _synthetic_level(rho, escapes=0):
+    return validate.summarise_level(_synthetic_rows(rho, escapes), rho)
+
+
+def _levels(primary):
+    lv = {rho: dict(_synthetic_level(rho)) for rho in thresholds.RHO_GRID}
+    lv[PRIM] = primary
+    return lv
+
+
+# --- provenance of the dev input -------------------------------------------------------------
+def test_dev_cells_use_burned_exploration_seeds_only():
+    for t_edge in (8.0, 20.0):
+        seeds = [r["seed"] for r in _dev_cell(t_edge)]
+        assert sorted(seeds) == list(thresholds.DRY_RUN_SEEDS)          # 10 seeds, 88a25f6
+        assert all(thresholds.EXPLORE_BAND[0] <= s <= thresholds.EXPLORE_BAND[1] for s in seeds)
+        assert not any(8_000_000 <= s <= 8_999_999 for s in seeds)       # virgin band untouched
+
+
+def test_dev_sweep_is_pinned():
+    sha = hashlib.sha256(open(DEV_SWEEP, "rb").read()).hexdigest()
+    assert sha == DEV_SWEEP_SHA256
+
+
+# --- baseline: the verdict CAN pass ----------------------------------------------------------
+def test_synthetic_baseline_passes():
+    out = validate.verdict_from_levels(_levels(dict(_synthetic_level(PRIM))), guard_ran=True)
+    assert out["verdict"] == "PASS", out["checks"]
+
+
+# --- (a) T=8 cell: localisation (ii) fails on coverage ---------------------------------------
+def test_a_rho126_T8_fails_localisation(monkeypatch):
+    rows = _dev_cell(8.0)
+    assert validate.summarise_level(rows, PRIM)["status"] == "inconclusive"   # 10 < 18 seeds
+    monkeypatch.setattr(thresholds, "MIN_VALID_SEEDS", len(rows))            # test-only bypass
+    prim = validate.summarise_level(rows, PRIM)
+    assert prim["status"] == "scored"
+    assert prim["coverage_frac"] == pytest.approx(0.2)
+    assert prim["coverage_frac"] < thresholds.COVERAGE_FLOOR
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
+    assert out["checks"]["ii_localisation_primary"] is False
+    assert out["verdict"] == "FAIL"
+
+
+# --- (b) flat control: 2 of 20 escapes fails (iv); 1 of 20 does not -------------------------
+def test_b_two_flat_escapes_fail_iv():
+    prim = dict(_synthetic_level(PRIM, escapes=2))
+    assert prim["n_escape_MINK"] == 2
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
+    assert out["checks"]["iv_flat_escapes_primary"] is False
+    assert [k for k, v in out["checks"].items() if not v] == ["iv_flat_escapes_primary"]
+    assert out["verdict"] == "FAIL"
+
+
+def test_b_control_one_flat_escape_passes():
+    prim = dict(_synthetic_level(PRIM, escapes=1))
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
+    assert out["checks"]["iv_flat_escapes_primary"] is True
+    assert out["verdict"] == "PASS"
+
+
+# --- (c) T=20 widths scaled just above / below theta_loc ------------------------------------
+def _scaled_cell(factor):
+    rows = _dev_cell(20.0)
+    widths = np.array([r["width"] / thresholds.TWO_M for r in rows if r["valid"] and r["clean"]])
+    k = factor * thresholds.theta_loc(PRIM) / float(np.median(widths))     # never printed
+    for r in rows:
+        if r["valid"]:
+            r["width"] *= k
+    return rows
+
+
+def test_c_widths_just_above_theta_fail_loc(monkeypatch):
+    rows = _scaled_cell(1.0 + EPS)
+    monkeypatch.setattr(thresholds, "MIN_VALID_SEEDS", len(rows))
+    prim = validate.summarise_level(rows, PRIM)
+    assert prim["status"] == "scored"
+    assert prim["loc_pass"] is False
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
+    assert out["checks"]["ii_localisation_primary"] is False
+    assert out["verdict"] == "FAIL"
+
+
+def test_c_control_widths_just_below_theta_pass_loc(monkeypatch):
+    rows = _scaled_cell(1.0 - EPS)
+    monkeypatch.setattr(thresholds, "MIN_VALID_SEEDS", len(rows))
+    assert validate.summarise_level(rows, PRIM)["loc_pass"] is True
+
+
+# --- (a') synthetic: coverage alone below the floor fails (ii) -------------------------------
+def test_a_synthetic_coverage_below_floor_fails_ii_only():
+    rows = _synthetic_rows(PRIM)
+    for r in rows[:11]:                                   # 9/20 = 0.45 < 0.5
+        r["covers"] = False
+    prim = validate.summarise_level(rows, PRIM)
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
+    assert [k for k, v in out["checks"].items() if not v] == ["ii_localisation_primary"]
+    assert out["verdict"] == "FAIL"
+
+
+# --- (v) Guard-v not run -> (v) false (auditor report 043, finding 1) ------------------------
+def test_v_guard_off_fails_v_only():
+    out = validate.verdict_from_levels(_levels(dict(_synthetic_level(PRIM))), guard_ran=False)
+    assert [k for k, v in out["checks"].items() if not v] == ["v_order_only"]
+    assert out["verdict"] == "FAIL"
+
+=== DOCUMENT 9: test_2p1_package.py ===
+
+"""Runnable guards for the prereg-004 CANDIDATE 2+1 sub-package (comité 052 §9 step 3).
+
+1. The port is behaviour-preserving: the sealed generator equals dev/gen2p1_efbox.py bit for bit
+   at the same T, and the estimator reproduces dev/explore_2p1_estimator.py's O, minimal set,
+   threshold and sep.
+2. T is a literal (no env knob) and the numba cache is off.
+3. The tau fixture has the recorded SHA, n <= 128 equals the sealed 1+1 table, n > 256 raises.
+4. Estimator/gate do not import the scoring subpackage, and the estimator source is coordinate-
+   free; Guard-v RAISES when the observable is made label-dependent (it can fail).
+5. Counters, the one-shot validation label and atomic writing behave as specified.
+No test compares theta with widths on the real rho grid (comité 052, leakage (c)).
+"""
+
+import ast
+import hashlib
+import importlib
+import inspect
+import json
+import math
+import os
+import subprocess
+import sys
+
+import numpy as np
+import pytest
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+from nachocausal2p1 import estimator, gate, generator, thresholds, validate  # noqa: E402
+
+pytestmark = pytest.mark.skipif(
+    np.__version__ != thresholds.PINNED_NUMPY,
+    reason=f"2+1 package pinned to numpy=={thresholds.PINNED_NUMPY}")
+
+SMALL_N = 150
+SEED = thresholds.DRY_RUN_SEEDS[0]
+
+
+def _small_cloud(seed=SEED, n=SMALL_N):
+    rng = np.random.default_rng(seed)
+    return generator.sprinkle(n, rng)
+
+
+# --- 1. behaviour-preserving port --------------------------------------------------------
+def test_generator_bit_equal_to_dev_at_same_T():
+    t, r, phi = _small_cloud()
+    order, _ = generator.bh_order(t, r, phi, rng=None)
+    port_sha = hashlib.sha256(np.packbits(order).tobytes()).hexdigest()
+    code = (
+        "import sys,hashlib,numpy as np;"
+        f"sys.path.insert(0,{os.path.join(ROOT, 'dev')!r});"
+        "import gen2p1_efbox as g;"
+        f"rng=np.random.default_rng({SEED});t,r,phi=g.sprinkle({SMALL_N},rng);"
+        "o,_=g.bh_order(t,r,phi,rng=None);"
+        "print(hashlib.sha256(np.packbits(o).tobytes()).hexdigest())")
+    env = dict(os.environ, NC2P1_T_EDGE=repr(thresholds.T_EDGE))
+    out = subprocess.run([sys.executable, "-c", code], env=env, capture_output=True,
+                         text=True, check=True).stdout.strip().splitlines()[-1]
+    assert out == port_sha
+
+
+def test_estimator_matches_dev_estimator():
+    sys.path.insert(0, os.path.join(ROOT, "dev"))
+    try:
+        os.environ["NC2P1_T_EDGE"] = repr(thresholds.T_EDGE)
+        dev = importlib.import_module("explore_2p1_estimator")
+    finally:
+        os.environ.pop("NC2P1_T_EDGE", None)
+    t, r, phi = _small_cloud()
+    for order in (generator.bh_order(t, r, phi)[0], generator.mink_order(t, r, phi)):
+        e = estimator.estimate(order)
+        d = dev.estimate(order)
+        assert sorted(e["min_idx"]) == sorted(int(i) for i in d["minimal"])
+        assert sorted(e["O_by_min"].values()) == sorted(int(x) for x in d["O"])
+        assert e["thr"] == d["thr"] or (math.isnan(e["thr"]) and math.isnan(d["thr"]))
+        if not e["abstained"]:
+            assert e["sep"] == d["sep"]
+
+
+# --- 2. literal T, cache off ---------------------------------------------------------------
+def test_T_is_literal_and_cache_off():
+    src = inspect.getsource(generator)
+    assert "os.environ" not in src and "NC2P1_T_EDGE" not in src.split('"""', 2)[2]
+    assert "cache=True" not in src
+    assert generator.T_EDGE == thresholds.T_EDGE == 16.0
+    assert thresholds.T_EDGE >= thresholds.T_EDGE_MIN
+
+
+# --- 3. tau fixture ------------------------------------------------------------------------
+def test_tau_fixture_sha_and_prefix():
+    raw = open(gate.TAU_PATH, "rb").read()
+    assert hashlib.sha256(raw).hexdigest() == thresholds.TAU_FIXTURE_SHA256
+    sealed = json.load(open(os.path.join(ROOT, "nachocausal", "fixtures", "tau_table.json")))
+    for n in range(2, 129):
+        assert gate.tau(n) == float(sealed["tau"][str(n)])
+    assert gate.tau(256) > 0
+    with pytest.raises(ValueError):
+        gate.tau(257)
+
+
+def test_theta_anchor_arithmetic():
+    # ASTRA table (revisiones/2026-10-13-anclaje-theta-ciego/astra.md); arithmetic only.
+    for rho, loc, stab in ((32, 0.09023, 0.04511), (63, 0.05744, 0.02872),
+                           (126, 0.03619, 0.01809)):
+        assert abs(thresholds.theta_loc(rho) - loc) < 5e-5
+        assert abs(thresholds.theta_stab(rho) - stab) < 5e-5
+        assert thresholds.convergence_slack(rho) == pytest.approx(thresholds.theta_loc(rho) / 2)
+
+
+# --- 4. leakage and Guard-v ----------------------------------------------------------------
+def test_estimator_and_gate_do_not_import_scoring():
+    for mod in list(sys.modules):
+        if mod.startswith("nachocausal2p1"):
+            del sys.modules[mod]
+    importlib.import_module("nachocausal2p1.estimator")
+    importlib.import_module("nachocausal2p1.gate")
+    assert not any(m.startswith("nachocausal2p1.scoring") for m in sys.modules)
+
+
+def test_estimator_source_is_coordinate_free():
+    tree = ast.parse(inspect.getsource(estimator))
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.Module)) and ast.get_docstring(node):
+            node.body = node.body[1:]
+    code = ast.unparse(tree)
+    for forbidden in ("scoring", "embedding", "phi", "to_kruskal", ".r ", "[:, 1]"):
+        assert forbidden not in code, forbidden
+
+
+def test_guard_v_can_fail(monkeypatch):
+    from nachocausal import estimator as sealed
+    t, r, phi = _small_cloud()
+    order = generator.mink_order(t, r, phi)
+    estimator.estimate(order)                      # real order-only O: no raise
+    orig = sealed.estimate_O_volume
+
+    def label_dependent(C):
+        O, mn = orig(C)
+        if mn:
+            O[mn[0]] += 1
+        return O, mn
+    monkeypatch.setattr(sealed, "estimate_O_volume", label_dependent)
+    with pytest.raises(ValueError, match="Guard"):
+        estimator.estimate(order)
+
+
+# --- 5. counters, one-shot label, atomic write ---------------------------------------------
+def _row(abst_bh=False, abst_mk=True, invalid=False):
+    if invalid:
+        return {"invalid": True}
+    return {"invalid": False, "abstained_BH": abst_bh, "abstained_MINK": abst_mk,
+            "d": 0.0 if abst_bh else 5.0, "valid": not abst_bh, "clean": not abst_bh,
+            "width": 0.0, "midpoint": 0.5, "covers": True}
+
+
+def test_counters_are_separate():
+    rows = [_row() for _ in range(15)] + [_row(abst_bh=True)] * 2 + [_row(abst_mk=False)] * 2 \
+        + [_row(invalid=True)]
+    s = validate.summarise_level(rows, thresholds.PRIMARY_RHO)
+    assert (s["n_invalid"], s["n_abstain_BH"], s["n_escape_MINK"]) == (1, 2, 2)
+    assert s["status"] == "scored" and s["escape_pass"] is False
+
+
+def test_too_many_invalid_is_inconclusive():
+    rows = [_row() for _ in range(17)] + [_row(invalid=True)] * 3
+    assert validate.summarise_level(rows, thresholds.PRIMARY_RHO)["status"] == "inconclusive"
+
+
+def test_validation_label_refuses_before_freeze():
+    with pytest.raises(RuntimeError):
+        validate.run(seeds=list(thresholds.DRY_RUN_SEEDS), label=validate.VALIDATION_LABEL,
+                     write=False)
+    with pytest.raises(RuntimeError):
+        validate.run(seeds=None, label="x", write=False)
+
+
+def test_atomic_write(tmp_path, monkeypatch):
+    monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
+    p = validate.write_atomic({"a": np.float64(1.5), "b": np.int64(2)}, "probe")
+    assert json.load(open(p)) == {"a": 1.5, "b": 2}
+    assert [f for f in os.listdir(tmp_path) if f.endswith(".tmp")] == []
+
+
+def test_environment_assertion_can_fail(monkeypatch):
+    thresholds.assert_environment()
+    monkeypatch.setenv("NC2P1_DEVICE", "gpu")
+    with pytest.raises(RuntimeError):
+        thresholds.assert_environment()
+
+
+# --- 6. seed guard and Guard-v enforcement (auditor report 043, findings 1-2) --------------
+VIRGIN_20 = tuple(range(8_000_000, 8_000_020))
+
+
+def _no_generation(*a, **k):
+    raise AssertionError("generation must not be reached")
+
+
+def test_seed_guard_can_fail(monkeypatch):
+    validate.check_seed(thresholds.DRY_RUN_SEEDS[0])
+    for bad in (8_000_001, 12345, 6_999_999, 7_001_000):
+        with pytest.raises(RuntimeError):
+            validate.check_seed(bad)
+    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    with pytest.raises(RuntimeError):                    # drawn but not frozen
+        validate.check_seed(VIRGIN_20[0])
+    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
+    validate.check_seed(VIRGIN_20[0])                    # frozen and drawn: allowed
+    with pytest.raises(RuntimeError):
+        validate.check_seed(VIRGIN_20[0] + 100)          # virgin but not drawn
+
+
+def test_run_refuses_bad_seeds_before_generation(monkeypatch):
+    monkeypatch.setattr(validate, "generate", _no_generation)
+    with pytest.raises(RuntimeError, match="virgin"):
+        validate.run(seeds=[8_000_001], label="probe", write=False)
+    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
+    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    with pytest.raises(RuntimeError, match="validation label"):
+        validate.run(seeds=[VIRGIN_20[0]], label="probe", write=False)
+
+
+def test_validation_label_requires_guard(monkeypatch, tmp_path):
+    monkeypatch.setattr(validate, "generate", _no_generation)
+    monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
+    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
+    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    with pytest.raises(RuntimeError, match="Guard-v"):
+        validate.run(seeds=None, label=validate.VALIDATION_LABEL, guard=False, write=False)
+
+
+def test_check_validation_seeds_can_fail():
+    thresholds.check_validation_seeds(())
+    thresholds.check_validation_seeds(VIRGIN_20)
+    for bad in (VIRGIN_20[:19], VIRGIN_20[:19] + (VIRGIN_20[0],),
+                VIRGIN_20[:19] + (7_000_500,), VIRGIN_20[:19] + (12345,)):
+        with pytest.raises(ValueError):
+            thresholds.check_validation_seeds(bad)
+
+
+def test_port_relation_count_and_T_discrimination():
+    # Counts recorded in dev/PREREG004_STEP_3_2026-10-13.md (auditor report 043, warning 5).
+    t, r, phi = _small_cloud()
+    order, _ = generator.bh_order(t, r, phi, rng=None)
+    assert int(order.sum()) == 8652
+    code = (
+        "import sys,numpy as np;"
+        f"sys.path.insert(0,{os.path.join(ROOT, 'dev')!r});"
+        "import gen2p1_efbox as g;"
+        f"rng=np.random.default_rng({SEED});t,r,phi=g.sprinkle({SMALL_N},rng);"
+        "o,_=g.bh_order(t,r,phi,rng=None);print(int(o.sum()))")
+    env = dict(os.environ, NC2P1_T_EDGE="6.0")
+    out = subprocess.run([sys.executable, "-c", code], env=env, capture_output=True,
+                         text=True, check=True).stdout.strip().splitlines()[-1]
+    assert int(out) == 5125
+
+
+# --- 7. blind-run thread count (O3) and per-seed progress log (O4), 2026-10-14 ---------------
+def test_blind_threads_can_fail(monkeypatch):
+    import numba
+    monkeypatch.delenv("NUMBA_NUM_THREADS", raising=False)
+    with pytest.raises(RuntimeError, match="NUMBA_NUM_THREADS"):
+        thresholds.assert_blind_threads()
+    monkeypatch.setenv("NUMBA_NUM_THREADS", "20")
+    monkeypatch.setattr(numba, "get_num_threads", lambda: 4)
+    with pytest.raises(RuntimeError, match="NUMBA_NUM_THREADS"):
+        thresholds.assert_blind_threads()           # env says 20, numba runs on 4
+    monkeypatch.setattr(numba, "get_num_threads", lambda: 20)
+    thresholds.assert_blind_threads()               # both 20: allowed
+    monkeypatch.setenv("NUMBA_NUM_THREADS", "4")
+    with pytest.raises(RuntimeError, match="NUMBA_NUM_THREADS"):
+        thresholds.assert_blind_threads()
+
+
+def test_validation_run_checks_threads_before_generation(monkeypatch, tmp_path):
+    import numba
+    monkeypatch.setattr(validate, "generate", _no_generation)
+    monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
+    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
+    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    monkeypatch.setenv("NUMBA_NUM_THREADS", "4")
+    monkeypatch.setattr(numba, "get_num_threads", lambda: 4)
+    with pytest.raises(RuntimeError, match="NUMBA_NUM_THREADS"):
+        validate.run(seeds=None, label=validate.VALIDATION_LABEL, write=False)
+    assert os.listdir(tmp_path) == []
+
+
+def test_progress_line_is_blind():
+    row = dict(_row(), seed=7_000_100, rho=126.0, seconds=1.0, r_lo=0.2, r_hi=0.3, width=0.1,
+               midpoint=0.25, covers=True, clean=True, sep_BH=1.0, sep_MINK=0.0, d=1.0)
+    line = validate.progress_line(row)
+    assert tuple(line) == validate.PROGRESS_FIELDS
+    leaky = {"r_lo", "r_hi", "width", "midpoint", "covers", "clean", "valid", "sep_BH",
+             "sep_MINK", "d", "theta_loc", "theta_stab"}
+    assert not leaky & set(validate.PROGRESS_FIELDS)
+    assert not leaky & set(line)
+
+
+def test_progress_log_written_per_seed_before_the_verdict(monkeypatch, tmp_path):
+    monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
+    calls = []
+
+    def fake_per_seed(seed, rho, guard=True):
+        path = validate._progress_path("probe")
+        n_before = sum(1 for _ in open(path)) if os.path.exists(path) else 0
+        calls.append(n_before)
+        return dict(_row(), seed=seed, rho=rho, seconds=0.0)
+
+    monkeypatch.setattr(validate, "per_seed", fake_per_seed)
+    seeds = list(thresholds.DRY_RUN_SEEDS[:3])
+    validate.run(seeds=seeds, label="probe", write=True)
+    lines = [json.loads(x) for x in open(validate._progress_path("probe"))]
+    assert lines[0]["event"] == "start"
+    body = lines[1:]
+    assert len(body) == len(seeds) * len(thresholds.RHO_GRID)
+    assert all(set(x) == set(validate.PROGRESS_FIELDS) for x in body)
+    assert calls == list(range(1, 1 + len(body)))   # each line is on disk before the next seed
+    validate.run(seeds=seeds, label="probe", write=False)
+    assert sum(1 for _ in open(validate._progress_path("probe"))) == len(lines)  # write=False: none
