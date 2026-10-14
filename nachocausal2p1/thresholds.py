@@ -114,13 +114,10 @@ VIRGIN_BAND = (8_000_000, 8_999_999)    # reserved for the single prereg-004 bli
 # Burned dev seeds used for the T sweeps at rho = 32/63/126; dry runs and the step-4
 # can-fail test may reuse them (comité 052 §9 step 4), never virgin seeds.
 DRY_RUN_SEEDS = tuple(range(7_000_100, 7_000_110))
-# Not drawn yet: step C2 draws 20 seeds ONCE and BLIND from VIRGIN_BAND, after C1, with
-# numpy(1.26.4).default_rng(VALIDATION_DRAW_SEED).choice(arange(8_000_000, 9_000_000), 20,
-# replace=False), sorted. [PI-O1, revised 2026-10-14 after the O8 review, D5] The draw seed is
-# not a number fixed in advance (that would let anyone compute the virgin seeds before the
-# freeze): it is draw_seed_from_commit(<SHA of the C1 freeze commit>), which does not exist
-# until C1 is committed. C2 records the SHA and the resulting seed here.
-VALIDATION_DRAW_SEED = None
+# C1 freezes this file, including the draw recipe. C2 records freeze_commit, draw_seed and
+# seeds in docs/validation_004_seeds.json; it NEVER edits the instrument sealed at C1.
+# The SHA rule is reproducible, not a guarantee of unpredictability to the author of C1.
+# No manifest exists yet, and no draw is performed at import. [PI-O1; auditor 045 E1/W1]
 
 
 def draw_seed_from_commit(sha: str) -> int:
@@ -129,7 +126,6 @@ def draw_seed_from_commit(sha: str) -> int:
     if len(sha) != 40 or any(c not in "0123456789abcdef" for c in sha):
         raise ValueError("draw_seed_from_commit needs the full 40-hex lowercase commit SHA.")
     return int(sha[:8], 16)
-VALIDATION_SEEDS: tuple = ()
 # Burned Phase-A seeds (comité 052:20, dev/2P1_PHASE_A_RESULT_2026-10-12.md): never reusable.
 BURNED_PHASE_A_SEEDS = (1, 2, 3, 4, 7, 99, 12345)
 
@@ -152,7 +148,15 @@ def check_validation_seeds(seeds) -> None:
 
 assert all(EXPLORE_BAND[0] <= s <= EXPLORE_BAND[1] for s in DRY_RUN_SEEDS)
 assert not set(DRY_RUN_SEEDS) & set(BURNED_PHASE_A_SEEDS)
-check_validation_seeds(VALIDATION_SEEDS)
+
+
+def validation_seeds() -> tuple:
+    """Read the committed C2 manifest only after C1. Never draw seeds at import."""
+    if STATUS != "FROZEN":
+        return ()
+    from .seed_manifest import load_manifest
+
+    return tuple(load_manifest()["seeds"])
 
 # --- Generator numerics (frozen with the generator; C052-1, mathematician brief) --------------
 TOL, REL_MARGIN = 1e-6, 1e-3       # [GEN]

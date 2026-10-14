@@ -163,7 +163,22 @@ def test_counters_are_separate():
 
 def test_too_many_invalid_is_inconclusive():
     rows = [_row() for _ in range(17)] + [_row(invalid=True)] * 3
-    assert validate.summarise_level(rows, thresholds.PRIMARY_RHO)["status"] == "inconclusive"
+    out = validate.summarise_level(rows, thresholds.PRIMARY_RHO)
+    assert out["status"] == "inconclusive"
+    assert out["n_bracket_valid"] == out["n_clean"] == out["coverage_count"] == 17
+    assert out["coverage_frac"] == 1.0
+    assert out["median_width_over_2M"] == out["iqr_width_over_2M"] == out["boundary_r_std"] == 0.0
+    assert out["p_perm"] == 2 ** -17
+
+
+def test_empty_inconclusive_reports_zero_counts_and_nan_statistics():
+    out = validate.summarise_level([_row(invalid=True)] * 20, thresholds.PRIMARY_RHO)
+    assert out["status"] == "inconclusive"
+    assert out["n_bracket_valid"] == out["n_clean"] == out["coverage_count"] == 0
+    for name in ("coverage_frac", "median_width_over_2M", "iqr_width_over_2M",
+                 "boundary_r_std", "p_perm"):
+        assert math.isnan(out[name])
+    assert not out["loc_pass"] and not out["stab_pass"] and not out["significant"]
 
 
 def test_validation_label_refuses_before_freeze():
@@ -201,7 +216,7 @@ def test_seed_guard_can_fail(monkeypatch):
     for bad in (8_000_001, 12345, 6_999_999, 7_001_000):
         with pytest.raises(RuntimeError):
             validate.check_seed(bad)
-    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    monkeypatch.setattr(thresholds, "validation_seeds", lambda: VIRGIN_20)
     with pytest.raises(RuntimeError):                    # drawn but not frozen
         validate.check_seed(VIRGIN_20[0])
     monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
@@ -215,7 +230,7 @@ def test_run_refuses_bad_seeds_before_generation(monkeypatch):
     with pytest.raises(RuntimeError, match="virgin"):
         validate.run(seeds=[8_000_001], label="probe", write=False)
     monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
-    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    monkeypatch.setattr(thresholds, "validation_seeds", lambda: VIRGIN_20)
     with pytest.raises(RuntimeError, match="validation label"):
         validate.run(seeds=[VIRGIN_20[0]], label="probe", write=False)
 
@@ -224,7 +239,7 @@ def test_validation_label_requires_guard(monkeypatch, tmp_path):
     monkeypatch.setattr(validate, "generate", _no_generation)
     monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
     monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
-    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    monkeypatch.setattr(thresholds, "validation_seeds", lambda: VIRGIN_20)
     with pytest.raises(RuntimeError, match="Guard-v"):
         validate.run(seeds=None, label=validate.VALIDATION_LABEL, guard=False, write=True)
 
@@ -277,7 +292,7 @@ def test_validation_run_checks_threads_before_generation(monkeypatch, tmp_path):
     monkeypatch.setattr(validate, "generate", _no_generation)
     monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
     monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
-    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    monkeypatch.setattr(thresholds, "validation_seeds", lambda: VIRGIN_20)
     monkeypatch.setenv("NUMBA_NUM_THREADS", "4")
     monkeypatch.setattr(numba, "get_num_threads", lambda: 4)
     with pytest.raises(RuntimeError, match="NUMBA_NUM_THREADS"):
@@ -325,13 +340,13 @@ def test_validation_run_refuses_write_false(monkeypatch, tmp_path):
     monkeypatch.setattr(validate, "generate", _no_generation)
     monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
     monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
-    monkeypatch.setattr(thresholds, "VALIDATION_SEEDS", VIRGIN_20)
+    monkeypatch.setattr(thresholds, "validation_seeds", lambda: VIRGIN_20)
     with pytest.raises(RuntimeError, match="write=True"):
         validate.run(seeds=None, label=validate.VALIDATION_LABEL, write=False)
 
 
 def test_draw_seed_is_not_fixed_before_c1():
-    assert thresholds.VALIDATION_DRAW_SEED is None
+    assert thresholds.validation_seeds() == ()
 
 
 def test_draw_seed_from_commit_can_fail():

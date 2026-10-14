@@ -88,7 +88,7 @@ not edited.
   from O.
 - **Runner** `nachocausal2p1/validate.py`: Guard-v → estimate → gate → bracket; atomic write;
   the label `validation_004` is one-shot and refused unless `STATUS == "FROZEN"`, the seeds are
-  the drawn ones, `guard=True`, and `results/validation_004.json` does not exist.
+  those of the committed C2 manifest, `guard=True`, and `results/validation_004.json` does not exist.
 - **Environment** (`thresholds.assert_environment`, hard-fail): Python 3.12.3, numpy 1.26.4,
   numba 0.66.0, llvmlite 0.48.0, scipy 1.17.1; CPU only (CuPy not loaded, `NC2P1_DEVICE` unset
   or `cpu`).
@@ -104,7 +104,9 @@ not edited.
 | `nachocausal/generator.py` (imported, radial check) | `d6f09fdc21b76f6cf329c33580342a068135f7ece7ed11c304552f0848216f9f` |
 | `nachocausal/__init__.py` (imported) | `f1ec7306ced3e1f948b3a147b4e8c69f201c2bb803a1cb2525b5602239a2c7b7` |
 
-The thresholds SHA will change at C1 (`STATUS`, `VALIDATION_DRAW_SEED`, `VALIDATION_SEEDS`).
+The thresholds SHA will change at C1 (`STATUS = "FROZEN"`). It will not change at C2:
+the draw is recorded separately in `docs/validation_004_seeds.json`. C1 also seals
+`nachocausal2p1/seed_manifest.py`, the permanent producer and reader of that manifest.
 
 ## 4. Observable and estimator
 
@@ -135,14 +137,20 @@ reused.
   `numpy(1.26.4).default_rng(VALIDATION_DRAW_SEED_004).choice(arange(8_000_000, 9_000_000), size=20, replace=False) -> sorted`.
 - **`VALIDATION_DRAW_SEED_004 = draw_seed_from_commit(SHA of the C1 freeze commit)`**: the first
   8 hex digits of the full SHA of the C1 commit, as an integer (`nachocausal2p1/thresholds.py`,
-  `draw_seed_from_commit`). The frozen text fixes the rule, not a number: the number does not
-  exist until C1 is committed, so nobody can compute the virgin seeds before the freeze. C2
-  records the SHA, the seed and the 20 seeds. (PI, 2026-10-14: O1 first fixed `20261014`, then
+  `draw_seed_from_commit`). The frozen text fixes the rule, not a number. This gives a
+  reproducible derivation from the identified C1 commit; it does not guarantee unpredictability
+  to its author, who can compute the hash of a candidate commit before publishing it.
+  C2 records the full C1 SHA, the draw seed and the sorted 20 seeds in the separate manifest
+  `docs/validation_004_seeds.json`, never by editing the instrument sealed at C1.
+  (PI, 2026-10-14: O1 first fixed `20261014`, then
   revised after the O8 review, D5.)
-- **Runnable guard** (`thresholds.check_validation_seeds`, at import): exactly 20 distinct seeds,
+- **Runnable guard** (`seed_manifest.load_manifest`, via `thresholds.validation_seeds`):
+  the manifest must equal its committed HEAD version, name the unique commit introducing
+  `docs/preregistration_004.md`, and match the unchanged C1 instrument and exact draw recipe.
+  `thresholds.check_validation_seeds` requires exactly 20 distinct seeds,
   all in `VIRGIN_BAND`, none in `EXPLORE_BAND = 7_000_000..7_000_999`, none among the burned
   Phase-A seeds `1, 2, 3, 4, 7, 99, 12345`. `validate.check_seed` refuses any virgin seed before
-  `STATUS == "FROZEN"`.
+  `STATUS == "FROZEN"` and a verified, committed C2 manifest. Nothing is drawn at import.
 - Burned and never reusable: the whole exploration band, the Phase-A seeds, and the prereg-001
   and prereg-002 seeds. Dry runs use only `DRY_RUN_SEEDS = 7_000_100..7_000_109`.
 
@@ -215,10 +223,13 @@ is reported as a FAIL, not repaired.
   bracket-valid seeds, sees them. `n_clean` is reported per level.
 - **Reported verbatim and separately, whatever the verdict:** per level, generator-invalid count
   and reasons, BH-abstain count, flat-escape count, bracket-valid and clean counts, coverage count
-  (not only the fraction), median and IQR width/2M, midpoint std, p_perm.
+  (not only the fraction), median and IQR width/2M, midpoint std, p_perm. These descriptive
+  aggregates are also reported when a level has fewer than 18 generator-valid seeds;
+  its status and the run verdict remain INCONCLUSIVE. Empty samples have zero counts and
+  NaN statistics (IQR is also NaN with one clean bracket), never a statistical PASS.
 - **Known weakness, stated in advance** (comité 052 §5 item 5; ASTRA risks): a narrow, reproducible
   but mislocated bracket can pass (ii)-width and (iii); only coverage catches it, and with floor
-  0.5 up to 9 of 20 non-covering seeds still PASS. The coverage floor 0.5 is a deliberately weak
+  0.5 up to 10 of 20 non-covering seeds still PASS. The coverage floor 0.5 is a deliberately weak
   floor, not nominal coverage, and is neither raised nor lowered.
 
 **Can-fail evidence (step 4):** `tests/test_004_criteria_can_fail.py` (18 tests) shows (ii) via
@@ -276,11 +287,11 @@ level giving INCONCLUSIVE; `dev/mutation_check_004.py` catches
   relaunched: it is reported as `ABORTED_GUARD_V` or `ABORTED_TAU_RANGE`, with the progress log
   and the traceback, and it is not a PASS.
 - **Entry point:** `python -m nachocausal2p1.validate` runs `validate.run()` with its defaults
-  (frozen seeds, `guard=True`, `write=True`) and prints the verdict and the result path. The
+  (seeds from the committed C2 manifest, `guard=True`, `write=True`) and prints the verdict and the result path. The
   validation label refuses `write=False` (O8 review, D3 and D4).
 - **Provenance launch file** `results/validation_004_provenance_launch.txt` records: start/end
   UTC; HEAD SHA and branch; both thresholds SHAs, the τ fixture SHA and the imported 1+1 module
-  SHAs (§3); `git diff <seal> -- nachocausal/ nachocausal2p1/ docs/preregistration_004.md` line
+  SHAs (§3); C1 SHA and C2 manifest SHA256; `git diff <C1-SHA> -- nachocausal/ nachocausal2p1/ docs/preregistration_004.md` line
   count (must be 0); `git status --porcelain` (must be empty); `uname -a`, `python -V`, full
   `pip freeze`; `NUMBA_NUM_THREADS`, OMP/MKL thread env, numba cache setting; `T_EDGE` as read by
   the generator at runtime; the 20 seeds and draw recipe; test pass count.
@@ -288,6 +299,15 @@ level giving INCONCLUSIVE; `dev/mutation_check_004.py` catches
   on this draft** → C1 freeze (`docs/preregistration_004.md` + `STATUS = "FROZEN"` + fixture,
   SHAs recorded, `make verify-seal` unchanged, tree clean, `make verify-comite` passing) → C2 blind
   draw → C3 single blind CPU run.
+- **C1/C2/C3 binding (auditor 045 E1):** C1 is the unique commit introducing the non-draft
+  `docs/preregistration_004.md`; it seals that document and the instrument, including the draw
+  recipe. After explicit C2 authorisation, on the pinned environment and a clean tree,
+  `python -m nachocausal2p1.seed_manifest <full-C1-SHA>` creates only
+  `docs/validation_004_seeds.json` (`freeze_commit`, `draw_seed`, `seeds`), refusing to overwrite
+  an existing manifest. Commit and publish that manifest without changing the C1 instrument.
+  C3 uses the published C2 commit as HEAD and the manifest's C1 commit as the reference for the
+  zero-diff check above. The C2 manifest is an administrative addition outside the sealed paths;
+  it cannot change any analysis parameter. No C1, C2 or C3 step is performed by this draft.
 
 **Audit trail:** `/auditor` on the candidate package: report 043 `AUDIT_FAIL` → fixes `c16fb12`
 → report 044 `AUDIT_PASS` (`docs/auditor/auditor_report_044_prereg004-2p1-remediation-reaudit.md`).
@@ -326,3 +346,10 @@ D7 and D8 (declared in §7, not changed). D12 is stated in §7.
   report 044. The delta needs a `/auditor` re-audit in a separate session (PI audit protocol:
   freeze and push first, then the auditor reads only the delta).
 - Step 7: reconvene `/comite` on this draft, and the PI signs the comité 052 verdict.
+
+**Auditor 045 remediation (2026-10-14; not a new audit verdict).** The PI authorised the
+proposed corrections after report 045 (`AUDIT_FAIL`, 2 errors and 2 warnings): E1 is addressed
+by the separate C2 manifest and explicit C1/C2/C3 references above; E2 by retaining descriptive
+aggregates for INCONCLUSIVE levels; W1 by limiting the SHA claim to reproducibility; W2 by
+correcting the coverage example to 10/20. The historical report 045 remains unchanged.
+The changed candidate must be re-audited in another session before step 7 and C1.

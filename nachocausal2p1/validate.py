@@ -84,7 +84,7 @@ def _iqr(x) -> float:
 # =============================================================================
 def check_seed(seed: int) -> None:
     """Runnable seed guard (comité 052:353; auditor report 043, finding 2). RAISES unless the seed
-    is in the 2+1 exploration band, or is one of the drawn VALIDATION_SEEDS after the freeze.
+    is in the 2+1 exploration band, or is in the committed C2 manifest after the freeze.
     Virgin-band seeds can therefore never be generated before C1/C2, and burned Phase-A seeds
     (outside the band) never at all."""
     s = int(seed)
@@ -92,7 +92,7 @@ def check_seed(seed: int) -> None:
         raise RuntimeError(f"seed {s} is a burned Phase-A seed.")
     if thresholds.EXPLORE_BAND[0] <= s <= thresholds.EXPLORE_BAND[1]:
         return
-    if thresholds.STATUS == "FROZEN" and s in thresholds.VALIDATION_SEEDS:
+    if thresholds.STATUS == "FROZEN" and s in thresholds.validation_seeds():
         return
     raise RuntimeError(f"seed {s} is outside the exploration band and not a frozen validation "
                        f"seed; virgin seeds {thresholds.VIRGIN_BAND} are reserved for C3.")
@@ -173,9 +173,6 @@ def summarise_level(rows: List[dict], rho: float) -> dict:
         "theta_stab": thresholds.theta_stab(rho),
         "slack_over_2M": thresholds.convergence_slack(rho),
     }
-    if len(ok) < thresholds.MIN_VALID_SEEDS:
-        res["status"] = "inconclusive"
-        return res
     res["p_perm"] = signflip_perm_p([r["d"] for r in ok])
     res["significant"] = bool(res["p_perm"] <= thresholds.P_PERM_THRESHOLD
                               and res["n_abstain_BH"] < thresholds.BH_ABSTAIN_FAIL)
@@ -194,7 +191,9 @@ def summarise_level(rows: List[dict], rho: float) -> dict:
     res["boundary_r_std"] = float(np.std(mids)) if mids.size else float("nan")
     res["stab_pass"] = bool(res["boundary_r_std"] <= res["theta_stab"])
     res["escape_pass"] = bool(res["n_escape_MINK"] <= thresholds.MAX_MINK_ESCAPES)
-    res["status"] = "scored"
+    # Report descriptive aggregates even when too few generator-valid seeds make the level
+    # INCONCLUSIVE. Empty samples retain NaN and zero counts; they cannot produce a PASS.
+    res["status"] = "scored" if len(ok) >= thresholds.MIN_VALID_SEEDS else "inconclusive"
     return res
 
 
@@ -263,21 +262,22 @@ def verdict_from_levels(levels: Dict[float, dict], *, guard_ran: bool) -> dict:
 def run(seeds=None, label: str = VALIDATION_LABEL, guard: bool = True, write: bool = True,
         t_edge: Optional[float] = None) -> dict:
     thresholds.assert_environment()
-    seeds = list(thresholds.VALIDATION_SEEDS if seeds is None else seeds)
+    validation_seeds = thresholds.validation_seeds()
+    seeds = list(validation_seeds if seeds is None else seeds)
     if not seeds:
-        raise RuntimeError("no seeds: VALIDATION_SEEDS are not drawn (step C2 of comité 052).")
+        raise RuntimeError("no seeds: the C2 manifest has not been drawn and committed.")
     for s in seeds:
         check_seed(s)
-    if label != VALIDATION_LABEL and set(seeds) & set(thresholds.VALIDATION_SEEDS):
+    if label != VALIDATION_LABEL and set(seeds) & set(validation_seeds):
         raise RuntimeError("validation seeds may only be run under the validation label.")
     if label == VALIDATION_LABEL:
         if not write:
             raise RuntimeError("the validation run must write its result (write=True).")
         if not guard:
             raise RuntimeError("the validation run requires Guard-v (guard=True).")
-        if thresholds.STATUS != "FROZEN" or tuple(seeds) != tuple(thresholds.VALIDATION_SEEDS):
+        if thresholds.STATUS != "FROZEN" or tuple(seeds) != tuple(validation_seeds):
             raise RuntimeError("the validation label is reserved for the single blind run on the "
-                               "frozen VALIDATION_SEEDS after C1/C2.")
+                               "committed C2 manifest seeds after C1/C2.")
         if os.path.exists(_result_path(label)):
             raise RuntimeError(f"{_result_path(label)} exists: the blind run is one-shot.")
         thresholds.assert_blind_threads()
