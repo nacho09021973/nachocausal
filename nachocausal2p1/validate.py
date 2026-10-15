@@ -23,7 +23,8 @@ Differences from 1+1 (all from comité 052 §8 and the PI decisions in §11):
     invalid seeds would reveal a FAIL of (i) or (iv) before the end (O8 review, D6);
   * any level with < MIN_VALID_SEEDS generator-valid seeds makes the verdict INCONCLUSIVE, not
     only the primary (O8 review, D2);
-  * every pass test is written as `x <= bound`, so a NaN fails it (O8 review, D1);
+  * every pass comparison is false on NaN (`<=`; `>=` for the coverage floor; `<` for the
+    integer abstention count), so a NaN never passes (O8 review, D1);
   * the validation label refuses write=False (O8 review, D3);
   * the validation label requires NUMBA_NUM_THREADS = 20 (thresholds.assert_blind_threads, O3).
 """
@@ -192,7 +193,9 @@ def summarise_level(rows: List[dict], rho: float) -> dict:
     res["stab_pass"] = bool(res["boundary_r_std"] <= res["theta_stab"])
     res["escape_pass"] = bool(res["n_escape_MINK"] <= thresholds.MAX_MINK_ESCAPES)
     # Report descriptive aggregates even when too few generator-valid seeds make the level
-    # INCONCLUSIVE. Empty samples retain NaN and zero counts; they cannot produce a PASS.
+    # INCONCLUSIVE. Empty samples retain NaN and zero counts. The run verdict is then
+    # INCONCLUSIVE; count-based fields such as escape_pass can still read True on zero seeds and
+    # are reported as not evaluable (draft §7).
     res["status"] = "scored" if len(ok) >= thresholds.MIN_VALID_SEEDS else "inconclusive"
     return res
 

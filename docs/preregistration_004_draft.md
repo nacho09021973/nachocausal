@@ -107,7 +107,7 @@ not edited.
 | `nachocausal2p1/gate.py` | `b688535636be2ac3a585fd34b5a2ed97481886452fac1be92de619f49124629c` |
 | `nachocausal2p1/generator.py` | `5324a924f7ef923984841199249e9a571626004efbdf85ca6dcd006c97e88b55` |
 | `nachocausal2p1/seed_manifest.py` | `299b4cc2ae02ee557e88d2210fc0ae658a6e24eb904ac73d09df555ac7d87255` |
-| `nachocausal2p1/validate.py` | `ad68e34b11fe758f8a28ed943ae91d9d43f85806038514e2fa8871b3aa19f4e6` |
+| `nachocausal2p1/validate.py` | `1dc539b6cd6d0b8711b80ca1a4da3abc79308807f7e1416a47ba5e136177749f` |
 | `nachocausal2p1/scoring/__init__.py` | `641c78ef485d75a2f175adda2de8623cd6b1b5ecd91255dfafacf81897cf0039` |
 | `nachocausal2p1/scoring/scorer.py` | `b9097beb20a3c7e3457f756a5d2cb469172ff9022fbf4bef83febd754265d144` |
 | `nachocausal/thresholds.py` (1+1 seal) | `6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4` |
@@ -484,5 +484,13 @@ reduction of (i) needs no flat escape; "bracket-valid" defined (§4); the explor
 burned only as validation seeds (§6); `ABORTED_*` are document labels; the provenance block is
 bash, exports `NUMBA_NUM_THREADS=20` first and ignores blank lockfile lines (§9).
 
-**Still open before C1:** `/auditor` on the delta since `782d031` (which now includes a change
-to `nachocausal2p1/seed_manifest.py`) in a separate session; the PI's signature and C1 decision.
+**Gemini audit of the delta `782d031..616c55d` (2026-10-15).** `AUDIT_PASS_WITH_WARNINGS`, 0 errors,
+2 warnings, without command execution (`revisiones/2026-10-15-prereg004-auditor-delta-gemini/`).
+W1 (§9 said O8 was the only cross-family content review) is fixed in the text. W2 (the
+`validate.py` docstring still said "every pass test is written as `x <= bound`", and a comment said
+empty samples "cannot produce a PASS" although `escape_pass` reads True on zero seeds) is fixed in
+the comments only, by PI decision: the parsed code is unchanged (AST equal ignoring docstrings),
+but the file's SHA changed (§3).
+
+**Still open before C1:** an audit of the comments-only delta `6f76d21..` on `validate.py` (and
+this text); the PI's signature of comités 052 and 053 and the C1 decision.
