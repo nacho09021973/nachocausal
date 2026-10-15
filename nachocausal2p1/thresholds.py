@@ -1,9 +1,8 @@
-"""prereg-004 CANDIDATE thresholds and protocol constants for the 2+1D equatorial bench.
+"""prereg-004 FROZEN thresholds and protocol constants for the 2+1D equatorial bench.
 
-STATUS: CANDIDATE — NOT FROZEN. This file becomes the prereg-004 seal only at step C1 of
-committee 052 (docs/comite/comite_decision_052_prereg004-2p1-design.md §9), committed together
-with docs/preregistration_004.md, after steps 3-7 are green and with explicit PI authorisation.
-Until then any value may change; after C1, a change is a new pre-registration.
+STATUS: FROZEN at C1, the unique commit introducing docs/preregistration_004.md (committee 052
+§9; comités 052 and 053 signed by the PI on 2026-10-15; C1 authorised by the PI on 2026-10-15).
+Any change after C1 is a new pre-registration.
 
 Every value carries its source. Sources:
   [PI-052]  PI decisions transcribed in comité 052 §11 (2026-10-13);
@@ -28,7 +27,7 @@ import math
 import os
 import sys
 
-STATUS = "CANDIDATE_NOT_FROZEN"
+STATUS = "FROZEN"
 
 # --- Pinned numeric environment (C052-1: hard-pin numba, llvmlite, scipy) -------------------
 # Versions of the sealed CPU .venv (requirements-lock.txt, Python 3.12.3).
