@@ -422,7 +422,7 @@ independent review (global rule 5). Reports 045 and 046 were produced by **Codex
 model family; 046 states that it does not certify that it ran in a separate session. Neither
 caught that the §7 text then contradicted the verdict precedence in the code (comité 053 §8
 item 1). Comité 053 (`docs/comite/comite_decision_053_prereg004-draft-readiness-c1.md`) is
-Claude. The only cross-family *content* review so far is Gemini O8 on `5afb33d` (§10). The 1+1 precedent is PASS with caveats `PRIMARY_ARTIFACT_LOST;
+Claude. Cross-family *content* reviews: Gemini O8 on `5afb33d` and Gemini on `007947e` (§10); the delta `782d031..616c55d` was audited by Gemini without command execution (`revisiones/2026-10-15-prereg004-auditor-delta-gemini/`, `AUDIT_PASS_WITH_WARNINGS`). The 1+1 precedent is PASS with caveats `PRIMARY_ARTIFACT_LOST;
 TRANSCRIPTION_REVERIFIED; BLINDNESS_DOCUMENTARY_ONLY` (`docs/preregistration_002_result.md:1`).
 
 ## 10. Open items O1-O8: resolution (2026-10-14)
