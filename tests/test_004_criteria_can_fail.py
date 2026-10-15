@@ -247,7 +247,8 @@ def test_iqr_above_theta_fails_ii_only():
     assert _failing(out) == ["ii_localisation_primary"]
 
 
-def test_nan_iqr_is_inconclusive_not_pass():
+def test_nan_iqr_fails_ii_not_pass():
+    # `loc_inconclusive` is a FAIL of (ii), never the run verdict INCONCLUSIVE (comité 053 §8 item 2).
     rows = _synthetic_rows(PRIM)
     for r in rows[1:]:
         r.update(clean=False)                       # one clean bracket: IQR is NaN
@@ -274,3 +275,32 @@ def test_non_primary_level_short_of_valid_seeds_is_inconclusive():
     lv[32.0] = validate.summarise_level(rows, 32.0)
     assert lv[32.0]["status"] == "inconclusive"
     assert validate.verdict_from_levels(lv, guard_ran=True)["verdict"] == "INCONCLUSIVE"
+
+
+def test_inconclusive_takes_precedence_over_a_fail_of_i():
+    # Comité 053 §8 items 1 and 8 (falsifier's minimal test): a short level makes the verdict
+    # INCONCLUSIVE before (i) is evaluated, even with >= 3 BH abstentions at the primary, and no
+    # per-clause `checks` are returned. Precedence: OUT_OF_DOMAIN > ABORTED_* > INCONCLUSIVE > PASS/FAIL.
+    rows = _synthetic_rows(PRIM)
+    for r in rows[:3]:
+        r.update(abstained_BH=True, d=0.0, valid=False, clean=False, covers=False)
+    lv = _levels(validate.summarise_level(rows, PRIM))
+    assert lv[PRIM]["n_abstain_BH"] == 3 and lv[PRIM]["significant"] is False
+    short = _synthetic_rows(32.0)
+    for r in short[:3]:
+        r.update(invalid=True)                      # 17 < 18 generator-valid seeds at rho=32
+    lv[32.0] = validate.summarise_level(short, 32.0)
+    out = validate.verdict_from_levels(lv, guard_ran=True)
+    assert out["verdict"] == "INCONCLUSIVE" and "checks" not in out
+
+
+def test_one_clean_bracket_passes_iii_but_fails_ii():
+    # Comité 053 §8 item 2: with one clean bracket the population std (ddof=0) is 0.0, not NaN,
+    # so (iii) passes on its own; the run still FAILs because the IQR is NaN and (ii) fails.
+    rows = _synthetic_rows(PRIM)
+    for r in rows[1:]:
+        r.update(clean=False)
+    prim = validate.summarise_level(rows, PRIM)
+    assert prim["n_clean"] == 1 and prim["boundary_r_std"] == 0.0 and prim["stab_pass"] is True
+    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
+    assert out["checks"]["ii_localisation_primary"] is False and out["verdict"] == "FAIL"

@@ -5,7 +5,7 @@
 
 PY ?= python
 
-.PHONY: test dry-run gate verify-seal verify-2p1 audit verify-comite verify-audit op21-bench op21-terminal
+.PHONY: test dry-run gate verify-seal verify-2p1 test-004 dry-run-004 verify-seal-004 audit verify-comite verify-audit op21-bench op21-terminal
 
 test:                ## bit-exact regression + leak + seed-invariant tests
 	$(PY) -m pytest -q tests/
@@ -20,6 +20,18 @@ print('thresholds.py sha256:', hashlib.sha256(p.read_bytes()).hexdigest())"
 verify-2p1:          ## SHA256 of the 2+1 CANDIDATE thresholds and tau fixture (not a seal yet)
 	@$(PY) -c "import hashlib,pathlib; [print(p, hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()) \
 for p in ('nachocausal2p1/thresholds.py','nachocausal2p1/fixtures/tau_table_2p1.json')]"
+
+# --- prereg-004 (2+1) pre-flight targets (comité 052 §9, comité 053 §8 item 6) ----------
+test-004:            ## the three prereg-004 test files (seed manifest, package, can-fail)
+	$(PY) -m pytest -q tests/test_004_seed_manifest.py tests/test_2p1_package.py tests/test_004_criteria_can_fail.py
+
+dry-run-004:         ## 2+1 MECHANICS-ONLY dry run: off-grid rho, burned seeds, no widths, not a result
+	$(PY) -m nachocausal2p1.dry_run
+
+verify-seal-004:     ## SHA256 of every file sealed at C1 for prereg-004 (2+1 package + imported 1+1 files)
+	@sha256sum nachocausal/thresholds.py nachocausal/__init__.py nachocausal/estimator.py \
+	  nachocausal/generator.py nachocausal2p1/*.py nachocausal2p1/scoring/*.py \
+	  nachocausal2p1/fixtures/tau_table_2p1.json
 
 gate:                ## re-run the Minz admissibility cross-check (needs Minz venv)
 	$(PY) -c "from nachocausal import generator as g; \

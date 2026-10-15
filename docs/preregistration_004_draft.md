@@ -4,10 +4,12 @@
 >
 > This file is the reversible draft of what `docs/preregistration_004.md` *would* register. It
 > freezes nothing, seals nothing, draws no seed and touches **no** seed of the virgin band
-> `8_000_000..8_999_999`. It is the input to step 7 of
-> `docs/comite/comite_decision_052_prereg004-2p1-design.md` §9 ("reconvene `/comite` on the
-> concrete prereg-004 draft"). Freezing is a separate committing step (C1, §9 below) that needs
-> steps 1-7 green and explicit PI authorisation; only then is the non-draft
+> `8_000_000..8_999_999`. It was the input to step 7 of
+> `docs/comite/comite_decision_052_prereg004-2p1-design.md` §9; that step is comité 053
+> (`docs/comite/comite_decision_053_prereg004-draft-readiness-c1.md`, `REVISE_AND_RECONVENE`),
+> and this revision applies its §8 changes (§10 below). Freezing is a separate committing step
+> (C1, §9 below) that needs the items still open in §10 closed and explicit PI authorisation;
+> only then is the non-draft
 > `docs/preregistration_004.md` created and `nachocausal2p1/thresholds.py` set to `FROZEN`.
 >
 > Sealed 1+1 instrument unchanged: `nachocausal/thresholds.py` SHA256 =
@@ -93,12 +95,21 @@ not edited.
   numba 0.66.0, llvmlite 0.48.0, scipy 1.17.1; CPU only (CuPy not loaded, `NC2P1_DEVICE` unset
   or `cpu`).
 
-**SHAs at drafting time** (to be re-taken and recorded at C1; `make verify-2p1`, `sha256sum`):
+**SHAs of the candidate on 2026-10-15** (`make verify-seal-004`; re-taken and recorded at C1):
 
 | File | SHA256 |
 |---|---|
-| `nachocausal2p1/thresholds.py` (candidate) | `e7a69934dff0219f4d3560e1f892eeb9ecf8accb5fa72996e1e0cf73f7e326eb` |
+| `nachocausal2p1/thresholds.py` (candidate; changes at C1) | `2bf954fb1164f94b42b2e34512aac1d10d5e76e77915b15c14a640bf7186908e` |
 | `nachocausal2p1/fixtures/tau_table_2p1.json` | `4bc4aec839257af7fed210030c0afa9041c265cacf43802bb735fb99df367a28` |
+| `nachocausal2p1/__init__.py` | `2c144e493dc3cc5b8e315892c4be4f591ee2e1dcfe04a05ea6698bb6cec2404a` |
+| `nachocausal2p1/dry_run.py` | `eb98e3339b9f208a6e4af8e40c6a4b139806accc7cc9762bea52039701211995` |
+| `nachocausal2p1/estimator.py` | `3a5010c403dd5083fcc2c4256c6e235ca092546d1e86dc83e3a980ecb4424ec4` |
+| `nachocausal2p1/gate.py` | `b688535636be2ac3a585fd34b5a2ed97481886452fac1be92de619f49124629c` |
+| `nachocausal2p1/generator.py` | `5324a924f7ef923984841199249e9a571626004efbdf85ca6dcd006c97e88b55` |
+| `nachocausal2p1/seed_manifest.py` | `e4047104d9683331e90e6826737dd77c6d0d187302b8bc6f6b7e7766e26aecf8` |
+| `nachocausal2p1/validate.py` | `ad68e34b11fe758f8a28ed943ae91d9d43f85806038514e2fa8871b3aa19f4e6` |
+| `nachocausal2p1/scoring/__init__.py` | `641c78ef485d75a2f175adda2de8623cd6b1b5ecd91255dfafacf81897cf0039` |
+| `nachocausal2p1/scoring/scorer.py` | `b9097beb20a3c7e3457f756a5d2cb469172ff9022fbf4bef83febd754265d144` |
 | `nachocausal/thresholds.py` (1+1 seal) | `6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4` |
 | `nachocausal/estimator.py` (imported) | `aa4411c3d095230e0f6dde78e4a8de11240c0cb42ad14353453848d70cdf1680` |
 | `nachocausal/generator.py` (imported, radial check) | `d6f09fdc21b76f6cf329c33580342a068135f7ece7ed11c304552f0848216f9f` |
@@ -184,25 +195,40 @@ compared with dev widths and will not be before the freeze. A low-ρ cell failin
 is reported as a FAIL, not repaired.
 
 **Criteria** (`nachocausal2p1/validate.py` `summarise_level`, `verdict_from_levels`). The run is
-**PASS iff all six hold**; otherwise FAIL, except for the two statuses below.
+**PASS iff (i)-(iv) hold**, with (v) as a precondition (below); otherwise FAIL, except for the
+statuses listed under "Verdict precedence".
 
 | Check | Definition |
 |---|---|
 | (i) significance | at every ρ ≥ 63: sign-flip `p_perm ≤ 1e-4` on `d = sep_BH − sep_MINK` over generator-valid seeds (exact for n ≤ 20; a BH abstention enters with sep = 0), **and** BH abstentions < 3 at that level |
-| (ii) localisation | at ρ\*: median clean width/2M ≤ θ_loc(ρ\*), **and** IQR of widths/2M ≤ θ_loc (else inconclusive ⇒ not passed), **and** coverage ≥ 0.5 over bracket-valid seeds |
+| (ii) localisation | at ρ\*: median clean width/2M ≤ θ_loc(ρ\*), **and** IQR of clean widths/2M ≤ θ_loc (a larger or NaN IQR fails (ii); the code field `loc_inconclusive` means this FAIL, not the run verdict INCONCLUSIVE), **and** coverage ≥ 0.5 over bracket-valid seeds |
 | (ii) convergence F | for consecutive grid levels: `m(ρ_{k+1}) ≤ m(ρ_k) + slack(ρ_k)`, m = median clean width/2M; a NaN median (no clean bracket at a level) fails it |
-| (iii) stability | at ρ\*: std of clean bracket midpoints ≤ θ_stab(ρ\*) |
+| (iii) stability | at ρ\*: population std (ddof = 0) of clean bracket midpoints ≤ θ_stab(ρ\*) |
 | (iv) flat escapes | at ρ\*: flat-control non-abstentions ≤ 1 of the generator-valid seeds |
-| (v) order-only | Guard-v ran on every causet (`guard=True`) |
+| (v) order-only | precondition, not a criterion that can be false in the validation run: the validation label refuses `guard=False` and a Guard-v failure raises (`ABORTED_GUARD_V`, §9). It is not counted as a passed criterion |
 
-- **INCONCLUSIVE** iff **any** level of the grid has < 18 generator-valid seeds (PI decision of
-  2026-10-14 after the O8 review, D2; before, only the primary level counted and a short
-  secondary level gave FAIL). It is reserved for generator-invalid seeds; ≥ 3 BH abstentions is
-  a **FAIL** of (i), never INCONCLUSIVE (PI decision, comité 052 §11).
-- **Every pass test is written as `x ≤ bound`**, so a NaN (empty or one-element sample) never
-  passes it (O8 review, D1).
-- **OUT_OF_DOMAIN** iff `T < T_EDGE_MIN = 10`. At the frozen T = 16 this gate cannot fire and is
-  **not** counted as a safeguard (comité 052 §5 "Verdict coercion").
+- **Verdict precedence** (as coded, `validate.py` `run` and `verdict_from_levels`):
+  `OUT_OF_DOMAIN` > `ABORTED_GUARD_V` / `ABORTED_TAU_RANGE` (§9) > `INCONCLUSIVE` > `PASS`/`FAIL`.
+  - **OUT_OF_DOMAIN** iff `T < T_EDGE_MIN = 10`. At the frozen T = 16 this gate cannot fire and
+    is **not** counted as a safeguard (comité 052 §5 "Verdict coercion").
+  - **INCONCLUSIVE** iff **any** level of the grid has < 18 generator-valid seeds (PI decision of
+    2026-10-14 after the O8 review, D2; before, only the primary level counted and a short
+    secondary level gave FAIL). It is evaluated **before** (i)-(iv), and the verdict then carries
+    no per-clause `checks`; so it takes precedence over any FAIL, including a FAIL of (i) at
+    ρ = 126 when ρ = 32 is short (`tests/test_004_criteria_can_fail.py`
+    `test_inconclusive_takes_precedence_over_a_fail_of_i`).
+  - **BH abstentions never cause INCONCLUSIVE**: when every level has ≥ 18 generator-valid seeds,
+    ≥ 3 BH abstentions at a required level is a **FAIL** of (i) (PI decision, comité 052 §11).
+  - **Under INCONCLUSIVE**, the result document also reports, from the recorded level
+    aggregates, the value each clause (i)-(iv) would have taken, labelled **non-verdict**, so that
+    a failure masked by INCONCLUSIVE is visible. These values never turn INCONCLUSIVE into a PASS
+    or a FAIL (comité 053 §8 item 1).
+- **NaN never passes** (O8 review, D1): every pass comparison is false on NaN (`≤` for (ii),
+  F, (iii), (iv); `≥` for the coverage floor; `<` for the abstention count, which is an integer).
+  A level with no clean bracket has NaN median, IQR and midpoint std. With exactly **one** clean
+  bracket the median is defined, the IQR is NaN and the midpoint std is **0.0**, not NaN: (iii)
+  then passes on its own, but (ii) fails through the IQR, so the run cannot PASS
+  (`test_one_clean_bracket_passes_iii_but_fails_ii`).
 - **(i) and (iv) are gate-derived.** With the flat control abstaining, `d ≥ 0` on every seed and
   the exact sign-flip test gives `p = 2^-m`, with m the number of seeds where the BH passes the
   gate, whatever the size of `sep_BH`. So (i) reduces to "fewer than 3 BH seeds abstained" at
@@ -231,12 +257,30 @@ is reported as a FAIL, not repaired.
   but mislocated bracket can pass (ii)-width and (iii); only coverage catches it, and with floor
   0.5 up to 10 of 20 non-covering seeds still PASS. The coverage floor 0.5 is a deliberately weak
   floor, not nominal coverage, and is neither raised nor lowered.
+- **Low power of (ii)-width and IQR, stated in advance** (comité 053 §8 item 7). This follows
+  from theory only: the ASTRA neighbour model (`revisiones/2026-10-13-anclaje-theta-ciego/astra.md`
+  l.33-46) and the frozen formula. No dev JSONL and no dev width was consulted to write it.
+  For a classifier that splits the minimal elements exactly at r = 2M, the bracket is the gap
+  between the nearest minimal elements on either side in radial projection. With radial
+  intensity `λ_r(2M) = c₃ρ^{2/3}·2π(2M)√2`, `c₃ = Γ(4/3)(3/π)^{1/3} ≈ 0.879`, each side is
+  Exp(δ) with `δ = 1/λ_r(2M) ≈ 0.256 ρ^{-2/3}`, and the width is Gamma(2, δ). The bound
+  `θ_loc·2M = 2ρ^{-2/3}/(1.4π) ≈ 0.455 ρ^{-2/3} ≈ 1.78 δ`. Then P(one width ≤ bound) =
+  `1 − e^{-1.78}·2.78 ≈ 0.53`; the median width is `1.678 δ ≈ 0.94` of the bound; the IQR is
+  `1.73 δ ≈ 0.97` of the bound. So even an ideal order-only localiser passes the width and IQR
+  clauses at ρ\* only about half the time `[UNVERIFIED — closed-form arithmetic in a flat-local
+  approximation, ρ^{-1/3} ≈ 0.2 not ≪ 2M; no simulation]`. This is a property of the test, fixed
+  before any validation data. **A FAIL is reported as FAIL**, with no qualifier added after the
+  result. **No result of this run may be used to re-derive, rescale or loosen θ_loc, θ_stab or
+  K_LOC**, here or in any successor pre-registration.
 
-**Can-fail evidence (step 4):** `tests/test_004_criteria_can_fail.py` (18 tests) shows (ii) via
+**Can-fail evidence (step 4):** `tests/test_004_criteria_can_fail.py` (20 tests) shows (ii) via
 coverage, (ii) via width, (iv) and (v) can each produce FAIL; since the O8 review (D9) it also
 shows, each failing alone, (i) by 3 BH abstentions at ρ = 63, the convergence clause F, (iii),
 the IQR clause of (ii), a NaN median failing F, a NaN IQR never passing, and a short secondary
-level giving INCONCLUSIVE; `dev/mutation_check_004.py` catches
+level giving INCONCLUSIVE; since comité 053 it also fixes the verdict precedence (a short level
+gives INCONCLUSIVE with no `checks` even with 3 BH abstentions at ρ\*) and the one-clean-bracket
+case. (v) is shown false only outside the validation label, where it is a precondition (§7).
+`dev/mutation_check_004.py` catches
 5/5 mutations (`dev/PREREG004_STEP_4_2026-10-13.md`).
 
 ## 8. Pre-flight (step 5) and expected runtime
@@ -274,13 +318,23 @@ level giving INCONCLUSIVE; `dev/mutation_check_004.py` catches
 - **Crash rule:** a crash is relaunched on the **same** seeds, environment and commit, **only if
   no scoring output was produced**, and the relaunch is logged with timestamps. The progress log
   below records each launch (a `start` line with its time) and carries no scoring field.
-- **Writing:** `results/validation_004.json` is written atomically and committed immediately with
-  its SHA (lesson of prereg-002 `PRIMARY_ARTIFACT_LOST`, `docs/preregistration_002_result.md`).
+- **Writing:** `results/validation_004.json` is written atomically. `results/` is git-ignored
+  (`.gitignore:21`), which keeps the tree clean during the run (the seed guard re-checks
+  `git status --porcelain`), so a plain `git add` records nothing. Immediately after the run
+  ends, crashes or aborts, the four run files are **force-added** by name in one commit:
+  `git add -f results/validation_004.json results/validation_004.progress.jsonl
+  results/validation_004_provenance_launch.txt results/validation_004_run.log` (only the files
+  that exist), with their `sha256sum` lines written into `docs/preregistration_004_result.md`
+  in the same commit, and the commit is pushed (lesson of prereg-002 `PRIMARY_ARTIFACT_LOST`,
+  `docs/preregistration_002_result.md`; comité 053 §8 item 4).
+- **Run log:** the run's stdout and stderr go to `results/validation_004_run.log`, so the
+  verdict line, or the traceback of an abort, is kept.
 - **Progress log** (O4, §10): `results/validation_004.progress.jsonl`, one fsynced line per seed
   and level with only `seed, rho, seconds` (`validate.PROGRESS_FIELDS`), appended as the run
   goes. It says nothing about the outcome: abstentions and invalid seeds would reveal a FAIL of
-  (i) or (iv) hours before the end (O8 review, D6). It is committed together with the result, or
-  alone after a crash.
+  (i) or (iv) hours before the end (O8 review, D6). It is force-added with the result, or alone
+  after a crash (Writing, above). Its `start` line uses local time with offset; the provenance
+  file records UTC.
 - **Deterministic aborts are not crashes** (O8 review, D11). A Guard-v failure or a seed with
   `n_minimal > 256` (outside the τ table) raises and stops the run without a result. Rerunning
   the same seeds, environment and commit would stop in the same place, so such an abort is not
@@ -289,16 +343,41 @@ level giving INCONCLUSIVE; `dev/mutation_check_004.py` catches
 - **Entry point:** `python -m nachocausal2p1.validate` runs `validate.run()` with its defaults
   (seeds from the committed C2 manifest, `guard=True`, `write=True`) and prints the verdict and the result path. The
   validation label refuses `write=False` (O8 review, D3 and D4).
-- **Provenance launch file** `results/validation_004_provenance_launch.txt` records: start/end
-  UTC; HEAD SHA and branch; both thresholds SHAs, the τ fixture SHA and the imported 1+1 module
-  SHAs (§3); C1 SHA and C2 manifest SHA256; `git diff <C1-SHA> -- nachocausal/ nachocausal2p1/ docs/preregistration_004.md` line
-  count (must be 0); `git status --porcelain` (must be empty); `uname -a`, `python -V`, full
-  `pip freeze`; `NUMBA_NUM_THREADS`, OMP/MKL thread env, numba cache setting; `T_EDGE` as read by
-  the generator at runtime; the 20 seeds and draw recipe; test pass count.
-- **Sequence:** comité 052 §9 steps 1-6 (done, §5-§8 above; step 5 partial) → **step 7: `/comite`
-  on this draft** → C1 freeze (`docs/preregistration_004.md` + `STATUS = "FROZEN"` + fixture,
-  SHAs recorded, `make verify-seal` unchanged, tree clean, `make verify-comite` passing) → C2 blind
-  draw → C3 single blind CPU run.
+- **Provenance launch file** `results/validation_004_provenance_launch.txt`. No code writes it;
+  it is produced by these commands, run in order from the repo root on the C2 commit, with
+  `PY=/home/ignac/nachocausal/.venv/bin/python` and `C1=<full C1 SHA>` (comité 053 §8 item 6):
+
+  ```sh
+  F=results/validation_004_provenance_launch.txt; mkdir -p results
+  { echo "start_utc $(date -u +%FT%TZ)"
+    echo "head $(git rev-parse HEAD) branch $(git rev-parse --abbrev-ref HEAD) c1 $C1"
+    make verify-seal-004
+    sha256sum docs/preregistration_004.md docs/validation_004_seeds.json
+    echo "sealed_diff_lines $(git diff $C1 -- nachocausal/ nachocausal2p1/ docs/preregistration_004.md | wc -l)"   # must be 0
+    echo "status_porcelain_lines $(git status --porcelain | wc -l)"                                          # must be 0
+    uname -a; lscpu | grep -E 'Model name|^CPU\(s\)|Thread'; $PY -V
+    $PY -m pip freeze > /tmp/pf.txt; cat /tmp/pf.txt
+    echo "pip_freeze_vs_lock_diff_lines $(diff <(sort /tmp/pf.txt) <(grep -v '^#' requirements-lock.txt | sort) | wc -l)"
+    env | grep -E '^(NUMBA_|OMP_|MKL_|OPENBLAS_|NC2P1_)' | sort
+    $PY -c "from nachocausal2p1 import thresholds as t; print('T_EDGE', t.T_EDGE, 'STATUS', t.STATUS); print('seeds', t.validation_seeds())"
+    make test-004 PY=$PY 2>&1 | tail -1
+  } > $F 2>&1
+  ```
+
+  The run itself is launched as
+  `NUMBA_NUM_THREADS=20 nohup $PY -m nachocausal2p1.validate > results/validation_004_run.log 2>&1`,
+  with the host kept awake; on exit, `echo "end_utc $(date -u +%FT%TZ)" >> $F`. Bit-reproducibility
+  is claimed only for 20 numba threads on the measured host (§8); a run elsewhere is unverified.
+- **Pre-flight commands** (no virgin seed): `make test-004`, `make dry-run-004` (mechanics only:
+  off-grid ρ = 2, burned seeds `7_000_100..7_000_102`, no widths; exit 0 on 2026-10-15),
+  `make verify-seal`, `make verify-seal-004`, `make verify-comite`, and the global `make test`.
+  A full-grid dry run on `DRY_RUN_SEEDS` after C1 (anticipated by comité 052) is **not** part of
+  the plan: the port was already run at ρ = 126, T = 16 on seed `7_000_100` (§8), and a full grid
+  would cost about 2 h for a result that is discarded.
+- **Sequence:** comité 052 §9 steps 1-6 (done, §5-§8 above; step 5 partial) → step 7: comité 053
+  (`RECOMMEND_REVISE_AND_RECONVENE`; wording and procedure only) → this revision → cross-family
+  review of §7/§9 against `validate.py` and `/auditor` on the delta → C1 freeze → C2 blind draw →
+  C3 single blind CPU run.
 - **C1/C2/C3 binding (auditor 045 E1):** C1 is the unique commit introducing the non-draft
   `docs/preregistration_004.md`; it seals that document and the instrument, including the draw
   recipe. After explicit C2 authorisation, on the pinned environment and a clean tree,
@@ -308,11 +387,28 @@ level giving INCONCLUSIVE; `dev/mutation_check_004.py` catches
   C3 uses the published C2 commit as HEAD and the manifest's C1 commit as the reference for the
   zero-diff check above. The C2 manifest is an administrative addition outside the sealed paths;
   it cannot change any analysis parameter. No C1, C2 or C3 step is performed by this draft.
+- **C1 procedure** (comité 053 §8 item 5; `seed_manifest.py:40-42` finds C1 with
+  `git log --diff-filter=A`):
+  - C1 **adds** `docs/preregistration_004.md` as a new file and keeps this draft; never `git mv`
+    the draft, since a rename is not an addition and C2 would then refuse.
+  - C1 also sets `STATUS = "FROZEN"` in `nachocausal2p1/thresholds.py`. Before committing:
+    `make verify-seal` unchanged, `make verify-comite` passing, tree clean.
+  - C1 is **pushed**, and its full SHA is written into a signed, pushed note (the sign-off of
+    the comité that clears C1) **before** C2 is run.
+  - C1, C2 and C3 are committed on `prereg004/step3-port` and are never amended, rebased or
+    squashed. The branch is merged only by fast-forward or by a merge commit, which keep the C1
+    SHA. A re-made C1 would give a new draw seed; that is forbidden.
 
 **Audit trail:** `/auditor` on the candidate package: report 043 `AUDIT_FAIL` → fixes `c16fb12`
-→ report 044 `AUDIT_PASS` (`docs/auditor/auditor_report_044_prereg004-2p1-remediation-reaudit.md`).
-The auditor is the same model family that wrote the code and is **not** an independent review
-(global rule 5). The 1+1 precedent is PASS with caveats `PRIMARY_ARTIFACT_LOST;
+→ report 044 `AUDIT_PASS` → O3/O4/O8 changes (`5afb33d`, `4190a10`) → report 045 `AUDIT_FAIL`
+(E1, E2, W1, W2) → remediation `782d031` → report 046 `AUDIT_PASS`
+(`docs/auditor/auditor_report_046_prereg004-auditor045-remediation-reaudit.md`). Reports 043 and
+044 do not name their producer; this draft treats them as the author's model family, so not an
+independent review (global rule 5). Reports 045 and 046 were produced by **Codex**, a different
+model family; 046 states that it does not certify that it ran in a separate session. Neither
+caught that the §7 text then contradicted the verdict precedence in the code (comité 053 §8
+item 1). Comité 053 (`docs/comite/comite_decision_053_prereg004-draft-readiness-c1.md`) is
+Claude. The only cross-family *content* review so far is Gemini O8 on `5afb33d` (§10). The 1+1 precedent is PASS with caveats `PRIMARY_ARTIFACT_LOST;
 TRANSCRIPTION_REVERIFIED; BLINDNESS_DOCUMENTARY_ONLY` (`docs/preregistration_002_result.md:1`).
 
 ## 10. Open items O1-O8: resolution (2026-10-14)
@@ -340,16 +436,25 @@ can-fail tests), D10 (§7 wording), D11 (deterministic aborts written down). PI 
 (any short level ⇒ INCONCLUSIVE), D5 (draw seed from the C1 commit), D6 (progress log reduced),
 D7 and D8 (declared in §7, not changed). D12 is stated in §7.
 
-**Consequences still open before C1:**
-
-- The O3/O4 and O8 changes touch `nachocausal2p1/validate.py` and `thresholds.py` after auditor
-  report 044. The delta needs a `/auditor` re-audit in a separate session (PI audit protocol:
-  freeze and push first, then the auditor reads only the delta).
-- Step 7: reconvene `/comite` on this draft, and the PI signs the comité 052 verdict.
+**Consequences of the O8 changes (closed).** The re-audit of the O3/O4/O8 delta was done:
+report 045 `AUDIT_FAIL`, remediation `782d031`, report 046 `AUDIT_PASS` (§9 audit trail).
+Step 7 was comité 053 (2026-10-15).
 
 **Auditor 045 remediation (2026-10-14; not a new audit verdict).** The PI authorised the
 proposed corrections after report 045 (`AUDIT_FAIL`, 2 errors and 2 warnings): E1 is addressed
 by the separate C2 manifest and explicit C1/C2/C3 references above; E2 by retaining descriptive
 aggregates for INCONCLUSIVE levels; W1 by limiting the SHA claim to reproducibility; W2 by
 correcting the coverage example to 10/20. The historical report 045 remains unchanged.
-The changed candidate must be re-audited in another session before step 7 and C1.
+The changed candidate was re-audited in report 046 (`AUDIT_PASS`).
+
+**Comité 053 revision (2026-10-15; wording, procedure and tests only).** The PI chose to apply
+the eight changes of comité 053 §8 and to add a cross-family review. Changed: verdict precedence
+and non-verdict clause values under INCONCLUSIVE (§7); the NaN and one-clean-bracket statements,
+the IQR wording, (iii) ddof, (v) as a precondition (§7); the power disclosure for (ii) (§7); the
+SHA table (§3); force-adding the run files, the run log and the provenance commands (§9); the C1
+procedure (§9); the audit trail (§9); two tests in `tests/test_004_criteria_can_fail.py`; the
+`make test-004`, `dry-run-004` and `verify-seal-004` targets. Nothing under `nachocausal/` or
+`nachocausal2p1/` changed; no θ, T, ρ, K, seed or criterion changed.
+
+**Still open before C1:** the cross-family review of §7/§9 against `validate.py` and its
+evaluation; `/auditor` on this delta in a separate session; the PI's signature and C1 decision.
