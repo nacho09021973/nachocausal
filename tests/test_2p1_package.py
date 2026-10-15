@@ -181,7 +181,8 @@ def test_empty_inconclusive_reports_zero_counts_and_nan_statistics():
     assert not out["loc_pass"] and not out["stab_pass"] and not out["significant"]
 
 
-def test_validation_label_refuses_before_freeze():
+def test_validation_label_refuses_before_freeze(monkeypatch):
+    monkeypatch.setattr(thresholds, "STATUS", "CANDIDATE_NOT_FROZEN")   # pre-C1 behaviour
     with pytest.raises(RuntimeError):
         validate.run(seeds=list(thresholds.DRY_RUN_SEEDS), label=validate.VALIDATION_LABEL,
                      write=False)
@@ -212,6 +213,7 @@ def _no_generation(*a, **k):
 
 
 def test_seed_guard_can_fail(monkeypatch):
+    monkeypatch.setattr(thresholds, "STATUS", "CANDIDATE_NOT_FROZEN")   # pre-C1 behaviour
     validate.check_seed(thresholds.DRY_RUN_SEEDS[0])
     for bad in (8_000_001, 12345, 6_999_999, 7_001_000):
         with pytest.raises(RuntimeError):
@@ -226,6 +228,7 @@ def test_seed_guard_can_fail(monkeypatch):
 
 
 def test_run_refuses_bad_seeds_before_generation(monkeypatch):
+    monkeypatch.setattr(thresholds, "STATUS", "CANDIDATE_NOT_FROZEN")   # pre-C1 behaviour
     monkeypatch.setattr(validate, "generate", _no_generation)
     with pytest.raises(RuntimeError, match="virgin"):
         validate.run(seeds=[8_000_001], label="probe", write=False)
@@ -313,6 +316,7 @@ def test_progress_line_is_blind():
 
 
 def test_progress_log_written_per_seed_before_the_verdict(monkeypatch, tmp_path):
+    monkeypatch.setattr(thresholds, "STATUS", "CANDIDATE_NOT_FROZEN")   # no C2 manifest needed
     monkeypatch.setattr(validate, "RESULTS_DIR", str(tmp_path))
     calls = []
 
@@ -345,7 +349,8 @@ def test_validation_run_refuses_write_false(monkeypatch, tmp_path):
         validate.run(seeds=None, label=validate.VALIDATION_LABEL, write=False)
 
 
-def test_draw_seed_is_not_fixed_before_c1():
+def test_draw_seed_is_not_fixed_before_c1(monkeypatch):
+    monkeypatch.setattr(thresholds, "STATUS", "CANDIDATE_NOT_FROZEN")
     assert thresholds.validation_seeds() == ()
 
 
