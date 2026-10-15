@@ -1,0 +1,1374 @@
+diff --git a/Makefile b/Makefile
+index 57fec98..61a597e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -5,7 +5,7 @@
+ 
+ PY ?= python
+ 
+-.PHONY: test dry-run gate verify-seal verify-2p1 audit verify-comite verify-audit op21-bench op21-terminal
++.PHONY: test dry-run gate verify-seal verify-2p1 test-004 dry-run-004 verify-seal-004 audit verify-comite verify-audit op21-bench op21-terminal
+ 
+ test:                ## bit-exact regression + leak + seed-invariant tests
+ 	$(PY) -m pytest -q tests/
+@@ -21,6 +21,18 @@ verify-2p1:          ## SHA256 of the 2+1 CANDIDATE thresholds and tau fixture (
+ 	@$(PY) -c "import hashlib,pathlib; [print(p, hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()) \
+ for p in ('nachocausal2p1/thresholds.py','nachocausal2p1/fixtures/tau_table_2p1.json')]"
+ 
++# --- prereg-004 (2+1) pre-flight targets (comité 052 §9, comité 053 §8 item 6) ----------
++test-004:            ## the three prereg-004 test files (seed manifest, package, can-fail)
++	$(PY) -m pytest -q tests/test_004_seed_manifest.py tests/test_2p1_package.py tests/test_004_criteria_can_fail.py
++
++dry-run-004:         ## 2+1 MECHANICS-ONLY dry run: off-grid rho, burned seeds, no widths, not a result
++	$(PY) -m nachocausal2p1.dry_run
++
++verify-seal-004:     ## SHA256 of every file sealed at C1 for prereg-004 (2+1 package + imported 1+1 files)
++	@sha256sum nachocausal/thresholds.py nachocausal/__init__.py nachocausal/estimator.py \
++	  nachocausal/generator.py nachocausal2p1/*.py nachocausal2p1/scoring/*.py \
++	  nachocausal2p1/fixtures/tau_table_2p1.json
++
+ gate:                ## re-run the Minz admissibility cross-check (needs Minz venv)
+ 	$(PY) -c "from nachocausal import generator as g; \
+ print('BH gate N=', g.gate('BH')); print('MINK gate N=', g.gate('MINK')); \
+diff --git a/docs/auditor/auditor_report_046_prereg004-auditor045-remediation-reaudit.md b/docs/auditor/auditor_report_046_prereg004-auditor045-remediation-reaudit.md
+new file mode 100644
+index 0000000..1d2b7c9
+--- /dev/null
++++ b/docs/auditor/auditor_report_046_prereg004-auditor045-remediation-reaudit.md
+@@ -0,0 +1,106 @@
++# Auditor Report 046 — prereg004-auditor045-remediation-reaudit
++
++> Producido por Codex aplicando `.claude/skills/auditor/SKILL.md`, el 2026-10-14.
++> Auditoría retrospectiva del delta publicado. Se informa; no se remedia.
++
++## 1. Scope & target
++
++- Repo: `/home/ignac/nachocausal/.worktrees/prereg004-step3`.
++- Rama: `prereg004/step3-port`.
++- Base: `3cc152a`; HEAD: `782d031f05f000ce193c75522d7820388944ebc3`.
++- Alcance: `3cc152a..782d031`, correcciones E1/E2/W1/W2 del informe 045, nuevo productor/lector de manifiesto, integración, tests y textos. No se reaudita el historial científico ajeno al delta.
++- Petición del PI: «comenzamos con la proxima sesion». Este turno audita el candidato publicado sin modificar su implementación. La continuidad de conversación no acredita por sí sola una sesión técnica distinta; este informe no certifica ese hecho de procedencia.
++- Estado inicial: `git status --short` vacío. `git ls-remote origin refs/heads/prereg004/step3-port` devuelve el SHA completo de HEAD, exit 0.
++- La única escritura permanente de esta auditoría es este informe. No se ejecutaron C1/C2/C3, sorteos reales, preflight ni validación; tampoco commit/push o envíos a terceros.
++- La biblioteca está en el repo principal, no en este worktree; se consultó su índice para orientar el alcance. No se usan sus etiquetas ni textos de modelos como evidencia de las correcciones.
++
++## 2. Mechanical audit
++
++Comando: `bash .claude/skills/auditor/audit.sh`. Salida literal:
++
++```text
++Auditor — auditing: /home/ignac/nachocausal/.worktrees/prereg004-step3
++----------------------------------------
++ok:   seal nachocausal/thresholds.py SHA256 6e2c3888… is recorded in: docs/PR9_INTEGRATION_2026-10-02.md,docs/archive/relatividad_875d2c3/manuscript_limits_draft.md,docs/auditor/auditor_report_001_pr003-c1-freeze-foundation.md,docs/auditor/auditor_report_002_pr003-c1-revised-draft.md,docs/auditor/auditor_report_003_bibliography-claims-vs-biblioteca.md,docs/auditor/auditor_report_004_bibliography-followup-verification.md,docs/auditor/auditor_report_005_prereg002-pass-raw-artifact-integrity.md,docs/auditor/auditor_report_006_rvar-mu-freeze-addendum-preflight.md,docs/auditor/auditor_report_007_pr011-viability-freeze-text.md,docs/auditor/auditor_report_008_pr011-g2b-pre-execution-epsilon.md,docs/auditor/auditor_report_009_pr011-tier1-hellinger-certification.md,docs/auditor/auditor_report_010_pr011-ladder-closure-n6-n8.md,docs/auditor/auditor_report_011_pr011-terminal-semantics.md,docs/auditor/auditor_report_012_pr012-draft-scope-preflight.md,docs/auditor/auditor_report_013_op01-survival-matrix.md,docs/auditor/auditor_report_014_op02-claim-grammar.md,docs/auditor/auditor_report_015_phase1-theory-package.md,docs/auditor/auditor_report_016_phase1-provenance-reaudit.md,docs/auditor/auditor_report_017_op21-terminal-run.md,docs/auditor/auditor_report_018_op21-terminal-second-pass.md,docs/auditor/auditor_report_019_op22-bd-dossier-rev2-viability-audit.md,docs/auditor/auditor_report_020_op22-bd-dossier-rev3-fix-verification.md,docs/auditor/auditor_report_021_truncated-futures-freeze-preflight.md,docs/auditor/auditor_report_022_freeze-commit-scoped-audit.md,docs/auditor/auditor_report_023_ficha-tv-order-only-precommit.md,docs/auditor/auditor_report_024_wp4-annex-c-comparable-pair-separation-precommit.md,docs/auditor/auditor_report_025_wp4-annex-c-remediation-reaudit.md,docs/auditor/auditor_report_026_wp4-annex-c-variance-addendum-precommit.md,docs/auditor/auditor_report_027_wp4-ibar-interval-design-precommit.md,docs/auditor/auditor_report_028_wp4-ibar-executable-contract-precommit.md,docs/auditor/auditor_report_031_p1a-seccion-13-certificado-familia-prescrita.md,docs/auditor/auditor_report_032_emergencia-viz-figuras-del-fracaso.md,docs/auditor/auditor_report_033_emergencia-viz-remediacion-032-reauditoria.md,docs/auditor/auditor_report_034_emergencia-viz-cierre-avisos-033.md,docs/auditor/auditor_report_035_viz-figuras-generales-6-agosto.md,docs/auditor/auditor_report_036_viz-cierre-e1-y-avisos-035.md,docs/auditor/auditor_report_037_wp6-s1-paper-and-lean-evidence.md,docs/auditor/auditor_report_038_w16-closure-verification.md,docs/auditor/auditor_report_039_wp6-s1-manuscript-v1-post-referee.md,docs/auditor/auditor_report_040_provenance-remediation-closure.md,docs/auditor/auditor_report_041_provenance-reachability-final-closure.md,docs/auditor/auditor_report_042_wp6-s1-fisher-fiber-event-and-referee-closure.md,docs/auditor/auditor_report_043_prereg004-2p1-candidate-package.md,docs/auditor/auditor_report_044_prereg004-2p1-remediation-reaudit.md,docs/auditor/auditor_report_045_prereg004-post-044-delta.md,docs/comite/comite_decision_001_pr003-bare-relocalisation-next-step.md,docs/comite/comite_decision_002_pr003-extended-horizon-ideas-and-density-robustness.md,docs/comite/comite_decision_003_pr003-silver-bullet-synthesis.md,docs/comite/comite_decision_004_pr003-c1-freeze-readiness.md,docs/comite/comite_decision_005_pr003-intrinsic-observable-identifiability.md,docs/comite/comite_decision_006_pr003-relational-horizon-candidate-adjudication.md,docs/comite/comite_decision_007_pr003-bl-localization-lemma-l1-regrade.md,docs/comite/comite_decision_009_c1-relational-closure-preflight.md,docs/comite/comite_decision_010_c1-completion-truncation-nonidentifiability.md,docs/comite/comite_decision_011_patch-ensemble-architecture.md,docs/comite/comite_decision_015_r-var-selector-adjudication.md,docs/comite/comite_decision_016_prereg002-supervised-reverification.md,docs/comite/comite_decision_017_r-var-v2-reconvene.md,docs/comite/comite_decision_018_rvar-mu-empty-family-object-choice.md,docs/comite/comite_decision_019_rvar-partF-execution-feasibility.md,docs/comite/comite_decision_020_rvar-partF-degeneracy-disposition.md,docs/comite/comite_decision_021_rvar-egs-truncation-object.md,docs/comite/comite_decision_022_pr011-viability-freeze-readiness.md,docs/comite/comite_decision_023_pr012-scope-adjudication.md,docs/comite/comite_decision_024_op02-claim-grammar-adoption.md,docs/comite/comite_decision_025_op02-claim-grammar-reconvene.md,docs/comite/comite_decision_026_op02-claim-grammar-final-adoption.md,docs/comite/comite_decision_027_phase1-theory-package-first-review.md,docs/comite/comite_decision_028_phase1-theory-package-second-review.md,docs/comite/comite_decision_029_phase1-theory-package-third-review.md,docs/comite/comite_decision_030_phase1-theory-package-fourth-review.md,docs/comite/comite_decision_031_phase1-theory-package-audit-gate.md,docs/comite/comite_decision_032_phase1-theory-closure-handoff.md,docs/comite/comite_decision_033_phase1-theory-ready-final-handoff.md,docs/comite/comite_decision_034_op21-certifier-opening.md,docs/comite/comite_decision_035_op22-witness-candidate-adjudication.md,docs/comite/comite_decision_036_pr009-pr010-sequencing-adjudication.md,docs/comite/comite_decision_037_candidate-b-viability-gate-review.md,docs/comite/comite_decision_038_truncated-futures-freeze-adjudication.md,docs/comite/comite_decision_043_c6-internal-alexandrov-waist-screen-adjudication.md,docs/comite/comite_decision_044_c6-waist-screen-adjudication-review.md,docs/comite/comite_decision_045_candidate-7-1-fixed-n-logical-status.md,docs/comite/comite_decision_046_weyl-level-sheet-page-shoom-adjudication.md,docs/comite/comite_decision_047_phase2-b2-documentation-publication.md,docs/comite/comite_decision_048_q-fmots-target-adjudication.md,docs/comite/comite_decision_049_program-closure-adjudication.md,docs/comite/comite_decision_050_p1a-seccion-13-certificado-familia-prescrita.md,docs/comite/comite_decision_051_s1-gate-geometric-tangent-classification.md,docs/comite/comite_decision_052_prereg004-2p1-design.md,docs/foro/foro_decision_001_ef4-falsacion-adversarial.md,docs/hoja_de_ruta_03_jul_2026.md,docs/hoja_de_ruta_24_jul_2026.md,docs/hoja_de_ruta_25_jul_2026.md,docs/hoja_de_ruta_25_jun_2026.md,docs/hoja_de_ruta_27_jul_2026.md,docs/hoja_de_ruta_27_jun_2026.md,docs/manuscript_release_checklist.md,docs/physical_reentry_audit_001_2026-08-28.md,docs/prereg002_reverification_declaration.md,docs/prereg002_reverification_result.md,docs/prereg004_auditor045_remediation.md,docs/preregistration_002.md,docs/preregistration_003.md,docs/preregistration_003_draft.md,docs/preregistration_004_draft.md,docs/program_closure_note_2026-07-30.md,docs/program_reopening_note_2026-08-28_R4.md,docs/rvar_closure_negative_result.md
++----------------------------------------
++Auditor: 0 error(s), 0 warning(s)
++```
++
++Exit code: `0`.
++
++## 3. Seal & freeze integrity
++
++`make verify-seal verify-2p1 PY=/home/ignac/nachocausal/.venv/bin/python`, exit 0:
++
++```text
++thresholds.py sha256: 6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4
++nachocausal2p1/thresholds.py 2bf954fb1164f94b42b2e34512aac1d10d5e76e77915b15c14a640bf7186908e
++nachocausal2p1/fixtures/tau_table_2p1.json 4bc4aec839257af7fed210030c0afa9041c265cacf43802bb735fb99df367a28
++```
++
++El sello 1+1 coincide con `docs/preregistration_002.md:7-9`. El SHA 2+1 es del candidato, no un sello.
++`git diff 3cc152a..782d031 -- nachocausal/ nachocausal2p1/generator.py nachocausal2p1/estimator.py nachocausal2p1/gate.py nachocausal2p1/scoring/ nachocausal2p1/fixtures/` no produce salida.
++Los SHAs antiguos del borrador están rotulados «at drafting time» (`draft:96`), y se prescribe retomarlos en C1.
++
++**E1 corregido.** C1 introduce el documento no-draft y sella el instrumento; C2 añade un manifiesto fuera de los caminos sellados sin modificar thresholds; C3 usa C2 publicado como HEAD y C1 como referencia del diff (`docs/preregistration_004_draft.md:299-310`).
++`seed_manifest.py:22-43` identifica C1 mediante el único commit de adición del documento y exige diff nulo del instrumento; `:54-71` comprueba esquema, SHA, banda, cardinalidad, tipos y receta exacta; `:74-100` exige manifiesto comprometido, árbol limpio y rechazo de sobrescritura.
++Segunda vía: `tests/test_004_seed_manifest.py:126-159` usa Git real en un repo temporal con documento, instrumento y sorteo sintéticos; acepta C1/C2 distintos y rechaza manifiesto no comprometido y deriva.
++La publicación remota de C2 y la autorización humana siguen siendo requisitos del procedimiento, no comprobaciones automáticas del lector.
++
++## 4. Reproducibility of published numbers
++
++Comprobación actual: `make test PY=/home/ignac/nachocausal/.venv/bin/python`.
++
++```text
++557 passed in 430.37s (0:07:10)
++exit 0
++```
++
++`pytest --collect-only -q tests/test_004_seed_manifest.py tests/test_2p1_package.py tests/test_004_criteria_can_fail.py`, en el mismo Python, recoge **61 tests**, exit 0. Están incluidos en la suite canónica; no se atribuye a este candidato el total histórico de 564 del informe 045.
++Los nuevos tests del manifiesto sustituyen el sorteo por IDs sintéticos o un RNG falso (`tests/test_004_seed_manifest.py:15-29,109-123,144-147`); no generan realizaciones vírgenes.
++
++**E2 corregido.** `validate.py:160-197` calcula agregados antes de asignar el estado. `verdict_from_levels:229-233` conserva INCONCLUSIVE si cualquier nivel es corto; `run_level:214-223` conserva también las filas.
++Segunda vía: tests de 17 válidas y 20 inválidas (`tests/test_2p1_package.py:164-181`) comprueban contadores, estadísticas y NaN; el test del nivel secundario corto conserva el veredicto INCONCLUSIVE (`tests/test_004_criteria_can_fail.py`).
++El registro de remediación identifica los comandos permanentes y sus resultados históricos; los tiempos de aquella ejecución no se presentan como mediciones actuales.
++
++## 5. dev/validation separation & ground-truth leakage
++
++`thresholds.py:31` conserva `CANDIDATE_NOT_FROZEN`; `:153-159` no lee ni sortea semillas en ese estado. `git ls-files docs/preregistration_004.md docs/validation_004_seeds.json` no produce salida y no existen esos archivos reales.
++`validate.py:85-102,262-283` exige manifiesto verificado para semillas vírgenes y mantiene las guardas de etiqueta, escritura, Guard-v y hilos antes de generar. Tests permanentes rechazan candidato, manifiesto ausente, receta incorrecta y deriva (`tests/test_004_seed_manifest.py:46-106`).
++El estimador permanece sin cambios; `validate.py:143-151` sigue estimando antes de revelar r al scoring.
++`git check-ignore results/validation_004.progress.jsonl results/validation_004_provenance_launch.txt` confirma que ambos archivos de ejecución están ignorados: su escritura prevista no ensucia por sí sola el árbol para el lector por semilla.
++No se cambia el alcance documental de D11 ni se acredita un manejador automático de abortos.
++
++**W1 corregido.** El borrador limita la derivación del SHA a reproducibilidad y declara que el autor puede calcular el hash antes de publicar (`draft:138-145`); thresholds hace la misma distinción (`:117-120`). La receta no incorpora entropía externa. Esto no demuestra ausencia histórica de anticipación; elimina la garantía absoluta que motivó W1.
++
++## 6. Claim-boundary check
++
++El borrador limita la afirmación al parche ecuatorial finito 2+1 y la presenta como algo que se registraría, no como un resultado validado (`draft:3-11,20-32`). No se promociona a reconstrucción métrica ni 3+1.
++El añadido al comité declara expresamente que no constituye nuevo veredicto ni autorización C1-C3 (`docs/comite/comite_decision_052_prereg004-2p1-design.md:509-517`); su verificador devuelve `BRIEF_CHECK=PASS`, exit 0, únicamente de estructura.
++
++**W2 corregido.** El ejemplo dice 10/20 no cubiertas (`draft:230-233`). El código compara cobertura con suelo 0.5 (`validate.py:248`, `thresholds.py:186`); segunda vía aritmética: 10 cubiertas / 20 válidas = 0.5. La frase describe el componente de cobertura, siempre subordinado a los demás criterios del PASS. No cambia el umbral.
++
++## 7. Findings
++
++| # | Severity | Finding | Anchor (file:line / command) |
++| --- | --- | --- | --- |
++| E1 | OK | Contrato C1/C2/C3 coherente; manifiesto externo al instrumento, verificado contra C1 y HEAD. | §3; seed_manifest.py:22-100; tests/test_004_seed_manifest.py:126-159 |
++| E2 | OK | INCONCLUSIVE conserva agregados y filas sin convertirse en PASS. | validate.py:160-197,214-233; tests/test_2p1_package.py:164-181 |
++| W1 | OK | Garantía limitada a reproducibilidad; límite de impredecibilidad declarado. | draft:138-145; thresholds.py:117-120 |
++| W2 | OK | Ejemplo de cobertura corregido a 10/20. | draft:230-233; validate.py:248 |
++| SEAL | OK | Sello 1+1 y tabla tau intactos; 2+1 permanece candidato. | §3; thresholds.py:31 |
++| TEST | OK | Suite canónica y 61 tests del alcance verificados. | §4 |
++| BOUNDARY | OK | Sin validación ni promoción de claim; firma y decisión C1 pendientes. | §5-6 |
++| MECH | OK | Auditoría mecánica sin errores ni avisos. | §2 |
++
++AUDIT_ERRORS=0
++AUDIT_WARNINGS=0
++
++## 8. Verdict
++
++AUDIT_VERDICT=AUDIT_PASS
++
++E1/E2/W1/W2 del informe 045 están corregidos en este delta. PASS del alcance técnico auditado: no es validación científica, revisión independiente entre familias ni autorización de congelación.
++Corresponde llevar el borrador y este informe al paso 7 de `/comite` en Claude Code; después el PI firma y decide C1. El auditor no convoca un comité propio ni ejecuta ese paso.
++El informe queda local, sin commit/push; HEAD permanece en el candidato auditado.
++
+diff --git a/docs/comite/comite_decision_053_prereg004-draft-readiness-c1.md b/docs/comite/comite_decision_053_prereg004-draft-readiness-c1.md
+new file mode 100644
+index 0000000..848795b
+--- /dev/null
++++ b/docs/comite/comite_decision_053_prereg004-draft-readiness-c1.md
+@@ -0,0 +1,520 @@
++# Comité Decision 053 — prereg004-draft-readiness-c1
++
++> Produced by `/comite`. The committee PROPOSES; the user AUTHORISES. The committee never executes
++> a one-way or outward-facing action (the blind validation run, a commit/push, anything
++> irreversible), never tunes a frozen threshold post-hoc, and never makes a reconstruction claim.
++> Guardrails: `NO_RECONSTRUCTION_CLAIM`, `NO_POST_HOC_TUNING`, `NO_THRESHOLD_LOOSENING`,
++> `NO_GROUND_TRUTH_LEAKAGE`, `RESPECT_SEAL_FREEZE`.
++
++## 1. Decision question
++Step 7 of comité 052 §9: is `docs/preregistration_004_draft.md`, together with the candidate instrument `nachocausal2p1/`, ready for the PI to sign the comité 052 verdict and decide C1 (commit the non-draft `docs/preregistration_004.md` + `STATUS = "FROZEN"` + sealed fixture)? If not, what exactly must change before C1? The committee does not authorise C1-C3; the PI decides.
++
++## 2. Verified state
++Facts checked **this session** (2026-10-15, worktree `.worktrees/prereg004-step3`, branch `prereg004/step3-port`), each with its command / file:line. Anything unchecked is marked `[UNVERIFIED]`.
++- `git log --oneline -4` → `efada85` (record audit 046), `782d031` (resolve audit 045 findings), `3cc152a` (record audit 045), `4190a10` (O8 fixes). `git status --short` is empty. `efada85` is pushed: `git ls-remote origin refs/heads/prereg004/step3-port` → `efada85cc2c6…`.
++- `make verify-seal verify-2p1 PY=/home/ignac/nachocausal/.venv/bin/python` gave:
++  - 1+1 seal `6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4`, intact;
++  - `nachocausal2p1/thresholds.py` `2bf954fb…`;
++  - τ fixture `4bc4aec8…`.
++- `sha256sum nachocausal2p1/seed_manifest.py` → `e4047104…`.
++- `nachocausal2p1/thresholds.py:31` is `STATUS = "CANDIDATE_NOT_FROZEN"`.
++- Not present: `docs/preregistration_004.md`, `docs/validation_004_seeds.json` and `results/`. No virgin seed has been drawn and no 2+1 validation output exists.
++- `pytest -q tests/test_004_seed_manifest.py tests/test_2p1_package.py tests/test_004_criteria_can_fail.py` → **61 passed** in 13.05 s. The global suite was not rerun.
++- `git check-ignore -v results/validation_004.json` → `.gitignore:21:results/`. The draft's "committed immediately" (§9) is therefore not executable with a plain `git add`.
++- `grep -n 'test-004\|dry-run-004\|verify-seal-004' Makefile` → no output.
++- `nachocausal2p1/validate.py:226-233` (read by the chair): `verdict_from_levels` returns INCONCLUSIVE, with no `checks`, before evaluating (i) whenever any ρ level is not `scored`.
++- `validate.py:191-192`: `np.std` of one midpoint is `0.0`, so `stab_pass` can be True with n_clean = 1.
++- `validate.py:248`: coverage uses `>=`.
++- `seed_manifest.py:40-42`: C1 is identified as the unique commit returned by `git log --diff-filter=A -- docs/preregistration_004.md`.
++- Producers of the audits:
++  - 045 and 046 were produced by **Codex** (header line 3 of each report).
++  - 043 and 044 do not name their producer `[UNVERIFIED]`. Draft §9 says they are the same family as the author.
++  - The falsifier's statement that 045 is Claude is **contradicted** by 045's own header.
++- Cross-family content review: only Gemini O8, on `5afb33d`, before the D1-D12 fixes (`revisiones/2026-10-14-prereg004-gemini/evaluacion.md`).
++- Stale text in the draft (chair, confirmed by every wave-1 role):
++  - §3 shows thresholds `e7a69934…`, but the file is now `2bf954fb…`;
++  - §9 "Audit trail" stops at 043/044;
++  - §10 still says the re-audit is pending.
++- Prior input to this question: `/auditor` 046 `AUDIT_VERDICT=AUDIT_PASS` (0 errors, 0 warnings) on the delta `3cc152a..782d031`. It states that it does not certify session separation.
++- `HERRAMIENTAS_COMMIT` `c12c10e` (`git -C ~/herramientas rev-parse --short HEAD`). This is informational: this committee is the repo's own `.claude/skills/comite/`.
++
++## 3. Dossier
++Files and references the chair supplied to the committee (dossier text kept at the chair's scratchpad; reproduced in substance in §2):
++- docs/preregistration_004_draft.md (object under review)
++- docs/comite/comite_decision_052_prereg004-2p1-design.md
++- docs/prereg004_auditor045_remediation.md
++- docs/auditor/auditor_report_043_prereg004-2p1-candidate-package.md, …_044_prereg004-2p1-remediation-reaudit.md, …_045_prereg004-post-044-delta.md, …_046_prereg004-auditor045-remediation-reaudit.md
++- revisiones/2026-10-14-prereg004-gemini/evaluacion.md; revisiones/2026-10-13-anclaje-theta-ciego/astra.md
++- nachocausal2p1/ (thresholds.py, validate.py, seed_manifest.py, generator.py, estimator.py, gate.py, scoring/, dry_run.py)
++- tests/test_004_criteria_can_fail.py, tests/test_004_seed_manifest.py, tests/test_2p1_package.py
++- dev/PREREG004_STEPS_1_2_2026-10-13.md, dev/PREREG004_STEP_3_2026-10-13.md, dev/PREREG004_STEP_4_2026-10-13.md, dev/PREREG004_STEP_5_2026-10-13.md
++- docs/preregistration_002.md, docs/preregistration_002_result.md; docs/acta_frente_2p1_ecuatorial_2026-10-12.md
++- research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md
++- biblioteca/derived-md/Towards black-hole horizons and geodesic focusing in causal sets.md (EGS); biblioteca/derived-md/The causal set approach to quantum gravity.md (Surya LRR 2019)
++
++- Members and models: reproducibility engineer, mathematician, logician, physicist (opus, wave 1, blind); falsifier (fable), pre-registration warden (sonnet), literature verifier (sonnet) (wave 2). The logician prompt added a focus line (text-vs-code of §7, C1/C2/C3 logic); the other wave-1 prompts were identical.
++
++## 4. Expert briefs (wave 1 — blind, parallel)
++### Reproducibility engineer brief
++**Bottom line (SWE):** The draft is not ready for C1 as written. No change to the scientific design is needed. There are four defects in the C1 text and mechanics: R1 to R4 below. All are editorial or tooling fixes that can be made before C1 without touching any θ, the ρ grid, T or the seeds. The two load-bearing ones are R1 (no defined way to commit the result) and R3 (stale SHAs in the text to be sealed). Until they are fixed, the PI would be signing a frozen text that contradicts the repo and an unspecified commit procedure.
++
++- **Proposed artefact(s):**
++  - **C1** (one commit, the unique commit that adds the file, as required by `nachocausal2p1/seed_manifest.py:40-42`):
++    - `docs/preregistration_004.md` (the non-draft, de-staled text).
++    - `nachocausal2p1/thresholds.py` with `STATUS = "FROZEN"` (currently `:31` `CANDIDATE_NOT_FROZEN`).
++    - The existing `nachocausal2p1/fixtures/tau_table_2p1.json` (4bc4aec8…, also enforced at runtime in `nachocausal2p1/gate.py:29-31`).
++  - **C2:** only `docs/validation_004_seeds.json`, written by `python -m nachocausal2p1.seed_manifest <full-C1-SHA>` (`seed_manifest.py:85-101`; it refuses to overwrite, refuses a dirty tree, and refuses anything before FROZEN).
++  - **C3 outputs:**
++    - `results/validation_004.json`
++    - `results/validation_004.progress.jsonl`
++    - `results/validation_004_provenance_launch.txt`
++    - `results/validation_004_run.log` (stdout and stderr, so an `ABORTED_*` traceback is kept; draft §9 l.284-288)
++    - then `docs/preregistration_004_result.md`
++  - **Missing before C1 (asked for by comité 052, `docs/comite/comite_decision_052_prereg004-2p1-design.md:85-86,90-93`):** the Makefile has none of the `test-004`, `dry-run-004` or `verify-seal-004` targets. Only `verify-2p1` exists (`Makefile:21-23`). Either add them before C1, or have the frozen text name the exact substitute commands. Today the "make test-004" step is not executable as specified.
++
++- **Environment & seal:**
++  - **Environment:** the sealed CPU `.venv` (`/home/ignac/nachocausal/.venv`, Python 3.12.3).
++    - `thresholds.assert_environment()` hard-pins numpy 1.26.4, numba 0.66.0, llvmlite 0.48.0 and scipy 1.17.1 (`nachocausal2p1/thresholds.py:35-62`), matching `requirements-lock.txt:10,14,15,26`.
++    - It also forbids CuPy and requires `NC2P1_DEVICE` to be unset or `cpu`.
++    - Minz/`venv_minz` (CLAUDE.md:50) is not needed on the 2+1 path, because the gate is the τ fixture.
++  - **Before C1 and before/after C3:**
++    - `make verify-seal PY=<.venv>` must print `6e2c3888…12bfefd4`.
++    - `make verify-2p1` must show the thresholds SHA (2bf954fb… now; this changes at C1 and must then be recorded) and τ fixture 4bc4aec8….
++    - `git diff --exit-code <C1> -- nachocausal/ nachocausal2p1/ docs/preregistration_004.md` must be empty. This is enforced in code: `seed_manifest.py:43`, reached through `validate.run → thresholds.validation_seeds → load_manifest`.
++  - **Package-diff-clean gap:** `assert_environment` checks only 5 packages. Nothing compares the full `pip freeze` with `requirements-lock.txt`. Recommend that C3 pre-flight `diff` them and record the result in the provenance file. Advisory only; not a blocker.
++
++- **Provenance capture:**
++  - `results/validation_004_provenance_launch.txt` with:
++    - start/end UTC
++    - HEAD SHA and branch; the C1 SHA; the C2 manifest sha256
++    - both thresholds SHAs, the τ fixture SHA and the three imported 1+1 SHAs (draft §3)
++    - a zero-diff line count; empty `git status --porcelain`
++    - `uname -a`, `python -V`, full `pip freeze`
++    - `NUMBA_NUM_THREADS=20` and OMP/MKL env; numba cache off
++    - `T_EDGE` at runtime
++    - the 20 seeds, `draw_seed` and the recipe
++    - the test pass count
++  - **Gap:** no code produces this file. Gemini already flagged it (`revisiones/2026-10-14-prereg004-gemini/informe_gemini.md:86`), and `grep provenance_launch` finds it only in docs. So it is a manual step and must be scripted or written out command-by-command in the frozen text.
++  - **Add `lscpu` / CPU model:** the 20-thread pin is tied to the one measured host, an i7-13700 under WSL2 (draft §8 l.253-254).
++
++- **Run mechanics:**
++  - **Reversible pre-flight (no virgin seed):**
++    - the full `make test` plus the three 004 test files (61 passed per dossier; global suite not rerun this session);
++    - `python -m nachocausal2p1.dry_run` (off-grid ρ = 2, burned seeds, no widths; `nachocausal2p1/dry_run.py:16-29`);
++    - the seal checks above.
++    - Comité 052:86 also anticipated a full-grid dry run after C1 on `DRY_RUN_SEEDS`. The draft does not say whether it is part of the plan. State it, or drop it explicitly.
++  - **Committing steps:** C2, then C3. C3 is a single background invocation with an explicit environment and a log, for example `setsid nohup env NUMBA_NUM_THREADS=20 <.venv>/bin/python -m nachocausal2p1.validate > results/validation_004_run.log 2>&1`. It runs about 4.4 h, which is `[UNVERIFIED]` extrapolation (draft §8 l.255-258).
++  - **Clean abort before seed 1:** the code already aborts on wrong env/pins, threads ≠ 20, FROZEN missing, a manifest mismatch or dirty tree, a sealed-path diff, or an existing result (`validate.py:262-283`, `seed_manifest.py:74-82`).
++  - **Mid-run:** invalid seeds count toward INCONCLUSIVE. Guard-v and τ-range aborts are deterministic and not relaunched. Only a no-output crash is relaunched on the same seeds (draft §9 l.272-288).
++  - **Keep the machine awake:** WSL2 host sleep is an unlogged crash vector. Pin power settings for the run `[UNVERIFIED]`.
++
++- **Reproducibility risks / ambiguities:**
++  - **R1 (blocker, repeats the prereg-002 failure).** Draft §9 l.277-278 says `results/validation_004.json` is "committed immediately". But `results/` is git-ignored (`.gitignore:19-21`: "not committed. The committed verdict record lives in docs/"), and auditor 046:71 confirms that `check-ignore` matches. A plain `git add` silently does nothing. That is exactly the `PRIMARY_ARTIFACT_LOST` path (`docs/preregistration_002_result.md:1,22`). The frozen text must fix the mechanism: `git add -f` of the result, the progress log, the provenance file and the run log, plus sha256 recorded in `docs/`, or a copy into `docs/` with hashes.
++  - **R2.** The progress "heartbeat" lives in ignored `results/`. Comité 052:93 asked for a log to a committed path. This is covered only if R1's force-add also covers it after a crash, as draft l.282-283 implies.
++  - **R3 (blocker, text to be sealed).**
++    - Draft §3 l.100 shows thresholds `e7a69934…`, but the file is now `2bf954fb…` (dossier).
++    - §9 l.312-316 omits audits 045/046, and still says the auditor is the same model family. 046 was Codex, with the self-stated caveat about session separation.
++    - §10 l.343-348 and l.355 still say the re-audit is pending.
++    - The SHA table also omits the 2+1 code files (`seed_manifest.py` e4047104…, `validate.py`, `generator.py`, `estimator.py`, `gate.py`, `scoring/`). Git-diff covers them, but recording them in the frozen doc removes any dependence on git history.
++  - **R4.** The C2 binding uses `git log --diff-filter=A` on the current branch (`seed_manifest.py:40`). A squash or rebase merge of `prereg004/step3-port` after C1 changes or duplicates the C1 SHA, and that permanently breaks `load_manifest`. The frozen text must say where C1 to C3 are committed: on this branch, with no rewrite, and merged only by fast-forward or merge commit. `[UNVERIFIED]` whether this has been decided.
++  - **R5 (declared, accepted).** The SHA-derived draw seed can be ground by whoever authors C1 (`thresholds.py:118-121`; draft §6 l.140-142; auditor 045 W1). This is not re-litigated. Recommend pushing C1 before running C2, so the published C1 is the reference.
++  - **R6.** Thread determinism has never been probed. Parity was measured on 1 of 10 seeds only (O2/O3, accepted by the PI). Bit-reproducibility is therefore claimed only for 20 threads on the measured host. A rerun on other hardware is unverified by construction, and the result doc must say so.
++  - **R7 (minor).** `validate.py:295-296` writes the progress `start` time with local `%z`. Make sure the provenance file records UTC so relaunch timestamps can be compared.
++### Mathematician brief
++- **Computability.** Once the order matrix exists, everything the estimator does is decided exactly from the order plus counts, and runs in polynomial time:
++  - Minimal elements are the rows with an empty past (`nachocausal/estimator.py:113-131`).
++  - O(i) = |future(i)| is a column sum, O(N²).
++  - The 1-D 2-means split and `improvement` are exact, O(n log n), and invariant under shift and scale (`nachocausal/estimator.py:80-155`).
++  - The τ(n) gate is a table lookup for n in [2, 256]. When n > 256 it raises an error and the run aborts; it never extrapolates (`nachocausal2p1/gate.py:87-99`).
++
++  The matrix itself is the part that is not exact. It is built by numerical geodesic shooting (`nachocausal2p1/generator.py:299-346`). It is still a strict partial order by construction: a relation requires U_x<U_y and V_x<V_y, which makes it irreflexive and antisymmetric. Transitivity is then checked in full on the output matrix (`generator.py:366-369`). The float32 A@A is exact because N ≈ 5.278·16·126 ≈ 10.6k < 2²⁴.
++
++  Only these parts of the matrix are certified by sampling: the 20 000-pair re-shoot audit and the same-angle radial closed form (`generator.py:356-363`). The rest is not certified. Draft A4 (l.48-49) states this correctly.
++
++  Margin on the gate range: the largest dev n_minimal is 184, against a cap of 256 (`dev/PREREG004_STEPS_1_2_2026-10-13.md:12`). My order-of-magnitude estimate is E[n_min] ≈ c₃ρ^{2/3}·(proper area of t*=0) ≈ 0.88·25.1·6.4 ≈ 140 at ρ=126. The Poisson standard deviation is about 12, so an abort for exceeding 256 is far in the tail [UNVERIFIED — my arithmetic, not a committed script]. OUT_OF_DOMAIN cannot fire at T=16; the draft says so correctly (l.204-205).
++
++- **Order observable.** The observable is the estimator-v2 future volume: O(i) = |{j : i ≺ j}| for each minimal element i (`docs/estimator_v2_freeze.md`; `nachocausal/estimator.py:113-131`). The minimal elements are split by 1-D 2-means.
++  - Why it carries the horizon signal: the future of an interior minimal element (r<2M) is confined to r<r_i and ends at the r=0.1 wall in finite t*. Its O is therefore bounded independently of T. An exterior element's future grows with T. EGS describe exactly this bimodality for longest chains (EGS derived-md l.181-191, l.463) and for future cardinality (l.193).
++  - EGS also warn (l.193) that future cardinality "may be affected more strongly by the choice of boundary". That is the origin of the T-dependent effective boundary disclosed at draft l.34-35.
++  - The order is the ambient order restricted to the sprinkled points: the Kruskal 1+1 order plus the angular reach `dist_phi ≤ min(π, sup L)` (`generator.py:12-14`; E1 lemma, `research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md` §3, with the [INFERENCE] step disclosed as A2).
++  - The flat control is a genuine flat Poisson sprinkle. The cloud's density ∝ r on (r, φ) is uniform in Cartesian x, y, and `mink_order` uses the Euclidean distance (`generator.py:100-105, 349-353`). So it is a fair same-cloud null.
++
++- **Relevant invariants.**
++  - Minimal-antichain size n: its scaling ρ^{(D−1)/D} = ρ^{2/3} is derived by ASTRA (`revisiones/2026-10-13-anclaje-theta-ciego/astra.md` l.7-12). It is also the gate's n.
++  - Future cardinality: counts are legitimate, "Order + Number" (Surya LRR, `biblioteca/derived-md/The causal set approach to quantum gravity.md` l.409-410, Myrheim 1978).
++  - Longest chain / height: this is the EGS diagnostic (EGS l.181) and the discrete geodesic distance (Surya LRR l.1226). It is not the estimator here.
++  - The ordering fraction and Myrheim–Meyer dimension (Surya LRR l.1000-1010) are not used and are not needed.
++  - Guard-v (relabelling invariance, `nachocausal/estimator.py:164`) is a necessary, not sufficient, certificate that the observable depends only on the order. That is enough here because the code reads only the matrix (`nachocausal2p1/estimator.py:29-45`).
++
++- **Analytic / continuum target.**
++  - The target is the coordinate locus r = 2M = 0.5 on the t*=0 slice of a finite equatorial EF box. It is reached as the bracket between the radially adjacent minimal elements on either side, not as an event horizon (draft §1).
++  - The bracket's discreteness scale comes from the radial intensity of minimal elements at the slice. The induced metric there is h = (1+2M/r)dr² + r²dφ² (ASTRA l.3-5). ASTRA gives λ_r(r) ≈ c₃ρ^{2/3}·2πr√(1+2M/r), with c₃ = Γ(4/3)(3/π)^{1/3} ≈ 0.88 (ASTRA l.33-41).
++  - The frozen scale is ℓ_rad = ρ^{-2/3}/(1.4π) (`nachocausal2p1/thresholds.py:195-213`). I re-checked the table: at ρ=126, ρ^{2/3} ≈ 25.13, so ℓ_rad ≈ 0.009047, θ_loc ≈ 0.03619 and θ_stab ≈ 0.01809. This matches draft l.173-176.
++  - In 1+1 the same construction gives ρ^{-1/2}, which matches the sealed `ell` (`nachocausal/thresholds.py:101-113`). The dimensional transfer is consistent.
++
++- **Caveats.**
++  - **Tight passability of (ii) width/IQR, even for a perfect classifier — must be disclosed before C1.** My own analysis, using only the frozen formula and ASTRA's idealised model and no dev data [UNVERIFIED — my arithmetic, not a committed script]:
++    1. With perfect classification at a sharp boundary, width ~ Gamma(2, δ) with δ = 1/λ_r(2M) ≈ 0.256ρ^{-2/3} ≈ 1.13·ℓ_rad.
++    2. The ideal median width is then 1.678δ ≈ 1.90ℓ_rad, against the bound 2ℓ_rad. The ideal IQR is 1.73δ ≈ 1.96ℓ_rad, against the same bound.
++    3. For a median of 20 seeds, P(pass) ≈ Φ(0.26) ≈ 0.6. The IQR clause is near a coin flip. The O(1) corrections (flat-cone approximation at ρ^{-1/3} ≈ 0.2 against curvature scale M = 0.25) are larger than these margins.
++    4. ASTRA flagged the same thing (l.42, l.52: "K=2 does not define a coverage level"; 0.594).
++
++    This does not breach a founding rule. It concerns power, not whether the criteria can fail, and θ was not compared with dev widths. So I do **not** re-litigate the (c1) anchor. But §7 should say in advance that a FAIL of (ii)-width/IQR is compatible even with ideal order-only localisation. That way the result cannot later be argued to justify loosening or re-deriving θ (`NO_THRESHOLD_LOOSENING`). This is a wording addition to the "Known weakness" bullet (l.230-233), not a parameter change.
++  - **Uniform null for τ(n) — inherited, declare only.** τ(n) is calibrated against a Uniform[0,1] null (`scripts/gen_tau_table.py:4, 60`). `improvement` is shift/scale-invariant but not shape-invariant, and the flat-control O law is not uniform. The gate is a heuristic threshold, not a calibrated test against the actual flat null. This is why (iv) is measured empirically and why (i)/(iv) are gate-derived (draft l.206-211). Inherited from the sealed 1+1; no change needed.
++  - **Unrecorded near-null relations — minor, declare.** Pairs with |d − dmax| < TOL are counted (`generator.py:325-327`, `near_boundary_pairs_tol`) but neither invalidate the seed nor are reported among the per-level aggregates. One wrong relation can flip an element's minimality and therefore n and O. In the continuum this is a measure-zero event [UNVERIFIED that it is negligible at TOL = 1e-6]. I recommend reporting `near_boundary_pairs_tol` per seed in the result for transparency. It is not a criterion change.
++  - **Future cardinality vs longest chain.** The observable departs from the EGS longest-chain diagnostic, and EGS expect it to be more boundary-sensitive (EGS l.193). This is consistent with the disclosed T-dependent effective boundary. The "no event-horizon claim" (draft l.33-35) is therefore mathematically required, not just prudent.
++  - **Stale documentary text (agrees with the chair) — must be fixed before C1.**
++    - §3: the candidate `thresholds.py` SHA is e7a69934…, but the current value is 2bf954fb… (draft l.100).
++    - §9: the audit trail stops at 043/044 (l.312-316).
++    - §10: the text still says the re-audit is pending (l.343-347, l.355), but report 046 was AUDIT_PASS.
++
++    None of these affects the order-theoretic content. They are documentary defects, but a frozen pre-registration must not misstate its own audit state.
++  - **Mathematical verdict.** The observable, order construction, gate and scoring are order-theoretically sound, computable, and correctly separated from the hidden embedding (`nachocausal2p1/scoring/scorer.py` is the only place r is read). Ready for C1 subject to (a) fixing the stale §3/§9/§10 text and (b) adding the a-priori tight-passability disclosure to §7. Neither (a) nor (b) changes any threshold, seed or code path. The PI decides C1.
++### Mathematical logic brief
++- **Formal status:**
++  - No Lean or other formal artefact covers prereg-004. `grep -rl "2p1|prereg.*004|equatorial" formal/` returns nothing. Every statement in the draft is therefore a *definition* (the criteria, implemented in `nachocausal2p1/validate.py:160-256` and `thresholds.py:177-213`), a *declared assumption* (A1-A4, draft §1:41-49; E1's maximiser step is self-marked `[INFERENCE]`), or a *physical interpretation*. None of it is a proved theorem.
++  - The can-fail property is shown by examples, not proved. Each clause has a synthetic counterexample in `tests/test_004_criteria_can_fail.py:108-276`, and the chair reports 61 tests passing.
++  - θ(ρ) is a definition anchored in a blind derivation (ASTRA). It is not a derived bound. I checked ρ=126 by hand: 126^(-2/3)/(1.4π) ≈ 0.009049, giving θ_loc ≈ 0.0362 and θ_stab ≈ 0.0181. Both match draft §7:173-176 and `thresholds.py:195-207`.
++- **Quantifier / dependency order:**
++  - **Most of §7 matches the code.** (i) is checked ∀ρ∈{63,126} as (p_perm ≤ 1e-4 ∧ n_abstain_BH < 3) (`validate.py:177-178,234-235`). (ii) and (iii) are checked only at ρ*=126. F is checked for each consecutive pair, with the slack taken from the lower level ρ_k (`validate.py:238-244`), as the draft says. (iv) is checked at ρ* over generator-valid seeds. Coverage is counted over bracket-valid seeds. Seeds where the BH abstained are not bracket-valid (`validate.py:147-149`), so they leave the coverage denominator.
++  - **Verdict precedence (code):** OUT_OF_DOMAIN (`validate.py:285`) > deterministic abort (an exception) > INCONCLUSIVE (`:229-233`) > PASS/FAIL. The draft never states this order.
++  - **Defect Q1: text contradicts code.** Draft §7:200-201 says "≥ 3 BH abstentions is a **FAIL** of (i), never INCONCLUSIVE".
++    - In the code, if *any* level has fewer than 18 generator-valid seeds, the verdict is INCONCLUSIVE before (i) is evaluated, even when ρ=126 has 3 or more abstentions.
++    - The INCONCLUSIVE branch also returns no `checks` dict (`:231-233`), so the failed (i) is not recorded as a check. Only the level aggregates show it.
++    - What is true is narrower: "abstentions never *cause* INCONCLUSIVE". The sentence should say exactly that, and should state that INCONCLUSIVE takes precedence over every FAIL.
++    - This is not a re-litigation of the D2 or §11 decisions. It only makes the text match the code.
++  - **C1→C2 dependency.**
++    - The draw seed is a function of the C1 SHA (`thresholds.py:123-128`). `seed_manifest._check_freeze` defines "C1" as *the unique commit in HEAD's ancestry that adds `docs/preregistration_004.md`* (`seed_manifest.py:40-42`). It does not check against a SHA that was announced in advance.
++    - So an amend, rebase or squash of C1 *before C2* silently produces a new valid C1 and a new draw. That is an extra post-hoc degree of freedom, beyond the "author can pre-compute the hash" caveat the draft already discloses (§6:140-142).
++    - The draft requires C2 to be published (§9:307) but never requires C1 to be pushed and its full SHA recorded before C2 is run.
++  - **What C3 enforces.**
++    - `load_manifest` (`seed_manifest.py:74-82`) enforces three things: the manifest equals its HEAD version, the tree is clean, and the sealed paths have zero diff against C1 (`:43`).
++    - It does not enforce that HEAD *is* the C2 commit, or that anything has been pushed. That part is procedural. It is harmless because the sealed paths are diff-checked.
++    - The sealed paths are `nachocausal/`, `nachocausal2p1/` and the frozen doc. They exclude `tests/`, the `Makefile` and `scripts/`, so the "test pass count" in the provenance file is not bound to C1.
++- **Equivalence claims:**
++  - **"Every pass test is written as `x ≤ bound`"** (§7:202) is literally false.
++    - Coverage is written `coverage_frac >= COVERAGE_FLOOR` (`validate.py:248`) and (i) uses `n_abstain_BH < 3` (`:178`).
++    - The *semantic* claim, that NaN never passes, still holds for these clauses, because every IEEE comparison with NaN is False.
++  - **"NaN (empty or one-element sample) never passes"** (§7:202) is false for (iii).
++    - `np.std` of a single clean midpoint is `0.0`, not NaN (`validate.py:191`), so `stab_pass=True` with n_clean=1.
++    - The run verdict is unaffected, because IQR is then NaN and (ii) fails (`_iqr`, `:76-77`). But the per-check boolean for (iii) misreports.
++    - The draft also leaves the std convention unstated: it is population std (ddof=0).
++  - **"(i) reduces to < 3 BH abstentions"** (§7:206-211) is one-way and conditional.
++    - It holds only if no flat-control seed escapes (then d ≥ 0 and p = 2^-m).
++    - It needs m ≥ 14, since 2^-13 > 1e-4 (`thresholds.py:102`), and n_valid ≥ 18 with < 3 abstentions gives m ≥ 16.
++    - A flat-control escape can make d < 0, so it is not an equivalence in general. The draft does word it conditionally, which is correct.
++  - **(v)** cannot evaluate to False under the validation label. `run` refuses `guard=False` (`validate.py:276-277`), and a failing Guard-v raises an exception instead of returning a result. So (v) is a precondition enforced by abort, not a criterion that can fail. The can-fail test (`test_v_guard_off_fails_v_only`) uses a non-validation path. The draft should state this, as it already does for OUT_OF_DOMAIN (§7:204-205).
++  - **Manifest ↔ C1 SHA** is a genuine functional equivalence. `check_manifest` recomputes `_draw(sha)` and requires equality (`seed_manifest.py:61-70`).
++- **Type / object discipline:**
++  - Units are consistent: (ii) uses widths/2M and θ_loc is dimensionless; (iii) uses raw midpoint std in r and θ_stab = K·ell_rad in r.
++  - **Terminology clash.** The level field `loc_inconclusive` (`validate.py:187`) and the draft's phrase "else inconclusive ⇒ not passed" (§7:192) produce a **FAIL** of (ii), not the verdict INCONCLUSIVE. The test name `test_nan_iqr_is_inconclusive_not_pass` (`tests/test_004_criteria_can_fail.py:250`) repeats the clash. The draft text should say "fails (ii)" so the IQR clause is not read as a third route to INCONCLUSIVE.
++  - Coverage is a fraction over a seed set (bracket-valid seeds) that differs from the set behind the median, IQR and std (clean brackets). The draft declares this (D8, §7:220-223). It is consistent.
++- **Caveats:**
++  - **Fail-closed trap at C1.** If C1 creates the frozen doc by `git mv` of the draft, or adds it while deleting a similar draft, git's default rename detection (diff.renames is unset here; git 2.43) reports the change as R, not A. Then `--diff-filter=A` returns nothing and C2 refuses.
++    - This is not a soundness hole, but it would block C2. The C1 instruction should say "add as a new file; keep the draft". `[UNVERIFIED — not executed; inferred from git defaults and seed_manifest.py:40]`
++  - **Writing/committing contradiction.** `results/` is in `.gitignore:21` (I confirmed with `git check-ignore`). That is what keeps the tree clean during C3, which matters because `check_seed`→`load_manifest` re-runs `git status --porcelain` on every seed (`validate.py:95`, `seed_manifest.py:80`). But §9:277-283 says the result and progress log are "committed immediately". That needs `git add -f`, and the draft should say so.
++  - **Stale draft text** (chair-observed, and I confirmed it):
++    - §3:100 lists thresholds SHA e7a69934…, but the current file is 2bf954fb….
++    - §9:312-316 cites only audits 043/044.
++    - §10:345-347 and §10:355 still say the re-audit is pending, but report 046 is done.
++    - §9:314 "same model family … not independent" was true of 044 but not of the Codex-run 046.
++  - **Not ready for C1 as written.** I see no logical defect that stops a criterion from failing or lets a NaN or INCONCLUSIVE case become a PASS. But the text should change before C1:
++    1. Fix Q1 and state the verdict precedence explicitly.
++    2. Correct the `x ≤ bound` / one-element-NaN claims, or change (iii) to return NaN when n_clean < 2. A code change needs a re-audit, so wording is the cheaper fix.
++    3. Rename the IQR "inconclusive" wording.
++    4. Declare that (v) is enforced by abort.
++    5. Require that C1 be pushed and its full SHA recorded before C2, with no amend, rebase or squash afterwards.
++    6. Fix the stale SHA, audit and §10 text and the `git add -f` wording.
++### Physicist brief
++- **Coordinates and patch.** The step must use ingoing Eddington–Finkelstein coordinates on the equatorial plane: `-(1-2M/r)dv² + 2dv dr + r²dφ²` with `v = t* + r` (draft §2 l.55). The generator maps these to Kruskal coordinates as `V = e^{(t*+r)/4M}`, `UV = (1-r/2M)e^{r/2M}` (`nachocausal2p1/generator.py` `to_kruskal`). This is horizon-penetrating, and the slices `t* = const` are spacelike everywhere, so the initial slice where the minimal elements sit is a legitimate past boundary on both sides of r = 2M.
++  - The patch is finite: `t* ∈ [0,16]`, `r ∈ [0.1,1.3]`, `φ ∈ S¹`, with 2M = 0.5 (`nachocausal2p1/thresholds.py:85-91`).
++  - Finiteness gives up the following:
++    - Any event-horizon claim. EGS defines the event horizon through J⁺ and needs an infinite causal set (EGS derived-md l.173-181).
++    - Any statement beyond T = 16, so no "for all T" and no decay law (draft §2 l.63-68).
++    - Any statement at r < 0.1. The inner wall stands in for the singularity: inside the horizon it is spacelike and acts as a future boundary.
++  - The order is the ambient Schwarzschild order restricted to the sprinkled points, not the box's intrinsic order (draft A1). E1's `Delta_max` criterion depends on a step its author marked `[INFERENCE]` (`research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md:98,172`). The draft correctly lists A1-A4 as assumptions, not proofs.
++
++- **Physical meaning of the signal.** Every future-directed causal curve from a minimal element inside r = 2M reaches the inner wall at r = 0.1 in finite t*. So its future, counted inside the box, saturates. An exterior minimal element's future grows roughly in proportion to T. This is the mechanism EGS gives for proper time and longest chains, and EGS note that future cardinality is also bimodal (EGS l.188-193).
++  - Rough check `[INFERENCE, my own order-of-magnitude estimate]`: near-horizon tails on both sides grow only like `4M·ln(2M/|r−2M|)`. At T = 16 = 16·(4M), the 2-means threshold sits far from both tails. So I expect misclassification near r = 2M to be smaller than the Poisson spacing.
++  - Two limits:
++    - EGS warn that the cardinality diagnostic "may be affected more strongly by the choice of boundary" than chain length (EGS l.193). The signal depends on the box (inner wall, T); it is not intrinsic to the spacetime.
++    - The thing being located is the coordinate locus r = 2M on the initial slice, read only through scoring. It is not a horizon surface.
++
++- **Sprinkling domain.**
++  - Poisson sprinkling with density proportional to `√−g = r` on the declared box. The mean is `round(ρ·5.278·T)` (`generator.py` `sprinkle`; `thresholds.py:90-108`).
++  - ρ grid {32, 63, 126}, primary ρ* = 126 (`thresholds.py:100-101`).
++  - Flat control: the Minkowski order on the same cloud, treating (r, φ) as Cartesian polar coordinates (`generator.py:349-353`).
++  - Guarantees given up:
++    - The three levels share one random stream, so they are not independent sprinkles of each other. This is declared in §7 (D7).
++    - The order is decided by numerical geodesic shooting, checked per seed rather than proved analytically (A4).
++    - The minimal-element layer is a 2D surface density. Its radial intensity at r is approximately `λ_r(r) = c₃ρ^{2/3}·2πr·√(1+2M/r)`, with `c₃ = Γ(4/3)(3/π)^{1/3} ≈ 0.88` (ASTRA, `revisiones/2026-10-13-anclaje-theta-ciego/astra.md:35-40`).
++
++- **Claim boundary.**
++  - Claimed: finite 2+1 equatorial-patch localisation within the frozen θ on the frozen ρ grid, with T = 16 and r ∈ [0.1, 1.3] (draft §1 l.28).
++  - Not claimed:
++    - metric reconstruction;
++    - an event horizon or apparent horizon;
++    - a 3+1 result (E1 transfers only the order on the equator, not any property of the estimator);
++    - 2+1 gravity (the bench metric is not an Einstein solution in 2+1);
++    - "for all ρ" or "for all T".
++  - Regular-black-hole caveat: EGS l.195 say the partition "would no longer work for regular black holes" (for example Hayward), because the interior allows arbitrarily long proper time. The draft carries this correctly (§1 l.38). A PASS says nothing about whether the method works for singular-versus-regular geometries in general.
++  - Coverage floor of 0.5: a narrow but mislocated bracket can pass (draft §7 l.230-233). The verdict therefore certifies "frequently covers and is narrow", not "accurate".
++
++- **Caveats.**
++  - **(Physics; affects interpretation; must be added to §7 before C1.)** Even a perfect classifier sits at the Poisson resolution limit under the (c1) anchor.
++    - Ideal model `[INFERENCE, flat-local approximation; ρ^{-1/3} ≈ 0.2 is not ≪ 2M = 0.5]`: the bracket width of a perfect classifier is Gamma(2, δ), with `δ = 1/λ_r(2M) ≈ 1/(3.91 ρ^{2/3})`.
++    - The bound is `θ_loc·2M = 2/(1.4π ρ^{2/3}) ≈ 1.78 δ`.
++    - So for an ideal estimator:
++      - P(single width ≤ bound) = `1 − e^{-1.78}(2.78) ≈ 0.53`;
++      - the population median width is ≈ 0.94 × the bound;
++      - the population IQR is ≈ 1.73 δ, about 0.97 × the bound.
++    - The (ii) width and IQR clauses at ρ* could therefore fail with roughly coin-flip probability even if the order localised r = 2M perfectly.
++    - Comparison with 1+1, using the same convention (ASTRA l.30): there the bound/δ ratio is about 2.5, so per-seed pass probability is about 0.71. The 2+1 anchor is relatively stricter, because P* is evaluated at r = 0.7 and the constant c₃ is absorbed into K_LOC (ASTRA l.33, l.52).
++    - This uses no dev widths and no ground truth beyond theory. It neither breaks a founding rule nor makes a criterion unable to fail, so I do **not** reopen the PI's (c1)/K_LOC decision.
++    - But ASTRA's own risk statement ("riesgo de exigir demasiado", astra.md:52) and the `λ_r` vs `ell_rad` gap (l.38-42) are missing from draft §7. Before C1, §7's "Known weakness" should add, in advance: a FAIL driven only by (ii)-width or IQR at ρ* is not evidence that the order fails to localise r = 2M, because the bound sits at about one Poisson spacing. θ stays unchanged. This is wording only.
++  - The finite-T effective boundary is real at small T (`dev/2P1_PHASE_B_INTERIM_2026-10-12.md`, cited at draft l.34-35). T = 16 is a margin, not a measured plateau (draft l.63-68), and T was chosen using r = 2M scoring, so it is not ground-truth-free. These are declared correctly.
++  - The order depends on `[INFERENCE]` steps in E1 (E1 lemma l.98, l.172) and on A3, the physicist's application of E1 to the box with r ≥ 0.1. Neither is formalised (Lean has nothing on 2+1: comité 052 l.153). This is acceptable as a stated assumption, not as a result.
++  - The flat control treats (t*, r, φ) as Minkowski polar coordinates on the same cloud (`generator.py:349-353`). As the draft already says (§7 l.206-211), it is a gate-derived comparison, not an independent physical null.
++  - Draft text is out of date and should be fixed before C1, though it does not affect the physics:
++    - the §3 thresholds SHA is `e7a69934…` but the file is now `2bf954fb…`;
++    - the §9 audit trail stops at 044;
++    - §10 l.343-355 still says a re-audit is pending, but it has been done (046 AUDIT_PASS).
++    - Source: chair's dossier `[UNVERIFIED by me beyond the draft text, which shows the old values at l.100, l.312-316, l.345-355]`.
++  - **Readiness from the physics side:** coordinates, domain, observable and claim boundary are sound and correctly bounded. The only change I need before C1 is the §7 resolution-limit disclosure above, together with the text corrections. I see no physics reason to change T, ρ, θ or the order definition.
++
++## 5. Falsifier attack
++- **Concrete failure modes:**
++  1. **The text to be frozen contradicts the code it seals.** The worst defect is Q1.
++     - Draft §7 l.199-201 says "≥ 3 BH abstentions is a **FAIL** of (i), never INCONCLUSIVE".
++     - In the code, `verdict_from_levels` returns INCONCLUSIVE first whenever any level is short (`nachocausal2p1/validate.py:229-233`). It also returns no `checks` dict in that case. So a decisive (i)-FAIL at ρ=126 is reported as INCONCLUSIVE whenever ρ=32 has ≤ 17 valid seeds. ρ=32 is not even a level that (i) requires (`validate.py:234`).
++     - Draft l.202 says "every pass test is written as `x ≤ bound`, so a NaN (empty or one-element sample) never passes". That is false twice over. Coverage uses `>=` (`validate.py:248`). With one clean bracket, `np.std` gives 0.0, not NaN, so `stab_pass=True` (`validate.py:191-192`).
++     - These are exactly the D1/D2 sentences that the O8 fixes introduced. Audits 045 and 046 both passed them. So the audit chain did not check text against code, and its PASS status says less than it appears to.
++  2. **The frozen text misstates its own state.** All three wave-1 briefs and the chair confirm this:
++     - §3 l.100 gives the thresholds SHA as e7a69934…, but the file is now 2bf954fb….
++     - §9 l.312-316 stops at audit 044 and says the auditor is the "same model family". That is wrong for 046, which was run by Codex.
++     - §10 l.343-355 still says the re-audit is pending.
++     - A pre-registration that misreports its audit state cannot be signed as is.
++  3. **C1 commits a result-writing mechanism that silently does nothing.** Draft §9 l.277-278 says the result is "committed immediately", but `results/` is git-ignored (`.gitignore:19-21`). A plain `git add` adds nothing, which is a repeat of `PRIMARY_ARTIFACT_LOST` (`docs/preregistration_002_result.md:1`). The provenance launch file has no producer in the code; it is a manual step.
++  4. **The design gives the localisation clause little power.** Two briefs worked this out independently from theory alone (Mathematician, Physicist; both `[UNVERIFIED — their arithmetic]`). Even a perfect classifier passes (ii)-width/IQR at ρ* with probability of only about 0.5-0.6.
++     - This does not stop the criterion from failing. It means a FAIL carries little information.
++     - Disclosing this in advance is correct. But see "Verdict coercion" below on how the disclosure must be worded.
++  5. **The sequence names Makefile targets that do not exist.** `make test-004`, `dry-run-004` and `verify-seal-004` were asked for by comité 052:85-93, but the `Makefile` targets list (`grep '^[a-z0-9-]*:' Makefile`) has none of them. `verify-comite` does exist.
++  6. **Thread nondeterminism: lower risk than the briefs imply.** The `prange` loops in `generator.py:130-134,242-248,275-279` write one element per iteration, with no reductions across iterations. On inspection, 20-thread nondeterminism is unlikely. `[UNVERIFIED — never probed, O2]`.
++
++- **Ground-truth leakage:**
++  1. **None found in the blind path.**
++     - The estimator is called on the order matrix only (`validate.py:143-144`).
++     - r is first passed to `blind_bracket`, which runs after `thr` has been fixed (`validate.py:145-151`).
++     - The progress log carries only `seed, rho, seconds` (`validate.py:48`).
++  2. **Residual leak through the dev data.**
++     - The dev widths at ρ=126, T=20 are committed (`dev/2p1_sweep_T_rho126_v2_2026-10-12.jsonl`, used by `tests/test_004_criteria_can_fail.py:34,138-145`). The frozen θ is in `thresholds.py`. The "do not compare θ with dev widths" rule (draft §7) therefore depends on people choosing not to look; nothing enforces it.
++     - The step-4 mutation check has already shown a partial comparison: "(ii) también es falso en T = 8" (`dev/PREREG004_STEP_4_2026-10-13.md:61-65`, declared).
++     - Requirement: the new §7 power disclosure must be derived from theory only (ASTRA plus the Gamma(2, δ) model). Its text must say so, and must say that no dev JSONL was consulted to write it.
++  3. **Declared, not a blocker:** T=16 was chosen with r=2M scoring on exploration seeds (Physicist brief; `thresholds.py:86-87`). T shapes the observable O, so ground truth guided one parameter of the observable during dev. It is disclosed, and it was done on dev seeds, so I do not reopen the PI decision. The result document must repeat it.
++
++- **Freeze violations:**
++  1. **C1 can be re-made silently.**
++     - `_check_freeze` defines C1 as "the unique commit in HEAD's ancestry adding the frozen doc" (`nachocausal2p1/seed_manifest.py:40-42`), not as a SHA announced in advance.
++     - Before C2, an amend or rebase, or a new branch off efada85 with a fresh C1, produces a new valid C1 and a new 32-bit draw (`thresholds.py:123-128`).
++     - After C3, the same route allows an undetectable "new C1 → new seeds → rerun". The one-shot guard is only the existence of a git-ignored file (`validate.py:281-282`).
++     - Combined with the declared grinding freedom (W1/D5), and with the fact that generator code can be called directly on virgin seeds outside `check_seed`, the separation is enforced only by procedure.
++     - I do not reopen D5. Before C2, though, C1 must be pushed and its full SHA recorded in a signed, pushed document (this comité's sign-off). C1 to C3 must stay on `prereg004/step3-port` with no rewrite, and be merged only fast-forward or by merge commit. C1 must add the frozen document as a new file, not by `git mv` of the draft (R detection breaks `--diff-filter=A`, logic brief).
++  2. **No loosening or post-hoc tuning is smuggled in by the proposed edits,** provided they stay wording-only. Any code change (for example making (iii) NaN when n_clean < 2) reopens the audit chain and needs a new re-audit before C1.
++
++- **Verdict coercion:**
++  1. **INCONCLUSIVE silently takes priority over FAIL** (`validate.py:229-233`). FAIL can collapse into INCONCLUSIVE, and the per-clause outcomes are not recorded.
++     - Before C1, the text must state the precedence: OUT_OF_DOMAIN > ABORTED_* > INCONCLUSIVE > PASS/FAIL.
++     - It must also commit in advance that, under INCONCLUSIVE, the result document will report the clause values computable from the recorded aggregates, labelled non-verdict, so a masked (i) or (ii) failure is visible.
++  2. **(v) can never be False under the validation label** (`validate.py:276-277`; Guard-v raises an exception instead). It is a precondition enforced by aborting, so it must not be listed as a sixth criterion that can fail.
++  3. **The proposed "a FAIL of (ii) is not evidence of non-localisation" wording is itself asymmetric.** It excuses FAIL in advance and leaves PASS fully informative.
++     - Required wording: FAIL is reported as FAIL, plainly. The low power is stated as a property of the test. The result can never be used to re-derive or loosen θ/K_LOC in any successor pre-registration.
++     - The draft also says "else inconclusive ⇒ not passed" for the IQR clause (l.192). That clause produces a FAIL of (ii), not INCONCLUSIVE, so the word "inconclusive" there must be replaced.
++
++- **Premature / over-broad claims:**
++  - The claim boundary in §1 is correct: finite 2+1 equatorial patch, no event horizon, no 3+1 claim, no 2+1 gravity claim. No over-claim found.
++  - Residual risk is in the reading: a PASS certifies "narrow and covers at least 50% of the time", not accuracy (coverage floor 0.5, l.230-233). (i) and (iv) follow from the gate and are not independent confirmation (l.206-211).
++  - The result document must not count six "passed" criteria when (v) cannot fail and (i)/(iv) are gate-derived.
++
++- **Independent-falsification gate:** Partially satisfied, which is not enough for an unconditional "ready".
++  - Claude wrote the code. Audits 043, 044 and 045 are Claude.
++  - The only review by a different model family on content is Gemini O8, on 5afb33d, before the fixes.
++  - The O8 fixes (4190a10) were audited only by Claude (045). Codex 046 covered only the 782d031 delta, and states that it may not be session-separated.
++  - This committee is Claude too. For the post-O8 semantics (the D1/D2 text versus the code), the author is effectively its own sole verifier, and failure mode 1 shows the result.
++  - Recommendation: after the wording fixes, run one cross-family pass (any non-Claude model) over the final `docs/preregistration_004.md` §7/§9 text against `validate.py`. This should happen before C1, or else the gap must be declared in §9.
++
++- **Minimal falsification test:** Run a pure-function check that touches no virgin seed and no width.
++  - Call `validate.verdict_from_levels` on synthetic levels: ρ=32 with 17 generator-valid seeds (`status="inconclusive"`), ρ=126 with `n_abstain_BH=3`, and every other field passing.
++  - Assert that the verdict is `INCONCLUSIVE` and that `"checks"` is absent.
++  - This turns draft §7 l.199-201 ("≥ 3 abstentions is a FAIL of (i), never INCONCLUSIVE") into a failing executable fact.
++  - Before C1, the text must be corrected to state the precedence, and this case must be added to `tests/test_004_criteria_can_fail.py` as a documented expectation. Until then the PI would be signing a pre-registration whose verdict rule is false as written.
++  - **Verdict: NOT READY for C1.** All required changes are wording or procedure. No θ, ρ, T, seed or code path needs to change.
++
++## 6. Pre-registration verdict
++- Verdict: BLOCK
++- Freeze status: Numeric thresholds (T=16, ρ grid {32,63,126}, ρ*=126, θ_loc/θ_stab via the ASTRA-derived (c1) anchor, τ fixture 4bc4aec8…) are written in advance in `docs/preregistration_004_draft.md` §7 (l.173-176 table) and `nachocausal2p1/thresholds.py`. Nothing is frozen yet. `thresholds.py:31` has `STATUS = "CANDIDATE_NOT_FROZEN"`. `docs/preregistration_004.md` and `docs/validation_004_seeds.json` do not exist (dossier). No validation seed has been seen. The text to be sealed is not yet fit to freeze, for the reasons below. They are editorial and wording fixes only, and no θ, T, ρ or seed changes.
++- Seal integrity: The 1+1 seal `6e2c3888…12bfefd4` is intact (dossier `make verify-seal`). The 2+1 package imports the sealed 1+1 files unchanged. `seed_manifest.py:43` runs `git diff --exit-code <C1> -- SEALED_PATHS` on `nachocausal/`, `nachocausal2p1/` and the frozen doc. This is code-enforced, so RESPECT_SEAL_FREEZE is not at risk. Current candidate SHAs are thresholds `2bf954fb…` and τ fixture `4bc4aec8…`. The draft §3 table (l.100) still shows `e7a69934…`, which is false.
++- Seed discipline: Virgin band 8_000_000..8_999_999 is untouched until C2 (dossier). The draw seed is the first 8 hex digits of the C1 SHA (D5). `seed_manifest.py:40-42` defines C1 as the unique commit that adds the frozen doc. Nothing requires C1 to be pushed and its full SHA announced before C2 is run. An amend, rebase or squash of C1 before C2 would silently produce a new valid C1 and a new draw. A squash or rebase merge after C1 would permanently break `load_manifest`. This is an unclosed post-hoc degree of freedom (Logician brief; SWE R4/R5). The author's ability to grind the hash is already declared (draft l.140-142) and is not re-litigated.
++- Reporting rule: Partly satisfied. The draft treats PASS, FAIL and INCONCLUSIVE alike, and burned-seed and abort rules are stated at l.272-288. But the text misstates the verdict logic (defect 2 below), and the mechanism for committing the result is broken (defect 1 below). The 1+1 precedent `docs/preregistration_002_result.md` records this same failure as `PRIMARY_ARTIFACT_LOST`.
++- Forbidden moves present? None found at present: no tuning, no loosening, no leakage, no re-run after peeking, and no reconstruction over-claim. Two latent risks are listed in the reasons. The first is an undeclared ideal-case FAIL probability for (ii), which invites a later θ re-derivation. The second is the open C1 SHA procedure.
++- Reasons (the first six must change before C1; I checked 1-3 and 5 against the repo, and took 4 and 6 from the wave-1 briefs):
++  1. **Result-commit mechanism is broken (blocker).** Draft l.277 says `results/validation_004.json` is "committed immediately". `.gitignore:19-21` ignores `results/` ("not committed. The committed verdict record lives in docs/"). A plain `git add` does nothing. The frozen text must specify `git add -f` of the result, progress log, provenance file and run log, or a copy into `docs/` with sha256 values. This is the PRIMARY_ARTIFACT_LOST path from prereg-002.
++  2. **Text contradicts code on verdict precedence (blocker).** Draft l.200-201 says ≥3 BH abstentions is "a FAIL of (i), never INCONCLUSIVE". In `validate.py` (Logician: l.229-233), INCONCLUSIVE (any level with <18 valid seeds) takes precedence over every FAIL, and the INCONCLUSIVE branch returns no `checks`. The text should say that abstentions never cause INCONCLUSIVE, and it should state the full precedence: OUT_OF_DOMAIN > abort > INCONCLUSIVE > PASS/FAIL. This only aligns the text with the code. It is not a re-litigation of D2 or §11.
++  3. **Stale SHAs and audit state in the text to be sealed (blocker).** l.100 shows thresholds `e7a69934…` against the real `2bf954fb…`. l.312-316 stops at audits 043/044. l.346 and l.355 still say the re-audit is pending, but audit 046 was AUDIT_PASS (Codex). l.314's "same model family, not independent" claim does not describe 046. The SHA table also omits the 2+1 code files (`seed_manifest.py` `e4047104…`, `validate.py`, `generator.py`, `estimator.py`, `gate.py`, `scoring/`). A frozen pre-registration must not misstate its own audit state.
++  4. **Resolution-limit disclosure missing from §7 (required by two independent briefs).** The "Known weakness" bullet (l.230-233) covers only the coverage floor. It must add, in advance, that a FAIL driven only by (ii)-width or IQR at ρ* is compatible with ideal order-only localisation, because the bound sits near one Poisson spacing. The Physicist and Mathematician estimate roughly a coin-flip pass probability, about 0.53-0.6, for an ideal classifier. These figures are `[UNVERIFIED]` and use no dev data. ASTRA's own risk statement is at astra.md:52. This is wording only and θ is unchanged. It is what stops a later re-derivation of θ, which would breach NO_THRESHOLD_LOOSENING.
++  5. **C1→C2 procedure is not binding.** The frozen text must require the following. C1 is added as a NEW file with the draft kept; a `git mv` would register as a rename, `--diff-filter=A` would return nothing, and C2 would refuse. C1 to C3 are committed on `prereg004/step3-port` with no amend, rebase or squash, and merged only by fast-forward or merge commit. C1 is pushed and its full SHA recorded before C2 runs.
++  6. **Smaller statements in l.202 and §7 that are literally false.**
++     - "Every pass test is written as `x ≤ bound`" is false: `validate.py:248` uses `>=` and `:178` uses `<`. The NaN-never-passes semantics still hold.
++     - "A one-element sample is NaN" is false for (iii): the std of one midpoint is 0.0, and ddof=0 is unstated.
++     - (v) is enforced by abort and cannot evaluate False under the validation label; the draft should say so.
++     - The IQR `loc_inconclusive` wording means "fails (ii)", not the INCONCLUSIVE verdict.
++     - The `near_boundary_pairs_tol` count should be reported per seed.
++  7. **Runnable-command gap.** The Makefile has no `test-004`, `dry-run-004` or `verify-seal-004` targets. I grepped and found none, and only `verify-2p1` exists. Comité 052 asked for them. The frozen text must name the exact substitute commands, and must say whether the full-grid dry run on `DRY_RUN_SEEDS` is part of the plan. No code writes `validation_004_provenance_launch.txt`, so the frozen text must give its content and the command-by-command procedure (UTC timestamps, lscpu, and a pip freeze diff against `requirements-lock.txt`).
++  8. **Review coverage, for the PI to weigh (not a freeze-rule breach).** The fixes after the O8 Gemini review (4190a10) and the changes after audit 045 have been checked only by /auditor 045/046 for the technical delta. No second model family has reviewed the text after the edits in items 1-7. Those edits are wording-only, so the PI could accept a light check instead. Audit 046 itself says session independence is not certified.
++  9. **What does not need to change.** T, the ρ grid, θ, K, the seeds, and the code (the fixes are wording only; Logician's optional (iii) NaN change is declined). No wave-1 brief found a criterion that cannot fail. Bit-reproducibility holds only for 20 threads on the measured host, and the result doc must say so (SWE R6). The 61 tests pass (dossier); the global suite was not rerun.
++  - **Conditions to lift the BLOCK, for the PI:** make fixes 1-7 in the draft, which then becomes the non-draft text. Re-run `make verify-seal verify-2p1` and refresh the SHA table. Then the PI may decide C1. The committee does not authorise C1-C3.
++
++## 7. Literature verdict
++| Citation | Claimed by | Status |
++| --- | --- | --- |
++| EGS (arXiv:2605.06813) derived-md l.173-181: event horizon = boundary of past of J+, needs an infinite sprinkling | physicist | CONFIRMED (l.173) |
++| EGS l.181-191 and l.463: bimodal longest-chain split of minimal elements, inside vs outside the horizon | mathematician | CONFIRMED (the chain text starts at l.181 and "bimodal" is at l.191 and l.463; l.463 is the summary of the first diagnostic) |
++| EGS l.193: future cardinality is also bimodal, but "may be affected more strongly by the choice of boundary" | mathematician, physicist | CONFIRMED. The l.188-193 range is fine. The paper's own example (a causal diamond) makes the cardinality vary between n and √n even in Minkowski, which supports the T-dependent effective boundary disclosure. |
++| EGS l.195: the partition "would no longer work for regular black holes" (Hayward) | physicist | CONFIRMED. The paper says "likely does not allow a partition", in 3+1; it is hedged. |
++| Surya LRR ("The causal set approach to quantum gravity", derived-md) l.409-410, Myrheim 1978: counts are legitimate, "Order + Number" | mathematician | CONFIRMED in substance, with a mislocated line. l.409-410 are the passage substituting continuum volume with cardinality, citing Myrheim 1978. The "Order + Number ∼ Lorentzian Geometry" formula (5) is at l.471. |
++| Surya LRR l.1000-1010: ordering fraction and Myrheim–Meyer dimension | mathematician | CONFIRMED |
++| Surya LRR l.1226: discrete geodesic distance = longest chain (Myrheim 1978) | mathematician | CONFIRMED |
++| ASTRA `astra.md` l.3-5: induced metric h = (1+2M/r)dr² + r²dφ² on t*=0 | mathematician | CONFIRMED |
++| ASTRA l.7-12: minimal-element surface density ∝ ρ^{(D-1)/D}, so ρ^{2/3} in 2+1D | mathematician | CONFIRMED |
++| ASTRA l.33-41 (physicist writes l.35-40): c₃ = Γ(4/3)(3/π)^{1/3}; λ_r(r) = c₃ρ^{2/3}·2πr√(1+2M/r) | mathematician, physicist | CONFIRMED. The c₃ ≈ 0.88 value, ρ=126 → ℓ_rad ≈ 0.00905, and θ_loc/θ_stab ≈ 0.0362/0.0181 all check out. |
++| ASTRA l.42: the O(1) factors between ℓ_rad and 1/λ_r are absorbed into K_LOC=2 | mathematician, physicist | CONFIRMED. The ASTRA formula "no es 1/λ_r(r)" is on that line. |
++| ASTRA l.52: "riesgo de exigir demasiado", K=2 sets no coverage level, 1−3e⁻² ≈ 0.594 | mathematician, physicist | CONFIRMED. 1−3e⁻² = 0.594 is correct. |
++| ASTRA l.30 (same 1+1 convention) → "bound/δ ≈ 2.5, per-seed pass ≈ 0.71" | physicist | UNCONFIRMED as cited. l.29-31 gives only the reduction ℓ_rad = ρ^{-2/3}/P_* and the 1+1 reduction to ρ^{-1/2}. The ratio 2.5 and the 0.71 are not in ASTRA. They are the physicist's own derivation, and the dossier marks this only as `[INFERENCE]`. |
++| ASTRA l.46: width mean 2δ, midpoint std δ/√2 for an exponential-neighbour model | (not cited by an expert; used to check them) | CONFIRMED, and consistent with the Gamma(2,δ) model both experts use |
++| E1 lemma `research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md` §3: x≺y ⟺ dist_φ ≤ min(π, sup L) on rectangular patches | mathematician | CONFIRMED (§3 l.81 onward) |
++| E1 l.98 and l.172: the maximiser-existence step is marked `[INFERENCE, no formalizado aquí]` | physicist | CONFIRMED (both lines) |
++| Comité 052 `docs/comite/comite_decision_052_prereg004-2p1-design.md` l.153: Lean has nothing on 2+1 | physicist, logician | CONFIRMED in substance (the Mathematical-logic brief says nothing in Lean mentions 2+1 or the equator). I only skimmed the line number. |
++
++- **Notes**
++  - **ASTRA derivation:** it exists at the stated worktree path. The line numbers cited by the mathematician and physicist are accurate except for the physicist's "l.30" for the 1+1 bound/δ ≈ 2.5 comparison. That figure, and the 0.71, have no anchor in ASTRA and should be treated as `[INFERENCE]`.
++  - **Idealised-model arithmetic:** I checked the experts' numbers using only the ASTRA formulas.
++    - δ ≈ 0.256ρ^{-2/3} ≈ 1.13 ℓ_rad.
++    - Bound/δ ≈ 1.78.
++    - Gamma(2) median = 1.678δ ≈ 0.94 × the bound.
++    - IQR ≈ 1.73δ ≈ 0.97 × the bound.
++    - P(single width ≤ bound) ≈ 0.53.
++    - All of these are numerically correct. I did not check the mathematician's Φ(0.26) ≈ 0.6 median-of-20 figure.
++    - The two experts do not agree on the conclusion. The mathematician says "coin flip" for the IQR and about 0.6 for the median. The physicist says about 0.53 per seed. Both agree that the (ii) clause is close to the edge and that this needs disclosing in advance.
++  - **E1 lemma location:** it is not in the main checkout `/home/ignac/nachocausal/research_program/`. It exists only in the worktree, `/home/ignac/nachocausal/.worktrees/prereg004-step3/research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md`. The E1 text also cites "ASTRA, §6". That is E1's own audit, not the blind-anchor ASTRA `astra.md`. A reader could confuse the two.
++  - **EGS limits:** EGS defines the diagnostics for 1+1 patches (Fig. 3) and for the 3+1 discussion. It does not treat 2+1 equatorial patches. The experts apply it by analogy, which the draft already discloses as A1-A4.
++  - **Not checked:** I did not verify the repo-internal line anchors (`validate.py`, `seed_manifest.py`, `.gitignore`, the draft's line numbers). Those are not literature citations and are outside this role.
++  - **Overall:** no citation is fabricated, and none supports a claim contrary to what the expert asserted. The two defects are one mislocated line (Surya "Order + Number" is at l.471, not l.409-410) and one unanchored figure (ASTRA l.30).
++
++## 8. Synthesis
++Recommended direction, ranked alternatives, and **open disagreements (never hidden)**. If a
++pre-registration BLOCK or an unresolved falsification exists, the verdict cannot be a PROCEED
++verdict.
++
++**Recommended direction: do not freeze yet. First revise the text, then decide C1.**
++- The warden **BLOCKs**, and the falsifier rates the draft NOT READY. Either one rules out a PROCEED verdict.
++- All seven roles agree on two points:
++  - the design (T, ρ grid, θ/K_LOC, seeds, criteria code) needs no change;
++  - no criterion is unable to fail; no ground-truth leakage was found in the blind path; no over-claim was found.
++- What blocks is the **text to be sealed**, plus the **C1→C3 procedure**.
++- The chair's §2 checks confirm every blocker that can be checked mechanically.
++
++**Required changes before C1 (converged; numbered for the sign-off):**
++1. **Verdict precedence (Q1).** Replace §7 "≥ 3 BH abstentions is a FAIL of (i), never INCONCLUSIVE" with:
++   - "BH abstentions never *cause* INCONCLUSIVE";
++   - the precedence actually coded: OUT_OF_DOMAIN > ABORTED_GUARD_V / ABORTED_TAU_RANGE > INCONCLUSIVE > PASS/FAIL (`validate.py:226-233`).
++
++   Commit in advance that, under INCONCLUSIVE, the result document reports the clause values computable from the recorded aggregates, labelled *non-verdict* (falsifier).
++2. **Literally false sentences in §7:**
++   - "every pass test is written as `x ≤ bound`": coverage uses `>=` and (i) uses `<`. The NaN semantics still hold.
++   - "one-element sample ⇒ NaN": with one clean midpoint the std is 0.0, so (iii) can pass. State ddof = 0, and that (ii)-IQR fails in that case.
++   - "else inconclusive ⇒ not passed" for the IQR clause: it should read "fails (ii)".
++   - (v): state that it is a precondition enforced by abort, not a criterion that can be False under the validation label. Do not count it as a sixth "passed" criterion.
++3. **Stale state.**
++   - Refresh the §3 SHA table to the current values (`2bf954fb…`; `seed_manifest.py` `e4047104…`). Add the SHAs of the 2+1 code files.
++   - Extend the §9 audit trail to cover 045 (AUDIT_FAIL, Codex) → 782d031 → 046 (AUDIT_PASS, Codex, session separation not certified). Correct the "same model family" sentence.
++   - Close the "re-audit pending" lines in §10.
++4. **Committing the result.** `results/` is git-ignored. §9 must fix the mechanism: `git add -f` of the result, the progress log, the provenance file and a run log (stdout and stderr), with their sha256 recorded in `docs/`. Otherwise the `PRIMARY_ARTIFACT_LOST` failure of prereg-002 repeats.
++5. **C1→C2→C3 procedure, made binding in the text:**
++   - C1 adds `docs/preregistration_004.md` as a **new file**, keeping the draft; never `git mv` (rename detection would defeat `--diff-filter=A`).
++   - C1 is pushed, and its full SHA is recorded in a signed, pushed note **before** C2.
++   - C1 to C3 stay on `prereg004/step3-port` with no amend, rebase or squash, and are merged only by fast-forward or by a merge commit.
++6. **Runnable commands.**
++   - Either add the `make` targets asked for by comité 052, or name the exact substitute commands.
++   - Say whether a full-grid dry run on `DRY_RUN_SEEDS` happens after C1.
++   - Write the provenance-launch procedure out command by command: UTC timestamps, `lscpu`, `pip freeze` diffed against `requirements-lock.txt`.
++7. **Power disclosure for (ii), worded symmetrically.** Add to "Known weakness" a statement derived **from theory only** (ASTRA plus the Gamma(2, δ) neighbour model; no dev JSONL consulted). It says that even an ideal classifier passes (ii)-width/IQR at ρ\* only about half the time (bound ≈ 1.78 δ). These figures are `[UNVERIFIED]`, from the experts' arithmetic as checked by the literature verifier.
++   - The wording must be the falsifier's, not the physicist's: a FAIL is reported as FAIL, and the low power is a property of the test. No result may be used to re-derive or loosen θ/K_LOC in any successor pre-registration.
++   - The physicist's "1+1 ratio ≈ 2.5 / 0.71" is not anchored in ASTRA (literature verdict) and must not be cited as ASTRA's.
++8. **Executable proof of item 1 (falsifier's minimal test).** Add to `tests/test_004_criteria_can_fail.py` the case "ρ = 32 short + ρ = 126 with 3 abstentions ⇒ INCONCLUSIVE, no `checks`" as a documented expectation. This is a test file, outside `SEALED_PATHS`. It changes no criterion.
++
++**Optional (advisory, not blocking):**
++- report `near_boundary_pairs_tol` per seed (mathematician);
++- record the CPU model and state that bit-reproducibility holds only for 20 threads on this host (SWE R6);
++- record UTC in the progress `start` line (SWE R7);
++- keep the host awake during the run.
++
++**Ranked alternatives:**
++- **(A, recommended)** Make the wording and procedure changes 1-8, with no code change in `nachocausal2p1/`. Then do a short cross-family check of the final §7/§9 text against `validate.py` (`revision-ciega`, PI permission required). Then the PI decides C1.
++- **(B)** Same as A, but without the cross-family check. The gap is declared in §9: the post-O8 semantics have been checked against code only by Codex audits 045/046 and this Claude committee.
++- **(C, rejected by the warden)** Code changes such as making (iii) NaN when n_clean < 2. They reopen the audit chain (re-audit needed) and add nothing the wording does not already give.
++
++**Open disagreements (not resolved here):**
++- **Cross-family review before C1.**
++  - The falsifier asks for one non-Claude pass on the final text.
++  - The warden leaves it to the PI ("light check" acceptable, since the edits are wording-only).
++  - Factual correction by the chair: the falsifier says 045 was Claude, but 045 and 046 were both **Codex** (§2). Their technical delta checks are therefore already cross-family.
++  - What remains true is narrower. Neither Codex audit caught the Q1 text-versus-code contradiction. The last *content* review by a non-Claude model predates the D1/D2 sentences.
++- **Wording of the power disclosure.**
++  - The physicist proposes "a FAIL driven only by (ii) is not evidence that the order fails to localise".
++  - The falsifier rejects that as an asymmetric pre-excuse of FAIL.
++  - The chair recommends the falsifier's wording (item 7).
++- **Power figures.**
++  - The mathematician gives ≈ 0.6 for a median of 20 seeds, plus a coin-flip IQR.
++  - The physicist gives ≈ 0.53 per seed.
++  - These are different quantities; they do not contradict each other. Neither is a committed script, so both stay `[UNVERIFIED]` in the text.
++- **Thread nondeterminism.**
++  - The SWE treats it as an unprobed risk (R6).
++  - The falsifier judges it unlikely on inspection (no cross-iteration reductions).
++  - Both agree that it is unverified and must be declared.
++
++
++## 9. Next-step spec
++The sequenced plan, separating **reversible** steps (may be run now if the user asks) from
++**committing** steps (only on explicit user authorisation), with the binding rules pre-committed
++and the falsifier's minimal falsification test included:
++
++**Reversible (may run now if the user asks; nothing touches the virgin band, the 1+1 seal or `nachocausal2p1/`):**
++1. Edit `docs/preregistration_004_draft.md` with changes 1-7 of §8. Wording only; no θ, T, ρ, K, seed or code change.
++2. Add the falsifier's minimal test (§8 item 8) to `tests/test_004_criteria_can_fail.py`:
++   - synthetic levels with ρ = 32 short and ρ = 126 at `n_abstain_BH = 3`;
++   - expect `INCONCLUSIVE` with no `checks`.
++
++   Run the three 004 test files and the global suite, and report the counts.
++3. Add the `make` targets, or substitute commands, for test, dry-run and seal (§8 item 6). The Makefile is outside `SEALED_PATHS`.
++4. Re-run `make verify-seal verify-2p1` and refresh the SHA table.
++5. Optional, with explicit PI permission because it sends text to a third party: `revision-ciega` with a non-Claude model on the final §7/§9 against `validate.py`. One round, closed by its evaluation. Alternative B: declare the gap in §9.
++6. Commit and push the revised draft (PI authorisation for the commit), then run `/auditor` on that delta in a separate session.
++
++**Committing (only on explicit user authorisation, after steps 1-6 are green):**
++- **C1.**
++  - Add `docs/preregistration_004.md` as a new file (the draft is kept), set `STATUS = "FROZEN"`, and include the fixture, all in one commit on `prereg004/step3-port`.
++  - Before that commit: `make verify-seal` is unchanged, the tree is clean, and `make verify-comite` passes.
++  - Push C1. Record its full SHA in a signed, pushed note. No amend, rebase or squash afterwards.
++- **C2.**
++  - `python -m nachocausal2p1.seed_manifest <full-C1-SHA>` on the pinned environment and a clean tree.
++  - Commit and push only `docs/validation_004_seeds.json`.
++- **C3.**
++  - A single blind CPU run, `NUMBA_NUM_THREADS=20`, under `nohup`, with a run log. HEAD is the C2 commit.
++  - Afterwards, `git add -f` the result, progress log, provenance file and run log, with their sha256 values in `docs/`.
++  - The result is reported alike whatever it is. No rerun on fresh seeds. A no-output crash is relaunched on the same seeds; deterministic aborts are not relaunched.
++
++
++## 10. Verdict
++COMMITTEE_DECISION_VERDICT=RECOMMEND_REVISE_AND_RECONVENE
++
++## 11. User sign-off
++_(left blank for the user — decision, date, and any overriding notes)_
+diff --git a/docs/preregistration_004_draft.md b/docs/preregistration_004_draft.md
+index ab89822..a26c9f5 100644
+--- a/docs/preregistration_004_draft.md
++++ b/docs/preregistration_004_draft.md
+@@ -4,10 +4,12 @@
+ >
+ > This file is the reversible draft of what `docs/preregistration_004.md` *would* register. It
+ > freezes nothing, seals nothing, draws no seed and touches **no** seed of the virgin band
+-> `8_000_000..8_999_999`. It is the input to step 7 of
+-> `docs/comite/comite_decision_052_prereg004-2p1-design.md` §9 ("reconvene `/comite` on the
+-> concrete prereg-004 draft"). Freezing is a separate committing step (C1, §9 below) that needs
+-> steps 1-7 green and explicit PI authorisation; only then is the non-draft
++> `8_000_000..8_999_999`. It was the input to step 7 of
++> `docs/comite/comite_decision_052_prereg004-2p1-design.md` §9; that step is comité 053
++> (`docs/comite/comite_decision_053_prereg004-draft-readiness-c1.md`, `REVISE_AND_RECONVENE`),
++> and this revision applies its §8 changes (§10 below). Freezing is a separate committing step
++> (C1, §9 below) that needs the items still open in §10 closed and explicit PI authorisation;
++> only then is the non-draft
+ > `docs/preregistration_004.md` created and `nachocausal2p1/thresholds.py` set to `FROZEN`.
+ >
+ > Sealed 1+1 instrument unchanged: `nachocausal/thresholds.py` SHA256 =
+@@ -93,12 +95,21 @@ not edited.
+   numba 0.66.0, llvmlite 0.48.0, scipy 1.17.1; CPU only (CuPy not loaded, `NC2P1_DEVICE` unset
+   or `cpu`).
+ 
+-**SHAs at drafting time** (to be re-taken and recorded at C1; `make verify-2p1`, `sha256sum`):
++**SHAs of the candidate on 2026-10-15** (`make verify-seal-004`; re-taken and recorded at C1):
+ 
+ | File | SHA256 |
+ |---|---|
+-| `nachocausal2p1/thresholds.py` (candidate) | `e7a69934dff0219f4d3560e1f892eeb9ecf8accb5fa72996e1e0cf73f7e326eb` |
++| `nachocausal2p1/thresholds.py` (candidate; changes at C1) | `2bf954fb1164f94b42b2e34512aac1d10d5e76e77915b15c14a640bf7186908e` |
+ | `nachocausal2p1/fixtures/tau_table_2p1.json` | `4bc4aec839257af7fed210030c0afa9041c265cacf43802bb735fb99df367a28` |
++| `nachocausal2p1/__init__.py` | `2c144e493dc3cc5b8e315892c4be4f591ee2e1dcfe04a05ea6698bb6cec2404a` |
++| `nachocausal2p1/dry_run.py` | `eb98e3339b9f208a6e4af8e40c6a4b139806accc7cc9762bea52039701211995` |
++| `nachocausal2p1/estimator.py` | `3a5010c403dd5083fcc2c4256c6e235ca092546d1e86dc83e3a980ecb4424ec4` |
++| `nachocausal2p1/gate.py` | `b688535636be2ac3a585fd34b5a2ed97481886452fac1be92de619f49124629c` |
++| `nachocausal2p1/generator.py` | `5324a924f7ef923984841199249e9a571626004efbdf85ca6dcd006c97e88b55` |
++| `nachocausal2p1/seed_manifest.py` | `299b4cc2ae02ee557e88d2210fc0ae658a6e24eb904ac73d09df555ac7d87255` |
++| `nachocausal2p1/validate.py` | `ad68e34b11fe758f8a28ed943ae91d9d43f85806038514e2fa8871b3aa19f4e6` |
++| `nachocausal2p1/scoring/__init__.py` | `641c78ef485d75a2f175adda2de8623cd6b1b5ecd91255dfafacf81897cf0039` |
++| `nachocausal2p1/scoring/scorer.py` | `b9097beb20a3c7e3457f756a5d2cb469172ff9022fbf4bef83febd754265d144` |
+ | `nachocausal/thresholds.py` (1+1 seal) | `6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4` |
+ | `nachocausal/estimator.py` (imported) | `aa4411c3d095230e0f6dde78e4a8de11240c0cb42ad14353453848d70cdf1680` |
+ | `nachocausal/generator.py` (imported, radial check) | `d6f09fdc21b76f6cf329c33580342a068135f7ece7ed11c304552f0848216f9f` |
+@@ -117,6 +128,8 @@ the draw is recorded separately in `docs/validation_004_seeds.json`. C1 also sea
+   minimal elements.
+ - **Bracket (scoring only):** `[max r over low-O minimals, min r over high-O minimals]`;
+   `covers` iff `r_lo ≤ 2M ≤ r_hi`; `clean` iff width ≥ 0; point estimate = midpoint.
++  A seed is **bracket-valid** iff it is generator-valid, the BH did not abstain, and both
++  classes of the split are non-empty (`scoring.scorer.blind_bracket`, `validate.per_seed`).
+ - **Guard-v:** `verify_order_only` on every causet; it raises on failure (aborting the run).
+ 
+ ## 5. Gate table τ(n) (step 1)
+@@ -151,8 +164,10 @@ reused.
+   all in `VIRGIN_BAND`, none in `EXPLORE_BAND = 7_000_000..7_000_999`, none among the burned
+   Phase-A seeds `1, 2, 3, 4, 7, 99, 12345`. `validate.check_seed` refuses any virgin seed before
+   `STATUS == "FROZEN"` and a verified, committed C2 manifest. Nothing is drawn at import.
+-- Burned and never reusable: the whole exploration band, the Phase-A seeds, and the prereg-001
+-  and prereg-002 seeds. Dry runs use only `DRY_RUN_SEEDS = 7_000_100..7_000_109`.
++- Burned and never reusable **as validation seeds**: the whole exploration band, the Phase-A
++  seeds, and the prereg-001 and prereg-002 seeds. `check_seed` still admits the exploration band
++  after the freeze, for dry runs and tests; the validation run admits only the 20 seeds of the C2
++  manifest (`validate.run`). Dry runs use only `DRY_RUN_SEEDS = 7_000_100..7_000_109`.
+ 
+ ## 7. Frozen analysis
+ 
+@@ -184,29 +199,52 @@ compared with dev widths and will not be before the freeze. A low-ρ cell failin
+ is reported as a FAIL, not repaired.
+ 
+ **Criteria** (`nachocausal2p1/validate.py` `summarise_level`, `verdict_from_levels`). The run is
+-**PASS iff all six hold**; otherwise FAIL, except for the two statuses below.
++**PASS iff (i)-(iv) hold**, with (v) as a precondition (below); otherwise FAIL, except for the
++statuses listed under "Verdict precedence".
+ 
+ | Check | Definition |
+ |---|---|
+ | (i) significance | at every ρ ≥ 63: sign-flip `p_perm ≤ 1e-4` on `d = sep_BH − sep_MINK` over generator-valid seeds (exact for n ≤ 20; a BH abstention enters with sep = 0), **and** BH abstentions < 3 at that level |
+-| (ii) localisation | at ρ\*: median clean width/2M ≤ θ_loc(ρ\*), **and** IQR of widths/2M ≤ θ_loc (else inconclusive ⇒ not passed), **and** coverage ≥ 0.5 over bracket-valid seeds |
++| (ii) localisation | at ρ\*: median clean width/2M ≤ θ_loc(ρ\*), **and** IQR of clean widths/2M ≤ θ_loc (a larger or NaN IQR fails (ii); the code field `loc_inconclusive` means this FAIL, not the run verdict INCONCLUSIVE), **and** coverage ≥ 0.5 over bracket-valid seeds |
+ | (ii) convergence F | for consecutive grid levels: `m(ρ_{k+1}) ≤ m(ρ_k) + slack(ρ_k)`, m = median clean width/2M; a NaN median (no clean bracket at a level) fails it |
+-| (iii) stability | at ρ\*: std of clean bracket midpoints ≤ θ_stab(ρ\*) |
++| (iii) stability | at ρ\*: population std (ddof = 0) of clean bracket midpoints ≤ θ_stab(ρ\*) |
+ | (iv) flat escapes | at ρ\*: flat-control non-abstentions ≤ 1 of the generator-valid seeds |
+-| (v) order-only | Guard-v ran on every causet (`guard=True`) |
+-
+-- **INCONCLUSIVE** iff **any** level of the grid has < 18 generator-valid seeds (PI decision of
+-  2026-10-14 after the O8 review, D2; before, only the primary level counted and a short
+-  secondary level gave FAIL). It is reserved for generator-invalid seeds; ≥ 3 BH abstentions is
+-  a **FAIL** of (i), never INCONCLUSIVE (PI decision, comité 052 §11).
+-- **Every pass test is written as `x ≤ bound`**, so a NaN (empty or one-element sample) never
+-  passes it (O8 review, D1).
+-- **OUT_OF_DOMAIN** iff `T < T_EDGE_MIN = 10`. At the frozen T = 16 this gate cannot fire and is
+-  **not** counted as a safeguard (comité 052 §5 "Verdict coercion").
++| (v) order-only | precondition, not a criterion that can be false in the validation run: the validation label refuses `guard=False` and a Guard-v failure raises (`ABORTED_GUARD_V`, §9). It is not counted as a passed criterion |
++
++- **Verdict precedence** (as coded, `validate.py` `run` and `verdict_from_levels`):
++  `OUT_OF_DOMAIN` > `ABORTED_GUARD_V` / `ABORTED_TAU_RANGE` (§9) > `INCONCLUSIVE` > `PASS`/`FAIL`.
++  - **OUT_OF_DOMAIN** iff `T < T_EDGE_MIN = 10`. At the frozen T = 16 this gate cannot fire and
++    is **not** counted as a safeguard (comité 052 §5 "Verdict coercion").
++  - **INCONCLUSIVE** iff **any** level of the grid has < 18 generator-valid seeds (PI decision of
++    2026-10-14 after the O8 review, D2; before, only the primary level counted and a short
++    secondary level gave FAIL). It is evaluated **before** (i)-(iv), and the verdict then carries
++    no per-clause `checks`; so it takes precedence over any FAIL, including a FAIL of (i) at
++    ρ = 126 when ρ = 32 is short (`tests/test_004_criteria_can_fail.py`
++    `test_inconclusive_takes_precedence_over_a_fail_of_i`).
++  - **BH abstentions never cause INCONCLUSIVE**: when every level has ≥ 18 generator-valid seeds,
++    ≥ 3 BH abstentions at a required level is a **FAIL** of (i) (PI decision, comité 052 §11).
++  - **Under INCONCLUSIVE**, the result document also reports, from the recorded level
++    aggregates, the value each clause (i)-(iv) would have taken, labelled **non-verdict**, so that
++    a failure masked by INCONCLUSIVE is visible. These values never turn INCONCLUSIVE into a PASS
++    or a FAIL (comité 053 §8 item 1). The code does not produce them (`verdict_from_levels`
++    returns before building `checks`); the result document computes them by hand from
++    `levels[ρ]`, applying the inequalities of the table to the recorded aggregates. A clause
++    whose input is a count over **zero** generator-valid seeds (for example `n_escape_MINK = 0`,
++    `n_abstain_BH = 0`) is reported as **not evaluable**, not as passed.
++- **NaN never passes** (O8 review, D1): every pass comparison is false on NaN (`≤` for (ii),
++  F, (iii), (iv); `≥` for the coverage floor; `<` for the abstention count, which is an integer).
++  A level with no clean bracket has NaN median, IQR and midpoint std. With exactly **one** clean
++  bracket the median is defined, the IQR is NaN and the midpoint std is **0.0**, not NaN. **At
++  ρ\*** (iii) then passes on its own, but (ii) fails through the IQR, so the run cannot PASS
++  (`test_one_clean_bracket_passes_iii_but_fails_ii`). At ρ = 32 or 63 only the median enters
++  (through F); the IQR and the midpoint std of those levels are reported but are not criteria, so
++  a secondary level with one clean bracket can be part of a PASS.
+ - **(i) and (iv) are gate-derived.** With the flat control abstaining, `d ≥ 0` on every seed and
+   the exact sign-flip test gives `p = 2^-m`, with m the number of seeds where the BH passes the
+   gate, whatever the size of `sep_BH`. So (i) reduces to "fewer than 3 BH seeds abstained" at
+-  each required level, and (iv) to "≤ 1 flat seed escaped the gate". Neither is independent
++  each required level, and (iv) to "≤ 1 flat seed escaped the gate". The reduction of (i) needs
++  **no** flat escape at that level: (iv) allows one at ρ\* and does not limit escapes at ρ = 63,
++  and an escape can make `d < 0` on a seed, so (i) can then also fail through `p_perm`. Neither is independent
+   confirmation; the discriminating content is (ii), (iii) and coverage (comité 052 §8 item 7;
+   O8 review, D10 and D12).
+ - **Declared dependence between levels** (O8 review, D7; inherited from 1+1,
+@@ -231,12 +269,30 @@ is reported as a FAIL, not repaired.
+   but mislocated bracket can pass (ii)-width and (iii); only coverage catches it, and with floor
+   0.5 up to 10 of 20 non-covering seeds still PASS. The coverage floor 0.5 is a deliberately weak
+   floor, not nominal coverage, and is neither raised nor lowered.
+-
+-**Can-fail evidence (step 4):** `tests/test_004_criteria_can_fail.py` (18 tests) shows (ii) via
++- **Low power of (ii)-width and IQR, stated in advance** (comité 053 §8 item 7). This follows
++  from theory only: the ASTRA neighbour model (`revisiones/2026-10-13-anclaje-theta-ciego/astra.md`
++  l.33-46) and the frozen formula. No dev JSONL and no dev width was consulted to write it.
++  For a classifier that splits the minimal elements exactly at r = 2M, the bracket is the gap
++  between the nearest minimal elements on either side in radial projection. With radial
++  intensity `λ_r(2M) = c₃ρ^{2/3}·2π(2M)√2`, `c₃ = Γ(4/3)(3/π)^{1/3} ≈ 0.879`, each side is
++  Exp(δ) with `δ = 1/λ_r(2M) ≈ 0.256 ρ^{-2/3}`, and the width is Gamma(2, δ). The bound
++  `θ_loc·2M = 2ρ^{-2/3}/(1.4π) ≈ 0.455 ρ^{-2/3} ≈ 1.78 δ`. Then P(one width ≤ bound) =
++  `1 − e^{-1.78}·2.78 ≈ 0.53`; the median width is `1.678 δ ≈ 0.94` of the bound; the IQR is
++  `1.73 δ ≈ 0.97` of the bound. So even an ideal order-only localiser passes the width and IQR
++  clauses at ρ\* only about half the time `[UNVERIFIED — closed-form arithmetic in a flat-local
++  approximation, ρ^{-1/3} ≈ 0.2 not ≪ 2M; no simulation]`. This is a property of the test, fixed
++  before any validation data. **A FAIL is reported as FAIL**, with no qualifier added after the
++  result. **No result of this run may be used to re-derive, rescale or loosen θ_loc, θ_stab or
++  K_LOC**, here or in any successor pre-registration.
++
++**Can-fail evidence (step 4):** `tests/test_004_criteria_can_fail.py` (20 tests) shows (ii) via
+ coverage, (ii) via width, (iv) and (v) can each produce FAIL; since the O8 review (D9) it also
+ shows, each failing alone, (i) by 3 BH abstentions at ρ = 63, the convergence clause F, (iii),
+ the IQR clause of (ii), a NaN median failing F, a NaN IQR never passing, and a short secondary
+-level giving INCONCLUSIVE; `dev/mutation_check_004.py` catches
++level giving INCONCLUSIVE; since comité 053 it also fixes the verdict precedence (a short level
++gives INCONCLUSIVE with no `checks` even with 3 BH abstentions at ρ\*) and the one-clean-bracket
++case. (v) is shown false only outside the validation label, where it is a precondition (§7).
++`dev/mutation_check_004.py` catches
+ 5/5 mutations (`dev/PREREG004_STEP_4_2026-10-13.md`).
+ 
+ ## 8. Pre-flight (step 5) and expected runtime
+@@ -274,31 +330,68 @@ level giving INCONCLUSIVE; `dev/mutation_check_004.py` catches
+ - **Crash rule:** a crash is relaunched on the **same** seeds, environment and commit, **only if
+   no scoring output was produced**, and the relaunch is logged with timestamps. The progress log
+   below records each launch (a `start` line with its time) and carries no scoring field.
+-- **Writing:** `results/validation_004.json` is written atomically and committed immediately with
+-  its SHA (lesson of prereg-002 `PRIMARY_ARTIFACT_LOST`, `docs/preregistration_002_result.md`).
++- **Writing:** `results/validation_004.json` is written atomically. `results/` is git-ignored
++  (`.gitignore:21`), which keeps the tree clean during the run (the seed guard re-checks
++  `git status --porcelain`), so a plain `git add` records nothing. Immediately after the run
++  ends, crashes or aborts, the four run files are **force-added** by name in one commit:
++  `git add -f results/validation_004.json results/validation_004.progress.jsonl
++  results/validation_004_provenance_launch.txt results/validation_004_run.log` (only the files
++  that exist), with their `sha256sum` lines written into `docs/preregistration_004_result.md`
++  in the same commit, and the commit is pushed (lesson of prereg-002 `PRIMARY_ARTIFACT_LOST`,
++  `docs/preregistration_002_result.md`; comité 053 §8 item 4).
++- **Run log:** the run's stdout and stderr go to `results/validation_004_run.log`, so the
++  verdict line, or the traceback of an abort, is kept.
+ - **Progress log** (O4, §10): `results/validation_004.progress.jsonl`, one fsynced line per seed
+   and level with only `seed, rho, seconds` (`validate.PROGRESS_FIELDS`), appended as the run
+   goes. It says nothing about the outcome: abstentions and invalid seeds would reveal a FAIL of
+-  (i) or (iv) hours before the end (O8 review, D6). It is committed together with the result, or
+-  alone after a crash.
++  (i) or (iv) hours before the end (O8 review, D6). It is force-added with the result, or alone
++  after a crash (Writing, above). Its `start` line uses local time with offset; the provenance
++  file records UTC.
+ - **Deterministic aborts are not crashes** (O8 review, D11). A Guard-v failure or a seed with
+   `n_minimal > 256` (outside the τ table) raises and stops the run without a result. Rerunning
+   the same seeds, environment and commit would stop in the same place, so such an abort is not
+   relaunched: it is reported as `ABORTED_GUARD_V` or `ABORTED_TAU_RANGE`, with the progress log
+-  and the traceback, and it is not a PASS.
++  and the traceback, and it is not a PASS. These two names are labels of the result document;
++  the code raises an exception and writes no verdict.
+ - **Entry point:** `python -m nachocausal2p1.validate` runs `validate.run()` with its defaults
+   (seeds from the committed C2 manifest, `guard=True`, `write=True`) and prints the verdict and the result path. The
+   validation label refuses `write=False` (O8 review, D3 and D4).
+-- **Provenance launch file** `results/validation_004_provenance_launch.txt` records: start/end
+-  UTC; HEAD SHA and branch; both thresholds SHAs, the τ fixture SHA and the imported 1+1 module
+-  SHAs (§3); C1 SHA and C2 manifest SHA256; `git diff <C1-SHA> -- nachocausal/ nachocausal2p1/ docs/preregistration_004.md` line
+-  count (must be 0); `git status --porcelain` (must be empty); `uname -a`, `python -V`, full
+-  `pip freeze`; `NUMBA_NUM_THREADS`, OMP/MKL thread env, numba cache setting; `T_EDGE` as read by
+-  the generator at runtime; the 20 seeds and draw recipe; test pass count.
+-- **Sequence:** comité 052 §9 steps 1-6 (done, §5-§8 above; step 5 partial) → **step 7: `/comite`
+-  on this draft** → C1 freeze (`docs/preregistration_004.md` + `STATUS = "FROZEN"` + fixture,
+-  SHAs recorded, `make verify-seal` unchanged, tree clean, `make verify-comite` passing) → C2 blind
+-  draw → C3 single blind CPU run.
++- **Provenance launch file** `results/validation_004_provenance_launch.txt`. No code writes it;
++  it is produced by these commands, run in order from the repo root on the C2 commit, with
++  `PY=/home/ignac/nachocausal/.venv/bin/python` and `C1=<full C1 SHA>` (comité 053 §8 item 6):
++
++  ```bash
++  export NUMBA_NUM_THREADS=20      # before the block, so that `env` below records it
++  F=results/validation_004_provenance_launch.txt; mkdir -p results
++  { echo "start_utc $(date -u +%FT%TZ)"
++    echo "head $(git rev-parse HEAD) branch $(git rev-parse --abbrev-ref HEAD) c1 $C1"
++    make verify-seal-004
++    sha256sum docs/preregistration_004.md docs/validation_004_seeds.json
++    echo "sealed_diff_lines $(git diff $C1 -- nachocausal/ nachocausal2p1/ docs/preregistration_004.md | wc -l)"   # must be 0
++    echo "status_porcelain_lines $(git status --porcelain | wc -l)"                                          # must be 0
++    uname -a; lscpu | grep -E 'Model name|^CPU\(s\)|Thread'; $PY -V
++    $PY -m pip freeze > /tmp/pf.txt; cat /tmp/pf.txt
++    echo "pip_freeze_vs_lock_diff_lines $(diff <(sort /tmp/pf.txt) <(grep -vE '^(#|$)' requirements-lock.txt | sort) | wc -l)"
++    env | grep -E '^(NUMBA_|OMP_|MKL_|OPENBLAS_|NC2P1_)' | sort
++    $PY -c "from nachocausal2p1 import thresholds as t; print('T_EDGE', t.T_EDGE, 'STATUS', t.STATUS); print('seeds', t.validation_seeds())"
++    make test-004 PY=$PY 2>&1 | tail -1
++  } > $F 2>&1
++  ```
++
++  The commands need `bash` (process substitution). The run itself is launched in the same shell as
++  `nohup $PY -m nachocausal2p1.validate > results/validation_004_run.log 2>&1`,
++  with the host kept awake; on exit, `echo "end_utc $(date -u +%FT%TZ)" >> $F`. Bit-reproducibility
++  is claimed only for 20 numba threads on the measured host (§8); a run elsewhere is unverified.
++- **Pre-flight commands** (no virgin seed): `make test-004`, `make dry-run-004` (mechanics only:
++  off-grid ρ = 2, burned seeds `7_000_100..7_000_102`, no widths; exit 0 on 2026-10-15),
++  `make verify-seal`, `make verify-seal-004`, `make verify-comite`, and the global `make test`.
++  A full-grid dry run on `DRY_RUN_SEEDS` after C1 (anticipated by comité 052) is **not** part of
++  the plan: the port was already run at ρ = 126, T = 16 on seed `7_000_100` (§8), and a full grid
++  would cost about 2 h for a result that is discarded (PI agreed, 2026-10-15).
++- **Sequence:** comité 052 §9 steps 1-6 (done, §5-§8 above; step 5 partial) → step 7: comité 053
++  (`RECOMMEND_REVISE_AND_RECONVENE`; wording and procedure only) → this revision → cross-family
++  review of §7/§9 against `validate.py` and `/auditor` on the delta → C1 freeze → C2 blind draw →
++  C3 single blind CPU run.
+ - **C1/C2/C3 binding (auditor 045 E1):** C1 is the unique commit introducing the non-draft
+   `docs/preregistration_004.md`; it seals that document and the instrument, including the draw
+   recipe. After explicit C2 authorisation, on the pinned environment and a clean tree,
+@@ -308,11 +401,28 @@ level giving INCONCLUSIVE; `dev/mutation_check_004.py` catches
+   C3 uses the published C2 commit as HEAD and the manifest's C1 commit as the reference for the
+   zero-diff check above. The C2 manifest is an administrative addition outside the sealed paths;
+   it cannot change any analysis parameter. No C1, C2 or C3 step is performed by this draft.
++- **C1 procedure** (comité 053 §8 item 5; `seed_manifest._check_freeze` finds C1 with
++  `git log --full-history --diff-filter=A`):
++  - C1 **adds** `docs/preregistration_004.md` as a new file and keeps this draft; never `git mv`
++    the draft, since a rename is not an addition and C2 would then refuse.
++  - C1 also sets `STATUS = "FROZEN"` in `nachocausal2p1/thresholds.py`. Before committing:
++    `make verify-seal` unchanged, `make verify-comite` passing, tree clean.
++  - C1 is **pushed**, and its full SHA is written into a signed, pushed note (the sign-off of
++    the comité that clears C1) **before** C2 is run.
++  - C1, C2 and C3 are committed on `prereg004/step3-port` and are never amended, rebased or
++    squashed. The branch is merged only by fast-forward or by a merge commit, which keep the C1
++    SHA. A re-made C1 would give a new draw seed; that is forbidden.
+ 
+ **Audit trail:** `/auditor` on the candidate package: report 043 `AUDIT_FAIL` → fixes `c16fb12`
+-→ report 044 `AUDIT_PASS` (`docs/auditor/auditor_report_044_prereg004-2p1-remediation-reaudit.md`).
+-The auditor is the same model family that wrote the code and is **not** an independent review
+-(global rule 5). The 1+1 precedent is PASS with caveats `PRIMARY_ARTIFACT_LOST;
++→ report 044 `AUDIT_PASS` → O3/O4/O8 changes (`5afb33d`, `4190a10`) → report 045 `AUDIT_FAIL`
++(E1, E2, W1, W2) → remediation `782d031` → report 046 `AUDIT_PASS`
++(`docs/auditor/auditor_report_046_prereg004-auditor045-remediation-reaudit.md`). Reports 043 and
++044 do not name their producer; this draft treats them as the author's model family, so not an
++independent review (global rule 5). Reports 045 and 046 were produced by **Codex**, a different
++model family; 046 states that it does not certify that it ran in a separate session. Neither
++caught that the §7 text then contradicted the verdict precedence in the code (comité 053 §8
++item 1). Comité 053 (`docs/comite/comite_decision_053_prereg004-draft-readiness-c1.md`) is
++Claude. The only cross-family *content* review so far is Gemini O8 on `5afb33d` (§10). The 1+1 precedent is PASS with caveats `PRIMARY_ARTIFACT_LOST;
+ TRANSCRIPTION_REVERIFIED; BLINDNESS_DOCUMENTARY_ONLY` (`docs/preregistration_002_result.md:1`).
+ 
+ ## 10. Open items O1-O8: resolution (2026-10-14)
+@@ -340,16 +450,39 @@ can-fail tests), D10 (§7 wording), D11 (deterministic aborts written down). PI
+ (any short level ⇒ INCONCLUSIVE), D5 (draw seed from the C1 commit), D6 (progress log reduced),
+ D7 and D8 (declared in §7, not changed). D12 is stated in §7.
+ 
+-**Consequences still open before C1:**
+-
+-- The O3/O4 and O8 changes touch `nachocausal2p1/validate.py` and `thresholds.py` after auditor
+-  report 044. The delta needs a `/auditor` re-audit in a separate session (PI audit protocol:
+-  freeze and push first, then the auditor reads only the delta).
+-- Step 7: reconvene `/comite` on this draft, and the PI signs the comité 052 verdict.
++**Consequences of the O8 changes (closed).** The re-audit of the O3/O4/O8 delta was done:
++report 045 `AUDIT_FAIL`, remediation `782d031`, report 046 `AUDIT_PASS` (§9 audit trail).
++Step 7 was comité 053 (2026-10-15).
+ 
+ **Auditor 045 remediation (2026-10-14; not a new audit verdict).** The PI authorised the
+ proposed corrections after report 045 (`AUDIT_FAIL`, 2 errors and 2 warnings): E1 is addressed
+ by the separate C2 manifest and explicit C1/C2/C3 references above; E2 by retaining descriptive
+ aggregates for INCONCLUSIVE levels; W1 by limiting the SHA claim to reproducibility; W2 by
+ correcting the coverage example to 10/20. The historical report 045 remains unchanged.
+-The changed candidate must be re-audited in another session before step 7 and C1.
++The changed candidate was re-audited in report 046 (`AUDIT_PASS`).
++
++**Comité 053 revision (2026-10-15; wording, procedure and tests only).** The PI chose to apply
++the eight changes of comité 053 §8 and to add a cross-family review. Changed: verdict precedence
++and non-verdict clause values under INCONCLUSIVE (§7); the NaN and one-clean-bracket statements,
++the IQR wording, (iii) ddof, (v) as a precondition (§7); the power disclosure for (ii) (§7); the
++SHA table (§3); force-adding the run files, the run log and the provenance commands (§9); the C1
++procedure (§9); the audit trail (§9); two tests in `tests/test_004_criteria_can_fail.py`; the
++`make test-004`, `dry-run-004` and `verify-seal-004` targets. Nothing under `nachocausal/` or
++`nachocausal2p1/` changed in this step (the later G8 fix below changes `seed_manifest.py`); no θ,
++T, ρ, K, seed or criterion changed.
++
++**Cross-family review of this revision (2026-10-15).** `revision-ciega gemini` (gemini-4-argon,
++high) on `007947e`: «listo con cambios menores enumerados»; eleven objections, all confirmed or
++partly confirmed against the code (`revisiones/2026-10-15-prereg004-c053-gemini/evaluacion.md`).
++One was a code loophole (G8): `seed_manifest._check_freeze` ran `git log --diff-filter=A` without
++`--full-history`, so a second C1 merged in with `-s ours` hid the first and gave another draw.
++Fixed in `nachocausal2p1/seed_manifest.py` (`--full-history`), with the test
++`test_second_c1_merged_with_ours_strategy_is_refused` (fails without the fix, passes with it).
++The other ten are text: the one-clean-bracket statement holds only at ρ\*; non-verdict values
++under INCONCLUSIVE are computed by hand and counts over zero seeds are "not evaluable"; the
++reduction of (i) needs no flat escape; "bracket-valid" defined (§4); the exploration band is
++burned only as validation seeds (§6); `ABORTED_*` are document labels; the provenance block is
++bash, exports `NUMBA_NUM_THREADS=20` first and ignores blank lockfile lines (§9).
++
++**Still open before C1:** `/auditor` on the delta since `782d031` (which now includes a change
++to `nachocausal2p1/seed_manifest.py`) in a separate session; the PI's signature and C1 decision.
+diff --git a/nachocausal2p1/seed_manifest.py b/nachocausal2p1/seed_manifest.py
+index e2e7248..830a7fd 100644
+--- a/nachocausal2p1/seed_manifest.py
++++ b/nachocausal2p1/seed_manifest.py
+@@ -37,7 +37,11 @@ def _check_freeze(freeze_commit: str) -> None:
+         raise RuntimeError("C2 manifest requires the C1 FROZEN instrument.")
+     thresholds.draw_seed_from_commit(freeze_commit)  # full lowercase SHA, never an abbreviation
+     # C1 is the unique commit introducing the frozen document, not a later convenient SHA.
+-    introduced = _git("log", "--diff-filter=A", "--format=%H", "--", FROZEN_DOC).splitlines()
++    # --full-history: without it, history simplification follows one parent of a merge whose
++    # tree equals it, so a second C1 merged in with `-s ours` would hide the first one
++    # (revisiones/2026-10-15-prereg004-c053-gemini, G8).
++    introduced = _git("log", "--full-history", "--diff-filter=A", "--format=%H", "--",
++                      FROZEN_DOC).splitlines()
+     if introduced != [freeze_commit]:
+         raise RuntimeError("freeze_commit must be the unique C1 commit introducing the frozen doc.")
+     _git("diff", "--exit-code", freeze_commit, "--", *SEALED_PATHS)
+diff --git a/revisiones/2026-10-15-prereg004-c053-gemini/documentos.txt b/revisiones/2026-10-15-prereg004-c053-gemini/documentos.txt
+new file mode 100644
+index 0000000..c917c8f
+--- /dev/null
++++ b/revisiones/2026-10-15-prereg004-c053-gemini/documentos.txt
+@@ -0,0 +1 @@
++docs/preregistration_004_draft.md nachocausal2p1/thresholds.py nachocausal2p1/validate.py nachocausal2p1/seed_manifest.py nachocausal2p1/estimator.py nachocausal2p1/gate.py nachocausal2p1/scoring/scorer.py tests/test_004_criteria_can_fail.py tests/test_004_seed_manifest.py
+diff --git a/revisiones/2026-10-15-prereg004-c053-gemini/evaluacion.md b/revisiones/2026-10-15-prereg004-c053-gemini/evaluacion.md
+new file mode 100644
+index 0000000..9ed4112
+--- /dev/null
++++ b/revisiones/2026-10-15-prereg004-c053-gemini/evaluacion.md
+@@ -0,0 +1,47 @@
++# Evaluación de la revisión cruzada del prereg-004 tras el comité 053 (gemini-4-argon, thinkingLevel=high)
++
++Fecha: 2026-10-15. Evaluador: Claude Opus 5.5, que escribió el paquete, el borrador y su revisión
++(no es evaluación independiente). Herramienta: revision-ciega @ ~/herramientas c12c10e. Documentos
++en 007947e (los nueve de `documentos.txt`). Una ronda.
++
++**Veredicto del revisor:** «listo con cambios menores enumerados». Tras comprobarlo contra el
++código, las objeciones se sostienen; una de ellas (G8) es un resquicio real del código, no solo
++del texto, y es la más importante. El informe ocupa unas 3000 palabras, por encima del máximo de
++2000 pedido; no afecta al contenido.
++
++## Objeciones comprobadas
++
++| # | objeción | estado | comprobación |
++|---|---|---|---|
++| G1 | En el bloque de procedencia, `env \| grep NUMBA_` no registra `NUMBA_NUM_THREADS=20`, que solo se pone como prefijo de la línea de lanzamiento | **comprobado** (lectura del bloque, §9) | hay que exportarlo antes del bloque |
++| G2 | El bloque usa `<(...)`, sintaxis de bash, en un bloque marcado `sh`; con `dash` falla | **comprobado** | `/bin/sh` es dash en Ubuntu; marcar `bash` |
++| G3 | `grep -v '^#'` conserva líneas vacías del lockfile | **parcial** | `grep -c '^$' requirements-lock.txt` → 0 hoy; se endurece igual (`grep -vE '^(#\|$)'`) |
++| G4 | «una sola horquilla limpia ⇒ la corrida no puede PASS» solo vale en ρ\*; en ρ = 32 o 63 el IQR y (iii) no se consultan | **comprobado** | `verdict_from_levels`: IQR y `stab_pass` solo de `prim` (`validate.py` l. 248-252). Error de alcance del texto |
++| G5 | Con 0 semillas válidas del generador, `escape_pass` (`0 ≤ 1`) y `n_abstain_BH < 3` dan True en vacío | **comprobado** | `validate.py:171,193`. No afecta al veredicto (es INCONCLUSIVE), pero sí a los valores *non-verdict* que el §7 promete informar |
++| G6 | Los valores *non-verdict* bajo INCONCLUSIVE no los produce el código: `verdict_from_levels` retorna antes de `checks`; hay que calcularlos en el documento de resultado a partir de `levels`. La guarda `status != "scored"` del bucle de F es inalcanzable | **comprobado** | `validate.py` l. 226-245. Inofensivo; se aclara en el texto |
++| G7 | La reducción de (i) a `p = 2^-m` exige que no escape ninguna semilla plana en ese nivel; (iv) no limita los escapes en ρ = 63 y en ρ\* permite 1 | **comprobado** | `verdict_from_levels` usa `escape_pass` solo de `prim`; el §7 ya lo condiciona («with the flat control abstaining»), pero no dice lo de ρ = 63 |
++| G8 | `_check_freeze` usa `git log --diff-filter=A` **sin `--full-history`**: un commit alternativo C1_alt desde `C1^`, con `git merge -s ours C1`, hace que `git log` devuelva solo `[C1_alt]` y el manifiesto acepte otro sorteo | **comprobado ejecutando** en un repo temporal (scratchpad, sin artefacto): por defecto devuelve solo C1_alt; con `--full-history` devuelve los dos y la comprobación de unicidad falla | `seed_manifest.py:40`. Resquicio de código; deja rastro en el grafo y contradice el SHA anotado, pero el código no lo detecta. Se cierra con `--full-history` |
++| G9 | «bracket-valid» no está definido en §4 | **comprobado** | `scorer.blind_bracket`: válida si ambas clases del corte son no vacías; además la semilla debe ser válida y el BH no abstenerse (`validate.per_seed`) |
++| G10 | `check_seed` admite la banda de exploración aunque `STATUS == "FROZEN"`; el §6 la llama «quemada» | **comprobado**, por diseño | `validate.py:93-94`. La corrida C3 exige las semillas del manifiesto (`run`), así que «quemada» significa «nunca semilla de validación»; se aclara el texto |
++| G11 | `ABORTED_GUARD_V` / `ABORTED_TAU_RANGE` no existen en el código; son etiquetas de procedimiento | **comprobado** | `grep ABORTED nachocausal2p1/` → nada. El §9 ya dice que se informan así; se aclara que son etiquetas del documento de resultado |
++
++## Confirmado sin objeción
++
++Precedencia (salvo G11), semántica NaN de (i)-(iv) en ρ\*, (v) como precondición, tabla de θ, la
++aritmética de potencia (0,53; 0,945; 0,975, coincide con mi comprobación con scipy) y la simetría
++de su redacción.
++
++## Contra la expectativa previa
++
++H1 (OUT_OF_DOMAIN y abortos en `run`): detectado. H2 (minado del SHA): detectado y separado de G8.
++H3 (unicidad dependiente de un fichero ignorado): detectado. H4 (bash, `/tmp`, diff del lockfile):
++detectado y ampliado (G1). H5 (aritmética): confirmada. H6 (reducción de (i)): detectado y
++precisado (G7). Objeción válida no prevista: **G8**, la más grave; también G4, G5, G9, G10.
++Afirmaciones falsas sobre el código: ninguna encontrada.
++
++## Qué se cambia
++
++- **Código (sellado en C1, requiere `/auditor` sobre el delta):** `--full-history` en
++  `seed_manifest._check_freeze`, con un test que reproduce el merge `-s ours`.
++- **Texto (borrador):** G1-G7, G9-G11.
++- **No se cambia** ningún umbral, semilla ni criterio.
+diff --git a/revisiones/2026-10-15-prereg004-c053-gemini/expectativa_previa.md b/revisiones/2026-10-15-prereg004-c053-gemini/expectativa_previa.md
+new file mode 100644
+index 0000000..21ed836
+--- /dev/null
++++ b/revisiones/2026-10-15-prereg004-c053-gemini/expectativa_previa.md
+@@ -0,0 +1,27 @@
++# Expectativa previa (escrita por Claude Opus 5.5 ANTES de enviar el encargo)
++
++Fecha: 2026-10-15. Commit revisado: 007947e. Criterios de Claude, no verdades. Claude escribió el
++paquete, el borrador y su revisión tras el comité 053; puede tener puntos ciegos.
++
++Lo que un buen revisor debería encontrar o discutir:
++
++H1. La precedencia escrita en §7 coincide con `verdict_from_levels`, pero OUT_OF_DOMAIN y los
++    abortos están en `run`, no en `verdict_from_levels`: conviene que el revisor lo compruebe en
++    `run` y no dé por buena la frase.
++H2. El grado de libertad residual del sorteo: el código no fija un SHA anunciado de antemano; solo
++    el procedimiento (push + nota firmada) lo hace. El autor de C1 puede calcular el hash antes de
++    publicarlo (declarado, W1/D5).
++H3. La unicidad de la corrida depende de un fichero git-ignored (`results/validation_004.json`) y
++    del historial git; una copia del repo en otro sitio podría correr de nuevo sin rastro en el
++    código.
++H4. El bloque de shell de procedencia usa `<(...)` (bash, no sh) y escribe `/tmp/pf.txt`; `diff`
++    contra el lockfile puede dar líneas distintas de 0 si `pip freeze` lista algo que el lockfile
++    no tiene. `validation_seeds()` exige el manifiesto C2 y falla antes de C2 (correcto: se ejecuta
++    sobre el commit C2).
++H5. La aritmética de potencia (0,53; 0,94; 0,97) es correcta dentro del modelo; el modelo es una
++    aproximación plana local con ρ^{-1/3} ≈ 0,2 frente a 2M = 0,5.
++H6. (i) con 20 semillas casi se reduce al recuento de abstenciones (declarado, D12).
++
++Puntuación: cuántos de H1-H6 detecta, si sus objeciones son correctas al comprobarlas contra el
++código, y objeciones válidas no previstas (a favor). Afirmaciones sobre el código que no se
++sostienen al leerlo, o literatura inventada, en contra.
+diff --git a/revisiones/2026-10-15-prereg004-c053-gemini/informe_gemini.md b/revisiones/2026-10-15-prereg004-c053-gemini/informe_gemini.md
+new file mode 100644
+index 0000000..579c004
+--- /dev/null
++++ b/revisiones/2026-10-15-prereg004-c053-gemini/informe_gemini.md
+@@ -0,0 +1,144 @@
++<!-- Procedencia (escrita por ~/herramientas/revision/revision_ciega.sh @ c12c10eb4de36669f2048754d2df20a9747adf1f; lo que sigue a la cabecera es la respuesta sin editar)
++script sha256 d4f0628a26b0e2ed64c6bd6312fb2b767a773037127a0384c8eea40872c47013; biblioteca sha256 054386f420bdcb2b90f0cdff79e3c0ca76369dc6dcabaa1d849bda2cc06b1356
++estado: COMPLETED; salida: 0; motivo de fin: STOP (estado operativo, no validación del contenido)
++modelo: gemini-4-argon, esfuerzo: maxOutputTokens=32768, thinkingLevel=high, vía: API generativelanguage.googleapis.com generateContent, sin herramientas
++modelo devuelto por API: gemini-4-argon
++gemini.json sha256 571ffe438318a6485d77f655adc7005f084bb9770b0ac90749712838bb6fda2f
++inicio: 2026-10-15T07:35:09Z  fin: 2026-10-15T07:40:25Z
++documento: /home/ignac/nachocausal/.worktrees/prereg004-step3/docs/preregistration_004_draft.md ; último commit observado: 007947e ; sha256 de la copia enviada 7c39399d727bcec7cb433af5d37bfd7efafc04146083b6833e87a0736e565155
++documento: /home/ignac/nachocausal/.worktrees/prereg004-step3/nachocausal2p1/thresholds.py ; último commit observado: 782d031 ; sha256 de la copia enviada 2bf954fb1164f94b42b2e34512aac1d10d5e76e77915b15c14a640bf7186908e
++documento: /home/ignac/nachocausal/.worktrees/prereg004-step3/nachocausal2p1/validate.py ; último commit observado: 782d031 ; sha256 de la copia enviada ad68e34b11fe758f8a28ed943ae91d9d43f85806038514e2fa8871b3aa19f4e6
++documento: /home/ignac/nachocausal/.worktrees/prereg004-step3/nachocausal2p1/seed_manifest.py ; último commit observado: 782d031 ; sha256 de la copia enviada e4047104d9683331e90e6826737dd77c6d0d187302b8bc6f6b7e7766e26aecf8
++documento: /home/ignac/nachocausal/.worktrees/prereg004-step3/nachocausal2p1/estimator.py ; último commit observado: 2d71bc0 ; sha256 de la copia enviada 3a5010c403dd5083fcc2c4256c6e235ca092546d1e86dc83e3a980ecb4424ec4
++documento: /home/ignac/nachocausal/.worktrees/prereg004-step3/nachocausal2p1/gate.py ; último commit observado: 2d71bc0 ; sha256 de la copia enviada b688535636be2ac3a585fd34b5a2ed97481886452fac1be92de619f49124629c
++documento: /home/ignac/nachocausal/.worktrees/prereg004-step3/nachocausal2p1/scoring/scorer.py ; último commit observado: 2d71bc0 ; sha256 de la copia enviada b9097beb20a3c7e3457f756a5d2cb469172ff9022fbf4bef83febd754265d144
++documento: /home/ignac/nachocausal/.worktrees/prereg004-step3/tests/test_004_criteria_can_fail.py ; último commit observado: 007947e ; sha256 de la copia enviada 2cb3a795318deed34c7e5e1e1871dfd3b8898fe262ea9fd17a84b1e88790bc13
++documento: /home/ignac/nachocausal/.worktrees/prereg004-step3/tests/test_004_seed_manifest.py ; último commit observado: 782d031 ; sha256 de la copia enviada 437c7cf7bf0d290250e99eafd7c8a727069d3b9fa811f93f0d9d1f50ef088dbc
++entrada_gemini.txt sha256 9faf03a82612165340b6e28a23b468abbb423ce4c6ec2239442a3ee7107fd673
++respuesta sha256 df2917b8533035153c4898aea0650952e604d0766ac04a7c2fbd7c1b8772dbd5
++-->
++
++### 1. Precedencia del veredicto
++
++El texto del §7 coincide con el comportamiento real de `validate.run` (`validate.py:249-296`) y `validate.verdict_from_levels` (`validate.py:210-243`):
++
++1. **Pre-guardas de ejecución (`validate.run`, l. 251-262):** Antes de evaluar el dominio o generar causets, el código verifica el entorno (`thresholds.assert_environment`), la existencia y validez de las semillas (`check_seed`), las restricciones de la etiqueta `validation_004` (`write=True`, `guard=True`, `STATUS == "FROZEN"`, coincidencia con `validation_seeds()`, inexistencia previa de `results/validation_004.json`) y los hilos (`thresholds.assert_blind_threads`). Cualquier fallo aquí lanza `RuntimeError` o `ValueError` antes de crear el archivo de progreso.
++2. **`OUT_OF_DOMAIN` (`validate.run`, l. 263-269):** Se evalúa inmediatamente después de las pre-guardas y antes de `run_level`. Si `t_edge < thresholds.T_EDGE_MIN` (`10.0`), devuelve `{"verdict": "OUT_OF_DOMAIN", ...}` sin ejecutar el generador. Con `T_EDGE = 16.0` congelado, esta rama es inalcanzable en la corrida ciega.
++3. **`ABORTED_GUARD_V` / `ABORTED_TAU_RANGE` (`estimator.estimate`, l. 36; `gate.abstains` / `gate.tau`, l. 43-53):** Durante `run_level` → `per_seed`, si falla `sealed.verify_order_only` (tratado como auditado) o si `gate.tau(n)` recibe `n > 256`, se lanza una excepción que detiene la corrida antes de `verdict_from_levels` y antes de `write_atomic`.
++   * *Matiz sobre el código:* Los literales `"ABORTED_GUARD_V"` y `"ABORTED_TAU_RANGE"` **no existen en el código Python**; son etiquetas procedimentales (§9) para documentar la excepción en el informe de resultados.
++   * *Matiz sobre `n < 2`:* En `gate.abstains` (`gate.py:50-51`), si `n < 2` devuelve `True` (abstención) sin llamar a `tau(n)`. Por tanto, `n ∈ {0, 1}` produce abstención y no aborto `ABORTED_TAU_RANGE`, lo cual coincide con el texto del §3 y §9 (`n > 256` / `n_minimal > 256`).
++4. **`INCONCLUSIVE` antes que (i)-(iv) y sin `checks` (`validate.verdict_from_levels`, l. 212-217):** `verdict_from_levels` calcula `short = [rho for rho in thresholds.RHO_GRID if levels[rho].get("status") != "scored"]` como primera instrucción y, si no es vacía, retorna `{"verdict": "INCONCLUSIVE", "reason": ...}` sin construir el diccionario `checks` ni evaluar (i)-(iv).
++5. **Las abstenciones de BH nunca causan `INCONCLUSIVE` (`validate.per_seed`, l. 113-128; `validate.summarise_level`, l. 139, 170):** En `per_seed`, `row["invalid"]` depende exclusivamente de `generate(seed, rho)`. Si el generador es válido y BH se abstiene (`bh["abstained"] == True`), se asigna `abstained_BH=True` y `valid=False`, pero `invalid` permanece `False`. En `summarise_level`, `ok = [r for r in rows if not r["invalid"]]`, por lo que `len(ok)` (`n_generator_valid`) incluye todas las abstenciones de BH. Si hay `< 18` semillas válidas del generador es `INCONCLUSIVE`; si hay `≥ 18` y `≥ 3` abstenciones de BH en `ρ ≥ 63`, `res["significant"]` es `False` y produce `FAIL` en (i).
++
++**¿Hay algún camino hacia un estado no listado o un PASS espurio?**
++* No hay ningún camino en `verdict_from_levels` que produzca `PASS` cuando el texto exige `FAIL` o `INCONCLUSIVE`.
++* En `validate.generate` (`validate.py:80-83`), solo se captura `AssertionError` de `generator.bh_order` para marcar la semilla como `invalid=True`. Cualquier otra excepción no capturada en `generator.py` (no adjunto) abortaría el proceso sin escribir `results/validation_004.json`.
++
++---
++
++### 2. NaN y muestras pequeñas
++
++1. **Comparaciones con `NaN` (`validate.summarise_level`, l. 151-168; `validate.verdict_from_levels`, l. 218-235):**
++   * Todas las condiciones de paso usan operadores IEEE-754 directos (`<=`, `>=`, `<`) que evalúan a `False` ante `NaN`:
++     * (i): `res["p_perm"] <= thresholds.P_PERM_THRESHOLD` (`NaN <= 1e-4` es `False` cuando `ok` es vacío).
++     * (ii) anchura: `res["median_width_over_2M"] <= res["theta_loc"]` (`False` si `n_clean == 0`).
++     * (ii) IQR: `res["loc_inconclusive"] = not bool(res["iqr_width_over_2M"] <= res["theta_loc"])` y en `verdict_from_levels` se exige `not prim["loc_inconclusive"]`. Si `n_clean < 2`, `_iqr` (`validate.py:51-57`) devuelve `NaN`, `NaN <= theta_loc` es `False`, `loc_inconclusive` es `True` y `not prim["loc_inconclusive"]` es `False`.
++     * (ii) cobertura: `prim["coverage_frac"] >= thresholds.COVERAGE_FLOOR` (`False` si `n_bracket_valid == 0`).
++     * (ii) convergencia F: `if not (b["median_width_over_2M"] <= a["median_width_over_2M"] + a["slack_over_2M"]): slack_ok = False` (`slack_ok` pasa a `False` si `a` o `b` tiene mediana `NaN`).
++     * (iii) estabilidad: `res["boundary_r_std"] <= res["theta_stab"]` (`False` si `n_clean == 0`).
++2. **Caso de exactamente una horquilla limpia (`n_clean == 1`):**
++   * En `summarise_level` (`validate.py:157-166`), con `n_clean == 1`, `np.median(widths)` está definida, `_iqr(widths)` devuelve `NaN` (`x.size < 2`) y `np.std(mids)` usa `ddof=0` por defecto en NumPy, devolviendo `0.0 <= theta_stab` (`stab_pass = True`).
++   * **Imprecisión del texto en §7 (niveles secundarios):** El §7 afirma: *«With exactly one clean bracket the median is defined, the IQR is NaN and the midpoint std is 0.0, not NaN: (iii) then passes on its own, but (ii) fails through the IQR, so the run cannot PASS»*. Esto es cierto **solo si la horquilla limpia única ocurre en el nivel primario `ρ* = 126`**. En `verdict_from_levels` (`validate.py:229-234`), el IQR (`loc_inconclusive`) y `stab_pass` se evalúan únicamente en `prim` (`ρ* = 126`). Si `ρ = 32` o `ρ = 63` tiene `n_clean == 1` (con `≥ 18` semillas válidas, p. ej. 17 horquillas invertidas `width < 0` y 1 limpia) y `ρ = 126` tiene `n_clean ≥ 2`, la mediana en el nivel secundario no es `NaN`, su IQR `NaN` no se consulta en `verdict_from_levels`, y la corrida **sí puede dar `PASS`**. El texto debe especificar *«At ρ\*, with exactly one clean bracket...»*.
++3. **¿Hay algún criterio que pase en vacío (`n_generator_valid == 0`)?**
++   * Si un nivel tiene 0 semillas válidas del generador (`len(ok) == 0`), el veredicto global es `INCONCLUSIVE`. Sin embargo, en `summarise_level` (`validate.py:145, 168`), `n_escape_MINK` vale `0`, por lo que `res["escape_pass"] = bool(0 <= 1)` evalúa a **`True`** en vacío (y `n_abstain_BH = 0 < 3` también se cumple, aunque `significant` da `False` porque `p_perm` es `NaN`). Por tanto, al reportar bajo `INCONCLUSIVE` el valor *non-verdict* que habrían tomado (i)-(iv) (§7), el criterio (iv) (`escape_pass`) pasa en vacío cuando `ok` está vacío en `ρ*`.
++4. **Precondición (v):**
++   * Bajo `label == "validation_004"`, `validate.run` (`validate.py:255-256`) rechaza `guard=False` con `RuntimeError`, y un fallo de `verify_order_only` aborta la ejecución. No puede ser `False` en un JSON de validación. Conviene notar que `verdict_from_levels` (`validate.py:241`) sigue incluyendo `"v_order_only": bool(guard_ran)` dentro del diccionario `checks` del JSON de salida, aunque el §7 aclare que conceptualmente es una precondición y no se cuenta como criterio superado.
++
++---
++
++### 3. Resto del texto frente al código (§6, §7, §9)
++
++1. **Reporte *non-verdict* de (i)-(iv) bajo `INCONCLUSIVE` y código muerto en cláusula F (§7 vs `validate.verdict_from_levels`, l. 213-225):**
++   * El §7 dice: *«Under INCONCLUSIVE, the result document also reports, from the recorded level aggregates, the value each clause (i)-(iv) would have taken, labelled non-verdict»*.
++   * `verdict_from_levels` retorna en la línea 215 antes de calcular `checks`, por lo que `results/validation_004.json` **no contiene** esos valores *non-verdict* a nivel de corrida; deben transcribirse manualmente en `docs/preregistration_004_result.md` a partir de `levels[rho]`.
++   * Además, en `verdict_from_levels` (`validate.py:223-225`), el bucle de `ii_convergence_slack` contiene código muerto:
++     ```python
++     if a.get("status") != "scored" or b.get("status") != "scored":
++         slack_ok = False
++         break
++     ```
++     Nunca se ejecuta porque las líneas 213-217 ya retornaron `INCONCLUSIVE` si algún nivel no es `"scored"`. El texto del §7 debe dejar claro que bajo `INCONCLUSIVE` el valor *non-verdict* de la cláusula F en el documento de resultados evalúa la desigualdad `m(ρ_{k+1}) ≤ m(ρ_k) + slack(ρ_k)` de los agregados registrados, ignorando ese `status != "scored"`.
++2. **Reducción de (i) y (iv) a conteos de la puerta (§7 vs `validate.summarise_level` y `verdict_from_levels`):**
++   * El §7 afirma: *«With the flat control abstaining, `d ≥ 0` on every seed and the exact sign-flip test gives `p = 2^-m`... So (i) reduces to "fewer than 3 BH seeds abstained" at each required level»*.
++   * Suponiendo que la primitiva sellada 1+1 `two_means_split` devuelve `sep > 0` siempre que `improvement >= tau(n)`, la igualdad `p_perm = 2^-m` es exacta **solo cuando ninguna semilla del control plano escapa** (`n_escape_MINK == 0`) en ese nivel (con `n_valid ≥ 18` y `< 3` abstenciones de BH, `m ≥ 16`, dando `p_perm ≤ 2^-16 = 1.53e-5 ≤ 1e-4`).
++   * Sin embargo, (iv) permite hasta 1 escape plano en `ρ* = 126` (`MAX_MINK_ESCAPES = 1`, `thresholds.py:137`) y **no restringe en absoluto** `n_escape_MINK` en `ρ = 63` (`verdict_from_levels` evalúa `iv_flat_escapes_primary` solo en `prim`, `validate.py:238`). Si hay `≥ 1` escape plano en `ρ = 63` o 1 escape en `ρ = 126`, `d` puede ser negativo o menor que `obs` al permutar signos, y (i) deja de reducirse al mero conteo de abstenciones de BH.
++3. **Definición de *bracket-valid* (§4 y §7 vs `scorer.blind_bracket`, l. 19-21, y `validate.per_seed`, l. 124-127):**
++   * El §1, §7 y §10 usan el término *«bracket-valid seeds»* (`n_bracket_valid`), pero el §4 no enuncia su condición exacta en código: una semilla tiene `valid=True` si y solo si es válida en el generador (`not invalid`), BH no se abstiene (`not abstained_BH`) **y** ambas clases del corte (`O < thr` y `O >= thr`) son no vacías en `scorer.blind_bracket`.
++4. **Semillas de exploración en `validate.check_seed` tras congelar (§6 vs `validate.check_seed`, l. 67-68):**
++   * El §6 declara que la banda de exploración está quemada (*«Burned and never reusable: the whole exploration band...»*), pero `validate.check_seed` permite `EXPLORE_BAND` (`7_000_000..7_000_999`) incondicionalmente incluso cuando `STATUS == "FROZEN"`. La corrida C3 está protegida porque `validate.run` (`validate.py:258`) exige `tuple(seeds) == tuple(validation_seeds)` bajo `VALIDATION_LABEL` y `thresholds.check_validation_seeds` exige `VIRGIN_BAND`.
++5. **Nombres simbólicos y tabla de θ (§6, §7 vs `thresholds.py`):**
++   * En §6 se llama `VALIDATION_DRAW_SEED_004` al entero que en `thresholds.py` y `seed_manifest.py` se obtiene mediante `draw_seed_from_commit(sha)` y se guarda como `"draw_seed"`. En §7 se escribe `slack(ρ)` para la función `thresholds.convergence_slack(rho)` (campo `"slack_over_2M"` en `summarise_level`).
++   * Los 6 valores numéricos de la tabla de `theta_loc` y `theta_stab` en §7 para `ρ ∈ {32, 63, 126}` coinciden exactamente (a las 5 cifras decimales mostradas) con `thresholds.theta_loc` y `thresholds.theta_stab`.
++
++---
++
++### 4. C1→C2→C3
++
++**Lo que impide el código (`seed_manifest.py`, `thresholds.py`, `validate.py`):**
++* Impide ejecutar C2 o C3 si `STATUS != "FROZEN"`, si el entorno no coincide con los *pins*, si el árbol de trabajo tiene cambios o archivos no ignorados sin confirmar (`git status --porcelain`), o si `nachocausal/`, `nachocausal2p1/` o `docs/preregistration_004.md` difieren respecto a `freeze_commit` (`git diff --exit-code`).
++* Impide usar un commit posterior arbitrario de la misma rama lineal como `freeze_commit`, porque `_check_freeze` (`seed_manifest.py:40-42`) exige que `git log --diff-filter=A --format=%H -- docs/preregistration_004.md` devuelva exactamente `[freeze_commit]`.
++* Impide modificar `docs/validation_004_seeds.json` sin confirmarlo en `HEAD` (`load_manifest`, l. 72) o elegir semillas distintas de las que dicta `_draw(freeze_commit)`.
++* Impide sobrescribir `results/validation_004.json` si ya existe en disco (`validate.py:261`).
++
++**Lo que solo impide el procedimiento y grados de libertad residuales:**
++1. **Minado de SHA antes de publicar C1 (reconocido en §6, solo procedimental):** Como `draw_seed_from_commit` toma los primeros 8 dígitos hexadecimales del SHA de C1, el autor puede variar localmente la marca temporal o el mensaje del commit C1 antes de hacer `push` para previsualizar las 20 semillas (o probarlas en otra copia). El código no puede detectarlo.
++2. **Simplificación de historial de Git en `_check_freeze` (`seed_manifest.py:40`, hueco en código pero con rastro en Git):**
++   * `_check_freeze` ejecuta `git log --diff-filter=A --format=%H -- docs/preregistration_004.md` **sin `--full-history`**.
++   * En Git, `git log -- <ruta>` por defecto activa la *simplificación de historial* en merges: si en un commit de merge `M` el archivo `<ruta>` es idéntico al de uno de sus padres (p. ej. el primer padre), Git poda el otro padre y no recorre su historial.
++   * Si alguien ramifica desde el padre de C1 (`C1^`), crea un commit alternativo `C1_alt` añadiendo exactamente el mismo `docs/preregistration_004.md` e instrumento (pero con distinta fecha → distinto SHA → otras 20 semillas), y fusiona el `C1` original como segundo padre (`git merge -s ours C1`), entonces:
++     * `C1` sigue estando en el historial del merge (cumpliendo en apariencia la regla de *merge commit*),
++     * pero `git log --diff-filter=A --format=%H -- docs/preregistration_004.md` sigue únicamente la rama del primer padre y devuelve **`[C1_alt]`** (un único SHA), pasando todas las comprobaciones de `seed_manifest.py` sin lanzar error.
++   * **¿Deja rastro?** Sí: deja rastro evidente en el grafo de Git (`git log --graph --full-history` mostraría ambos commits `C1` y `C1_alt`) y contradiría el SHA de C1 anotado y firmado antes de C2 (§9). *(Nota: añadir `"--full-history"` en `seed_manifest.py:40` cerraría este hueco en el propio código).*
++3. **Borrado local de `results/` para repetir u ocultar C3 (solo procedimental):**
++   * En `validate.run` (`validate.py:251-291`), cada llamada a `per_seed` → `generate` → `check_seed` invoca `thresholds.validation_seeds()` → `seed_manifest.load_manifest()`, que exige `git status --porcelain` vacío (60 veces durante la corrida). Por eso `results/` **tiene** que estar en `.gitignore`.
++   * Como consecuencia, `results/validation_004.json`, `.progress.jsonl`, `_run.log` y `_provenance_launch.txt` no están rastreados por Git hasta el `git add -f` manual posterior a la corrida. Si se borra `results/` tras un fallo o aborto, Git no guarda rastro. No obstante, una vez fijado C2, repetir la corrida en el mismo host y con 20 hilos es determinista y producirá el mismo resultado (no permite obtener otras 20 semillas).
++
++---
++
++### 5. Declaración de potencia de (ii)
++
++* **Verificación aritmética (exacta):**
++  * $c_3 = \Gamma(4/3)(3/\pi)^{1/3} = 0.89298 \times 0.98475 = 0.87936 \approx 0.879$.
++  * Con $2M = 0.5$, $\lambda_r(2M) = c_3 \rho^{2/3} \cdot 2\pi(0.5)\sqrt{2} = 3.90688\,\rho^{2/3}$, luego $\delta = 1/\lambda_r(2M) = 0.25596\,\rho^{-2/3} \approx 0.256\,\rho^{-2/3}$.
++  * Cota: $\theta_{\text{loc}}\cdot 2M = 2\rho^{-2/3}/(1.4\pi) = 0.45473\,\rho^{-2/3} \approx 0.455\,\rho^{-2/3}$.
++  * Cociente cota/$\delta$: $0.45473 / 0.25596 = 1.7766 \approx 1.78\,\delta$.
++  * Para $W \sim \text{Gamma}(2, \delta)$: $P(W \le 1.78\delta) = 1 - (1 + 1.78)e^{-1.78} = 0.531 \approx 0.53$ ($0.530$ con $1.7766$).
++  * Mediana poblacional: solución de $(1+u)e^{-u} = 0.5 \Rightarrow u = 1.6783\,\delta \approx 1.678\,\delta$, que es $1.6783/1.7766 = 0.9447 \approx 0.94$ de la cota.
++  * IQR poblacional: $u_{0.75} - u_{0.25} = (2.6926 - 0.9613)\delta = 1.7314\,\delta \approx 1.73\,\delta$, que es $1.7314/1.7766 = 0.9746 \approx 0.97$ de la cota.
++  * En $\rho^* = 126$, $\rho^{-1/3} = 126^{-1/3} = 0.1995 \approx 0.2$. Con 20 semillas i.i.d. cuya mediana e IQR poblacionales están en $0.945$ y $0.975$ de la cota, la probabilidad conjunta de que la mediana muestral y el IQR muestral caigan ambos por debajo de la cota ronda efectivamente el 50 %.
++* **Simetría de la redacción:** Es estrictamente simétrica. Las frases *«A FAIL is reported as FAIL, with no qualifier added after the result»* y *«No result of this run may be used to re-derive, rescale or loosen θ_loc, θ_stab or K_LOC, here or in any successor pre-registration»* cierran cualquier puerta a reinterpretar un `FAIL` como «casi PASS por baja potencia» o a relajar umbrales después.
++
++---
++
++### 6. Comandos de procedencia del §9
++
++El bloque de shell del §9 tiene **tres defectos concretos**:
++
++1. **`NUMBA_NUM_THREADS=20` no queda registrado en el volcado de `env` del archivo de procedencia:**
++   * Dentro del bloque `{ ... } > $F 2>&1`, se ejecuta `env | grep -E '^(NUMBA_|OMP_|MKL_|OPENBLAS_|NC2P1_)' | sort`.
++   * Sin embargo, `NUMBA_NUM_THREADS=20` solo se define como prefijo en la línea posterior de lanzamiento (`NUMBA_NUM_THREADS=20 nohup $PY -m nachocausal2p1.validate ...`). Si `NUMBA_NUM_THREADS=20` no se ha exportado antes (`export NUMBA_NUM_THREADS=20`), `env | grep ...` en el bloque de procedencia no capturará `NUMBA_NUM_THREADS=20`.
++2. **Sustitución de procesos `<(...)` en un bloque etiquetado ```` ```sh ````:**
++   * La línea `diff <(sort /tmp/pf.txt) <(grep -v '^#' requirements-lock.txt | sort)` usa sustitución de procesos `<(...)`, que es sintaxis exclusiva de `bash`/`zsh`. Si se ejecuta bajo `/bin/sh` POSIX (en Ubuntu/WSL2 `/bin/sh` es `dash`), falla con `Syntax error: "(" unexpected`. Debe ejecutarse en `bash` (y etiquetarse ```` ```bash ````) o usar un archivo temporal.
++3. **Posibles líneas en blanco en `requirements-lock.txt`:**
++   * `grep -v '^#' requirements-lock.txt | sort` conserva las líneas vacías si existen en el archivo, haciendo que `diff ... | wc -l` sea distinto de 0 frente a `pip freeze`. Es más seguro `grep -vE '^(#|$)' requirements-lock.txt | sort`.
++
++---
++
++### 7. Veredicto global
++
++**Veredicto: «listo con cambios menores enumerados»** (todos resolubles en el texto del borrador antes de C1 sin tocar los archivos de `nachocausal2p1/`, cuyos SHAs candidatos ya están fijados):
++
++1. **(Medio — §9, bloque de comandos de procedencia):** Exportar `export NUMBA_NUM_THREADS=20` *antes* del bloque `{ ... } > $F 2>&1` (o incluirlo explícitamente) para que `env | grep ...` lo registre realmente en `validation_004_provenance_launch.txt`; cambiar ```` ```sh ```` a ```` ```bash ```` (por el uso de `<(...)`) y usar `grep -vE '^(#|$)' requirements-lock.txt`.
++2. **(Menor — §7, alcance del caso `n_clean == 1` y vaciedad en conteos):** Precisar que la afirmación *«With exactly one clean bracket... (ii) fails through the IQR, so the run cannot PASS»* se refiere a **una horquilla limpia en `ρ* = 126`** (en `ρ = 32` o `63` el IQR no interviene en `verdict_from_levels`), y aclarar que con 0 semillas válidas del generador (`INCONCLUSIVE`), los conteos como `n_escape_MINK = 0 <= 1` dan `True` en vacío aunque las estadísticas basadas en `NaN` den `False`.
++3. **(Menor — §7, cláusulas *non-verdict* bajo `INCONCLUSIVE`):** Aclarar que los valores *non-verdict* de (i)-(iv) bajo `INCONCLUSIVE` los calcula el informe `docs/preregistration_004_result.md` a partir de `levels[rho]` (y no `verdict_from_levels`, que retorna antes de construir `checks` y contiene una guarda inalcanzable `status != "scored"` en `slack_ok`).
++4. **(Menor — §7 y §4, precisión descriptiva):** En §7, recordar junto a la reducción de (i) a `p = 2^-m` que en `ρ = 63` el código no evalúa (iv) y en `ρ = 126` permite 1 escape plano; en §4, explicitar que `bracket-valid` (`valid=True` en `scorer.blind_bracket`) exige semilla válida del generador, no abstención de BH y conjuntos `lo_r` y `hi_r` no vacíos; y en §9 (procedimiento C1/C2), exigir que la verificación de historial de C1 incluya `git log --full-history --diff-filter=A -- docs/preregistration_004.md` para descartar merges con simplificación de historial.
+diff --git a/revisiones/2026-10-15-prereg004-c053-gemini/prompt.md b/revisiones/2026-10-15-prereg004-c053-gemini/prompt.md
+new file mode 100644
+index 0000000..192a1da
+--- /dev/null
++++ b/revisiones/2026-10-15-prereg004-c053-gemini/prompt.md
+@@ -0,0 +1,18 @@
++Encargo: revisión ciega por otra familia de modelos (gemini-4-argon, thinkingLevel=high) del texto revisado del borrador de pre-registro 004 frente al código que lo ejecuta, en el commit 007947e de la rama prereg004/step3-port. Lo pide el comité 053 §8-§9 (paso 5) y lo autorizó el PI el 2026-10-15. Objetivo: comprobar, antes de congelar (C1), que lo que dicen §6, §7 y §9 del borrador coincide exactamente con `validate.py`, `thresholds.py` y `seed_manifest.py`, y que el procedimiento C1→C2→C3 no deja grados de libertad sin declarar. Resultado esperado: lista de discrepancias texto-código y de resquicios, por gravedad, y un veredicto. Una sola ronda; la cierra el informe y su evaluación; no hay segunda ronda salvo decisión del PI.
++---
++Eres un revisor adversarial de pre-registros y de código científico. Te adjunto el borrador de un pre-registro (todavía no congelado), el código que lo ejecutará y sus tests. El proyecto prueba si el orden causal de un conjunto causal sembrado (sin coordenadas) basta para localizar r = 2M en un banco 2+1D ecuatorial de Schwarzschild. Un estimador ve solo el orden; un módulo aislado de puntuación compara después su horquilla con la verdad (`r`). Habrá una única corrida ciega sobre 20 semillas vírgenes, sin repetición.
++
++El borrador acaba de revisarse para corregir frases que contradecían al código. Tu tarea principal es comprobar, frase por frase, si el texto que se va a congelar dice exactamente lo que hace el código. No se adjunta el paquete 1+1 sellado del que se reutilizan primitivas (`two_means_split`, `improvement`, la prueba de permutación con cambio de signo); trátalo como auditado y di cuándo una conclusión tuya depende de él.
++
++Tareas, en este orden:
++
++1. **Precedencia del veredicto.** El §7 afirma: OUT_OF_DOMAIN > ABORTED_GUARD_V / ABORTED_TAU_RANGE > INCONCLUSIVE > PASS/FAIL; INCONCLUSIVE se evalúa antes que (i)-(iv) y no devuelve `checks`; las abstenciones del agujero negro nunca causan INCONCLUSIVE. ¿Es eso lo que hacen `validate.run` y `verdict_from_levels`? ¿Hay algún camino de código que produzca un estado no listado, o un PASS cuando el texto exige FAIL o INCONCLUSIVE?
++2. **NaN y muestras pequeñas.** Comprueba las afirmaciones del §7 sobre NaN, sobre una sola horquilla limpia (desviación típica 0.0 con ddof=0, IQR NaN) y sobre (v) como precondición que no puede ser falsa con la etiqueta de validación. ¿Hay algún criterio que pase en vacío?
++3. **Resto del texto frente al código.** Recorre §6, §7 (tabla de criterios, θ, cobertura, (iv)) y §9 (escritura, registro de progreso, abortos deterministas, punto de entrada, procedimiento C1/C2/C3) y enumera cada discrepancia con `thresholds.py`, `validate.py` o `seed_manifest.py`, citando función.
++4. **C1→C2→C3.** `seed_manifest` identifica C1 como el único commit que añade `docs/preregistration_004.md` (`git log --diff-filter=A`) y deriva la semilla del sorteo de su SHA. Con el procedimiento escrito en §9 (añadir como fichero nuevo, push y SHA anotado antes de C2, sin amend/rebase/squash, merge solo fast-forward o con commit de merge), ¿queda algún grado de libertad por el que se puedan obtener otras 20 semillas, o repetir la corrida, sin que quede rastro? Distingue lo que impide el código de lo que solo impide el procedimiento.
++5. **Declaración de potencia de (ii).** El §7 declara que un localizador ideal pasaría la anchura y el IQR de (ii) solo la mitad de las veces aproximadamente, con un modelo Gamma(2, δ). ¿Es correcta la aritmética? ¿La redacción es simétrica (un FAIL se informa como FAIL) o deja una puerta para reinterpretar el resultado?
++6. **Comandos de procedencia del §9.** ¿El bloque de shell es ejecutable tal como está y registra lo que dice registrar? Señala errores concretos.
++7. **Veredicto global:** «listo para congelar», «listo con cambios menores enumerados» o «no listo», con los defectos ordenados por gravedad.
++
++Reglas: distingue lo que demuestras con el código adjunto de lo que conjeturas. Cita fichero y función. No cites literatura. Sé conciso: máximo 2000 palabras.
++---
+diff --git a/tests/test_004_criteria_can_fail.py b/tests/test_004_criteria_can_fail.py
+index 04ebbb1..2399a0f 100644
+--- a/tests/test_004_criteria_can_fail.py
++++ b/tests/test_004_criteria_can_fail.py
+@@ -247,7 +247,8 @@ def test_iqr_above_theta_fails_ii_only():
+     assert _failing(out) == ["ii_localisation_primary"]
+ 
+ 
+-def test_nan_iqr_is_inconclusive_not_pass():
++def test_nan_iqr_fails_ii_not_pass():
++    # `loc_inconclusive` is a FAIL of (ii), never the run verdict INCONCLUSIVE (comité 053 §8 item 2).
+     rows = _synthetic_rows(PRIM)
+     for r in rows[1:]:
+         r.update(clean=False)                       # one clean bracket: IQR is NaN
+@@ -274,3 +275,32 @@ def test_non_primary_level_short_of_valid_seeds_is_inconclusive():
+     lv[32.0] = validate.summarise_level(rows, 32.0)
+     assert lv[32.0]["status"] == "inconclusive"
+     assert validate.verdict_from_levels(lv, guard_ran=True)["verdict"] == "INCONCLUSIVE"
++
++
++def test_inconclusive_takes_precedence_over_a_fail_of_i():
++    # Comité 053 §8 items 1 and 8 (falsifier's minimal test): a short level makes the verdict
++    # INCONCLUSIVE before (i) is evaluated, even with >= 3 BH abstentions at the primary, and no
++    # per-clause `checks` are returned. Precedence: OUT_OF_DOMAIN > ABORTED_* > INCONCLUSIVE > PASS/FAIL.
++    rows = _synthetic_rows(PRIM)
++    for r in rows[:3]:
++        r.update(abstained_BH=True, d=0.0, valid=False, clean=False, covers=False)
++    lv = _levels(validate.summarise_level(rows, PRIM))
++    assert lv[PRIM]["n_abstain_BH"] == 3 and lv[PRIM]["significant"] is False
++    short = _synthetic_rows(32.0)
++    for r in short[:3]:
++        r.update(invalid=True)                      # 17 < 18 generator-valid seeds at rho=32
++    lv[32.0] = validate.summarise_level(short, 32.0)
++    out = validate.verdict_from_levels(lv, guard_ran=True)
++    assert out["verdict"] == "INCONCLUSIVE" and "checks" not in out
++
++
++def test_one_clean_bracket_passes_iii_but_fails_ii():
++    # Comité 053 §8 item 2: with one clean bracket the population std (ddof=0) is 0.0, not NaN,
++    # so (iii) passes on its own; the run still FAILs because the IQR is NaN and (ii) fails.
++    rows = _synthetic_rows(PRIM)
++    for r in rows[1:]:
++        r.update(clean=False)
++    prim = validate.summarise_level(rows, PRIM)
++    assert prim["n_clean"] == 1 and prim["boundary_r_std"] == 0.0 and prim["stab_pass"] is True
++    out = validate.verdict_from_levels(_levels(prim), guard_ran=True)
++    assert out["checks"]["ii_localisation_primary"] is False and out["verdict"] == "FAIL"
+diff --git a/tests/test_004_seed_manifest.py b/tests/test_004_seed_manifest.py
+index a0d2afa..d5f77ab 100644
+--- a/tests/test_004_seed_manifest.py
++++ b/tests/test_004_seed_manifest.py
+@@ -157,3 +157,37 @@ def test_actual_git_c1_c2_binding_and_drift(monkeypatch, tmp_path):
+         manifest._check_freeze(sha)
+     with pytest.raises(RuntimeError, match="clean tree"):
+         manifest.load_manifest()
++
++
++def test_second_c1_merged_with_ours_strategy_is_refused(monkeypatch, tmp_path):
++    """A second commit adding the frozen doc, with the first merged in by `-s ours`, must not
++    pass as the unique C1 (revisiones/2026-10-15-prereg004-c053-gemini, G8). Without
++    --full-history, `git log` follows only the first parent and sees one addition."""
++    def git(*args):
++        return subprocess.run(["git", "-C", str(tmp_path), "-c", "core.hooksPath=/dev/null", *args],
++                              check=True, capture_output=True, text=True).stdout.strip()
++
++    git("init", "-q")
++    git("config", "user.name", "Manifest test")
++    git("config", "user.email", "manifest-test@example.invalid")
++    (tmp_path / "base").write_text("base\n")
++    git("add", "base")
++    git("commit", "-qm", "base")
++    base = git("rev-parse", "HEAD")
++    (tmp_path / "docs").mkdir()
++    (tmp_path / manifest.FROZEN_DOC).write_text("synthetic frozen document\n")
++    git("add", manifest.FROZEN_DOC)
++    git("commit", "-qm", "C1")
++    c1 = git("rev-parse", "HEAD")
++    git("checkout", "-q", "-b", "alt", base)
++    (tmp_path / "docs").mkdir(exist_ok=True)
++    (tmp_path / manifest.FROZEN_DOC).write_text("synthetic frozen document\n")
++    git("add", manifest.FROZEN_DOC)
++    git("commit", "-qm", "C1 alternative")
++    alt = git("rev-parse", "HEAD")
++    git("merge", "-q", "-s", "ours", "--no-edit", c1)
++    monkeypatch.setattr(manifest, "ROOT", tmp_path)
++    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
++    for candidate in (alt, c1):
++        with pytest.raises(RuntimeError, match="unique C1 commit"):
++            manifest._check_freeze(candidate)
