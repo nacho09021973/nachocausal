@@ -106,7 +106,7 @@ not edited.
 | `nachocausal2p1/estimator.py` | `3a5010c403dd5083fcc2c4256c6e235ca092546d1e86dc83e3a980ecb4424ec4` |
 | `nachocausal2p1/gate.py` | `b688535636be2ac3a585fd34b5a2ed97481886452fac1be92de619f49124629c` |
 | `nachocausal2p1/generator.py` | `5324a924f7ef923984841199249e9a571626004efbdf85ca6dcd006c97e88b55` |
-| `nachocausal2p1/seed_manifest.py` | `e4047104d9683331e90e6826737dd77c6d0d187302b8bc6f6b7e7766e26aecf8` |
+| `nachocausal2p1/seed_manifest.py` | `299b4cc2ae02ee557e88d2210fc0ae658a6e24eb904ac73d09df555ac7d87255` |
 | `nachocausal2p1/validate.py` | `ad68e34b11fe758f8a28ed943ae91d9d43f85806038514e2fa8871b3aa19f4e6` |
 | `nachocausal2p1/scoring/__init__.py` | `641c78ef485d75a2f175adda2de8623cd6b1b5ecd91255dfafacf81897cf0039` |
 | `nachocausal2p1/scoring/scorer.py` | `b9097beb20a3c7e3457f756a5d2cb469172ff9022fbf4bef83febd754265d144` |
@@ -128,6 +128,8 @@ the draw is recorded separately in `docs/validation_004_seeds.json`. C1 also sea
   minimal elements.
 - **Bracket (scoring only):** `[max r over low-O minimals, min r over high-O minimals]`;
   `covers` iff `r_lo ≤ 2M ≤ r_hi`; `clean` iff width ≥ 0; point estimate = midpoint.
+  A seed is **bracket-valid** iff it is generator-valid, the BH did not abstain, and both
+  classes of the split are non-empty (`scoring.scorer.blind_bracket`, `validate.per_seed`).
 - **Guard-v:** `verify_order_only` on every causet; it raises on failure (aborting the run).
 
 ## 5. Gate table τ(n) (step 1)
@@ -162,8 +164,10 @@ reused.
   all in `VIRGIN_BAND`, none in `EXPLORE_BAND = 7_000_000..7_000_999`, none among the burned
   Phase-A seeds `1, 2, 3, 4, 7, 99, 12345`. `validate.check_seed` refuses any virgin seed before
   `STATUS == "FROZEN"` and a verified, committed C2 manifest. Nothing is drawn at import.
-- Burned and never reusable: the whole exploration band, the Phase-A seeds, and the prereg-001
-  and prereg-002 seeds. Dry runs use only `DRY_RUN_SEEDS = 7_000_100..7_000_109`.
+- Burned and never reusable **as validation seeds**: the whole exploration band, the Phase-A
+  seeds, and the prereg-001 and prereg-002 seeds. `check_seed` still admits the exploration band
+  after the freeze, for dry runs and tests; the validation run admits only the 20 seeds of the C2
+  manifest (`validate.run`). Dry runs use only `DRY_RUN_SEEDS = 7_000_100..7_000_109`.
 
 ## 7. Frozen analysis
 
@@ -222,17 +226,25 @@ statuses listed under "Verdict precedence".
   - **Under INCONCLUSIVE**, the result document also reports, from the recorded level
     aggregates, the value each clause (i)-(iv) would have taken, labelled **non-verdict**, so that
     a failure masked by INCONCLUSIVE is visible. These values never turn INCONCLUSIVE into a PASS
-    or a FAIL (comité 053 §8 item 1).
+    or a FAIL (comité 053 §8 item 1). The code does not produce them (`verdict_from_levels`
+    returns before building `checks`); the result document computes them by hand from
+    `levels[ρ]`, applying the inequalities of the table to the recorded aggregates. A clause
+    whose input is a count over **zero** generator-valid seeds (for example `n_escape_MINK = 0`,
+    `n_abstain_BH = 0`) is reported as **not evaluable**, not as passed.
 - **NaN never passes** (O8 review, D1): every pass comparison is false on NaN (`≤` for (ii),
   F, (iii), (iv); `≥` for the coverage floor; `<` for the abstention count, which is an integer).
   A level with no clean bracket has NaN median, IQR and midpoint std. With exactly **one** clean
-  bracket the median is defined, the IQR is NaN and the midpoint std is **0.0**, not NaN: (iii)
-  then passes on its own, but (ii) fails through the IQR, so the run cannot PASS
-  (`test_one_clean_bracket_passes_iii_but_fails_ii`).
+  bracket the median is defined, the IQR is NaN and the midpoint std is **0.0**, not NaN. **At
+  ρ\*** (iii) then passes on its own, but (ii) fails through the IQR, so the run cannot PASS
+  (`test_one_clean_bracket_passes_iii_but_fails_ii`). At ρ = 32 or 63 only the median enters
+  (through F); the IQR and the midpoint std of those levels are reported but are not criteria, so
+  a secondary level with one clean bracket can be part of a PASS.
 - **(i) and (iv) are gate-derived.** With the flat control abstaining, `d ≥ 0` on every seed and
   the exact sign-flip test gives `p = 2^-m`, with m the number of seeds where the BH passes the
   gate, whatever the size of `sep_BH`. So (i) reduces to "fewer than 3 BH seeds abstained" at
-  each required level, and (iv) to "≤ 1 flat seed escaped the gate". Neither is independent
+  each required level, and (iv) to "≤ 1 flat seed escaped the gate". The reduction of (i) needs
+  **no** flat escape at that level: (iv) allows one at ρ\* and does not limit escapes at ρ = 63,
+  and an escape can make `d < 0` on a seed, so (i) can then also fail through `p_perm`. Neither is independent
   confirmation; the discriminating content is (ii), (iii) and coverage (comité 052 §8 item 7;
   O8 review, D10 and D12).
 - **Declared dependence between levels** (O8 review, D7; inherited from 1+1,
@@ -339,7 +351,8 @@ case. (v) is shown false only outside the validation label, where it is a precon
   `n_minimal > 256` (outside the τ table) raises and stops the run without a result. Rerunning
   the same seeds, environment and commit would stop in the same place, so such an abort is not
   relaunched: it is reported as `ABORTED_GUARD_V` or `ABORTED_TAU_RANGE`, with the progress log
-  and the traceback, and it is not a PASS.
+  and the traceback, and it is not a PASS. These two names are labels of the result document;
+  the code raises an exception and writes no verdict.
 - **Entry point:** `python -m nachocausal2p1.validate` runs `validate.run()` with its defaults
   (seeds from the committed C2 manifest, `guard=True`, `write=True`) and prints the verdict and the result path. The
   validation label refuses `write=False` (O8 review, D3 and D4).
@@ -347,7 +360,8 @@ case. (v) is shown false only outside the validation label, where it is a precon
   it is produced by these commands, run in order from the repo root on the C2 commit, with
   `PY=/home/ignac/nachocausal/.venv/bin/python` and `C1=<full C1 SHA>` (comité 053 §8 item 6):
 
-  ```sh
+  ```bash
+  export NUMBA_NUM_THREADS=20      # before the block, so that `env` below records it
   F=results/validation_004_provenance_launch.txt; mkdir -p results
   { echo "start_utc $(date -u +%FT%TZ)"
     echo "head $(git rev-parse HEAD) branch $(git rev-parse --abbrev-ref HEAD) c1 $C1"
@@ -357,15 +371,15 @@ case. (v) is shown false only outside the validation label, where it is a precon
     echo "status_porcelain_lines $(git status --porcelain | wc -l)"                                          # must be 0
     uname -a; lscpu | grep -E 'Model name|^CPU\(s\)|Thread'; $PY -V
     $PY -m pip freeze > /tmp/pf.txt; cat /tmp/pf.txt
-    echo "pip_freeze_vs_lock_diff_lines $(diff <(sort /tmp/pf.txt) <(grep -v '^#' requirements-lock.txt | sort) | wc -l)"
+    echo "pip_freeze_vs_lock_diff_lines $(diff <(sort /tmp/pf.txt) <(grep -vE '^(#|$)' requirements-lock.txt | sort) | wc -l)"
     env | grep -E '^(NUMBA_|OMP_|MKL_|OPENBLAS_|NC2P1_)' | sort
     $PY -c "from nachocausal2p1 import thresholds as t; print('T_EDGE', t.T_EDGE, 'STATUS', t.STATUS); print('seeds', t.validation_seeds())"
     make test-004 PY=$PY 2>&1 | tail -1
   } > $F 2>&1
   ```
 
-  The run itself is launched as
-  `NUMBA_NUM_THREADS=20 nohup $PY -m nachocausal2p1.validate > results/validation_004_run.log 2>&1`,
+  The commands need `bash` (process substitution). The run itself is launched in the same shell as
+  `nohup $PY -m nachocausal2p1.validate > results/validation_004_run.log 2>&1`,
   with the host kept awake; on exit, `echo "end_utc $(date -u +%FT%TZ)" >> $F`. Bit-reproducibility
   is claimed only for 20 numba threads on the measured host (§8); a run elsewhere is unverified.
 - **Pre-flight commands** (no virgin seed): `make test-004`, `make dry-run-004` (mechanics only:
@@ -387,8 +401,8 @@ case. (v) is shown false only outside the validation label, where it is a precon
   C3 uses the published C2 commit as HEAD and the manifest's C1 commit as the reference for the
   zero-diff check above. The C2 manifest is an administrative addition outside the sealed paths;
   it cannot change any analysis parameter. No C1, C2 or C3 step is performed by this draft.
-- **C1 procedure** (comité 053 §8 item 5; `seed_manifest.py:40-42` finds C1 with
-  `git log --diff-filter=A`):
+- **C1 procedure** (comité 053 §8 item 5; `seed_manifest._check_freeze` finds C1 with
+  `git log --full-history --diff-filter=A`):
   - C1 **adds** `docs/preregistration_004.md` as a new file and keeps this draft; never `git mv`
     the draft, since a rename is not an addition and C2 would then refuse.
   - C1 also sets `STATUS = "FROZEN"` in `nachocausal2p1/thresholds.py`. Before committing:
@@ -454,7 +468,21 @@ the IQR wording, (iii) ddof, (v) as a precondition (§7); the power disclosure f
 SHA table (§3); force-adding the run files, the run log and the provenance commands (§9); the C1
 procedure (§9); the audit trail (§9); two tests in `tests/test_004_criteria_can_fail.py`; the
 `make test-004`, `dry-run-004` and `verify-seal-004` targets. Nothing under `nachocausal/` or
-`nachocausal2p1/` changed; no θ, T, ρ, K, seed or criterion changed.
+`nachocausal2p1/` changed in this step (the later G8 fix below changes `seed_manifest.py`); no θ,
+T, ρ, K, seed or criterion changed.
 
-**Still open before C1:** the cross-family review of §7/§9 against `validate.py` and its
-evaluation; `/auditor` on this delta in a separate session; the PI's signature and C1 decision.
+**Cross-family review of this revision (2026-10-15).** `revision-ciega gemini` (gemini-4-argon,
+high) on `007947e`: «listo con cambios menores enumerados»; eleven objections, all confirmed or
+partly confirmed against the code (`revisiones/2026-10-15-prereg004-c053-gemini/evaluacion.md`).
+One was a code loophole (G8): `seed_manifest._check_freeze` ran `git log --diff-filter=A` without
+`--full-history`, so a second C1 merged in with `-s ours` hid the first and gave another draw.
+Fixed in `nachocausal2p1/seed_manifest.py` (`--full-history`), with the test
+`test_second_c1_merged_with_ours_strategy_is_refused` (fails without the fix, passes with it).
+The other ten are text: the one-clean-bracket statement holds only at ρ\*; non-verdict values
+under INCONCLUSIVE are computed by hand and counts over zero seeds are "not evaluable"; the
+reduction of (i) needs no flat escape; "bracket-valid" defined (§4); the exploration band is
+burned only as validation seeds (§6); `ABORTED_*` are document labels; the provenance block is
+bash, exports `NUMBA_NUM_THREADS=20` first and ignores blank lockfile lines (§9).
+
+**Still open before C1:** `/auditor` on the delta since `782d031` (which now includes a change
+to `nachocausal2p1/seed_manifest.py`) in a separate session; the PI's signature and C1 decision.

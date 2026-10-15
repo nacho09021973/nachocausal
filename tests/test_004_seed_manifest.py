@@ -157,3 +157,37 @@ def test_actual_git_c1_c2_binding_and_drift(monkeypatch, tmp_path):
         manifest._check_freeze(sha)
     with pytest.raises(RuntimeError, match="clean tree"):
         manifest.load_manifest()
+
+
+def test_second_c1_merged_with_ours_strategy_is_refused(monkeypatch, tmp_path):
+    """A second commit adding the frozen doc, with the first merged in by `-s ours`, must not
+    pass as the unique C1 (revisiones/2026-10-15-prereg004-c053-gemini, G8). Without
+    --full-history, `git log` follows only the first parent and sees one addition."""
+    def git(*args):
+        return subprocess.run(["git", "-C", str(tmp_path), "-c", "core.hooksPath=/dev/null", *args],
+                              check=True, capture_output=True, text=True).stdout.strip()
+
+    git("init", "-q")
+    git("config", "user.name", "Manifest test")
+    git("config", "user.email", "manifest-test@example.invalid")
+    (tmp_path / "base").write_text("base\n")
+    git("add", "base")
+    git("commit", "-qm", "base")
+    base = git("rev-parse", "HEAD")
+    (tmp_path / "docs").mkdir()
+    (tmp_path / manifest.FROZEN_DOC).write_text("synthetic frozen document\n")
+    git("add", manifest.FROZEN_DOC)
+    git("commit", "-qm", "C1")
+    c1 = git("rev-parse", "HEAD")
+    git("checkout", "-q", "-b", "alt", base)
+    (tmp_path / "docs").mkdir(exist_ok=True)
+    (tmp_path / manifest.FROZEN_DOC).write_text("synthetic frozen document\n")
+    git("add", manifest.FROZEN_DOC)
+    git("commit", "-qm", "C1 alternative")
+    alt = git("rev-parse", "HEAD")
+    git("merge", "-q", "-s", "ours", "--no-edit", c1)
+    monkeypatch.setattr(manifest, "ROOT", tmp_path)
+    monkeypatch.setattr(thresholds, "STATUS", "FROZEN")
+    for candidate in (alt, c1):
+        with pytest.raises(RuntimeError, match="unique C1 commit"):
+            manifest._check_freeze(candidate)

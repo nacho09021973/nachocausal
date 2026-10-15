@@ -37,7 +37,11 @@ def _check_freeze(freeze_commit: str) -> None:
         raise RuntimeError("C2 manifest requires the C1 FROZEN instrument.")
     thresholds.draw_seed_from_commit(freeze_commit)  # full lowercase SHA, never an abbreviation
     # C1 is the unique commit introducing the frozen document, not a later convenient SHA.
-    introduced = _git("log", "--diff-filter=A", "--format=%H", "--", FROZEN_DOC).splitlines()
+    # --full-history: without it, history simplification follows one parent of a merge whose
+    # tree equals it, so a second C1 merged in with `-s ours` would hide the first one
+    # (revisiones/2026-10-15-prereg004-c053-gemini, G8).
+    introduced = _git("log", "--full-history", "--diff-filter=A", "--format=%H", "--",
+                      FROZEN_DOC).splitlines()
     if introduced != [freeze_commit]:
         raise RuntimeError("freeze_commit must be the unique C1 commit introducing the frozen doc.")
     _git("diff", "--exit-code", freeze_commit, "--", *SEALED_PATHS)
