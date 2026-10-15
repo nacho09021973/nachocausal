@@ -1,0 +1,1 @@
+revisiones/2026-10-15-prereg004-auditor-w2-gemini/delta.diff revisiones/2026-10-15-prereg004-auditor-w2-gemini/mecanica.txt nachocausal2p1/validate.py docs/preregistration_004_draft.md

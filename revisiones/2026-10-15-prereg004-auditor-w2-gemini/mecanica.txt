@@ -1,0 +1,30 @@
+# Salida capturada por Claude Opus 5.5 el 2026-10-15T08:02:34Z; el auditor no puede re-ejecutarla.
+$ git rev-parse HEAD
+e6b5bfe9dd9e735162d76becc33dd4ceb899a1c9
+$ git diff --stat 6f76d21..e6b5bfe
+ docs/preregistration_004_draft.md | 14 +++++++++++---
+ nachocausal2p1/validate.py        |  7 +++++--
+ 2 files changed, 16 insertions(+), 5 deletions(-)
+$ make verify-seal verify-seal-004
+thresholds.py sha256: 6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4
+6e2c38881234cef48e859096b46f261cfa83ea8a2f6c955cc1dbc42537bfefd4  nachocausal/thresholds.py
+f1ec7306ced3e1f948b3a147b4e8c69f201c2bb803a1cb2525b5602239a2c7b7  nachocausal/__init__.py
+aa4411c3d095230e0f6dde78e4a8de11240c0cb42ad14353453848d70cdf1680  nachocausal/estimator.py
+d6f09fdc21b76f6cf329c33580342a068135f7ece7ed11c304552f0848216f9f  nachocausal/generator.py
+2c144e493dc3cc5b8e315892c4be4f591ee2e1dcfe04a05ea6698bb6cec2404a  nachocausal2p1/__init__.py
+eb98e3339b9f208a6e4af8e40c6a4b139806accc7cc9762bea52039701211995  nachocausal2p1/dry_run.py
+3a5010c403dd5083fcc2c4256c6e235ca092546d1e86dc83e3a980ecb4424ec4  nachocausal2p1/estimator.py
+b688535636be2ac3a585fd34b5a2ed97481886452fac1be92de619f49124629c  nachocausal2p1/gate.py
+5324a924f7ef923984841199249e9a571626004efbdf85ca6dcd006c97e88b55  nachocausal2p1/generator.py
+299b4cc2ae02ee557e88d2210fc0ae658a6e24eb904ac73d09df555ac7d87255  nachocausal2p1/seed_manifest.py
+2bf954fb1164f94b42b2e34512aac1d10d5e76e77915b15c14a640bf7186908e  nachocausal2p1/thresholds.py
+1dc539b6cd6d0b8711b80ca1a4da3abc79308807f7e1416a47ba5e136177749f  nachocausal2p1/validate.py
+641c78ef485d75a2f175adda2de8623cd6b1b5ecd91255dfafacf81897cf0039  nachocausal2p1/scoring/__init__.py
+b9097beb20a3c7e3457f756a5d2cb469172ff9022fbf4bef83febd754265d144  nachocausal2p1/scoring/scorer.py
+4bc4aec839257af7fed210030c0afa9041c265cacf43802bb735fb99df367a28  nachocausal2p1/fixtures/tau_table_2p1.json
+exit=0
+$ make test-004
+64 passed in 12.76s
+exit=0
+$ AST of validate.py at 6f76d21 vs e6b5bfe, docstrings blanked (comments are not in the AST)
+ast_equal True
