@@ -387,7 +387,7 @@ case. (v) is shown false only outside the validation label, where it is a precon
   `make verify-seal`, `make verify-seal-004`, `make verify-comite`, and the global `make test`.
   A full-grid dry run on `DRY_RUN_SEEDS` after C1 (anticipated by comité 052) is **not** part of
   the plan: the port was already run at ρ = 126, T = 16 on seed `7_000_100` (§8), and a full grid
-  would cost about 2 h for a result that is discarded.
+  would cost about 2 h for a result that is discarded (PI agreed, 2026-10-15).
 - **Sequence:** comité 052 §9 steps 1-6 (done, §5-§8 above; step 5 partial) → step 7: comité 053
   (`RECOMMEND_REVISE_AND_RECONVENE`; wording and procedure only) → this revision → cross-family
   review of §7/§9 against `validate.py` and `/auditor` on the delta → C1 freeze → C2 blind draw →
