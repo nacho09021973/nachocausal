@@ -545,3 +545,9 @@ of the PI. Revised candidate identified: `0c16845` on `prereg004/step3-port`.
   execution.
 - **C1-C3.** This sign-off does not authorise C1, C2 or C3. C1 needs its own explicit PI decision
   and must follow the §9 C1 procedure of the draft.
+
+**C1 record (2026-10-15, PI-signed, transcribed by Claude).** C1 = `d6494e5aa32289594c1f30033ac041eecdb87ee6`
+on `prereg004/step3-port`, pushed, the unique commit adding `docs/preregistration_004.md`. It must
+never be amended, rebased or squashed. In the same message that signed this note, the PI
+explicitly authorised C2 (blind draw) and C3 (single blind CPU run), to be carried out by the
+procedure of `docs/preregistration_004.md` §9.
