@@ -518,3 +518,30 @@ COMMITTEE_DECISION_VERDICT=RECOMMEND_REVISE_AND_RECONVENE
 
 ## 11. User sign-off
 _(left blank for the user — decision, date, and any overriding notes)_
+
+**PI sign-off (2026-10-15, in chat, transcribed by Claude).** Signed with two wording adjustments
+of the PI. Revised candidate identified: `0c16845` on `prereg004/step3-port`.
+- **Verdict.** `RECOMMEND_REVISE_AND_RECONVENE` accepted.
+- **Changes.** The eight changes of §8 were applied in `007947e`.
+- **Open disagreements, resolved by the PI:**
+  - (a) A cross-family review was run: Gemini on `007947e`
+    (`revisiones/2026-10-15-prereg004-c053-gemini/`). Its code finding G8 (`--full-history`) was
+    fixed in `76da124`, together with ten text fixes.
+  - (b) The power disclosure uses the falsifier's wording.
+  - (c) The power figures stay `[UNVERIFIED]` (closed-form arithmetic); the PI expressly accepts
+    this limitation.
+  - (d) Thread determinism is declared, not probed; the PI expressly accepts this limitation.
+- **Full-grid dry run.** The post-C1 full-grid dry run on `DRY_RUN_SEEDS` is dropped (`616c55d`).
+- **Audit.** The delta audit was assigned by the PI to Gemini instead of a Claude `/auditor`,
+  without command execution:
+  - `782d031..616c55d`: `AUDIT_PASS_WITH_WARNINGS`. W1 was fixed in the text. W2 was fixed in
+    `validate.py` comments and docstring only; no executable code changed; the AST is equal after
+    excluding docstrings.
+  - `6f76d21..e6b5bfe`: `AUDIT_PASS`.
+- **Reconvening.** Having considered the Gemini review and both delta audits, including their
+  stated limitations and lack of command execution, the PI explicitly waives the reconvening
+  recommended by comité 053. No further comité is required before the separate C1 decision. This
+  is a PI procedural decision, not a new committee verdict or independent verification of command
+  execution.
+- **C1-C3.** This sign-off does not authorise C1, C2 or C3. C1 needs its own explicit PI decision
+  and must follow the §9 C1 procedure of the draft.

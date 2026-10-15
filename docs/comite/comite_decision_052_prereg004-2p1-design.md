@@ -515,3 +515,9 @@ of unpredictability to the author of C1. INCONCLUSIVE levels retain descriptive 
 and the coverage example is corrected to 10 non-covering seeds out of 20.
 These corrections implement the PI's subsequent instruction; they are not a new committee
 verdict, an audit PASS, or authorisation of C1-C3. See the draft §6, §7, §9 and §10.
+
+**PI sign-off (2026-10-15, in chat, transcribed by Claude; revised candidate `0c16845`).** The PI
+accepts the verdict `RECOMMEND_REVISE_AND_RECONVENE`. The reconvening of §9 step 7 was comité 053
+(`docs/comite/comite_decision_053_prereg004-draft-readiness-c1.md`). The PI decisions already
+transcribed above (T = 16, anchor (c1), BH-abstention rule, O1-O8, post-045 remediation) stand as
+signed. This sign-off does not authorise C1, C2 or C3.
