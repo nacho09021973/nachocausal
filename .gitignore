@@ -28,3 +28,6 @@ biblioteca/
 # phase2_novelty_and_item5.md §3.3): no email addresses and no choice of persons
 # in the tracked tree. Local only, never pushed.
 email/
+
+# local manuscript build output (not committed)
+manuscrito/build_v4/
