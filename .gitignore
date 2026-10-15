@@ -31,3 +31,6 @@ email/
 
 # local manuscript build output (not committed)
 manuscrito/build_v4/
+
+# local Open WebUI secret key (never commit)
+.webui_secret_key
