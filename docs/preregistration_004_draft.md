@@ -492,5 +492,7 @@ empty samples "cannot produce a PASS" although `escape_pass` reads True on zero 
 the comments only, by PI decision: the parsed code is unchanged (AST equal ignoring docstrings),
 but the file's SHA changed (§3).
 
-**Still open before C1:** an audit of the comments-only delta `6f76d21..` on `validate.py` (and
-this text); the PI's signature of comités 052 and 053 and the C1 decision.
+**Gemini audit of the comments-only delta `6f76d21..e6b5bfe` (2026-10-15).** `AUDIT_PASS`,
+0 errors, 0 warnings, without command execution (`revisiones/2026-10-15-prereg004-auditor-w2-gemini/`).
+
+**Still open before C1:** the PI's signature of comités 052 and 053 and the C1 decision.
