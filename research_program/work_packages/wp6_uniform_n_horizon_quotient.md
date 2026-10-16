@@ -11,8 +11,9 @@ UNIFORM_QMD_WINDOW = delta_n = o(1/n)
 UNIFORM_QMD_AT_LAN_SCALE = NOT_IMPLIED (ver §6)
 EF_BOX_ORDER_ONLY_TWO_POINT_FLOOR = PROVED  (orden 1/sqrt(n Jbar), Corolario C §7)
 EF_BOX_ORDER_CHANNEL_ATTAINS_1_OVER_N = REFUTED (Corolario C)
-EF_BOX_MINIMAX_RATE = NOT_ESTABLISHED (falta la cota superior)
-POISSON_MIXTURE_REGULARITY = OPEN_NOT_STARTED
+EF_BOX_MINIMAX_RATE = N_POW_MINUS_HALF_CONDITIONAL_ON_P_MONOTONE (Prop. F §9; monotonía solo numérica)
+POISSON_MIXTURE_REGULARITY = PROVED (Corolario D §8)
+FISHER_LOWER_BOUND = PROVED_LINEAR_WHERE_P_PRIME_NONZERO (Prop. E §9)
 FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
 NO_PRIORITY_CLAIM
 NEXT_RUN_AUTHORIZED = NO
@@ -228,7 +229,79 @@ puntos aplicado al test \(1\{\widehat\tau>\tau+\delta/2\}\); el punto 3 se sigue
   \(\tau\) [UNVERIFIED].
 - La constante es la de la cota de TV, no la del riesgo gaussiano.
 
-## 8. Comprobación numérica (caja sellada \(r\in[0.1,1.3]\), \(v\in[0,6]\))
+## 8. Corolario D: mezcla de Poisson
+
+En el protocolo Poisson, \(N\sim\mathrm{Poisson}(\Lambda)\) con \(\Lambda=\lambda T L\). En la caja
+EF, \(\sqrt{-g}=1\) en \((v,r)\) (`nachocausal/generator.py:9-12`), así que la ley de \(N\) no
+depende de \(\tau\). Dado \(N=n\), los puntos son iid uniformes y \(\Pi_n\) es el de §1. Se
+observa \((N,\Pi_N)\), o el poset sin etiquetas, que determina \(N\) y es imagen fija de
+\((N,\Pi_N)\). Con pesos \(w_n=e^{-\Lambda}\Lambda^n/n!\), el vector de raíces es
+\(S(\tau)=(\sqrt{w_n}\,s_n(\tau))_{n\ge0}\).
+
+**Corolario D.** En \(K\):
+1. \(I^{\mathrm{Pois}}(\tau)=\sum_nw_nI_n^\Pi(\tau)\le\Lambda J(\tau)\).
+2. \(S\) es \(C^1\) con valores en \(\ell^2\), con \(\dot S=(\sqrt{w_n}\dot s_n)\), y
+   \(\|S(\tau+h)-S(\tau)-h\dot S(\tau)\|\le\tfrac{h^2}{2}C_K\sqrt{\Lambda+\Lambda^2}\). La mezcla es
+   QMD, uniformemente en \(K\).
+3. \(\mathrm{TV}(P_\tau,P_{\tau+\delta})=\sum_nw_n\mathrm{TV}_n\le\tfrac{|\delta|}{2}\sqrt{\bar J}\,E\sqrt N
+   \le\tfrac{|\delta|}{2}\sqrt{\bar J\Lambda}\). Así, la cota inferior del Corolario C vale con
+   \(\Lambda\) en lugar de \(n\).
+
+*Prueba.* Los bloques con distinto \(n\) tienen soportes disjuntos y el mismo peso
+\(w_n\) para todo \(\tau\); de ahí la igualdad de 3 y la suma de 1. Por los Teoremas A y B,
+\(\sum_nw_n\sup_K\|\dot s_n\|^2\le\bar J\Lambda/4\) y
+\(\sum_nw_n\sup_K\|\ddot s_n\|^2\le C_K^2E N^2=C_K^2(\Lambda+\Lambda^2)\). Estas son las cotas
+dominantes uniformes en \(n\) que pedía `docs/physical_channel_observable_bridge_2026-09.md`
+§4 (líneas 177–181). Con ellas, la derivación término a término en \(\ell^2\) y el teorema
+fundamental del cálculo valen componente a componente y se suman. Para 3 se usa
+Jensen, \(E\sqrt N\le\sqrt\Lambda\). \(\square\)
+
+## 9. Cota inferior lineal de Fisher y cota superior condicional
+
+Sea \(p(\tau)=P_\tau(\text{dos puntos están relacionados causalmente})\), es decir, la
+probabilidad de la permutación identidad para \(n=2\). Sea
+\(U_n=\binom n2^{-1}\#\{\text{pares relacionados}\}\). \(U_n\) es función de \(\Pi_n\) (los pares
+que no forman inversión) y del poset sin etiquetas (su número de relaciones).
+
+**Proposición E (cota inferior lineal).** Para \(n\ge2\) y \(\tau\in K\),
+
+\[
+I_n^\Pi(\tau)\ \ge\ \frac{n\,p'(\tau)^2}{4\,p(\tau)(1-p(\tau))}.
+\]
+
+*Prueba.* \(U_n\) es un U-estadístico de núcleo \(h\in\{0,1\}\). Por la fórmula de Hoeffding,
+\(\operatorname{Var}U_n=\binom n2^{-1}[2(n-2)\zeta_1+\zeta_2]\) con \(\zeta_1\le\zeta_2=p(1-p)\), luego
+\(\operatorname{Var}U_n\le4p(1-p)/n\). Como \(S_n\) es finito,
+\(\tfrac{d}{d\tau}E_\tau U_n=\sum_\sigma U(\sigma)\pi_\sigma'=\operatorname{Cov}(U_n,\text{score})\le
+\sqrt{\operatorname{Var}U_n\,I_n^\Pi}\), y \(E_\tau U_n=p(\tau)\). \(\square\)
+
+Con el Teorema A, \(I_n^\Pi\asymp n\) en todo \(\tau\) con \(p'(\tau)\ne0\). Por la cota de
+Astra (§6), \(\|\ddot s_n\|\ge I_n^\Pi/4\), así que en esos puntos la escala \(n\eta\) del
+Teorema B es la correcta en orden.
+
+**Proposición F (cota superior, condicional).** Supóngase que \(p\) es \(C^1\) y
+estrictamente monótona en \(K\), con \(m=\min_K|p'|>0\). Sea
+\(\widehat\tau=p^{-1}(\mathrm{clip}_{p(K)}U_n)\), un estimador basado solo en el orden. Entonces
+
+\[
+\sup_{\tau\in K}E_\tau|\widehat\tau-\tau|\ \le\ \frac{2\sup_K\sqrt{p(1-p)}}{m\sqrt n}.
+\]
+
+*Prueba.* \(p^{-1}\) es \(1/m\)-lipschitziana en \(p(K)\), y recortar a \(p(K)\) no aleja de
+\(p(\tau)\). Por tanto \(|\widehat\tau-\tau|\le|U_n-p(\tau)|/m\). Se concluye con Cauchy–Schwarz
+y la cota de la varianza. \(\square\)
+
+Junto con el Corolario C, **si \(p\) es estrictamente monótona en \(K\), la tasa minimax de
+localización basada solo en el orden en la caja EF es \(n^{-1/2}\)**, como en el Teorema 3.9
+del manuscrito para el diamante. Lo mismo vale con \(\Lambda\) en el protocolo Poisson,
+condicionando a \(N\). La monotonía **no está demostrada**. La evidencia numérica es
+`dev/explore_ef_box_comparable_pair_monotonicity.py` (veredicto MONOTONE_ON_GRID): en la
+caja sellada, \(p\) decrece en \(\tau\in[0.15,1.25]\), con \(p'\) entre \(-0.73\) y \(-0.43\) y
+\(|p'|/\mathrm{se}>300\) en todos los puntos de la malla. Comprobación por otra vía:
+\(p'^2/(p(1-p))\) en \(\tau=0.5\) vale 1.425, y el Monte Carlo independiente de
+\(I_2^\Pi\) (§10) da 1.421; para \(n=2\) ambos son el mismo Fisher.
+
+## 10. Comprobación numérica (caja sellada \(r\in[0.1,1.3]\), \(v\in[0,6]\))
 
 Criterios fijados en el docstring antes de ejecutar:
 
@@ -243,11 +316,12 @@ Criterios fijados en el docstring antes de ejecutar:
 Las comprobaciones numéricas cubren solo \(n\) pequeño. Para todo \(n\), el
 resultado descansa en las pruebas de §4–§5.
 
-## 9. Pendiente
+## 11. Pendiente
 
 1. ~~Lectura humana de §2–§5.~~ Hecha por el PI, 2026-10-16.
 2. ~~Revisión por otra familia de la parte (b).~~ Hecha por Astra (no independiente); una revisión independiente de §5 sigue siendo deseable.
 3. Cita de un criterio de QMD comprobado en la fuente. Aquí no hace falta: la
    prueba usa derivación bajo la integral, no el criterio. El lema 7.6 de van der
    Vaart no está en `biblioteca/` [UNVERIFIED].
-4. Cota inferior \(I_n^\Pi\gtrsim n\), abierta (§6).
+4. ~~Cota inferior \(I_n^\Pi\gtrsim n\).~~ Probada donde \(p'\ne0\) (Prop. E).
+5. **Demostrar que \(p(\tau)\) es estrictamente monótona en \(K\)**. Es lo único que falta para la tasa minimax \(n^{-1/2}\) en la caja EF (Prop. F).

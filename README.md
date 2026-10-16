@@ -105,7 +105,9 @@ experiment. Regularity after the finite rank/permutation channel is now bounded
 uniformly in `n`: a horizon-side quotient gives `I_n^Pi <= n J(tau)` and a root-score
 modulus `Omega_{n,K}(eta) <= C_K n eta` (QMD-uniform windows `n delta_n -> 0`; not the
 LAN scale). As a corollary, no order-only estimator in the fixed EF box localizes `tau`
-below order `1/sqrt(n Jbar)` (two-point floor; the minimax rate is not established).
+below order `1/sqrt(n Jbar)` (two-point floor), and the related-pair-count estimator attains
+`n^{-1/2}` provided the comparable-pair probability `p(tau)` is strictly monotone on `K`
+(numerically supported, not proved). The Poisson mixture is QMD with `I <= Lambda J`.
 Status `PROVED — READ_BY_PI 2026-10-16` (part (a) reviewed by DeepSeek, part (b) by Astra):
 [`wp6_uniform_n_horizon_quotient.md`](research_program/work_packages/wp6_uniform_n_horizon_quotient.md).
 See
@@ -138,7 +140,8 @@ UNIFORM_IN_N_FISHER_BOUND = PROVED_LINEAR  [DEEPSEEK_REVIEWED; READ_BY_PI]
 UNIFORM_SQRT_SCORE_MODULUS = PROVED_LINEAR_WINDOW  [READ_BY_PI; ASTRA_REVIEWED_NOT_INDEPENDENT]
 UNIFORM_QMD_AT_LAN_SCALE = NOT_IMPLIED
 EF_BOX_ORDER_ONLY_TWO_POINT_FLOOR = PROVED  [order 1/sqrt(n Jbar); order channel does not attain 1/n]
-EF_BOX_MINIMAX_RATE = NOT_ESTABLISHED
+EF_BOX_MINIMAX_RATE = N_POW_MINUS_HALF_IF_P_MONOTONE  [monotonicity of comparable-pair p(tau) numerical only]
+EF_BOX_POISSON_MIXTURE_QMD = PROVED
 PREREG_002 = UNCHANGED
 NEXT_RUN_AUTHORIZED = NO
 TARGET_SUBCLASS = SYMMETRIC_RANK_ONE_COPULA_TANGENTS

@@ -184,6 +184,12 @@ Por ello el canal físico queda caracterizado de manera completa a cardinalidad
 fija, mientras que la ley Poisson no condicionada permanece como una obligación
 analítica separada.
 
+`[ADDENDUM 2026-10-16]` La cota dominante uniforme en `n` está ya disponible para la
+caja EF fija (Teoremas A y B de
+`research_program/work_packages/wp6_uniform_n_horizon_quotient.md`). Con ella, la mezcla
+Poisson es QMD, con `I^Pois <= Lambda J`, y la cota inferior de dos puntos se extiende con
+`Lambda`: Corolario D, §8 de ese documento.
+
 ## 5. Relación exacta y límite de la relación con Fisher
 
 La cadena correcta es
