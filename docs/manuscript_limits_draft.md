@@ -22,6 +22,11 @@ fixed sufficiently small null lapse. A Fisher-information two-point bound gives
 the matching \(\Omega(n^{-1/2})\) lower rate, so the minimax rate is
 \(n^{-1/2}\). The constants are not sharp; a deterministic lapse sweep supports,
 but does not prove, the conjectured quadratic small-lapse Fisher scaling.
+On a fixed Eddington--Finkelstein rectangle the point law has moving support and is
+not regular. A horizon-side reparametrization nevertheless writes the permutation
+channel as a parameter-free image of a regular i.i.d. sample. This gives a Fisher
+bound linear in \(n\), and a pairwise monotonicity lemma shows that the same
+comparable-pair estimator attains the matching minimax rate \(n^{-1/2}\) there too.
 For the future-cardinality observable used in a preregistered in-patch experiment, we
 also derive an exact tagged-element binomial law and its finite-\(n\) correlation
 attenuation. The empirical result is reported with its artifact caveat, and a
@@ -130,7 +135,7 @@ The paper has three components:
 
 | Component | Content | Where |
 |---|---|---|
-| **Theory** | Exact co-scaling blindness; global-event-horizon nonlocality; and matching minimax upper and lower rates on a regular fixed-corner \(1{+}1\) family | Theorems 3.1, 3.2, 3.8–3.9 and Corollary 3.10 |
+| **Theory** | Exact co-scaling blindness; global-event-horizon nonlocality; matching minimax upper and lower rates on a regular fixed-corner \(1{+}1\) family; and the same rate on the fixed EF rectangle, whose point law is not regular | Theorems 3.1, 3.2, 3.8–3.9, Corollary 3.10 and Theorems 3.12–3.15 |
 | **Future cardinality** | An exact tagged-element law and a preregistered in-patch evaluation of the same observable | Section 4 |
 | **Empirical context** | A compact record of seven unsuccessful region-localization constructions | Section 5 |
 
@@ -716,8 +721,9 @@ passing to parameter-dependent global null coordinates to make the order map com
 the image of the rectangle has moving support. Thus this design does not meet the
 fixed-domain smooth-density hypotheses used for the Fisher argument below. This
 follows directly from the EF metric and the \(\tau\)-dependent null transformation
-displayed in §3.3.2; it is a design diagnostic, not a claim that no other analysis
-of the rectangle is possible.
+displayed in §3.3.2. It is a design diagnostic for the point experiment only:
+§3.5 shows that the *order channel* of the rectangle is regular uniformly in \(n\)
+and has the same minimax rate.
 
 #### 3.3.2 The diamond family with fixed EF corners
 
@@ -1607,7 +1613,158 @@ activates because the diamond crosses \(r=\tau\). Discriminating \(\tau\) is
 discrimination of a continuous geometric parameter of the patch, not a proof that an
 event horizon has been localized as a codimension-one object.
 
-### 3.4 Summary of §3
+### 3.5 The fixed EF rectangle: regularity is restored by the order channel
+
+Observation 3.4 says that the fixed EF rectangle does not provide the regular
+point experiment used above. The point law has moving support and is not QMD.
+This subsection shows that the **order channel** is nevertheless regular uniformly
+in \(n\), and that the rectangle has the same order-only minimax rate as the diamond.
+The comparable-pair fraction of Theorem 3.9 again attains it.
+
+**Setting.** Fix \(0<r_a<r_b\), \(L=r_b-r_a\), \(T>0\) and the rectangle
+\(B=[0,T]\times[r_a,r_b]\) in ingoing EF coordinates. Fix a compact interval
+\(K=[\tau_-,\tau_+]\subset(r_a,r_b)\). Since \(\det g=-1\), the normalized volume
+law is uniform on \(B\) for every \(\tau\). Let \(X_1,\dots,X_n\) be i.i.d. uniform on
+\(B\). Let \(\Pi_n\in\mathfrak S_n\) be the permutation that relates the \(\tilde U\)-order
+to the \(v\)-order, with probabilities \(\pi_\sigma(\tau)\). The unlabeled poset is a
+\(\tau\)-free image of \(\Pi_n\), because the order is the product order. Write
+\(s_n=(\sqrt{\pi_\sigma})_\sigma\) and
+\(I_n^\Pi(\tau)=\sum_\sigma\pi_\sigma'^2/\pi_\sigma=4\|\dot s_n\|^2\). Every
+\(\pi_\sigma\) is positive on \(K\): this is the full-support lemma, proved in the
+repository note `research_program/work_packages/wp6_domain_bridge_fixed_ef_box.md`,
+§6. Each \(\pi_\sigma\) is \(C^2\) by differentiating under the integral in the
+representation of Lemma 3.11.
+
+**Lemma 3.11 (horizon-side representation).** For a point \((v,r)\in B\), let
+\(\varepsilon=\operatorname{sgn}(r-\tau)\), \(b_\varepsilon=r_b\) if \(\varepsilon=+1\) and
+\(b_\varepsilon=r_a\) if \(\varepsilon=-1\), and
+
+\[
+D=2\tau\log\frac{|\omega_\tau(b_\varepsilon)|}{|\omega_\tau(r)|}\ \ge 0 .
+\]
+
+Then \(\tilde U<0\) iff \(\varepsilon=+1\). Within each side,
+\(\log|\tilde U|=\log|\omega_\tau(b_\varepsilon)|-(D+v)/(2\tau)\). Hence there is a map
+\(\varphi\) **independent of \(\tau\)** with \(\Pi_n=\varphi((\varepsilon_i,D_i,v_i)_{i\le n})\):
+exterior points come first, ordered by increasing \(D+v\); interior points follow,
+ordered by decreasing \(D+v\). The variable \(v\) is uniform and independent of
+\((\varepsilon,D)\). The pair \((\varepsilon,D)\) has the **fixed** support
+\(\{\pm1\}\times[0,\infty)\) and density
+\(f_\tau(\varepsilon,d)=t/\bigl(2L(\tau+\varepsilon t)\bigr)\), where \(t=|r-\tau|\) solves
+\(\log t+\varepsilon t/\tau=\log t_b+\varepsilon t_b/\tau-d/(2\tau)\) and \(t_b=|b_\varepsilon-\tau|\).
+
+*Proof.* \(\omega_\tau\) has the sign of \(r-\tau\); take logarithms. The density follows
+from \(|dD/dr|=2r/|r-\tau|\). \(\blacksquare\)
+
+The change of variables \((v,r)\mapsto(\varepsilon,D,v)\) depends on \(\tau\), but the
+order map \(\varphi\) does not. This is why Observation 3.4 does not extend to the
+order channel. The one-point family \(\{f_\tau\}\) is smooth in \(\tau\) by the implicit
+function theorem, since \(\partial_tG=1/t+\varepsilon/\tau>0\). Its score is
+\(O(1+d)\) and its tail is \(O(e^{-d/(2\tau_+)})\), uniformly on \(K\). Hence
+\(J(\tau):=E_\tau[(\partial_\tau\log f_\tau)^2]\) is finite and continuous on \(K\).
+
+**Theorem 3.12 (linear Fisher bound, uniform in \(n\)).** For all \(n\ge1\) and
+\(\tau\in K\), \(I_n^{[P]}(\tau)\le I_n^\Pi(\tau)\le nJ(\tau)\).
+
+*Proof.* Differentiating under the integral,
+\(\pi_\sigma'=E_\tau[A_n1\{\varphi=\sigma\}]\) with \(A_n=\sum_i\partial_\tau\log f_\tau(\varepsilon_i,D_i)\).
+By Cauchy–Schwarz, \(\pi_\sigma'^2/\pi_\sigma\le E[A_n^21\{\varphi=\sigma\}]\). Sum over
+\(\sigma\) to get \(E A_n^2=nJ\). The poset bound follows by data processing. \(\blacksquare\)
+
+**Theorem 3.13 (two-point floor on the rectangle).** Let \(\bar J=\sup_KJ\). For all
+\(\tau,\tau+\delta\in K\) and all \(n\),
+\(\mathrm{TV}(Q^n_\tau,Q^n_{\tau+\delta})\le\tfrac{|\delta|}{2}\sqrt{n\bar J}\), both for
+\(\Pi_n\) and for the unlabeled poset. Consequently, for every order-only estimator
+and every \(n\ge n_0=1/(\bar J|K|^2)\),
+\(\sup_{\tau\in K}E_\tau|\widehat\tau-\tau|\ge 1/(8\sqrt{n\bar J})\).
+
+*Proof.* By the fundamental theorem of calculus,
+\(\|s_n(\tau+\delta)-s_n(\tau)\|\le\int\|\dot s_n\|\le\tfrac{|\delta|}2\sqrt{n\bar J}\).
+Then use \(\mathrm{TV}\le\|\sqrt p-\sqrt q\|_2\) and contraction under the \(\tau\)-free
+poset map. For the risk bound, take \(|\delta|=1/\sqrt{n\bar J}\le|K|\) and apply the
+two-point argument of Theorem 3.8. \(\blacksquare\)
+
+**Lemma 3.14 (pairwise monotonicity).** Let \(p(\tau)\) be the probability that two
+independent points of \(B\) are comparable. For **every fixed pair** of points, the
+event "comparable" is non-increasing in \(\tau\). Moreover \(-p'(\tau)\ge c(\tau)>0\), with
+
+\[
+c(\tau)=\frac1{L^2}\iint_{\tau<r_1<r_2<r_b}\frac2T\Bigl(1-\frac{\Delta\phi}{T}\Bigr)_+
+\bigl(\gamma(r_2)-\gamma(r_1)\bigr)\,dr_1\,dr_2 ,
+\]
+
+where \(\phi_\tau(r)=2\tau\log|\omega_\tau(r)|\), \(\Delta\phi=\phi(r_2)-\phi(r_1)\) and
+\(\gamma=\partial_\tau\phi\). The function \(c\) is lower semicontinuous, so
+\(m:=\min_K|p'|>0\).
+
+*Proof.* For \(\Delta v=v_2-v_1>0\), comparability is equivalent to
+\(\omega_\tau(r_1)e^{\Delta v/(2\tau)}>\omega_\tau(r_2)\). There are four cases.
+
+1. *Exterior–exterior.* Comparability is \(\Delta v>\Delta\phi\). It always holds if
+   \(r_2\le r_1\). If \(r_2>r_1\), the threshold increases in \(\tau\), because
+   \(\gamma'(r)=2r/(r-\tau)^2>0\).
+2. *Interior–interior.* Comparability is \(\Delta v<\phi(r_2)-\phi(r_1)\) if
+   \(r_2<r_1\), and never holds otherwise. The threshold decreases in \(\tau\), because
+   \(\partial_r\gamma=2r/(\tau-r)^2>0\).
+3. *Exterior before interior.* Always comparable.
+4. *Interior before exterior.* Never comparable.
+
+When \(\tau\) crosses the radius of one of the points, \(\phi\to-\infty\) at the
+horizon. At each crossing the indicator is either continuous or drops from 1 to 0.
+Hence \(p(\tau)-p(\tau+h)\) is the probability of leaving comparability. Restrict to
+case 1 with \(r_2>r_1>\tau+h\), divide by \(h\) and apply Fatou; \(p\in C^1\) because
+\(p=\pi_{\mathrm{id}}\) at \(n=2\). The integrand of \(c\) is non-negative, positive on
+a set of positive measure, and pointwise lower semicontinuous in \(\tau\): near
+\(r_1=\tau\) the factor \((1-\Delta\phi/T)_+\) vanishes before \(\gamma\) diverges. By
+Fatou, \(c\) is lower semicontinuous, so it attains a positive minimum on
+\(K\). \(\blacksquare\)
+
+**Theorem 3.15 (minimax rate on the rectangle).** Let \(U_n\) be the comparable-pair
+fraction and \(\widehat\tau=p^{-1}(\operatorname{clip}_{p(K)}U_n)\). For \(n\ge2\),
+
+\[
+\sup_{\tau\in K}E_\tau|\widehat\tau-\tau|\le\frac{2\sup_K\sqrt{p(1-p)}}{m\sqrt n}.
+\]
+
+Together with Theorem 3.13, the order-only minimax absolute-error rate on \(K\) is
+\(n^{-1/2}\). Moreover \(I_n^\Pi(\tau)\ge n\,p'(\tau)^2/\bigl(4p(1-p)\bigr)\), so
+\(I_n^\Pi\asymp n\) on \(K\).
+
+*Proof.* By Hoeffding's formula, \(\operatorname{Var}U_n\le4p(1-p)/n\). By Lemma 3.14,
+\(p^{-1}\) is \(1/m\)-Lipschitz on \(p(K)\), and clipping does not increase the
+distance to \(p(\tau)\). The Fisher lower bound is Cramér–Rao applied to the
+statistic \(U_n\) of \(\Pi_n\): \(|p'|=|\operatorname{Cov}(U_n,\mathrm{score})|\le
+\sqrt{\operatorname{Var}U_n\,I_n^\Pi}\). \(\blacksquare\)
+
+**Remark 3.16 (Poisson cardinality).** With \(N\sim\mathrm{Poisson}(\Lambda)\) and
+\(\Lambda=\varrho TL\) independent of \(\tau\), the blocks \(N=n\) have disjoint supports and
+\(\tau\)-free weights. Hence
+\(\mathrm{TV}\le\tfrac{|\delta|}2\sqrt{\bar J\Lambda}\) and \(I^{\mathrm{Pois}}\le\Lambda J\). A
+uniform-in-\(n\) bound \(\sup_K\|\ddot s_n\|\le C_Kn\) (proved by the same
+representation) makes the mixture QMD uniformly on \(K\). Setting \(\widehat\tau\) to a
+fixed point of \(K\) when \(N<2\), the estimator has risk at most
+\(2\sqrt2\sup_K\sqrt{p(1-p)}/(m\sqrt\Lambda)+|K|e^{-\Lambda}(1+\Lambda)\). The rate is
+therefore \(\Lambda^{-1/2}\), with modified constants.
+
+#### What Theorems 3.12–3.15 do and do not claim
+
+| Claims | Does **not** claim |
+|---|---|
+| Uniform-in-\(n\) linear Fisher bound for the order channel of the fixed EF rectangle | That the point experiment is regular (it is not; Observation 3.4) |
+| Matching \(n^{-1/2}\) minimax rates on \(K\subset(r_a,r_b)\), attained by the comparable-pair fraction | Sharp constants; \(m\) from \(c(\tau)\) is weak near \(r_b\) |
+| Pairwise monotonicity of comparability in \(\tau\), with a proof | Uniform QMD of \(\Pi_n\) at the LAN scale \(h/\sqrt n\), LAN, or efficiency |
+| Poisson cardinality: rate \(\Lambda^{-1/2}\) | Any result in 3+1 dimensions, or that \(\tau\) localizes a horizon as an object |
+
+**Numerical checks.** On \(r\in[0.1,1.3]\), \(v\in[0,6]\), the following deterministic
+`dev/` scripts check the statements; their criteria were fixed before execution.
+- `explore_create_fisher_quotient_check.py`: \(\varphi\) reproduces \(\Pi_n\) with 0
+  mismatches in \(6\cdot10^5\) samples, and \(J(0.5)=4.38\).
+- `explore_ef_box_comparable_pair_monotonicity.py`: \(p'\in[-0.73,-0.43]\) on
+  \(\tau\in[0.15,1.25]\).
+- `explore_ef_box_pairwise_relation_monotonicity.py`: no \(0\to1\) switch in
+  \(2\cdot10^6\) pairs on 116 values of \(\tau\), and \(0<c\le-p'\) on the grid.
+
+### 3.6 Summary of §3
 
 | Result | Target and family | Guarantee |
 |---|---|---|
@@ -1615,9 +1772,11 @@ event horizon has been localized as a codimension-one object.
 | Thm 3.2 | Global event horizon over alternative completions | Not a functional of one finite patch |
 | Thm 3.8 | \(\tau\) in the fixed-corner diamond family | Estimator-independent lower risk bound |
 | Thm 3.9 / Cor 3.10 | Same family, \(0<\Delta v<\Delta v_0\) | Explicit ordering-fraction estimator and minimax rate \(n^{-1/2}\) |
+| Thms 3.12–3.15 | \(\tau\) in the fixed EF rectangle (non-regular point law) | Uniform-in-\(n\) linear Fisher bound for the order channel; minimax rate \(n^{-1/2}\) by the same estimator |
 
-The first result removes an absolute ruler; the last two show that order can still
-carry information about dimensionless shape when the external patch is held fixed.
+The first result removes an absolute ruler; the others show that order can still
+carry information about dimensionless shape when the external patch is held fixed,
+even when the point law itself is not regular.
 
 ## §4 Future cardinality: exact tagged law and preregistered experiment
 
@@ -2073,6 +2232,7 @@ fixed-\(n\) order-only blindness for absolute mass.
 | Absolute scale on a patch-shape-preserving orbit | Exactly absent from the fixed-\(n\) order law |
 | Global event horizon from one causally convex patch | Not a functional of the observation |
 | Fixed-corner parameter \(\tau\) at small fixed \(\Delta v\) | Minimax absolute-error rate \(n^{-1/2}\) |
+| \(\tau\) on the fixed EF rectangle (non-regular point law) | Linear Fisher bound for the order channel; minimax rate \(n^{-1/2}\) |
 | Future cardinality of a pretagged element | Exact binomial mixture and finite-\(n\) attenuation |
 | Preregistered minimal-element procedure | Met all primary criteria; original raw artifact lost |
 | Investigated region-locators | Unsuccessful as listed; no universal no-go |
@@ -2093,6 +2253,8 @@ fixed-\(n\) order-only blindness for absolute mass.
 5. Study absolute scale in the order+number channel with known sprinkling density.
 6. For a specifically defined quasi-local proxy, seek either a witness pair or a
    constructive estimator under a new observation contract.
+7. On the fixed EF rectangle, decide whether the order channel is LAN at the scale
+   \(h/\sqrt n\), and find sharp constants. Theorems 3.12–3.15 give the rate only.
 
 Direct reconstruction of the global event horizon from one finite order-only patch
 is not an open estimator problem under the present observation model; Theorem 3.2
@@ -2114,7 +2276,11 @@ of the ordering fraction gives an explicit uniform upper bound. For every fixed
 \(n^{-1/2}\). The plotted family also makes the limitation concrete: the available
 upper constant is nontrivial relative to the parameter diameter only at very large
 \(n\). Deterministic quadrature supports matching \(1/\Delta v\) scaling of the
-two constants, but a uniform proof and sharp constants remain open.
+two constants, but a uniform proof and sharp constants remain open. On the fixed
+EF rectangle the point law is not regular, yet the order channel is: writing the
+permutation as a parameter-free image of a regular sample gives a Fisher bound
+linear in \(n\). Pairwise monotonicity of comparability then yields the same
+\(n^{-1/2}\) minimax rate with the same estimator.
 
 Future cardinality provides a complementary positive result. For a pretagged
 element it is exactly a binomial thinning of continuum future volume, with an
@@ -2132,7 +2298,10 @@ additional information or a different question.
 ## Acknowledgments
 
 The author used AI assistants — Anthropic's Claude and OpenAI's ChatGPT — for code
-writing, literature search, and manuscript preparation. All code, mathematical
+writing, literature search, and manuscript preparation. The horizon-side
+representation of §3.5 was first proposed by Claude and ChatGPT in a structured
+search for alternative approaches; §3.5 was then checked by blind adversarial reviews
+with DeepSeek and xAI's Grok. All code, mathematical
 statements, proofs, and numerical results were verified by the author, who takes
 full responsibility for the content.
 
@@ -2152,7 +2321,9 @@ repository. The figure runner emits the complete numerical sweep quoted in the t
 those values reproduce in the pinned environment. Cross-machine PNG byte identity
 is not claimed because font and FreeType rasterization can alter pixels without
 altering the underlying numbers. The seal can be checked with `make verify-seal`.
-No new validation ensemble was generated for this manuscript revision. The missing
+No new validation ensemble was generated for this manuscript revision. The
+numerical checks of §3.5 are deterministic Monte Carlo and quadrature scripts in
+`dev/`, with their results files. The missing
 primary artifact and the scope of its deterministic replay are described in §4.4.
 
 ## References
