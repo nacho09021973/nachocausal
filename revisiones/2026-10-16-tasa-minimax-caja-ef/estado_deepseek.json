@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "status": "COMPLETED",
+  "exit_code": 0,
+  "finish_reason": "stop",
+  "requested_model": "deepseek-v4-pro",
+  "input_sha256": "7516ff36423c522fbb04f04fa4664b13a46cc2c259846e1a3b4e92fb762a15ab",
+  "started": "2026-10-16T09:47:08Z",
+  "finished": "2026-10-16T09:56:35Z",
+  "tool_commit": "14929ebaaf557162cec5fab1f54a14a51da636d4",
+  "script_sha256": "bcaf2d80615ed82c36faf282a64d7adbc0b664f07a1dc8847202f14ee861082f",
+  "library_sha256": "054386f420bdcb2b90f0cdff79e3c0ca76369dc6dcabaa1d849bda2cc06b1356"
+}

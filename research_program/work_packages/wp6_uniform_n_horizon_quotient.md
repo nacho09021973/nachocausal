@@ -12,7 +12,7 @@ UNIFORM_QMD_AT_LAN_SCALE = NOT_IMPLIED (ver §6)
 EF_BOX_ORDER_ONLY_TWO_POINT_FLOOR = PROVED  (orden 1/sqrt(n Jbar), Corolario C §7)
 EF_BOX_ORDER_CHANNEL_ATTAINS_1_OVER_N = REFUTED (Corolario C)
 EF_BOX_MINIMAX_RATE = N_POW_MINUS_HALF_PROVED (Teorema H §9; Lema G de monotonía)
-REVIEW_OF_SECTIONS_8_9 = NONE_YET (escritas por Claude; sin revisión de otra familia ni lectura humana)
+REVIEW_OF_SECTIONS_8_9 = READ_BY_PI 2026-10-16; REVIEWED_DEEPSEEK_AND_GROK (correcto con salvedades; corregidas)
 POISSON_MIXTURE_REGULARITY = PROVED (Corolario D §8)
 FISHER_LOWER_BOUND = PROVED_LINEAR_WHERE_P_PRIME_NONZERO (Prop. E §9)
 FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
@@ -254,8 +254,9 @@ observa \((N,\Pi_N)\), o el poset sin etiquetas, que determina \(N\) y es imagen
 \(\sum_nw_n\sup_K\|\ddot s_n\|^2\le C_K^2E N^2=C_K^2(\Lambda+\Lambda^2)\). Estas son las cotas
 dominantes uniformes en \(n\) que pedía `docs/physical_channel_observable_bridge_2026-09.md`
 §4 (líneas 177–181). Con ellas, la derivación término a término en \(\ell^2\) y el teorema
-fundamental del cálculo valen componente a componente y se suman. Para 3 se usa
-Jensen, \(E\sqrt N\le\sqrt\Lambda\). \(\square\)
+fundamental del cálculo valen componente a componente y se suman. La misma suma de segundas derivadas da
+\(\|\dot S(\tau+h)-\dot S(\tau)\|\le|h|C_K\sqrt{\Lambda+\Lambda^2}\), es decir, la continuidad de
+\(\dot S\) (revisores). Para 3 se usa Jensen, \(E\sqrt N\le\sqrt\Lambda\). \(\square\)
 
 ## 9. Cota inferior lineal de Fisher y cota superior condicional
 
@@ -325,8 +326,10 @@ probabilidad de dejar de estar relacionados. Restringiendo al caso 1 con
 \(r_2>r_1>\tau+h\), dividiendo por \(h\) y aplicando Fatou, se obtiene
 \(-p'(\tau)\ge c(\tau)\). Aquí \(p\) es \(C^1\) porque es \(\pi_{\rm id}\) con \(n=2\) (wp6
 §11). El integrando de \(c\) es positivo en un conjunto de medida positiva (\(r_2\)
-cercano a \(r_1\), \(\Delta\varphi<T\)), y el factor \(1\{r_1>\tau\}\) es semicontinuo
-inferiormente, de modo que \(c\) es semicontinua inferiormente y positiva. Por ser
+cercano a \(r_1\), \(\Delta\varphi<T\)). Es no negativo y, para cada \((r_1,r_2)\) fijo,
+cumple \(\liminf_{\tau'\to\tau}f_{\tau'}\ge f_\tau\): el factor \(1\{r_1>\tau\}\) es semicontinuo
+inferiormente, y cerca de \(r_1=\tau\) el factor \((1-\Delta\varphi/T)_+\) se anula antes de que
+\(\gamma\) diverja. Por Fatou, \(c\) es semicontinua inferiormente; y es finita, porque \(c\le-p'\). Por ser
 \(K\) compacto, alcanza un mínimo positivo. \(\square\)
 
 **Teorema H (tasa minimax en la caja EF).** Por el Lema G, la Proposición F se cumple
@@ -335,13 +338,22 @@ sin condiciones. Con el Corolario C, la tasa minimax de localización de \(\tau\
 \(n^{-1/2}\):
 
 \[
-\frac{c_1}{\sqrt{n\bar J}}\ \le\ \inf_{\widehat\tau}\sup_{\tau\in K}E_\tau|\widehat\tau-\tau|\ \le\
-\frac{2\sup_K\sqrt{p(1-p)}}{m\sqrt n}.
+\frac{1}{8\sqrt{n\bar J}}\ \le\ \inf_{\widehat\tau}\sup_{\tau\in K}E_\tau|\widehat\tau-\tau|\ \le\
+\frac{2\sup_K\sqrt{p(1-p)}}{m\sqrt n},
 \]
 
+donde la cota superior vale para \(n\ge2\) y la inferior para \(n\ge n_0=1/(\bar J|K|^2)\). Para
+la inferior se toma \(|\delta|=1/\sqrt{n\bar J}\), que debe caber en \(K\); con
+\(\mathrm{TV}\le1/2\), el método de dos puntos da \(\max E|\widehat\tau-\cdot|\ge|\delta|/8\). La
+restricción \(n\ge n_0\) es de rango, no de tasa (Grok).
+
 La cota superior la alcanza \(\widehat\tau=p^{-1}(\mathrm{clip}\,U_n)\), que solo usa el número
-de relaciones del poset. En el protocolo Poisson vale lo mismo con \(\Lambda\) (Corolario
-D; para la cota superior, condicionando a \(N\)). Es la contrapartida, en la caja EF, del
+de relaciones del poset. En el protocolo Poisson, la **tasa** es \(\Lambda^{-1/2}\), pero no con las mismas
+constantes. Revisores: la versión anterior decía "vale lo mismo con \(\Lambda\)", y eso no se
+sigue. La cota inferior sale del Corolario D(3) por dos puntos, para \(\Lambda\) grande. Para
+la superior se define \(\widehat\tau\) como un punto fijo de \(K\) cuando \(N<2\). Como
+\(N^{-1/2}\le\sqrt2/\sqrt{N+1}\) para \(N\ge1\) y \(E[(N+1)^{-1}]\le1/\Lambda\), Jensen da
+\(E|\widehat\tau-\tau|\le\frac{2\sqrt2\sup_K\sqrt{p(1-p)}}{m\sqrt\Lambda}+|K|\,e^{-\Lambda}(1+\Lambda)\). Es la contrapartida, en la caja EF, del
 Corolario 3.10 del manuscrito para el diamante.
 
 Comprobación numérica (criterios fijados antes de ejecutar):
@@ -378,4 +390,5 @@ resultado descansa en las pruebas de §4–§5.
    Vaart no está en `biblioteca/` [UNVERIFIED].
 4. ~~Cota inferior \(I_n^\Pi\gtrsim n\).~~ Probada donde \(p'\ne0\) (Prop. E).
 5. ~~Monotonía de \(p\).~~ Lema G, §9.
-6. Revisión ciega de §8–§9 (Corolario D, Proposiciones E y F, Lema G, Teorema H) por otra familia, y lectura del PI.
+6. ~~Revisión ciega de §8–§9.~~ DeepSeek y Grok, "correcto con salvedades enumeradas"; salvedades incorporadas en §8–§9 (`revisiones/2026-10-16-tasa-minimax-caja-ef/`). Lectura del PI: hecha.
+7. Decidir la incorporación al manuscrito (no enviado; en rama, con lectura del PI antes de fusionar).
