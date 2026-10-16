@@ -1,0 +1,2 @@
+grok: FAILED (salida=1, fin=cli_exit_1). No se crea informe; ver estado_grok.json y grok.log
+exit=1

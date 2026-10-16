@@ -1,0 +1,2 @@
+gemini: FAILED (salida=22, fin=UNKNOWN). No se crea informe; ver estado_gemini.json y gemini.log
+exit=1

@@ -170,9 +170,17 @@ régimen** \(\sqrt n|h|\to0\), porque el módulo está acotado por \(\sqrt n\). 
   que el coeficiente de Lipschitz local es de orden \(n\). Esa cota inferior está
   abierta. La simulación da \(I_n^\Pi\) creciente para \(n\le4\), pero no la prueba.
 
-Si el argumento posterior necesita la escala LAN, el objeto correcto es un resto
-relativo, por ejemplo
-\(\|s_n(\tau+h/\sqrt n)-s_n(\tau)-(h/\sqrt n)\dot s_n\|\to0\), y queda abierto.
+`[CORRECCIÓN 2026-10-16, tras la encuesta]` Una versión anterior proponía como objeto
+el resto lineal \(\|s_n(\tau+h/\sqrt n)-s_n(\tau)-(h/\sqrt n)\dot s_n\|\to0\). Está **mal
+planteado**: tampoco tiende a 0 en el modelo iid regular, que sí es LAN. Con
+\(s_n=s^{\otimes n}\) y \(a=h^2I/8\), su cuadrado tiende a
+\(2(1-e^{-a})+2a-4ae^{-a}=3a^2+O(a^3)\) (Opus y Astra por separado; rehecho por Claude).
+LAN es un enunciado sobre la log-verosimilitud:
+\(\log dP_{\tau+h/\sqrt n}/dP_\tau=h\Delta_n-\tfrac12h^2I^\Pi+o_P(1)\) con
+\(\Delta_n\Rightarrow N(0,I^\Pi)\). Para \(\Pi_n\) está abierta y, según la encuesta
+(`revisiones/2026-10-16-encuesta-escala-lan/sintesis.md`), **no hace falta** para las
+cotas inferiores sobre el orden de la tasa. Solo haría falta para constantes óptimas
+o para eficiencia.
 Tampoco se abren la mezcla Poisson ni el puente Fisher–localización.
 
 ## 7. Comprobación numérica (caja sellada \(r\in[0.1,1.3]\), \(v\in[0,6]\))
