@@ -1,0 +1,403 @@
+{
+ "verdict": "ARTEFACT_CONFIRMED",
+ "repo_head": "2fd5ca5",
+ "eps": 0.1,
+ "seeds": [
+  20240617,
+  13,
+  101,
+  7,
+  42,
+  99,
+  2718,
+  31415
+ ],
+ "bh_b_frac_previous": {
+  "1500": 0.2691260686588961,
+  "3000": 0.2630796300554663
+ },
+ "medians": {
+  "MINK_WIDE/1500": {
+   "N": 3185.0,
+   "n_R": 15.0,
+   "n_max": 57.0,
+   "B_frac": 0.16968333454920637,
+   "n_interface": 201.0
+  },
+  "MINK_NARROW/1500": {
+   "N": 1930.5,
+   "n_R": 15.0,
+   "n_max": 15.0,
+   "B_frac": 0.0,
+   "n_interface": 0.0
+  },
+  "MINK_WIDE/3000": {
+   "N": 6391.5,
+   "n_R": 21.5,
+   "n_max": 76.5,
+   "B_frac": 0.16646302099685012,
+   "n_interface": 422.0
+  },
+  "MINK_NARROW/3000": {
+   "N": 3866.5,
+   "n_R": 21.5,
+   "n_max": 21.5,
+   "B_frac": 0.0,
+   "n_interface": 0.0
+  }
+ },
+ "rows": [
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 1500.0,
+   "seed": 20240617,
+   "N": 3197,
+   "n_R": 15,
+   "n_max": 58,
+   "B_frac": 0.17766656240225212,
+   "n_interface": 205,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 1500.0,
+   "seed": 20240617,
+   "N": 1935,
+   "n_R": 15,
+   "n_max": 15,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 1500.0,
+   "seed": 13,
+   "N": 3171,
+   "n_R": 13,
+   "n_max": 56,
+   "B_frac": 0.17250078839482813,
+   "n_interface": 188,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 1500.0,
+   "seed": 13,
+   "N": 1943,
+   "n_R": 13,
+   "n_max": 13,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 1500.0,
+   "seed": 101,
+   "N": 3227,
+   "n_R": 16,
+   "n_max": 58,
+   "B_frac": 0.1645491168267741,
+   "n_interface": 197,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 1500.0,
+   "seed": 101,
+   "N": 1987,
+   "n_R": 16,
+   "n_max": 16,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 1500.0,
+   "seed": 7,
+   "N": 3172,
+   "n_R": 15,
+   "n_max": 51,
+   "B_frac": 0.16740226986128626,
+   "n_interface": 197,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 1500.0,
+   "seed": 7,
+   "N": 1926,
+   "n_R": 15,
+   "n_max": 15,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 1500.0,
+   "seed": 42,
+   "N": 3228,
+   "n_R": 19,
+   "n_max": 58,
+   "B_frac": 0.1579925650557621,
+   "n_interface": 219,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 1500.0,
+   "seed": 42,
+   "N": 1964,
+   "n_R": 19,
+   "n_max": 19,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 1500.0,
+   "seed": 99,
+   "N": 3173,
+   "n_R": 20,
+   "n_max": 54,
+   "B_frac": 0.16577371572644184,
+   "n_interface": 208,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 1500.0,
+   "seed": 99,
+   "N": 1920,
+   "n_R": 20,
+   "n_max": 20,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 1500.0,
+   "seed": 2718,
+   "N": 3211,
+   "n_R": 14,
+   "n_max": 59,
+   "B_frac": 0.1793833696667705,
+   "n_interface": 241,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 1500.0,
+   "seed": 2718,
+   "N": 1925,
+   "n_R": 14,
+   "n_max": 14,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 1500.0,
+   "seed": 31415,
+   "N": 3146,
+   "n_R": 15,
+   "n_max": 53,
+   "B_frac": 0.1719643992371265,
+   "n_interface": 178,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 1500.0,
+   "seed": 31415,
+   "N": 1906,
+   "n_R": 15,
+   "n_max": 15,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 3000.0,
+   "seed": 20240617,
+   "N": 6413,
+   "n_R": 22,
+   "n_max": 71,
+   "B_frac": 0.16217059098705755,
+   "n_interface": 347,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 3000.0,
+   "seed": 20240617,
+   "N": 3878,
+   "n_R": 22,
+   "n_max": 22,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 3000.0,
+   "seed": 13,
+   "N": 6424,
+   "n_R": 19,
+   "n_max": 74,
+   "B_frac": 0.16251556662515568,
+   "n_interface": 423,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 3000.0,
+   "seed": 13,
+   "N": 3913,
+   "n_R": 19,
+   "n_max": 19,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 3000.0,
+   "seed": 101,
+   "N": 6522,
+   "n_R": 23,
+   "n_max": 79,
+   "B_frac": 0.16697332106715732,
+   "n_interface": 379,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 3000.0,
+   "seed": 101,
+   "N": 3985,
+   "n_R": 23,
+   "n_max": 23,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 3000.0,
+   "seed": 7,
+   "N": 6407,
+   "n_R": 21,
+   "n_max": 74,
+   "B_frac": 0.18152021226783205,
+   "n_interface": 434,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 3000.0,
+   "seed": 7,
+   "N": 3880,
+   "n_R": 21,
+   "n_max": 21,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 3000.0,
+   "seed": 42,
+   "N": 6267,
+   "n_R": 32,
+   "n_max": 85,
+   "B_frac": 0.16355513004627414,
+   "n_interface": 421,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 3000.0,
+   "seed": 42,
+   "N": 3823,
+   "n_R": 32,
+   "n_max": 32,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 3000.0,
+   "seed": 99,
+   "N": 6303,
+   "n_R": 23,
+   "n_max": 79,
+   "B_frac": 0.16595272092654292,
+   "n_interface": 429,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 3000.0,
+   "seed": 99,
+   "N": 3819,
+   "n_R": 23,
+   "n_max": 23,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 3000.0,
+   "seed": 2718,
+   "N": 6305,
+   "n_R": 21,
+   "n_max": 73,
+   "B_frac": 0.17446471054718476,
+   "n_interface": 414,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 3000.0,
+   "seed": 2718,
+   "N": 3800,
+   "n_R": 21,
+   "n_max": 21,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  },
+  {
+   "kind": "MINK_WIDE",
+   "intensity": 3000.0,
+   "seed": 31415,
+   "N": 6376,
+   "n_R": 19,
+   "n_max": 82,
+   "B_frac": 0.17550188205771644,
+   "n_interface": 455,
+   "B_in_wing_frac": 1.0
+  },
+  {
+   "kind": "MINK_NARROW",
+   "intensity": 3000.0,
+   "seed": 31415,
+   "N": 3855,
+   "n_R": 19,
+   "n_max": 19,
+   "B_frac": 0.0,
+   "n_interface": 0,
+   "B_in_wing_frac": null
+  }
+ ]
+}
