@@ -111,16 +111,29 @@ por un factor conforme constante. Veredicto **MONOTONE_2P1_CONSISTENT**:
   frontera del cono, y ninguno dio violación.
 - M2: \(p\) baja de 0.295 a 0.172; en cada paso, \(|\Delta p|/\mathrm{se}\) está entre 70 y 90.
 
-Es 2+1D, que por E1 es el corte ecuatorial exacto de 3+1D. Una comprobación en
-3+1D completo puede usar la misma relación con \(\Delta\phi=\alpha\), la separación
-angular en \(S^2\).
+Es 2+1D, que por E1 es el corte ecuatorial exacto de 3+1D.
+
+`dev/explore_metric_comparison_3p1.py` hace la comprobación en **3+1D completo**:
+la relación es \(\alpha\le\min(\pi,L)\), con \(\alpha\) el ángulo en \(S^2\) y \(L\) el
+alcance angular del disparo auditado de 2+1D. Caja \(t^*\in[0,4]\), \(r\in[0.15,1.3]\),
+densidad \(\propto r^2\), direcciones uniformes. Veredicto **MONOTONE_3P1_CONSISTENT**:
+- N0: en puntos ecuatoriales coincide con `bh_order` de 2+1D (0 discrepancias).
+- N1: 10 semillas de 300 puntos y 7 masas; ninguna violación, y solo 1 par quedó
+  cerca de la frontera del cono.
+- N2: \(p\) baja de 0.274 a 0.149; en cada paso, \(|\Delta p|/\mathrm{se}\) está entre 40 y 60.
+
+**Vía para M3 con rigor** (bosquejo). Se tiene \(L_M(x,y)=L_0(kx,ky)\), con \(k=k(M)\)
+suave. Por la primera variación (teorema de la envolvente) aplicada al problema de
+alcance angular máximo, \(\partial_ML=-\int\lambda\,\dot v^2/r<0\), porque \(\dot v>0\) en
+las geodésicas nulas no radiales. Entonces
+\(-p'(M)\ge E[f_\alpha(L)\,|\partial_ML|\,1\{\cdot\}]>0\). Falta probar la no degeneración
+(ausencia de puntos conjugados), tratar el borde \(L=\pi\) y la uniformidad en \(K\).
 
 ## 5. Qué falta para el resultado en 3+1D
 
 1. **M3 con rigor.** Continuidad de \(\partial_M\Delta v^*\) en \(\alpha\) y una cota uniforme
    en \(K\).
-2. **Comprobación en 3+1D completo** de \(p(M)\) monótona, con la relación de 2+1D
-   aplicada a \(\alpha\).
+2. ~~Comprobación en 3+1D completo.~~ MONOTONE_3P1_CONSISTENT (§4).
 3. **Cota inferior en 3+1D** (abierta). El cociente de wp6 usaba que el orden es un
    orden producto, y eso no vale aquí. Sin la cota inferior, M2 da la tasa superior
    \(n^{-1/2}\), pero no la minimax.
