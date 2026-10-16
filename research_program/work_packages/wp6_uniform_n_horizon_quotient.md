@@ -11,7 +11,8 @@ UNIFORM_QMD_WINDOW = delta_n = o(1/n)
 UNIFORM_QMD_AT_LAN_SCALE = NOT_IMPLIED (ver §6)
 EF_BOX_ORDER_ONLY_TWO_POINT_FLOOR = PROVED  (orden 1/sqrt(n Jbar), Corolario C §7)
 EF_BOX_ORDER_CHANNEL_ATTAINS_1_OVER_N = REFUTED (Corolario C)
-EF_BOX_MINIMAX_RATE = N_POW_MINUS_HALF_CONDITIONAL_ON_P_MONOTONE (Prop. F §9; monotonía solo numérica)
+EF_BOX_MINIMAX_RATE = N_POW_MINUS_HALF_PROVED (Teorema H §9; Lema G de monotonía)
+REVIEW_OF_SECTIONS_8_9 = NONE_YET (escritas por Claude; sin revisión de otra familia ni lectura humana)
 POISSON_MIXTURE_REGULARITY = PROVED (Corolario D §8)
 FISHER_LOWER_BOUND = PROVED_LINEAR_WHERE_P_PRIME_NONZERO (Prop. E §9)
 FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
@@ -291,15 +292,67 @@ estrictamente monótona en \(K\), con \(m=\min_K|p'|>0\). Sea
 \(p(\tau)\). Por tanto \(|\widehat\tau-\tau|\le|U_n-p(\tau)|/m\). Se concluye con Cauchy–Schwarz
 y la cota de la varianza. \(\square\)
 
-Junto con el Corolario C, **si \(p\) es estrictamente monótona en \(K\), la tasa minimax de
-localización basada solo en el orden en la caja EF es \(n^{-1/2}\)**, como en el Teorema 3.9
-del manuscrito para el diamante. Lo mismo vale con \(\Lambda\) en el protocolo Poisson,
-condicionando a \(N\). La monotonía **no está demostrada**. La evidencia numérica es
-`dev/explore_ef_box_comparable_pair_monotonicity.py` (veredicto MONOTONE_ON_GRID): en la
-caja sellada, \(p\) decrece en \(\tau\in[0.15,1.25]\), con \(p'\) entre \(-0.73\) y \(-0.43\) y
-\(|p'|/\mathrm{se}>300\) en todos los puntos de la malla. Comprobación por otra vía:
-\(p'^2/(p(1-p))\) en \(\tau=0.5\) vale 1.425, y el Monte Carlo independiente de
-\(I_2^\Pi\) (§10) da 1.421; para \(n=2\) ambos son el mismo Fisher.
+**Lema G (monotonía de \(p\)).** Para cada par fijo de puntos de \(B\), el suceso "están
+relacionados" es no creciente en \(\tau\). Además, \(-p'(\tau)\ge c(\tau)\), con
+
+\[
+c(\tau)=\frac1{L^2}\iint_{\tau<r_1<r_2<r_b}\frac2T\Bigl(1-\frac{\Delta\varphi}{T}\Bigr)_+
+\bigl(\gamma(r_2)-\gamma(r_1)\bigr)\,dr_1dr_2>0,
+\]
+
+donde \(\varphi_\tau(r)=2\tau\log|W_\tau(r)/\tau|\) (es decir, \(2r+2\tau\log(|r-\tau|/\tau)\)),
+\(\Delta\varphi=\varphi(r_2)-\varphi(r_1)\) y \(\gamma=\partial_\tau\varphi\). La función \(c\) es
+semicontinua inferiormente, así que \(m:=\min_K|p'|\ge\min_Kc>0\).
+
+*Prueba.* Sea \(\Delta v=v_2-v_1>0\). La relación equivale a
+\(W(r_1)e^{\Delta v/(2\tau)}>W(r_2)\). Hay cuatro casos.
+
+1. **Exterior y exterior.** La relación equivale a \(\Delta v>\Delta\varphi\). Si
+   \(r_2\le r_1\), se cumple siempre. Si \(r_2>r_1\),
+   \(\partial_\tau\Delta\varphi=\gamma(r_2)-\gamma(r_1)>0\), porque
+   \(\gamma'(r)=2/(r-\tau)+2\tau/(r-\tau)^2>0\): el umbral sube.
+2. **Interior y interior.** La relación equivale a \(\Delta v<\varphi(r_2)-\varphi(r_1)\) si
+   \(r_2<r_1\), y no se da si \(r_2\ge r_1\). Aquí
+   \(\gamma_{\rm int}'(r)=2r/(\tau-r)^2>0\), así que el umbral baja.
+3. **Exterior antes que interior.** Siempre relacionados.
+4. **Interior antes que exterior.** Nunca relacionados.
+
+Cuando \(\tau\) cruza el radio de uno de los puntos, \(\varphi\to-\infty\) en el horizonte.
+Revisando los cruces, el indicador es continuo o pasa de 1 a 0. Por ejemplo, con
+\(r_2<r_1\) y \(r_1\) cruzando, se pasa del caso 3 al caso 2 con un umbral que tiende a
+\(+\infty\). Por tanto el indicador es no creciente, y \(p(\tau)-p(\tau+h)\) es la
+probabilidad de dejar de estar relacionados. Restringiendo al caso 1 con
+\(r_2>r_1>\tau+h\), dividiendo por \(h\) y aplicando Fatou, se obtiene
+\(-p'(\tau)\ge c(\tau)\). Aquí \(p\) es \(C^1\) porque es \(\pi_{\rm id}\) con \(n=2\) (wp6
+§11). El integrando de \(c\) es positivo en un conjunto de medida positiva (\(r_2\)
+cercano a \(r_1\), \(\Delta\varphi<T\)), y el factor \(1\{r_1>\tau\}\) es semicontinuo
+inferiormente, de modo que \(c\) es semicontinua inferiormente y positiva. Por ser
+\(K\) compacto, alcanza un mínimo positivo. \(\square\)
+
+**Teorema H (tasa minimax en la caja EF).** Por el Lema G, la Proposición F se cumple
+sin condiciones. Con el Corolario C, la tasa minimax de localización de \(\tau\) en
+\(K\) por un procedimiento basado solo en el orden (\(\Pi_n\) o el poset sin etiquetas) es
+\(n^{-1/2}\):
+
+\[
+\frac{c_1}{\sqrt{n\bar J}}\ \le\ \inf_{\widehat\tau}\sup_{\tau\in K}E_\tau|\widehat\tau-\tau|\ \le\
+\frac{2\sup_K\sqrt{p(1-p)}}{m\sqrt n}.
+\]
+
+La cota superior la alcanza \(\widehat\tau=p^{-1}(\mathrm{clip}\,U_n)\), que solo usa el número
+de relaciones del poset. En el protocolo Poisson vale lo mismo con \(\Lambda\) (Corolario
+D; para la cota superior, condicionando a \(N\)). Es la contrapartida, en la caja EF, del
+Corolario 3.10 del manuscrito para el diamante.
+
+Comprobación numérica (criterios fijados antes de ejecutar):
+- `dev/explore_ef_box_comparable_pair_monotonicity.py`: MONOTONE_ON_GRID; en la caja
+  sellada, \(p'\in[-0.73,-0.43]\) en \(\tau\in[0.15,1.25]\).
+- `dev/explore_ef_box_pairwise_relation_monotonicity.py`: LEMMA_CONSISTENT. En 2·10⁶
+  pares y 116 valores de \(\tau\), el indicador nunca pasa de 0 a 1. Además
+  \(0<c(\tau)\le-p'(\tau)\) en los 23 puntos (\(c\) va de 0.70 a 0.017; la cota es floja
+  cerca de \(r_b\)).
+- Otra vía: \(p'^2/(p(1-p))\) en \(\tau=0.5\) vale 1.425, frente a 1.421 del Monte Carlo
+  independiente de \(I_2^\Pi\).
 
 ## 10. Comprobación numérica (caja sellada \(r\in[0.1,1.3]\), \(v\in[0,6]\))
 
@@ -324,4 +377,5 @@ resultado descansa en las pruebas de §4–§5.
    prueba usa derivación bajo la integral, no el criterio. El lema 7.6 de van der
    Vaart no está en `biblioteca/` [UNVERIFIED].
 4. ~~Cota inferior \(I_n^\Pi\gtrsim n\).~~ Probada donde \(p'\ne0\) (Prop. E).
-5. **Demostrar que \(p(\tau)\) es estrictamente monótona en \(K\)**. Es lo único que falta para la tasa minimax \(n^{-1/2}\) en la caja EF (Prop. F).
+5. ~~Monotonía de \(p\).~~ Lema G, §9.
+6. Revisión ciega de §8–§9 (Corolario D, Proposiciones E y F, Lema G, Teorema H) por otra familia, y lectura del PI.
