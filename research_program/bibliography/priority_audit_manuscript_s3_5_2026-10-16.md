@@ -72,3 +72,32 @@ VEREDICTO: NO_OVERLAP_FOUND_IN_LIMITED_SEARCH — PROVISIONAL
    créditos, o `sanedrin --hibrido`. Las dos envían texto a terceros: requieren
    permiso del PI.
 4. Pedir la opinión de una persona experta en estadística de rangos o en causets.
+
+## 6. Fuentes conseguidas (2026-10-16, arXiv, acceso legal)
+
+- `biblioteca/Minguzzi_Sanchez_2008_Causal_Hierarchy_arXiv_gr-qc0609119v3.pdf`
+  (identificador verificado en la API de arXiv). §3.8, p. 36: "A partial (strict)
+  ordering < is defined in Lor(M): g < g′ if and only if all the causal vectors for g
+  are timelike for g′." Ya se usa en p. 9 (Lema 2.13). Nuestro caso
+  \(g_{M'}-g_M=2(M'-M)\dot v^2/r\ge0\) es la **versión no estricta**, porque \(-\partial_r\)
+  es nulo para todo \(M\). Los futuros causales anidados se siguen directamente. Es la cita
+  para el Lema 3.14 y para M1.
+- `biblioteca/Bleybel_2024_Conformal_Group_Globally_Hyperbolic_arXiv2407.12946.pdf`.
+  p. 1: en dimensión > 2, los automorfismos causales de Minkowski son Lorentz
+  ortócronas, traslaciones y dilataciones (**Zeeman**). En una variedad lorentziana
+  general de dimensión > 2, todo automorfismo causal que distinga pasado y futuro es
+  conforme (**Levichev**). En 2D aparecen grandes grupos de reparametrización (Kim; el
+  propio Bleybel). **Corrección:** la rigidez de 3+1D que se usa en
+  `puente_3p1/2026-10-16/` y en la prueba 3 de CREATE se había atribuido a "Malament";
+  corresponde a Zeeman y Levichev. Las fuentes primarias (Zeeman 1964, Levichev) no
+  están descargadas.
+
+No conseguidos (con derechos de autor, sin copia abierta legal): Hájek–Šidák, *Theory
+of Rank Tests*; Lehmann–Romano, *Testing Statistical Hypotheses*. Hay que obtenerlos
+por una biblioteca o comprándolos. Sustituto parcial buscado en arXiv (experimentos de
+rangos con soporte móvil): sin resultados que se solapen.
+
+**Catálogo.** `biblioteca/INDICE.md` se genera desde `scripts/biblioteca_catalog/curated.csv`,
+que solo existe en la rama `research/causal-fidelity-bridge`, no en `main`. No se ha
+regenerado el índice, para no perder las etiquetas curadas. Los dos PDFs nuevos están en
+`biblioteca/` pero todavía no en el índice.
