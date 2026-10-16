@@ -101,9 +101,12 @@ transport to the sealed Schwarzschild benchmark. The physical re-entry audit
 finds exact transport only for the product-order/rank-permutation skeleton at
 fixed cardinality. The point experiment is now proved non-QMD, which rules out
 a common parameter-independent statistical isomorphism to the regular S1/S2
-experiment. The remaining `DOMAIN_BRIDGE` question is regularity after the
-finite rank/permutation or unlabeled-poset channel; it is open and not
-authorized. See
+experiment. Regularity after the finite rank/permutation channel is now bounded
+uniformly in `n`: a horizon-side quotient gives `I_n^Pi <= n J(tau)` and a root-score
+modulus `Omega_{n,K}(eta) <= C_K n eta` (QMD-uniform windows `n delta_n -> 0`; not the
+LAN scale). Status `PROVED_MODEL_REVIEWED — NO_HUMAN_READ`:
+[`wp6_uniform_n_horizon_quotient.md`](research_program/work_packages/wp6_uniform_n_horizon_quotient.md).
+See
 [`wp6_d2_geometric_tangent_classification.md`](research_program/work_packages/wp6_d2_geometric_tangent_classification.md),
 [`wp6_d2_geometric_fisher_retention.md`](research_program/work_packages/wp6_d2_geometric_fisher_retention.md),
 and the [physical re-entry audit](docs/physical_reentry_audit_001_2026-08-28.md).
@@ -129,6 +132,9 @@ T12_TO_PREREG002_FALSIFIABLE_TRANSFER = NOT_ESTABLISHED
 T19_STRUCTURAL_RESULT = CLOSED_AUTONOMOUSLY
 POISSON_QMD_BRANCH = PARKED_OPEN_REDUCED
 POISSON_MIXTURE_QMD = OPEN_UNIFORM_BOUND
+UNIFORM_IN_N_FISHER_BOUND = PROVED_LINEAR  [MODEL_REVIEWED; NO_HUMAN_READ]
+UNIFORM_SQRT_SCORE_MODULUS = PROVED_LINEAR_WINDOW  [NO_CROSS_FAMILY_REVIEW]
+UNIFORM_QMD_AT_LAN_SCALE = NOT_IMPLIED
 PREREG_002 = UNCHANGED
 NEXT_RUN_AUTHORIZED = NO
 TARGET_SUBCLASS = SYMMETRIC_RANK_ONE_COPULA_TANGENTS

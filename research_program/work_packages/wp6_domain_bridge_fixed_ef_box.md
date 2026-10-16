@@ -155,6 +155,14 @@ Un mapa dependiente de \(\tau\) puede fijar el soporte, pero entonces el
 canal de orden también depende de \(\tau\); no es el transporte común exigido
 por `DOMAIN_BRIDGE`.
 
+`[CORRECCIÓN 2026-10-16 — lectura fuerte refutada]` La frase anterior es falsa si
+se lee como "todo mapa que fija el soporte hace depender de τ el canal de orden".
+Hay un cambio de variables dependiente de τ, \((v,r)\mapsto(\varepsilon,D,V)\), que
+fija el soporte y para el que \(\Pi_n=\varphi(\cdot)\) con \(\varphi\) **independiente**
+de τ (cociente por lado del horizonte): ver
+`wp6_uniform_n_horizon_quotient.md` §2. El teorema de esta sección (no hay un
+isomorfismo común de la ley puntual) se mantiene.
+
 ## 6. Lema de soporte cuantitativo completo para el canal de rangos
 
 Para \(n\ge1\), sean \(X_i=(U_i,V_i)\), \(1\le i\le n\), puntos iid con
@@ -2014,3 +2022,11 @@ I_n^{[P]}(\tau)\le I_n^\Pi(\tau)
 
 No se abre el tail lemma, el trace lemma completo, uniformidad QMD, mezcla
 Poisson, Fisher--localización o Kerr.
+
+`[ADDENDUM 2026-10-16]` La cadena condicional §15–§19 queda superada para la escala
+de Fisher y el módulo de la raíz-score por `wp6_uniform_n_horizon_quotient.md`
+(estado `PROVED_MODEL_REVIEWED — NO_HUMAN_READ`): \(I_n^\Pi\le nJ(\tau)\) y
+\(\Omega_{n,K}(\eta)\le C_Kn\eta\), sin el tail lemma. Los sublemas de §16–§19
+siguen abiertos como enunciados, pero ya no se necesitan para esas dos cotas.
+La QMD uniforme en la escala LAN, la mezcla Poisson y el puente Fisher–localización
+siguen como estaban.
