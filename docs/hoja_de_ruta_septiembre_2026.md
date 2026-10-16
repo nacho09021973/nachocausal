@@ -84,6 +84,11 @@ POISSON_MIXTURE_QMD = OPEN_UNIFORM_BOUND
 PREREG_002 = UNCHANGED
 NEW_VALIDATION_RUNS = NOT_AUTHORIZED
 SCHWARZSCHILD_3P1_RUNS = NOT_AUTHORIZED
+# [ADDENDUM 2026-10-16, decisión del PI] El bloqueo se debía a que no había una vía. Con
+# los resultados de la caja EF del 2026-10-16 (wp6_uniform_n_horizon_quotient.md) y el
+# Lema M1 (puente_3p1/2026-10-16/), el PI abre el trabajo en 3+1D para exploración en dev/.
+# Las ejecuciones de validación siguen necesitando prerregistro.
+SCHWARZSCHILD_3P1_EXPLORATION = AUTHORIZED_BY_PI_2026-10-16
 PUENTE_3P1_BLOCK = OPEN_VIA_B_NEW_PROGRAM
 PHASE_0_R1 = UNCHANGED_IN_FORCE
 PUENTE_3P1_TARGET = PHI_LAMBDA_INTERIOR_VOLUME_FRACTION

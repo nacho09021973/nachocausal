@@ -287,6 +287,18 @@ stated `τ(x,y) >= τ(x,z) + τ(z,y)` for `z` in the causal future of `x`; it al
 PI authorised the text fix, recorded in the certificate's 2026-10-14 addendum. The certified
 number is unaffected: both corner bounds that use the step have `z` between the endpoints.
 
+**3+1D order-only rate front (opened by the PI on 2026-10-16).** The 3+1D block was parked
+for lack of a route. The EF-rectangle results of 2026-10-16 give one, and the PI opened 3+1D
+work for `dev/` exploration. Validation runs still need a preregistration.
+- **Lemma M1:** in ingoing EF coordinates, `g_{M'} - g_M = 2(M'-M) vdot^2/r >= 0`, so
+  `J^+_{M'}(x) ⊆ J^+_M(x)` in any dimension. "Related" is non-increasing in `M` for every
+  fixed pair.
+- **Theorem M2:** the related-pair estimator has error `O(n^{-1/2})` in a fixed 3+1D box,
+  conditional on `min|p'| > 0`. That condition (M3) is only a proof sketch.
+- **Open:** the 3+1D lower bound.
+- Note: [`puente_3p1/2026-10-16/M1_metric_comparison_and_upper_rate.md`](research_program/puente_3p1/2026-10-16/M1_metric_comparison_and_upper_rate.md).
+  The 2+1D check gives `MONOTONE_2P1_CONSISTENT`.
+
 **2+1D equatorial front** (charter: `docs/acta_frente_2p1_ecuatorial_2026-10-12.md`, signed).
 Lemma E1 (`research_program/puente_3p1/2026-10-12/E1_equatorial_restriction_lemma.md`, audited)
 shows that the 3+1D Schwarzschild causal order restricted to the equator equals the order of the
