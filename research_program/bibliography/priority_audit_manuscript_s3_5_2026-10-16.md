@@ -101,3 +101,29 @@ rangos con soporte móvil): sin resultados que se solapen.
 que solo existe en la rama `research/causal-fidelity-bridge`, no en `main`. No se ha
 regenerado el índice, para no perder las etiquetas curadas. Los dos PDFs nuevos están en
 `biblioteca/` pero todavía no en el índice.
+
+## 7. Libros aportados por el PI (2026-10-16)
+
+- `biblioteca/Testing-statistical-hypotheses.epub`: Lehmann–Romano, 4.ª ed. Leído por
+  búsqueda de texto en la conversión del EPUB (el EPUB no tiene páginas fijas; se cita
+  por sección o ejemplo).
+  - §6.8, *Rank Tests*: "Any invariant test is thus a rank test, that is, it depends only
+    on the ranks of the observations". Los rangos son el invariante maximal bajo
+    transformaciones monótonas. Es la cita para la frase de reducción por invariante
+    maximal de la §3.5.
+  - Ejemplo 14.2.8 (*Uniform Family*): la familia uniforme no es QMD, porque
+    \(n\int[p_{\theta_0}^{1/2}-p_{\theta_0+hn^{-1/2}}^{1/2}]^2\to\infty\). A continuación:
+    "it is quite typical that families whose support depends on unknown parameters will
+    not be q.m.d., though Example 14.2.7 is an exception". Es la cita para la
+    Observación 3.4 (la ley de un punto en la caja EF no es QMD).
+  - Ningún pasaje del libro trata que el experimento de rangos de una familia con soporte
+    móvil sea regular. Búsquedas: "maximal invariant" (24 apariciones), "rank test" (14),
+    "quadratic mean" (25), dependencia del soporte (1, la del Ejemplo 14.2.8), "local
+    asymptotic normality" (3). **No se encuentra antecedente de A en Lehmann–Romano.**
+- `biblioteca/the-asymptotic-theory-of-extreme-order-statistics.pdf`: **es Galambos**,
+  *The Asymptotic Theory of Extreme Order Statistics*, 2.ª ed., no Hájek–Šidák como dice
+  `Libros.txt`. Sirve para el lado de la frontera (tasa \(1/n\) de los extremos). No cubre
+  los tests de rangos. **Hájek–Šidák sigue sin estar disponible.**
+
+Veredicto actualizado: NO_OVERLAP_FOUND (biblioteca, alphaXiv y Lehmann–Romano) —
+PROVISIONAL mientras no se consulte Hájek–Šidák ni a una persona experta.
