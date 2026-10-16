@@ -11,7 +11,7 @@ For any AI or agent connecting to this repo, read [INSTRUCCIONES.md](INSTRUCCION
 the available machinery and the correct workflow between committee, auditor, external consultors,
 and Alloy.
 
-**Manuscript under review:**
+**Manuscript draft (not yet submitted):**
 [Finite order-only observation of Schwarzschild patches](docs/manuscript_limits_draft.md)
 separates exact fixed-\(n\) blindness to absolute scale, completion dependence of the global
 event horizon, and a matching \(n^{-1/2}\) minimax localization rate on one declared
