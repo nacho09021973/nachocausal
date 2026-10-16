@@ -300,7 +300,7 @@ c(\tau)=\frac1{L^2}\iint_{\tau<r_1<r_2<r_b}\frac2T\Bigl(1-\frac{\Delta\varphi}{T
 \bigl(\gamma(r_2)-\gamma(r_1)\bigr)\,dr_1dr_2>0,
 \]
 
-donde \(\varphi_\tau(r)=2\tau\log|W_\tau(r)/\tau|\) (es decir, \(2r+2\tau\log(|r-\tau|/\tau)\)),
+donde \(\varphi_\tau(r)=2\tau\log|W_\tau(r)|=2r+2\tau\log(|r-\tau|/\tau)\),
 \(\Delta\varphi=\varphi(r_2)-\varphi(r_1)\) y \(\gamma=\partial_\tau\varphi\). La función \(c\) es
 semicontinua inferiormente, así que \(m:=\min_K|p'|\ge\min_Kc>0\).
 
