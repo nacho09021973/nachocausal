@@ -104,7 +104,9 @@ a common parameter-independent statistical isomorphism to the regular S1/S2
 experiment. Regularity after the finite rank/permutation channel is now bounded
 uniformly in `n`: a horizon-side quotient gives `I_n^Pi <= n J(tau)` and a root-score
 modulus `Omega_{n,K}(eta) <= C_K n eta` (QMD-uniform windows `n delta_n -> 0`; not the
-LAN scale). Status `PROVED — READ_BY_PI 2026-10-16` (part (a) reviewed by DeepSeek, part (b) by Astra):
+LAN scale). As a corollary, no order-only estimator in the fixed EF box localizes `tau`
+below order `1/sqrt(n Jbar)` (two-point floor; the minimax rate is not established).
+Status `PROVED — READ_BY_PI 2026-10-16` (part (a) reviewed by DeepSeek, part (b) by Astra):
 [`wp6_uniform_n_horizon_quotient.md`](research_program/work_packages/wp6_uniform_n_horizon_quotient.md).
 See
 [`wp6_d2_geometric_tangent_classification.md`](research_program/work_packages/wp6_d2_geometric_tangent_classification.md),
@@ -135,6 +137,8 @@ POISSON_MIXTURE_QMD = OPEN_UNIFORM_BOUND
 UNIFORM_IN_N_FISHER_BOUND = PROVED_LINEAR  [DEEPSEEK_REVIEWED; READ_BY_PI]
 UNIFORM_SQRT_SCORE_MODULUS = PROVED_LINEAR_WINDOW  [READ_BY_PI; ASTRA_REVIEWED_NOT_INDEPENDENT]
 UNIFORM_QMD_AT_LAN_SCALE = NOT_IMPLIED
+EF_BOX_ORDER_ONLY_TWO_POINT_FLOOR = PROVED  [order 1/sqrt(n Jbar); order channel does not attain 1/n]
+EF_BOX_MINIMAX_RATE = NOT_ESTABLISHED
 PREREG_002 = UNCHANGED
 NEXT_RUN_AUTHORIZED = NO
 TARGET_SUBCLASS = SYMMETRIC_RANK_ONE_COPULA_TANGENTS

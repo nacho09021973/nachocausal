@@ -9,6 +9,9 @@ UNIFORM_IN_N_FISHER_BOUND = PROVED_LINEAR            (I_n^Pi <= n J(tau))
 UNIFORM_SQRT_SCORE_MODULUS = PROVED_LINEAR_WINDOW     (Omega_{n,K}(eta) <= C_K n eta)
 UNIFORM_QMD_WINDOW = delta_n = o(1/n)
 UNIFORM_QMD_AT_LAN_SCALE = NOT_IMPLIED (ver §6)
+EF_BOX_ORDER_ONLY_TWO_POINT_FLOOR = PROVED  (orden 1/sqrt(n Jbar), Corolario C §7)
+EF_BOX_ORDER_CHANNEL_ATTAINS_1_OVER_N = REFUTED (Corolario C)
+EF_BOX_MINIMAX_RATE = NOT_ESTABLISHED (falta la cota superior)
 POISSON_MIXTURE_REGULARITY = OPEN_NOT_STARTED
 FISHER_TO_LOCALISATION_BRIDGE = NOT_OPENED
 NO_PRIORITY_CLAIM
@@ -183,7 +186,49 @@ cotas inferiores sobre el orden de la tasa. Solo haría falta para constantes ó
 o para eficiencia.
 Tampoco se abren la mezcla Poisson ni el puente Fisher–localización.
 
-## 7. Comprobación numérica (caja sellada \(r\in[0.1,1.3]\), \(v\in[0,6]\))
+## 7. Corolario C: cota inferior de dos puntos en la caja EF
+
+Lo propusieron por separado los cuatro modelos de la encuesta
+(`revisiones/2026-10-16-encuesta-escala-lan/sintesis.md`). Es la contrapartida, en la
+caja EF, del Teorema 3.8 de `docs/manuscript_limits_draft.md`.
+
+**Corolario C.** Sea \(\bar J=\sup_KJ\). Para todo \(n\ge1\), todo
+\(\tau,\tau+\delta\in K\) y todo estimador \(\widehat\tau\), posiblemente aleatorizado,
+que sea función de \(\Pi_n\) o del poset sin etiquetas \([P_{\Pi_n}]\):
+
+1. \(\mathrm{TV}(\mathcal L_\tau,\mathcal L_{\tau+\delta})\le\tfrac{|\delta|}{2}\sqrt{n\bar J}\),
+   tanto para la ley de \(\Pi_n\) como para la del poset.
+2. \(\mathbb P_\tau(|\widehat\tau-\tau|\ge|\delta|/2)+
+   \mathbb P_{\tau+\delta}(|\widehat\tau-\tau-\delta|\ge|\delta|/2)\ge
+   1-\tfrac{|\delta|}{2}\sqrt{n\bar J}\).
+3. Ningún procedimiento basado solo en el orden localiza \(\tau\) con precisión
+   \(|\delta|/2\) y confianza \(1-\epsilon\) en ambos extremos si
+   \(|\delta|<2(1-2\epsilon)/\sqrt{n\bar J}\).
+
+*Prueba.* A \(n\) fijo, \(s_n\) es \(C^1\) en \(K\) (Teorema B) y
+\(\|\dot s_n\|^2=\sum_\sigma\pi_\sigma'^2/(4\pi_\sigma)=I_n^\Pi/4\) (\(\pi_\sigma>0\), wp6 §6).
+Como \(K\) es un intervalo, por el teorema fundamental del cálculo y el Teorema A,
+\(\|s_n(\tau+\delta)-s_n(\tau)\|\le\int\|\dot s_n\|\le\tfrac{|\delta|}{2}\sqrt{n\bar J}\). Además,
+\(\mathrm{TV}=\tfrac12\sum|\sqrt p-\sqrt q|(\sqrt p+\sqrt q)\le\|\sqrt p-\sqrt q\|_2\) por
+Cauchy–Schwarz, ya que \(\|\sqrt p+\sqrt q\|_2\le2\). El poset es imagen de \(\Pi_n\) por un
+mapa fijo (wp6 (15.3)), así que la TV se contrae. El punto 2 es el lema de dos
+puntos aplicado al test \(1\{\widehat\tau>\tau+\delta/2\}\); el punto 3 se sigue de 2. \(\square\)
+
+**Consecuencias.**
+
+- Cierra en negativo el hueco 4 de `wp4_fisher_localization_floor.md` §6, que preguntaba
+  si el canal de orden alcanza la tasa \(1/n\) de la ley de un punto en la caja EF
+  (Proposición 3 de wp4). **No la alcanza**: ningún estimador basado solo en el orden
+  baja del orden \(1/\sqrt{n\bar J}\). La ventaja del soporte móvil (estadísticos
+  extremos) se pierde al quedarse solo con el orden.
+- **No** establece la tasa minimax \(n^{-1/2}\) en la caja EF: falta una cota superior
+  basada en el orden, que es el puente Fisher–localización, abierto.
+- Solo vale a \(N=n\) fijo. Opus sugiere que con \(N\) de Poisson la cota se extendería
+  con \(E[N]\), porque en una caja rectangular en \((v,r)\) la ley de \(N\) no depende de
+  \(\tau\) [UNVERIFIED].
+- La constante es la de la cota de TV, no la del riesgo gaussiano.
+
+## 8. Comprobación numérica (caja sellada \(r\in[0.1,1.3]\), \(v\in[0,6]\))
 
 Criterios fijados en el docstring antes de ejecutar:
 
@@ -198,7 +243,7 @@ Criterios fijados en el docstring antes de ejecutar:
 Las comprobaciones numéricas cubren solo \(n\) pequeño. Para todo \(n\), el
 resultado descansa en las pruebas de §4–§5.
 
-## 8. Pendiente
+## 9. Pendiente
 
 1. ~~Lectura humana de §2–§5.~~ Hecha por el PI, 2026-10-16.
 2. ~~Revisión por otra familia de la parte (b).~~ Hecha por Astra (no independiente); una revisión independiente de §5 sigue siendo deseable.

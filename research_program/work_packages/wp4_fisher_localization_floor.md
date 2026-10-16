@@ -481,6 +481,11 @@ geometrically probes; this connection has not been made.
    an explicit order-only estimator) is still missing — same open item as Attempt C.
 4. **The `1/n` box-family gap** (§3): whether the order-only channel attains the `1/n` point-level
    rate for support-type families is unknown.
+   `[ADDENDUM 2026-10-16]` Resuelto en negativo para la caja EF fija:
+   `wp6_uniform_n_horizon_quotient.md` §7 (Corolario C) prueba una cota inferior de dos puntos
+   de orden `1/sqrt(n Jbar)` para todo estimador basado solo en el orden (Π_n o poset), así
+   que el canal de orden no alcanza `1/n`. La Proposición 3 sigue siendo cierta, pero ya no es
+   la cota más fuerte. La tasa minimax sigue sin establecerse (falta la cota superior).
 
 ## 7. Verdicts (task rubric)
 
