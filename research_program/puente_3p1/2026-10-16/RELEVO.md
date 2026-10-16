@@ -17,9 +17,16 @@
   - `dev/explore_information_growth_degeneracy.py`: UNDECIDED (fallo de diseño anotado).
     \(\tilde I\) del juguete saltó a 41 065 en \(n=4000\), con solo 100 réplicas, por la
     combinación de la fracción de pares con \(n_{\max}\) y \(n_{\min}\).
-  - **En curso al irse el PI:** `dev/explore_information_growth_boundary_cv.py`
-    (\(n\) hasta 8000, 300 réplicas, regla fijada en el docstring). Si no llegó a
-    terminar, **no hay fichero de resultados**: hay que relanzarlo.
+  - `dev/explore_information_growth_boundary_cv.py` (\(n\) hasta 8000, 300 réplicas):
+    **LINEAR_CONSISTENT**, terminado el 2026-10-16.
+    - Control de 1+1D: pendiente 0.95 [0.89, 1.02].
+    - Juguete de Minkowski 3+1D: pendiente 1.01 [0.95, 1.08].
+    - Los contadores de frontera multiplican \(\tilde I\) por un factor constante (unos 1.8)
+      sin cambiar el exponente.
+    - El salto de \(n=4000\) del experimento anterior era ruido (100 réplicas).
+  - **Lectura:** es evidencia, no prueba, de que la tasa sigue siendo \(n^{-1/2}\) en un
+    modelo rígido (sin el grupo de reparametrización de 2D). **Siguiente:** probar
+    \(I_n\le Cn\) por la identidad de flujo (CREATE prueba 3, ruta Opus 1) y cerrar M3.
 
 ## Cómo relanzar el experimento en curso
 
