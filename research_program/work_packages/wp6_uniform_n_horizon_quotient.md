@@ -1,7 +1,7 @@
 # `UNIFORM_IN_N_REGULARITY` para la caja EF fija — cociente por lado del horizonte
 
 ```text
-ESTADO: PROVED_MODEL_REVIEWED — NO_HUMAN_READ
+ESTADO: PROVED — READ_BY_PI 2026-10-16; PART_A_REVIEWED_DEEPSEEK; PART_B_REVIEWED_ASTRA (not independent)
 FECHA: 2026-10-16
 ENTRADA: research_program/work_packages/wp6_domain_bridge_fixed_ef_box.md §13–§19
 NATURALEZA: prueba analítica; comprobación numérica en dev/ (sin semillas del track sellado)
@@ -23,10 +23,10 @@ prueba de la herramienta CREATE (`~/herramientas`, commit `fbc5b3c`;
 la lista de vías ya exploradas; esta no estaba en ella. Las pruebas de §3–§5 las
 escribió Claude (Opus 5.5). Revisión ciega de la parte (a) por deepseek-v4-pro, con
 veredicto "correcta con salvedades menores":
-`revisiones/2026-10-16-cociente-horizonte-ciego/` (commit `278d536`). La parte (b)
-(§5) no ha tenido revisión de otra familia. **Ninguna persona ha leído este
-documento.** El estado `PROVED_MODEL_REVIEWED` se fija por decisión del PI
-(2026-10-16) y debe revisarse tras la lectura humana.
+`revisiones/2026-10-16-cociente-horizonte-ciego/` (commit `278d536`). El PI leyó
+§2–§5 el 2026-10-16 y los da por buenos. Revisión de la parte (b) (§5) por gpt-6-astra, con veredicto "correcta con
+salvedades enumeradas" en el §6: `revisiones/2026-10-16-modulo-omega-astra/`. No es
+independiente, porque Astra propuso la cota.
 
 ## 1. Modelo y notación
 
@@ -155,15 +155,25 @@ Sumando,
 
 ## 6. Techo: la escala LAN
 
-La ventana \(n\delta_n\to0\) es la natural de este argumento. En el experimento
-gaussiano producto \(N(\tau,1)^{\otimes n}\), el módulo es del orden de \(n\delta\),
-así que en la escala \(\delta_n=h/\sqrt n\) no tiende a 0 (cálculo propuesto por
-la ruta 4 de Opus en la prueba CREATE; comprobado aquí solo en su escala).
-Por tanto el Teorema B **no** implica QMD uniforme en la escala LAN. Si el
-argumento posterior la necesita, el objeto correcto es un resto relativo, por
-ejemplo \(\|s_n(\tau+h/\sqrt n)-s_n(\tau)-(h/\sqrt n)\dot s_n\|\to0\), y eso queda
-abierto. Tampoco se abren la mezcla Poisson, el puente Fisher–localización ni
-cotas inferiores de \(I_n^\Pi\).
+En el experimento gaussiano producto \(N(\tau,1)^{\otimes n}\) (cálculo de la ruta 4
+de Opus, rehecho por Astra en la revisión de §5),
+\(\|\ddot\psi\|^2=3n^2/16\) y
+\(\|\dot\psi_{\tau+h}-\dot\psi_\tau\|=(\sqrt3/4)\,n|h|\,[1+O(nh^2)]\) **solo en el
+régimen** \(\sqrt n|h|\to0\), porque el módulo está acotado por \(\sqrt n\). Por tanto:
+
+- La cota del Teorema B no da QMD uniforme en la escala \(\delta_n=h/\sqrt n\): el resto
+  \((\delta^2/2)\sup\|\ddot s_n\|\) es \(O(h^2)\), no \(o(1)\). Esto es una **limitación de
+  esta cota**, no una imposibilidad. No excluye LAN para \(\Pi_n\) por otro argumento.
+- La optimalidad de la escala \(n\eta\) para \(\Pi_n\) **no está demostrada**. Para
+  cualquier canal, \(\langle s_n,\ddot s_n\rangle=-I_n^\Pi/4\), luego
+  \(\|\ddot s_n\|\ge I_n^\Pi/4\) (Astra). Una cota inferior \(I_n^\Pi\gtrsim n\) probaría
+  que el coeficiente de Lipschitz local es de orden \(n\). Esa cota inferior está
+  abierta. La simulación da \(I_n^\Pi\) creciente para \(n\le4\), pero no la prueba.
+
+Si el argumento posterior necesita la escala LAN, el objeto correcto es un resto
+relativo, por ejemplo
+\(\|s_n(\tau+h/\sqrt n)-s_n(\tau)-(h/\sqrt n)\dot s_n\|\to0\), y queda abierto.
+Tampoco se abren la mezcla Poisson ni el puente Fisher–localización.
 
 ## 7. Comprobación numérica (caja sellada \(r\in[0.1,1.3]\), \(v\in[0,6]\))
 
@@ -182,8 +192,9 @@ resultado descansa en las pruebas de §4–§5.
 
 ## 8. Pendiente
 
-1. Lectura humana de §2–§5.
-2. Revisión por otra familia de la parte (b) (§5) y de la dominación de segundo orden de §3.
+1. ~~Lectura humana de §2–§5.~~ Hecha por el PI, 2026-10-16.
+2. ~~Revisión por otra familia de la parte (b).~~ Hecha por Astra (no independiente); una revisión independiente de §5 sigue siendo deseable.
 3. Cita de un criterio de QMD comprobado en la fuente. Aquí no hace falta: la
    prueba usa derivación bajo la integral, no el criterio. El lema 7.6 de van der
    Vaart no está en `biblioteca/` [UNVERIFIED].
+4. Cota inferior \(I_n^\Pi\gtrsim n\), abierta (§6).

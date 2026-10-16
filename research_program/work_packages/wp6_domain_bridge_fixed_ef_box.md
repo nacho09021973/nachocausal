@@ -2025,7 +2025,7 @@ Poisson, Fisher--localización o Kerr.
 
 `[ADDENDUM 2026-10-16]` La cadena condicional §15–§19 queda superada para la escala
 de Fisher y el módulo de la raíz-score por `wp6_uniform_n_horizon_quotient.md`
-(estado `PROVED_MODEL_REVIEWED — NO_HUMAN_READ`): \(I_n^\Pi\le nJ(\tau)\) y
+(estado `PROVED — READ_BY_PI 2026-10-16`): \(I_n^\Pi\le nJ(\tau)\) y
 \(\Omega_{n,K}(\eta)\le C_Kn\eta\), sin el tail lemma. Los sublemas de §16–§19
 siguen abiertos como enunciados, pero ya no se necesitan para esas dos cotas.
 La QMD uniforme en la escala LAN, la mezcla Poisson y el puente Fisher–localización

@@ -1,0 +1,62 @@
+# Afirmación a revisar: módulo de la raíz-score de un canal de permutaciones
+
+## 1. Contexto (dado; ya revisado y aceptado, no se pide revisarlo)
+
+Sea X = (ε_i, D_i, V_i)_{i≤n} i.i.d. y Π_n = φ(X) ∈ S_n, con φ un mapa fijo
+(independiente del parámetro τ ∈ K, K un intervalo compacto). V es uniforme en
+[0,T] e independiente de (ε, D). (ε, D) toma valores en el soporte fijo
+{±1} × [0, ∞), con densidad
+
+    f_τ(ε, d) = t / (2L(τ + ε t)),   donde t = t_τ(ε, d) ∈ (0, t_b] resuelve
+    G(t, τ, d) = log t + ε t/τ − log t_b − ε t_b/τ + d/(2τ) = 0,
+
+con t_b = |b_ε − τ|, b_{+1} = r_b > τ > b_{−1} = r_a > 0, L = r_b − r_a, y
+τ + ε t = r ∈ [r_a, r_b]. Está ya aceptado: ∂_t G = 1/t + ε/τ > 0; t_τ(d) es C^∞ en τ;
+t ≤ L e^{−d/(2τ_max)}; s := ∂_τ log f = O(1 + d) uniformemente en K; π_σ(τ) =
+P_τ(Π_n = σ) > 0 para todo σ; y la cota de Fisher I_n^Π(τ) = Σ_σ π_σ'²/π_σ ≤ n J(τ),
+J = E s², obtenida derivando bajo la integral y aplicando Cauchy–Schwarz.
+
+## 2. Afirmación (Teorema B)
+
+Sean s_n = (√π_σ)_σ ∈ ℓ²(S_n), b := ∂²_τ log f_τ(ε, D), m_4 = E s⁴ y
+c(τ)² = (9/8)(m_4 + 3J²) + E b². Entonces, para todo n ≥ 1,
+
+    sup_{τ∈K} ‖s̈_n(τ)‖₂ ≤ n · C_K,   C_K = sup_K c,
+
+y por tanto Ω_{n,K}(η) := sup_{τ,τ+h∈K, |h|≤η} ‖ṡ_n(τ+h) − ṡ_n(τ)‖₂ ≤ C_K n η. En
+particular, Ω_{n,K}(|δ_n|) → 0 si n δ_n → 0.
+
+## 3. Argumento
+
+(a) **Segundas derivadas.** Derivando G otra vez: ∂²_t G = −1/t², ∂_τ ∂_t G = −ε/τ²,
+∂²_τ G = O(1 + d). Con ∂_t G ≥ c_K / t (en el interior, τ − t ≥ r_a) y ∂_τ t / t = O(1 + d),
+se obtiene ∂²_τ t / t = O((1 + d)²). Por tanto b = O((1 + d)²) uniformemente en K.
+Como la cola es exponencial, m_4, E b² < ∞ uniformemente en K, y se cumplen E s = 0
+y E b = −J.
+
+(b) **Fórmula de π''.** Con A_n = Σ_i s(ε_i, D_i) y B_n = Σ_i b(ε_i, D_i), la dominación
+|∂^k_τ f| ≤ C (1 + d)² e^{−d/(2τ_max)} (k ≤ 2, uniforme en K) permite derivar dos
+veces bajo la integral: π_σ'' = E[(A_n² + B_n) 1{φ(X) = σ}].
+
+(c) **Cota.** ṡ_σ = π_σ'/(2√π_σ), s̈_σ = π_σ''/(2√π_σ) − π_σ'²/(4 π_σ^{3/2}). Con
+(x + y)² ≤ 2x² + 2y²:
+‖s̈_n‖² ≤ ½ Σ π_σ''²/π_σ + ⅛ Σ π_σ'⁴/π_σ³.
+Por Cauchy–Schwarz, π_σ''²/π_σ ≤ E[(A_n² + B_n)² 1_σ] y
+π_σ'⁴/π_σ³ ≤ (E[A_n² 1_σ])²/π_σ ≤ E[A_n⁴ 1_σ]. Sumando en σ,
+‖s̈_n‖² ≤ ½ E(A_n² + B_n)² + ⅛ E A_n⁴ ≤ (9/8) E A_n⁴ + E B_n².
+
+(d) **Momentos de sumas i.i.d.** E A_n⁴ = n m_4 + 3n(n−1) J² ≤ n²(m_4 + 3J²);
+E B_n² = n Var b + n² J² ≤ n² E b². Por tanto ‖s̈_n‖ ≤ n c(τ).
+
+(e) **Módulo.** ṡ_n(τ+h) − ṡ_n(τ) = ∫_τ^{τ+h} s̈_n, luego ‖·‖ ≤ |h| sup_K ‖s̈_n‖.
+
+## 4. Límite declarado
+
+En el modelo gaussiano N(τ,1)^{⊗n} el módulo es del orden de n δ. Así que la
+ventana n δ_n → 0 parece la natural, y el resultado no da QMD uniforme en la
+escala δ_n = h/√n.
+
+## 5. Comprobación numérica ya hecha (r_a = 0.1, r_b = 1.3, T = 6)
+
+|E b + J| / J < 10⁻⁷. Monte Carlo (2·10⁷ conjuntos) de ‖s̈_n‖ con n = 2, 3, 4 y
+τ ∈ {0.4, 0.5, 0.7}: entre 0.02 y 0.06 veces la cota.
